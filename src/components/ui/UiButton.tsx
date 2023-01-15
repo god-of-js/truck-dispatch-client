@@ -14,7 +14,7 @@ const Button: React.FC<Props> = ({
   children,
   onClick,
   disabled = false,
-  variant = 'primary',
+  variant = 'primary-outlined',
 }) => {
   return (
     <ButtonContainer
@@ -30,12 +30,27 @@ const Button: React.FC<Props> = ({
 export default Button;
 
 const ButtonContainer = styled.button<Props>`
-  padding: 8px 16px;
+  padding: 12px 16px;
   border: none;
-  border-radius: 4px;
   cursor: pointer;
-  background-color: ${({ variant = 'primary' }: Props) =>
-    variant === 'primary' ? '#4CAF50' : '#f44336'};
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  letter-spacing: 0.4px;
+  line-height: 1.45;
+  text-align: center;
+  text-transform: uppercase;
+  border-radius: 4px;
+  font-weight: 900;
   text-transform: ${({ textCasing = 'uppercase' }) => textCasing};
   color: #ffffff;
+
+  &.primary {
+    background-color: rgb(44, 155, 242);
+  }
+  &.primary-outlined {
+    background: white;
+    border: white;
+  }
 `;
