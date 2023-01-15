@@ -5,6 +5,7 @@ interface Props {
   children?: React.ReactNode;
   disabled?: boolean;
   variant?: 'primary' | 'secondary' | 'neutal' | 'primary-outlined';
+  size?: 'large' | 'medium' | 'small';
   textCasing?: 'uppercase' | 'lowercase' | 'capitalize';
   onClick?: () => void;
 }
@@ -33,7 +34,8 @@ const ButtonContainer = styled.button<Props>`
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  background-color: ${(props: Props) =>
-    props.variant === 'primary' ? '#4CAF50' : '#f44336'};
+  background-color: ${({ variant = 'primary' }: Props) =>
+    variant === 'primary' ? '#4CAF50' : '#f44336'};
   text-transform: ${({ textCasing = 'uppercase' }) => textCasing};
+  color: #ffffff;
 `;
