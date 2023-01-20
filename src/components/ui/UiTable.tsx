@@ -7,7 +7,6 @@ interface Header {
    * It should be the same as the key of the key-value pair in the array.
    */
   query: string;
-  isSlot?: boolean
 }
 interface Props {
   // Any is forbidden in this codebase. However, for the sake of the flexibility this component needs,
@@ -20,11 +19,11 @@ interface Props {
   data: Record<string, any>[];
   headers: Header[];
   options: [];
+  children?: React.ReactNode[];
+  ComponentProps?: Record<string, React.ReactNode>;
 }
 
-const Table: React.FC<Props> = ({ data, headers, options = [] }) => {
-  const headersWithSlots = headers.filter((header) => header.isSlot);
-  console.log(headersWithSlots);
+export const UiTable: React.FC<Props> = ({ data, headers, options = [] }) => {
   return (
     <div>
       <table>
@@ -47,5 +46,3 @@ const Table: React.FC<Props> = ({ data, headers, options = [] }) => {
     </div>
   );
 };
-
-export default Table;

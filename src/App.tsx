@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-import UiButton from './components/ui/UiButton';
-import UiInput from './components/ui/UiInput';
-import UiTable from './components/ui/UiTable';
+import { UiButton } from './components/ui/UiButton';
+import { UiInput } from './components/ui/UiInput';
+import { UiTable } from './components/ui/UiTable';
 
 function App() {
   const [isFocused, setIsFocused] = useState('');
@@ -10,7 +10,6 @@ function App() {
     {
       title: 'Lorem',
       query: 'lorem',
-      isSlot: true
     },
     {
       title: 'Ipsum',
@@ -26,31 +25,31 @@ function App() {
       lorem: 'Lorem',
       ipsum: 'ipsum',
       dolor: 'amet',
-      wahala: 'wahala'
+      wahala: 'wahala',
     },
     {
       lorem: 'Lorem',
       ipsum: 'ipsum',
       dolor: 'amet',
-      wahala: 'wahala'
+      wahala: 'wahala',
     },
     {
       lorem: 'Lorem',
       ipsum: 'ipsum',
       dolor: 'amet',
-      wahala: 'wahala'
+      wahala: 'wahala',
     },
     {
       lorem: 'Lorem',
       ipsum: 'ipsum',
       dolor: 'amet',
-      wahala: 'wahala'
+      wahala: 'wahala',
     },
     {
       lorem: 'Lorem',
       ipsum: 'ipsum',
       dolor: 'amet',
-      wahala: 'wahala'
+      wahala: 'wahala',
     },
   ];
   return (
@@ -62,7 +61,16 @@ function App() {
         value={isFocused}
         onChange={(e) => setIsFocused(e.target.value)}
       />
-      <UiTable data={tableData} options={[]} headers={headers} />
+      <UiTable
+        data={tableData.map((item) => ({
+          lorem: (<a href={`https://${item.lorem}`}>{item.lorem}/////</a>),
+          ipsum: item.ipsum,
+          dolor: item.dolor,
+          wahala: item.wahala
+        }))}
+        options={[]}
+        headers={headers}
+      />
     </div>
   );
 }

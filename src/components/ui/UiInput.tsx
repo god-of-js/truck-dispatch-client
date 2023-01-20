@@ -8,7 +8,7 @@ interface Props {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const TheInput: React.FC<Props> = ({
+export const UiInput: React.FC<Props> = ({
   label,
   type = 'text',
   value,
@@ -30,8 +30,6 @@ const TheInput: React.FC<Props> = ({
     </div>
   );
 };
-
-export default TheInput;
 
 const Input = styled.input`
   display: flex;

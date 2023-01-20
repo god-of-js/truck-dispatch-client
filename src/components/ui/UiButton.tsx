@@ -15,7 +15,7 @@ interface Props {
   onClick?: () => void;
 }
 
-const Button: React.FC<Props> = ({
+export const UiButton: React.FC<Props> = ({
   children,
   onClick,
   disabled = false,
@@ -31,8 +31,6 @@ const Button: React.FC<Props> = ({
     </ButtonContainer>
   );
 };
-
-export default Button;
 
 const ButtonContainer = styled.button<Props>`
   padding: 12px 16px;
