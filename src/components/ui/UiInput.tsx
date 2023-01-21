@@ -43,7 +43,7 @@ const Input = styled.input`
   align-self: stretch;
   border: 1px solid
     ${({ isFocused }: { isFocused: boolean }) =>
-      isFocused ? 'var(--color-primary)' : 'var(--color-gray-300)'};
+      isFocused ? 'var(--color-primary)' : 'var(--color-gray-200)'};
   background: #ffffff;
   outline: none;
   box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);

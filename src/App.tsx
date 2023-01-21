@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 
 import { UiButton } from './components/ui/UiButton';
 import { UiInput } from './components/ui/UiInput';
@@ -61,7 +62,9 @@ function App() {
         value={isFocused}
         onChange={(e) => setIsFocused(e.target.value)}
       />
+      <Padding>
       <UiTable
+        tableTitle='Overview'
         data={tableData.map((item) => ({
           lorem: (<a href={`https://${item.lorem}`}>{item.lorem}/////</a>),
           ipsum: item.ipsum,
@@ -71,8 +74,13 @@ function App() {
         options={[]}
         headers={headers}
       />
+      </Padding>
     </div>
   );
 }
 
 export default App;
+
+const Padding = styled.div`
+  padding: 24px;
+`;
