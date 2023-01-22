@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-import UiButton from './components/ui/UiButton';
-import UiInput from './components/ui/UiInput';
+import UiButton from '../components/ui/UiButton';
+import UiInput from '../components/ui/UiInput';
 
-function App() {
+function ComponentsView() {
   const [isFocused, setIsFocused] = useState('');
 
   return (
@@ -19,4 +19,4 @@ function App() {
   );
 }
 
-export default App;
+export default ComponentsView;
