@@ -1,7 +1,5 @@
 :root {
     --color-primary: rgb(44, 155, 242);
-
-
     --color-gray: rgb(255, 255, 255);
     --color-gray-25: rgb(252, 253, 253);
     --color-gray-50: rgb(249, 250, 251);
@@ -14,4 +12,17 @@
     --color-gray-700: rgb(52, 64, 84);
     --color-gray-800: rgb(29, 41, 57);
     --color-gray-900: rgb(16, 24, 40);
+
+    /* Sizes */
+    --desktop-width: 1440px;
+    --laptop-width: 1366px;
+    --laptop-small-width: 1200px;
+    --tablet-large-width: 1024px;
+    --tablet: 992px;
+    --tablet-mid-width: 880px;
+    --tablet-small-width: 768px;
+    --mobile-large-width: 611px;
+    --mobile: 576px;
+    --mobile-small: 414px;
+    --min-resolution: 320px;
 }

@@ -35,14 +35,13 @@ export default TheInput;
 
 const Input = styled.input`
   display: flex;
-  flex-grow: 1;
   align-items: center;
   justify-content: stretch;
   padding: 4px 8px;
   gap: 8px;
   width: 100%;
-  height: 32px;
-  align-self: stretch;
+  height: 40px;
+  font-size: 12px;
   border: 1px solid
     ${({ isFocused }: { isFocused: boolean }) =>
       isFocused ? 'var(--color-primary)' : 'var(--color-gray-300)'};
@@ -50,6 +49,7 @@ const Input = styled.input`
   outline: none;
   box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
   border-radius: 4px;
+  box-sizing: border-box;
 `;
 
 const Label = styled.label`
