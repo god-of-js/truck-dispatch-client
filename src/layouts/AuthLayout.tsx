@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import sizes from '../sizes';
 
 interface Props {
   children: React.ReactNode;
@@ -32,8 +33,8 @@ const FormContainer = styled.div`
   width: 100%;
   padding: 24px;
 
-  @media only screen and (min-width: calc(var(--mobile) + 3px)) {
-    width: var(--mobile);
+  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+    width: 30%;
     background: red;
   }
 `;
