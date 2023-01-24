@@ -11,10 +11,14 @@
   font-family: 'thiccboi-extrabold';
   src: url('./assets/fonts/thicccboi/TTF/THICCCBOI-ExtraBold.ttf');
 }
+@font-face {
+  font-family: 'thiccboi-medium';
+  src: url('./assets/fonts/thicccboi/TTF/THICCCBOI-Medium.ttf');
+}
 
 body {
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: 'thiccboi-medium', sans-serif;
   font-weight: 400;
   color: red;
   -webkit-font-smoothing: antialiased;

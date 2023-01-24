@@ -25,6 +25,7 @@ export default function AuthLayout({ children, type = 'transporter' }: Props) {
         </div>
       </ImageContainer>
       <FormContainer>
+        <img src={TruckDispatchLogo} alt="" width="150" />
         <div className="form-container-inner">{children}</div>
       </FormContainer>
     </Layout>
@@ -94,8 +95,16 @@ const FormContainer = styled.div`
   width: 100%;
   padding: 24px;
 
+  img {
+    display: block;
+  }
+
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     width: 35%;
+
+    img {
+      display: none;
+    }
 
     .form-container-inner {
       width: 80%;

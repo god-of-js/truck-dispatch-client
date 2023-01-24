@@ -32,7 +32,6 @@ export default function RegistrationPage({ userType = 'transporter' }: Props){
     if (formData.cPassword !== formData.password) {
       alert('Passwords must match')
     }
-    console.log(formData)
   }
 
   const isTransporter = () => userType === 'transporter';
@@ -123,6 +122,6 @@ const PrivacyPolicyParagraph = styled.p`
 
 const AlreadyAMember = styled.p`
   text-align: center;
-  font-size: 16px;
+  font-size: 14px;
   color: var(--color-gray-400);
 `;
