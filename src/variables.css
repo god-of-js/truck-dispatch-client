@@ -1,5 +1,6 @@
 :root {
     --color-primary: rgb(44, 155, 242);
+    --color-primary-dark: rgb(11, 144, 245);
     --color-gray: rgb(255, 255, 255);
     --color-gray-25: rgb(252, 253, 253);
     --color-gray-50: rgb(249, 250, 251);

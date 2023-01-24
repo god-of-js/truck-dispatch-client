@@ -2,6 +2,16 @@
   font-family: 'Inter', sans-serif;
   src: url(https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap);
 }
+@font-face {
+  font-family: 'Audiowide';
+  src: url('./assets/fonts/Audiowide/Audiowide-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'thiccboi-extrabold';
+  src: url('./assets/fonts/thicccboi/TTF/THICCCBOI-ExtraBold.ttf');
+}
+
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
@@ -11,4 +21,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-:root {}
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: bold;
+}

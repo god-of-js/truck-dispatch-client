@@ -12,6 +12,8 @@ interface Props {
     | 'secondary-outlined';
   size?: 'large' | 'medium' | 'small';
   textCasing?: 'uppercase' | 'lowercase' | 'capitalize';
+  /** This prop decides if we want the button to fit the content or be full width */
+  fitContent?: boolean;
   onClick?: () => void;
 }
 
@@ -19,7 +21,7 @@ const Button: React.FC<Props> = ({
   children,
   onClick,
   disabled = false,
-  variant = 'secondary',
+  variant = 'primary',
 }) => {
   return (
     <ButtonContainer
@@ -49,10 +51,15 @@ const ButtonContainer = styled.button<Props>`
   border-radius: 4px;
   font-weight: 900;
   text-transform: ${({ textCasing = 'uppercase' }) => textCasing};
+  width: ${({ fitContent = false }) => (fitContent ? 'fit-content' : '100%')};
 
   &.primary {
     background-color: var(--color-primary);
     color: white;
+
+    &:hover {
+      background-color: var(--color-primary-dark);
+    }
   }
 
   &.primary-outlined {
