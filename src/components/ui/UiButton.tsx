@@ -4,13 +4,18 @@ import styled from 'styled-components';
 interface Props {
   children?: React.ReactNode;
   disabled?: boolean;
-  variant?: 'primary' | 'secondary' | 'neutal' | 'primary-outlined' | 'secondary-outlined';
+  variant?:
+    | 'primary'
+    | 'secondary'
+    | 'neutal'
+    | 'primary-outlined'
+    | 'secondary-outlined';
   size?: 'large' | 'medium' | 'small';
   textCasing?: 'uppercase' | 'lowercase' | 'capitalize';
   onClick?: () => void;
 }
 
-const Button: React.FC<Props> = ({
+export const UiButton: React.FC<Props> = ({
   children,
   onClick,
   disabled = false,
@@ -26,8 +31,6 @@ const Button: React.FC<Props> = ({
     </ButtonContainer>
   );
 };
-
-export default Button;
 
 const ButtonContainer = styled.button<Props>`
   padding: 12px 16px;
@@ -64,6 +67,6 @@ const ButtonContainer = styled.button<Props>`
   &.secondary-outlined {
     background-color: white;
     border: 1px solid var(--color-gray-400);
-    color: var(--color-gray-400)
+    color: var(--color-gray-400);
   }
 `;

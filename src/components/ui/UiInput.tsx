@@ -8,7 +8,12 @@ interface Props {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const TheInput: React.FC<Props> = ({ label, type = 'text', value, onChange }: Props) => {
+export const UiInput: React.FC<Props> = ({
+  label,
+  type = 'text',
+  value,
+  onChange,
+}: Props) => {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
@@ -26,8 +31,6 @@ const TheInput: React.FC<Props> = ({ label, type = 'text', value, onChange }: Pr
   );
 };
 
-export default TheInput;
-
 const Input = styled.input`
   display: flex;
   flex-grow: 1;
@@ -38,7 +41,9 @@ const Input = styled.input`
   width: 100%;
   height: 32px;
   align-self: stretch;
-  border: 1px solid ${({ isFocused }: { isFocused: boolean}) => isFocused ? 'var(--color-primary)' : 'var(--color-gray-300)'};
+  border: 1px solid
+    ${({ isFocused }: { isFocused: boolean }) =>
+      isFocused ? 'var(--color-primary)' : 'var(--color-gray-200)'};
   background: #ffffff;
   outline: none;
   box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
