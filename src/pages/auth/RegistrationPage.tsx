@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
@@ -9,22 +9,81 @@ import sizes from '../../sizes';
 interface Props {
   userType?: 'transporter' | 'agent';
 }
-const RegistrationPage: React.FC<Props> = ({ userType = 'transporter' }) => {
+
+export default function RegistrationPage({ userType = 'transporter' }: Props){
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    password: '',
+    cPassword: '',
+  });
+
+  function handleChange(event: { target: { name: string; value: string } }) {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    });
+  }
+
+  function handleSubmit(event: { preventDefault: () => void; }) {
+    event.preventDefault();
+    if (formData.cPassword !== formData.password) {
+      alert('Passwords must match')
+    }
+    console.log(formData)
+  }
+
   const isTransporter = () => userType === 'transporter';
   const heading = isTransporter() ? 'Join Our Team' : '';
   const privacyPolicyText = isTransporter()
-    ? "By clicking on the following button, you are willing to become TruckDispatch's parter, and agree to our "
+    ? "By clicking on the following button, you are willing to become TruckDispatch's partner, and agree to our "
     : '';
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <JoinUsHeading>{heading}</JoinUsHeading>
       <GridSpacer>
-        <UiInput label="First Name*" value="" onChange={() => {}} />
-        <UiInput label="Last Name*" value="" onChange={() => {}} />
-        <UiInput label="Email*" value="" onChange={() => {}} />
-        <UiInput label="Phone Number*" value="" onChange={() => {}} />
-        <UiInput label="Password*" value="" onChange={() => {}} />
-        <UiInput label="Confirm Password*" value="" onChange={() => {}} />
+        <UiInput
+          label="First Name*"
+          value={formData.firstName}
+          name="firstName"
+          onChange={handleChange}
+        />
+        <UiInput
+          label="Last Name*"
+          value={formData.lastName}
+          name="lastName"
+          onChange={handleChange}
+        />
+        <UiInput
+          label="Email*"
+          value={formData.email}
+          name="email"
+          onChange={handleChange}
+        />
+        <UiInput
+          label="Phone Number*"
+          type="phone"
+          value={formData.phone}
+          name="phone"
+          onChange={handleChange}
+        />
+        <UiInput
+          type="password"
+          label="Password*"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+        />
+        <UiInput
+          type="password"
+          label="Confirm Password*"
+          value={formData.cPassword}
+          name="cPassword"
+          onChange={handleChange}
+        />
       </GridSpacer>
       <PrivacyPolicyParagraph>
         {privacyPolicyText} <Link to="/">Privacy policy</Link>
@@ -36,8 +95,6 @@ const RegistrationPage: React.FC<Props> = ({ userType = 'transporter' }) => {
     </Form>
   );
 };
-
-export default RegistrationPage;
 
 const Form = styled.form`
   width: 100%;

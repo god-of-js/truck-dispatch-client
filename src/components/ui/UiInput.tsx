@@ -3,14 +3,16 @@ import styled from 'styled-components';
 
 interface Props {
   label: string;
-  type?: string;
+  type?: 'text' | 'password' | 'number' | 'phone';
   value: string;
+  name: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const TheInput: React.FC<Props> = ({
   label,
   type = 'text',
+  name,
   value,
   onChange,
 }: Props) => {
@@ -22,6 +24,7 @@ const TheInput: React.FC<Props> = ({
       <Input
         type={type}
         value={value}
+        name={name}
         isFocused={isFocused}
         onChange={onChange}
         onFocus={() => setIsFocused(true)}
