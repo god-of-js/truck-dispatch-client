@@ -15,12 +15,12 @@ interface Props {
   onClick?: () => void;
 }
 
-const Button: React.FC<Props> = ({
+export default function UiButton({
   children,
   onClick,
   disabled = false,
   variant = 'secondary',
-}) => {
+}: Props) {
   return (
     <ButtonContainer
       className={`btn ${variant}`}
@@ -30,9 +30,7 @@ const Button: React.FC<Props> = ({
       {children}
     </ButtonContainer>
   );
-};
-
-export default Button;
+}
 
 const ButtonContainer = styled.button<Props>`
   padding: 12px 16px;

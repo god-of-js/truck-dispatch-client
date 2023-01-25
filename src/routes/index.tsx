@@ -13,8 +13,8 @@ const router = createBrowserRouter([
   },
   {
     path: 'components',
-    element: <ComponentsView />
-  }
+    element: <ComponentsView />,
+  },
 ]);
 
 export default router;

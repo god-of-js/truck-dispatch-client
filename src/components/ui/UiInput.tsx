@@ -8,12 +8,12 @@ interface Props {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const TheInput: React.FC<Props> = ({
+export default function UiInput({
   label,
   type = 'text',
   value,
   onChange,
-}: Props) => {
+}: Props) {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
@@ -29,9 +29,7 @@ const TheInput: React.FC<Props> = ({
       />
     </div>
   );
-};
-
-export default TheInput;
+}
 
 const Input = styled.input`
   display: flex;
@@ -45,7 +43,7 @@ const Input = styled.input`
   align-self: stretch;
   border: 1px solid
     ${({ isFocused }: { isFocused: boolean }) =>
-      isFocused ? 'var(--color-primary)' : 'var(--color-gray-300)'};
+      isFocused ? 'var(--color-primary)' : 'var(--color-gray-200)'};
   background: #ffffff;
   outline: none;
   box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
