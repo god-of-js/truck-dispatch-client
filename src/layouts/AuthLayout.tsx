@@ -1,23 +1,29 @@
 import React from 'react';
 import styled from 'styled-components';
+
+import UserType from '../types/UserType';
+
 import sizes from '../sizes';
 import TransporterImage from '../assets/img/truck-image.jpeg';
+import AgentImage from '../assets/img/agent-mono-effect.jpg';
 import TruckDispatchLogo from '../assets/img/truck-dispatch-full-logo.svg';
+
 interface Props {
   children: React.ReactNode;
-  type?: 'transporter' | 'agent';
+  userType?: UserType;
 }
 
-export default function AuthLayout({ children, type = 'transporter' }: Props) {
+export default function AuthLayout({ children, userType = 'transporter' }: Props) {
   const layoutTitle =
-    type === 'transporter' ? 'Take the road to prosperity' : '';
+  userType === 'transporter' ? 'Take the road to prosperity' : 'Customer\'s first Always';
   const layoutText =
-    type === 'transporter'
+  userType === 'transporter'
       ? 'Get access to the most profitable orders, steepest discounts, and fastest payments in Nigeria.'
-      : '';
+      : 'We provide you with the most competitive rates, verified drivers, and best deals. Become part of our success story d profit from a wide range of advantages';
+
   return (
     <Layout>
-      <ImageContainer>
+      <ImageContainer userType={userType}>
         <img src={TruckDispatchLogo} alt="" width="150" />
         <div>
           <h2>{layoutTitle}</h2>
@@ -47,8 +53,9 @@ const ImageContainer = styled.div`
     display: block;
     height: 100%;
     width: 65%;
-    background-image: url(${TransporterImage});
+    background-image: url(${(props: Props) => props.userType === 'transporter' ? TransporterImage : AgentImage});
     background-size: cover;
+    background-position: center;
 
     div {
       height: 80%;

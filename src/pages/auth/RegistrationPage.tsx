@@ -1,23 +1,30 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import UiInput from '../../components/ui/UiInput';
 import UiButton from '../../components/ui/UiButton';
 import sizes from '../../sizes';
+import UserType from '../../types/UserType';
+import UserWithPassword from '../../types/UserWithPassword';
+import { RegisterUser } from '../../modules/Account';
 
 interface Props {
-  userType?: 'transporter' | 'agent';
+  userType?: UserType;
 }
 
 export default function RegistrationPage({ userType = 'transporter' }: Props) {
-  const [formData, setFormData] = useState({
+  const dispatch = useDispatch();
+  const [formData, setFormData] = useState<UserWithPassword>({
+    id: '',
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
     password: '',
     cPassword: '',
+    userType,
   });
 
   function handleChange(event: { target: { name: string; value: string } }) {
@@ -32,13 +39,12 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
     if (formData.cPassword !== formData.password) {
       alert('Passwords must match');
     }
+
+    dispatch(RegisterUser(formData)).then((data: unknown) =>  console.log(data));
   }
 
   const isTransporter = () => userType === 'transporter';
-  const heading = isTransporter() ? 'Join Our Team' : '';
-  const privacyPolicyText = isTransporter()
-    ? "By clicking on the following button, you are willing to become TruckDispatch's partner, and agree to our "
-    : '';
+  const heading = isTransporter() ? 'Join Our Team' : 'Deliver with us';
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -73,21 +79,21 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
           type="password"
           label="Password*"
           name="password"
-          value={formData.password}
+          value={formData.password!}
           onChange={handleChange}
         />
         <UiInput
           type="password"
           label="Confirm Password*"
-          value={formData.cPassword}
+          value={formData.cPassword!}
           name="cPassword"
           onChange={handleChange}
         />
       </GridSpacer>
       <PrivacyPolicyParagraph>
-        {privacyPolicyText} <Link to="/">Privacy policy</Link>
+      By clicking on the following button, you are willing to become TruckDispatch's partner, and agree to our  <Link to="/">Privacy policy</Link>
       </PrivacyPolicyParagraph>
-      <UiButton>Join as a {userType}</UiButton>
+      <UiButton textCasing='lowercase'>Join as {userType === 'transporter' ? 'a' : 'an'} {userType}</UiButton>
       <AlreadyAMember>
         Already a member? <Link to="/login">Sign In</Link>
       </AlreadyAMember>

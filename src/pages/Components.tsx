@@ -11,7 +11,7 @@ function ComponentsView() {
       {isFocused}
       <UiInput
         label={'First Name'}
-        name='test'
+        name="test"
         value={isFocused}
         onChange={(e) => setIsFocused(e.target.value)}
       />

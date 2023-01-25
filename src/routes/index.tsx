@@ -28,6 +28,14 @@ const router = createBrowserRouter([
       </AuthLayout>
     ),
   },
+  {
+    path: 'join/agent',
+    element: (
+      <AuthLayout userType='agent'>
+        <RegistrationPage userType='agent'/>
+      </AuthLayout>
+    ),
+  },
 ]);
 
 export default router;

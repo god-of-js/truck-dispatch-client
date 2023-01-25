@@ -1,5 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-
-export default configureStore({
-  reducer: {},
+import Account from './Account';
+const store = configureStore({
+  reducer: {
+    account: Account,
+  },
 });
+
+export type AppDispatch = typeof store.dispatch;
+export type AppState = typeof store.getState;
+export default function getStore() {
+  return store;
+}
