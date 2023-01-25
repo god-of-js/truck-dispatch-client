@@ -27,7 +27,7 @@ export const { setUser } = accountSlice.actions;
 export default accountSlice.reducer;
 
 export function RegisterUser(user: UserWithPassword) {
-  return () => {
+  return (dispatch: AppDispatch) => {
     return Api.createUserWithEmailAndPassword(user.email, user.password!).then(
       (data) => {
         user.id = data.uid;
@@ -38,7 +38,7 @@ export function RegisterUser(user: UserWithPassword) {
 
         return Api.recordAccountDetails({
           ...user,
-        });
+        })
       },
     );
   };

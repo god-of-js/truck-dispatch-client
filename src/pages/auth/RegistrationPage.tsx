@@ -9,6 +9,7 @@ import sizes from '../../sizes';
 import UserType from '../../types/UserType';
 import UserWithPassword from '../../types/UserWithPassword';
 import { RegisterUser } from '../../modules/Account';
+import { AnyAction } from 'redux';
 
 interface Props {
   userType?: UserType;
@@ -39,8 +40,8 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
     if (formData.cPassword !== formData.password) {
       alert('Passwords must match');
     }
-
-    dispatch(RegisterUser(formData)).then((data: unknown) =>  console.log(data));
+    // Search for solution.
+    dispatch(RegisterUser(formData) as unknown as AnyAction)
   }
 
   const isTransporter = () => userType === 'transporter';
