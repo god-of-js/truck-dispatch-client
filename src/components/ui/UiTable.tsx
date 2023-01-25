@@ -24,12 +24,7 @@ interface Props {
   ComponentProps?: Record<string, React.ReactNode>;
 }
 
-export const UiTable: React.FC<Props> = ({
-  tableTitle,
-  data,
-  headers,
-  options = [],
-}) => {
+export default function UiTable({ tableTitle, data, headers, options = [] }: Props) {
   return (
     <TableContainer>
       <TableContainerHeader>
@@ -57,7 +52,7 @@ export const UiTable: React.FC<Props> = ({
       </Table>
     </TableContainer>
   );
-};
+}
 
 const TableContainer = styled.div`
   border: 1px solid var(--color-gray-200);

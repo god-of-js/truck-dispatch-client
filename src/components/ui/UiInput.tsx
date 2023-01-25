@@ -8,12 +8,12 @@ interface Props {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const UiInput: React.FC<Props> = ({
+export default function UiInput({
   label,
   type = 'text',
   value,
   onChange,
-}: Props) => {
+}: Props) {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
@@ -29,7 +29,7 @@ export const UiInput: React.FC<Props> = ({
       />
     </div>
   );
-};
+}
 
 const Input = styled.input`
   display: flex;
