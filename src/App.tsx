@@ -63,17 +63,17 @@ function App() {
         onChange={(e) => setIsFocused(e.target.value)}
       />
       <Padding>
-      <UiTable
-        tableTitle='Overview'
-        data={tableData.map((item) => ({
-          lorem: (<a href={`https://${item.lorem}`}>{item.lorem}/////</a>),
-          ipsum: item.ipsum,
-          dolor: item.dolor,
-          wahala: item.wahala
-        }))}
-        options={[]}
-        headers={headers}
-      />
+        <UiTable
+          tableTitle="Overview"
+          data={tableData.map((item) => ({
+            lorem: <a href={`https://${item.lorem}`}>{item.lorem}/////</a>,
+            ipsum: item.ipsum,
+            dolor: item.dolor,
+            wahala: item.wahala,
+          }))}
+          options={[]}
+          headers={headers}
+        />
       </Padding>
     </div>
   );
