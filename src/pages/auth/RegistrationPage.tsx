@@ -10,7 +10,7 @@ interface Props {
   userType?: 'transporter' | 'agent';
 }
 
-export default function RegistrationPage({ userType = 'transporter' }: Props){
+export default function RegistrationPage({ userType = 'transporter' }: Props) {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -27,10 +27,10 @@ export default function RegistrationPage({ userType = 'transporter' }: Props){
     });
   }
 
-  function handleSubmit(event: { preventDefault: () => void; }) {
+  function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
     if (formData.cPassword !== formData.password) {
-      alert('Passwords must match')
+      alert('Passwords must match');
     }
   }
 
@@ -93,7 +93,7 @@ export default function RegistrationPage({ userType = 'transporter' }: Props){
       </AlreadyAMember>
     </Form>
   );
-};
+}
 
 const Form = styled.form`
   width: 100%;
