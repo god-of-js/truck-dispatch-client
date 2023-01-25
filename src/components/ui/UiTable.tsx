@@ -24,7 +24,7 @@ interface Props {
   ComponentProps?: Record<string, React.ReactNode>;
 }
 
-export function UiTable({ tableTitle, data, headers, options = [] }: Props) {
+export default function UiTable({ tableTitle, data, headers, options = [] }: Props) {
   return (
     <TableContainer>
       <TableContainerHeader>
