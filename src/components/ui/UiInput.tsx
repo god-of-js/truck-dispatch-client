@@ -9,7 +9,7 @@ interface Props {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function TheInput({
+export default function UiInput({
   label,
   type = 'text',
   name,
@@ -32,7 +32,7 @@ export default function TheInput({
       />
     </div>
   );
-};
+}
 
 const Input = styled.input`
   display: flex;
@@ -45,7 +45,7 @@ const Input = styled.input`
   font-size: 12px;
   border: 1px solid
     ${({ isFocused }: { isFocused: boolean }) =>
-      isFocused ? 'var(--color-primary)' : 'var(--color-gray-300)'};
+      isFocused ? 'var(--color-primary)' : 'var(--color-gray-200)'};
   background: #ffffff;
   outline: none;
   box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
