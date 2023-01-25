@@ -20,7 +20,7 @@ body {
   margin: 0;
   font-family: 'thiccboi-medium', sans-serif;
   font-weight: 400;
-  color: red;
+  color: var(--color-gray-900);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
