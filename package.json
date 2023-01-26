@@ -31,6 +31,8 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.4.2",
+    "@commitlint/config-conventional": "^17.4.2",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.10",
     "@types/styled-components": "^5.1.26",
