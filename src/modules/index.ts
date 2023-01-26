@@ -6,7 +6,7 @@ const store = configureStore({
   reducer: {
     account: Account,
   },
-  middleware: [thunk]
+  middleware: [thunk],
 });
 
 export type AppDispatch = typeof store.dispatch;

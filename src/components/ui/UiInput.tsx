@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Eye, EyeSlash } from 'phosphor-react';
 
 interface Props {
   label: string;
@@ -17,19 +18,32 @@ export default function UiInput({
   onChange,
 }: Props) {
   const [isFocused, setIsFocused] = useState(false);
+  const [inputType, setInputType] = useState(type);
 
+  function handlePasswordTypeToText() {
+    if (inputType === 'password') setInputType('text');
+    else setInputType('password');
+  }
   return (
     <div>
       <Label>{label}</Label>
-      <Input
-        type={type}
-        value={value}
-        name={name}
-        isFocused={isFocused}
-        onChange={onChange}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-      />
+      <InputContainer>
+        <Input
+          type={inputType}
+          value={value}
+          name={name}
+          isFocused={isFocused}
+          onChange={onChange}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+        />
+
+        {type === 'password' && (
+          <IconButton onClick={handlePasswordTypeToText}>
+            {inputType === 'password' ? <Eye /> : <EyeSlash />}
+          </IconButton>
+        )}
+      </InputContainer>
     </div>
   );
 }
@@ -57,4 +71,20 @@ const Label = styled.label`
   font-size: 12px;
   color: var(--color-gray-500);
   font-weight: bold;
+`;
+
+const InputContainer = styled.div`
+  position: relative;
+`;
+
+const IconButton = styled.div`
+  position: absolute;
+  padding: 0 8px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 0;
+  top: 0;
+  cursor: pointer;
 `;
