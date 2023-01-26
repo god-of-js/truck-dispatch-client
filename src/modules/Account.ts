@@ -34,11 +34,11 @@ export function RegisterUser(user: UserWithPassword) {
 
         delete user.password;
         delete user.cPassword;
-        localStorage.setItem('uid', user.id)
+        localStorage.setItem('uid', user.id);
 
         return Api.recordAccountDetails({
           ...user,
-        })
+        });
       },
     );
   };

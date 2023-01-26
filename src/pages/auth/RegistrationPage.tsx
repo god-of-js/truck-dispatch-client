@@ -41,7 +41,7 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
       alert('Passwords must match');
     }
     // Search for solution.
-    dispatch(RegisterUser(formData) as unknown as AnyAction)
+    dispatch(RegisterUser(formData) as unknown as AnyAction);
   }
 
   const isTransporter = () => userType === 'transporter';
@@ -92,9 +92,13 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
         />
       </GridSpacer>
       <PrivacyPolicyParagraph>
-      By clicking on the following button, you are willing to become TruckDispatch's partner, and agree to our  <Link to="/">Privacy policy</Link>
+        By clicking on the following button, you are willing to become
+        TruckDispatch's partner, and agree to our{' '}
+        <Link to="/">Privacy policy</Link>
       </PrivacyPolicyParagraph>
-      <UiButton textCasing='lowercase'>Join as {userType === 'transporter' ? 'a' : 'an'} {userType}</UiButton>
+      <UiButton textCasing="lowercase">
+        Join as {userType === 'transporter' ? 'a' : 'an'} {userType}
+      </UiButton>
       <AlreadyAMember>
         Already a member? <Link to="/login">Sign In</Link>
       </AlreadyAMember>

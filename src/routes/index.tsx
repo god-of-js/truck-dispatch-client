@@ -31,8 +31,8 @@ const router = createBrowserRouter([
   {
     path: 'join/agent',
     element: (
-      <AuthLayout userType='agent'>
-        <RegistrationPage userType='agent'/>
+      <AuthLayout userType="agent">
+        <RegistrationPage userType="agent" />
       </AuthLayout>
     ),
   },
