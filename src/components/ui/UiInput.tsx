@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import 'react-phone-number-input/style.css';
+import PhoneInput from 'react-phone-number-input';
+
 import { Eye, EyeSlash } from 'phosphor-react';
 
 interface Props {
@@ -20,6 +23,12 @@ export default function UiInput({
   const [isFocused, setIsFocused] = useState(false);
   const [inputType, setInputType] = useState(type);
 
+  function sendPhone(value: string | undefined) {
+    onChange({
+      target: { name, value },
+    } as React.ChangeEvent<HTMLInputElement>);
+  }
+
   function handlePasswordTypeToText() {
     if (inputType === 'password') setInputType('text');
     else setInputType('password');
@@ -28,15 +37,19 @@ export default function UiInput({
     <div>
       <Label>{label}</Label>
       <InputContainer>
-        <Input
-          type={inputType}
-          value={value}
-          name={name}
-          isFocused={isFocused}
-          onChange={onChange}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-        />
+        {inputType === 'phone' ? (
+          <PhoneInput value={value} country="NG" onChange={(e) => sendPhone(e)} />
+        ) : (
+          <Input
+            type={inputType}
+            value={value}
+            name={name}
+            isFocused={isFocused}
+            onChange={onChange}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+          />
+        )}
 
         {type === 'password' && (
           <IconButton onClick={handlePasswordTypeToText}>
