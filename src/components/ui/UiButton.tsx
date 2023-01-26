@@ -35,7 +35,7 @@ export default function UiButton({
 }
 
 const ButtonContainer = styled.button<Props>`
-  padding: 12px 16px;
+  padding: 16px 16px;
   border: none;
   cursor: pointer;
   display: inline-flex;
@@ -46,7 +46,7 @@ const ButtonContainer = styled.button<Props>`
   line-height: 1.45;
   text-align: center;
   text-transform: uppercase;
-  border-radius: 4px;
+  border-radius: 8px;
   font-weight: 900;
   text-transform: ${({ textCasing = 'uppercase' }) => textCasing};
   width: ${({ fitContent = false }) => (fitContent ? 'fit-content' : '100%')};

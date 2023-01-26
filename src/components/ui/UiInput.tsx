@@ -38,7 +38,7 @@ const Input = styled.input`
   display: flex;
   align-items: center;
   justify-content: stretch;
-  padding: 4px 8px;
+  padding: 16px 8px;
   gap: 8px;
   width: 100%;
   height: 40px;
