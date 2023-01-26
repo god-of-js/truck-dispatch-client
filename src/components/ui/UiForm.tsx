@@ -3,29 +3,34 @@ import { Formik } from 'formik';
 
 const ruleCheck = {
   required: true,
-}
+  email: (value: string) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)
+};
 
 interface Props {
   rules: Record<string, string[]>;
   formData: Record<string, any>;
-  children?: React.ReactNode;
+  children: (props: {
+    errors: Record<string, string | undefined>,
+    hasErrors: boolean,
+    isSubmitting: boolean;
+  }) => React.ReactNode;
   onSubmit: () => void;
 }
 
 export default function UiForm({ rules, formData, children, onSubmit }: Props) {
   function validateForm(values: Record<string, string>) {
+    console.log('it gets here')
     const errors: Record<string, string> = {};
-    if (!values.email) {
-      errors.email = 'Required';
-    } else if (
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-    ) {
-      errors.email = 'Invalid email address';
-    }
+    const dataKeys = Object.keys(formData);
+    dataKeys.forEach((key: string) => {
+      rules[key].forEach((rule) => {
+        console.log(rule);
+      })
+    })
     return errors;
   }
 
-  function handleSubmit() { }
+  function handleSubmit() {}
 
   return (
     <Formik
@@ -41,7 +46,11 @@ export default function UiForm({ rules, formData, children, onSubmit }: Props) {
         handleBlur,
         handleSubmit,
         isSubmitting,
-      }) => <form>{children}</form>}
+      }) => <form>{children({
+        errors,
+        hasErrors: !!errors.length,
+        isSubmitting
+      })}</form>}
     </Formik>
   );
 }
