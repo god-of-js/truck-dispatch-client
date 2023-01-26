@@ -28,22 +28,25 @@ export default accountSlice.reducer;
 
 export function RegisterUser(AuthUser: UserWithPassword) {
   return () => {
-    return Api.createUserWithEmailAndPassword(AuthUser.email, AuthUser.password!).then(
-      (data) => {
+    return Api.createUserWithEmailAndPassword(
+      AuthUser.email,
+      AuthUser.password!,
+    )
+      .then((data) => {
         const user = {} as User;
         Object.keys(AuthUser)
-        .filter((key) => key !== 'password' && key !== 'cPassword')
-        .forEach((key: string) => { 
-          user[key as keyof User] = AuthUser[key as keyof User]
-        })
+          .filter((key) => key !== 'password' && key !== 'cPassword')
+          .forEach((key: string) => {
+            user[key as keyof User] = AuthUser[key as keyof User];
+          });
         user.id = data.uid;
 
         localStorage.setItem('uid', user.id);
-        
+
         return Api.recordAccountDetails(user);
-      },
-    ).catch((err) => {
-      console.log(err.message);
-    });
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 }
