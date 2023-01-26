@@ -1,8 +1,18 @@
 import { collection, addDoc, getDocs } from 'firebase/firestore';
-
-import db from './firebase';
+import User from '../types/User';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import db, { auth } from './firebase';
 
 class ApiService {
+  createUserWithEmailAndPassword(email: string, password: string) {
+    return createUserWithEmailAndPassword(auth, email, password).then(
+      ({ user }) => user,
+    );
+  }
+  recordAccountDetails(data: User) {
+    return this.create('user', data);
+  }
+
   private create(collectionName: string, data: unknown): Promise<unknown> {
     return addDoc(collection(db, collectionName), data);
   }
