@@ -25,8 +25,7 @@ export default function UiInput({
   const [isFocused, setIsFocused] = useState(false);
 
   return (
-    <UiField name={name} error={error}>
-      <Label>{label}</Label>
+    <UiField label={label} name={name} error={error}>
       <Input
         type={type}
         value={value}
@@ -62,10 +61,4 @@ const Input = styled.input`
   box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
   border-radius: 4px;
   box-sizing: border-box;
-`;
-
-const Label = styled.label`
-  font-size: 12px;
-  color: var(--color-gray-500);
-  font-weight: bold;
 `;
