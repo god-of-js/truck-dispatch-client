@@ -3,7 +3,12 @@ import { createBrowserRouter } from 'react-router-dom';
 
 const PageError = lazy(() => import('../components/errors/PageError'));
 
+// LAYOUTS
+const AuthLayout = lazy(() => import('../layouts/AuthLayout'));
+
 const ComponentsView = lazy(() => import('../pages/Components'));
+
+const RegistrationPage = lazy(() => import('../pages/auth/RegistrationPage'));
 
 const router = createBrowserRouter([
   {
@@ -14,6 +19,22 @@ const router = createBrowserRouter([
   {
     path: 'components',
     element: <ComponentsView />,
+  },
+  {
+    path: 'join/transporter',
+    element: (
+      <AuthLayout>
+        <RegistrationPage />
+      </AuthLayout>
+    ),
+  },
+  {
+    path: 'join/agent',
+    element: (
+      <AuthLayout userType='agent'>
+        <RegistrationPage userType='agent'/>
+      </AuthLayout>
+    ),
   },
 ]);
 
