@@ -1,56 +1,92 @@
-import React from 'react';
-import { Formik } from 'formik';
+import { Formik, FormikErrors } from 'formik';
+import React, { useState } from 'react';
 
+export type RuleType =
+  | 'required'
+  | 'email'
+  | 'password'
+  | `sameas.${'password'}`
+  | `min.${8 | 6}`;
 const ruleCheck = {
-  required: true,
-  email: (value: string) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)
+  email: (value: string) =>
+    /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value),
 };
 
 interface Props {
-  rules: Record<string, string[]>;
+  /** These rules are used for validations. */
+  rules?: Record<string, RuleType[]>;
   formData: Record<string, any>;
   children: (props: {
-    errors: Record<string, string | undefined>,
-    hasErrors: boolean,
-    isSubmitting: boolean;
+    errors: FormikErrors<Record<string, string>>;
+    hasErrors?: boolean;
+    isSubmitting?: boolean;
   }) => React.ReactNode;
   onSubmit: () => void;
 }
 
 export default function UiForm({ rules, formData, children, onSubmit }: Props) {
-  function validateForm(values: Record<string, string>) {
-    console.log('it gets here')
-    const errors: Record<string, string> = {};
-    const dataKeys = Object.keys(formData);
-    dataKeys.forEach((key: string) => {
-      rules[key].forEach((rule) => {
-        console.log(rule);
-      })
-    })
-    return errors;
-  }
+  function validateForm() {
+    try {
+      const errors: FormikErrors<Record<string, string>> = {};
+      const dataKeys = Object.keys(formData);
+      dataKeys.forEach((key: string) => {
+        // @ts-ignore
+        rules[key] &&
+          // @ts-ignore
+          rules[key].forEach((rule) => {
+            if (rule === 'required' && !formData[key]) {
+              errors[key] = 'This field is required';
+              return;
+            }
 
-  function handleSubmit() {}
+            if (
+              rule === 'email' &&
+              formData[key] &&
+              !ruleCheck.email(formData[key])
+            ) {
+              errors[key] = 'Invalid email format';
+              return;
+            }
+
+            if (rule.includes('sameas.')) {
+              const lookAlikesKey = rule.split('.')[1];
+              if (formData[key] !== formData[lookAlikesKey]) {
+                errors[key] = `This field must match ${lookAlikesKey}`;
+                return;
+              }
+            }
+            if (rule.includes('min.')) {
+              const minNumber = parseInt(rule.split('.')[1] || '0');
+              if (formData[key].length < minNumber) {
+                errors[
+                  key
+                ] = `This field must have above ${minNumber} characters`;
+                return;
+              }
+            }
+          });
+      });
+      return errors;
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   return (
     <Formik
       initialValues={formData}
       validate={validateForm}
-      onSubmit={handleSubmit}
+      onSubmit={onSubmit}
     >
-      {({
-        values,
-        errors,
-        touched,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        isSubmitting,
-      }) => <form>{children({
-        errors,
-        hasErrors: !!errors.length,
-        isSubmitting
-      })}</form>}
+      {({ errors, handleSubmit, isSubmitting }) => (
+        <form onSubmit={handleSubmit}>
+          {children({
+            errors,
+            hasErrors: !!errors.length,
+            isSubmitting,
+          })}
+        </form>
+      )}
     </Formik>
   );
 }

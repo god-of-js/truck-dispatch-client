@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import UiButton from '../components/ui/UiButton';
-import UiForm from '../components/ui/UiForm';
+import UiForm, { RuleType } from '../components/ui/UiForm';
 import UiInput from '../components/ui/UiInput';
 
 function ComponentsView() {
@@ -8,13 +8,18 @@ function ComponentsView() {
   const [formData, setFormData] = useState({
     email: '',
   });
-  const formRules = {
-    email: ['required', 'email']
+
+  const formRules: Record<string, RuleType[]> = {
+    email: ['required', 'email'],
   };
 
-  function handleSubmit() {}
+  function handleSubmit() {
+    console.log(formData);
+  }
 
-  function handleFormChange(event: { target: { name: string; value: string } }) {
+  function handleFormChange(event: {
+    target: { name: string; value: string };
+  }) {
     setFormData({
       ...formData,
       [event.target.name]: event.target.value,
@@ -32,13 +37,16 @@ function ComponentsView() {
         onChange={(e) => setIsFocused(e.target.value)}
       />
       <UiForm rules={formRules} formData={formData} onSubmit={handleSubmit}>
-        {({}) => (
+        {({ errors }) => (
           <>
             <UiInput
               label={'First Name'}
               value={formData.email}
+              name="email"
+              error={errors.email}
               onChange={handleFormChange}
             />
+            <UiButton> Submit </UiButton>
           </>
         )}
       </UiForm>
