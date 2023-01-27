@@ -57,7 +57,6 @@ export function loginUser(AuthUser: { email: string; password: string }) {
   return () => {
     return Api.signInWithEmailAndPassword(AuthUser.email, AuthUser.password!)
       .then((data) => {
-        console.log(data)
         localStorage.setItem('uid', data.uid);
       })
       .catch((err) => {
