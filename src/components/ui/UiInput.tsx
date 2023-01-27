@@ -78,7 +78,6 @@ const Input = styled.input`
   border: 1px solid var(--color-gray-200);
   background: #ffffff;
   outline: none;
-  /* box-shadow: var(--box-shadow); */
   border-radius: 4px;
   box-sizing: border-box;
 
