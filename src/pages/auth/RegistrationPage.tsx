@@ -40,6 +40,7 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
     if (formData.cPassword !== formData.password) {
       alert('Passwords must match');
     }
+    console.log(formData);
     // Search for solution.
     dispatch(RegisterUser(formData) as unknown as AnyAction);
   }

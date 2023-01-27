@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import 'react-phone-number-input/style.css';
-import PhoneInput from 'react-phone-number-input';
+import PhoneInput from 'react-phone-number-input/input';
 
 import { Eye, EyeSlash } from 'phosphor-react';
 
@@ -38,13 +38,18 @@ export default function UiInput({
       <Label>{label}</Label>
       <InputContainer>
         {inputType === 'phone' ? (
-          <PhoneInput value={value} country="NG" onChange={(e) => sendPhone(e)} />
+          <PhoneInput
+            value={value}
+            country="NG"
+            className={'phone-input'}
+            placeholder="e.g: 08034283438"
+            onChange={(e) => sendPhone(e)}
+          />
         ) : (
           <Input
             type={inputType}
             value={value}
             name={name}
-            isFocused={isFocused}
             onChange={onChange}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
@@ -70,14 +75,16 @@ const Input = styled.input`
   width: 100%;
   height: 40px;
   font-size: 12px;
-  border: 1px solid
-    ${({ isFocused }: { isFocused: boolean }) =>
-      isFocused ? 'var(--color-primary)' : 'var(--color-gray-200)'};
+  border: 1px solid var(--color-gray-200);
   background: #ffffff;
   outline: none;
-  box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+  /* box-shadow: var(--box-shadow); */
   border-radius: 4px;
   box-sizing: border-box;
+
+  &:focus {
+    border-color: var(--color-primary);
+  }
 `;
 
 const Label = styled.label`
