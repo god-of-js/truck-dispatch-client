@@ -10,6 +10,7 @@ import UserType from '../../types/UserType';
 import { loginUser } from '../../modules/Account';
 import { AnyAction } from 'redux';
 import UiForm, { RuleType } from '../../components/ui/UiForm';
+import { Toast } from '../../utils/toast';
 
 interface Props {
   userType?: UserType;
@@ -48,7 +49,7 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
         msg = 'A user with this email does not exist'
       }
 
-      console.log(msg)
+      Toast.error({ msg })
     });
   }
 
