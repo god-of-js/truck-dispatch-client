@@ -7,7 +7,8 @@ export interface ToastProps {
 
 const toastStyle = {
     style: {
-      fontSize: "15px",
+      fontSize: "14px",
+      borderRadius: "0px",
     },
   };
 export const Toast = {

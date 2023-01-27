@@ -13,11 +13,16 @@ interface Props {
   userType?: UserType;
 }
 
-export default function AuthLayout({ children, userType = 'transporter' }: Props) {
+export default function AuthLayout({
+  children,
+  userType = 'transporter',
+}: Props) {
   const layoutTitle =
-  userType === 'transporter' ? 'Take the road to prosperity' : 'Customer\'s first Always';
+    userType === 'transporter'
+      ? 'Take the road to prosperity'
+      : "Customer's first Always";
   const layoutText =
-  userType === 'transporter'
+    userType === 'transporter'
       ? 'Get access to the most profitable orders, steepest discounts, and fastest payments in Nigeria.'
       : 'We provide you with the most competitive rates, verified drivers, and best deals. Become part of our success story d profit from a wide range of advantages';
 
@@ -53,7 +58,8 @@ const ImageContainer = styled.div`
     display: block;
     height: 100%;
     width: 65%;
-    background-image: url(${(props: Props) => props.userType === 'transporter' ? TransporterImage : AgentImage});
+    background-image: url(${(props: Props) =>
+      props.userType === 'transporter' ? TransporterImage : AgentImage});
     background-size: cover;
     background-position: center;
 
