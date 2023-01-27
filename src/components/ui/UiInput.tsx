@@ -47,8 +47,8 @@ const Input = styled.input`
   padding: 4px 8px;
   gap: 8px;
   width: 100%;
-  height: 40px;
-  font-size: 12px;
+  height: 52px;
+  font-size: 14px;
   border: 1px solid
     ${({ isFocused, hasError }: { isFocused: boolean; hasError: boolean }) =>
       isFocused

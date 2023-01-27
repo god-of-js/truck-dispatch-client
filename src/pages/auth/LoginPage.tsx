@@ -26,7 +26,7 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
   );
 
   const formRules: Record<string, RuleType[]> = {
-    firstName: ['required'],
+    email: ['required', 'email'],
     password: ['required'],
   };
   function handleChange(event: { target: { name: string; value: string } }) {
