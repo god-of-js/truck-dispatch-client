@@ -10,6 +10,7 @@ import UserType from '../../types/UserType';
 import UserWithPassword from '../../types/UserWithPassword';
 import { RegisterUser } from '../../modules/Account';
 import { AnyAction } from 'redux';
+import { Toast } from '../../utils/toast';
 
 interface Props {
   userType?: UserType;
@@ -40,8 +41,16 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
     if (formData.cPassword !== formData.password) {
       alert('Passwords must match');
     }
-    // Search for solution.
-    dispatch(RegisterUser(formData) as unknown as AnyAction)
+
+    dispatch(RegisterUser(formData) as unknown as AnyAction).catch((err: {message: string}) => {
+      let msg: string = err.message;
+
+      if (err.message === 'Firebase: Error (auth/email-already-in-use).') {
+        msg = 'User with this email already exists';
+      }
+
+      Toast.error({ msg })
+    })
   }
 
   const isTransporter = () => userType === 'transporter';

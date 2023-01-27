@@ -40,6 +40,8 @@ export function RegisterUser(user: UserWithPassword) {
           ...user,
         })
       },
-    );
+    ).catch((err) => {
+      throw new Error(err.message);
+    });
   };
 }
