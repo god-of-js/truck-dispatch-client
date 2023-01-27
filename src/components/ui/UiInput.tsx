@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input/input';
-
-import { Eye, EyeSlash } from 'phosphor-react';
+import UiIcon from './UiIcon';
 
 interface Props {
   label: string;
@@ -58,7 +57,7 @@ export default function UiInput({
 
         {type === 'password' && (
           <IconButton onClick={handlePasswordTypeToText}>
-            {inputType === 'password' ? <Eye /> : <EyeSlash />}
+            <UiIcon name={inputType === 'password' ? 'Eye' : 'EyeSlash'} />
           </IconButton>
         )}
       </InputContainer>
