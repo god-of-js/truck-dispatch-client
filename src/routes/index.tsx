@@ -9,6 +9,7 @@ const AuthLayout = lazy(() => import('../layouts/AuthLayout'));
 const ComponentsView = lazy(() => import('../pages/Components'));
 
 const RegistrationPage = lazy(() => import('../pages/auth/RegistrationPage'));
+const LoginPage = lazy(() => import('../pages/auth/LoginPage'));
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,14 @@ const router = createBrowserRouter([
     element: (
       <AuthLayout userType="agent">
         <RegistrationPage userType="agent" />
+      </AuthLayout>
+    ),
+  },
+  {
+    path: 'login',
+    element: (
+      <AuthLayout>
+        <LoginPage />
       </AuthLayout>
     ),
   },

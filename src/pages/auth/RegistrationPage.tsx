@@ -109,7 +109,7 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
           <PrivacyPolicyParagraph>
             By clicking on the following button, you are willing to become
             TruckDispatch's partner, and agree to our{' '}
-            <Link to="/">Privacy policy</Link>
+            <Link to="/">privacy policy</Link>
           </PrivacyPolicyParagraph>
           <UiButton>
             Join as {isTransporter() ? 'a' : 'an'} {userType}
