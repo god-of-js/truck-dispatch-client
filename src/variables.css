@@ -2,7 +2,9 @@
     /* COLORS */
     --color-primary: rgb(44, 155, 242);
     --color-primary-dark: rgb(11, 144, 245);
-    --color-primaru-100: #f4f7fa;
+    --color-primary-100: rgba(0,102,245,.07);
+    --color-primary-50: #0a2e6512;
+    --color-primary-200: #0a2e65;
 
     --color-danger: #f51b1b;
 

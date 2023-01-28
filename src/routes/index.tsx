@@ -46,7 +46,6 @@ const router = createBrowserRouter([
       </AuthLayout>
     ),
   },
-
 ]);
 
 export default router;

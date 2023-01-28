@@ -49,15 +49,17 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
       alert('Passwords must match');
     }
 
-    dispatch(RegisterUser(formData) as unknown as AnyAction).catch((err: {message: string}) => {
-      let msg: string = err.message;
+    dispatch(RegisterUser(formData) as unknown as AnyAction).catch(
+      (err: { message: string }) => {
+        let msg: string = err.message;
 
-      if (err.message === 'Firebase: Error (auth/email-already-in-use).') {
-        msg = 'User with this email already exists';
-      }
+        if (err.message === 'Firebase: Error (auth/email-already-in-use).') {
+          msg = 'User with this email already exists';
+        }
 
-      Toast.error({ msg })
-    })
+        Toast.error({ msg });
+      },
+    );
   }
 
   const isTransporter = () => userType === 'transporter';
