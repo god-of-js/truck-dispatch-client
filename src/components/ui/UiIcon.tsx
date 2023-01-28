@@ -8,8 +8,8 @@ const icons = {
 };
 interface Props {
   /** Name of the icon as stored in the icons object */
-  name: keyof typeof icons;
+  icon: keyof typeof icons;
 }
-export default function UiIcon({ name }: Props) {
-  return <>{icons[name]}</>;
+export default function UiIcon({ icon }: Props) {
+  return <>{icons[icon]}</>;
 }

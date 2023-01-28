@@ -60,7 +60,7 @@ export default function UiInput({
 
         {type === 'password' && (
           <IconButton onClick={handlePasswordTypeToText}>
-            <UiIcon name={inputType === 'password' ? 'Eye' : 'EyeSlash'} />
+            <UiIcon icon={inputType === 'password' ? 'Eye' : 'EyeSlash'} />
           </IconButton>
         )}
       </InputContainer>
