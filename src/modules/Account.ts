@@ -52,3 +52,15 @@ export function RegisterUser(AuthUser: UserWithPassword) {
       });
   };
 }
+
+export function loginUser(AuthUser: { email: string; password: string }) {
+  return () => {
+    return Api.signInWithEmailAndPassword(AuthUser.email, AuthUser.password!)
+      .then((data) => {
+        localStorage.setItem('uid', data.uid);
+      })
+      .catch((err) => {
+        throw new Error(err.message);
+      });
+  };
+}

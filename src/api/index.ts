@@ -1,11 +1,19 @@
 import { collection, addDoc, getDocs } from 'firebase/firestore';
 import User from '../types/User';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import db, { auth } from './firebase';
 
 class ApiService {
   createUserWithEmailAndPassword(email: string, password: string) {
     return createUserWithEmailAndPassword(auth, email, password).then(
+      ({ user }) => user,
+    );
+  }
+  signInWithEmailAndPassword(email: string, password: string) {
+    return signInWithEmailAndPassword(auth, email, password).then(
       ({ user }) => user,
     );
   }
