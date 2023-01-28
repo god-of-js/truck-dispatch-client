@@ -43,10 +43,12 @@ export function RegisterUser(AuthUser: UserWithPassword) {
 
         localStorage.setItem('uid', user.id);
 
-        return Api.recordAccountDetails(user);
+        return Api.recordAccountDetails({
+          ...user,
+        });
       })
       .catch((err) => {
-        console.log(err.message);
+        throw new Error(err.message);
       });
   };
 }

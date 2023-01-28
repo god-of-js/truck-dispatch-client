@@ -7,7 +7,7 @@ const icons = {
   EyeSlash: <EyeSlash />,
 };
 interface Props {
-    /** Name of the icon as stored in the icons object */
+  /** Name of the icon as stored in the icons object */
   name: keyof typeof icons;
 }
 export default function UiIcon({ name }: Props) {
