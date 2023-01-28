@@ -45,10 +45,10 @@ export function RegisterUser(AuthUser: UserWithPassword) {
 
         return Api.recordAccountDetails({
           ...user,
-        })
-      },
-    ).catch((err) => {
-      throw new Error(err.message);
-    });
+        });
+      })
+      .catch((err) => {
+        throw new Error(err.message);
+      });
   };
 }
