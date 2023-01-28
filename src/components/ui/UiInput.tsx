@@ -3,12 +3,17 @@ import styled from 'styled-components';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input/input';
 import UiIcon from './UiIcon';
+import UiField from './UiField';
 
 interface Props {
   label: string;
   type?: 'text' | 'password' | 'number' | 'phone';
   value: string;
+  /** The name property should always be the same as the model value. example if the input belongs to
+   * formData.confirm_password, the name prop should be confirm_password.
+   */
   name: string;
+  error?: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -17,6 +22,7 @@ export default function UiInput({
   type = 'text',
   name,
   value,
+  error,
   onChange,
 }: Props) {
   const [isFocused, setIsFocused] = useState(false);
@@ -33,8 +39,7 @@ export default function UiInput({
     else setInputType('password');
   }
   return (
-    <div>
-      <Label>{label}</Label>
+    <UiField label={label} name={name} error={error}>
       <InputContainer>
         {inputType === 'phone' ? (
           <PhoneInput
@@ -49,6 +54,7 @@ export default function UiInput({
             type={inputType}
             value={value}
             name={name}
+            hasError={!!error}
             onChange={onChange}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
@@ -61,7 +67,7 @@ export default function UiInput({
           </IconButton>
         )}
       </InputContainer>
-    </div>
+    </UiField>
   );
 }
 
@@ -69,12 +75,14 @@ const Input = styled.input`
   display: flex;
   align-items: center;
   justify-content: stretch;
-  padding: 4px 8px;
+  padding: 16px 8px;
   gap: 8px;
   width: 100%;
   height: 40px;
   font-size: 12px;
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid;
+  border-color: ${({ hasError }: { hasError: boolean }) =>
+    hasError ? 'var(--color-danger)' : 'var(--color-gray-200)'};
   background: #ffffff;
   outline: none;
   border-radius: 4px;
@@ -83,12 +91,6 @@ const Input = styled.input`
   &:focus {
     border-color: var(--color-primary);
   }
-`;
-
-const Label = styled.label`
-  font-size: 12px;
-  color: var(--color-gray-500);
-  font-weight: bold;
 `;
 
 const InputContainer = styled.div`

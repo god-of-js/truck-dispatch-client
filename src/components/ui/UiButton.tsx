@@ -11,6 +11,7 @@ interface Props {
     | 'primary-outlined'
     | 'secondary-outlined';
   size?: 'large' | 'medium' | 'small';
+  type?: 'submit' | 'button';
   textCasing?: 'uppercase' | 'lowercase' | 'capitalize';
   /** This prop decides if we want the button to fit the content or be full width */
   fitContent?: boolean;
@@ -22,12 +23,18 @@ export default function UiButton({
   onClick,
   disabled = false,
   variant = 'primary',
+  type = 'submit',
+  textCasing = 'uppercase',
+  size,
 }: Props) {
   return (
     <ButtonContainer
       className={`btn ${variant}`}
       onClick={onClick}
       disabled={disabled}
+      type={type}
+      textCasing={textCasing}
+      size={size}
     >
       {children}
     </ButtonContainer>
@@ -35,7 +42,7 @@ export default function UiButton({
 }
 
 const ButtonContainer = styled.button<Props>`
-  padding: 12px 16px;
+  padding: 16px 16px;
   border: none;
   cursor: pointer;
   display: inline-flex;
@@ -46,9 +53,9 @@ const ButtonContainer = styled.button<Props>`
   line-height: 1.45;
   text-align: center;
   text-transform: uppercase;
-  border-radius: 4px;
+  border-radius: 8px;
   font-weight: 900;
-  text-transform: ${({ textCasing = 'uppercase' }) => textCasing};
+  text-transform: ${({ textCasing }) => textCasing};
   width: ${({ fitContent = false }) => (fitContent ? 'fit-content' : '100%')};
 
   &.primary {
