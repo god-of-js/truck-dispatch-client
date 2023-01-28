@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import UiButton from '../components/ui/UiButton';
 import UiForm, { RuleType } from '../components/ui/UiForm';
 import UiInput from '../components/ui/UiInput';
+import { UiSelect } from '../components/ui/UiSelect';
 
 function ComponentsView() {
   const [isFocused, setIsFocused] = useState('');
@@ -46,6 +47,7 @@ function ComponentsView() {
               error={errors.email}
               onChange={handleFormChange}
             />
+            <UiSelect options={[]} />
             <UiButton> Submit </UiButton>
           </>
         )}
