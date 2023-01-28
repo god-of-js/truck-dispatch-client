@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import UserType from '../../types/UserType';
 import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
 import UiIcon from '../ui/UiIcon';
+
 interface Props {
   userType?: UserType;
 }
@@ -14,7 +15,7 @@ export default function DashboardSidebar({ userType }: Props) {
       <TabList>
         <Tab>
           <UiIcon icon="Eye" />
-          <span>Home</span>
+          <span>Dashboard</span>
         </Tab>
       </TabList>
     </Sidebar>
@@ -35,13 +36,19 @@ const TabList = styled.ul`
 
 const Tab = styled.li`
   list-style-type: none;
-  padding: 16px 8px;
+  padding: 16px 20px;
   font-size: 14px;
   border-radius: 8px;
   color: var(--color-primary-200);
+  font-weight: 600;
+  opacity: 0.6;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 
   &:hover {
     background: var(--color-primary-100);
     color: var(--color-primary-200);
+    opacity: 1;
   }
 `;

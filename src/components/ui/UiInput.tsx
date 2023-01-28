@@ -75,7 +75,7 @@ const Input = styled.input`
   padding: 16px 8px;
   gap: 8px;
   width: 100%;
-  height: 40px;
+  height: 52px;
   font-size: 12px;
   border: 1px solid;
   border-color: ${({ hasError }: { hasError: boolean }) =>
