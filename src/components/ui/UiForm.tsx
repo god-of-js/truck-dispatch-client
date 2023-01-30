@@ -6,7 +6,8 @@ export type RuleType =
   | 'email'
   | 'password'
   | `sameas.${'password'}`
-  | `min.${8 | 6}`;
+  | `min.${8 | 6}`
+  | 'anotherrule';
 const ruleCheck = {
   email: (value: string) =>
     /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value),
