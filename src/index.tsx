@@ -7,8 +7,11 @@ import { Toaster } from 'react-hot-toast';
 import router from './routes/index';
 import './index.scss';
 import './variables.css';
+// import './pxToRem';
 import reportWebVitals from './reportWebVitals';
 import getStore from './modules';
+// @ts-ignore
+window.pxToRem = (px: number, baseSize = 16) => `${px / baseSize}rem`;
 
 const root = createRoot(document.getElementById('root')!);
 root.render(

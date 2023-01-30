@@ -93,7 +93,7 @@ const Sidebar = styled.nav`
     width: 5%;
     border-top: none;
     position: static;
-    border-right: px(1) solid var(--color-gray-200);
+    border-right: ${pxToRem(1)} solid var(--color-gray-200);
   }
 `;
 
@@ -106,9 +106,9 @@ const LogoContainer = styled.div`
 `;
 
 const TDLogo = styled.img`
-  width: 100px;
+  width: ${pxToRem(100)};
   margin: auto;
-  margin: 0 px(-12);
+  margin: 0 ${pxToRem(-12)};
 `;
 
 const TabList = styled.ul`
@@ -138,6 +138,7 @@ const Tab = styled.li`
     border-color: var(--color-primary);
     color: var(--color-primary);
   }
+
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     border-bottom: none;
     border-left: 4px solid transparent;

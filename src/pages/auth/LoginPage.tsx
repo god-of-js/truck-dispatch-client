@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
+import { AnyAction } from 'redux';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import UiInput from '../../components/ui/UiInput';
-import UiButton from '../../components/ui/UiButton';
 import { loginUser } from '../../modules/Account';
-import { AnyAction } from 'redux';
-import UiForm, { RuleType } from '../../components/ui/UiForm';
+
 import { Toast } from '../../utils/toast';
+import UiInput from 'ui/UiInput';
+import UiButton from 'ui/UiButton';
+import UiForm, { RuleType } from 'ui/UiForm';
 
 export default function RegistrationPage() {
   const dispatch = useDispatch();

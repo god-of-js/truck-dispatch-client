@@ -17,7 +17,11 @@ export default defineConfig({
       scss: {
         additionalData: `
           @use 'sass:math';
-          @import "./src/assets/style/helpers.scss";`,
+
+          @function pxToRem($px, $base-size: 16px) {
+            @return math.div($px * 1px, $base-size) * 1rem; 
+          }          
+          `,
       },
     },
   },
@@ -26,6 +30,8 @@ export default defineConfig({
     alias: {
       components: './src/components',
       ui: './src/components/ui',
+      assets: './src/assets',
+      Api: './src/Api/index',
     },
   },
 });

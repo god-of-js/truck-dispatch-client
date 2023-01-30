@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { AppDispatch, AppState } from '.';
-import Api from '../Api';
+import Api from 'Api';
 import User from '../types/User';
 import UserWithPassword from '../types/UserWithPassword';
 

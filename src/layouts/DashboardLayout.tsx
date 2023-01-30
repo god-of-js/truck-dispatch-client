@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import { AnyAction } from 'redux';
 import styled from 'styled-components';
-import DashboardSidebar from '../components/layout/DashboardSidebar';
-import DashboardTopNav from '../components/layout/DashboardTopNav';
+import DashboardSidebar from 'components/layout/DashboardSidebar';
+import DashboardTopNav from 'components/layout/DashboardTopNav';
 import { getUser } from '../modules/Account';
 
 export default function DashboardLayout() {
