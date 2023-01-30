@@ -64,3 +64,19 @@ export function loginUser(AuthUser: { email: string; password: string }) {
       });
   };
 }
+
+export function getUser() {
+  return () => {
+    console.log('getUser');
+    const uid = localStorage.getItem('uid');
+    console.log(uid);
+    if (!uid) throw new Error('400: User is not authenticated');
+    return Api.getUser(uid)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        throw new Error(err.message);
+      });
+  };
+}

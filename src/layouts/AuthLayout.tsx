@@ -28,7 +28,7 @@ export default function AuthLayout({
 
   return (
     <Layout>
-      <ImageContainer userType={userType}>
+      <ImageContainer isTransporter={userType === 'transporter'}>
         <img src={TruckDispatchLogo} alt="" width="150" />
         <div>
           <h2>{layoutTitle}</h2>
@@ -58,8 +58,8 @@ const ImageContainer = styled.div`
     display: block;
     height: 100%;
     width: 65%;
-    background-image: url(${(props: Props) =>
-      props.userType === 'transporter' ? TransporterImage : AgentImage});
+    background-image: url(${({ isTransporter }: { isTransporter: boolean }) =>
+      isTransporter ? TransporterImage : AgentImage});
     background-size: cover;
     background-position: center;
 
@@ -107,6 +107,7 @@ const FormContainer = styled.div`
   height: 100%;
   width: 100%;
   padding: 24px;
+  overflow-y: auto;
 
   img {
     display: block;

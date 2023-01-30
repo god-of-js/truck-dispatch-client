@@ -2,7 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 
 export default function DashboardTopNav() {
-  return <TopNav></TopNav>;
+  return (
+    <TopNav>
+      <span>Home</span>
+    </TopNav>
+  );
 }
 
 const TopNav = styled.nav`

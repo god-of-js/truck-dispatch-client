@@ -1,4 +1,11 @@
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import {
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+  getDoc,
+  setDoc,
+} from 'firebase/firestore';
 import User from '../types/User';
 import {
   createUserWithEmailAndPassword,
@@ -18,16 +25,35 @@ class ApiService {
     );
   }
   recordAccountDetails(data: User) {
-    return this.create('user', data);
+    return this.setDoc('user', data.id, data);
   }
 
-  private create(collectionName: string, data: unknown): Promise<unknown> {
-    return addDoc(collection(db, collectionName), data);
+  getUser(id: string) {
+    return this.getItem('user', id);
+  }
+
+  private setDoc(
+    collectionName: string,
+    id: string,
+    data: unknown,
+  ): Promise<unknown> {
+    return setDoc(doc(db, collectionName, id), data);
   }
 
   private async getCollection(collectionName: string): Promise<unknown> {
     const rawObjects = await getDocs(collection(db, collectionName));
     return rawObjects.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+  }
+
+  private async getItem(key: string, value: string): Promise<unknown> {
+    const docRef = doc(db, key, value);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      throw new Error('404: Document not found');
+    }
   }
 
   private patch(url: string, data: unknown): unknown {
