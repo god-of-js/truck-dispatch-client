@@ -1,28 +1,50 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import UiButton from '../components/ui/UiButton';
 import UiForm, { RuleType } from '../components/ui/UiForm';
 import UiInput from '../components/ui/UiInput';
+import UiSelect from '../components/ui/UiSelect';
 
 function ComponentsView() {
-  const [isFocused, setIsFocused] = useState('');
+  const [isFocused, setIsFocused] = useState<string | null>('');
+
   const [formData, setFormData] = useState({
     email: '',
+    selectValue: 'Wahala',
   });
 
-  const formRules: Record<string, RuleType[]> = {
+  const formRules: Record<keyof typeof formData, RuleType[]> = {
     email: ['required', 'email'],
+    selectValue: ['required'],
   };
+
+  const selectOptions = [
+    {
+      value: 'Lorem',
+      label: 'lorem',
+    },
+    {
+      value: 'Ipsum',
+      label: 'ipsum',
+    },
+    {
+      value: 'Wahala',
+      label: 'wahala',
+    },
+    {
+      value: 'Dolor',
+      label: 'dolor',
+    },
+  ];
 
   function handleSubmit() {
     console.log(formData);
   }
 
-  function handleFormChange(event: {
-    target: { name: string; value: string };
-  }) {
+  function handleFormChange(event: { name: string; value: string | null }) {
     setFormData({
       ...formData,
-      [event.target.name]: event.target.value,
+      [event.name]: event.value,
     });
   }
 
@@ -34,7 +56,7 @@ function ComponentsView() {
         label={'First Name'}
         name="test"
         value={isFocused}
-        onChange={(e) => setIsFocused(e.target.value)}
+        onChange={(e) => setIsFocused(e.value)}
       />
       <UiForm rules={formRules} formData={formData} onSubmit={handleSubmit}>
         {({ errors }) => (
@@ -46,6 +68,17 @@ function ComponentsView() {
               error={errors.email}
               onChange={handleFormChange}
             />
+            <br />
+            <W90>
+              <UiSelect
+                label="Label"
+                options={selectOptions}
+                name="selectValue"
+                value={formData.selectValue}
+                onChange={handleFormChange}
+              />
+            </W90>
+            <br />
             <UiButton> Submit </UiButton>
           </>
         )}
@@ -55,3 +88,7 @@ function ComponentsView() {
 }
 
 export default ComponentsView;
+
+const W90 = styled.div`
+  width: 90%;
+`;

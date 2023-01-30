@@ -20,8 +20,6 @@ interface Props {
   data: Record<string, any>[];
   headers: Header[];
   options: [];
-  children?: React.ReactNode[];
-  ComponentProps?: Record<string, React.ReactNode>;
 }
 
 export default function UiTable({
@@ -38,8 +36,8 @@ export default function UiTable({
       <Table>
         <TableHeader>
           <TableRow>
-            {headers.map((header) => (
-              <TableHeadItem>{header.title}</TableHeadItem>
+            {headers.map((header, index) => (
+              <TableHeadItem key={index}>{header.title}</TableHeadItem>
             ))}
           </TableRow>
         </TableHeader>
@@ -47,8 +45,12 @@ export default function UiTable({
           {data.map((item) => {
             return (
               <TableRow>
-                {headers.map((header) => {
-                  return <TableDataItem>{item[header.query]}</TableDataItem>;
+                {headers.map((header, index) => {
+                  return (
+                    <TableDataItem key={index}>
+                      {item[header.query]}
+                    </TableDataItem>
+                  );
                 })}
               </TableRow>
             );

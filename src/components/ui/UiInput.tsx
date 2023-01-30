@@ -8,13 +8,13 @@ import UiField from './UiField';
 interface Props {
   label: string;
   type?: 'text' | 'password' | 'number' | 'phone';
-  value: string;
+  value: string | null;
   /** The name property should always be the same as the model value. example if the input belongs to
    * formData.confirm_password, the name prop should be confirm_password.
    */
   name: string;
   error?: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (event: { name: string; value: string | null }) => void;
 }
 
 export default function UiInput({
@@ -27,22 +27,25 @@ export default function UiInput({
 }: Props) {
   const [inputType, setInputType] = useState(type);
 
-  function sendPhone(value: string | undefined) {
-    onChange({
-      target: { name, value },
-    } as React.ChangeEvent<HTMLInputElement>);
+  function sendPhone(value: string | null | undefined) {
+    onChange({ name, value: value || null });
   }
 
   function handlePasswordTypeToText() {
     if (inputType === 'password') setInputType('text');
     else setInputType('password');
   }
+
+  function sendValue(e: { target: { name: string; value: string } }) {
+    onChange({ name: e.target.name, value: e.target.value });
+  }
+
   return (
     <UiField label={label} name={name} error={error}>
       <InputContainer>
         {inputType === 'phone' ? (
           <PhoneInput
-            value={value}
+            value={value || ''}
             country="NG"
             className={'phone-input'}
             placeholder="e.g: 08034283438"
@@ -51,10 +54,10 @@ export default function UiInput({
         ) : (
           <Input
             type={inputType}
-            value={value}
+            value={value || ''}
             name={name}
             hasError={!!error}
-            onChange={onChange}
+            onChange={sendValue}
           />
         )}
 

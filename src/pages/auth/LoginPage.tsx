@@ -23,10 +23,10 @@ export default function RegistrationPage() {
     email: ['required', 'email'],
     password: ['required'],
   };
-  function handleChange(event: { target: { name: string; value: string } }) {
+  function handleChange(event: { name: string; value: string | null }) {
     setFormData({
       ...formData,
-      [event.target.name]: event.target.value,
+      [event.name]: event.value,
     });
   }
 
