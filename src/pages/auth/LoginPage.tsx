@@ -29,10 +29,10 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
     firstName: ['required'],
     password: ['required'],
   };
-  function handleChange(event: { target: { name: string; value: string } }) {
+  function handleChange(event: { name: string; value: string | null }) {
     setFormData({
       ...formData,
-      [event.target.name]: event.target.value,
+      [event.name]: event.value,
     });
   }
 

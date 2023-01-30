@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import styled from 'styled-components';
 import UiField from './UiField';
+import UiIcon from './UiIcon';
 
 interface Option {
   value: string;
@@ -24,14 +25,14 @@ export default function UiSelect({
   error,
   onChange,
 }: Props) {
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const toggleOptions = () => {
-    setOpen(!open);
-  };
+  function toggleOptions() {
+    setIsOpen(!isOpen);
+  }
 
   const handleOptionClick = (option: Option) => {
-    setOpen(false);
+    toggleOptions();
     onChange({ name, value: option.value });
   };
 
@@ -44,8 +45,11 @@ export default function UiSelect({
       <StyledSelect onClick={toggleOptions} hasError={!!error}>
         <div>
           <span>{selectedOption && selectedOption.label}</span>
+          <span>
+            <UiIcon name={isOpen ? 'CaretUp' : 'CaretDown'} />
+          </span>
         </div>
-        <StyledOptions open={open}>
+        <StyledOptions open={isOpen}>
           {options.map((option) => (
             <StyledOption
               key={option.value}
@@ -66,7 +70,7 @@ const StyledSelect = styled.div`
     padding: 16px 8px;
     display: flex;
     align-items: center;
-    justify-content: stretch;
+    justify-content: space-between;
     height: 40px;
     font-size: 12px;
     border: 1px solid;

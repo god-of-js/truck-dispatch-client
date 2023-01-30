@@ -1,10 +1,11 @@
 import React from 'react';
-import { CaretDown, Eye, EyeSlash } from 'phosphor-react';
+import { CaretDown, CaretUp, Eye, EyeSlash } from 'phosphor-react';
 
 const icons = {
   Eye: <Eye />,
   EyeSlash: <EyeSlash />,
   CaretDown: <CaretDown />,
+  CaretUp: <CaretUp />,
 };
 
 interface Props {
