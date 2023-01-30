@@ -57,7 +57,7 @@ const ButtonContainer = styled.button<Props>`
   font-weight: 900;
   text-transform: ${({ textCasing }) => textCasing};
   width: ${({ fitContent = false }) => (fitContent ? 'fit-content' : '100%')};
-  height: 52px;
+  height: var(--base-height);
 
   &.primary {
     background-color: var(--color-primary);

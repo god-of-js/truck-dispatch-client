@@ -124,15 +124,15 @@ const TabList = styled.ul`
 
 const Tab = styled.li`
   list-style-type: none;
-  padding: 12px 20px;
-  font-size: 14px;
+  padding: ${pxToRem(12)} ${pxToRem(20)};
+  font-size: ${pxToRem(14)};
   color: var(--color-gray-500);
   font-weight: 600;
   opacity: 0.6;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 4px solid transparent;
+  border-bottom: ${pxToRem(4)} solid transparent;
 
   &:hover {
     border-color: var(--color-primary);
@@ -141,7 +141,7 @@ const Tab = styled.li`
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     border-bottom: none;
-    border-left: 4px solid transparent;
-    margin: 8px 0;
+    border-left: ${pxToRem(4)} solid transparent;
+    margin: ${pxToRem(8)} 0;
   }
 `;

@@ -75,17 +75,17 @@ const Input = styled.input`
   display: flex;
   align-items: center;
   justify-content: stretch;
-  padding: 16px 8px;
-  gap: 8px;
+  padding: ${pxToRem(16)} ${pxToRem(8)};
+  gap: ${pxToRem(8)};
   width: 100%;
-  height: 52px;
-  font-size: 12px;
-  border: 1px solid;
+  height: var(--base-height);
+  font-size: ${pxToRem(12)};
+  border: ${pxToRem(1)} solid;
   border-color: ${({ hasError }: { hasError: boolean }) =>
     hasError ? 'var(--color-danger)' : 'var(--color-gray-200)'};
   background: #ffffff;
   outline: none;
-  border-radius: 4px;
+  border-radius: ${pxToRem(4)};
   box-sizing: border-box;
 
   &:focus {
@@ -100,7 +100,7 @@ const InputContainer = styled.div`
 
 const IconButton = styled.div`
   position: absolute;
-  padding: 0 8px;
+  padding: 0 ${pxToRem(8)};
   height: 100%;
   display: flex;
   align-items: center;

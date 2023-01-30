@@ -70,18 +70,18 @@ export default function UiSelect({
 const StyledSelect = styled.div`
   position: relative;
   div {
-    padding: 16px 8px;
+    padding: ${pxToRem(16)} ${pxToRem(8)};
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 40px;
-    font-size: 12px;
-    border: 1px solid;
+    height: var(--base-height);
+    font-size: ${pxToRem(12)};
+    border: ${pxToRem(1)} solid;
     border-color: ${({ hasError }: { hasError: boolean }) =>
       hasError ? 'var(--color-danger)' : 'var(--color-gray-200)'};
     background: #ffffff;
     outline: none;
-    border-radius: 4px;
+    border-radius: ${pxToRem(4)};
     box-sizing: border-box;
   }
 `;
@@ -94,15 +94,15 @@ const StyledOptions = styled.ul`
   width: 100%;
   background: #fff;
   border: 1px solid var(--color-gray-200);
-  border-radius: 5px;
+  border-radius: ${pxToRem(4)};
   z-index: 1;
   overflow: auto;
-  max-height: 150px;
+  max-height: ${pxToRem(150)};
   display: ${({ isOpen }: { isOpen: boolean }) => (isOpen ? 'block' : 'none')};
 `;
 
 const StyledOption = styled.li`
-  padding: 10px;
+  padding: ${pxToRem(10)};
   cursor: pointer;
   &:hover {
     /* TODO: check if the color-primary makes sense for this attribute when it's merged */

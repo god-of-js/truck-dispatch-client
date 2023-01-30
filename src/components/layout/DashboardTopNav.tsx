@@ -15,24 +15,24 @@ export default function DashboardTopNav() {
 
 const TopNav = styled.nav`
   background-color: #ffffff;
-  border-bottom: 1px solid var(--color-gray-200);
-  padding: 8px 20px;
+  border-bottom: ${pxToRem(1)} solid var(--color-gray-200);
+  padding: ${pxToRem(8)} ${pxToRem(20)};
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   span {
-    font-size: 16px;
+    font-size: ${pxToRem(16)};
     font-weight: 600;
     color: var(--color-gray-400);
   }
 
   .user-icon {
     color: var(--color-gray-400);
-    border: 1px solid var(--color-gray-200);
+    border: ${pxToRem(1)} solid var(--color-gray-200);
     border-radius: 50%;
-    width: 36px;
-    height: 36px;
+    width: ${pxToRem(36)};
+    height: ${pxToRem(36)};
     display: flex;
     align-items: center;
     justify-content: center;

@@ -39,5 +39,6 @@ export default function UiIcon({ icon, size = '16' }: Props) {
 }
 
 const IconStyle = styled.span`
-  font-size: ${({ size }: { size?: Props['size'] }) => `${size}px`};
+  font-size: ${({ size }: { size?: Props['size'] }) =>
+    pxToRem((size && parseInt(size)) || 16)};
 `;

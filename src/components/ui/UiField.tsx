@@ -19,11 +19,11 @@ export default function UiField({ error, label, name, children }: Props) {
 
 const Message = styled.div`
   color: var(--color-danger);
-  font-size: 12px;
+  font-size: ${pxToRem(12)};
 `;
 
 const Label = styled.label`
-  font-size: 12px;
+  font-size: ${pxToRem(12)};
   color: var(--color-gray-500);
   font-weight: bold;
 `;
