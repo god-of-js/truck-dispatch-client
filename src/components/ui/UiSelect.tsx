@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import styled from 'styled-components';
 
 // this is how the option data will be displayed 
@@ -18,26 +18,30 @@ interface Option {
 
 interface Props {
   options: Option[];
+  value: string | null;
 }
 
-export const UiSelect: React.FC<Props> = ({ options }: Props) => {
+export const UiSelect: React.FC<Props> = ({ options, value }: Props) => {
     const [open, setOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState(options[0]);
+    
 
   const toggleOptions = () => {
     setOpen(!open);
   };
 
   const handleOptionClick = (option: Option) => {
-    setSelectedOption(option);
+   
     setOpen(false);
   };
 
-
+  const selectedOption = useMemo(()=>{
+    return options.find((option) => option.value === value) || null  
+  },[value])
+   
+  
   return (
-    <div>
       <StyledSelect onClick={toggleOptions}>
-        <span>{selectedOption.label}</span>
+        <span>{selectedOption && selectedOption.label}</span>
         <StyledOptions open={open}>
           {options.map((option) => (
             <StyledOption
@@ -49,12 +53,11 @@ export const UiSelect: React.FC<Props> = ({ options }: Props) => {
           ))}
         </StyledOptions>
       </StyledSelect>
-    </div>
   );
 };
 
 const StyledSelect = styled.div`
-  width: 200px;
+  width: 100%;
   height: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
