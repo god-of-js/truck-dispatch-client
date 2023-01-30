@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -14,7 +14,9 @@ const root = createRoot(document.getElementById('root')!);
 root.render(
   <React.StrictMode>
     <Provider store={getStore()}>
-      <RouterProvider router={router} />
+      <Suspense fallback={<span>Loading....</span>}>
+        <RouterProvider router={router} />
+      </Suspense>
       <Toaster position="bottom-right" reverseOrder={true} />
     </Provider>
   </React.StrictMode>,

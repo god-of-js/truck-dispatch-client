@@ -24,28 +24,18 @@ const router = createBrowserRouter([
     element: <ComponentsView />,
   },
   {
-    path: 'join/transporter',
-    element: (
-      <AuthLayout>
-        <RegistrationPage />
-      </AuthLayout>
-    ),
-  },
-  {
-    path: 'join/agent',
-    element: (
-      <AuthLayout userType="agent">
-        <RegistrationPage userType="agent" />
-      </AuthLayout>
-    ),
-  },
-  {
-    path: 'login',
-    element: (
-      <AuthLayout>
-        <LoginPage />
-      </AuthLayout>
-    ),
+    path: 'auth',
+    element: <AuthLayout />,
+    children: [
+      {
+        path: 'join/:userType',
+        element: <RegistrationPage />,
+      },
+      {
+        path: 'login',
+        element: <LoginPage />,
+      },
+    ],
   },
 ]);
 

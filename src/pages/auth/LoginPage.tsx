@@ -5,18 +5,12 @@ import { Link } from 'react-router-dom';
 
 import UiInput from '../../components/ui/UiInput';
 import UiButton from '../../components/ui/UiButton';
-import sizes from '../../sizes';
-import UserType from '../../types/UserType';
 import { loginUser } from '../../modules/Account';
 import { AnyAction } from 'redux';
 import UiForm, { RuleType } from '../../components/ui/UiForm';
 import { Toast } from '../../utils/toast';
 
-interface Props {
-  userType?: UserType;
-}
-
-export default function RegistrationPage({ userType = 'transporter' }: Props) {
+export default function RegistrationPage() {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState<{ email: string; password: string }>(
     {
@@ -86,7 +80,8 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
           </PrivacyPolicyParagraph>
           <UiButton>Sign In</UiButton>
           <ForgotPassword>
-            Can't login? try <Link to="/forgot-password">forgot password</Link>
+            Can't login? try{' '}
+            <Link to="/auth/join/transporter">forgot password</Link>
           </ForgotPassword>
         </>
       )}

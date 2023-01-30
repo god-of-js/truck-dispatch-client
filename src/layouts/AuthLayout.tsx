@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Suspense } from 'react';
+import { Outlet, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import UserType from '../types/UserType';
@@ -9,14 +10,11 @@ import AgentImage from '../assets/img/agent-mono-effect.jpg';
 import TruckDispatchLogo from '../assets/img/truck-dispatch-full-logo.svg';
 
 interface Props {
-  children: React.ReactNode;
   userType?: UserType;
 }
 
-export default function AuthLayout({
-  children,
-  userType = 'transporter',
-}: Props) {
+export default function AuthLayout() {
+  const { userType } = useParams();
   const layoutTitle =
     userType === 'transporter'
       ? 'Take the road to prosperity'
@@ -37,7 +35,11 @@ export default function AuthLayout({
       </ImageContainer>
       <FormContainer>
         <img src={TruckDispatchLogo} alt="" width="150" />
-        <div className="form-container-inner">{children}</div>
+        <div className="form-container-inner">
+          <Suspense fallback={<span>Loading....</span>}>
+            <Outlet />
+          </Suspense>
+        </div>
       </FormContainer>
     </Layout>
   );
