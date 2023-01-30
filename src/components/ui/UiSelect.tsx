@@ -1,15 +1,8 @@
 import React, { useState, useMemo } from 'react';
+import OutsideClickHandler from 'react-outside-click-handler';
 import styled from 'styled-components';
-
-// this is how the option data will be displayed 
-
-// const options = [
-//   { value: "option1", label: "Option 1" },
-//   { value: "option2", label: "Option 2" },
-//   { value: "option3", label: "Option3" },
-//   { value: "option4", label: "Option 4" },
-//   { value: "option5", label: "Option 5" }
-// ]
+import UiField from './UiField';
+import UiIcon from './UiIcon';
 
 interface Option {
   value: string;
@@ -17,68 +10,79 @@ interface Option {
 }
 
 interface Props {
+  label: string;
   options: Option[];
   value: string | null;
+  name: string;
+  error?: string;
+  onChange: (event: { name: string; value: string }) => void;
 }
 
-export const UiSelect: React.FC<Props> = ({ options, value }: Props) => {
-    const [open, setOpen] = useState(false);
-    
+export default function UiSelect({
+  label,
+  options,
+  value,
+  name,
+  error,
+  onChange,
+}: Props) {
+  const [isOpen, setIsOpen] = useState(false);
 
-  const toggleOptions = () => {
-    setOpen(!open);
-  };
+  function toggleOptions() {
+    setIsOpen(!isOpen);
+  }
 
   const handleOptionClick = (option: Option) => {
-   
-    setOpen(false);
+    toggleOptions();
+    onChange({ name, value: option.value });
   };
 
-  const selectedOption = useMemo(()=>{
-    return options.find((option) => option.value === value) || null  
-  },[value])
-   
-  
+  const selectedOption = useMemo(() => {
+    return options.find((option) => option.value === value) || null;
+  }, [value]);
+
   return (
-      <StyledSelect onClick={toggleOptions}>
-        <span>{selectedOption && selectedOption.label}</span>
-        <StyledOptions open={open}>
-          {options.map((option) => (
-            <StyledOption
-              key={option.value}
-              onClick={() => handleOptionClick(option)}
-            >
-              {option.label}
-            </StyledOption>
-          ))}
-        </StyledOptions>
-      </StyledSelect>
+    <OutsideClickHandler onOutsideClick={() => setIsOpen(false)}>
+      <UiField label={label} name={name} error={error}>
+        <StyledSelect onClick={toggleOptions} hasError={!!error}>
+          <div>
+            <span>{selectedOption && selectedOption.label}</span>
+            <span>
+              <UiIcon name={isOpen ? 'CaretUp' : 'CaretDown'} />
+            </span>
+          </div>
+          <StyledOptions isOpen={isOpen}>
+            {options.map((option) => (
+              <StyledOption
+                key={option.value}
+                onClick={() => handleOptionClick(option)}
+              >
+                {option.label}
+              </StyledOption>
+            ))}
+          </StyledOptions>
+        </StyledSelect>
+      </UiField>
+    </OutsideClickHandler>
   );
-};
+}
 
 const StyledSelect = styled.div`
-  width: 100%;
-  height: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
   position: relative;
-  
-  &:after {
-    content: "";
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 5px solid #333;
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
+  div {
+    padding: 16px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 40px;
+    font-size: 12px;
+    border: 1px solid;
+    border-color: ${({ hasError }: { hasError: boolean }) =>
+      hasError ? 'var(--color-danger)' : 'var(--color-gray-200)'};
+    background: #ffffff;
+    outline: none;
+    border-radius: 4px;
+    box-sizing: border-box;
   }
 `;
 
@@ -89,19 +93,19 @@ const StyledOptions = styled.ul`
   position: absolute;
   width: 100%;
   background: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-gray-200);
   border-radius: 5px;
   z-index: 1;
   overflow: auto;
   max-height: 150px;
-  display: ${({ open }: { open: boolean }) => (open ? "block" : "none")};
+  display: ${({ isOpen }: { isOpen: boolean }) => (isOpen ? 'block' : 'none')};
 `;
 
 const StyledOption = styled.li`
   padding: 10px;
   cursor: pointer;
   &:hover {
-    background: #f5f5f5;
+    /* TODO: check if the color-primary makes sense for this attribute when it's merged */
+    background: var(--color-primary-200);
   }
 `;
-
