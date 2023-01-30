@@ -83,7 +83,7 @@ export default function DashboardSidebar() {
 
 const Sidebar = styled.nav`
   background: #ffffff;
-  border-top: 1px solid var(--color-gray-200);
+  border-top: px(1) solid var(--color-gray-200);
   position: fixed;
   bottom: 0;
   right: 0;
@@ -93,7 +93,7 @@ const Sidebar = styled.nav`
     width: 5%;
     border-top: none;
     position: static;
-    border-right: 1px solid var(--color-gray-200);
+    border-right: px(1) solid var(--color-gray-200);
   }
 `;
 

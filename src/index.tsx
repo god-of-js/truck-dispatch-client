@@ -5,9 +5,9 @@ import { Provider } from 'react-redux';
 import { Toaster } from 'react-hot-toast';
 
 import router from './routes/index';
-import './index.css';
+import './index.scss';
 import './variables.css';
-// import './assets/style/helpers.scss';
+import './assets/style/helpers.scss';
 import reportWebVitals from './reportWebVitals';
 import getStore from './modules';
 

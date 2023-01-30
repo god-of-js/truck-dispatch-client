@@ -64,7 +64,7 @@ const ButtonContainer = styled.button<Props>`
     color: white;
 
     &:hover {
-      background-color: var(--color-primary-dark);
+      background-color: var(--color-primary-600);
     }
   }
 
