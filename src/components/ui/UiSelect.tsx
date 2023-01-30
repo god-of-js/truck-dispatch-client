@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import OutsideClickHandler from 'react-outside-click-handler';
 import styled from 'styled-components';
 import UiField from './UiField';
 import UiIcon from './UiIcon';
@@ -41,26 +42,28 @@ export default function UiSelect({
   }, [value]);
 
   return (
-    <UiField label={label} name={name} error={error}>
-      <StyledSelect onClick={toggleOptions} hasError={!!error}>
-        <div>
-          <span>{selectedOption && selectedOption.label}</span>
-          <span>
-            <UiIcon name={isOpen ? 'CaretUp' : 'CaretDown'} />
-          </span>
-        </div>
-        <StyledOptions open={isOpen}>
-          {options.map((option) => (
-            <StyledOption
-              key={option.value}
-              onClick={() => handleOptionClick(option)}
-            >
-              {option.label}
-            </StyledOption>
-          ))}
-        </StyledOptions>
-      </StyledSelect>
-    </UiField>
+    <OutsideClickHandler onOutsideClick={() => setIsOpen(false)}>
+      <UiField label={label} name={name} error={error}>
+        <StyledSelect onClick={toggleOptions} hasError={!!error}>
+          <div>
+            <span>{selectedOption && selectedOption.label}</span>
+            <span>
+              <UiIcon name={isOpen ? 'CaretUp' : 'CaretDown'} />
+            </span>
+          </div>
+          <StyledOptions open={isOpen}>
+            {options.map((option) => (
+              <StyledOption
+                key={option.value}
+                onClick={() => handleOptionClick(option)}
+              >
+                {option.label}
+              </StyledOption>
+            ))}
+          </StyledOptions>
+        </StyledSelect>
+      </UiField>
+    </OutsideClickHandler>
   );
 }
 
@@ -102,6 +105,7 @@ const StyledOption = styled.li`
   padding: 10px;
   cursor: pointer;
   &:hover {
-    background: #f5f5f5;
+    /* TODO: check if the color-primary makes sense for this attribute when it's merged */
+    background: var(--color-primary-200);
   }
 `;
