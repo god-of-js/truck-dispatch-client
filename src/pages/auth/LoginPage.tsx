@@ -38,19 +38,21 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
 
   function handleSubmit() {
     // Search for solution.
-    dispatch(loginUser(formData) as unknown as AnyAction).then(() => {}).catch((err: { message: string}) => {
-      let msg = err.message;
+    dispatch(loginUser(formData) as unknown as AnyAction)
+      .then(() => {})
+      .catch((err: { message: string }) => {
+        let msg = err.message;
 
-      if (msg === 'Firebase: Error (auth/wrong-password).') {
-        msg = 'Email and password do not match'
-      }
+        if (msg === 'Firebase: Error (auth/wrong-password).') {
+          msg = 'Email and password do not match';
+        }
 
-      if (msg === 'Firebase: Error (auth/user-not-found).') {
-        msg = 'A user with this email does not exist'
-      }
+        if (msg === 'Firebase: Error (auth/user-not-found).') {
+          msg = 'A user with this email does not exist';
+        }
 
-      Toast.error({ msg })
-    });
+        Toast.error({ msg });
+      });
   }
 
   return (
