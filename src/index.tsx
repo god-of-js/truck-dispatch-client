@@ -7,6 +7,7 @@ import { Toaster } from 'react-hot-toast';
 import router from './routes/index';
 import './index.css';
 import './variables.css';
+// import './assets/style/helpers.scss';
 import reportWebVitals from './reportWebVitals';
 import getStore from './modules';
 
@@ -14,6 +15,7 @@ const root = createRoot(document.getElementById('root')!);
 root.render(
   <React.StrictMode>
     <Provider store={getStore()}>
+      {/* TODO: replace loading with an actual loader and animate page entry */}
       <Suspense fallback={<span>Loading....</span>}>
         <RouterProvider router={router} />
       </Suspense>

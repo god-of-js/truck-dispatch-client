@@ -90,6 +90,7 @@ const Sidebar = styled.nav`
   left: 0;
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+    width: 5%;
     border-top: none;
     position: static;
     border-right: 1px solid var(--color-gray-200);
