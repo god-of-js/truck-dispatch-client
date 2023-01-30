@@ -1,15 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import styled from 'styled-components';
-
-// this is how the option data will be displayed 
-
-// const options = [
-//   { value: "option1", label: "Option 1" },
-//   { value: "option2", label: "Option 2" },
-//   { value: "option3", label: "Option3" },
-//   { value: "option4", label: "Option 4" },
-//   { value: "option5", label: "Option 5" }
-// ]
+import UiField from './UiField';
 
 interface Option {
   value: string;
@@ -17,31 +8,43 @@ interface Option {
 }
 
 interface Props {
+  label: string;
   options: Option[];
   value: string | null;
+  name: string;
+  error?: string;
+  onChange: (event: { name: string; value: string }) => void;
 }
 
-export const UiSelect: React.FC<Props> = ({ options, value }: Props) => {
-    const [open, setOpen] = useState(false);
-    
+export default function UiSelect({
+  label,
+  options,
+  value,
+  name,
+  error,
+  onChange,
+}: Props) {
+  const [open, setOpen] = useState(false);
 
   const toggleOptions = () => {
     setOpen(!open);
   };
 
   const handleOptionClick = (option: Option) => {
-   
     setOpen(false);
+    onChange({ name, value: option.value });
   };
 
-  const selectedOption = useMemo(()=>{
-    return options.find((option) => option.value === value) || null  
-  },[value])
-   
-  
+  const selectedOption = useMemo(() => {
+    return options.find((option) => option.value === value) || null;
+  }, [value]);
+
   return (
-      <StyledSelect onClick={toggleOptions}>
-        <span>{selectedOption && selectedOption.label}</span>
+    <UiField label={label} name={name} error={error}>
+      <StyledSelect onClick={toggleOptions} hasError={!!error}>
+        <div>
+          <span>{selectedOption && selectedOption.label}</span>
+        </div>
         <StyledOptions open={open}>
           {options.map((option) => (
             <StyledOption
@@ -53,32 +56,26 @@ export const UiSelect: React.FC<Props> = ({ options, value }: Props) => {
           ))}
         </StyledOptions>
       </StyledSelect>
+    </UiField>
   );
-};
+}
 
 const StyledSelect = styled.div`
-  width: 100%;
-  height: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
   position: relative;
-  
-  &:after {
-    content: "";
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 5px solid #333;
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
+  div {
+    padding: 16px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: stretch;
+    height: 40px;
+    font-size: 12px;
+    border: 1px solid;
+    border-color: ${({ hasError }: { hasError: boolean }) =>
+      hasError ? 'var(--color-danger)' : 'var(--color-gray-200)'};
+    background: #ffffff;
+    outline: none;
+    border-radius: 4px;
+    box-sizing: border-box;
   }
 `;
 
@@ -89,12 +86,12 @@ const StyledOptions = styled.ul`
   position: absolute;
   width: 100%;
   background: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-gray-200);
   border-radius: 5px;
   z-index: 1;
   overflow: auto;
   max-height: 150px;
-  display: ${({ open }: { open: boolean }) => (open ? "block" : "none")};
+  display: ${({ open }: { open: boolean }) => (open ? 'block' : 'none')};
 `;
 
 const StyledOption = styled.li`
@@ -104,4 +101,3 @@ const StyledOption = styled.li`
     background: #f5f5f5;
   }
 `;
-
