@@ -29,28 +29,30 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
     firstName: ['required'],
     password: ['required'],
   };
-  function handleChange(event: { target: { name: string; value: string } }) {
+  function handleChange(event: { name: string; value: string | null }) {
     setFormData({
       ...formData,
-      [event.target.name]: event.target.value,
+      [event.name]: event.value,
     });
   }
 
   function handleSubmit() {
     // Search for solution.
-    dispatch(loginUser(formData) as unknown as AnyAction).then(() => {}).catch((err: { message: string}) => {
-      let msg = err.message;
+    dispatch(loginUser(formData) as unknown as AnyAction)
+      .then(() => {})
+      .catch((err: { message: string }) => {
+        let msg = err.message;
 
-      if (msg === 'Firebase: Error (auth/wrong-password).') {
-        msg = 'Email and password do not match'
-      }
+        if (msg === 'Firebase: Error (auth/wrong-password).') {
+          msg = 'Email and password do not match';
+        }
 
-      if (msg === 'Firebase: Error (auth/user-not-found).') {
-        msg = 'A user with this email does not exist'
-      }
+        if (msg === 'Firebase: Error (auth/user-not-found).') {
+          msg = 'A user with this email does not exist';
+        }
 
-      Toast.error({ msg })
-    });
+        Toast.error({ msg });
+      });
   }
 
   return (

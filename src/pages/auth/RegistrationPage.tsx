@@ -37,10 +37,10 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
     password: ['required', 'min.8'],
     cPassword: ['required', 'sameas.password'],
   };
-  function handleChange(event: { target: { name: string; value: string } }) {
+  function handleChange(event: { name: string; value: string | null }) {
     setFormData({
       ...formData,
-      [event.target.name]: event.target.value,
+      [event.name]: event.value,
     });
   }
 
