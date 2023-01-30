@@ -10,7 +10,9 @@ import { getUser } from '../modules/Account';
 export default function DashboardLayout() {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getUser() as unknown as AnyAction);
+    dispatch(getUser() as unknown as AnyAction).catch(() => {
+      console.log('error occurs');
+    });
   });
 
   return (

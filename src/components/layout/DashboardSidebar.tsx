@@ -83,7 +83,7 @@ export default function DashboardSidebar() {
 
 const Sidebar = styled.nav`
   background: #ffffff;
-  border-top: px(1) solid var(--color-gray-200);
+  border-top: 1px solid var(--color-gray-200);
   position: fixed;
   bottom: 0;
   right: 0;
@@ -108,7 +108,7 @@ const LogoContainer = styled.div`
 const TDLogo = styled.img`
   width: 100px;
   margin: auto;
-  margin: 0px -12px;
+  margin: 0 px(-12);
 `;
 
 const TabList = styled.ul`
