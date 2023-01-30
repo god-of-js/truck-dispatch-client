@@ -51,7 +51,7 @@ export default function UiSelect({
               <UiIcon name={isOpen ? 'CaretUp' : 'CaretDown'} />
             </span>
           </div>
-          <StyledOptions open={isOpen}>
+          <StyledOptions isOpen={isOpen}>
             {options.map((option) => (
               <StyledOption
                 key={option.value}
@@ -98,7 +98,7 @@ const StyledOptions = styled.ul`
   z-index: 1;
   overflow: auto;
   max-height: 150px;
-  display: ${({ open }: { open: boolean }) => (open ? 'block' : 'none')};
+  display: ${({ isOpen }: { isOpen: boolean }) => (isOpen ? 'block' : 'none')};
 `;
 
 const StyledOption = styled.li`
