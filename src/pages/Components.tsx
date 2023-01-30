@@ -47,7 +47,7 @@ function ComponentsView() {
               error={errors.email}
               onChange={handleFormChange}
             />
-            <UiSelect options={[]} />
+            <UiSelect options={[]} value=""/>
             <UiButton> Submit </UiButton>
           </>
         )}
