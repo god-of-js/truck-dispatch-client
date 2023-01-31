@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { AppDispatch, AppState } from '.';
-import Api from '../Api';
+import Api from 'Api';
 import User from '../types/User';
 import UserWithPassword from '../types/UserWithPassword';
 
@@ -58,6 +58,20 @@ export function loginUser(AuthUser: { email: string; password: string }) {
     return Api.signInWithEmailAndPassword(AuthUser.email, AuthUser.password!)
       .then((data) => {
         localStorage.setItem('uid', data.uid);
+      })
+      .catch((err) => {
+        throw new Error(err.message);
+      });
+  };
+}
+
+export function getUser() {
+  return () => {
+    const uid = localStorage.getItem('uid');
+    if (!uid) throw new Error('400: User is not authenticated');
+    return Api.getUser(uid)
+      .then((data) => {
+        console.log(data);
       })
       .catch((err) => {
         throw new Error(err.message);

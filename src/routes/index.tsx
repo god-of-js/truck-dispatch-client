@@ -5,7 +5,7 @@ const PageError = lazy(() => import('../components/errors/PageError'));
 
 // LAYOUTS
 const AuthLayout = lazy(() => import('../layouts/AuthLayout'));
-
+const DashboardLayout = lazy(() => import('../layouts/DashboardLayout'));
 const ComponentsView = lazy(() => import('../pages/Components'));
 
 const RegistrationPage = lazy(() => import('../pages/auth/RegistrationPage'));
@@ -14,36 +14,28 @@ const LoginPage = lazy(() => import('../pages/auth/LoginPage'));
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <div>Hello world!</div>,
+    id: '',
+    element: <DashboardLayout />,
     errorElement: <PageError />,
+    children: [],
   },
   {
     path: 'components',
     element: <ComponentsView />,
   },
   {
-    path: 'join/transporter',
-    element: (
-      <AuthLayout>
-        <RegistrationPage />
-      </AuthLayout>
-    ),
-  },
-  {
-    path: 'join/agent',
-    element: (
-      <AuthLayout userType="agent">
-        <RegistrationPage userType="agent" />
-      </AuthLayout>
-    ),
-  },
-  {
-    path: 'login',
-    element: (
-      <AuthLayout>
-        <LoginPage />
-      </AuthLayout>
-    ),
+    path: 'auth',
+    element: <AuthLayout />,
+    children: [
+      {
+        path: 'join/:userType',
+        element: <RegistrationPage />,
+      },
+      {
+        path: 'login',
+        element: <LoginPage />,
+      },
+    ],
   },
 ]);
 

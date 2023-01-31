@@ -22,7 +22,12 @@ interface Props {
   options: [];
 }
 
-export default function UiTable({ tableTitle, data, headers, options = [] }:Props) {
+export default function UiTable({
+  tableTitle,
+  data,
+  headers,
+  options = [],
+}: Props) {
   return (
     <TableContainer>
       <TableContainerHeader>
@@ -64,10 +69,10 @@ const TableContainerHeader = styled.header`
   border-bottom: 1px solid var(--color-gray-200);
 `;
 const TableTitle = styled.h2`
-  padding: 0px 12px;
+  padding: 0 ${pxToRem(12)};
   font-weight: 700;
-  font-size: 16px;
-  line-height: 28px;
+  font-size: ${pxToRem(16)};
+  line-height: ${pxToRem(28)};
   text-transform: uppercase;
   color: var(--color-gray-900);
 `;
@@ -79,11 +84,11 @@ const Table = styled.table`
 `;
 
 const TableHeader = styled.thead`
-  border-bottom: 1px solid var(--color-gray-200);
+  border-bottom: ${pxToRem(1)} solid var(--color-gray-200);
 `;
 
 const TableRow = styled.tr`
-  border-bottom: 1px solid var(--color-gray-200);
+  border-bottom: ${pxToRem(1)} solid var(--color-gray-200);
   text-align: left;
   &:last-child {
     border-bottom: transparent;
@@ -91,16 +96,16 @@ const TableRow = styled.tr`
 `;
 
 const TableHeadItem = styled.th`
-  padding: 12px 24px;
+  padding: ${pxToRem(12)} ${pxToRem(24)};
   background: var(--color-gray-50);
   color: var(--color-gray-500);
-  font-size: 12px;
+  font-size: ${pxToRem(12)};
 `;
 
 const TableDataItem = styled.td`
-  padding: 12px 24px;
+  padding: ${pxToRem(12)} ${pxToRem(24)};
   color: var(--color-gray-500);
   font-weight: 700;
-  font-size: 14px;
-  line-height: 20px;
+  font-size: ${pxToRem(14)};
+  line-height: ${pxToRem(20)};
 `;

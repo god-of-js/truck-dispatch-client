@@ -1,22 +1,17 @@
 import React, { useState } from 'react';
+import { AnyAction } from 'redux';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import UiInput from '../../components/ui/UiInput';
-import UiButton from '../../components/ui/UiButton';
-import sizes from '../../sizes';
-import UserType from '../../types/UserType';
 import { loginUser } from '../../modules/Account';
-import { AnyAction } from 'redux';
-import UiForm, { RuleType } from '../../components/ui/UiForm';
+
 import { Toast } from '../../utils/toast';
+import UiInput from 'ui/UiInput';
+import UiButton from 'ui/UiButton';
+import UiForm, { RuleType } from 'ui/UiForm';
 
-interface Props {
-  userType?: UserType;
-}
-
-export default function RegistrationPage({ userType = 'transporter' }: Props) {
+export default function RegistrationPage() {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState<{ email: string; password: string }>(
     {
@@ -26,7 +21,7 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
   );
 
   const formRules: Record<string, RuleType[]> = {
-    firstName: ['required'],
+    email: ['required', 'email'],
     password: ['required'],
   };
   function handleChange(event: { name: string; value: string | null }) {
@@ -86,7 +81,8 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
           </PrivacyPolicyParagraph>
           <UiButton>Sign In</UiButton>
           <ForgotPassword>
-            Can't login? try <Link to="/forgot-password">forgot password</Link>
+            Can't login? try{' '}
+            <Link to="/auth/join/transporter">forgot password</Link>
           </ForgotPassword>
         </>
       )}
@@ -94,26 +90,23 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
   );
 }
 
-const Form = styled.form`
-  width: 100%;
-`;
 const Heading = styled.h3`
   color: var(--color-primary);
   font-family: 'Audiowide';
-  font-size: 24px;
+  font-size: ${pxToRem(24)};
 `;
 const Margin = styled.div`
-  margin-bottom: 12px;
+  margin-bottom: ${pxToRem(12)};
 `;
 
 const PrivacyPolicyParagraph = styled.p`
   color: var(--color-gray-500);
-  font-size: 14px;
-  margin-bottom: 16px;
+  font-size: ${pxToRem(14)};
+  margin-bottom: ${pxToRem(16)};
 `;
 
 const ForgotPassword = styled.p`
   text-align: center;
-  font-size: 14px;
+  font-size: ${pxToRem(14)};
   color: var(--color-gray-400);
 `;

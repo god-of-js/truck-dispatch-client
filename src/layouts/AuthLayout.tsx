@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Suspense } from 'react';
+import { Outlet, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import UserType from '../types/UserType';
@@ -8,27 +9,19 @@ import TransporterImage from '../assets/img/truck-image.jpeg';
 import AgentImage from '../assets/img/agent-mono-effect.jpg';
 import TruckDispatchLogo from '../assets/img/truck-dispatch-full-logo.svg';
 
-interface Props {
-  children: React.ReactNode;
-  userType?: UserType;
-}
-
-export default function AuthLayout({
-  children,
-  userType = 'transporter',
-}: Props) {
-  const layoutTitle =
-    userType === 'transporter'
-      ? 'Take the road to prosperity'
-      : "Customer's first Always";
-  const layoutText =
-    userType === 'transporter'
-      ? 'Get access to the most profitable orders, steepest discounts, and fastest payments in Nigeria.'
-      : 'We provide you with the most competitive rates, verified drivers, and best deals. Become part of our success story d profit from a wide range of advantages';
+export default function AuthLayout() {
+  const { userType } = useParams();
+  const isTransporter = userType === 'transporter';
+  const layoutTitle = isTransporter
+    ? 'Take the road to prosperity'
+    : "Customer's first Always";
+  const layoutText = isTransporter
+    ? 'Get access to the most profitable orders, steepest discounts, and fastest payments in Nigeria.'
+    : 'We provide you with the most competitive rates, verified drivers, and best deals. Become part of our success story d profit from a wide range of advantages';
 
   return (
     <Layout>
-      <ImageContainer userType={userType}>
+      <ImageContainer isTransporter={isTransporter}>
         <img src={TruckDispatchLogo} alt="" width="150" />
         <div>
           <h2>{layoutTitle}</h2>
@@ -37,7 +30,11 @@ export default function AuthLayout({
       </ImageContainer>
       <FormContainer>
         <img src={TruckDispatchLogo} alt="" width="150" />
-        <div className="form-container-inner">{children}</div>
+        <div className="form-container-inner">
+          <Suspense fallback={<span>Loading....</span>}>
+            <Outlet />
+          </Suspense>
+        </div>
       </FormContainer>
     </Layout>
   );
@@ -45,7 +42,7 @@ export default function AuthLayout({
 
 const Layout = styled.div`
   display: flex;
-  gap: 12px;
+  gap: ${pxToRem(12)};
   overflow: hidden;
   height: 100vh;
   width: 100%;
@@ -58,8 +55,8 @@ const ImageContainer = styled.div`
     display: block;
     height: 100%;
     width: 65%;
-    background-image: url(${(props: Props) =>
-      props.userType === 'transporter' ? TransporterImage : AgentImage});
+    background-image: url(${({ isTransporter }: { isTransporter: boolean }) =>
+      isTransporter ? TransporterImage : AgentImage});
     background-size: cover;
     background-position: center;
 
@@ -74,16 +71,16 @@ const ImageContainer = styled.div`
         font-family: 'thiccboi-extrabold';
         text-transform: uppercase;
         color: #fff;
-        font-size: 44px;
+        font-size: ${pxToRem(44)};
         width: 70%;
-        margin-bottom: 0px;
+        margin-bottom: 0;
       }
       p {
         width: 70%;
         font-family: 'Audiowide';
         color: #fff;
         font-weight: 800;
-        font-size: 20px;
+        font-size: ${pxToRem(20)};
       }
     }
   }
@@ -91,13 +88,13 @@ const ImageContainer = styled.div`
     width: 60%;
     div {
       h2 {
-        font-size: 44px;
+        font-size: ${pxToRem(44)};
         width: 50%;
       }
       p {
         width: 50%;
         font-weight: 800;
-        font-size: 20px;
+        font-size: ${pxToRem(20)};
       }
     }
   }
@@ -106,7 +103,8 @@ const ImageContainer = styled.div`
 const FormContainer = styled.div`
   height: 100%;
   width: 100%;
-  padding: 24px;
+  padding: ${pxToRem(24)};
+  overflow-y: auto;
 
   img {
     display: block;
