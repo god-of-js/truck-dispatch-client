@@ -17,4 +17,5 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 export const auth = getAuth(app);
 
+const googleApiKey = 'AIzaSyD4FFMDJjd-vxcvcwF1O85mMc1_2qJG9vM';
 export default db;
