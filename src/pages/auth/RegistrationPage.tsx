@@ -126,7 +126,7 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
             Join as {isTransporter() ? 'a' : 'an'} {userType}
           </UiButton>
           <AlreadyAMember>
-            Already a member? <Link to="/login">Sign In</Link>
+            Already a member? <Link to="/auth/login">Sign In</Link>
           </AlreadyAMember>
         </>
       )}

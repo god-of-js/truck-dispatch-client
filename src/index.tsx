@@ -1,20 +1,25 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { Toaster } from 'react-hot-toast';
 
 import router from './routes/index';
-import './index.css';
+import './index.scss';
 import './variables.css';
 import reportWebVitals from './reportWebVitals';
 import getStore from './modules';
+// @ts-ignore
+window.pxToRem = (px: number, baseSize = 16) => `${px / baseSize}rem`;
 
 const root = createRoot(document.getElementById('root')!);
 root.render(
   <React.StrictMode>
     <Provider store={getStore()}>
-      <RouterProvider router={router} />
+      {/* TODO: replace loading with an actual loader and animate page entry */}
+      <Suspense fallback={<span>Loading....</span>}>
+        <RouterProvider router={router} />
+      </Suspense>
       <Toaster position="bottom-right" reverseOrder={true} />
     </Provider>
   </React.StrictMode>,

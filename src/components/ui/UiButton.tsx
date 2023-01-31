@@ -57,13 +57,14 @@ const ButtonContainer = styled.button<Props>`
   font-weight: 900;
   text-transform: ${({ textCasing }) => textCasing};
   width: ${({ fitContent = false }) => (fitContent ? 'fit-content' : '100%')};
+  height: var(--base-height);
 
   &.primary {
     background-color: var(--color-primary);
     color: white;
 
     &:hover {
-      background-color: var(--color-primary-dark);
+      background-color: var(--color-primary-600);
     }
   }
 
