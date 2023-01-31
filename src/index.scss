@@ -32,7 +32,7 @@ a {
   font-weight: bold;
 }
 
-.phone-input {
+.global-input {
   display: flex;
   align-items: center;
   justify-content: stretch;
@@ -48,6 +48,6 @@ a {
   box-sizing: border-box;
 }
 
-.phone-input:focus {
+.global-input:focus {
   border-color: var(--color-primary);
 }

@@ -47,7 +47,7 @@ export default function UiInput({
           <PhoneInput
             value={value || ''}
             country="NG"
-            className={'phone-input'}
+            className={'global-input'}
             placeholder="e.g: 08034283438"
             onChange={(e) => sendPhone(e)}
           />

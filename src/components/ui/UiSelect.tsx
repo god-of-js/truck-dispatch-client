@@ -106,6 +106,6 @@ const StyledOption = styled.li`
   cursor: pointer;
   &:hover {
     /* TODO: check if the color-primary makes sense for this attribute when it's merged */
-    background: var(--color-primary-200);
+    background: var(--color-gray-50);
   }
 `;

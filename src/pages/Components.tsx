@@ -1,3 +1,4 @@
+import UiLocationsInput from 'components/ui/UiLocationsInput';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import UiButton from '../components/ui/UiButton';
@@ -11,11 +12,13 @@ function ComponentsView() {
   const [formData, setFormData] = useState({
     email: '',
     selectValue: 'Wahala',
+    location: '',
   });
 
   const formRules: Record<keyof typeof formData, RuleType[]> = {
     email: ['required', 'email'],
     selectValue: ['required'],
+    location: ['required'],
   };
 
   const selectOptions = [
@@ -79,6 +82,12 @@ function ComponentsView() {
               />
             </W90>
             <br />
+            <UiLocationsInput
+              onChange={handleFormChange}
+              label="Location"
+              value={formData.location}
+              name="location"
+            />
             <UiButton> Submit </UiButton>
           </>
         )}
