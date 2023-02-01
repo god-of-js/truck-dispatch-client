@@ -44,9 +44,12 @@ const Body = styled.div`
   width: 100%;
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    width: 95%;
+    width: 97%;
     border-top: none;
     position: static;
     border-right: ${pxToRem(1)} solid var(--color-gray-200);
+  }
+  @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
+    width: 95%;
   }
 `;

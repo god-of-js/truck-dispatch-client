@@ -29,9 +29,12 @@ class ApiService {
   }
 
   getUser(id: string) {
-    return this.getItem('user', id);
+    return this.getItem<User>('user', id);
   }
 
+  sendVerificationDetailsToAdmin(userId: string, data: unknown) {
+    return this.setDoc('verification', userId, data);
+  }
   private setDoc(
     collectionName: string,
     id: string,
@@ -45,12 +48,12 @@ class ApiService {
     return rawObjects.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
   }
 
-  private async getItem(key: string, value: string): Promise<unknown> {
+  private async getItem<T>(key: string, value: string): Promise<T> {
     const docRef = doc(db, key, value);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      return docSnap.data();
+      return docSnap.data() as T;
     } else {
       throw new Error('404: Document not found');
     }

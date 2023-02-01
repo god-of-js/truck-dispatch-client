@@ -40,14 +40,17 @@ const Tabs = styled.ul`
 
 const Tab = styled.li`
   font-size: ${pxToRem(16)};
-  padding-bottom: ${pxToRem(12)};
+  padding-bottom: ${pxToRem(24)};
   /* TODO: make border rounded */
-  border-bottom: ${pxToRem(2)} solid transparent;
+  border-bottom: ${pxToRem(2)} solid
+    ${({ isActive }: { isActive: boolean }) =>
+      isActive ? 'var(--color-primary)' : 'transparent'};
 
   a {
     color: ${({ isActive }: { isActive: boolean }) =>
       isActive ? 'var(--color-primary)' : 'var(--color-gray-400)'};
-    font-weight: 500;
+    font-weight: ${({ isActive }: { isActive: boolean }) =>
+      isActive ? 600 : 400};
     &:hover {
       color: var(--color-primary-400);
     }

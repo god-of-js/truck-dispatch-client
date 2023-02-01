@@ -4,6 +4,7 @@ import styled from 'styled-components';
 interface Props {
   children?: React.ReactNode;
   disabled?: boolean;
+  loading?: boolean;
   variant?:
     | 'primary'
     | 'secondary'
@@ -22,6 +23,7 @@ export default function UiButton({
   children,
   onClick,
   disabled = false,
+  loading = false,
   variant = 'primary',
   type = 'submit',
   textCasing = 'uppercase',
@@ -31,12 +33,12 @@ export default function UiButton({
     <ButtonContainer
       className={`btn ${variant}`}
       onClick={onClick}
-      disabled={disabled}
+      disabled={disabled || loading}
       type={type}
       textCasing={textCasing}
       size={size}
     >
-      {children}
+      {loading ? <span>Loading...</span> : children}
     </ButtonContainer>
   );
 }

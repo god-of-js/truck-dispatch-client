@@ -66,15 +66,29 @@ export function loginUser(AuthUser: { email: string; password: string }) {
 }
 
 export function getUser() {
-  return () => {
+  return (dispatch: AppDispatch) => {
     const uid = localStorage.getItem('uid');
     if (!uid) throw new Error('400: User is not authenticated');
     return Api.getUser(uid)
       .then((data) => {
         console.log(data);
+        dispatch(setUser(data));
       })
       .catch((err) => {
         throw new Error(err.message);
       });
+  };
+}
+
+// TODO: add middlewares to check if user is a transporter or admin before triggering certain actions.
+// https://medium.com/netscape/creating-custom-middleware-in-react-redux-961570459ecb#:~:text=To%20apply%20a%20middleware%20in,when%20an%20action%20is%20dispatched.
+export function sendVerificationDetailsToAdmin(
+  verificationData: Record<string, string>,
+) {
+  return (dispatch: AppDispatch, state: AppState) => {
+    return Api.sendVerificationDetailsToAdmin(
+      state().account.user?.id!,
+      verificationData,
+    );
   };
 }

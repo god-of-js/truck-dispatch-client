@@ -19,6 +19,7 @@ export default function RegistrationPage() {
       password: '',
     },
   );
+  const [loading, setLoading] = useState(false);
 
   const formRules: Record<string, RuleType[]> = {
     email: ['required', 'email'],
@@ -33,6 +34,7 @@ export default function RegistrationPage() {
 
   function handleSubmit() {
     // Search for solution.
+    setLoading(true);
     dispatch(loginUser(formData) as unknown as AnyAction)
       .then(() => {})
       .catch((err: { message: string }) => {
@@ -47,6 +49,9 @@ export default function RegistrationPage() {
         }
 
         Toast.error({ msg });
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }
 
@@ -79,7 +84,7 @@ export default function RegistrationPage() {
             TruckDispatch's partner, and agree to our{' '}
             <Link to="/">privacy policy</Link>
           </PrivacyPolicyParagraph>
-          <UiButton>Sign In</UiButton>
+          <UiButton loading={loading}>Sign In</UiButton>
           <ForgotPassword>
             Can't login? try{' '}
             <Link to="/auth/join/transporter">forgot password</Link>
