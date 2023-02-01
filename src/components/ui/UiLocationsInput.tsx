@@ -37,7 +37,6 @@ export default function UiLocationsInput({
       // @ts-ignore
       const place = await autoCompleteRef.current.getPlace();
       // TODO: format to the needed type
-      console.log({ name, value: place.name });
       onChange({ name, value: place.name });
     });
   }, []);
