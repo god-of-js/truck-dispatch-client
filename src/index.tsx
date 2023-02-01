@@ -9,6 +9,7 @@ import './index.scss';
 import './variables.css';
 import reportWebVitals from './reportWebVitals';
 import getStore from './modules';
+import Loader from 'components/layout/Loader';
 // @ts-ignore
 window.pxToRem = (px: number, baseSize = 16) => `${px / baseSize}rem`;
 
@@ -17,7 +18,7 @@ root.render(
   <React.StrictMode>
     <Provider store={getStore()}>
       {/* TODO: replace loading with an actual loader and animate page entry */}
-      <Suspense fallback={<span>Loading....</span>}>
+      <Suspense fallback={<Loader />}>
         <RouterProvider router={router} />
       </Suspense>
       <Toaster position="bottom-right" reverseOrder={true} />
