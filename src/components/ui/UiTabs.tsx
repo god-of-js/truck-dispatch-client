@@ -13,11 +13,10 @@ interface Props {
 }
 export default function UiTabs({ tabs }: Props) {
   const urlLocation = useLocation();
-  console.log(urlLocation);
   return (
     <Tabs>
-      {tabs.map((tab) => (
-        <Tab isActive={tab.path === urlLocation.pathname}>
+      {tabs.map((tab, index) => (
+        <Tab isActive={tab.path === urlLocation.pathname} key={index}>
           {tab.path ? (
             <Link to={tab.path}>{tab.label}</Link>
           ) : (

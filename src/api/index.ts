@@ -19,11 +19,13 @@ class ApiService {
       ({ user }) => user,
     );
   }
+
   signInWithEmailAndPassword(email: string, password: string) {
     return signInWithEmailAndPassword(auth, email, password).then(
       ({ user }) => user,
     );
   }
+
   recordAccountDetails(data: User) {
     return this.setDoc('user', data.id, data);
   }
@@ -35,6 +37,12 @@ class ApiService {
   sendVerificationDetailsToAdmin(userId: string, data: unknown) {
     return this.setDoc('verification', userId, data);
   }
+
+  saveAsset(url: string) {
+    // In case of future migrations to different asset servers.
+    return this.setDoc('asset', url, url);
+  }
+
   private setDoc(
     collectionName: string,
     id: string,

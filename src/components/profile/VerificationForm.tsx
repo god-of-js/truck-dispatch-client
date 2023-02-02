@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { AnyAction } from 'redux';
 import styled from 'styled-components';
 
 import UiForm, { RuleType } from 'ui/UiForm';
@@ -6,23 +8,25 @@ import UiSelect from 'ui/UiSelect';
 import FileUploadWidget from 'ui/FileUploadWidget';
 import UiLocationsInput from 'ui/UiLocationsInput';
 import UiButton from 'ui/UiButton';
-interface FormData {
-  idType: string;
-  idDoc: File | null;
-  homeAddress: string;
-}
+import { sendVerificationDetailsToAdmin } from '../../modules/Account';
+import VerificationFormData from '../../types/VerificationFormData';
+import { uploadItem } from '../../api/Cloudinary';
+
 export default function VerificationForm() {
-  const [formData, setFormData] = useState<FormData>({
+  const dispatch = useDispatch();
+  const [formData, setFormData] = useState<VerificationFormData>({
     idType: '',
     idDoc: null,
     homeAddress: '',
   });
+
   const [loading, setLoading] = useState(false);
   const formRules: Record<string, RuleType[]> = {
     idType: ['required'],
     idDoc: ['required'],
     homeAddress: ['required'],
   };
+
   const idTypeOptions = [
     {
       label: 'National Identification Card(NIN)',
@@ -42,20 +46,39 @@ export default function VerificationForm() {
     },
   ];
 
-  function verifyUser() {
+  async function verifyUser() {
     setLoading(true);
+    const idDocUrl = await uploadItem(formData.idDoc as File);
+    setFormData({
+      ...formData,
+      idDoc: idDocUrl,
+    })
     console.log(formData);
+    dispatch(sendVerificationDetailsToAdmin(formData) as unknown as AnyAction)
+      .then(() => {
+        console.log('success');
+      })
+      .catch((err: Error) => {
+        console.log(err);
+      })
+      .finally(() => setLoading(false));
   }
 
-  function setData(event: {
-    name: string;
-    value: string | null | File | File[];
-  }) {
-    //   Fix idType reset
-    console.log({
-        ...formData,
-        [event.name]: event.value,
-      }, event.name, event.value)
+  const formDataAddressKey = useMemo(
+    () =>
+      JSON.stringify({
+        idType: formData.idType,
+        idDoc: formData.idDoc,
+      }),
+    [
+      {
+        idType: formData.idType,
+        idDoc: formData.idDoc,
+      },
+    ],
+  );
+
+  function setData(event: { name: string; value: string | File | File[] }) {
     setFormData({
       ...formData,
       [event.name]: event.value,
@@ -71,23 +94,23 @@ export default function VerificationForm() {
             options={idTypeOptions}
             name="idType"
             error={errors.idType}
-            value={formData.idType}
+            value={`${formData.idType}`}
             onChange={setData}
           />
           <FileUploadWidget
             label="Identification Document"
             name="idDoc"
-            value={formData.idDoc}
+            value={formData.idDoc as File}
             error={errors.idDoc}
             onChange={setData}
           />
-
           <UiLocationsInput
             label="Home Address"
             name="homeAddress"
-            value={formData.homeAddress}
+            key={formDataAddressKey}
+            formData={formData}
             error={errors.homeAddress}
-            onChange={setData}
+            onChange={(e) => setFormData(e as VerificationFormData)}
           />
           <UiButton loading={loading}>Submit Verification Details</UiButton>
         </Gap>

@@ -90,4 +90,5 @@ const DefaultUploadTrigger = styled.div`
   text-align: center;
   color: var(--color-gray-500);
   border-radius: ${pxToRem(4)};
+  cursor: pointer;
 `;

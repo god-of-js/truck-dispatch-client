@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import { AnyAction } from 'redux';
@@ -13,7 +13,7 @@ export default function DashboardLayout() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getUser() as unknown as AnyAction).catch(() => {
-      console.log('error occurs');
+      // Handle error
     });
   });
 

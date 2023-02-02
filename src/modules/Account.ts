@@ -3,6 +3,7 @@ import { AppDispatch, AppState } from '.';
 import Api from 'Api';
 import User from '../types/User';
 import UserWithPassword from '../types/UserWithPassword';
+import VerificationFormData from '../types/VerificationFormData';
 
 interface AccountState {
   user: User | null;
@@ -71,7 +72,6 @@ export function getUser() {
     if (!uid) throw new Error('400: User is not authenticated');
     return Api.getUser(uid)
       .then((data) => {
-        console.log(data);
         dispatch(setUser(data));
       })
       .catch((err) => {
@@ -83,7 +83,7 @@ export function getUser() {
 // TODO: add middlewares to check if user is a transporter or admin before triggering certain actions.
 // https://medium.com/netscape/creating-custom-middleware-in-react-redux-961570459ecb#:~:text=To%20apply%20a%20middleware%20in,when%20an%20action%20is%20dispatched.
 export function sendVerificationDetailsToAdmin(
-  verificationData: Record<string, string>,
+  verificationData: VerificationFormData,
 ) {
   return (dispatch: AppDispatch, state: AppState) => {
     return Api.sendVerificationDetailsToAdmin(
