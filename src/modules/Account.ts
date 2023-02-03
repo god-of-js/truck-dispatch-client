@@ -85,18 +85,20 @@ export function getUser() {
 
 // TODO: add middlewares to check if user is a transporter or admin before triggering certain actions.
 // https://medium.com/netscape/creating-custom-middleware-in-react-redux-961570459ecb#:~:text=To%20apply%20a%20middleware%20in,when%20an%20action%20is%20dispatched.
-export const  sendVerificationDetailsToAdmin =  (
+export const sendVerificationDetailsToAdmin = (
   verificationData: VerificationFormData,
 ) => {
   // TODO: Ask ben: redux error ﻿ Actions must be plain objects. Use custom middleware for async actions.
   return async (dispatch: AppDispatch, state: AppState) => {
     const userId = state().account.user?.id;
     if (!userId) throw new Error('user is not authenticated');
-    await Api.sendVerificationDetailsToAdmin(userId, verificationData).then(() => {
-      dispatch({
-        type: 'sendVerificationDetailsToAdmin'
-      })
-    });
+    await Api.sendVerificationDetailsToAdmin(userId, verificationData).then(
+      () => {
+        dispatch({
+          type: 'sendVerificationDetailsToAdmin',
+        });
+      },
+    );
     return;
   };
-}
+};

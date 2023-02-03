@@ -1,56 +1,54 @@
-import VerificationForm from 'components/profile/VerificationForm';
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
-
-import sizes from '../../sizes';
-import FilesSent from '../../assets/img/files-sent.svg';
+import { AnyAction } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { AppState } from '../../modules';
 import { createOrUpdateUser, getUser } from '../../modules/Account';
-import { AnyAction } from 'redux';
+
+import sizes from '../../sizes';
+
+import VerificationForm from 'components/profile/VerificationForm';
+import VerificationMessage from 'components/profile/VerificationMessage';
+import AccessDenied from '../../assets/img/access-denied.svg';
 
 export default function TransporterVerificationPage() {
   const dispatch = useDispatch();
   const [isVerified, setIsVerified] = useState(false);
   // TODO: ask Ben
   const user = useSelector((state: AppState) => state.account.user);
+  const userHasBeenVerified = <VerificationMessage />;
+  const userIsAwaitingVerification = (
+    <VerificationMessage
+      title={'Verification details have been sent'}
+      subtitle={`Your verification details has been sent. expect a mail or text
+  message from the organization in 24 hours regarding if your profile
+  has been approved or declined`}
+    />
+  );
+  const userVerificationWasRejected = (
+    <VerificationMessage
+      img={AccessDenied}
+      title="Your verification has been declined"
+      subtitle="Kindly reach out to support@truckdispatch.ng for more assistance and further clarification "
+    />
+  );
 
   const componentBasedOnVerificationStatus = useMemo(() => {
-  // TODO: implement card for rejected verification and reopen form for submission with the previously entered details.
+    // TODO: implement card for rejected verification and reopen form for submission with the previously entered details.
     if (!isVerified && user.status === 'unverified') {
       return <VerificationForm onVerified={setVerificationStatus} />;
     }
-    if (user.status === 'verified') {
-      return (
-        <div className="details-feedback">
-          <img
-            src={FilesSent}
-            alt="User has been verified"
-          />
-          <h2>User has been verified</h2>
-          <p>
-            Your profile has been verified. Now, you are eligible to partake in rides, bonuses, 
-            and all features available to transporters.
 
-          </p>
-        </div>
-      );
+    if (user.status === 'verified') {
+      return userHasBeenVerified;
     }
+    if (user.status === 'rejected') {
+      return userVerificationWasRejected;
+    }
+
     if (isVerified || user.status === 'pending_verification') {
-      return (
-        <div className="details-feedback">
-          <img
-            src={FilesSent}
-            alt="verification details has been sent, we would get back shortly."
-          />
-          <h2>Verification details have been sent</h2>
-          <p>
-            Your verification details has been sent. expect a mail or text
-            message from the organization in 24 hours regarding if your profile
-            has been approved or declined.{' '}
-          </p>
-        </div>
-      );
+      return userIsAwaitingVerification;
     }
   }, [isVerified]);
 
