@@ -16,6 +16,7 @@ export default function TransporterVerificationPage() {
   const user = useSelector((state: AppState) => state.account.user);
 
   const componentBasedOnVerificationStatus = useMemo(() => {
+  // TODO: implement card for rejected verification and reopen form for submission with the previously entered details.
     if (!isVerified && user.status === 'unverified') {
       return <VerificationForm onVerified={setVerificationStatus} />;
     }

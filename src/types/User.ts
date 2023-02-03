@@ -5,5 +5,5 @@ export default interface User {
   email: string;
   phone: string;
   userType: string;
-  status?: 'pending_verification' | 'verified' | 'unverified';
+  status?: 'pending_verification' | 'verified' | 'unverified' | 'rejected';
 }
