@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import { AnyAction } from 'redux';
@@ -11,20 +11,28 @@ import Loader from 'components/layout/Loader';
 
 export default function DashboardLayout() {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getUser() as unknown as AnyAction).catch(() => {
-      // Handle error
-    });
-  });
+  const [isLoading, setLoading] = useState(true);
 
+  useEffect(() => {
+    dispatch(getUser() as unknown as AnyAction)
+      .catch((err: Error) => {
+        console.log(err.message);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+  const Component = isLoading ? (
+    <Loader />
+  ) : (
+    <Suspense fallback={<Loader />}>
+      <Outlet />
+    </Suspense>
+  );
   return (
     <Layout>
       <DashboardSidebar />
       <Body>
         <DashboardTopNav />
-        <Suspense fallback={<Loader />}>
-          <Outlet />
-        </Suspense>
+        {Component}
       </Body>
     </Layout>
   );

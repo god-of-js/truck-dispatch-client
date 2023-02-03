@@ -28,6 +28,7 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
     password: '',
     cPassword: '',
     userType,
+    status: userType === 'transporter' ? 'unverified' : undefined,
   });
   const [loading, setLoading] = useState(false);
   const formRules: Record<string, RuleType[]> = {
@@ -49,6 +50,7 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
     if (formData.cPassword !== formData.password) {
       alert('Passwords must match');
     }
+
     setLoading(true);
     dispatch(RegisterUser(formData) as unknown as AnyAction)
       .catch((err: { message: string }) => {

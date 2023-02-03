@@ -38,9 +38,9 @@ class ApiService {
     return this.setDoc('verification', userId, data);
   }
 
-  saveAsset(url: string) {
+  saveAsset(id: string, url: string) {
     // In case of future migrations to different asset servers.
-    return this.setDoc('asset', url, url);
+    return this.setDoc('assets', id, { id, url });
   }
 
   private setDoc(
