@@ -75,7 +75,7 @@ const StyledSelect = styled.div`
     align-items: center;
     justify-content: space-between;
     height: var(--base-height);
-    font-size: ${pxToRem(12)};
+    font-size: ${pxToRem(14)};
     border: ${pxToRem(1)} solid;
     border-color: ${({ hasError }: { hasError: boolean }) =>
       hasError ? 'var(--color-danger)' : 'var(--color-gray-200)'};
