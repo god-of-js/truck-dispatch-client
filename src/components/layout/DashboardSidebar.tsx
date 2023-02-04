@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
 import UiIcon, { Icons } from '../ui/UiIcon';
-import sizes from '../../sizes';
+import sizes from '../../utils/sizes';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../modules';
 import { Link } from 'react-router-dom';

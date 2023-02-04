@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import DashboardSidebar from 'components/layout/DashboardSidebar';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
 import { getUser } from '../modules/Account';
-import sizes from '../sizes';
+import sizes from '../utils/sizes';
 import Loader from 'components/layout/Loader';
 
 export default function DashboardLayout() {

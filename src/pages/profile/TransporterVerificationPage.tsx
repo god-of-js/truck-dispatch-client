@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../modules';
 import { createOrUpdateUser, getUser } from '../../modules/Account';
 
-import sizes from '../../sizes';
+import sizes from '../../utils/sizes';
 
 import VerificationForm from 'components/profile/VerificationForm';
 import VerificationMessage from 'components/profile/VerificationMessage';

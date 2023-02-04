@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 
 import UiInput from '../../components/ui/UiInput';
 import UiButton from '../../components/ui/UiButton';
-import sizes from '../../sizes';
+import sizes from '../../utils/sizes';
 import UserType from '../../types/UserType';
 import UserWithPassword from '../../types/UserWithPassword';
 import { RegisterUser } from '../../modules/Account';

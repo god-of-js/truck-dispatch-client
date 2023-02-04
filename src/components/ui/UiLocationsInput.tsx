@@ -26,6 +26,8 @@ export default function UiLocationsInput({
   };
 
   useEffect(() => {
+    // TODO: implement prefilling of google input.
+    // if (inputRef.current?.value) inputRef.current?.value = formData[name] || '';
     //   @ts-ignore
     autoCompleteRef.current = new window.google.maps.places.Autocomplete(
       inputRef.current,

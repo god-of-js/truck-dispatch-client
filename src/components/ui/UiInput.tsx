@@ -7,7 +7,7 @@ import UiField from './UiField';
 
 interface Props {
   label: string;
-  type?: 'text' | 'password' | 'number' | 'phone';
+  type?: 'text' | 'password' | 'number' | 'phone' | 'date';
   value: string | null;
   /** The name property should always be the same as the model value. example if the input belongs to
    * formData.confirm_password, the name prop should be confirm_password.
@@ -74,11 +74,10 @@ export default function UiInput({
 const Input = styled.input`
   display: flex;
   align-items: center;
-  justify-content: stretch;
   padding: ${pxToRem(16)} ${pxToRem(8)};
+  height: var(--base-height);
   gap: ${pxToRem(8)};
   width: 100%;
-  height: var(--base-height);
   font-size: ${pxToRem(12)};
   border: ${pxToRem(1)} solid;
   border-color: ${({ hasError }: { hasError: boolean }) =>
