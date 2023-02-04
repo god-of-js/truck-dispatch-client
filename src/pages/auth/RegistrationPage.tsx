@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import UiInput from '../../components/ui/UiInput';
 import UiButton from '../../components/ui/UiButton';
@@ -13,12 +13,9 @@ import { AnyAction } from 'redux';
 import { Toast } from '../../utils/toast';
 import UiForm, { RuleType } from '../../components/ui/UiForm';
 
-interface Props {
-  userType?: UserType;
-}
-
-export default function RegistrationPage({ userType = 'transporter' }: Props) {
+export default function RegistrationPage() {
   const dispatch = useDispatch();
+  const { userType } = useParams();
   const [formData, setFormData] = useState<UserWithPassword>({
     id: '',
     firstName: '',
@@ -27,7 +24,7 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
     phone: '',
     password: '',
     cPassword: '',
-    userType,
+    userType: userType || 'transporter',
   });
   const formRules: Record<string, RuleType[]> = {
     firstName: ['required'],

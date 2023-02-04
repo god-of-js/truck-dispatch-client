@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
 import UiIcon, { Icons } from '../ui/UiIcon';
 import sizes from '../../sizes';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../modules';
+import { Link } from 'react-router-dom';
 
 interface Route {
   iconName: Icons;
@@ -11,6 +14,8 @@ interface Route {
 }
 
 export default function DashboardSidebar() {
+  const user = useSelector((state: AppState) => state.account.user);
+
   const transporterRoutes: Route[] = [
     {
       path: '/',
@@ -62,7 +67,8 @@ export default function DashboardSidebar() {
     },
   ];
 
-  const routes = transporterRoutes;
+  const routes =
+    user?.userType === 'transporter' ? transporterRoutes : agentRoutes;
 
   return (
     <Sidebar>
@@ -72,9 +78,11 @@ export default function DashboardSidebar() {
 
       <TabList>
         {routes.map((route, index) => (
-          <Tab key={index}>
-            <UiIcon icon={route.iconName} size="24" />
-          </Tab>
+          <Link to={route.path} key={index}>
+            <Tab>
+              <UiIcon icon={route.iconName} size="24" />
+            </Tab>
+          </Link>
         ))}
       </TabList>
     </Sidebar>
