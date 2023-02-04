@@ -2,6 +2,11 @@
 import { useEffect, useRef } from 'react';
 import UiField from './UiField';
 
+interface Detail {
+  long_name: string;
+  short_name: string;
+  types: string[]
+}
 interface Props {
   label?: string;
   name: string;
@@ -24,7 +29,9 @@ export default function UiLocationsInput({
     fields: ['address_components', 'geometry', 'icon', 'name'],
     types: ['establishment'],
   };
-
+  function formatPlaceName(name: string,placeDetails: Detail[]) {
+    console.log({ name, placeDetails})
+  }
   useEffect(() => {
     // TODO: implement prefilling of google input.
     // if (inputRef.current?.value) inputRef.current?.value = formData[name] || '';
@@ -37,7 +44,8 @@ export default function UiLocationsInput({
     autoCompleteRef.current.addListener('place_changed', async function () {
       // @ts-ignore
       const place = await autoCompleteRef.current.getPlace();
-      console.log({ ...formData, [name]: place.name });
+
+      formatPlaceName(place.name,place.address_components);
       // TODO: format to the needed type
       onChange({ ...formData, [name]: place.name });
     });

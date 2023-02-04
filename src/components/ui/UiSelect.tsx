@@ -97,7 +97,7 @@ const StyledOptions = styled.ul`
   border-radius: ${pxToRem(4)};
   z-index: 1;
   overflow: auto;
-  max-height: ${pxToRem(150)};
+  max-height: ${pxToRem(200)};
   display: ${({ isOpen }: { isOpen: boolean }) => (isOpen ? 'block' : 'none')};
 `;
 

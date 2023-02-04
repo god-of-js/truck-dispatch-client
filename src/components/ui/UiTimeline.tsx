@@ -27,8 +27,8 @@ export default function UiTimeline({ steps, currentStep }: Props) {
   }
   return (
     <TimeLineContainer>
-      {steps.map((step) => (
-        <TimeLineItem isActive={StepIsPresentOrPassed(step.value)}>
+      {steps.map((step, index) => (
+        <TimeLineItem key={index} isActive={StepIsPresentOrPassed(step.value)}>
           <span>{step.name}</span>
           <div className="step-thread" />
         </TimeLineItem>

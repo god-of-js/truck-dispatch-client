@@ -57,7 +57,7 @@ const ButtonContainer = styled.button<Props>`
   line-height: 1.45;
   text-align: center;
   text-transform: uppercase;
-  border-radius: 8px;
+  border-radius: ${pxToRem(4)};
   font-weight: 900;
   text-transform: ${({ textCasing }) => textCasing};
   width: ${({ notFullWidth }) => (notFullWidth ? 'fit-content' : '100%')};

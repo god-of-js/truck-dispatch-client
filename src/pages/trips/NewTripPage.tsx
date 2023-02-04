@@ -69,6 +69,7 @@ const PageContainer = styled.div`
     border-right: ${pxToRem(1)} solid var(--color-gray-200);
   }
   @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
-    width: 40%;
+    width: 50%;
+    padding: ${pxToRem(48)};
   }
 `;

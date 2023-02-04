@@ -8,7 +8,7 @@ import UiField from './UiField';
 interface Props {
   label: string;
   type?: 'text' | 'password' | 'number' | 'phone' | 'date';
-  value: string | null;
+  value: string | null | number;
   /** The name property should always be the same as the model value. example if the input belongs to
    * formData.confirm_password, the name prop should be confirm_password.
    */
@@ -45,7 +45,7 @@ export default function UiInput({
       <InputContainer>
         {inputType === 'phone' ? (
           <PhoneInput
-            value={value || ''}
+            value={`${value}` || ''}
             country="NG"
             className={'global-input'}
             placeholder="e.g: 08034283438"
@@ -72,8 +72,6 @@ export default function UiInput({
 }
 
 const Input = styled.input`
-  display: flex;
-  align-items: center;
   padding: ${pxToRem(16)} ${pxToRem(8)};
   height: var(--base-height);
   gap: ${pxToRem(8)};
