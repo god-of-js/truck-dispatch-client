@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
 
 import Account from './Account';
+
 const store = configureStore({
   reducer: {
     account: Account,

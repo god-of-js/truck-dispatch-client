@@ -1,17 +1,21 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+
 import Trip from 'types/Trip';
+
+import { shippingLines, sizeOfContainer, typeOfGoods } from 'utils/constants';
+
 import UiForm from 'ui/UiForm';
 import UiInput from 'ui/UiInput';
 import UiLocationsInput from 'ui/UiLocationsInput';
 import UiSelect from 'ui/UiSelect';
 import sizes from '../../utils/sizes';
-import { shippingLines, sizeOfContainer, typeOfGoods } from 'utils/constants';
 import UiTextArea from 'ui/UiTextArea';
 import UiButton from 'ui/UiButton';
 
 interface Props {
   defaultFormData: Trip;
+  nextHandler: (param: Trip) => void;
 }
 export default function NewTripForm({ defaultFormData }: Props) {
   const [formData, setFormData] = useState(defaultFormData);
@@ -24,22 +28,11 @@ export default function NewTripForm({ defaultFormData }: Props) {
     console.log(formData);
   }
 
-  const pickUpAdressKey = useMemo(() => {
-    return JSON.stringify({ ...formData, pickUpAddress: undefined});
-  }, [
-    formData
-  ]);
-
-  const deliveryAdressKey = useMemo(() => {
-    return JSON.stringify({ ...formData, deliveryAddress: undefined});
-  }, [
-    formData
-  ]);
   function handleChange(event: { name: string; value: string | null }) {
-    setFormData({
-      ...formData,
+    setFormData((state) => ({
+      ...state,
       [event.name]: event.value,
-    });
+    }));
   }
 
   function turnArrayToOptions(arr: string[]) {
@@ -48,6 +41,7 @@ export default function NewTripForm({ defaultFormData }: Props) {
       label: value,
     }));
   }
+
   return (
     <UiForm formData={formData} rules={formRules} onSubmit={onSubmit}>
       {() => (
@@ -55,18 +49,14 @@ export default function NewTripForm({ defaultFormData }: Props) {
           <Heading>Addresses</Heading>
           <GridContainer>
             <UiLocationsInput
-              key={pickUpAdressKey}
               label="Pickup Address(Terminal)"
               name="pickUpAddress"
-              formData={formData}
-              onChange={(data) => setFormData(data as Trip)}
+              onChange={handleChange}
             />
             <UiLocationsInput
-              key={deliveryAdressKey}
               label="Delivery address"
               name="deliveryAddress"
-              formData={formData}
-              onChange={(data) => setFormData(data as Trip)}
+              onChange={handleChange}
             />
           </GridContainer>
           <Heading>Shipment Dates</Heading>
@@ -124,9 +114,7 @@ export default function NewTripForm({ defaultFormData }: Props) {
             onChange={handleChange}
           />
           <SubmitButtonContainer className="submit-button-container">
-            <UiButton notFullWidth>
-              Confirm Trip Details
-            </UiButton>
+            <UiButton notFullWidth>Confirm Trip Details</UiButton>
           </SubmitButtonContainer>
         </div>
       )}
@@ -154,5 +142,5 @@ const Heading = styled.h2`
 const SubmitButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-  padding-top: ${pxToRem(12)}
-`
+  padding-top: ${pxToRem(12)};
+`;

@@ -86,7 +86,6 @@ const Input = styled.input`
   box-sizing: border-box;
 
   &:focus {
-    /* Switch to a ring instead of border. */
     border-color: var(--color-primary);
   }
 `;

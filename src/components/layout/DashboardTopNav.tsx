@@ -5,6 +5,7 @@ import UiIcon from '../ui/UiIcon';
 
 export default function DashboardTopNav() {
   const location = useLocation();
+  console.log(location);
   return (
     <TopNav>
       <span>Home</span>

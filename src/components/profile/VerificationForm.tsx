@@ -62,7 +62,7 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
         ...formData,
         idDoc: idDocUrl,
         userId: user?.id,
-      }) as unknown as AnyAction,
+      }),
     )
       .then(() => {
         onVerified();
@@ -73,25 +73,11 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
       .finally(() => setLoading(false));
   }
 
-  const formDataAddressKey = useMemo(
-    () =>
-      JSON.stringify({
-        idType: formData.idType,
-        idDoc: formData.idDoc,
-      }),
-    [
-      {
-        idType: formData.idType,
-        idDoc: formData.idDoc,
-      },
-    ],
-  );
-
   function setData(event: { name: string; value: string | File | File[] }) {
-    setFormData({
-      ...formData,
+    setFormData((state) => ({
+      ...state,
       [event.name]: event.value,
-    });
+    }));
   }
 
   return (
@@ -116,10 +102,8 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
           <UiLocationsInput
             label="Home Address"
             name="homeAddress"
-            key={formDataAddressKey}
-            formData={formData}
             error={errors.homeAddress}
-            onChange={(e) => setFormData(e as VerificationFormData)}
+            onChange={setData}
           />
           <UiButton loading={loading}>Submit Verification Details</UiButton>
         </Gap>
