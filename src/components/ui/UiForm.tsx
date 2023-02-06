@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 export type RuleType =
   | 'required'
+  | `required.if.${'typeOfGoods.is.container'}`
   | 'email'
   | 'password'
   | `sameas.${'password'}`
@@ -63,6 +64,21 @@ export default function UiForm({ rules, formData, children, onSubmit }: Props) {
                 ] = `This field must have above ${minNumber} characters`;
                 return;
               }
+            }
+            if (rule.includes('required.if.')) {
+              const splits = rule.split('.');
+              const variableKey = splits[2];
+
+              if (splits.length > 4) {
+                // check if 
+              }
+              if (splits[3] === 'is' && formData[variableKey] && !formData[key]) {
+                // check if it's required only if one variable is available
+                errors[
+                  key
+                ] = `This field is required if ${variableKey} is selected`;
+                return;
+              } 
             }
           });
       });

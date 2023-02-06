@@ -19,7 +19,16 @@ interface Props {
 }
 export default function NewTripForm({ defaultFormData }: Props) {
   const [formData, setFormData] = useState(defaultFormData);
-  const formRules = {};
+  const formRules = {
+    pickUpAddress: ['required'],
+    deliveryAddress: ['required'],
+    pickUpDate: ['required'],
+    deliveryDate: ['required'],
+    typeOfGoods: ['required'],
+    sizeOfContainer: ['required.if.typeOfGoods.container'],
+    shippingLine: ['required.if.typeOfGoods'],
+    weight: ['required'],
+  };
   const typeOfGoodsOptions = turnArrayToOptions(typeOfGoods);
   const shippingLinesOptions = turnArrayToOptions(shippingLines);
   const sizeOfContainerOptions = turnArrayToOptions(sizeOfContainer);
@@ -108,7 +117,7 @@ export default function NewTripForm({ defaultFormData }: Props) {
             />
           </GridContainer>
           <UiTextArea
-            label="Description Of Goods"
+            label="Description Of Goods(optional)"
             name="description"
             value={formData.description || ''}
             onChange={handleChange}
