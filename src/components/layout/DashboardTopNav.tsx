@@ -5,6 +5,7 @@ import UiIcon from '../ui/UiIcon';
 
 export default function DashboardTopNav() {
   const location = useLocation();
+  console.log(location);
   return (
     <TopNav>
       <span>Home</span>
@@ -18,7 +19,7 @@ export default function DashboardTopNav() {
 const TopNav = styled.nav`
   background-color: #ffffff;
   border-bottom: ${pxToRem(1)} solid var(--color-gray-200);
-  padding: ${pxToRem(12)} ${pxToRem(20)};
+  padding: ${pxToRem(12)} ${pxToRem(24)};
   display: flex;
   align-items: center;
   justify-content: space-between;

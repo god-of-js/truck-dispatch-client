@@ -11,11 +11,11 @@ interface Props {
     | 'neutal'
     | 'primary-outlined'
     | 'secondary-outlined';
-  size?: 'large' | 'medium' | 'small';
+  size?: 'large' | 'md' | 's';
   type?: 'submit' | 'button';
   textCasing?: 'uppercase' | 'lowercase' | 'capitalize';
   /** This prop decides if we want the button to fit the content or be full width */
-  fitContent?: boolean;
+  notFullWidth?: boolean;
   onClick?: () => void;
 }
 
@@ -27,7 +27,8 @@ export default function UiButton({
   variant = 'primary',
   type = 'submit',
   textCasing = 'uppercase',
-  size,
+  size = 'large',
+  notFullWidth = false,
 }: Props) {
   return (
     <ButtonContainer
@@ -37,6 +38,7 @@ export default function UiButton({
       type={type}
       textCasing={textCasing}
       size={size}
+      notFullWidth={notFullWidth}
     >
       {loading ? <span>Loading...</span> : children}
     </ButtonContainer>
@@ -44,7 +46,7 @@ export default function UiButton({
 }
 
 const ButtonContainer = styled.button<Props>`
-  padding: 16px 16px;
+  padding: ${pxToRem(12)};
   border: none;
   cursor: pointer;
   display: inline-flex;
@@ -55,11 +57,10 @@ const ButtonContainer = styled.button<Props>`
   line-height: 1.45;
   text-align: center;
   text-transform: uppercase;
-  border-radius: 8px;
+  border-radius: ${pxToRem(4)};
   font-weight: 900;
   text-transform: ${({ textCasing }) => textCasing};
-  width: ${({ fitContent = false }) => (fitContent ? 'fit-content' : '100%')};
-  height: var(--base-height);
+  width: ${({ notFullWidth }) => (notFullWidth ? 'fit-content' : '100%')};
 
   &.primary {
     background-color: var(--color-primary);
@@ -79,6 +80,9 @@ const ButtonContainer = styled.button<Props>`
   &.secondary {
     background-color: var(--color-gray-100);
     color: var(--color-gray-700);
+    &:hover {
+      background: var(--color-gray-100);
+    }
   }
 
   &.secondary-outlined {

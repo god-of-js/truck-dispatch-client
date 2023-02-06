@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { AnyAction } from 'redux';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
@@ -9,7 +8,9 @@ import { loginUser } from '../../modules/Account';
 import { Toast } from '../../utils/toast';
 import UiInput from 'ui/UiInput';
 import UiButton from 'ui/UiButton';
-import UiForm, { RuleType } from 'ui/UiForm';
+import UiForm from 'ui/UiForm';
+import { toAnyAction } from 'utils/helpers';
+import loginSchema from 'utils/validations/loginSchema';
 
 export default function RegistrationPage() {
   const dispatch = useDispatch();
@@ -21,10 +22,6 @@ export default function RegistrationPage() {
   );
   const [loading, setLoading] = useState(false);
 
-  const formRules: Record<string, RuleType[]> = {
-    email: ['required', 'email'],
-    password: ['required'],
-  };
   function handleChange(event: { name: string; value: string | null }) {
     setFormData({
       ...formData,
@@ -35,7 +32,7 @@ export default function RegistrationPage() {
   function handleSubmit() {
     // Search for solution.
     setLoading(true);
-    dispatch(loginUser(formData) as unknown as AnyAction)
+    dispatch(toAnyAction(loginUser(formData)))
       .then(() => {})
       .catch((err: { message: string }) => {
         let msg = err.message;
@@ -56,7 +53,7 @@ export default function RegistrationPage() {
   }
 
   return (
-    <UiForm rules={formRules} formData={formData} onSubmit={handleSubmit}>
+    <UiForm schema={loginSchema} formData={formData} onSubmit={handleSubmit}>
       {({ errors }) => (
         <>
           <Heading>Sign in</Heading>

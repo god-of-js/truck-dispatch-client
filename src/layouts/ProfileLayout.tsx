@@ -3,7 +3,7 @@ import UiTabs from 'components/ui/UiTabs';
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
-import sizes from '../sizes';
+import sizes from '../utils/sizes';
 
 export default function ProfileLayout() {
   const transporterRoutes = [

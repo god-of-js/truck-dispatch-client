@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import UserType from '../types/UserType';
 
-import sizes from '../sizes';
+import sizes from '../utils/sizes';
 import TransporterImage from '../assets/img/truck-image.jpeg';
 import AgentImage from '../assets/img/agent-mono-effect.jpg';
 import TruckDispatchLogo from '../assets/img/truck-dispatch-full-logo.svg';

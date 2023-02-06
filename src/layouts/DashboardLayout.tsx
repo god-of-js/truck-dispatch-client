@@ -1,12 +1,15 @@
 import React, { Suspense, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Outlet } from 'react-router-dom';
-import { AnyAction } from 'redux';
 import styled from 'styled-components';
+
+import { toAnyAction } from 'utils/helpers';
+import sizes from '../utils/sizes';
+
+import { getUser } from '../modules/Account';
+
 import DashboardSidebar from 'components/layout/DashboardSidebar';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
-import { getUser } from '../modules/Account';
-import sizes from '../sizes';
 import Loader from 'components/layout/Loader';
 
 export default function DashboardLayout() {
@@ -14,7 +17,7 @@ export default function DashboardLayout() {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(getUser() as unknown as AnyAction)
+    dispatch(toAnyAction(getUser()))
       .catch((err: Error) => {
         console.log(err.message);
       })

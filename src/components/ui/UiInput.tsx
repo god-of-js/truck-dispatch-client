@@ -7,8 +7,8 @@ import UiField from './UiField';
 
 interface Props {
   label: string;
-  type?: 'text' | 'password' | 'number' | 'phone';
-  value: string | null;
+  type?: 'text' | 'password' | 'number' | 'phone' | 'date';
+  value: string | null | number;
   /** The name property should always be the same as the model value. example if the input belongs to
    * formData.confirm_password, the name prop should be confirm_password.
    */
@@ -45,7 +45,7 @@ export default function UiInput({
       <InputContainer>
         {inputType === 'phone' ? (
           <PhoneInput
-            value={value || ''}
+            value={`${value}` || ''}
             country="NG"
             className={'global-input'}
             placeholder="e.g: 08034283438"
@@ -72,13 +72,10 @@ export default function UiInput({
 }
 
 const Input = styled.input`
-  display: flex;
-  align-items: center;
-  justify-content: stretch;
   padding: ${pxToRem(16)} ${pxToRem(8)};
+  height: var(--base-height);
   gap: ${pxToRem(8)};
   width: 100%;
-  height: var(--base-height);
   font-size: ${pxToRem(12)};
   border: ${pxToRem(1)} solid;
   border-color: ${({ hasError }: { hasError: boolean }) =>
@@ -89,7 +86,6 @@ const Input = styled.input`
   box-sizing: border-box;
 
   &:focus {
-    /* Switch to a ring instead of border. */
     border-color: var(--color-primary);
   }
 `;

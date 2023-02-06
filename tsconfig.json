@@ -11,10 +11,15 @@
       "vite-plugin-svgr/client"
     ],
     "paths": {
-      "components/*": ["./src/components/*"],
       "ui/*": ["./src/components/ui/*"],
+      "components/*": ["./src/components/*"],
       "assets/*": ["./src/assets/*"],
+      "Api/*": ["./src/api/*"],
       "Api": ["./src/api"],
+      "types/*": ["./src/types/*"],
+      "utils/*": ["./src/utils/*"],
+      "modules/*": ["./src/modules/*"],
+      "modules": ["./src/modules"],
     },
     "allowJs": false,
     "skipLibCheck": false,

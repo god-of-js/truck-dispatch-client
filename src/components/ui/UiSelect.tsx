@@ -71,11 +71,11 @@ const StyledSelect = styled.div`
   position: relative;
   div {
     padding: ${pxToRem(16)} ${pxToRem(8)};
+    height: var(--base-height);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: var(--base-height);
-    font-size: ${pxToRem(14)};
+    font-size: ${pxToRem(12)};
     border: ${pxToRem(1)} solid;
     border-color: ${({ hasError }: { hasError: boolean }) =>
       hasError ? 'var(--color-danger)' : 'var(--color-gray-200)'};
@@ -97,13 +97,14 @@ const StyledOptions = styled.ul`
   border-radius: ${pxToRem(4)};
   z-index: 1;
   overflow: auto;
-  max-height: ${pxToRem(150)};
+  max-height: ${pxToRem(200)};
   display: ${({ isOpen }: { isOpen: boolean }) => (isOpen ? 'block' : 'none')};
 `;
 
 const StyledOption = styled.li`
   padding: ${pxToRem(10)};
   cursor: pointer;
+  text-transform: capitalize;
   &:hover {
     background: var(--color-gray-50);
   }
