@@ -19,7 +19,7 @@
       "types/*": ["./src/types/*"],
       "utils/*": ["./src/utils/*"],
       "modules/*": ["./src/modules/*"],
-      "modules": ["./src/modules"],
+      "Modules": ["./src/modules"],
     },
     "allowJs": false,
     "skipLibCheck": false,
