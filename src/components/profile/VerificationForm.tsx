@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AnyAction } from 'redux';
 import styled from 'styled-components';
 
 import UiForm, { RuleType } from 'ui/UiForm';
@@ -11,13 +10,14 @@ import UiButton from 'ui/UiButton';
 import { sendVerificationDetailsToAdmin } from '../../modules/Account';
 import VerificationFormData from '../../types/VerificationFormData';
 import { uploadItem } from '../../api/Cloudinary';
-import { AppState } from '../../modules';
+import { RootState } from '../../modules';
+import { toAnyAction } from 'utils/helpers';
 
 interface Props {
   onVerified: () => void;
 }
 export default function VerificationForm({ onVerified = () => {} }: Props) {
-  const user = useSelector((state: AppState) => state.account.user);
+  const user = useSelector((state: RootState) => state.account.user);
 
   const dispatch = useDispatch();
   const [formData, setFormData] = useState<VerificationFormData>({
@@ -57,12 +57,16 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
     setLoading(true);
     const idDocUrl = await uploadItem(formData.idDoc as File);
 
+    if (!user?.id) return;
+
     dispatch(
-      sendVerificationDetailsToAdmin({
-        ...formData,
-        idDoc: idDocUrl,
-        userId: user?.id,
-      }),
+      toAnyAction(
+        sendVerificationDetailsToAdmin({
+          ...formData,
+          idDoc: idDocUrl,
+          userId: user?.id,
+        }),
+      ),
     )
       .then(() => {
         onVerified();

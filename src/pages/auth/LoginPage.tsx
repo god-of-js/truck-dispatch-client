@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { AnyAction } from 'redux';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
@@ -10,6 +9,7 @@ import { Toast } from '../../utils/toast';
 import UiInput from 'ui/UiInput';
 import UiButton from 'ui/UiButton';
 import UiForm, { RuleType } from 'ui/UiForm';
+import { toAnyAction } from 'utils/helpers';
 
 export default function RegistrationPage() {
   const dispatch = useDispatch();
@@ -35,7 +35,7 @@ export default function RegistrationPage() {
   function handleSubmit() {
     // Search for solution.
     setLoading(true);
-    dispatch(loginUser(formData) as unknown as AnyAction)
+    dispatch(toAnyAction(loginUser(formData)))
       .then(() => {})
       .catch((err: { message: string }) => {
         let msg = err.message;

@@ -3,15 +3,16 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Link, useParams } from 'react-router-dom';
 
-import UiInput from '../../components/ui/UiInput';
-import UiButton from '../../components/ui/UiButton';
-import sizes from '../../utils/sizes';
-import UserType from '../../types/UserType';
-import UserWithPassword from '../../types/UserWithPassword';
-import { RegisterUser } from '../../modules/Account';
-import { AnyAction } from 'redux';
-import { Toast } from '../../utils/toast';
-import UiForm, { RuleType } from '../../components/ui/UiForm';
+import { RegisterUser } from 'modules/Account';
+
+import { Toast } from 'utils/toast';
+import sizes from 'utils/sizes';
+
+import UiInput from 'components/ui/UiInput';
+import UiButton from 'components/ui/UiButton';
+import UserWithPassword from 'types/UserWithPassword';
+import UiForm, { RuleType } from 'components/ui/UiForm';
+import { toAnyAction } from 'utils/helpers';
 
 export default function RegistrationPage() {
   const dispatch = useDispatch();
@@ -49,7 +50,7 @@ export default function RegistrationPage() {
     }
 
     setLoading(true);
-    dispatch(RegisterUser(formData) as unknown as AnyAction)
+    dispatch(toAnyAction(RegisterUser(formData)))
       .catch((err: { message: string }) => {
         let msg: string = err.message;
 

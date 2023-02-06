@@ -17,6 +17,7 @@
       "Api": ["./src/api"],
       "types/*": ["./src/types/*"],
       "utils/*": ["./src/utils/*"],
+      "modules/*": ["./src/modules/*"],
     },
     "allowJs": false,
     "skipLibCheck": false,

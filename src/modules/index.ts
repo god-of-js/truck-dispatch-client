@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
 
-import Account from './Account';
+import Account, { AccountState } from './Account';
 
 const store = configureStore({
   reducer: {
@@ -12,6 +12,9 @@ const store = configureStore({
 
 export type AppDispatch = typeof store.dispatch;
 export type AppState = typeof store.getState;
+export interface RootState {
+  account: AccountState;
+}
 export default function getStore() {
   return store;
 }

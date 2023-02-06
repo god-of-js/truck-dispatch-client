@@ -1,3 +1,5 @@
+import { AnyAction } from 'redux';
+
 export function removeKeyValuePairsFromObject<T>(
   obj: T,
   stringToBeRemoved: string[],
@@ -9,4 +11,8 @@ export function removeKeyValuePairsFromObject<T>(
       refinedObj[key] = obj[key as keyof T];
     });
   return refinedObj as T;
+}
+
+export function toAnyAction(func: unknown) {
+  return func as AnyAction;
 }

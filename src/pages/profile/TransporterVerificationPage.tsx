@@ -1,21 +1,23 @@
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { AnyAction } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AppState } from '../../modules';
+import { RootState } from '../../modules';
 import { createOrUpdateUser, getUser } from '../../modules/Account';
 
-import sizes from '../../utils/sizes';
+import User from 'types/User';
+
+import { toAnyAction } from 'utils/helpers';
+import sizes from 'utils/sizes';
 
 import VerificationForm from 'components/profile/VerificationForm';
 import VerificationMessage from 'components/profile/VerificationMessage';
-import AccessDenied from '../../assets/img/access-denied.svg';
+import AccessDenied from 'assets/img/access-denied.svg';
 
 export default function TransporterVerificationPage() {
   const dispatch = useDispatch();
   const [isVerified, setIsVerified] = useState(false);
-  const user = useSelector((state: AppState) => state.account.user);
+  const user = useSelector((state: RootState) => state.account.user);
   const userHasBeenVerified = <VerificationMessage />;
   const userIsAwaitingVerification = (
     <VerificationMessage
@@ -34,33 +36,34 @@ export default function TransporterVerificationPage() {
   );
 
   const componentBasedOnVerificationStatus = useMemo(() => {
-    if (!isVerified && user.status === 'unverified') {
+    if (!isVerified && user?.status === 'unverified') {
       return <VerificationForm onVerified={setVerificationStatus} />;
     }
 
-    if (user.status === 'verified') {
+    if (user?.status === 'verified') {
       return userHasBeenVerified;
     }
-    if (user.status === 'rejected') {
+    if (user?.status === 'rejected') {
       return userVerificationWasRejected;
     }
 
-    if (isVerified || user.status === 'pending_verification') {
+    if (isVerified || user?.status === 'pending_verification') {
       return userIsAwaitingVerification;
     }
   }, [isVerified]);
 
   function setVerificationStatus() {
     setIsVerified(true);
-    const verificationPendingUser = {
+    if (user === null) return;
+    const verificationPendingUser: User = {
       ...user,
       status: 'pending_verification',
     };
-    dispatch(
-      createOrUpdateUser(verificationPendingUser) as unknown as AnyAction,
-    ).then(() => {
-      dispatch(getUser() as unknown as AnyAction);
-    });
+    dispatch(toAnyAction(createOrUpdateUser(verificationPendingUser))).then(
+      () => {
+        dispatch(toAnyAction(getUser()));
+      },
+    );
   }
 
   return (

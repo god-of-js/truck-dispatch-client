@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { AnyAction } from 'redux';
 import { AppDispatch, AppState } from '.';
 import Api from 'Api';
 import User from '../types/User';
@@ -6,7 +7,7 @@ import UserWithPassword from '../types/UserWithPassword';
 import VerificationFormData from '../types/VerificationFormData';
 import { removeKeyValuePairsFromObject } from 'utils/helpers';
 
-interface AccountState {
+export interface AccountState {
   user: User | null;
 }
 const initialState: AccountState = {
@@ -27,7 +28,7 @@ export const { setUser } = accountSlice.actions;
 export default accountSlice.reducer;
 
 export function RegisterUser(AuthUser: UserWithPassword) {
-  return () => {
+  return (dispatch: AppDispatch) => {
     return Api.createUserWithEmailAndPassword(
       AuthUser.email,
       AuthUser.password!,
@@ -41,7 +42,7 @@ export function RegisterUser(AuthUser: UserWithPassword) {
         user.id = data.uid;
 
         localStorage.setItem('uid', user.id);
-        createOrUpdateUser(user);
+        dispatch(createOrUpdateUser(user) as unknown as AnyAction);
       })
       .catch((err) => {
         throw new Error(err.message);
@@ -52,10 +53,12 @@ export function RegisterUser(AuthUser: UserWithPassword) {
 export function createOrUpdateUser(user: User) {
   return Api.recordAccountDetails(user);
 }
+
 export function loginUser(AuthUser: { email: string; password: string }) {
   return () => {
     return Api.signInWithEmailAndPassword(AuthUser.email, AuthUser.password!)
       .then((data) => {
+        console.log(data);
         localStorage.setItem('uid', data.uid);
       })
       .catch((err) => {

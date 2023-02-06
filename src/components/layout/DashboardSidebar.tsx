@@ -4,7 +4,7 @@ import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
 import UiIcon, { Icons } from '../ui/UiIcon';
 import sizes from '../../utils/sizes';
 import { useSelector } from 'react-redux';
-import { AppState } from '../../modules';
+import { RootState } from '../../modules';
 import { Link } from 'react-router-dom';
 
 interface Route {
@@ -14,7 +14,7 @@ interface Route {
 }
 
 export default function DashboardSidebar() {
-  const user = useSelector((state: AppState) => state.account.user);
+  const user = useSelector((state: RootState) => state.account.user);
 
   const transporterRoutes: Route[] = [
     {
