@@ -1,24 +1,23 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
-import UiInput from '../../components/ui/UiInput';
-import UiButton from '../../components/ui/UiButton';
-import sizes from '../../sizes';
-import UserType from '../../types/UserType';
-import UserWithPassword from '../../types/UserWithPassword';
-import { RegisterUser } from '../../modules/Account';
-import { AnyAction } from 'redux';
-import { Toast } from '../../utils/toast';
-import UiForm, { RuleType } from '../../components/ui/UiForm';
+import { RegisterUser } from 'modules/Account';
 
-interface Props {
-  userType?: UserType;
-}
+import { Toast } from 'utils/toast';
+import sizes from 'utils/sizes';
 
-export default function RegistrationPage({ userType = 'transporter' }: Props) {
+import UiInput from 'components/ui/UiInput';
+import UiButton from 'components/ui/UiButton';
+import UserWithPassword from 'types/UserWithPassword';
+import UiForm from 'components/ui/UiForm';
+import { toAnyAction } from 'utils/helpers';
+import registrationSchema from 'utils/validations/registrationSchema';
+
+export default function RegistrationPage() {
   const dispatch = useDispatch();
+  const { userType } = useParams();
   const [formData, setFormData] = useState<UserWithPassword>({
     id: '',
     firstName: '',
@@ -27,18 +26,11 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
     phone: '',
     password: '',
     cPassword: '',
-    userType,
+    userType: userType || 'transporter',
     status: userType === 'transporter' ? 'unverified' : undefined,
   });
   const [loading, setLoading] = useState(false);
-  const formRules: Record<string, RuleType[]> = {
-    firstName: ['required'],
-    lastName: ['required'],
-    email: ['required', 'email'],
-    phone: ['required'],
-    password: ['required', 'min.8'],
-    cPassword: ['required', 'sameas.password'],
-  };
+
   function handleChange(event: { name: string; value: string | null }) {
     setFormData({
       ...formData,
@@ -52,7 +44,7 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
     }
 
     setLoading(true);
-    dispatch(RegisterUser(formData) as unknown as AnyAction)
+    dispatch(toAnyAction(RegisterUser(formData)))
       .catch((err: { message: string }) => {
         let msg: string = err.message;
 
@@ -71,7 +63,11 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
   const heading = isTransporter() ? 'Join Our Team' : 'Deliver with us';
 
   return (
-    <UiForm rules={formRules} formData={formData} onSubmit={handleSubmit}>
+    <UiForm
+      schema={registrationSchema}
+      formData={formData}
+      onSubmit={handleSubmit}
+    >
       {({ errors }) => (
         <>
           <JoinUsHeading>{heading}</JoinUsHeading>

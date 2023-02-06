@@ -1,23 +1,25 @@
 import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AnyAction } from 'redux';
 import styled from 'styled-components';
 
-import UiForm, { RuleType } from 'ui/UiForm';
+import { uploadItem } from '../../api/Cloudinary';
+import { RootState } from '../../modules';
+import { sendVerificationDetailsToAdmin } from 'modules/Account';
+import { toAnyAction } from 'utils/helpers';
+import TransporterValidationSchema from 'utils/validations/TransporterValidationSchema';
+
+import UiForm from 'ui/UiForm';
 import UiSelect from 'ui/UiSelect';
 import FileUploadWidget from 'ui/FileUploadWidget';
 import UiLocationsInput from 'ui/UiLocationsInput';
 import UiButton from 'ui/UiButton';
-import { sendVerificationDetailsToAdmin } from '../../modules/Account';
-import VerificationFormData from '../../types/VerificationFormData';
-import { uploadItem } from '../../api/Cloudinary';
-import { AppState } from '../../modules';
+import VerificationFormData from 'types/VerificationFormData';
 
 interface Props {
   onVerified: () => void;
 }
 export default function VerificationForm({ onVerified = () => {} }: Props) {
-  const user = useSelector((state: AppState) => state.account.user);
+  const user = useSelector((state: RootState) => state.account.user);
 
   const dispatch = useDispatch();
   const [formData, setFormData] = useState<VerificationFormData>({
@@ -28,12 +30,6 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
   });
 
   const [loading, setLoading] = useState(false);
-  const formRules: Record<string, RuleType[]> = {
-    idType: ['required'],
-    idDoc: ['required'],
-    homeAddress: ['required'],
-  };
-
   const idTypeOptions = [
     {
       label: 'National Identification Card(NIN)',
@@ -57,12 +53,16 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
     setLoading(true);
     const idDocUrl = await uploadItem(formData.idDoc as File);
 
+    if (!user?.id) return;
+
     dispatch(
-      sendVerificationDetailsToAdmin({
-        ...formData,
-        idDoc: idDocUrl,
-        userId: user?.id,
-      }) as unknown as AnyAction,
+      toAnyAction(
+        sendVerificationDetailsToAdmin({
+          ...formData,
+          idDoc: idDocUrl,
+          userId: user?.id,
+        }),
+      ),
     )
       .then(() => {
         onVerified();
@@ -73,29 +73,19 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
       .finally(() => setLoading(false));
   }
 
-  const formDataAddressKey = useMemo(
-    () =>
-      JSON.stringify({
-        idType: formData.idType,
-        idDoc: formData.idDoc,
-      }),
-    [
-      {
-        idType: formData.idType,
-        idDoc: formData.idDoc,
-      },
-    ],
-  );
-
   function setData(event: { name: string; value: string | File | File[] }) {
-    setFormData({
-      ...formData,
+    setFormData((state) => ({
+      ...state,
       [event.name]: event.value,
-    });
+    }));
   }
 
   return (
-    <UiForm formData={formData} rules={formRules} onSubmit={verifyUser}>
+    <UiForm
+      formData={formData}
+      schema={TransporterValidationSchema}
+      onSubmit={verifyUser}
+    >
       {({ errors }) => (
         <Gap>
           <UiSelect
@@ -116,10 +106,8 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
           <UiLocationsInput
             label="Home Address"
             name="homeAddress"
-            key={formDataAddressKey}
-            formData={formData}
             error={errors.homeAddress}
-            onChange={(e) => setFormData(e as VerificationFormData)}
+            onChange={setData}
           />
           <UiButton loading={loading}>Submit Verification Details</UiButton>
         </Gap>
