@@ -4,12 +4,23 @@ import sizes from '../../utils/sizes';
 import UiTimeline from 'ui/UiTimeline';
 import NewTripForm from 'components/trips/NewTripForm';
 import Trip from 'types/Trip';
+import ConfirmTripDetails from 'components/trips/ConfirmTripDetails';
+
+interface Step {
+  name: string;
+  value: CurrentStep;
+}
+type CurrentStep =
+  | 'trip-form'
+  | 'confirm-details'
+  | 'select-transporter'
+  | 'payment';
 
 export default function NewTripPage() {
-  const newTripSteps = [
+  const newTripSteps: Step[] = [
     {
       name: 'Trip Details',
-      value: 'trip-details',
+      value: 'trip-form',
     },
     {
       name: 'Confirm Trip Details',
@@ -25,7 +36,7 @@ export default function NewTripPage() {
     },
   ];
 
-  const [currentStep, setCurrentStep] = useState('trip-details');
+  const [currentStep, setCurrentStep] = useState<CurrentStep>('trip-form');
   const [defaultFormData, setDefaultFormData] = useState<Trip>({
     pickUpAddress: '',
     deliveryAddress: '',
@@ -37,15 +48,61 @@ export default function NewTripPage() {
     weight: 0,
     description: '',
   });
-  const newTripForm = <NewTripForm defaultFormData={defaultFormData} />;
+
+  function nextHandler(formData?: Trip) {
+    if (currentStep === 'trip-form' && formData) {
+      setDefaultFormData(formData);
+      setCurrentStep('confirm-details');
+      return;
+    }
+
+    if (currentStep === 'payment') {
+      return;
+    }
+    const indexOfCurrentStep = newTripSteps.findIndex(
+      (step) => step.value === currentStep,
+    );
+
+    setCurrentStep(newTripSteps[indexOfCurrentStep + 1].value);
+  }
+  function prevHandler() {
+    if (currentStep === 'trip-form') {
+      return;
+    }
+
+    const indexOfCurrentStep = newTripSteps.findIndex(
+      (step) => step.value === currentStep,
+    );
+    setCurrentStep(newTripSteps[indexOfCurrentStep - 1].value);
+  }
 
   const currentComponent = useMemo(() => {
-    return newTripForm;
-  }, []);
+    if (currentStep === 'trip-form') {
+      return (
+        <NewTripForm
+          defaultFormData={defaultFormData}
+          nextHandler={nextHandler}
+        />
+      );
+    }
+
+    if (currentStep === 'confirm-details') {
+      return (
+        <ConfirmTripDetails
+          data={defaultFormData}
+          nextHandler={nextHandler}
+          prevHandler={prevHandler}
+        />
+      );
+    }
+  }, [currentStep]);
+
   return (
     <PageContainer>
       <UiTimeline steps={newTripSteps} currentStep={currentStep} />
-      <div className="children-container">{currentComponent}</div>
+      <React.Suspense>
+        <div className="children-container">{currentComponent}</div>
+      </React.Suspense>
     </PageContainer>
   );
 }

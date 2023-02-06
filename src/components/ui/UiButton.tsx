@@ -80,6 +80,9 @@ const ButtonContainer = styled.button<Props>`
   &.secondary {
     background-color: var(--color-gray-100);
     color: var(--color-gray-700);
+    &:hover {
+      background: var(--color-gray-100);
+    }
   }
 
   &.secondary-outlined {

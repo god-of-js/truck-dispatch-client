@@ -30,7 +30,7 @@ export default function RegistrationPage() {
     status: userType === 'transporter' ? 'unverified' : undefined,
   });
   const [loading, setLoading] = useState(false);
-  
+
   function handleChange(event: { name: string; value: string | null }) {
     setFormData({
       ...formData,
@@ -63,7 +63,11 @@ export default function RegistrationPage() {
   const heading = isTransporter() ? 'Join Our Team' : 'Deliver with us';
 
   return (
-    <UiForm schema={registrationSchema} formData={formData} onSubmit={handleSubmit}>
+    <UiForm
+      schema={registrationSchema}
+      formData={formData}
+      onSubmit={handleSubmit}
+    >
       {({ errors }) => (
         <>
           <JoinUsHeading>{heading}</JoinUsHeading>

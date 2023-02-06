@@ -8,7 +8,6 @@ import { sendVerificationDetailsToAdmin } from 'modules/Account';
 import { toAnyAction } from 'utils/helpers';
 import TransporterValidationSchema from 'utils/validations/TransporterValidationSchema';
 
-
 import UiForm from 'ui/UiForm';
 import UiSelect from 'ui/UiSelect';
 import FileUploadWidget from 'ui/FileUploadWidget';
@@ -82,7 +81,11 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
   }
 
   return (
-    <UiForm formData={formData} schema={TransporterValidationSchema} onSubmit={verifyUser}>
+    <UiForm
+      formData={formData}
+      schema={TransporterValidationSchema}
+      onSubmit={verifyUser}
+    >
       {({ errors }) => (
         <Gap>
           <UiSelect

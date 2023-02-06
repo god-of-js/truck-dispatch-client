@@ -18,14 +18,14 @@ interface Props {
   defaultFormData: Trip;
   nextHandler: (param: Trip) => void;
 }
-export default function NewTripForm({ defaultFormData }: Props) {
+export default function NewTripForm({ defaultFormData, nextHandler }: Props) {
   const [formData, setFormData] = useState(defaultFormData);
   const typeOfGoodsOptions = turnArrayToOptions(typeOfGoods);
   const shippingLinesOptions = turnArrayToOptions(shippingLines);
   const sizeOfContainerOptions = turnArrayToOptions(sizeOfContainer);
 
   function onSubmit() {
-    console.log(formData);
+    nextHandler(formData);
   }
 
   function handleChange(event: { name: string; value: string | null }) {
@@ -71,6 +71,7 @@ export default function NewTripForm({ defaultFormData }: Props) {
               error={errors.deliveryAddress}
               onChange={handleChange}
             />
+            {/* TODO: validate that delivery date is past pick up date. */}
             <UiInput
               label="Delivery Date"
               name="deliveryDate"

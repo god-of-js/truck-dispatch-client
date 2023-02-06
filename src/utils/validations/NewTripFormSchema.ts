@@ -7,7 +7,13 @@ export default Yup.object({
   pickUpDate: Yup.string().required(isRequiredMessage),
   deliveryDate: Yup.string().required(isRequiredMessage),
   typeOfGoods: Yup.string().required(isRequiredMessage),
-  sizeOfContainer: Yup.string().required(isRequiredMessage),
-  shippingLine: Yup.string().required(isRequiredMessage),
+  sizeOfContainer: Yup.string().when('typeOfGoods', {
+    is: 'container',
+    then: Yup.string().required(isRequiredMessage),
+  }),
+  shippingLine: Yup.string().when('typeOfGoods', {
+    is: 'container',
+    then: Yup.string().required(isRequiredMessage),
+  }),
   weight: Yup.number().required(isRequiredMessage),
 });
