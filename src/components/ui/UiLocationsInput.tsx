@@ -1,21 +1,18 @@
-// import Api from 'Api';
+// google places location input
 import { useEffect, useRef } from 'react';
-import { useTransition } from 'react';
-import { useState } from 'react';
 import UiField from './UiField';
-import UiInput from './UiInput';
 
 interface Props {
   label?: string;
   name: string;
-  value: string;
   error?: string;
-  onChange: (event: { name: string; value: string | null }) => void;
+  formData: Record<string, any>;
+  onChange: (event: Record<string, any>) => void;
 }
 export default function UiLocationsInput({
   label,
   name,
-  value,
+  formData,
   error,
   onChange,
 }: Props) {
@@ -27,6 +24,7 @@ export default function UiLocationsInput({
     fields: ['address_components', 'geometry', 'icon', 'name'],
     types: ['establishment'],
   };
+
   useEffect(() => {
     //   @ts-ignore
     autoCompleteRef.current = new window.google.maps.places.Autocomplete(
@@ -37,8 +35,9 @@ export default function UiLocationsInput({
     autoCompleteRef.current.addListener('place_changed', async function () {
       // @ts-ignore
       const place = await autoCompleteRef.current.getPlace();
+      console.log({ ...formData, [name]: place.name });
       // TODO: format to the needed type
-      onChange({ name, value: place.name });
+      onChange({ ...formData, [name]: place.name });
     });
   }, []);
 

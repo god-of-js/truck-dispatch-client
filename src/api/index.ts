@@ -19,17 +19,28 @@ class ApiService {
       ({ user }) => user,
     );
   }
+
   signInWithEmailAndPassword(email: string, password: string) {
     return signInWithEmailAndPassword(auth, email, password).then(
       ({ user }) => user,
     );
   }
+
   recordAccountDetails(data: User) {
     return this.setDoc('user', data.id, data);
   }
 
   getUser(id: string) {
-    return this.getItem('user', id);
+    return this.getItem<User>('user', id);
+  }
+
+  sendVerificationDetailsToAdmin(userId: string, data: unknown) {
+    return this.setDoc('verification', userId, data);
+  }
+
+  saveAsset(id: string, url: string) {
+    // In case of future migrations to different asset servers.
+    return this.setDoc('assets', id, { id, url });
   }
 
   private setDoc(
@@ -45,12 +56,12 @@ class ApiService {
     return rawObjects.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
   }
 
-  private async getItem(key: string, value: string): Promise<unknown> {
+  private async getItem<T>(key: string, value: string): Promise<T> {
     const docRef = doc(db, key, value);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      return docSnap.data();
+      return docSnap.data() as T;
     } else {
       throw new Error('404: Document not found');
     }

@@ -90,10 +90,13 @@ const Sidebar = styled.nav`
   left: 0;
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    width: 5%;
+    width: 7%;
     border-top: none;
     position: static;
     border-right: ${pxToRem(1)} solid var(--color-gray-200);
+  }
+  @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
+    width: 5%;
   }
 `;
 

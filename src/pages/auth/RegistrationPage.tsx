@@ -28,7 +28,9 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
     password: '',
     cPassword: '',
     userType,
+    status: userType === 'transporter' ? 'unverified' : undefined,
   });
+  const [loading, setLoading] = useState(false);
   const formRules: Record<string, RuleType[]> = {
     firstName: ['required'],
     lastName: ['required'],
@@ -49,8 +51,9 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
       alert('Passwords must match');
     }
 
-    dispatch(RegisterUser(formData) as unknown as AnyAction).catch(
-      (err: { message: string }) => {
+    setLoading(true);
+    dispatch(RegisterUser(formData) as unknown as AnyAction)
+      .catch((err: { message: string }) => {
         let msg: string = err.message;
 
         if (err.message === 'Firebase: Error (auth/email-already-in-use).') {
@@ -58,8 +61,10 @@ export default function RegistrationPage({ userType = 'transporter' }: Props) {
         }
 
         Toast.error({ msg });
-      },
-    );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   const isTransporter = () => userType === 'transporter';
