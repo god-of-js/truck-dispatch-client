@@ -2,16 +2,19 @@ import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import UiForm, { RuleType } from 'ui/UiForm';
+import { uploadItem } from '../../api/Cloudinary';
+import { RootState } from '../../modules';
+import { sendVerificationDetailsToAdmin } from 'modules/Account';
+import { toAnyAction } from 'utils/helpers';
+import TransporterValidationSchema from 'utils/validations/TransporterValidationSchema';
+
+
+import UiForm from 'ui/UiForm';
 import UiSelect from 'ui/UiSelect';
 import FileUploadWidget from 'ui/FileUploadWidget';
 import UiLocationsInput from 'ui/UiLocationsInput';
 import UiButton from 'ui/UiButton';
-import { sendVerificationDetailsToAdmin } from '../../modules/Account';
-import VerificationFormData from '../../types/VerificationFormData';
-import { uploadItem } from '../../api/Cloudinary';
-import { RootState } from '../../modules';
-import { toAnyAction } from 'utils/helpers';
+import VerificationFormData from 'types/VerificationFormData';
 
 interface Props {
   onVerified: () => void;
@@ -28,12 +31,6 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
   });
 
   const [loading, setLoading] = useState(false);
-  const formRules: Record<string, RuleType[]> = {
-    idType: ['required'],
-    idDoc: ['required'],
-    homeAddress: ['required'],
-  };
-
   const idTypeOptions = [
     {
       label: 'National Identification Card(NIN)',
@@ -85,7 +82,7 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
   }
 
   return (
-    <UiForm formData={formData} rules={formRules} onSubmit={verifyUser}>
+    <UiForm formData={formData} schema={TransporterValidationSchema} onSubmit={verifyUser}>
       {({ errors }) => (
         <Gap>
           <UiSelect

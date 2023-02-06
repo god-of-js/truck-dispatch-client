@@ -11,8 +11,9 @@ import sizes from 'utils/sizes';
 import UiInput from 'components/ui/UiInput';
 import UiButton from 'components/ui/UiButton';
 import UserWithPassword from 'types/UserWithPassword';
-import UiForm, { RuleType } from 'components/ui/UiForm';
+import UiForm from 'components/ui/UiForm';
 import { toAnyAction } from 'utils/helpers';
+import registrationSchema from 'utils/validations/registrationSchema';
 
 export default function RegistrationPage() {
   const dispatch = useDispatch();
@@ -29,14 +30,7 @@ export default function RegistrationPage() {
     status: userType === 'transporter' ? 'unverified' : undefined,
   });
   const [loading, setLoading] = useState(false);
-  const formRules: Record<string, RuleType[]> = {
-    firstName: ['required'],
-    lastName: ['required'],
-    email: ['required', 'email'],
-    phone: ['required'],
-    password: ['required', 'min.8'],
-    cPassword: ['required', 'sameas.password'],
-  };
+  
   function handleChange(event: { name: string; value: string | null }) {
     setFormData({
       ...formData,
@@ -69,7 +63,7 @@ export default function RegistrationPage() {
   const heading = isTransporter() ? 'Join Our Team' : 'Deliver with us';
 
   return (
-    <UiForm rules={formRules} formData={formData} onSubmit={handleSubmit}>
+    <UiForm schema={registrationSchema} formData={formData} onSubmit={handleSubmit}>
       {({ errors }) => (
         <>
           <JoinUsHeading>{heading}</JoinUsHeading>

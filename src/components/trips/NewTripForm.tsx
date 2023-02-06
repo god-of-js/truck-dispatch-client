@@ -4,12 +4,13 @@ import styled from 'styled-components';
 import Trip from 'types/Trip';
 
 import { shippingLines, sizeOfContainer, typeOfGoods } from 'utils/constants';
+import NewTripFormSchema from 'utils/validations/NewTripFormSchema';
 
 import UiForm from 'ui/UiForm';
 import UiInput from 'ui/UiInput';
 import UiLocationsInput from 'ui/UiLocationsInput';
 import UiSelect from 'ui/UiSelect';
-import sizes from '../../utils/sizes';
+import sizes from 'utils/sizes';
 import UiTextArea from 'ui/UiTextArea';
 import UiButton from 'ui/UiButton';
 
@@ -19,16 +20,6 @@ interface Props {
 }
 export default function NewTripForm({ defaultFormData }: Props) {
   const [formData, setFormData] = useState(defaultFormData);
-  const formRules = {
-    pickUpAddress: ['required'],
-    deliveryAddress: ['required'],
-    pickUpDate: ['required'],
-    deliveryDate: ['required'],
-    typeOfGoods: ['required'],
-    sizeOfContainer: ['required.if.typeOfGoods.container'],
-    shippingLine: ['required.if.typeOfGoods'],
-    weight: ['required'],
-  };
   const typeOfGoodsOptions = turnArrayToOptions(typeOfGoods);
   const shippingLinesOptions = turnArrayToOptions(shippingLines);
   const sizeOfContainerOptions = turnArrayToOptions(sizeOfContainer);
@@ -52,19 +43,21 @@ export default function NewTripForm({ defaultFormData }: Props) {
   }
 
   return (
-    <UiForm formData={formData} rules={formRules} onSubmit={onSubmit}>
-      {() => (
+    <UiForm formData={formData} schema={NewTripFormSchema} onSubmit={onSubmit}>
+      {({ errors }) => (
         <div>
           <Heading>Addresses</Heading>
           <GridContainer>
             <UiLocationsInput
               label="Pickup Address(Terminal)"
               name="pickUpAddress"
+              error={errors.pickUpAddress}
               onChange={handleChange}
             />
             <UiLocationsInput
               label="Delivery address"
               name="deliveryAddress"
+              error={errors.deliveryAddress}
               onChange={handleChange}
             />
           </GridContainer>
@@ -75,6 +68,7 @@ export default function NewTripForm({ defaultFormData }: Props) {
               name="pickUpDate"
               type="date"
               value={formData.pickUpDate}
+              error={errors.deliveryAddress}
               onChange={handleChange}
             />
             <UiInput
@@ -82,6 +76,7 @@ export default function NewTripForm({ defaultFormData }: Props) {
               name="deliveryDate"
               type="date"
               value={formData.deliveryDate}
+              error={errors.deliveryAddress}
               onChange={handleChange}
             />
           </GridContainer>
@@ -93,6 +88,7 @@ export default function NewTripForm({ defaultFormData }: Props) {
               name="typeOfGoods"
               options={typeOfGoodsOptions}
               value={formData.typeOfGoods}
+              error={errors.typeOfGoods}
               onChange={handleChange}
             />
             <UiSelect
@@ -100,6 +96,7 @@ export default function NewTripForm({ defaultFormData }: Props) {
               name="shippingLine"
               options={shippingLinesOptions}
               value={formData.shippingLine || ''}
+              error={errors.shippingLine}
               onChange={handleChange}
             />
             <UiSelect
@@ -107,12 +104,15 @@ export default function NewTripForm({ defaultFormData }: Props) {
               name="sizeOfContainer"
               options={sizeOfContainerOptions}
               value={formData.sizeOfContainer || ''}
+              error={errors.sizeOfContainer}
               onChange={handleChange}
             />
             <UiInput
               label="Weight Of Goods(Tonnage)"
               name="weight"
+              type="number"
               value={formData.weight}
+              error={errors.weight}
               onChange={handleChange}
             />
           </GridContainer>
@@ -120,6 +120,7 @@ export default function NewTripForm({ defaultFormData }: Props) {
             label="Description Of Goods(optional)"
             name="description"
             value={formData.description || ''}
+            error={errors.description}
             onChange={handleChange}
           />
           <SubmitButtonContainer className="submit-button-container">
