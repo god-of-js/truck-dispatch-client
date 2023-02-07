@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Outlet, useParams, Link, useLocation } from 'react-router-dom';
+import { Outlet, useParams, Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import sizes from '../utils/sizes';
@@ -114,7 +114,7 @@ const ImageContainer = styled.div`
     isTransporter ? TransporterImage : AgentImage});
     background-size: cover;
     background-position: center;
-
+    padding-top: 6%;
     div {
       height: 80%;
       display: flex;
