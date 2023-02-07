@@ -1,18 +1,15 @@
 import React, { Suspense } from 'react';
-import { Outlet, useParams, useNavigate } from 'react-router-dom';
+import { Outlet, useParams, Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import UiButton from '../components/ui/UiButton';
-
-import UserType from '../types/UserType';
 
 import sizes from '../utils/sizes';
 import TransporterImage from '../assets/img/truck-image.jpeg';
 import AgentImage from '../assets/img/agent-mono-effect.jpg';
 import TruckDispatchLogo from '../assets/img/truck-dispatch-full-logo.svg';
+import Loader from 'components/layout/Loader';
 
 export default function AuthLayout() {
   const { userType } = useParams();
-  const navigate = useNavigate();
   const isTransporter = userType === 'transporter';
   const layoutTitle = isTransporter
     ? 'Take the road to prosperity'
@@ -24,27 +21,25 @@ export default function AuthLayout() {
   return (
     <>
       <Header>
-        <img src={TruckDispatchLogo} alt="" width="100" height="100" />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <img
+          src={TruckDispatchLogo}
+          alt="truck-dispatch"
+          width="100"
+          height="100"
+        />
         <ButtonContainer>
-          <UiButton
-            size="s"
-            textCasing="uppercase"
-            notFullWidth={true}
-            onClick={() => navigate('/auth/join/agent')}
+          <Link
+            className={`route ${!isTransporter && 'isActive'}`}
+            to="/auth/join/agent"
           >
-            Agent
-          </UiButton>
-          &nbsp;&nbsp;&nbsp;
-          <UiButton
-            size="s"
-            textCasing="uppercase"
-            notFullWidth={true}
-            onClick={() => navigate('/auth/join/transporter')}
+            For Agent
+          </Link>
+          <Link
+            className={`route ${isTransporter && 'isActive'}`}
+            to="/auth/join/transporter"
           >
-            Trasporter
-          </UiButton>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            For Transporter
+          </Link>
         </ButtonContainer>
       </Header>
       <Layout>
@@ -56,7 +51,7 @@ export default function AuthLayout() {
         </ImageContainer>
         <FormContainer>
           <div className="form-container-inner">
-            <Suspense fallback={<span>Loading....</span>}>
+            <Suspense fallback={<Loader />}>
               <Outlet />
             </Suspense>
           </div>
@@ -66,37 +61,44 @@ export default function AuthLayout() {
   );
 }
 
-const Header = styled.div`
-  position: fixed;
+const Header = styled.header`
+  padding: 0 ${pxToRem(16)};
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 3;
-  background: #ffffff;
-
-  @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
-    left: 0;
-    right: 0;
-  }
+  left: 0;
+  right: 0;
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    background: none;
-  }
-  @media only screen and (max-width: ${sizes.tabletSmallWidth}) {
-    background: #ffffff;
-    left: 0;
-    right: 0;
+    position: absolute;
   }
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
+  gap: ${pxToRem(16)};
+  .route {
+    text-transform: uppercase;
+    font-size: ${pxToRem(14)};
+    color: var(--color-gray-500);
+    padding: ${pxToRem(8)} ${pxToRem(4)};
+    border-bottom: 1px solid transparent;
+
+    &:hover {
+      color: var(--color-gray-500);
+    }
+    &.isActive {
+      color: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+  }
 `;
 
 const Layout = styled.div`
   display: flex;
   gap: ${pxToRem(12)};
-  overflow: hidden;
+  overflow: auto;
   height: 100vh;
   width: 100%;
   position: relative;
@@ -109,7 +111,7 @@ const ImageContainer = styled.div`
     height: 100%;
     width: 65%;
     background-image: url(${({ isTransporter }: { isTransporter: boolean }) =>
-      isTransporter ? TransporterImage : AgentImage});
+    isTransporter ? TransporterImage : AgentImage});
     background-size: cover;
     background-position: center;
 
@@ -156,8 +158,6 @@ const ImageContainer = styled.div`
 const FormContainer = styled.div`
   width: 100%;
   padding: ${pxToRem(24)};
-  margin-top: 50px;
-  overflow-y: auto;
 
   img {
     display: block;
