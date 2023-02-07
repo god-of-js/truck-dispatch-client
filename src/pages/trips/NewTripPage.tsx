@@ -1,22 +1,34 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import sizes from '../../utils/sizes';
-import UiTimeline from 'ui/UiTimeline';
-import NewTripForm from 'components/trips/NewTripForm';
-import Trip from 'types/Trip';
-import ConfirmTripDetails from 'components/trips/ConfirmTripDetails';
 
-interface Step {
-  name: string;
+import Trip from 'types/Trip';
+import sizes from 'utils/sizes';
+import { RootState } from '../../modules';
+import uuidv4 from 'utils/uuid';
+import { toAnyAction } from 'utils/helpers';
+import { createOrUpdateTrip } from 'modules/Trips';
+
+import UiTimeline, { TimelineStep } from 'ui/UiTimeline';
+import NewTripForm from 'components/trips/NewTripForm';
+import ConfirmTripDetails from 'components/trips/ConfirmTripDetails';
+import MessageWithImage from 'ui/MessageWithImage';
+import UiButton from 'ui/UiButton';
+
+interface Step extends TimelineStep {
   value: CurrentStep;
 }
 type CurrentStep =
   | 'trip-form'
   | 'confirm-details'
+  | 'broadcast-successful'
   | 'select-transporter'
   | 'payment';
 
 export default function NewTripPage() {
+  const user = useSelector((state: RootState) => state.account.user);
+  const dispatch = useDispatch();
+
   const newTripSteps: Step[] = [
     {
       name: 'Trip Details',
@@ -25,6 +37,11 @@ export default function NewTripPage() {
     {
       name: 'Confirm Trip Details',
       value: 'confirm-details',
+    },
+    {
+      name: 'Broadcast successful',
+      value: 'broadcast-successful',
+      invincible: true,
     },
     {
       name: 'Select Transporter',
@@ -36,8 +53,11 @@ export default function NewTripPage() {
     },
   ];
 
+  const [loading, setLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState<CurrentStep>('trip-form');
   const [defaultFormData, setDefaultFormData] = useState<Trip>({
+    id: uuidv4(),
+    agentId: user?.id || '',
     pickUpAddress: '',
     deliveryAddress: '',
     pickUpDate: '',
@@ -45,8 +65,9 @@ export default function NewTripPage() {
     typeOfGoods: '',
     sizeOfContainer: '',
     shippingLine: '',
-    weight: 0,
+    weight: NaN,
     description: '',
+    status: 'awaiting_transporter',
   });
 
   function nextHandler(formData?: Trip) {
@@ -56,15 +77,20 @@ export default function NewTripPage() {
       return;
     }
 
+    if (currentStep === 'confirm-details') {
+      sendTripToDrivers().then(() => {
+        setCurrentStep('broadcast-successful');
+      });
+    }
+
+    if (currentStep === 'broadcast-successful') {
+      setCurrentStep('select-transporter');
+    }
     if (currentStep === 'payment') {
       return;
     }
-    const indexOfCurrentStep = newTripSteps.findIndex(
-      (step) => step.value === currentStep,
-    );
-
-    setCurrentStep(newTripSteps[indexOfCurrentStep + 1].value);
   }
+
   function prevHandler() {
     if (currentStep === 'trip-form') {
       return;
@@ -76,32 +102,49 @@ export default function NewTripPage() {
     setCurrentStep(newTripSteps[indexOfCurrentStep - 1].value);
   }
 
-  const currentComponent = useMemo(() => {
-    if (currentStep === 'trip-form') {
-      return (
-        <NewTripForm
-          defaultFormData={defaultFormData}
-          nextHandler={nextHandler}
-        />
-      );
-    }
-
-    if (currentStep === 'confirm-details') {
-      return (
-        <ConfirmTripDetails
-          data={defaultFormData}
-          nextHandler={nextHandler}
-          prevHandler={prevHandler}
-        />
-      );
-    }
-  }, [currentStep]);
+  function sendTripToDrivers() {
+    if (!user?.id) return;
+    setLoading(true);
+    return dispatch(toAnyAction(createOrUpdateTrip(defaultFormData))).finally(
+      () => {
+        setLoading(false);
+      },
+    );
+  }
 
   return (
     <PageContainer>
       <UiTimeline steps={newTripSteps} currentStep={currentStep} />
       <React.Suspense>
-        <div className="children-container">{currentComponent}</div>
+        <div className="children-container">
+          {currentStep === 'trip-form' && (
+            <NewTripForm
+              defaultFormData={defaultFormData}
+              nextHandler={nextHandler}
+            />
+          )}
+          {currentStep === 'confirm-details' && (
+            <ConfirmTripDetails
+              data={defaultFormData}
+              nextHandler={nextHandler}
+              prevHandler={prevHandler}
+              loading={loading}
+            />
+          )}
+          {currentStep === 'broadcast-successful' && (
+            <>
+              <MessageWithImage
+                title="Your Trip has been broadcasted"
+                subtitle={`Thank you for trusting us with your dispatch. Your trip has been broadcasted to trusted transporters in our network. It usually takes a couple minutes to get matched with transporters. Expect a call or text message in the next couple of minutes to inform you of transporters available. You can view the list of transporters by clicking the button below.`}
+              />
+              <div className="button-container">
+                <UiButton onClick={nextHandler}>
+                  View Transporters available for your trip
+                </UiButton>
+              </div>
+            </>
+          )}
+        </div>
       </React.Suspense>
     </PageContainer>
   );
@@ -118,6 +161,10 @@ const PageContainer = styled.div`
 
   .children-container {
     padding-top: ${pxToRem(16)};
+  }
+  .button-container {
+    display: flex;
+    justify-content: center;
   }
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     width: 70%;

@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { isRequiredMessage } from './validationVariables';
+import { isNumberMessage, isRequiredMessage } from './validationVariables';
 
 export default Yup.object({
   pickUpAddress: Yup.string().required(isRequiredMessage),
@@ -15,5 +15,5 @@ export default Yup.object({
     is: 'container',
     then: Yup.string().required(isRequiredMessage),
   }),
-  weight: Yup.number().required(isRequiredMessage),
+  weight: Yup.number().required(isRequiredMessage).typeError(isNumberMessage),
 });

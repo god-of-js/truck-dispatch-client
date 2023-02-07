@@ -11,24 +11,24 @@ import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
 
 import VerificationForm from 'components/profile/VerificationForm';
-import VerificationMessage from 'components/profile/VerificationMessage';
+import MessageWithImage from 'ui/MessageWithImage';
 import AccessDenied from 'assets/img/access-denied.svg';
 
 export default function TransporterVerificationPage() {
   const dispatch = useDispatch();
   const [isVerified, setIsVerified] = useState(false);
   const user = useSelector((state: RootState) => state.account.user);
-  const userHasBeenVerified = <VerificationMessage />;
+  const userHasBeenVerified = <MessageWithImage />;
   const userIsAwaitingVerification = (
-    <VerificationMessage
-      title={'Verification details have been sent'}
+    <MessageWithImage
+      title="Verification details have been sent"
       subtitle={`Your verification details has been sent. expect a mail or text
   message from the organization in 24 hours regarding if your profile
   has been approved or declined`}
     />
   );
   const userVerificationWasRejected = (
-    <VerificationMessage
+    <MessageWithImage
       img={AccessDenied}
       title="Your verification has been declined"
       subtitle="Kindly reach out to support@truckdispatch.ng for more assistance and further clarification "
@@ -80,27 +80,6 @@ const TransportVerificationCard = styled.div`
   border: 1px solid var(--color-gray-200);
   padding: ${pxToRem(20)};
   border-radius: ${pxToRem(8)};
-
-  .details-feedback {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  img {
-    width: ${pxToRem(380)};
-    margin: auto;
-  }
-
-  h2 {
-    text-align: center;
-    font-size: ${pxToRem(20)};
-    font-family: 'Audiowide';
-    margin-bottom: 0;
-  }
-
-  p {
-    text-align: center;
-  }
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     width: 60%;

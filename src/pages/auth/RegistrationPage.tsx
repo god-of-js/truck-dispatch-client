@@ -123,7 +123,7 @@ export default function RegistrationPage() {
             TruckDispatch's partner, and agree to our{' '}
             <Link to="/">privacy policy</Link>
           </PrivacyPolicyParagraph>
-          <UiButton>
+          <UiButton isFullWidth>
             Join as {isTransporter() ? 'a' : 'an'} {userType}
           </UiButton>
           <AlreadyAMember>

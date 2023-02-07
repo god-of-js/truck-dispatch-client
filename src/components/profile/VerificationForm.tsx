@@ -109,7 +109,7 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
             error={errors.homeAddress}
             onChange={setData}
           />
-          <UiButton loading={loading}>Submit Verification Details</UiButton>
+          <UiButton isFullWidth loading={loading}>Submit Verification Details</UiButton>
         </Gap>
       )}
     </UiForm>

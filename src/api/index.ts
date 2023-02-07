@@ -1,17 +1,11 @@
-import {
-  collection,
-  addDoc,
-  getDocs,
-  doc,
-  getDoc,
-  setDoc,
-} from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc, setDoc } from 'firebase/firestore';
 import User from '../types/User';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import db, { auth } from './firebase';
+import Trip from 'types/Trip';
 
 class ApiService {
   createUserWithEmailAndPassword(email: string, password: string) {
@@ -43,11 +37,17 @@ class ApiService {
     return this.setDoc('assets', id, { id, url });
   }
 
+  createOrUpdateTrip(data: Trip) {
+    console.log('yep it should work', data);
+    return this.setDoc('trip', data.id, data);
+  }
+
   private setDoc(
     collectionName: string,
     id: string,
     data: unknown,
   ): Promise<unknown> {
+    console.log(collectionName, id, data);
     return setDoc(doc(db, collectionName, id), data);
   }
 

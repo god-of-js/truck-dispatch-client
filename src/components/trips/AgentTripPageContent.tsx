@@ -9,7 +9,7 @@ export default function AgentTripPageContent() {
     <>
       <CreateTripButtonContainer>
         <Link to="/my-trips/new">
-          <UiButton notFullWidth size="md">
+          <UiButton size="md">
             Create Trip
           </UiButton>
         </Link>

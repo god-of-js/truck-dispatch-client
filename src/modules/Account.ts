@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { AnyAction } from 'redux';
 import { AppDispatch, AppState } from '.';
 import Api from 'Api';
