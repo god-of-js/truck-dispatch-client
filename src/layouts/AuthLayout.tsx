@@ -49,14 +49,12 @@ export default function AuthLayout() {
       </Header>
       <Layout>
         <ImageContainer isTransporter={isTransporter}>
-          {/* <img src={TruckDispatchLogo} alt="" width="150" /> */}
           <div>
             <h2>{layoutTitle}</h2>
             <p>{layoutText}</p>
           </div>
         </ImageContainer>
         <FormContainer>
-          {/* <img src={TruckDispatchLogo} alt="" width="150" /> */}
           <div className="form-container-inner">
             <Suspense fallback={<span>Loading....</span>}>
               <Outlet />
@@ -75,7 +73,7 @@ const Header = styled.div`
   align-items: center;
   z-index: 3;
   background: #ffffff;
-  
+
   @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
     left: 0;
     right: 0;
@@ -167,7 +165,6 @@ const FormContainer = styled.div`
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     width: 35%;
-   
 
     img {
       display: none;
