@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { RegisterUser } from 'modules/Account';
 
@@ -17,6 +17,7 @@ import registrationSchema from 'utils/validations/registrationSchema';
 
 export default function RegistrationPage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { userType } = useParams();
   const [formData, setFormData] = useState<UserWithPassword>({
     id: '',
@@ -42,16 +43,18 @@ export default function RegistrationPage() {
     if (formData.cPassword !== formData.password) {
       alert('Passwords must match');
     }
-
     setLoading(true);
     dispatch(toAnyAction(RegisterUser(formData)))
+      .then(() => {
+        navigate('/');
+      })
       .catch((err: { message: string }) => {
         let msg: string = err.message;
 
         if (err.message === 'Firebase: Error (auth/email-already-in-use).') {
           msg = 'User with this email already exists';
         }
-
+        console.log(msg);
         Toast.error({ msg });
       })
       .finally(() => {
@@ -123,7 +126,7 @@ export default function RegistrationPage() {
             TruckDispatch's partner, and agree to our{' '}
             <Link to="/">privacy policy</Link>
           </PrivacyPolicyParagraph>
-          <UiButton isFullWidth>
+          <UiButton isFullWidth loading={loading}>
             Join as {isTransporter() ? 'a' : 'an'} {userType}
           </UiButton>
           <AlreadyAMember>

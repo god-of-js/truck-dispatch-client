@@ -28,6 +28,7 @@ const TransporterAccountsPage = lazy(
 // DASHBOARD
 const MyTripsPage = lazy(() => import('../pages/trips/MyTripsPage'));
 const NewTripPage = lazy(() => import('../pages/trips/NewTripPage'));
+const TransporterJobsPage = lazy(() => import('../pages/trips/TransporterJobsPage'));
 
 // TODO: ask Ben for how to get the name prop out on the nav bar.
 const router = createBrowserRouter([
@@ -63,6 +64,11 @@ const router = createBrowserRouter([
         path: '/my-trips',
         id: 'My Trips',
         element: <MyTripsPage />,
+      },
+      {
+        path: '/available-jobs',
+        id: 'Jobs',
+        element: <TransporterJobsPage />,
       },
       {
         path: '/my-trips/new',

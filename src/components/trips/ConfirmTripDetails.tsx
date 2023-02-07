@@ -52,10 +52,7 @@ export default function ConfirmTripDetails({
         <div className="value">{data.weight}Tons</div>
       </Section>
       <SubmitButtonContainer className="submit-button-container">
-        <UiButton
-          variant="secondary-outlined"
-          onClick={prevHandler}
-        >
+        <UiButton variant="secondary-outlined" onClick={prevHandler}>
           Back To Details
         </UiButton>
         <UiButton loading={loading} onClick={nextHandler}>
