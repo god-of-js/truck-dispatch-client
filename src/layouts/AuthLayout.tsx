@@ -114,7 +114,7 @@ const ImageContainer = styled.div`
     height: 100%;
     width: 65%;
     background-image: url(${({ isTransporter }: { isTransporter: boolean }) =>
-    isTransporter ? TransporterImage : AgentImage});
+      isTransporter ? TransporterImage : AgentImage});
     background-size: cover;
     background-position: center;
     padding-top: 6%;

@@ -6,11 +6,11 @@ import { toAnyAction } from 'utils/helpers';
 
 export interface TripState {
   trips: Trip[];
-  transporterJobs: Trip[]
+  transporterJobs: Trip[];
 }
 const initialState: TripState = {
   trips: [],
-  transporterJobs: []
+  transporterJobs: [],
 };
 
 export const TripsSlice = createSlice({
@@ -38,18 +38,24 @@ export function createOrUpdateTrip(data: Trip) {
 
 export function getAgentTrips(agentId: string) {
   return (dispatch: AppDispatch) => {
-    return Api.getAgentTrips(agentId).then((data) => dispatch(toAnyAction(setTrips(data))));
+    return Api.getAgentTrips(agentId).then((data) =>
+      dispatch(toAnyAction(setTrips(data))),
+    );
   };
 }
 
 export function getTransporterTrips(transporterId: string) {
   return (dispatch: AppDispatch) => {
-    return Api.getTransporterTrips(transporterId).then((data) => dispatch(toAnyAction(setTrips(data))));
+    return Api.getTransporterTrips(transporterId).then((data) =>
+      dispatch(toAnyAction(setTrips(data))),
+    );
   };
 }
 
 export function getTransporterJobs() {
   return (dispatch: AppDispatch) => {
-    return Api.getTransporterJobs().then((data) => dispatch(toAnyAction(setTrips(data))));
+    return Api.getTransporterJobs().then((data) =>
+      dispatch(toAnyAction(setTransporterJobs(data))),
+    );
   };
 }
