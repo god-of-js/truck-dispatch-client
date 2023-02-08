@@ -1,34 +1,49 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { toAnyAction } from 'utils/helpers';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { getTransporterJobs, selectTransporterJob } from 'modules/Trips';
+import { toAnyAction } from 'utils/helpers';
+import sizes from 'utils/sizes';
+
+import {
+  getBidsWithTripId,
+  getTransporterJobs,
+  selectBid,
+  selectTransporterJob,
+} from 'modules/Trips';
 import { RootState } from 'modules/index';
 import UiBackButton from 'ui/UiBackButton';
 import Loader from 'components/layout/Loader';
 import ViewTripDetails from 'components/trips/ViewTripDetails';
-import { useNavigate, useParams } from 'react-router-dom';
 import NotFoundError from 'components/errors/NotFoundError';
-import sizes from 'utils/sizes';
 
 export default function ViewTransporterJobDetailsPage() {
-  const { jobId } = useParams();
+  const { tripId } = useParams();
   const navigate = useNavigate();
-  const transporterJob = jobId
-    ? useSelector(selectTransporterJob(jobId))
+  const transporterJob = tripId
+    ? useSelector(selectTransporterJob(tripId))
     : null;
   const [loading, setLoading] = useState(true);
+  const user = useSelector((state: RootState) => state.account.user);
+  const bid = useSelector(selectBid(user?.id || '', 'transporterId'));
   const dispatch = useDispatch();
 
-  function bidForJob() {}
+  function bidForJob() {
+    navigate(`/available-jobs/${tripId}/bid`);
+  }
   function goBack() {
     navigate(-1);
   }
   useEffect(() => {
-    dispatch(toAnyAction(getTransporterJobs())).finally(() => {
-      setLoading(false);
-    });
+    if (tripId) {
+      Promise.all([
+        (dispatch(toAnyAction(getTransporterJobs())),
+        dispatch(toAnyAction(getBidsWithTripId(tripId)))),
+      ]).finally(() => {
+        setLoading(false);
+      });
+    }
   });
   return (
     <ViewTransporterJobPageStyle>
@@ -43,7 +58,8 @@ export default function ViewTransporterJobDetailsPage() {
               nextHandler={bidForJob}
               prevHandler={goBack}
               loading={loading}
-              actionText="Bid For Job"
+              isActionButtonDisabled={!!bid}
+              actionText={!!bid ? 'Bid Has been sent to Agent' : 'Bid For Job'}
             />
           </CardContainer>
         )) || <NotFoundError />

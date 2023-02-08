@@ -15,6 +15,7 @@ import {
 } from 'firebase/auth';
 import db, { auth } from './firebase';
 import Trip from 'types/Trip';
+import Bid from 'types/Bid';
 
 class ApiService {
   createUserWithEmailAndPassword(email: string, password: string) {
@@ -75,6 +76,19 @@ class ApiService {
       key: 'status',
       condition: '==',
       value: 'awaiting_transporter',
+    });
+  }
+
+  submitBid(data: Bid) {
+    return this.setDoc('bid', data.id, data);
+  }
+
+  getBidsWithTripId(tripId: string) {
+    return this.query<Bid>({
+      collectionName: 'bid',
+      key: 'tripId',
+      condition: '==',
+      value: tripId,
     });
   }
 

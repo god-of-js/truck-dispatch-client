@@ -49,7 +49,7 @@ export default function UiButton({
 const ButtonContainer = styled.button<Props>`
   padding: ${pxToRem(12)};
   border: none;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? '' : 'pointer')};
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -63,6 +63,7 @@ const ButtonContainer = styled.button<Props>`
   text-transform: ${({ textCasing }) => textCasing};
   width: ${({ isFullWidth }) => (isFullWidth ? '100%' : 'fit-content')};
   white-space: nowrap;
+  opacity: ${({ disabled }) => (disabled ? '0.6' : '1')};
 
   &.primary {
     background-color: var(--color-primary);
