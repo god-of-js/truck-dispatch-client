@@ -86,7 +86,7 @@ const ButtonContainer = styled.div`
     border-bottom: 1px solid transparent;
 
     &:hover {
-      color: var(--color-gray-500);
+      color: var(--color-primary);
     }
     &.isActive {
       color: var(--color-primary);
@@ -102,6 +102,9 @@ const Layout = styled.div`
   height: 100vh;
   width: 100%;
   position: relative;
+  @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
+    overflow: hidden;
+  }
 `;
 
 const ImageContainer = styled.div`
