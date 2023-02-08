@@ -1,13 +1,12 @@
 import React, { Suspense } from 'react';
-import { Outlet, useParams } from 'react-router-dom';
+import { Outlet, useParams, Link } from 'react-router-dom';
 import styled from 'styled-components';
-
-import UserType from '../types/UserType';
 
 import sizes from '../utils/sizes';
 import TransporterImage from '../assets/img/truck-image.jpeg';
 import AgentImage from '../assets/img/agent-mono-effect.jpg';
 import TruckDispatchLogo from '../assets/img/truck-dispatch-full-logo.svg';
+import Loader from 'components/layout/Loader';
 
 export default function AuthLayout() {
   const { userType } = useParams();
@@ -20,33 +19,92 @@ export default function AuthLayout() {
     : 'We provide you with the most competitive rates, verified drivers, and best deals. Become part of our success story d profit from a wide range of advantages';
 
   return (
-    <Layout>
-      <ImageContainer isTransporter={isTransporter}>
-        <img src={TruckDispatchLogo} alt="" width="150" />
-        <div>
-          <h2>{layoutTitle}</h2>
-          <p>{layoutText}</p>
-        </div>
-      </ImageContainer>
-      <FormContainer>
-        <img src={TruckDispatchLogo} alt="" width="150" />
-        <div className="form-container-inner">
-          <Suspense fallback={<span>Loading....</span>}>
-            <Outlet />
-          </Suspense>
-        </div>
-      </FormContainer>
-    </Layout>
+    <>
+      <Header>
+        <img
+          src={TruckDispatchLogo}
+          alt="truck-dispatch"
+          width="100"
+          height="100"
+        />
+        <ButtonContainer>
+          <Link
+            className={`route ${!isTransporter && 'isActive'}`}
+            to="/auth/join/agent"
+          >
+            For Agent
+          </Link>
+          <Link
+            className={`route ${isTransporter && 'isActive'}`}
+            to="/auth/join/transporter"
+          >
+            For Transporter
+          </Link>
+        </ButtonContainer>
+      </Header>
+      <Layout>
+        <ImageContainer isTransporter={isTransporter}>
+          <div>
+            <h2>{layoutTitle}</h2>
+            <p>{layoutText}</p>
+          </div>
+        </ImageContainer>
+        <FormContainer>
+          <div className="form-container-inner">
+            <Suspense fallback={<Loader />}>
+              <Outlet />
+            </Suspense>
+          </div>
+        </FormContainer>
+      </Layout>
+    </>
   );
 }
+
+const Header = styled.header`
+  padding: 0 ${pxToRem(16)};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+    position: absolute;
+  }
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${pxToRem(16)};
+  .route {
+    text-transform: uppercase;
+    font-size: ${pxToRem(14)};
+    color: var(--color-gray-500);
+    padding: ${pxToRem(8)} ${pxToRem(4)};
+    border-bottom: 1px solid transparent;
+
+    &:hover {
+      color: var(--color-primary);
+    }
+    &.isActive {
+      color: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+  }
+`;
 
 const Layout = styled.div`
   display: flex;
   gap: ${pxToRem(12)};
-  overflow: hidden;
+  overflow: auto;
   height: 100vh;
   width: 100%;
-  position: absolute;
+  position: relative;
+  @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
+    overflow: hidden;
+  }
 `;
 
 const ImageContainer = styled.div`
@@ -56,10 +114,10 @@ const ImageContainer = styled.div`
     height: 100%;
     width: 65%;
     background-image: url(${({ isTransporter }: { isTransporter: boolean }) =>
-      isTransporter ? TransporterImage : AgentImage});
+    isTransporter ? TransporterImage : AgentImage});
     background-size: cover;
     background-position: center;
-
+    padding-top: 6%;
     div {
       height: 80%;
       display: flex;
@@ -101,10 +159,8 @@ const ImageContainer = styled.div`
 `;
 
 const FormContainer = styled.div`
-  height: 100%;
   width: 100%;
   padding: ${pxToRem(24)};
-  overflow-y: auto;
 
   img {
     display: block;

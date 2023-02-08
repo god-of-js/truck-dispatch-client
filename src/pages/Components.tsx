@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import UiLocationsInput from 'components/ui/UiLocationsInput';
 import styled from 'styled-components';
 import UiButton from '../components/ui/UiButton';
