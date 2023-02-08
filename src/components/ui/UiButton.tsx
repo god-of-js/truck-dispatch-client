@@ -8,9 +8,10 @@ interface Props {
   variant?:
     | 'primary'
     | 'secondary'
-    | 'neutal'
+    | 'neutral'
     | 'primary-outlined'
-    | 'secondary-outlined';
+    | 'secondary-outlined'
+    | 'primary-text';
   size?: 'large' | 'md' | 's';
   type?: 'submit' | 'button';
   textCasing?: 'uppercase' | 'lowercase' | 'capitalize';
@@ -61,6 +62,7 @@ const ButtonContainer = styled.button<Props>`
   font-weight: 900;
   text-transform: ${({ textCasing }) => textCasing};
   width: ${({ isFullWidth }) => (isFullWidth ? '100%' : 'fit-content')};
+  white-space: nowrap;
 
   &.primary {
     background-color: var(--color-primary);
@@ -69,6 +71,15 @@ const ButtonContainer = styled.button<Props>`
     &:hover {
       background-color: var(--color-primary-600);
     }
+  }
+  &.primary-text {
+    background: transparent;
+    border-color: transparent;
+    color: var(--color-primary);
+  }
+  &.neutral {
+    background-color: var(--color-gray-200);
+    color: var(--color-gray-900);
   }
 
   &.primary-outlined {
