@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 import Trip from 'types/Trip';
 import { AppDispatch, AppState, RootState } from '.';
 import Api from 'Api';
@@ -27,8 +27,13 @@ export const TripsSlice = createSlice({
 });
 
 export const { setTrips, setTransporterJobs } = TripsSlice.actions;
-
 export default TripsSlice.reducer;
+
+const transporterJobs = (state: RootState) => state.trips.transporterJobs;
+export const selectTransporterJob = (jobId: string) =>
+  createSelector(transporterJobs, (jobs) =>
+    jobs.find(({ id }) => id === jobId),
+  );
 
 export function createOrUpdateTrip(data: Trip) {
   return () => {

@@ -11,7 +11,7 @@ import { createOrUpdateTrip } from 'modules/Trips';
 
 import UiTimeline, { TimelineStep } from 'ui/UiTimeline';
 import NewTripForm from 'components/trips/NewTripForm';
-import ConfirmTripDetails from 'components/trips/ConfirmTripDetails';
+import ViewTripDetails from 'components/trips/ViewTripDetails';
 import MessageWithImage from 'ui/MessageWithImage';
 import UiButton from 'ui/UiButton';
 
@@ -124,7 +124,7 @@ export default function NewTripPage() {
             />
           )}
           {currentStep === 'confirm-details' && (
-            <ConfirmTripDetails
+            <ViewTripDetails
               data={defaultFormData}
               nextHandler={nextHandler}
               prevHandler={prevHandler}

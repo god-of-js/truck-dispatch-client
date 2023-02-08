@@ -9,12 +9,14 @@ interface Props {
   nextHandler: () => void;
   prevHandler: () => void;
   loading?: boolean;
+  actionText?: string;
 }
 export default function ConfirmTripDetails({
   data,
   prevHandler,
   nextHandler,
   loading,
+  actionText,
 }: Props) {
   return (
     <Layout>
@@ -53,10 +55,10 @@ export default function ConfirmTripDetails({
       </Section>
       <SubmitButtonContainer className="submit-button-container">
         <UiButton variant="secondary-outlined" onClick={prevHandler}>
-          Back To Details
+          Go Back
         </UiButton>
         <UiButton loading={loading} onClick={nextHandler}>
-          Broadcast Job
+          {actionText || 'Broadcast Job'}
         </UiButton>
       </SubmitButtonContainer>
     </Layout>

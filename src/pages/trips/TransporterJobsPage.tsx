@@ -39,7 +39,7 @@ export default function TransporterJobs() {
   const [loading, setLoading] = useState(true);
 
   function viewJob(jobId: string) {
-    navigate(`available-jobs/${jobId}`);
+    navigate(`${jobId}`);
   }
   useEffect(() => {
     dispatch(toAnyAction(getTransporterJobs())).finally(() => {
