@@ -7,6 +7,8 @@ const PageError = lazy(() => import('../components/errors/PageError'));
 const AuthLayout = lazy(() => import('../layouts/AuthLayout'));
 const DashboardLayout = lazy(() => import('../layouts/DashboardLayout'));
 const ProfileLayout = lazy(() => import('../layouts/ProfileLayout'));
+const ViewTripLayout = lazy(() => import('../layouts/ViewTripLayout'));
+const TripsLayout = lazy(() => import('../layouts/TripsLayout'));
 
 const ComponentsView = lazy(() => import('../pages/Components'));
 
@@ -28,7 +30,8 @@ const TransporterAccountsPage = lazy(
 // DASHBOARD
 const MyTripsPage = lazy(() => import('../pages/trips/MyTripsPage'));
 const NewTripPage = lazy(() => import('../pages/trips/NewTripPage'));
-const ViewTrip = lazy(() => import('../pages/trips/ViewTrip'))
+const ViewTripPage = lazy(() => import('../pages/trips/ViewTripPage'));
+const ViewTripBidsPage = lazy(() => import('../pages/trips/ViewTripBidsPage'));
 
 const TransporterJobsPage = lazy(
   () => import('../pages/trips/TransporterJobsPage'),
@@ -36,7 +39,7 @@ const TransporterJobsPage = lazy(
 const ViewTransporterJobDetailsPage = lazy(
   () => import('../pages/trips/ViewTransporterJobDetailsPage'),
 );
-const BidOnJob = lazy(() => import('../pages/trips/BidOnJob'));
+const BidOnJobPage = lazy(() => import('../pages/trips/BidOnJobPage'));
 
 const router = createBrowserRouter([
   {
@@ -69,18 +72,37 @@ const router = createBrowserRouter([
       },
       {
         path: '/my-trips',
-        id: 'My Trips',
-        element: <MyTripsPage />,
-      },
-      {
-        path: '/my-trips/new',
-        id: 'New Trip',
-        element: <NewTripPage />,
-      },
-      {
-        path: '/my-trips/:id',
-        id: 'View Trip',
-        element: <ViewTrip />,
+        id: 'My Trips Layout',
+        element: <TripsLayout />,
+        children: [
+          {
+            path: '',
+            id: 'My Trips',
+            element: <MyTripsPage />,
+          },
+          {
+            path: '/my-trips/new',
+            id: 'New Trip',
+            element: <NewTripPage />,
+          },
+          {
+            path: '/my-trips/:tripId',
+            id: 'View Trip Layout',
+            element: <ViewTripLayout />,
+            children: [
+              {
+                path: '',
+                id: 'View Trip',
+                element: <ViewTripPage />,
+              },
+              {
+                path: '/my-trips/:tripId/bids',
+                id: 'View Trip Bids',
+                element: <ViewTripBidsPage />,
+              },
+            ],
+          },
+        ],
       },
       {
         path: '/available-jobs',
@@ -95,7 +117,7 @@ const router = createBrowserRouter([
       {
         path: '/available-jobs/:tripId/bid',
         id: 'Bid on Job',
-        element: <BidOnJob />,
+        element: <BidOnJobPage />,
       },
     ],
   },

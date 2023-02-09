@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { toAnyAction } from 'utils/helpers';
 import sizes from '../utils/sizes';
 
-import { getUser } from '../modules/Account';
+import { getUser } from 'modules/Account';
 
 import DashboardSidebar from 'components/layout/DashboardSidebar';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
@@ -23,6 +23,7 @@ export default function DashboardLayout() {
       })
       .finally(() => setLoading(false));
   }, []);
+
   const Component = isLoading ? (
     <Loader />
   ) : (
@@ -36,7 +37,7 @@ export default function DashboardLayout() {
       <Body>
         <DashboardTopNav />
         {/* TODO: put a message for transporter to verify if not yet verified */}
-        {Component}
+        <div className="body-components-container">{Component}</div>
       </Body>
     </Layout>
   );
@@ -52,7 +53,7 @@ const Layout = styled.div`
 
 const Body = styled.div`
   position: relative;
-  overflow-x: hidden;
+  overflow-x: auto;
   width: 100%;
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {

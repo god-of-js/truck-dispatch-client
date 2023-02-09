@@ -6,22 +6,25 @@ import sizes from 'utils/sizes';
 
 interface Props {
   data: Trip;
-  nextHandler: () => void;
-  prevHandler: () => void;
   loading?: boolean;
   actionText?: string;
   isActionButtonDisabled?: boolean;
+  hideActionButtons?: boolean;
+  nextHandler?: () => void;
+  prevHandler?: () => void;
 }
 export default function ConfirmTripDetails({
   data,
   isActionButtonDisabled,
   loading,
   actionText,
+  hideActionButtons,
   prevHandler,
   nextHandler,
 }: Props) {
   return (
     <Layout>
+      {/* TODO: remove confirm text when not confirm */}
       <Heading>Confirm Trip Details</Heading>
       <Section>
         <div className="title">Pick Up Address</div>
@@ -55,18 +58,20 @@ export default function ConfirmTripDetails({
         <div className="title">Weight of Goods(Tonnage)</div>
         <div className="value">{data.weight}Tons</div>
       </Section>
-      <SubmitButtonContainer className="submit-button-container">
-        <UiButton variant="secondary-outlined" onClick={prevHandler}>
-          Go Back
-        </UiButton>
-        <UiButton
-          loading={loading}
-          disabled={isActionButtonDisabled}
-          onClick={nextHandler}
-        >
-          {actionText || 'Broadcast Job'}
-        </UiButton>
-      </SubmitButtonContainer>
+      {!hideActionButtons && (
+        <SubmitButtonContainer className="submit-button-container">
+          <UiButton variant="secondary-outlined" onClick={prevHandler}>
+            Go Back
+          </UiButton>
+          <UiButton
+            loading={loading}
+            disabled={isActionButtonDisabled}
+            onClick={nextHandler}
+          >
+            {actionText || 'Broadcast Job'}
+          </UiButton>
+        </SubmitButtonContainer>
+      )}
     </Layout>
   );
 }

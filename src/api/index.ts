@@ -69,7 +69,7 @@ class ApiService {
     });
   }
 
-  getTransporterJobs() {
+  getJobs() {
     // Jobs are trips that haven't been claimed by any transporter and
     return this.query<Trip>({
       collectionName: 'trip',

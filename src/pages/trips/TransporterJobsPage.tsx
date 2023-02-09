@@ -1,6 +1,6 @@
 import Loader from 'components/layout/Loader';
 import { RootState } from 'modules/index';
-import { getTransporterJobs } from 'modules/Trips';
+import { getJobs } from 'modules/Trips';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -9,9 +9,7 @@ import UiTable from 'ui/UiTable';
 import { toAnyAction } from 'utils/helpers';
 
 export default function TransporterJobs() {
-  const transporterJobs = useSelector(
-    (state: RootState) => state.trips.transporterJobs,
-  );
+  const jobs = useSelector((state: RootState) => state.trips.jobs);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const headers = [
@@ -42,7 +40,7 @@ export default function TransporterJobs() {
     navigate(`${jobId}`);
   }
   useEffect(() => {
-    dispatch(toAnyAction(getTransporterJobs())).finally(() => {
+    dispatch(toAnyAction(getJobs())).finally(() => {
       setLoading(false);
     });
   });
@@ -52,7 +50,7 @@ export default function TransporterJobs() {
       {!loading ? (
         <UiTable
           tableTitle="Available Jobs"
-          data={transporterJobs}
+          data={jobs}
           headers={headers}
           options={[]}
           onRowClick={viewJob}

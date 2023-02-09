@@ -12,7 +12,7 @@ import sizes from 'utils/sizes';
 
 import VerificationForm from 'components/profile/VerificationForm';
 import MessageWithImage from 'ui/MessageWithImage';
-import AccessDenied from 'assets/img/access-denied.svg';
+import AccessDenied from '../../assets/img/access-denied.svg';
 
 export default function TransporterVerificationPage() {
   const dispatch = useDispatch();
