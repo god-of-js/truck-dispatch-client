@@ -1,6 +1,6 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import Trip from 'types/Trip';
-import { AppDispatch, AppState, RootState } from '.';
+import { AppDispatch, RootState } from '.';
 import Api from 'Api';
 import { toAnyAction } from 'utils/helpers';
 import Bid from 'types/Bid';
@@ -38,7 +38,7 @@ export default TripsSlice.reducer;
 // SELECTORS
 const transporterJobs = (state: RootState) => state.trips.transporterJobs;
 export const selectTransporterJob = (jobId: string) =>
-  createSelector(transporterJobs, (jobs) =>
+  createSelector(transporterJobs, (jobs: Trip[]) =>
     jobs.find(({ id }) => id === jobId),
   );
 
@@ -47,7 +47,7 @@ export const selectBid = (
   valueToQueryWith: string,
   queryParam: 'id' | 'transporterId',
 ) =>
-  createSelector(bids, (bidArr) => {
+  createSelector(bids, (bidArr: Bid[]) => {
     return bidArr.find((bid) => valueToQueryWith === bid[queryParam]);
   });
 

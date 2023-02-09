@@ -68,7 +68,7 @@ export default function BidOnJob() {
         setPageLoading(false),
       );
     }
-  });
+  }, [bid]);
 
   return (
     <BidOnJobPageStyle>

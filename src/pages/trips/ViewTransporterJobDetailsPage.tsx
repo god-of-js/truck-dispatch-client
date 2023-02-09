@@ -44,7 +44,7 @@ export default function ViewTransporterJobDetailsPage() {
         setLoading(false);
       });
     }
-  });
+  }, [bid]);
   return (
     <ViewTransporterJobPageStyle>
       <UiBackButton />
