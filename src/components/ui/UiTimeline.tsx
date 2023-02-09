@@ -2,13 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import sizes from '../../utils/sizes';
 
-interface Step {
+export interface TimelineStep {
   name: string;
   value: string;
+
+  invincible?: boolean;
 }
 
 interface Props {
-  steps: Step[];
+  steps: TimelineStep[];
   currentStep: string;
 }
 
@@ -27,12 +29,17 @@ export default function UiTimeline({ steps, currentStep }: Props) {
   }
   return (
     <TimeLineContainer>
-      {steps.map((step, index) => (
-        <TimeLineItem key={index} isActive={StepIsPresentOrPassed(step.value)}>
-          <span>{step.name}</span>
-          <div className="step-thread" />
-        </TimeLineItem>
-      ))}
+      {steps
+        .filter(({ invincible }) => !invincible)
+        .map((step, index) => (
+          <TimeLineItem
+            key={index}
+            isActive={StepIsPresentOrPassed(step.value)}
+          >
+            <span>{step.name}</span>
+            <div className="step-thread" />
+          </TimeLineItem>
+        ))}
     </TimeLineContainer>
   );
 }

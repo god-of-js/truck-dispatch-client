@@ -4,6 +4,6 @@ export default interface User {
   lastName: string;
   email: string;
   phone: string;
-  userType: string;
+  userType: 'agent' | 'transporter';
   status?: 'pending_verification' | 'verified' | 'unverified' | 'rejected';
 }

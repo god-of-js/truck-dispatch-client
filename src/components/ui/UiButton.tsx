@@ -16,7 +16,7 @@ interface Props {
   type?: 'submit' | 'button';
   textCasing?: 'uppercase' | 'lowercase' | 'capitalize';
   /** This prop decides if we want the button to fit the content or be full width */
-  notFullWidth?: boolean;
+  isFullWidth?: boolean;
   onClick?: () => void;
 }
 
@@ -29,7 +29,7 @@ export default function UiButton({
   type = 'submit',
   textCasing = 'uppercase',
   size = 'large',
-  notFullWidth = false,
+  isFullWidth = false,
 }: Props) {
   return (
     <ButtonContainer
@@ -39,7 +39,7 @@ export default function UiButton({
       type={type}
       textCasing={textCasing}
       size={size}
-      notFullWidth={notFullWidth}
+      isFullWidth={isFullWidth}
     >
       {loading ? <span>Loading...</span> : children}
     </ButtonContainer>
@@ -49,7 +49,7 @@ export default function UiButton({
 const ButtonContainer = styled.button<Props>`
   padding: ${pxToRem(12)};
   border: none;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? '' : 'pointer')};
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -61,8 +61,9 @@ const ButtonContainer = styled.button<Props>`
   border-radius: ${pxToRem(4)};
   font-weight: 900;
   text-transform: ${({ textCasing }) => textCasing};
-  width: ${({ notFullWidth }) => (notFullWidth ? 'fit-content' : '100%')};
+  width: ${({ isFullWidth }) => (isFullWidth ? '100%' : 'fit-content')};
   white-space: nowrap;
+  opacity: ${({ disabled }) => (disabled ? '0.6' : '1')};
 
   &.primary {
     background-color: var(--color-primary);

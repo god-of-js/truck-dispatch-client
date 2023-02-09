@@ -125,7 +125,7 @@ export default function NewTripForm({ defaultFormData, nextHandler }: Props) {
             onChange={handleChange}
           />
           <SubmitButtonContainer className="submit-button-container">
-            <UiButton notFullWidth>Confirm Trip Details</UiButton>
+            <UiButton>Confirm Trip Details</UiButton>
           </SubmitButtonContainer>
         </div>
       )}

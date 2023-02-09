@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
-import UiIcon, { Icons } from '../ui/UiIcon';
-import sizes from '../../utils/sizes';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../modules';
 import { Link } from 'react-router-dom';
+import sizes from 'utils/sizes';
+import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
+import UiIcon, { Icons } from '../ui/UiIcon';
 
 interface Route {
   iconName: Icons;

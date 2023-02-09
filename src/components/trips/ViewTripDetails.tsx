@@ -8,9 +8,15 @@ interface Props {
   data: Trip;
   nextHandler: () => void;
   prevHandler: () => void;
+  loading?: boolean;
+  actionText?: string;
+  isActionButtonDisabled?: boolean;
 }
 export default function ConfirmTripDetails({
   data,
+  isActionButtonDisabled,
+  loading,
+  actionText,
   prevHandler,
   nextHandler,
 }: Props) {
@@ -50,15 +56,15 @@ export default function ConfirmTripDetails({
         <div className="value">{data.weight}Tons</div>
       </Section>
       <SubmitButtonContainer className="submit-button-container">
-        <UiButton
-          variant="secondary-outlined"
-          notFullWidth
-          onClick={prevHandler}
-        >
-          Back To Details
+        <UiButton variant="secondary-outlined" onClick={prevHandler}>
+          Go Back
         </UiButton>
-        <UiButton notFullWidth onClick={nextHandler}>
-          Select Transporter
+        <UiButton
+          loading={loading}
+          disabled={isActionButtonDisabled}
+          onClick={nextHandler}
+        >
+          {actionText || 'Broadcast Job'}
         </UiButton>
       </SubmitButtonContainer>
     </Layout>

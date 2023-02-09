@@ -35,6 +35,7 @@ export default function DashboardLayout() {
       <DashboardSidebar />
       <Body>
         <DashboardTopNav />
+        {/* TODO: put a message for transporter to verify if not yet verified */}
         {Component}
       </Body>
     </Layout>

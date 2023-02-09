@@ -1,10 +1,12 @@
 import {
   collection,
-  addDoc,
   getDocs,
   doc,
   getDoc,
   setDoc,
+  query,
+  where,
+  WhereFilterOp,
 } from 'firebase/firestore';
 import User from '../types/User';
 import {
@@ -12,6 +14,8 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import db, { auth } from './firebase';
+import Trip from 'types/Trip';
+import Bid from 'types/Bid';
 
 class ApiService {
   createUserWithEmailAndPassword(email: string, password: string) {
@@ -43,6 +47,51 @@ class ApiService {
     return this.setDoc('assets', id, { id, url });
   }
 
+  createOrUpdateTrip(data: Trip) {
+    return this.setDoc('trip', data.id, data);
+  }
+
+  getAgentTrips(agentId: string) {
+    return this.query<Trip>({
+      collectionName: 'trip',
+      key: 'agentId',
+      condition: '==',
+      value: agentId,
+    });
+  }
+
+  getTransporterTrips(transporterId: string) {
+    return this.query<Trip>({
+      collectionName: 'trip',
+      key: 'agentId',
+      condition: '==',
+      value: transporterId,
+    });
+  }
+
+  getTransporterJobs() {
+    // Jobs are trips that haven't been claimed by any transporter and
+    return this.query<Trip>({
+      collectionName: 'trip',
+      key: 'status',
+      condition: '==',
+      value: 'awaiting_transporter',
+    });
+  }
+
+  submitBid(data: Bid) {
+    return this.setDoc('bid', data.id, data);
+  }
+
+  getBidsWithTripId(tripId: string) {
+    return this.query<Bid>({
+      collectionName: 'bid',
+      key: 'tripId',
+      condition: '==',
+      value: tripId,
+    });
+  }
+
   private setDoc(
     collectionName: string,
     id: string,
@@ -54,6 +103,27 @@ class ApiService {
   private async getCollection(collectionName: string): Promise<unknown> {
     const rawObjects = await getDocs(collection(db, collectionName));
     return rawObjects.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+  }
+
+  private async query<T = unknown>({
+    collectionName,
+    key,
+    condition,
+    value,
+  }: {
+    collectionName: string;
+    key: string;
+    condition: WhereFilterOp;
+    value: string;
+  }): Promise<T[]> {
+    const dbRef = collection(db, collectionName);
+    const rawQuery = query(dbRef, where(key, condition, value));
+    const snapShots = await getDocs(rawQuery);
+    const documentList: T[] = [];
+    snapShots.forEach((doc) => {
+      documentList.push(doc.data() as T);
+    });
+    return documentList;
   }
 
   private async getItem<T>(key: string, value: string): Promise<T> {

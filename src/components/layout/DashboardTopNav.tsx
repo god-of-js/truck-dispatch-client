@@ -1,11 +1,8 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import UiIcon from '../ui/UiIcon';
-
+// TODO: change Home to a dynamic text
 export default function DashboardTopNav() {
-  const location = useLocation();
-  console.log(location);
   return (
     <TopNav>
       <span>Home</span>

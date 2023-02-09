@@ -81,7 +81,9 @@ export default function RegistrationPage() {
             TruckDispatch's partner, and agree to our{' '}
             <Link to="/">privacy policy</Link>
           </PrivacyPolicyParagraph>
-          <UiButton loading={loading}>Sign In</UiButton>
+          <UiButton isFullWidth loading={loading}>
+            Sign In
+          </UiButton>
           <ForgotPassword>
             Can't login? try{' '}
             <Link to="/auth/join/transporter">forgot password</Link>

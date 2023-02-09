@@ -1,11 +1,10 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { AnyAction } from 'redux';
+import { createSlice } from '@reduxjs/toolkit';
 import { AppDispatch, AppState } from '.';
 import Api from 'Api';
 import User from '../types/User';
 import UserWithPassword from '../types/UserWithPassword';
 import VerificationFormData from '../types/VerificationFormData';
-import { removeKeyValuePairsFromObject } from 'utils/helpers';
+import { removeKeyValuePairsFromObject, toAnyAction } from 'utils/helpers';
 
 export interface AccountState {
   user: User | null;
@@ -28,30 +27,28 @@ export const { setUser } = accountSlice.actions;
 export default accountSlice.reducer;
 
 export function RegisterUser(AuthUser: UserWithPassword) {
-  return (dispatch: AppDispatch) => {
-    return Api.createUserWithEmailAndPassword(
+  return async (dispatch: AppDispatch) => {
+    await Api.createUserWithEmailAndPassword(
       AuthUser.email,
       AuthUser.password!,
-    )
-      .then((data) => {
-        const user = removeKeyValuePairsFromObject<User>(AuthUser, [
-          'password',
-          'cPassword',
-          AuthUser.userType !== 'agent' ? '' : 'status',
-        ]);
-        user.id = data.uid;
+    ).then((data) => {
+      const user = removeKeyValuePairsFromObject<User>(AuthUser, [
+        'password',
+        'cPassword',
+        AuthUser.userType !== 'agent' ? '' : 'status',
+      ]);
+      user.id = data.uid;
 
-        localStorage.setItem('uid', user.id);
-        dispatch(createOrUpdateUser(user) as unknown as AnyAction);
-      })
-      .catch((err) => {
-        throw new Error(err.message);
-      });
+      localStorage.setItem('uid', user.id);
+      dispatch(toAnyAction(createOrUpdateUser(user)));
+    });
   };
 }
 
 export function createOrUpdateUser(user: User) {
-  return Api.recordAccountDetails(user);
+  return async (dispatch: AppDispatch) => {
+    return Api.recordAccountDetails(user);
+  };
 }
 
 export function loginUser(AuthUser: { email: string; password: string }) {
@@ -73,6 +70,7 @@ export function getUser() {
     if (!uid) throw new Error('400: User is not authenticated');
     return Api.getUser(uid)
       .then((data) => {
+        console.log(data);
         dispatch(setUser(data));
       })
       .catch((err) => {
