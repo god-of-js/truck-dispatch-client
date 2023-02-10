@@ -113,8 +113,8 @@ const ImageContainer = styled.div`
     display: block;
     height: 100%;
     width: 65%;
-    background-image: url(${({ isTransporter }: { isTransporter: boolean }) =>
-      isTransporter ? TransporterImage : AgentImage});
+    background: linear-gradient(var(--color-gray-10), var(--color-gray-10)), url(${({ isTransporter }: { isTransporter: boolean }) =>
+    isTransporter ? TransporterImage : AgentImage});
     background-size: cover;
     background-position: center;
     padding-top: 6%;
@@ -157,6 +157,7 @@ const ImageContainer = styled.div`
     }
   }
 `;
+
 
 const FormContainer = styled.div`
   width: 100%;
