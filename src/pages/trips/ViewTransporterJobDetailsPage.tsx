@@ -17,13 +17,14 @@ import UiBackButton from 'ui/UiBackButton';
 import Loader from 'components/layout/Loader';
 import ViewTripDetails from 'components/trips/ViewTripDetails';
 import NotFoundError from 'components/errors/NotFoundError';
+import { selectDashboardUser } from 'modules/Account';
 
 export default function ViewTransporterJobDetailsPage() {
   const { tripId } = useParams();
   const navigate = useNavigate();
   const job = tripId ? useSelector(selectJob(tripId)) : null;
   const [loading, setLoading] = useState(true);
-  const user = useSelector((state: RootState) => state.account.user);
+  const user = useSelector(selectDashboardUser);
   const bid = useSelector(selectBid(user?.id || '', 'transporterId'));
   const dispatch = useDispatch();
 

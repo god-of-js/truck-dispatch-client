@@ -5,15 +5,15 @@ import { Outlet } from 'react-router-dom';
 import { toAnyAction } from 'utils/helpers';
 import Loader from 'components/layout/Loader';
 import { getAgentTrips, getTransporterTrips } from 'modules/Trips';
-import { RootState } from 'modules/index';
+import { selectDashboardUser } from 'modules/Account';
 
 export default function DashboardLayout() {
-  const user = useSelector((state: RootState) => state.account.user);
+  const user = useSelector(selectDashboardUser);
   const dispatch = useDispatch();
   const [isLoading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!user?.id) throw new Error('404: User should exist');
+  function loadTrips() {
+    if (!user) return;
     if (user.userType === 'agent') {
       dispatch(toAnyAction(getAgentTrips(user.id))).finally(() => {
         setLoading(false);
@@ -23,6 +23,9 @@ export default function DashboardLayout() {
         setLoading(false);
       });
     }
+  }
+  useEffect(() => {
+    loadTrips();
   }, []);
 
   const Component = isLoading ? (

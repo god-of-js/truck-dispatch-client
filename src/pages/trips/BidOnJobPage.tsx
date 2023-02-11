@@ -1,6 +1,7 @@
 import userEvent from '@testing-library/user-event';
 import NotFoundError from 'components/errors/NotFoundError';
 import Loader from 'components/layout/Loader';
+import { selectDashboardUser } from 'modules/Account';
 import { RootState } from 'modules/index';
 import { getBidsWithTripId, selectBid, submitBid } from 'modules/Trips';
 import React, { useEffect, useState } from 'react';
@@ -22,7 +23,7 @@ import BidForJobSchema from 'utils/validations/BidForJobSchema';
 
 export default function BidOnJob() {
   const { tripId } = useParams();
-  const user = useSelector((state: RootState) => state.account.user);
+  const user = useSelector(selectDashboardUser);
   const bid = useSelector(selectBid(user?.id || '', 'transporterId'));
 
   const dispatch = useDispatch();

@@ -15,6 +15,7 @@ export default function UiTabs({ tabs }: Props) {
   const urlLocation = useLocation();
   return (
     <Tabs>
+      {/* TODO: figure out how to retain active state for child routes. */}
       {tabs.map((tab, index) => (
         <Tab isActive={tab.path === urlLocation.pathname} key={index}>
           {tab.path ? (

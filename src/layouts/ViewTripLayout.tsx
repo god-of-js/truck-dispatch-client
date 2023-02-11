@@ -1,15 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Suspense } from 'react';
-import { Outlet, useParams } from 'react-router-dom';
+import { Outlet, useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import sizes from 'utils/sizes';
 
 import Loader from 'components/layout/Loader';
 import UiTabs from 'components/ui/UiTabs';
+import UiBackButton from 'ui/UiBackButton';
 
 export default function ViewTrip() {
   const { tripId } = useParams();
+  const [is400, setIs400] = useState(false);
   const agentRoutes = [
     {
       label: 'Trip Details',
@@ -25,14 +27,19 @@ export default function ViewTrip() {
     },
   ];
 
-  useEffect(() => {});
+  useEffect(() => {
+    //   TODO: show user no trip id was found.
+    if (!tripId) setIs400(true);
+  });
 
   return (
     <>
+      {/* TODO: handle is400 */}
       <TabContainer>
         <UiTabs tabs={agentRoutes} />
       </TabContainer>
       <OutletContainer>
+        <UiBackButton />
         <Suspense fallback={<Loader />}>
           <Outlet />
         </Suspense>

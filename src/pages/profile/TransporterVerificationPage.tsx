@@ -2,8 +2,11 @@ import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { RootState } from '../../modules';
-import { createOrUpdateUser, getUser } from '../../modules/Account';
+import {
+  createOrUpdateUser,
+  getUsers,
+  selectDashboardUser,
+} from '../../modules/Account';
 
 import User from 'types/User';
 
@@ -17,7 +20,7 @@ import AccessDenied from '../../assets/img/access-denied.svg';
 export default function TransporterVerificationPage() {
   const dispatch = useDispatch();
   const [isVerified, setIsVerified] = useState(false);
-  const user = useSelector((state: RootState) => state.account.user);
+  const user = useSelector(selectDashboardUser);
   const userHasBeenVerified = <MessageWithImage />;
   const userIsAwaitingVerification = (
     <MessageWithImage
@@ -61,7 +64,7 @@ export default function TransporterVerificationPage() {
     };
     dispatch(toAnyAction(createOrUpdateUser(verificationPendingUser))).then(
       () => {
-        dispatch(toAnyAction(getUser()));
+        dispatch(toAnyAction(getUsers()));
       },
     );
   }

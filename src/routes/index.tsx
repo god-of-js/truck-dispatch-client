@@ -8,6 +8,7 @@ const AuthLayout = lazy(() => import('../layouts/AuthLayout'));
 const DashboardLayout = lazy(() => import('../layouts/DashboardLayout'));
 const ProfileLayout = lazy(() => import('../layouts/ProfileLayout'));
 const ViewTripLayout = lazy(() => import('../layouts/ViewTripLayout'));
+const ViewTripBidsLayout = lazy(() => import('../layouts/ViewTripBidsLayout'));
 const TripsLayout = lazy(() => import('../layouts/TripsLayout'));
 
 const ComponentsView = lazy(() => import('../pages/Components'));
@@ -32,6 +33,8 @@ const MyTripsPage = lazy(() => import('../pages/trips/MyTripsPage'));
 const NewTripPage = lazy(() => import('../pages/trips/NewTripPage'));
 const ViewTripPage = lazy(() => import('../pages/trips/ViewTripPage'));
 const ViewTripBidsPage = lazy(() => import('../pages/trips/ViewTripBidsPage'));
+const ViewTripBidPage = lazy(() => import('../pages/trips/ViewTripBidPage'));
+const BidCheckoutPage = lazy(() => import('../pages/trips/BidCheckoutPage'));
 
 const TransporterJobsPage = lazy(
   () => import('../pages/trips/TransporterJobsPage'),
@@ -91,14 +94,31 @@ const router = createBrowserRouter([
             element: <ViewTripLayout />,
             children: [
               {
-                path: '',
+                path: '/my-trips/:tripId',
                 id: 'View Trip',
                 element: <ViewTripPage />,
               },
               {
                 path: '/my-trips/:tripId/bids',
-                id: 'View Trip Bids',
-                element: <ViewTripBidsPage />,
+                id: 'View Trip Bids Layout',
+                element: <ViewTripBidsLayout />,
+                children: [
+                  {
+                    path: '',
+                    id: 'View Trip Bids',
+                    element: <ViewTripBidsPage />,
+                  },
+                  {
+                    path: '/my-trips/:tripId/bids/:bidId',
+                    id: 'View Trip Bid',
+                    element: <ViewTripBidPage />,
+                  },
+                  {
+                    path: '/my-trips/:tripId/bids/:bidId/checkout',
+                    id: 'Checkout Trip Bid',
+                    element: <BidCheckoutPage />,
+                  },
+                ],
               },
             ],
           },

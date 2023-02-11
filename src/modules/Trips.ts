@@ -53,7 +53,7 @@ export const selectJob = (jobId: string) =>
 const bids = (state: RootState) => state.trips.bids;
 export const selectBid = (
   valueToQueryWith: string,
-  queryParam: 'id' | 'transporterId',
+  queryParam: 'id' | 'transporterId' = 'id',
 ) =>
   createSelector(bids, (bidArr: Bid[]) => {
     return bidArr.find((bid) => valueToQueryWith === bid[queryParam]);

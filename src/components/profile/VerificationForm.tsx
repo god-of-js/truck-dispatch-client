@@ -4,7 +4,10 @@ import styled from 'styled-components';
 
 import { uploadItem } from '../../api/Cloudinary';
 import { RootState } from '../../modules';
-import { sendVerificationDetailsToAdmin } from 'modules/Account';
+import {
+  selectDashboardUser,
+  sendVerificationDetailsToAdmin,
+} from 'modules/Account';
 import { toAnyAction } from 'utils/helpers';
 import TransporterValidationSchema from 'utils/validations/TransporterValidationSchema';
 
@@ -19,7 +22,7 @@ interface Props {
   onVerified: () => void;
 }
 export default function VerificationForm({ onVerified = () => {} }: Props) {
-  const user = useSelector((state: RootState) => state.account.user);
+  const user = useSelector(selectDashboardUser);
 
   const dispatch = useDispatch();
   const [formData, setFormData] = useState<VerificationFormData>({

@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 import Trip from 'types/Trip';
 import sizes from 'utils/sizes';
-import { RootState } from '../../modules';
 import uuidv4 from 'utils/uuid';
 import { toAnyAction } from 'utils/helpers';
 import { createOrUpdateTrip } from 'modules/Trips';
@@ -15,6 +14,7 @@ import ViewTripDetails from 'components/trips/ViewTripDetails';
 import MessageWithImage from 'ui/MessageWithImage';
 import UiButton from 'ui/UiButton';
 import UiBackButton from 'ui/UiBackButton';
+import { selectDashboardUser } from 'modules/Account';
 
 interface Step extends TimelineStep {
   value: CurrentStep;
@@ -27,7 +27,7 @@ type CurrentStep =
   | 'payment';
 
 export default function NewTripPage() {
-  const user = useSelector((state: RootState) => state.account.user);
+  const user = useSelector(selectDashboardUser);
   const dispatch = useDispatch();
 
   const newTripSteps: Step[] = [

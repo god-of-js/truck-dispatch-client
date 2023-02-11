@@ -1,58 +1,86 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import React, { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { getBidsWithTripId } from 'modules/Trips';
-import { toAnyAction } from 'utils/helpers';
+import { abbreviateNumber } from 'utils/helpers';
 
-import Loader from 'components/layout/Loader';
 import UiTable from 'ui/UiTable';
 import { RootState } from 'modules/index';
+import Bid from 'types/Bid';
+import UiAvatar from 'ui/UiAvatar';
 
 export default function ViewTripBidsPage() {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { tripId } = useParams();
-  const bids = useSelector((state: RootState) => state.trips.bids)
-  const [loading, setLoading] = useState(true);
+  const bids = useSelector((state: RootState) => state.trips.bids);
+  const users = useSelector((state: RootState) => state.account.users);
+
   const headers = [
-      {
-        title: 'Transporter',
-        query: 'presentLocation' 
-      },
-      {
-        title: 'Transporter Ratings',
-        query: 'presentLocation' 
-      },
-      {
-        title: 'Truck Present Location',
-        query: 'presentLocation' 
-      },
-  ]
-  useEffect(() => {
-    //   TODO: show user no trip id was found.
-    if (!tripId) throw new Error('400: Trip was not provided');
-    dispatch(toAnyAction(getBidsWithTripId(tripId))).finally(() =>
-      setLoading(false),
-    );
-  });
+    {
+      title: 'Transporter',
+      query: 'transporter',
+    },
+    {
+      title: 'Price of trip',
+      query: 'price',
+    },
+    {
+      title: 'Transporter Ratings',
+      query: 'price',
+    },
+    {
+      title: 'No. of Completed Trips',
+      query: 'price',
+    },
+    {
+      title: 'Truck Present Location',
+      query: 'presentLocation',
+    },
+  ];
+
+  function viewBid(bidId: string) {
+    navigate(`/my-trips/${tripId}/bids/${bidId}`);
+  }
+
+  function getUser(userId: string) {
+    return users.find(({ id }) => userId === id) || null;
+  }
+
+  const bidsData = useMemo(() => {
+    return bids.map((bid: Bid) => ({
+      ...bid,
+      price: <>&#8358; {abbreviateNumber(bid.price)}</>,
+      transporter: (
+        <TransporterDetails>
+          <UiAvatar />
+          <span>{`${getUser(bid.transporterId)?.firstName} ${
+            getUser(bid.transporterId)?.lastName
+          }`}</span>
+        </TransporterDetails>
+      ),
+    }));
+  }, [bids]);
 
   return (
     <PageStyling>
-      {loading ? (
-        <Loader />
-      ) : (
-        <UiTable
-          data={bids}
-          headers={headers}
-          tableTitle="Bids by transporters"
-          options={[]}
-        />
-      )}
+      <UiTable
+        data={bidsData}
+        headers={headers}
+        tableTitle="Bids by transporters"
+        options={[]}
+        onRowClick={viewBid}
+      />
     </PageStyling>
   );
 }
 
 const PageStyling = styled.div`
   padding: 0 ${pxToRem(20)};
+`;
+
+const TransporterDetails = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${pxToRem(8)};
 `;

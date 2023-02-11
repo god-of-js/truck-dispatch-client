@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { toAnyAction } from 'utils/helpers';
 import sizes from '../utils/sizes';
 
-import { getUser } from 'modules/Account';
+import { getUsers } from 'modules/Account';
 
 import DashboardSidebar from 'components/layout/DashboardSidebar';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
@@ -17,7 +17,7 @@ export default function DashboardLayout() {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(toAnyAction(getUser()))
+    dispatch(toAnyAction(getUsers()))
       .catch((err: Error) => {
         console.log(err.message);
       })

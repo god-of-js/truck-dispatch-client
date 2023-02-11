@@ -86,21 +86,21 @@ const Heading = styled.h2`
 const Section = styled.div`
   display: flex;
   align-items: flex-start;
+  flex-direction: column;
   gap: ${pxToRem(8)};
   font-size: ${pxToRem(16)};
   margin-bottom: ${pxToRem(24)};
 
   .title {
     color: var(--color-gray-400);
-    width: 50%;
   }
 
   .value {
     color: var(--color-gray-600);
-    width: 50%;
   }
 
   @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
+    flex-direction: row;
     .title {
       width: 35%;
     }
