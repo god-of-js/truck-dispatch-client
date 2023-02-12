@@ -34,6 +34,7 @@ export default function BidOnJob() {
     id: uuidv4(),
     transporterId: user?.id || '',
     tripId: tripId || '',
+    status: 'pending'
   });
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);

@@ -5,4 +5,5 @@ export default interface Bid {
   presentLocation?: string;
   transporterId: string;
   tripId: string;
+  status: 'pending' | 'accepted' | 'rejected';
 }

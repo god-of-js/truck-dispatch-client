@@ -49,3 +49,11 @@ export function tdPercentage(amount: number | string, percent = 7) {
   }
   return Math.round((percent / 100) * value);
 }
+
+export function nairaToKobo(amount: string | number) {
+  let value = amount;
+  if (typeof value === 'string') {
+    value = parseInt(`${amount}`);
+  }
+  return value * 100;
+}

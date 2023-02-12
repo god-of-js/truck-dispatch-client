@@ -41,11 +41,6 @@ export const selectTrip = (tripId: string) =>
   createSelector(trips, (trips: Trip[]) =>
     trips.find((trip) => trip.id === tripId),
   );
-export const selectTrips = (valueToQueryWith: string, queryParam: 'status') =>
-  createSelector(trips, (arr) =>
-    arr.filter(() => arr[queryParam] === valueToQueryWith),
-  );
-
 const jobs = (state: RootState) => state.trips.jobs;
 export const selectJob = (jobId: string) =>
   createSelector(jobs, (jobs: Trip[]) => jobs.find(({ id }) => id === jobId));

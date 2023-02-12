@@ -2,6 +2,7 @@ import React from 'react';
 // These icons should be arranged alphabetically for easy sorting
 import {
   ArrowLeft,
+  ArrowRight,
   CaretDown,
   CaretUp,
   Eye,
@@ -18,6 +19,7 @@ import styled from 'styled-components';
 // These icons should be arranged alphabetically for easy sorting
 const icons = {
   ArrowLeft: <ArrowLeft />,
+  ArrowRight: <ArrowRight />,
   CaretDown: <CaretDown />,
   CaretUp: <CaretUp />,
   Eye: <Eye />,
