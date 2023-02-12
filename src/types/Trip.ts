@@ -12,7 +12,7 @@ export default interface Trip {
   weight: number;
   description?: string;
   agentId: string;
-  responsibleTransporter?: string;
+  responsibleTransporterId?: string;
   status:
     | 'awaiting_transporter'
     | 'awaiting_payment'

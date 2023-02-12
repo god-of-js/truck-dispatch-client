@@ -1,34 +1,45 @@
-import React, { Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Suspense } from 'react';
+import { Outlet, useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import sizes from '../utils/sizes';
+import sizes from 'utils/sizes';
 
 import Loader from 'components/layout/Loader';
 import UiTabs from 'components/ui/UiTabs';
+import UiBackButton from 'ui/UiBackButton';
 
-export default function ProfileLayout() {
-  const transporterRoutes = [
+export default function ViewTrip() {
+  const { tripId } = useParams();
+  const [is400, setIs400] = useState(false);
+  const agentRoutes = [
     {
-      label: 'Profile',
-      path: '/profile',
+      label: 'Trip Details',
+      path: `/my-trips/${tripId}`,
     },
     {
-      label: 'Accounts',
-      path: '/profile/accounts',
+      label: 'View Bids',
+      path: `/my-trips/${tripId}/bids`,
     },
     {
-      label: 'Verification',
+      label: 'Driver Details',
       path: '/profile/verification',
     },
   ];
 
+  useEffect(() => {
+    //   TODO: show user no trip id was found.
+    if (!tripId) setIs400(true);
+  });
+
   return (
     <>
+      {/* TODO: handle is400 */}
       <TabContainer>
-        <UiTabs tabs={transporterRoutes} />
+        <UiTabs tabs={agentRoutes} />
       </TabContainer>
       <OutletContainer>
+        <UiBackButton />
         <Suspense fallback={<Loader />}>
           <Outlet />
         </Suspense>

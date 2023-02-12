@@ -34,8 +34,8 @@ class ApiService {
     return this.setDoc('user', data.id, data);
   }
 
-  getUser(id: string) {
-    return this.getItem<User>('user', id);
+  getUsers() {
+    return this.getCollection<User>('user');
   }
 
   sendVerificationDetailsToAdmin(userId: string, data: unknown) {
@@ -69,7 +69,7 @@ class ApiService {
     });
   }
 
-  getTransporterJobs() {
+  getJobs() {
     // Jobs are trips that haven't been claimed by any transporter and
     return this.query<Trip>({
       collectionName: 'trip',
@@ -100,9 +100,12 @@ class ApiService {
     return setDoc(doc(db, collectionName, id), data);
   }
 
-  private async getCollection(collectionName: string): Promise<unknown> {
+  private async getCollection<T>(collectionName: string): Promise<T[]> {
     const rawObjects = await getDocs(collection(db, collectionName));
-    return rawObjects.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    return rawObjects.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    })) as unknown as T[];
   }
 
   private async query<T = unknown>({

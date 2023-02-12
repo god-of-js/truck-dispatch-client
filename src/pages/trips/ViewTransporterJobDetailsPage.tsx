@@ -8,24 +8,23 @@ import sizes from 'utils/sizes';
 
 import {
   getBidsWithTripId,
-  getTransporterJobs,
+  getJobs,
   selectBid,
-  selectTransporterJob,
+  selectJob,
 } from 'modules/Trips';
 import { RootState } from 'modules/index';
 import UiBackButton from 'ui/UiBackButton';
 import Loader from 'components/layout/Loader';
 import ViewTripDetails from 'components/trips/ViewTripDetails';
 import NotFoundError from 'components/errors/NotFoundError';
+import { selectDashboardUser } from 'modules/Account';
 
 export default function ViewTransporterJobDetailsPage() {
   const { tripId } = useParams();
   const navigate = useNavigate();
-  const transporterJob = tripId
-    ? useSelector(selectTransporterJob(tripId))
-    : null;
+  const job = tripId ? useSelector(selectJob(tripId)) : null;
   const [loading, setLoading] = useState(true);
-  const user = useSelector((state: RootState) => state.account.user);
+  const user = useSelector(selectDashboardUser);
   const bid = useSelector(selectBid(user?.id || '', 'transporterId'));
   const dispatch = useDispatch();
 
@@ -38,23 +37,23 @@ export default function ViewTransporterJobDetailsPage() {
   useEffect(() => {
     if (tripId) {
       Promise.all([
-        (dispatch(toAnyAction(getTransporterJobs())),
+        (dispatch(toAnyAction(getJobs())),
         dispatch(toAnyAction(getBidsWithTripId(tripId)))),
       ]).finally(() => {
         setLoading(false);
       });
     }
-  });
+  }, [bid]);
   return (
     <ViewTransporterJobPageStyle>
       <UiBackButton />
       {loading ? (
         <Loader />
       ) : (
-        (transporterJob && (
+        (job && (
           <CardContainer>
             <ViewTripDetails
-              data={transporterJob}
+              data={job}
               nextHandler={bidForJob}
               prevHandler={goBack}
               loading={loading}

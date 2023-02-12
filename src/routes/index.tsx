@@ -7,6 +7,9 @@ const PageError = lazy(() => import('../components/errors/PageError'));
 const AuthLayout = lazy(() => import('../layouts/AuthLayout'));
 const DashboardLayout = lazy(() => import('../layouts/DashboardLayout'));
 const ProfileLayout = lazy(() => import('../layouts/ProfileLayout'));
+const ViewTripLayout = lazy(() => import('../layouts/ViewTripLayout'));
+const ViewTripBidsLayout = lazy(() => import('../layouts/ViewTripBidsLayout'));
+const TripsLayout = lazy(() => import('../layouts/TripsLayout'));
 
 const ComponentsView = lazy(() => import('../pages/Components'));
 
@@ -28,15 +31,19 @@ const TransporterAccountsPage = lazy(
 // DASHBOARD
 const MyTripsPage = lazy(() => import('../pages/trips/MyTripsPage'));
 const NewTripPage = lazy(() => import('../pages/trips/NewTripPage'));
+const ViewTripPage = lazy(() => import('../pages/trips/ViewTripPage'));
+const ViewTripBidsPage = lazy(() => import('../pages/trips/ViewTripBidsPage'));
+const ViewTripBidPage = lazy(() => import('../pages/trips/ViewTripBidPage'));
+const BidCheckoutPage = lazy(() => import('../pages/trips/BidCheckoutPage'));
+
 const TransporterJobsPage = lazy(
   () => import('../pages/trips/TransporterJobsPage'),
 );
 const ViewTransporterJobDetailsPage = lazy(
   () => import('../pages/trips/ViewTransporterJobDetailsPage'),
 );
-const BidOnJob = lazy(() => import('../pages/trips/BidOnJob'));
+const BidOnJobPage = lazy(() => import('../pages/trips/BidOnJobPage'));
 
-// TODO: ask Ben for how to get the name prop out on the nav bar.
 const router = createBrowserRouter([
   {
     path: '/',
@@ -68,8 +75,54 @@ const router = createBrowserRouter([
       },
       {
         path: '/my-trips',
-        id: 'My Trips',
-        element: <MyTripsPage />,
+        id: 'My Trips Layout',
+        element: <TripsLayout />,
+        children: [
+          {
+            path: '',
+            id: 'My Trips',
+            element: <MyTripsPage />,
+          },
+          {
+            path: '/my-trips/new',
+            id: 'New Trip',
+            element: <NewTripPage />,
+          },
+          {
+            path: '/my-trips/:tripId',
+            id: 'View Trip Layout',
+            element: <ViewTripLayout />,
+            children: [
+              {
+                path: '/my-trips/:tripId',
+                id: 'View Trip',
+                element: <ViewTripPage />,
+              },
+              {
+                path: '/my-trips/:tripId/bids',
+                id: 'View Trip Bids Layout',
+                element: <ViewTripBidsLayout />,
+                children: [
+                  {
+                    path: '',
+                    id: 'View Trip Bids',
+                    element: <ViewTripBidsPage />,
+                  },
+                  {
+                    path: '/my-trips/:tripId/bids/:bidId',
+                    id: 'View Trip Bid',
+                    element: <ViewTripBidPage />,
+                  },
+                  {
+                    path: '/my-trips/:tripId/bids/:bidId/checkout',
+                    id: 'Checkout Trip Bid',
+                    element: <BidCheckoutPage />,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       },
       {
         path: '/available-jobs',
@@ -84,12 +137,7 @@ const router = createBrowserRouter([
       {
         path: '/available-jobs/:tripId/bid',
         id: 'Bid on Job',
-        element: <BidOnJob />,
-      },
-      {
-        path: '/my-trips/new',
-        id: 'New Trip',
-        element: <NewTripPage />,
+        element: <BidOnJobPage />,
       },
     ],
   },
