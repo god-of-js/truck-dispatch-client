@@ -36,3 +36,16 @@ export function abbreviateNumber(
   }
   return num.toString();
 }
+
+export function priceWithTDPercent(amount: number | string, percent = 7) {
+  const value = parseInt(`${amount}`);
+  return value + tdPercentage(amount);
+}
+
+export function tdPercentage(amount: number | string, percent = 7) {
+  let value = amount;
+  if (typeof value === 'string') {
+    value = parseInt(`${amount}`);
+  }
+  return Math.round((percent / 100) * value);
+}
