@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import sizes from 'utils/sizes';
 import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
 import UiIcon, { Icons } from '../ui/UiIcon';
+import { selectDashboardUser, selectUser } from 'modules/Account';
 
 interface Route {
   iconName: Icons;
@@ -14,7 +15,7 @@ interface Route {
 }
 
 export default function DashboardSidebar() {
-  const user = useSelector((state: RootState) => state.account.user);
+  const user = useSelector(selectDashboardUser);
 
   const transporterRoutes: Route[] = [
     {
