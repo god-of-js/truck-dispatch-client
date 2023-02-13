@@ -8,6 +8,7 @@ import sizes from 'utils/sizes';
 import { selectTrip } from 'modules/Trips';
 import ViewTripDetails from 'components/trips/ViewTripDetails';
 import NotFoundError from 'components/errors/NotFoundError';
+import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
 
 export default function ViewTripDetailsPage() {
   const { tripId } = useParams();
@@ -16,9 +17,17 @@ export default function ViewTripDetailsPage() {
   return (
     <>
       {(trip && (
-        <CardContainer>
-          <ViewTripDetails data={trip} notConfirm hideActionButtons />
-        </CardContainer>
+        <>
+          <CardContainer>
+            <TripPickupAndDropOff
+              pickup={trip?.pickUpAddress || ''}
+              dropOff={trip?.deliveryAddress || ''}
+            />
+          </CardContainer>
+          <CardContainer>
+            <ViewTripDetails data={trip} notConfirm hideActionButtons />
+          </CardContainer>
+        </>
       )) || <NotFoundError />}
     </>
   );
