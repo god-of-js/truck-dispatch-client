@@ -57,7 +57,8 @@ export const selectBid = (
 // ASYNC THUNKS
 export function createOrUpdateTrip(data: Trip) {
   return () => {
-    return Api.createOrUpdateTrip(data);
+    console.log(data);
+    return Api.createOrUpdateTrip(data).catch((err) => console.log(err));
   };
 }
 
@@ -83,10 +84,11 @@ export function getJobs() {
   };
 }
 
-export function submitBid(data: Bid) {
+export function createOrUpdateBid(data: Bid) {
   return () => {
     if (!data.tripId) throw new Error('400: No trip id been sent');
-    return Api.submitBid(data);
+    console.log(data);
+    return Api.createOrUpdateBid(data).catch((err) => console.log(err));
   };
 }
 

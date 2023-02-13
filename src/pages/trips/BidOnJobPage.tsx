@@ -1,13 +1,12 @@
-import userEvent from '@testing-library/user-event';
-import NotFoundError from 'components/errors/NotFoundError';
-import Loader from 'components/layout/Loader';
-import { selectDashboardUser } from 'modules/Account';
-import { RootState } from 'modules/index';
-import { getBidsWithTripId, selectBid, submitBid } from 'modules/Trips';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+
+import NotFoundError from 'components/errors/NotFoundError';
+import Loader from 'components/layout/Loader';
+import { selectDashboardUser } from 'modules/Account';
+import { getBidsWithTripId, selectBid, createOrUpdateBid } from 'modules/Trips';
 import Bid from 'types/Bid';
 import MessageWithImage from 'ui/MessageWithImage';
 import UiBackButton from 'ui/UiBackButton';
@@ -34,7 +33,7 @@ export default function BidOnJob() {
     id: uuidv4(),
     transporterId: user?.id || '',
     tripId: tripId || '',
-    status: 'pending'
+    status: 'pending',
   });
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
@@ -43,7 +42,7 @@ export default function BidOnJob() {
 
   function sendJobBid() {
     setLoading(true);
-    dispatch(toAnyAction(submitBid(formData)))
+    dispatch(toAnyAction(createOrUpdateBid(formData)))
       .then(() => {
         setHasSentBid(true);
       })

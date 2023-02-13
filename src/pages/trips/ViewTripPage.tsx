@@ -17,7 +17,7 @@ export default function ViewTripDetailsPage() {
     <>
       {(trip && (
         <CardContainer>
-          <ViewTripDetails data={trip} hideActionButtons />
+          <ViewTripDetails data={trip} notConfirm hideActionButtons />
         </CardContainer>
       )) || <NotFoundError />}
     </>

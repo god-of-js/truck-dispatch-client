@@ -16,7 +16,7 @@ export default interface Trip {
   status:
     | 'awaiting_transporter'
     | 'awaiting_payment'
-    | 'paid'
+    | 'payment_complete'
     | 'in-progress'
     | 'completed';
 }

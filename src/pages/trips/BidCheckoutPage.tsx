@@ -1,40 +1,79 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useMemo, useState } from 'react';
+import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
 import { usePaystackPayment } from 'react-paystack';
+import { Link, useLocation, useNavigate, useNavigation, useParams } from 'react-router-dom';
 
 import { selectDashboardUser } from 'modules/Account';
-import { Link, useParams } from 'react-router-dom';
-import { selectBid } from 'modules/Trips';
-import styled from 'styled-components';
+import { createOrUpdateBid, createOrUpdateTrip, selectBid, selectTrip } from 'modules/Trips';
 import sizes from 'utils/sizes';
-
-import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
+import { paystackPublickKey } from 'utils/privateKeys';
 import {
   abbreviateNumber,
   nairaToKobo,
   priceWithTDPercent,
   tdPercentage,
+  toAnyAction,
 } from 'utils/helpers';
+
+import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
 import UiButton from 'ui/UiButton';
 import UiIcon from 'ui/UiIcon';
+import { RootState } from 'modules/index';
+import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
+import UiAvatar from 'ui/UiAvatar';
 
 export default function BidCheckoutPage() {
-  const { bidId } = useParams();
+  const { bidId, tripId } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation()
   const user = useSelector(selectDashboardUser);
+  const users = useSelector((state: RootState) => state.account.users);
   const bid = useSelector(selectBid(bidId || ''));
+  const trip = useSelector(selectTrip(tripId || ''));
+  const [loading, setLoading] = useState(false);
 
   const paystackConfig = {
     email: user?.email || '',
     firstName: user?.firstName,
     lastName: user?.lastName,
     phone: user?.phone,
-    amount: nairaToKobo(priceWithTDPercent(bid?.price || 0)),
-    publicKey: 'pk_test_0a7a8b8adcd87dea506fae49778b4d4c5b783f41',
+    amount: priceWithTDPercent(bid?.price || 0),
+    publicKey: paystackPublickKey,
   };
-  function onSuccess(data?: unknown) {
-    // Mark bid 
-  }
   const initializePayment = usePaystackPayment(paystackConfig);
+
+  const responsibleTransporter = useMemo(() => {
+    return users.find(({ id }) => id === bid?.transporterId) || null;
+  }, [users, bid]);
+
+  function onSuccess(_data?: unknown) {
+    if (!bid || !trip) return;
+    setLoading(true);
+    Promise.all([
+      dispatch(
+        toAnyAction(
+          createOrUpdateBid({
+            ...bid,
+            status: 'accepted',
+          }),
+        ),
+      ),
+      dispatch(
+        toAnyAction(
+          createOrUpdateTrip({
+            ...trip,
+            status: 'payment_complete',
+            responsibleTransporterId: bid.transporterId
+          }),
+        ),
+      ),
+    ]).then(() => {
+      navigate(`my-trips/${tripId}`);
+    }).finally(() => setLoading(false));
+  }
+
   return (
     <CardContainer>
       <header>
@@ -47,7 +86,7 @@ export default function BidCheckoutPage() {
         </div>
       </header>
       <h2>Thanks for trusting us to handle your dispatch, {user?.firstName}</h2>
-      <h4>We are </h4>
+      <h4>We wish you a safe trucking run.</h4>
       <Receipt>
         <Section>
           <div>Total</div>
@@ -64,20 +103,47 @@ export default function BidCheckoutPage() {
           <div>&#8358;{abbreviateNumber(tdPercentage(bid?.price || 0))}</div>
         </Section>
         <Section>
-          <UiButton onClick={() => initializePayment(onSuccess)}>
+          <UiButton
+            loading={loading}
+            onClick={() => initializePayment(onSuccess)}
+          >
             Complete Payment
           </UiButton>
         </Section>
       </Receipt>
       <SafetyPrecautions>
         <h2>The safety of your goods is our priority</h2>
-        <p>We are committed to improving your experience and are always looking for ways to ensure your goods as safe as possible when dispatching with us. </p>
+        <p>
+          We are committed to improving your experience and are always looking
+          for ways to ensure your goods are as safe as possible when dispatching
+          with us.{' '}
+        </p>
         {/* TODO: replace link with link to blog */}
-        <Link to="/"> <div className='learn-more-text'>Learn More</div> <UiIcon icon="ArrowRight" size="20" /></Link>
+        <Link to="/">
+          {' '}
+          <div className="learn-more-text">Learn More</div>{' '}
+          <UiIcon icon="ArrowRight" size="20" />
+        </Link>
       </SafetyPrecautions>
       <TripDetails>
-
+        <h2>Trip Details</h2>
+        <TripPickupAndDropOff
+          pickup={trip?.pickUpAddress || ''}
+          dropOff={trip?.deliveryAddress || ''}
+        />
+        <div className="transporter-details">
+          {/* TODO: input user avatar when avatars are ready */}
+          <UiAvatar />
+          <div>
+            <h4 className="your-transporter-header">Your Transporter</h4>
+            <div className="transporter-name">{`${responsibleTransporter?.firstName} ${responsibleTransporter?.lastName}`}</div>
+          </div>
+        </div>
       </TripDetails>
+      {/* TODO: input referral details for user to refer another client or driver to enable him earn bonuses */}
+      <ContactSupportMessage>
+        If you need help, contact support
+      </ContactSupportMessage>
     </CardContainer>
   );
 }
@@ -117,7 +183,7 @@ const CardContainer = styled.div`
     padding: 0 ${pxToRem(20)};
   }
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    width: 50%;
+    width: 60%;
   }
   @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
     width: 35%;
@@ -126,7 +192,7 @@ const CardContainer = styled.div`
 
 const Receipt = styled.div`
   margin-top: ${pxToRem(60)};
-  padding: 0 ${pxToRem(24)};
+  padding: 0 ${pxToRem(24)} ${pxToRem(24)} ${pxToRem(24)};
 `;
 
 const Section = styled.div`
@@ -157,10 +223,41 @@ const SafetyPrecautions = styled.section`
     margin-top: ${pxToRem(32)};
   }
   .learn-more-text {
-    margin-top: ${pxToRem(-4)}
+    margin-top: ${pxToRem(-4)};
   }
 `;
 
 const TripDetails = styled.section`
-  padding: ${pxToRem(24)};
-`
+  padding: ${pxToRem(12)} ${pxToRem(24)};
+
+  h2 {
+    padding: 0;
+  }
+
+  .transporter-details {
+    display: flex;
+    align-items: center;
+    gap: ${pxToRem(12)};
+    margin: ${pxToRem(16)} 0;
+    padding: ${pxToRem(16)} 0;
+    border-top: ${pxToRem(1)} solid var(--color-gray-200);
+
+    h4 {
+      font-size: ${pxToRem(14)};
+      color: var(--color-gray-400);
+      padding: 0;
+      margin: 0;
+    }
+
+    .transporter-name {
+      font-size: ${pxToRem(16)};
+      color: var(--color-gray-500);
+    }
+  }
+`;
+
+const ContactSupportMessage = styled.p`
+  font-size: ${pxToRem(14)};
+  color: var(--color-gray-400);
+  text-align: center;
+`;

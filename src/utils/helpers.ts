@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 
-export function removeKeyValuePairsFromObject<T>(
+export function removeKeyValuePairsFromObject<T extends Object>(
   obj: T,
   stringToBeRemoved: string[],
 ): T {

@@ -70,7 +70,6 @@ export function getUsers() {
     if (!uid) throw new Error('400: User is not authenticated');
     return Api.getUsers()
       .then((data) => {
-        console.log(data);
         dispatch(setUsers(data));
       })
       .catch((err) => {
@@ -93,12 +92,13 @@ export const selectDashboardUser = createSelector(
   },
 );
 
+export const selectTransporters = createSelector(users, (usersArr: User[]) => usersArr.filter(({userType}) => userType === 'transporter'));
+
 // TODO: add middlewares to check if user is a transporter or admin before triggering certain actions.
 // https://medium.com/netscape/creating-custom-middleware-in-react-redux-961570459ecb#:~:text=To%20apply%20a%20middleware%20in,when%20an%20action%20is%20dispatched.
 export const sendVerificationDetailsToAdmin = (
   verificationData: VerificationFormData,
 ) => {
-  // TODO: Ask ben: redux error ﻿ Actions must be plain objects. Use custom middleware for async actions.
   return (dispatch: AppDispatch, state: AppState) => {
     const userId = localStorage.getItem('uid');
     if (!userId) throw new Error('user is not authenticated');
