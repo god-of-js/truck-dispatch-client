@@ -1,9 +1,11 @@
+import { selectTransporters } from 'modules/Account';
 import { RootState } from 'modules/index';
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Trip from 'types/Trip';
+import UiAvatar from 'ui/UiAvatar';
 
 import UiButton from 'ui/UiButton';
 import UiTable from 'ui/UiTable';
@@ -11,6 +13,7 @@ import UiTable from 'ui/UiTable';
 export default function AgentTripPageContent() {
   const navigate = useNavigate();
   const trips = useSelector((state: RootState) => state.trips.trips);
+  const transporters = useSelector(selectTransporters);
 
   const headers = [
     {
@@ -41,6 +44,19 @@ export default function AgentTripPageContent() {
 
   function responsibleTransporterDetails(transporterId?: string) {
     if (!transporterId) return 'Not yet assigned';
+    const transporter = transporters.find(({ id }) => id === transporterId);
+
+    if (!transporter) return 'Invalid Transporter';
+
+    return (
+      <TransporterDetails>
+        <UiAvatar />
+        <div>
+          <div>{`${transporter.firstName} ${transporter.lastName}`}</div>
+          <div className="transporter-phone">{transporter.phone}</div>
+        </div>
+      </TransporterDetails>
+    );
   }
 
   const tripsData = useMemo(() => {
@@ -78,4 +94,14 @@ const CreateTripButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   margin-bottom: ${pxToRem(8)};
+`;
+
+const TransporterDetails = styled.div`
+  display: flex;
+  gap: ${pxToRem(8)};
+  align-items: center;
+  .transporter-phone {
+    font-weight: 400;
+    font-size: ${pxToRem(14)};
+  }
 `;

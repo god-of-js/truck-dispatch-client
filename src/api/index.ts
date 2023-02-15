@@ -79,7 +79,7 @@ class ApiService {
     });
   }
 
-  submitBid(data: Bid) {
+  createOrUpdateBid(data: Bid) {
     return this.setDoc('bid', data.id, data);
   }
 

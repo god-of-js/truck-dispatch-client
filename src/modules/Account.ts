@@ -26,6 +26,24 @@ export const { setUsers } = accountSlice.actions;
 
 export default accountSlice.reducer;
 
+const users = (state: RootState) => state.account.users;
+export const selectUser = (userId: string) =>
+  createSelector(users, (usersArr) =>
+    usersArr.find((user) => user.id === userId),
+  );
+export const selectDashboardUser = createSelector(
+  users,
+  (usersArr): User | null => {
+    const userId = localStorage.getItem('uid');
+    if (!userId) return null;
+    return usersArr.find((user) => user.id === userId) || null;
+  },
+);
+
+export const selectTransporters = createSelector(users, (usersArr: User[]) =>
+  usersArr.filter(({ userType }) => userType === 'transporter'),
+);
+
 export function RegisterUser(AuthUser: UserWithPassword) {
   return async (dispatch: AppDispatch) => {
     await Api.createUserWithEmailAndPassword(
@@ -70,7 +88,6 @@ export function getUsers() {
     if (!uid) throw new Error('400: User is not authenticated');
     return Api.getUsers()
       .then((data) => {
-        console.log(data);
         dispatch(setUsers(data));
       })
       .catch((err) => {
@@ -79,26 +96,11 @@ export function getUsers() {
   };
 }
 
-const users = (state: RootState) => state.account.users;
-export const selectUser = (userId: string) =>
-  createSelector(users, (usersArr) =>
-    usersArr.find((user) => user.id === userId),
-  );
-export const selectDashboardUser = createSelector(
-  users,
-  (usersArr): User | null => {
-    const userId = localStorage.getItem('uid');
-    if (!userId) return null;
-    return usersArr.find((user) => user.id === userId) || null;
-  },
-);
-
 // TODO: add middlewares to check if user is a transporter or admin before triggering certain actions.
 // https://medium.com/netscape/creating-custom-middleware-in-react-redux-961570459ecb#:~:text=To%20apply%20a%20middleware%20in,when%20an%20action%20is%20dispatched.
 export const sendVerificationDetailsToAdmin = (
   verificationData: VerificationFormData,
 ) => {
-  // TODO: Ask ben: redux error ﻿ Actions must be plain objects. Use custom middleware for async actions.
   return (dispatch: AppDispatch, state: AppState) => {
     const userId = localStorage.getItem('uid');
     if (!userId) throw new Error('user is not authenticated');

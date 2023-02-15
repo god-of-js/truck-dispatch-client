@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 
-export function removeKeyValuePairsFromObject<T>(
+export function removeKeyValuePairsFromObject<T extends Object>(
   obj: T,
   stringToBeRemoved: string[],
 ): T {
@@ -35,4 +35,25 @@ export function abbreviateNumber(
     }
   }
   return num.toString();
+}
+
+export function priceWithTDPercent(amount: number | string, percent = 7) {
+  const value = parseInt(`${amount}`);
+  return value + tdPercentage(amount);
+}
+
+export function tdPercentage(amount: number | string, percent = 7) {
+  let value = amount;
+  if (typeof value === 'string') {
+    value = parseInt(`${amount}`);
+  }
+  return Math.round((percent / 100) * value);
+}
+
+export function nairaToKobo(amount: string | number) {
+  let value = amount;
+  if (typeof value === 'string') {
+    value = parseInt(`${amount}`);
+  }
+  return value * 100;
 }

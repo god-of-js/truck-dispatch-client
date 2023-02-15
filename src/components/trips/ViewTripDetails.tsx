@@ -1,4 +1,6 @@
+import { selectTransporters } from 'modules/Account';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Trip from 'types/Trip';
 import UiButton from 'ui/UiButton';
@@ -10,6 +12,7 @@ interface Props {
   actionText?: string;
   isActionButtonDisabled?: boolean;
   hideActionButtons?: boolean;
+  notConfirm?: boolean;
   nextHandler?: () => void;
   prevHandler?: () => void;
 }
@@ -19,13 +22,16 @@ export default function ConfirmTripDetails({
   loading,
   actionText,
   hideActionButtons,
+  notConfirm = false,
   prevHandler,
   nextHandler,
 }: Props) {
+  const transporters = useSelector(selectTransporters);
+
   return (
     <Layout>
       {/* TODO: remove confirm text when not confirm */}
-      <Heading>Confirm Trip Details</Heading>
+      <Heading>{notConfirm ? '' : 'Confirm'} Trip Details</Heading>
       <Section>
         <div className="title">Pick Up Address</div>
         <div className="value">{data.pickUpAddress}</div>

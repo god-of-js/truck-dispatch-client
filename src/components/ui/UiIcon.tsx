@@ -2,11 +2,13 @@ import React from 'react';
 // These icons should be arranged alphabetically for easy sorting
 import {
   ArrowLeft,
+  ArrowRight,
   CaretDown,
   CaretUp,
   Eye,
   EyeSlash,
   House,
+  MapPin,
   Money,
   Suitcase,
   Truck,
@@ -18,12 +20,14 @@ import styled from 'styled-components';
 // These icons should be arranged alphabetically for easy sorting
 const icons = {
   ArrowLeft: <ArrowLeft />,
+  ArrowRight: <ArrowRight />,
   CaretDown: <CaretDown />,
   CaretUp: <CaretUp />,
   Eye: <Eye />,
   EyeSlash: <EyeSlash />,
   House: <House />,
   Money: <Money />,
+  MapPin: <MapPin />,
   Suitcase: <Suitcase />,
   Truck: <Truck />,
   User: <User />,

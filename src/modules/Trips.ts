@@ -41,11 +41,6 @@ export const selectTrip = (tripId: string) =>
   createSelector(trips, (trips: Trip[]) =>
     trips.find((trip) => trip.id === tripId),
   );
-export const selectTrips = (valueToQueryWith: string, queryParam: 'status') =>
-  createSelector(trips, (arr) =>
-    arr.filter(() => arr[queryParam] === valueToQueryWith),
-  );
-
 const jobs = (state: RootState) => state.trips.jobs;
 export const selectJob = (jobId: string) =>
   createSelector(jobs, (jobs: Trip[]) => jobs.find(({ id }) => id === jobId));
@@ -62,7 +57,8 @@ export const selectBid = (
 // ASYNC THUNKS
 export function createOrUpdateTrip(data: Trip) {
   return () => {
-    return Api.createOrUpdateTrip(data);
+    console.log(data);
+    return Api.createOrUpdateTrip(data).catch((err) => console.log(err));
   };
 }
 
@@ -88,10 +84,11 @@ export function getJobs() {
   };
 }
 
-export function submitBid(data: Bid) {
+export function createOrUpdateBid(data: Bid) {
   return () => {
     if (!data.tripId) throw new Error('400: No trip id been sent');
-    return Api.submitBid(data);
+    console.log(data);
+    return Api.createOrUpdateBid(data).catch((err) => console.log(err));
   };
 }
 
