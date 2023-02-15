@@ -68,7 +68,7 @@ export default function NewTripPage() {
     shippingLine: '',
     weight: NaN,
     description: '',
-    status: 'awaiting_transporter',
+    status: 'awaiting_bid',
   });
 
   function nextHandler(formData?: Trip) {

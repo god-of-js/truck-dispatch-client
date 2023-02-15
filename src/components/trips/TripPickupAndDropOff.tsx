@@ -1,14 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
+import Trip from 'types/Trip';
 import UiIcon from 'ui/UiIcon';
 
 interface Props {
   pickup: string;
   dropOff: string;
+  status?: Trip['status'];
 }
-export default function TripPickupAndDropOff({ pickup, dropOff }: Props) {
+export default function TripPickupAndDropOff({
+  pickup,
+  dropOff,
+  status,
+}: Props) {
   return (
-    <TripPickupAndDropOffStyle>
+    <TripPickupAndDropOffStyle status={status}>
       <div className="indicator">
         <UiIcon icon="MapPin" />
         <div className="thread" />
@@ -62,6 +68,8 @@ const TripPickupAndDropOffStyle = styled.div`
     background: var(--color-gray-400);
     &:first-of-type {
       height: 25%;
+      background-color: ${({ status }: { status?: Trip['status'] }) =>
+        status === 'in-progress' ? 'var(--color-primary)' : ''};
     }
     &:nth-of-type(2) {
       height: 15%;

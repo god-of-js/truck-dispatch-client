@@ -2,12 +2,7 @@ import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { usePaystackPayment } from 'react-paystack';
-import {
-  Link,
-  useLocation,
-  useNavigate,
-  useParams,
-} from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { selectDashboardUser } from 'modules/Account';
 import {
@@ -32,6 +27,8 @@ import UiIcon from 'ui/UiIcon';
 import { RootState } from 'modules/index';
 import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
 import UiAvatar from 'ui/UiAvatar';
+import Payment from 'types/Payment';
+import { createOrUpdatePayment } from 'modules/Payments';
 
 export default function BidCheckoutPage() {
   const { bidId, tripId } = useParams();
@@ -49,7 +46,7 @@ export default function BidCheckoutPage() {
     firstName: user?.firstName,
     lastName: user?.lastName,
     phone: user?.phone,
-    amount: nairaToKobo(priceWithTDPercent(bid?.price || 0)),
+    amount: priceWithTDPercent(bid?.price || 0),
     publicKey: paystackPublickKey,
   };
   const initializePayment = usePaystackPayment(paystackConfig);
@@ -58,15 +55,27 @@ export default function BidCheckoutPage() {
     return users.find(({ id }) => id === bid?.transporterId) || null;
   }, [users, bid]);
 
-  function onSuccess(_data?: unknown) {
-    if (!bid || !trip) return;
+  function onSuccess(payment?: Payment) {
+    if (!bid || !trip || !payment || !user) return;
     setLoading(true);
     Promise.all([
+      dispatch(
+        toAnyAction(
+          createOrUpdatePayment({
+            ...payment,
+            id: payment.reference || '',
+            userId: user.id || '',
+            tripId,
+            bidId
+          }),
+        ),
+      ),
       dispatch(
         toAnyAction(
           createOrUpdateBid({
             ...bid,
             status: 'accepted',
+            paymentId: payment?.reference
           }),
         ),
       ),
@@ -75,7 +84,8 @@ export default function BidCheckoutPage() {
           createOrUpdateTrip({
             ...trip,
             status: 'payment_complete',
-            responsibleTransporterId: bid.transporterId,
+            transporterId: bid.transporterId,
+            paymentId: payment?.reference
           }),
         ),
       ),
@@ -248,7 +258,7 @@ const TripDetails = styled.section`
 
   .transporter-details {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     gap: ${pxToRem(12)};
     margin: ${pxToRem(16)} 0;
     padding: ${pxToRem(16)} 0;

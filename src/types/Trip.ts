@@ -12,11 +12,7 @@ export default interface Trip {
   weight: number;
   description?: string;
   agentId: string;
-  responsibleTransporterId?: string;
-  status:
-    | 'awaiting_transporter'
-    | 'awaiting_payment'
-    | 'payment_complete'
-    | 'in-progress'
-    | 'completed';
+  transporterId?: string;
+  paymentId?: string;
+  status: 'awaiting_bid' | 'payment_complete' | 'in-progress' | 'completed';
 }
