@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Suspense } from 'react';
-import { Outlet, useLocation, useParams } from 'react-router-dom';
+import { Outlet, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+
+import { selectDashboardUser } from 'modules/Account';
+import { selectTrip } from 'modules/Trips';
 
 import sizes from 'utils/sizes';
 
@@ -11,8 +15,10 @@ import UiBackButton from 'ui/UiBackButton';
 
 export default function ViewTrip() {
   const { tripId } = useParams();
+  const user = useSelector(selectDashboardUser);
+  const trip = useSelector(selectTrip(tripId || ''));
   const [is400, setIs400] = useState(false);
-  const agentRoutes = [
+  const unfilteredTabs = [
     {
       label: 'Trip Details',
       path: `/my-trips/${tripId}`,
@@ -22,11 +28,28 @@ export default function ViewTrip() {
       path: `/my-trips/${tripId}/bids`,
     },
     {
-      label: 'Driver Details',
-      path: '/profile/verification',
+      label: 'Trip Status',
+      path: `/my-trips/${tripId}/status`,
     },
   ];
 
+  const tabs = useMemo(() => {
+    return unfilteredTabs.filter((tab) => {
+      if (user?.userType === 'agent') return agentChecks(tab.path);
+      else if (user?.userType === 'transporter')
+        return transporterChecks(tab.path);
+    });
+  }, [user]);
+
+  function agentChecks(path: string) {
+    if (path.includes('bids') && trip?.status !== 'awaiting_bid') return false;
+    return true;
+  }
+
+  function transporterChecks(path: string) {
+    if (path.includes('bids')) return false;
+    return true;
+  }
   useEffect(() => {
     //   TODO: show user no trip id was found.
     if (!tripId) setIs400(true);
@@ -36,7 +59,7 @@ export default function ViewTrip() {
     <>
       {/* TODO: handle is400 */}
       <TabContainer>
-        <UiTabs tabs={agentRoutes} />
+        <UiTabs tabs={tabs} />
       </TabContainer>
       <OutletContainer>
         <UiBackButton />
@@ -59,7 +82,7 @@ const TabContainer = styled.div`
 `;
 
 const OutletContainer = styled.div`
-  padding: ${pxToRem(24)} 0;
+  padding: ${pxToRem(20)} 0;
   min-height: 70%;
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {

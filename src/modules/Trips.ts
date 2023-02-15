@@ -57,7 +57,6 @@ export const selectBid = (
 // ASYNC THUNKS
 export function createOrUpdateTrip(data: Trip) {
   return () => {
-    console.log(data);
     return Api.createOrUpdateTrip(data).catch((err) => console.log(err));
   };
 }
@@ -72,9 +71,10 @@ export function getAgentTrips(agentId: string) {
 
 export function getTransporterTrips(transporterId: string) {
   return (dispatch: AppDispatch) => {
-    return Api.getTransporterTrips(transporterId).then((data) =>
-      dispatch(toAnyAction(setTrips(data))),
-    );
+    return Api.getTransporterTrips(transporterId).then((data) => {
+      console.log(data);
+      dispatch(toAnyAction(setTrips(data)));
+    });
   };
 }
 

@@ -43,6 +43,9 @@ export const selectDashboardUser = createSelector(
 export const selectTransporters = createSelector(users, (usersArr: User[]) =>
   usersArr.filter(({ userType }) => userType === 'transporter'),
 );
+export const selectAgents = createSelector(users, (usersArr: User[]) =>
+  usersArr.filter(({ userType }) => userType === 'agent'),
+);
 
 export function RegisterUser(AuthUser: UserWithPassword) {
   return async (dispatch: AppDispatch) => {

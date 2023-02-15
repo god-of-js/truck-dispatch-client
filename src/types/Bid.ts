@@ -1,5 +1,6 @@
 export default interface Bid {
   id: string;
+  paymentId?: string;
   extraNotes?: string;
   price: number;
   presentLocation?: string;

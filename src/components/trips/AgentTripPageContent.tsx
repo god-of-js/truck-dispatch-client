@@ -62,9 +62,7 @@ export default function AgentTripPageContent() {
   const tripsData = useMemo(() => {
     return trips.map((trip: Trip) => ({
       ...trip,
-      responsibleTransporter: responsibleTransporterDetails(
-        trip.responsibleTransporterId,
-      ),
+      responsibleTransporter: responsibleTransporterDetails(trip.transporterId),
     }));
   }, [trips]);
 
