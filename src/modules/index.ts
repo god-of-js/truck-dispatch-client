@@ -3,13 +3,13 @@ import thunk from 'redux-thunk';
 
 import Account, { AccountState } from './Account';
 import Trips, { TripState } from './Trips';
-import Payment, { PaymentsState } from './Payments'
+import Payment, { PaymentsState } from './Payments';
 
 const store = configureStore({
   reducer: {
     account: Account,
     trips: Trips,
-    payment: Payment
+    payment: Payment,
   },
   middleware: [thunk],
 });

@@ -1,4 +1,5 @@
 import { shippingLines, sizeOfContainer, typeOfGoods } from 'utils/constants';
+import Asset from './Asset';
 
 export default interface Trip {
   id: string;
@@ -13,6 +14,7 @@ export default interface Trip {
   description?: string;
   agentId: string;
   transporterId?: string;
+  TDO?: Asset;
   paymentId?: string;
   status: 'awaiting_bid' | 'payment_complete' | 'in-progress' | 'completed';
 }

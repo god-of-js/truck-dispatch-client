@@ -14,12 +14,11 @@ export const paymentsSlice = createSlice({
   reducers: {},
 });
 
-
 export default paymentsSlice.reducer;
 
 export function createOrUpdatePayment(data: Payment) {
-    return () => {
-      if (!data.userId) throw new Error('400: user id been sent');
-      return Api.createOrUpdatePayment(data).catch((err) => console.log(err));
-    };
-  }
+  return () => {
+    if (!data.userId) throw new Error('400: user id been sent');
+    return Api.createOrUpdatePayment(data).catch((err) => console.log(err));
+  };
+}

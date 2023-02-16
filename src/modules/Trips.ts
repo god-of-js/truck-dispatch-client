@@ -57,7 +57,7 @@ export const selectBid = (
 // ASYNC THUNKS
 export function createOrUpdateTrip(data: Trip) {
   return () => {
-    return Api.createOrUpdateTrip(data).catch((err) => console.log(err));
+    return Api.createOrUpdateTrip(data);
   };
 }
 

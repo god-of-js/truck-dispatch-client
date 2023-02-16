@@ -84,6 +84,7 @@ class ApiService {
   createOrUpdateBid(data: Bid) {
     return this.setDoc('bid', data.id, data);
   }
+
   createOrUpdatePayment(data: Payment) {
     return this.setDoc('payment', data.id, data);
   }
