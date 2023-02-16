@@ -31,6 +31,10 @@ export default function ViewTrip() {
       label: 'Trip Status',
       path: `/my-trips/${tripId}/status`,
     },
+    {
+      label: 'Terminal Delivery Order',
+      path: `/my-trips/${tripId}/terminal-delivery-order`,
+    },
   ];
 
   const tabs = useMemo(() => {
@@ -43,6 +47,13 @@ export default function ViewTrip() {
 
   function agentChecks(path: string) {
     if (path.includes('bids') && trip?.status !== 'awaiting_bid') return false;
+
+    if (
+      path.includes('terminal-delivery-order') &&
+      trip?.status === 'awaiting_bid'
+    )
+      return false;
+
     return true;
   }
 

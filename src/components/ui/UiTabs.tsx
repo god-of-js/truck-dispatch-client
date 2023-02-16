@@ -39,7 +39,7 @@ const Tabs = styled.ul`
 `;
 
 const Tab = styled.li`
-  font-size: ${pxToRem(16)};
+  font-size: ${pxToRem(14)};
   padding-bottom: ${pxToRem(24)};
   /* TODO: make border rounded */
   border-bottom: ${pxToRem(2)} solid

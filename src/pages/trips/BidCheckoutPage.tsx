@@ -66,7 +66,7 @@ export default function BidCheckoutPage() {
             id: payment.reference || '',
             userId: user.id || '',
             tripId,
-            bidId
+            bidId,
           }),
         ),
       ),
@@ -75,7 +75,7 @@ export default function BidCheckoutPage() {
           createOrUpdateBid({
             ...bid,
             status: 'accepted',
-            paymentId: payment?.reference
+            paymentId: payment?.reference,
           }),
         ),
       ),
@@ -85,7 +85,7 @@ export default function BidCheckoutPage() {
             ...trip,
             status: 'payment_complete',
             transporterId: bid.transporterId,
-            paymentId: payment?.reference
+            paymentId: payment?.reference,
           }),
         ),
       ),
