@@ -9,4 +9,5 @@ export default interface User {
   avatar?: Asset;
   userType: 'agent' | 'transporter';
   status?: 'pending_verification' | 'verified' | 'unverified' | 'rejected';
+  rating: number;
 }

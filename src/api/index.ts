@@ -17,6 +17,7 @@ import db, { auth } from './firebase';
 import Trip from 'types/Trip';
 import Bid from 'types/Bid';
 import Payment from 'types/Payment';
+import Rating from 'types/Rating';
 
 class ApiService {
   createUserWithEmailAndPassword(email: string, password: string) {
@@ -48,6 +49,10 @@ class ApiService {
     return this.setDoc('assets', id, { id, url });
   }
 
+  publishUserRating(data: Rating) {
+    return this.setDoc('rating', data.id, data);
+  }
+
   createOrUpdateTrip(data: Trip) {
     return this.setDoc('trip', data.id, data);
   }
@@ -61,8 +66,19 @@ class ApiService {
     });
   }
 
+  getRatings(
+    value: string,
+    queryKey: 'transporterId' | 'tripId' = 'transporterId',
+  ) {
+    return this.query<Rating>({
+      collectionName: 'rating',
+      key: queryKey,
+      condition: '==',
+      value,
+    });
+  }
+
   getTransporterTrips(transporterId: string) {
-    console.log(transporterId);
     return this.query<Trip>({
       collectionName: 'trip',
       key: 'transporterId',

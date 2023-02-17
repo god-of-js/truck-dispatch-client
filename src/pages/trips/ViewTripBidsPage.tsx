@@ -9,6 +9,7 @@ import UiTable from 'ui/UiTable';
 import { RootState } from 'modules/index';
 import Bid from 'types/Bid';
 import UiAvatar from 'ui/UiAvatar';
+import Ratings from 'components/ratings/Ratings';
 
 export default function ViewTripBidsPage() {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ export default function ViewTripBidsPage() {
     },
     {
       title: 'Transporter Ratings',
-      query: 'price',
+      query: 'rating',
     },
     {
       title: 'No. of Completed Trips',
@@ -59,6 +60,7 @@ export default function ViewTripBidsPage() {
           }`}</span>
         </TransporterDetails>
       ),
+      rating: <Ratings rating={getUser(bid.transporterId)?.rating || 0}/>
     }));
   }, [bids]);
 

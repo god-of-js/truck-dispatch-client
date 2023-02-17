@@ -11,9 +11,11 @@ import {
   MapPin,
   Money,
   Suitcase,
+  Star,
   Truck,
   User,
   UsersThree,
+  X,
 } from 'phosphor-react';
 import styled from 'styled-components';
 
@@ -29,9 +31,11 @@ const icons = {
   Money: <Money />,
   MapPin: <MapPin />,
   Suitcase: <Suitcase />,
+  Star: <Star />,
   Truck: <Truck />,
   User: <User />,
   UsersThree: <UsersThree />,
+  X: <X />,
 };
 
 export type Icons = keyof typeof icons;

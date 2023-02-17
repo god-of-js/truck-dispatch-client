@@ -98,7 +98,7 @@ export default function ViewTripStatus() {
           dropOff={trip?.deliveryAddress || ''}
           status={trip?.status}
         />
-        <p>{tripStatusMessage}</p>
+        <div>{tripStatusMessage}</div>
 
         <div className="responsible-user-details">
           {/* TODO: input user avatar when avatars are ready */}

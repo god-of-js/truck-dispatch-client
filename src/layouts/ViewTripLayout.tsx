@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Suspense } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { selectDashboardUser } from 'modules/Account';
@@ -12,11 +12,18 @@ import sizes from 'utils/sizes';
 import Loader from 'components/layout/Loader';
 import UiTabs from 'components/ui/UiTabs';
 import UiBackButton from 'ui/UiBackButton';
+import UiOverlay from 'ui/UiOverlay';
+import RateTransporter from 'components/ratings/RateTransporter';
+import { toAnyAction } from 'utils/helpers';
+import { getTripRating } from 'modules/Ratings';
+import Rating from 'types/Rating';
 
 export default function ViewTrip() {
   const { tripId } = useParams();
+  const dispatch = useDispatch();
   const user = useSelector(selectDashboardUser);
   const trip = useSelector(selectTrip(tripId || ''));
+  const [isRatingsModalVisible, setIsRatingsModalVisible] = useState(false);
   const [is400, setIs400] = useState(false);
   const unfilteredTabs = [
     {
@@ -61,10 +68,20 @@ export default function ViewTrip() {
     if (path.includes('bids')) return false;
     return true;
   }
+
+  function closeRateTransporter() {
+    setIsRatingsModalVisible(false);
+  }
+
   useEffect(() => {
     //   TODO: show user no trip id was found.
     if (!tripId) setIs400(true);
-  });
+    if (user?.userType === 'agent' && trip?.status === 'completed') {
+      dispatch(toAnyAction(getTripRating(tripId!))).then((data: Rating[]) => {
+        if (data.length === 0) setIsRatingsModalVisible(true);
+      });
+    }
+  }, [tripId, trip]);
 
   return (
     <>
@@ -78,6 +95,9 @@ export default function ViewTrip() {
           <Outlet />
         </Suspense>
       </OutletContainer>
+      <UiOverlay isVisible={isRatingsModalVisible}>
+        <RateTransporter onClose={closeRateTransporter} />
+      </UiOverlay>
     </>
   );
 }

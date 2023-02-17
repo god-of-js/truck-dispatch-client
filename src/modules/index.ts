@@ -3,6 +3,7 @@ import thunk from 'redux-thunk';
 
 import Account, { AccountState } from './Account';
 import Trips, { TripState } from './Trips';
+import Ratings, { RatingsState } from './Ratings';
 import Payment, { PaymentsState } from './Payments';
 
 const store = configureStore({
@@ -10,6 +11,7 @@ const store = configureStore({
     account: Account,
     trips: Trips,
     payment: Payment,
+    ratings: Ratings,
   },
   middleware: [thunk],
 });
@@ -20,6 +22,7 @@ export interface RootState {
   account: AccountState;
   trips: TripState;
   payment: PaymentsState;
+  ratings: RatingsState;
 }
 export default function getStore() {
   return store;

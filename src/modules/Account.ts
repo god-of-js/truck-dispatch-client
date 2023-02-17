@@ -5,6 +5,7 @@ import User from '../types/User';
 import UserWithPassword from '../types/UserWithPassword';
 import VerificationFormData from '../types/VerificationFormData';
 import { removeKeyValuePairsFromObject, toAnyAction } from 'utils/helpers';
+import Rating from 'types/Rating';
 
 export interface AccountState {
   users: User[];
@@ -43,6 +44,10 @@ export const selectDashboardUser = createSelector(
 export const selectTransporters = createSelector(users, (usersArr: User[]) =>
   usersArr.filter(({ userType }) => userType === 'transporter'),
 );
+export const selectTransporter = (transporterId: string) =>
+  createSelector(users, (usersArr: User[]) =>
+    usersArr.find(({ id }) => id === transporterId),
+  );
 export const selectAgents = createSelector(users, (usersArr: User[]) =>
   usersArr.filter(({ userType }) => userType === 'agent'),
 );
@@ -99,8 +104,6 @@ export function getUsers() {
   };
 }
 
-// TODO: add middlewares to check if user is a transporter or admin before triggering certain actions.
-// https://medium.com/netscape/creating-custom-middleware-in-react-redux-961570459ecb#:~:text=To%20apply%20a%20middleware%20in,when%20an%20action%20is%20dispatched.
 export const sendVerificationDetailsToAdmin = (
   verificationData: VerificationFormData,
 ) => {
@@ -108,5 +111,11 @@ export const sendVerificationDetailsToAdmin = (
     const userId = localStorage.getItem('uid');
     if (!userId) throw new Error('user is not authenticated');
     return Api.sendVerificationDetailsToAdmin(userId, verificationData);
+  };
+};
+
+export const publishUserRating = (data: Rating) => {
+  return () => {
+    return Api.publishUserRating(data);
   };
 };
