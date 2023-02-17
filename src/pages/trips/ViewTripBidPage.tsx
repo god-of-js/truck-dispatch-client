@@ -3,7 +3,7 @@ import { RootState } from 'modules/index';
 import { getTransporterTrips, selectBid } from 'modules/Trips';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Trip from 'types/Trip';
 import UiAvatar from 'ui/UiAvatar';
@@ -14,17 +14,18 @@ import sizes from 'utils/sizes';
 export default function ViewTripBidPage() {
   const { bidId, tripId } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const bid = useSelector(selectBid(bidId as string));
   const users = useSelector((state: RootState) => state.account.users);
+
   const [noOfTransporterTrips, setNoOfTransporterTrips] = useState<string | number>('Loading.....');
+
   function getUser(userId: string) {
     return users.find(({ id }) => userId === id) || null;
   }
 
   function loadTransporterCompletedTrips() {
     if (!bid?.transporterId) return;
-    dispatch(toAnyAction(getTransporterTrips(bid.transporterId))).then((data: Trip[]) => {
+    dispatch(toAnyAction(getTransporterTrips(bid.transporterId, true))).then((data: Trip[]) => {
       const completedTrips = data.filter(({ status }) => status === 'completed');
       setNoOfTransporterTrips(completedTrips.length);
     })
