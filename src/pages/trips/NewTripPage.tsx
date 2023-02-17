@@ -6,7 +6,7 @@ import Trip from 'types/Trip';
 import sizes from 'utils/sizes';
 import uuidv4 from 'utils/uuid';
 import { toAnyAction } from 'utils/helpers';
-import { createOrUpdateTrip } from 'modules/Trips';
+import { createOrUpdateTrip, setTrips } from 'modules/Trips';
 
 import UiTimeline, { TimelineStep } from 'ui/UiTimeline';
 import NewTripForm from 'components/trips/NewTripForm';
@@ -15,6 +15,8 @@ import MessageWithImage from 'ui/MessageWithImage';
 import UiButton from 'ui/UiButton';
 import UiBackButton from 'ui/UiBackButton';
 import { selectDashboardUser } from 'modules/Account';
+import { Link } from 'react-router-dom';
+import { RootState } from 'modules/index';
 
 interface Step extends TimelineStep {
   value: CurrentStep;
@@ -28,6 +30,7 @@ type CurrentStep =
 
 export default function NewTripPage() {
   const user = useSelector(selectDashboardUser);
+  const trips = useSelector((state: RootState) => state.trips.trips);
   const dispatch = useDispatch();
 
   const newTripSteps: Step[] = [
@@ -44,14 +47,14 @@ export default function NewTripPage() {
       value: 'broadcast-successful',
       invincible: true,
     },
-    {
-      name: 'Select Transporter',
-      value: 'select-transporter',
-    },
-    {
-      name: 'Payment',
-      value: 'payment',
-    },
+    // {
+    //   name: 'Select Transporter',
+    //   value: 'select-transporter',
+    // },
+    // {
+    //   name: 'Payment',
+    //   value: 'payment',
+    // },
   ];
 
   const [loading, setLoading] = useState(false);
@@ -83,13 +86,6 @@ export default function NewTripPage() {
         setCurrentStep('broadcast-successful');
       });
     }
-
-    if (currentStep === 'broadcast-successful') {
-      setCurrentStep('select-transporter');
-    }
-    if (currentStep === 'payment') {
-      return;
-    }
   }
 
   function prevHandler() {
@@ -106,11 +102,13 @@ export default function NewTripPage() {
   function sendTripToDrivers() {
     if (!user?.id) return;
     setLoading(true);
-    return dispatch(toAnyAction(createOrUpdateTrip(defaultFormData))).finally(
-      () => {
+    return dispatch(toAnyAction(createOrUpdateTrip(defaultFormData)))
+      .then(() => {
+        dispatch(setTrips([...trips, defaultFormData]));
+      })
+      .finally(() => {
         setLoading(false);
-      },
-    );
+      });
   }
 
   return (
@@ -138,12 +136,14 @@ export default function NewTripPage() {
               <>
                 <MessageWithImage
                   title="Your Trip has been broadcasted"
-                  subtitle={`Your trip has been broadcasted to trusted transporters in our network. It usually takes a couple minutes to get matched with transporters. Expect a call or text message in the next couple of minutes to inform you of transporters available. You can view the list of transporters by clicking the button below. Thank you for trusting us with your dispatch. `}
+                  subtitle={`Your trip has been broadcasted to trusted transporters in our network. It usually takes a couple minutes to get matched with transporters. Expect several transporters to send bids on the trip you just created. You can view the bids created by transporters by clicking the button below. Thank you for trusting us with your dispatch. `}
                 />
                 <div className="button-container">
-                  <UiButton onClick={nextHandler}>
-                    View Transporters available for your trip
-                  </UiButton>
+                  <Link to={`/my-trips/${defaultFormData.id}`}>
+                    <UiButton>
+                      View Transporters available for your trip
+                    </UiButton>
+                  </Link>
                 </div>
               </>
             )}

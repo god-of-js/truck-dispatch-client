@@ -69,7 +69,10 @@ export function getAgentTrips(agentId: string) {
   };
 }
 // Prevent default is used to notify the store that this is not the normal flow, hence we do not need to set the value to state.
-export function getTransporterTrips(transporterId: string, preventDefault?: boolean) {
+export function getTransporterTrips(
+  transporterId: string,
+  preventDefault?: boolean,
+) {
   return (dispatch: AppDispatch) => {
     return Api.getTransporterTrips(transporterId).then((data) => {
       !preventDefault && dispatch(toAnyAction(setTrips(data)));

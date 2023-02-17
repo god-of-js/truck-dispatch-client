@@ -17,7 +17,9 @@ export default function ViewTripBidPage() {
   const bid = useSelector(selectBid(bidId as string));
   const users = useSelector((state: RootState) => state.account.users);
 
-  const [noOfTransporterTrips, setNoOfTransporterTrips] = useState<string | number>('Loading.....');
+  const [noOfTransporterTrips, setNoOfTransporterTrips] = useState<
+    string | number
+  >('Loading.....');
 
   function getUser(userId: string) {
     return users.find(({ id }) => userId === id) || null;
@@ -25,10 +27,14 @@ export default function ViewTripBidPage() {
 
   function loadTransporterCompletedTrips() {
     if (!bid?.transporterId) return;
-    dispatch(toAnyAction(getTransporterTrips(bid.transporterId, true))).then((data: Trip[]) => {
-      const completedTrips = data.filter(({ status }) => status === 'completed');
-      setNoOfTransporterTrips(completedTrips.length);
-    })
+    dispatch(toAnyAction(getTransporterTrips(bid.transporterId, true))).then(
+      (data: Trip[]) => {
+        const completedTrips = data.filter(
+          ({ status }) => status === 'completed',
+        );
+        setNoOfTransporterTrips(completedTrips.length);
+      },
+    );
   }
 
   useEffect(() => {
@@ -37,7 +43,6 @@ export default function ViewTripBidPage() {
     } else {
       loadTransporterCompletedTrips();
     }
-
   });
 
   return (
@@ -58,7 +63,7 @@ export default function ViewTripBidPage() {
         <Section>
           <div className="title">Transporter Ratings</div>
           <div className="value">
-            <Ratings rating={getUser(bid?.transporterId || '')?.rating || 0}/>
+            <Ratings rating={getUser(bid?.transporterId || '')?.rating || 0} />
           </div>
         </Section>
         <Section>

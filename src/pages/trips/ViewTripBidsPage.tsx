@@ -60,7 +60,7 @@ export default function ViewTripBidsPage() {
           }`}</span>
         </TransporterDetails>
       ),
-      rating: <Ratings rating={getUser(bid.transporterId)?.rating || 0}/>
+      rating: <Ratings rating={getUser(bid.transporterId)?.rating || 0} />,
     }));
   }, [bids]);
 
