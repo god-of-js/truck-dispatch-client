@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { usePaystackPayment } from 'react-paystack';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { selectDashboardUser } from 'modules/Account';
 import {
@@ -34,7 +34,6 @@ export default function BidCheckoutPage() {
   const { bidId, tripId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
   const user = useSelector(selectDashboardUser);
   const users = useSelector((state: RootState) => state.account.users);
   const bid = useSelector(selectBid(bidId || ''));
@@ -46,7 +45,7 @@ export default function BidCheckoutPage() {
     firstName: user?.firstName,
     lastName: user?.lastName,
     phone: user?.phone,
-    amount: priceWithTDPercent(bid?.price || 0),
+    amount: nairaToKobo(priceWithTDPercent(bid?.price || 0)),
     publicKey: paystackPublickKey,
   };
   const initializePayment = usePaystackPayment(paystackConfig);

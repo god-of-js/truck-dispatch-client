@@ -1,24 +1,47 @@
+import Ratings from 'components/ratings/Ratings';
 import { RootState } from 'modules/index';
-import { selectBid } from 'modules/Trips';
+import { getTransporterTrips, selectBid } from 'modules/Trips';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import Trip from 'types/Trip';
 import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
+import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
 
 export default function ViewTripBidPage() {
   const { bidId, tripId } = useParams();
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const bid = useSelector(selectBid(bidId as string));
   const users = useSelector((state: RootState) => state.account.users);
+
+  const [noOfTransporterTrips, setNoOfTransporterTrips] = useState<
+    string | number
+  >('Loading.....');
+
   function getUser(userId: string) {
     return users.find(({ id }) => userId === id) || null;
   }
+
+  function loadTransporterCompletedTrips() {
+    if (!bid?.transporterId) return;
+    dispatch(toAnyAction(getTransporterTrips(bid.transporterId, true))).then(
+      (data: Trip[]) => {
+        const completedTrips = data.filter(
+          ({ status }) => status === 'completed',
+        );
+        setNoOfTransporterTrips(completedTrips.length);
+      },
+    );
+  }
+
   useEffect(() => {
     if (!bidId) {
       //   TODO: handle 400 if bidId is not sent.
+    } else {
+      loadTransporterCompletedTrips();
     }
   });
 
@@ -40,14 +63,13 @@ export default function ViewTripBidPage() {
         <Section>
           <div className="title">Transporter Ratings</div>
           <div className="value">
-            {/* TODO: Rating component */}
-            <></>
+            <Ratings rating={getUser(bid?.transporterId || '')?.rating || 0} />
           </div>
         </Section>
         <Section>
           <div className="title">Number of completed trips</div>
           <div className="value">
-            {/* TODO: calculate number of completed trips */}
+            {noOfTransporterTrips} completed trips
             <></>
           </div>
         </Section>

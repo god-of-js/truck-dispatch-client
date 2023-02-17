@@ -89,7 +89,7 @@ const Heading = styled.h2`
   font-size: ${pxToRem(16)};
   margin: ${pxToRem(28)} 0;
 `;
-const Section = styled.div`
+const Section = styled.section`
   display: flex;
   align-items: flex-start;
   flex-direction: column;
