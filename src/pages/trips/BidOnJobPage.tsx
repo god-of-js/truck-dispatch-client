@@ -19,6 +19,8 @@ import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
 import uuidv4 from 'utils/uuid';
 import BidForJobSchema from 'utils/validations/BidForJobSchema';
+import UiOverlay from 'ui/UiOverlay';
+import InformUserOfVerification from 'components/verification/InformUserOfVerification';
 
 export default function BidOnJob() {
   const { tripId } = useParams();
