@@ -1,9 +1,8 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { uploadItem } from '../../api/Cloudinary';
-import { RootState } from '../../modules';
 import {
   selectDashboardUser,
   sendVerificationDetailsToAdmin,
@@ -109,6 +108,25 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
           <UiLocationsInput
             label="Home Address"
             name="homeAddress"
+            error={errors.homeAddress}
+            onChange={setData}
+          />
+          <FileUploadWidget
+            label="Utility bill of Home address"
+            name="homeUtiityBill"
+            value={formData.idDoc as File}
+            error={errors.idDoc}
+            onChange={setData}
+          />
+          <UiLocationsInput
+            label="Office Address"
+            name="officeAddress"
+            error={errors.homeAddress}
+            onChange={setData}
+          />
+          <UiLocationsInput
+            label="Garage Address"
+            name="garageAddress"
             error={errors.homeAddress}
             onChange={setData}
           />

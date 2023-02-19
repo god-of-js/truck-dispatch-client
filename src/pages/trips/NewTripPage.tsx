@@ -139,10 +139,8 @@ export default function NewTripPage() {
                   subtitle={`Your trip has been broadcasted to trusted transporters in our network. It usually takes a couple minutes to get matched with transporters. Expect several transporters to send bids on the trip you just created. You can view the bids created by transporters by clicking the button below. Thank you for trusting us with your dispatch. `}
                 />
                 <div className="button-container">
-                  <Link to={`/my-trips/${defaultFormData.id}`}>
-                    <UiButton>
-                      View Transporters available for your trip
-                    </UiButton>
+                  <Link to={`/my-trips/${defaultFormData.id}/bids`}>
+                    <UiButton>View Trip Bids</UiButton>
                   </Link>
                 </div>
               </>

@@ -1,20 +1,22 @@
 import React, { Suspense, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Outlet } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { toAnyAction } from 'utils/helpers';
 import sizes from '../utils/sizes';
 
-import { getUsers } from 'modules/Account';
+import { getUsers, selectDashboardUser } from 'modules/Account';
 
 import DashboardSidebar from 'components/layout/DashboardSidebar';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
 import Loader from 'components/layout/Loader';
+import UiAlert from 'ui/UiAlert';
 
 export default function DashboardLayout() {
   const dispatch = useDispatch();
   const [isLoading, setLoading] = useState(true);
+  const user = useSelector(selectDashboardUser);
 
   useEffect(() => {
     dispatch(toAnyAction(getUsers()))
@@ -35,8 +37,14 @@ export default function DashboardLayout() {
     <Layout>
       <DashboardSidebar />
       <Body>
+        {user?.status === 'unverified' && (
+          <UiAlert variant="warning">
+            Verification is required to access all core features of the
+            application. To complete verification,{' '}
+            <Link to="/profile/verification">Click Here</Link>
+          </UiAlert>
+        )}
         <DashboardTopNav />
-        {/* TODO: put a message for transporter to verify if not yet verified */}
         <div className="body-components-container">{Component}</div>
       </Body>
     </Layout>
@@ -55,7 +63,9 @@ const Body = styled.div`
   position: relative;
   overflow-x: auto;
   width: 100%;
-
+  .alert-container {
+    padding: ${pxToRem(16)};
+  }
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     width: 97%;
     border-top: none;
