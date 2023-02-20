@@ -18,6 +18,8 @@ import Loader from 'components/layout/Loader';
 import ViewTripDetails from 'components/trips/ViewTripDetails';
 import NotFoundError from 'components/errors/NotFoundError';
 import { selectDashboardUser } from 'modules/Account';
+import UiOverlay from 'ui/UiOverlay';
+import InformUserOfVerification from 'components/verification/InformUserOfVerification';
 
 export default function ViewTransporterJobDetailsPage() {
   const { tripId } = useParams();
@@ -27,8 +29,16 @@ export default function ViewTransporterJobDetailsPage() {
   const user = useSelector(selectDashboardUser);
   const bid = useSelector(selectBid(user?.id || '', 'transporterId'));
   const dispatch = useDispatch();
+  const [
+    isInformUserOfVerificationModalVisible,
+    setIsInformUserOfVerificationModalVisible,
+  ] = useState(false);
 
   function bidForJob() {
+    if (user?.status === 'unverified') {
+      setIsInformUserOfVerificationModalVisible(true);
+      return;
+    }
     navigate(`/available-jobs/${tripId}/bid`);
   }
   function goBack() {
@@ -63,6 +73,11 @@ export default function ViewTransporterJobDetailsPage() {
           </CardContainer>
         )) || <NotFoundError />
       )}
+      <UiOverlay isVisible={isInformUserOfVerificationModalVisible}>
+        <InformUserOfVerification
+          onClose={() => setIsInformUserOfVerificationModalVisible(false)}
+        />
+      </UiOverlay>
     </ViewTransporterJobPageStyle>
   );
 }
