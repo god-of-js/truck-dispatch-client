@@ -5,6 +5,7 @@ import UiButton from '../components/ui/UiButton';
 import UiForm, { RuleType } from '../components/ui/UiForm';
 import UiInput from '../components/ui/UiInput';
 import UiSelect from '../components/ui/UiSelect';
+import UidropdownMenu from 'components/ui/UiDropdownMenu';
 
 function ComponentsView() {
   const [isFocused, setIsFocused] = useState<string | null>('');
@@ -51,6 +52,62 @@ function ComponentsView() {
     });
   }
 
+  function dropdownfunc1  () {
+    console.log("this is function 1")
+  }
+  function dropdownfunc2  () {
+    console.log("this is function 2")
+  }
+  const dropDownData = [
+    {
+      type:"link", 
+      href: "https://www.google.com/",
+      value: "value1",
+      display: "Link-option"
+    },
+    {
+      type:"route", 
+      path: "/auth",
+      value: "value1",
+      display: "route-option"
+    },
+    {
+      type: "function", 
+      function: dropdownfunc1 ,
+      value: "value2",
+      display: "Function-option1"
+    },
+    {
+      type: "function", 
+      function: dropdownfunc2,
+      value: "value3",
+      display: "Function-option2"
+    },
+    {
+      type:"subItem", 
+      display: "socials",
+      subItems: [
+        {
+          type:"link", 
+          href: "https://www.google.com/",
+          value: "value1",
+          display: "Facebook"
+        },
+        {
+          type:"link", 
+          href: "https://www.google.com/",
+          value: "value1",
+          display: "Twitter"
+        },
+        {
+          type:"link", 
+          href: "https://www.google.com/",
+          value: "value1",
+          display: "Github"
+        },
+      ]
+    },
+  ]
   return (
     <div className="App">
       <UiButton onClick={() => alert('henry is a god')}>Submit</UiButton>
@@ -92,6 +149,7 @@ function ComponentsView() {
           </>
         )}
       </UiForm>
+      <UidropdownMenu data={dropDownData}/>
     </div>
   );
 }
