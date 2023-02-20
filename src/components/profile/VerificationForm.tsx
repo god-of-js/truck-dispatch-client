@@ -145,13 +145,13 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
           <UiLocationsInput
             label="Office Address"
             name="officeAddress"
-            error={errors.homeAddress}
+            error={errors.officeAddress}
             onChange={setData}
           />
           <UiLocationsInput
             label="Garage Address"
             name="garageAddress"
-            error={errors.homeAddress}
+            error={errors.garageAddress}
             onChange={setData}
           />
           <Heading>Guarantor Details</Heading>
@@ -171,14 +171,14 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
               label="Guarantor Name"
               name="guarantor.name"
               value={formData.guarantor.name}
-              error={errors.homeAddress}
+              error={errors['guarantor.name']}
               onChange={setData}
             />
             <UiInput
               label="Guarantor Email"
               name="guarantor.email"
               value={formData.guarantor.email}
-              error={errors.email}
+              error={errors['guarantor.email']}
               onChange={setData}
             />
             <UiInput
@@ -186,20 +186,20 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
               name="guarantor.phone"
               type="phone"
               value={formData.guarantor.phone}
-              error={errors.guarantor}
+              error={errors['guarantor.phone']}
               onChange={setData}
             />
             <UiLocationsInput
               label="Guarantor Home Address"
               name="guarantor.homeAddress"
-              error={errors.homeAddress}
+              error={errors['guarantor.homeAddress']}
               onChange={setData}
             />
             <UiSelect
               label="Guarantor Identification Document Type"
               options={idTypeOptions}
               name="guarantor.idType"
-              error={errors.idType}
+              error={errors['guarantor.idType']}
               value={`${formData.guarantor.idType}`}
               onChange={setData}
             />
@@ -207,7 +207,7 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
               label="Guarantor Identification Document"
               name="guarantor.idDoc"
               value={formData.guarantor.idDoc as File}
-              error={errors.idDoc}
+              error={errors['guarantor.idDoc']}
               onChange={setData}
             />
           </GapGrid>
