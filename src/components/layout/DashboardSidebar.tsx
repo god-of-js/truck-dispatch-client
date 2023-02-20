@@ -1,8 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../modules';
+import { Link } from 'react-router-dom';
+import sizes from 'utils/sizes';
 import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
 import UiIcon, { Icons } from '../ui/UiIcon';
-import sizes from '../../sizes';
+import { selectDashboardUser, selectUser } from 'modules/Account';
 
 interface Route {
   iconName: Icons;
@@ -11,6 +15,8 @@ interface Route {
 }
 
 export default function DashboardSidebar() {
+  const user = useSelector(selectDashboardUser);
+
   const transporterRoutes: Route[] = [
     {
       path: '/',
@@ -62,7 +68,8 @@ export default function DashboardSidebar() {
     },
   ];
 
-  const routes = transporterRoutes;
+  const routes =
+    user?.userType === 'transporter' ? transporterRoutes : agentRoutes;
 
   return (
     <Sidebar>
@@ -72,9 +79,11 @@ export default function DashboardSidebar() {
 
       <TabList>
         {routes.map((route, index) => (
-          <Tab key={index}>
-            <UiIcon icon={route.iconName} size="24" />
-          </Tab>
+          <Link to={route.path} key={index}>
+            <Tab>
+              <UiIcon icon={route.iconName} size="24" />
+            </Tab>
+          </Link>
         ))}
       </TabList>
     </Sidebar>
@@ -90,10 +99,13 @@ const Sidebar = styled.nav`
   left: 0;
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    width: 5%;
+    width: 7%;
     border-top: none;
     position: static;
     border-right: ${pxToRem(1)} solid var(--color-gray-200);
+  }
+  @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
+    width: 5%;
   }
 `;
 

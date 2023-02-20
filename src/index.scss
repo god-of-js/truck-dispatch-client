@@ -39,7 +39,7 @@ a {
   padding: px(16) px(8);
   gap: px(8);
   width: 100%;
-  height: --base-height;
+  height: var(--base-height);
   font-size: px(12);
   border: 1px solid var(--color-gray-200);
   background: #ffffff;

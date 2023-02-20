@@ -1,26 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Outlet } from 'react-router-dom';
-import { AnyAction } from 'redux';
 import styled from 'styled-components';
+
+import { toAnyAction } from 'utils/helpers';
+import sizes from '../utils/sizes';
+
+import { getUsers } from 'modules/Account';
+
 import DashboardSidebar from 'components/layout/DashboardSidebar';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
-import { getUser } from '../modules/Account';
+import Loader from 'components/layout/Loader';
 
 export default function DashboardLayout() {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getUser() as unknown as AnyAction).catch(() => {
-      console.log('error occurs');
-    });
-  });
+  const [isLoading, setLoading] = useState(true);
 
+  useEffect(() => {
+    dispatch(toAnyAction(getUsers()))
+      .catch((err: Error) => {
+        console.log(err.message);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  const Component = isLoading ? (
+    <Loader />
+  ) : (
+    <Suspense fallback={<Loader />}>
+      <Outlet />
+    </Suspense>
+  );
   return (
     <Layout>
       <DashboardSidebar />
       <Body>
         <DashboardTopNav />
-        <Outlet />
+        {/* TODO: put a message for transporter to verify if not yet verified */}
+        <div className="body-components-container">{Component}</div>
       </Body>
     </Layout>
   );
@@ -35,7 +52,17 @@ const Layout = styled.div`
 `;
 
 const Body = styled.div`
-  width: 95%;
   position: relative;
-  overflow-x: hidden;
+  overflow-x: auto;
+  width: 100%;
+
+  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+    width: 97%;
+    border-top: none;
+    position: static;
+    border-right: ${pxToRem(1)} solid var(--color-gray-200);
+  }
+  @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
+    width: 95%;
+  }
 `;

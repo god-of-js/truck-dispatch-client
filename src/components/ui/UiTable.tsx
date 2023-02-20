@@ -8,6 +8,9 @@ interface Header {
    */
   query: string;
 }
+interface Row extends Record<string, any> {
+  id: string;
+}
 interface Props {
   // Any is forbidden in this codebase. However, for the sake of the flexibility this component needs,
   // it's required that we disable the type checks to make it truly dynamic.
@@ -17,9 +20,10 @@ interface Props {
    * Hence, it needs to be the same as the
    */
   tableTitle: string;
-  data: Record<string, any>[];
+  data: Row[];
   headers: Header[];
   options: [];
+  onRowClick?: (id: string) => void;
 }
 
 export default function UiTable({
@@ -27,6 +31,7 @@ export default function UiTable({
   data,
   headers,
   options = [],
+  onRowClick,
 }: Props) {
   return (
     <TableContainer>
@@ -44,7 +49,7 @@ export default function UiTable({
         <tbody>
           {data.map((item) => {
             return (
-              <TableRow>
+              <TableRow key={item.id} onClick={() => onRowClick?.(item.id)}>
                 {headers.map((header, index) => {
                   return (
                     <TableDataItem key={index}>
@@ -63,10 +68,13 @@ export default function UiTable({
 
 const TableContainer = styled.div`
   border: 1px solid var(--color-gray-200);
+  background: #ffffff;
 `;
 
 const TableContainerHeader = styled.header`
   border-bottom: 1px solid var(--color-gray-200);
+  display: flex;
+  justify-content: space-between;
 `;
 const TableTitle = styled.h2`
   padding: 0 ${pxToRem(12)};
@@ -90,6 +98,7 @@ const TableHeader = styled.thead`
 const TableRow = styled.tr`
   border-bottom: ${pxToRem(1)} solid var(--color-gray-200);
   text-align: left;
+  cursor: pointer;
   &:last-child {
     border-bottom: transparent;
   }

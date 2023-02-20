@@ -1,20 +1,15 @@
-import Api from 'Api';
-import { useEffect, useRef } from 'react';
-import { useTransition } from 'react';
-import { useState } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import UiField from './UiField';
-import UiInput from './UiInput';
+
 interface Props {
   label?: string;
   name: string;
-  value: string;
   error?: string;
-  onChange: (event: { name: string; value: string | null }) => void;
+  onChange: (event: { name: string; value: string }) => void;
 }
 export default function UiLocationsInput({
   label,
   name,
-  value,
   error,
   onChange,
 }: Props) {
@@ -23,10 +18,14 @@ export default function UiLocationsInput({
 
   const options = {
     componentRestrictions: { country: 'ng' },
-    fields: ['address_components', 'geometry', 'icon', 'name'],
+    // If additional fields are needed, they can be gotten from https://developers.google.com/maps/documentation/places/web-service/place-data-fields
+    fields: ['formatted_address'],
     types: ['establishment'],
   };
-  useEffect(() => {
+
+  useLayoutEffect(() => {
+    // TODO: implement prefilling of google input.
+    // if (inputRef.current?.value) inputRef.current?.value = formData[name] || '';
     //   @ts-ignore
     autoCompleteRef.current = new window.google.maps.places.Autocomplete(
       inputRef.current,
@@ -36,8 +35,8 @@ export default function UiLocationsInput({
     autoCompleteRef.current.addListener('place_changed', async function () {
       // @ts-ignore
       const place = await autoCompleteRef.current.getPlace();
-      // TODO: format to the needed type
-      onChange({ name, value: place.name });
+      // TODO: correct transporter verification
+      onChange({ name, value: place.formatted_address });
     });
   }, []);
 

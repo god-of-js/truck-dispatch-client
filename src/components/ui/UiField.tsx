@@ -23,7 +23,7 @@ const Message = styled.div`
 `;
 
 const Label = styled.label`
-  font-size: ${pxToRem(12)};
+  font-size: ${pxToRem(14)};
   color: var(--color-gray-500);
   font-weight: bold;
 `;

@@ -4,17 +4,19 @@ import styled from 'styled-components';
 interface Props {
   children?: React.ReactNode;
   disabled?: boolean;
+  loading?: boolean;
   variant?:
     | 'primary'
     | 'secondary'
-    | 'neutal'
+    | 'neutral'
     | 'primary-outlined'
-    | 'secondary-outlined';
-  size?: 'large' | 'medium' | 'small';
+    | 'secondary-outlined'
+    | 'primary-text';
+  size?: 'large' | 'md' | 's';
   type?: 'submit' | 'button';
   textCasing?: 'uppercase' | 'lowercase' | 'capitalize';
   /** This prop decides if we want the button to fit the content or be full width */
-  fitContent?: boolean;
+  isFullWidth?: boolean;
   onClick?: () => void;
 }
 
@@ -22,29 +24,32 @@ export default function UiButton({
   children,
   onClick,
   disabled = false,
+  loading = false,
   variant = 'primary',
   type = 'submit',
   textCasing = 'uppercase',
-  size,
+  size = 'large',
+  isFullWidth = false,
 }: Props) {
   return (
     <ButtonContainer
       className={`btn ${variant}`}
       onClick={onClick}
-      disabled={disabled}
+      disabled={disabled || loading}
       type={type}
       textCasing={textCasing}
       size={size}
+      isFullWidth={isFullWidth}
     >
-      {children}
+      {loading ? <span>Loading...</span> : children}
     </ButtonContainer>
   );
 }
 
 const ButtonContainer = styled.button<Props>`
-  padding: 16px 16px;
+  padding: ${pxToRem(12)};
   border: none;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? '' : 'pointer')};
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -53,11 +58,12 @@ const ButtonContainer = styled.button<Props>`
   line-height: 1.45;
   text-align: center;
   text-transform: uppercase;
-  border-radius: 8px;
+  border-radius: ${pxToRem(4)};
   font-weight: 900;
   text-transform: ${({ textCasing }) => textCasing};
-  width: ${({ fitContent = false }) => (fitContent ? 'fit-content' : '100%')};
-  height: var(--base-height);
+  width: ${({ isFullWidth }) => (isFullWidth ? '100%' : 'fit-content')};
+  white-space: nowrap;
+  opacity: ${({ disabled }) => (disabled ? '0.6' : '1')};
 
   &.primary {
     background-color: var(--color-primary);
@@ -66,6 +72,15 @@ const ButtonContainer = styled.button<Props>`
     &:hover {
       background-color: var(--color-primary-600);
     }
+  }
+  &.primary-text {
+    background: transparent;
+    border-color: transparent;
+    color: var(--color-primary);
+  }
+  &.neutral {
+    background-color: var(--color-gray-200);
+    color: var(--color-gray-900);
   }
 
   &.primary-outlined {
@@ -77,6 +92,9 @@ const ButtonContainer = styled.button<Props>`
   &.secondary {
     background-color: var(--color-gray-100);
     color: var(--color-gray-700);
+    &:hover {
+      background: var(--color-gray-100);
+    }
   }
 
   &.secondary-outlined {
