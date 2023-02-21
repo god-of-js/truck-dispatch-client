@@ -1,12 +1,12 @@
-import userEvent from '@testing-library/user-event';
-import NotFoundError from 'components/errors/NotFoundError';
-import Loader from 'components/layout/Loader';
-import { RootState } from 'modules/index';
-import { getBidsWithTripId, selectBid, submitBid } from 'modules/Trips';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+
+import NotFoundError from 'components/errors/NotFoundError';
+import Loader from 'components/layout/Loader';
+import { selectDashboardUser } from 'modules/Account';
+import { getBidsWithTripId, selectBid, createOrUpdateBid } from 'modules/Trips';
 import Bid from 'types/Bid';
 import MessageWithImage from 'ui/MessageWithImage';
 import UiBackButton from 'ui/UiBackButton';
@@ -19,10 +19,12 @@ import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
 import uuidv4 from 'utils/uuid';
 import BidForJobSchema from 'utils/validations/BidForJobSchema';
+import UiOverlay from 'ui/UiOverlay';
+import InformUserOfVerification from 'components/verification/InformUserOfVerification';
 
 export default function BidOnJob() {
   const { tripId } = useParams();
-  const user = useSelector((state: RootState) => state.account.user);
+  const user = useSelector(selectDashboardUser);
   const bid = useSelector(selectBid(user?.id || '', 'transporterId'));
 
   const dispatch = useDispatch();
@@ -33,6 +35,7 @@ export default function BidOnJob() {
     id: uuidv4(),
     transporterId: user?.id || '',
     tripId: tripId || '',
+    status: 'pending',
   });
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
@@ -41,7 +44,7 @@ export default function BidOnJob() {
 
   function sendJobBid() {
     setLoading(true);
-    dispatch(toAnyAction(submitBid(formData)))
+    dispatch(toAnyAction(createOrUpdateBid(formData)))
       .then(() => {
         setHasSentBid(true);
       })
@@ -68,7 +71,7 @@ export default function BidOnJob() {
         setPageLoading(false),
       );
     }
-  });
+  }, [bid]);
 
   return (
     <BidOnJobPageStyle>

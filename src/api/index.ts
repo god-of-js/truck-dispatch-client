@@ -16,6 +16,8 @@ import {
 import db, { auth } from './firebase';
 import Trip from 'types/Trip';
 import Bid from 'types/Bid';
+import Payment from 'types/Payment';
+import Rating from 'types/Rating';
 
 class ApiService {
   createUserWithEmailAndPassword(email: string, password: string) {
@@ -34,8 +36,8 @@ class ApiService {
     return this.setDoc('user', data.id, data);
   }
 
-  getUser(id: string) {
-    return this.getItem<User>('user', id);
+  getUsers() {
+    return this.getCollection<User>('user');
   }
 
   sendVerificationDetailsToAdmin(userId: string, data: unknown) {
@@ -45,6 +47,10 @@ class ApiService {
   saveAsset(id: string, url: string) {
     // In case of future migrations to different asset servers.
     return this.setDoc('assets', id, { id, url });
+  }
+
+  publishUserRating(data: Rating) {
+    return this.setDoc('rating', data.id, data);
   }
 
   createOrUpdateTrip(data: Trip) {
@@ -60,27 +66,43 @@ class ApiService {
     });
   }
 
+  getRatings(
+    value: string,
+    queryKey: 'transporterId' | 'tripId' = 'transporterId',
+  ) {
+    return this.query<Rating>({
+      collectionName: 'rating',
+      key: queryKey,
+      condition: '==',
+      value,
+    });
+  }
+
   getTransporterTrips(transporterId: string) {
     return this.query<Trip>({
       collectionName: 'trip',
-      key: 'agentId',
+      key: 'transporterId',
       condition: '==',
       value: transporterId,
     });
   }
 
-  getTransporterJobs() {
+  getJobs() {
     // Jobs are trips that haven't been claimed by any transporter and
     return this.query<Trip>({
       collectionName: 'trip',
       key: 'status',
       condition: '==',
-      value: 'awaiting_transporter',
+      value: 'awaiting_bid',
     });
   }
 
-  submitBid(data: Bid) {
+  createOrUpdateBid(data: Bid) {
     return this.setDoc('bid', data.id, data);
+  }
+
+  createOrUpdatePayment(data: Payment) {
+    return this.setDoc('payment', data.id, data);
   }
 
   getBidsWithTripId(tripId: string) {
@@ -100,9 +122,12 @@ class ApiService {
     return setDoc(doc(db, collectionName, id), data);
   }
 
-  private async getCollection(collectionName: string): Promise<unknown> {
+  private async getCollection<T>(collectionName: string): Promise<T[]> {
     const rawObjects = await getDocs(collection(db, collectionName));
-    return rawObjects.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    return rawObjects.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    })) as unknown as T[];
   }
 
   private async query<T = unknown>({

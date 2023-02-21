@@ -1,4 +1,6 @@
+import { selectTransporters } from 'modules/Account';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Trip from 'types/Trip';
 import UiButton from 'ui/UiButton';
@@ -6,23 +8,30 @@ import sizes from 'utils/sizes';
 
 interface Props {
   data: Trip;
-  nextHandler: () => void;
-  prevHandler: () => void;
   loading?: boolean;
   actionText?: string;
   isActionButtonDisabled?: boolean;
+  hideActionButtons?: boolean;
+  notConfirm?: boolean;
+  nextHandler?: () => void;
+  prevHandler?: () => void;
 }
 export default function ConfirmTripDetails({
   data,
   isActionButtonDisabled,
   loading,
   actionText,
+  hideActionButtons,
+  notConfirm = false,
   prevHandler,
   nextHandler,
 }: Props) {
+  const transporters = useSelector(selectTransporters);
+
   return (
     <Layout>
-      <Heading>Confirm Trip Details</Heading>
+      {/* TODO: remove confirm text when not confirm */}
+      <Heading>{notConfirm ? '' : 'Confirm'} Trip Details</Heading>
       <Section>
         <div className="title">Pick Up Address</div>
         <div className="value">{data.pickUpAddress}</div>
@@ -55,18 +64,20 @@ export default function ConfirmTripDetails({
         <div className="title">Weight of Goods(Tonnage)</div>
         <div className="value">{data.weight}Tons</div>
       </Section>
-      <SubmitButtonContainer className="submit-button-container">
-        <UiButton variant="secondary-outlined" onClick={prevHandler}>
-          Go Back
-        </UiButton>
-        <UiButton
-          loading={loading}
-          disabled={isActionButtonDisabled}
-          onClick={nextHandler}
-        >
-          {actionText || 'Broadcast Job'}
-        </UiButton>
-      </SubmitButtonContainer>
+      {!hideActionButtons && (
+        <SubmitButtonContainer className="submit-button-container">
+          <UiButton variant="secondary-outlined" onClick={prevHandler}>
+            Go Back
+          </UiButton>
+          <UiButton
+            loading={loading}
+            disabled={isActionButtonDisabled}
+            onClick={nextHandler}
+          >
+            {actionText || 'Broadcast Job'}
+          </UiButton>
+        </SubmitButtonContainer>
+      )}
     </Layout>
   );
 }
@@ -78,24 +89,24 @@ const Heading = styled.h2`
   font-size: ${pxToRem(16)};
   margin: ${pxToRem(28)} 0;
 `;
-const Section = styled.div`
+const Section = styled.section`
   display: flex;
   align-items: flex-start;
+  flex-direction: column;
   gap: ${pxToRem(8)};
   font-size: ${pxToRem(16)};
   margin-bottom: ${pxToRem(24)};
 
   .title {
     color: var(--color-gray-400);
-    width: 50%;
   }
 
   .value {
     color: var(--color-gray-600);
-    width: 50%;
   }
 
   @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
+    flex-direction: row;
     .title {
       width: 35%;
     }

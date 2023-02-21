@@ -15,6 +15,7 @@ export default function UiTabs({ tabs }: Props) {
   const urlLocation = useLocation();
   return (
     <Tabs>
+      {/* TODO: figure out how to retain active state for child routes. */}
       {tabs.map((tab, index) => (
         <Tab isActive={tab.path === urlLocation.pathname} key={index}>
           {tab.path ? (
@@ -38,7 +39,7 @@ const Tabs = styled.ul`
 `;
 
 const Tab = styled.li`
-  font-size: ${pxToRem(16)};
+  font-size: ${pxToRem(14)};
   padding-bottom: ${pxToRem(24)};
   /* TODO: make border rounded */
   border-bottom: ${pxToRem(2)} solid

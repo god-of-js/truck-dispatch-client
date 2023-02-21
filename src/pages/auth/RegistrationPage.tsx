@@ -27,8 +27,9 @@ export default function RegistrationPage() {
     phone: '',
     password: '',
     cPassword: '',
-    userType: userType || 'transporter',
+    userType: (userType as UserWithPassword['userType']) || 'transporter',
     status: userType === 'transporter' ? 'unverified' : undefined,
+    rating: 0,
   });
   const [loading, setLoading] = useState(false);
 

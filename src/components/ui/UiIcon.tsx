@@ -2,34 +2,42 @@ import React from 'react';
 // These icons should be arranged alphabetically for easy sorting
 import {
   ArrowLeft,
+  ArrowRight,
   CaretDown,
   CaretUp,
   Eye,
   EyeSlash,
   House,
+  MapPin,
   Money,
-  Suitcase,
   SignOut,
+  Suitcase,
+  Star,
   Truck,
   User,
-  UsersThree
+  UsersThree,
+  X,
 } from 'phosphor-react';
 import styled from 'styled-components';
 
 // These icons should be arranged alphabetically for easy sorting
 const icons = {
   ArrowLeft: <ArrowLeft />,
+  ArrowRight: <ArrowRight />,
   CaretDown: <CaretDown />,
   CaretUp: <CaretUp />,
   Eye: <Eye />,
   EyeSlash: <EyeSlash />,
   House: <House />,
   Money: <Money />,
+  MapPin: <MapPin />,
+  SignOut: <SignOut />,
   Suitcase: <Suitcase />,
-  SignOut:<SignOut/>,
+  Star: <Star />,
   Truck: <Truck />,
   User: <User />,
   UsersThree: <UsersThree />,
+  X: <X />,
 };
 
 export type Icons = keyof typeof icons;

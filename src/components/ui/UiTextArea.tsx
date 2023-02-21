@@ -10,7 +10,7 @@ interface Props {
    */
   name: string;
   error?: string;
-  onChange: (event: { name: string; value: string | null }) => void;
+  onChange: (event: { name: string; value: string }) => void;
 }
 export default function UiTextArea({
   label,

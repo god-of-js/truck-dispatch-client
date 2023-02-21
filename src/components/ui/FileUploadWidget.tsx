@@ -7,6 +7,7 @@ interface Props {
   label?: string;
   value: File[] | File | null;
   acceptMultiple?: boolean;
+  fileType?: 'image' | 'document';
   onChange: (event: { name: string; value: File | File[] }) => void;
   children?: React.ReactNode;
   error?: string;
@@ -14,6 +15,7 @@ interface Props {
 
 export default function FileUploadWidget({
   acceptMultiple,
+  fileType = 'image',
   children,
   label,
   value,
@@ -22,7 +24,11 @@ export default function FileUploadWidget({
   onChange,
 }: Props) {
   const displayComponent = children || defaultComponent();
-
+  const fileTypeSelector = {
+    image: 'image/*',
+    document:
+      'application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation, application/rtf, text/plain',
+  };
   function pickImages() {
     document.getElementById('input')?.click();
   }
@@ -51,6 +57,7 @@ export default function FileUploadWidget({
   function getFileName(item: File) {
     return item?.name || '';
   }
+
   function defaultComponent() {
     return (
       <DefaultUploadTrigger>
@@ -68,7 +75,7 @@ export default function FileUploadWidget({
           type="file"
           onChange={handleFileChange}
           multiple={acceptMultiple}
-          accept="image/*"
+          accept={fileTypeSelector[fileType]}
         />
         {displayComponent}
       </FileUploadWidgetStyle>

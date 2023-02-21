@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import UiLocationsInput from 'components/ui/UiLocationsInput';
 import styled from 'styled-components';
 import UiButton from '../components/ui/UiButton';
-import UiForm, { RuleType } from '../components/ui/UiForm';
+import UiForm from '../components/ui/UiForm';
 import UiInput from '../components/ui/UiInput';
 import UiSelect from '../components/ui/UiSelect';
 
@@ -14,12 +14,6 @@ function ComponentsView() {
     selectValue: 'Wahala',
     location: '',
   });
-
-  const formRules: Record<keyof typeof formData, RuleType[]> = {
-    email: ['required', 'email'],
-    selectValue: ['required'],
-    location: ['required'],
-  };
 
   const selectOptions = [
     {
@@ -61,7 +55,7 @@ function ComponentsView() {
         value={isFocused}
         onChange={(e) => setIsFocused(e.value)}
       />
-      <UiForm rules={formRules} formData={formData} onSubmit={handleSubmit}>
+      <UiForm formData={formData} onSubmit={handleSubmit}>
         {({ errors }) => (
           <>
             <UiInput
@@ -85,7 +79,6 @@ function ComponentsView() {
             <UiLocationsInput
               onChange={handleFormChange}
               label="Location"
-              value={formData.location}
               name="location"
             />
             <UiButton> Submit </UiButton>

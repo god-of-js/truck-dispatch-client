@@ -1,9 +1,11 @@
-import Loader from 'components/layout/Loader';
-import UiTabs from 'components/ui/UiTabs';
-import { Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
+
 import sizes from '../utils/sizes';
+
+import Loader from 'components/layout/Loader';
+import UiTabs from 'components/ui/UiTabs';
 
 export default function ProfileLayout() {
   const transporterRoutes = [

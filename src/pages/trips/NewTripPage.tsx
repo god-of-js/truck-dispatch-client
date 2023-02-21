@@ -4,16 +4,19 @@ import styled from 'styled-components';
 
 import Trip from 'types/Trip';
 import sizes from 'utils/sizes';
-import { RootState } from '../../modules';
 import uuidv4 from 'utils/uuid';
 import { toAnyAction } from 'utils/helpers';
-import { createOrUpdateTrip } from 'modules/Trips';
+import { createOrUpdateTrip, setTrips } from 'modules/Trips';
 
 import UiTimeline, { TimelineStep } from 'ui/UiTimeline';
 import NewTripForm from 'components/trips/NewTripForm';
 import ViewTripDetails from 'components/trips/ViewTripDetails';
 import MessageWithImage from 'ui/MessageWithImage';
 import UiButton from 'ui/UiButton';
+import UiBackButton from 'ui/UiBackButton';
+import { selectDashboardUser } from 'modules/Account';
+import { Link } from 'react-router-dom';
+import { RootState } from 'modules/index';
 
 interface Step extends TimelineStep {
   value: CurrentStep;
@@ -26,7 +29,8 @@ type CurrentStep =
   | 'payment';
 
 export default function NewTripPage() {
-  const user = useSelector((state: RootState) => state.account.user);
+  const user = useSelector(selectDashboardUser);
+  const trips = useSelector((state: RootState) => state.trips.trips);
   const dispatch = useDispatch();
 
   const newTripSteps: Step[] = [
@@ -43,14 +47,14 @@ export default function NewTripPage() {
       value: 'broadcast-successful',
       invincible: true,
     },
-    {
-      name: 'Select Transporter',
-      value: 'select-transporter',
-    },
-    {
-      name: 'Payment',
-      value: 'payment',
-    },
+    // {
+    //   name: 'Select Transporter',
+    //   value: 'select-transporter',
+    // },
+    // {
+    //   name: 'Payment',
+    //   value: 'payment',
+    // },
   ];
 
   const [loading, setLoading] = useState(false);
@@ -67,7 +71,7 @@ export default function NewTripPage() {
     shippingLine: '',
     weight: NaN,
     description: '',
-    status: 'awaiting_transporter',
+    status: 'awaiting_bid',
   });
 
   function nextHandler(formData?: Trip) {
@@ -81,13 +85,6 @@ export default function NewTripPage() {
       sendTripToDrivers().then(() => {
         setCurrentStep('broadcast-successful');
       });
-    }
-
-    if (currentStep === 'broadcast-successful') {
-      setCurrentStep('select-transporter');
-    }
-    if (currentStep === 'payment') {
-      return;
     }
   }
 
@@ -105,52 +102,60 @@ export default function NewTripPage() {
   function sendTripToDrivers() {
     if (!user?.id) return;
     setLoading(true);
-    return dispatch(toAnyAction(createOrUpdateTrip(defaultFormData))).finally(
-      () => {
+    return dispatch(toAnyAction(createOrUpdateTrip(defaultFormData)))
+      .then(() => {
+        dispatch(setTrips([...trips, defaultFormData]));
+      })
+      .finally(() => {
         setLoading(false);
-      },
-    );
+      });
   }
 
   return (
-    <PageContainer>
-      <UiTimeline steps={newTripSteps} currentStep={currentStep} />
-      <React.Suspense>
-        <div className="children-container">
-          {currentStep === 'trip-form' && (
-            <NewTripForm
-              defaultFormData={defaultFormData}
-              nextHandler={nextHandler}
-            />
-          )}
-          {currentStep === 'confirm-details' && (
-            <ViewTripDetails
-              data={defaultFormData}
-              nextHandler={nextHandler}
-              prevHandler={prevHandler}
-              loading={loading}
-            />
-          )}
-          {currentStep === 'broadcast-successful' && (
-            <>
-              <MessageWithImage
-                title="Your Trip has been broadcasted"
-                subtitle={`Thank you for trusting us with your dispatch. Your trip has been broadcasted to trusted transporters in our network. It usually takes a couple minutes to get matched with transporters. Expect a call or text message in the next couple of minutes to inform you of transporters available. You can view the list of transporters by clicking the button below.`}
+    <PageStyling>
+      <UiBackButton />
+      <CardContainer>
+        <UiTimeline steps={newTripSteps} currentStep={currentStep} />
+        <React.Suspense>
+          <div className="children-container">
+            {currentStep === 'trip-form' && (
+              <NewTripForm
+                defaultFormData={defaultFormData}
+                nextHandler={nextHandler}
               />
-              <div className="button-container">
-                <UiButton onClick={nextHandler}>
-                  View Transporters available for your trip
-                </UiButton>
-              </div>
-            </>
-          )}
-        </div>
-      </React.Suspense>
-    </PageContainer>
+            )}
+            {currentStep === 'confirm-details' && (
+              <ViewTripDetails
+                data={defaultFormData}
+                nextHandler={nextHandler}
+                prevHandler={prevHandler}
+                loading={loading}
+              />
+            )}
+            {currentStep === 'broadcast-successful' && (
+              <>
+                <MessageWithImage
+                  title="Your Trip has been broadcasted"
+                  subtitle={`Your trip has been broadcasted to trusted transporters in our network. It usually takes a couple minutes to get matched with transporters. Expect several transporters to send bids on the trip you just created. You can view the bids created by transporters by clicking the button below. Thank you for trusting us with your dispatch. `}
+                />
+                <div className="button-container">
+                  <Link to={`/my-trips/${defaultFormData.id}/bids`}>
+                    <UiButton>View Trip Bids</UiButton>
+                  </Link>
+                </div>
+              </>
+            )}
+          </div>
+        </React.Suspense>
+      </CardContainer>
+    </PageStyling>
   );
 }
 
-const PageContainer = styled.div`
+const PageStyling = styled.div`
+  padding: ${pxToRem(20)};
+`;
+const CardContainer = styled.div`
   background: #ffffff;
   width: 90%;
   margin: auto;

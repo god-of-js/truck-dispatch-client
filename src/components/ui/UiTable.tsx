@@ -23,7 +23,7 @@ interface Props {
   data: Row[];
   headers: Header[];
   options: [];
-  onRowClick: (id: string) => void;
+  onRowClick?: (id: string) => void;
 }
 
 export default function UiTable({
@@ -49,7 +49,7 @@ export default function UiTable({
         <tbody>
           {data.map((item) => {
             return (
-              <TableRow key={item.id} onClick={() => onRowClick(item.id)}>
+              <TableRow key={item.id} onClick={() => onRowClick?.(item.id)}>
                 {headers.map((header, index) => {
                   return (
                     <TableDataItem key={index}>
@@ -73,6 +73,8 @@ const TableContainer = styled.div`
 
 const TableContainerHeader = styled.header`
   border-bottom: 1px solid var(--color-gray-200);
+  display: flex;
+  justify-content: space-between;
 `;
 const TableTitle = styled.h2`
   padding: 0 ${pxToRem(12)};

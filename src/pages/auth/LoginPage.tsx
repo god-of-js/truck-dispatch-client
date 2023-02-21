@@ -12,7 +12,7 @@ import UiForm from 'ui/UiForm';
 import { toAnyAction } from 'utils/helpers';
 import loginSchema from 'utils/validations/loginSchema';
 
-export default function RegistrationPage() {
+export default function LoginPage() {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState<{ email: string; password: string }>(
     {
