@@ -4,54 +4,62 @@ import { Menu, MenuItem, MenuButton, SubMenu } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/slide.css';
 import { Link } from 'react-router-dom';
-interface Data {
-    value?: string | null;
-    type?: string;
-    href?:string ;
-    display?:string | null;
-    path?: string;
-    subItems?: Data[];
-    function?: () => void
+import styled from 'styled-components';
+
+export interface DropDownData {
+  type?: 'route' | 'function';
+  label: string;
+  path?: string;
+  func?: () => void;
 }
 
 interface Props {
-    data: Data[];
-    trigger?: React.ReactNode;
+  data: DropDownData[];
+  trigger?: React.ReactNode;
 }
 
-export default function UidropdownMenu ({data, trigger}: Props) {
-    return (
-        <Menu menuButton={<MenuButton>{trigger || <UiIcon icon='DotsThreeBold' size='20'/>}</MenuButton>}>
-            {
-                data.map((option)=>(
-                    <>
-                        { option.type === "route" && 
-                        <MenuItem>
-                            <Link to={`${option.path}`}>{option.display}</Link> 
-                        </MenuItem> }
+export default function UidropdownMenu({ data, trigger }: Props) {
+  return (
+    <Menu
+      menuButton={
+        <MenuButtonStyling>
+          {trigger || <UiIcon icon="DotsThreeVertical" size="20" />}
+        </MenuButtonStyling>
+      }
+    >
+      {data.map((option) => (
+        <>
+          {option.type === 'route' && (
+            <MenuItemStyling>
+              <Link to={`${option.path}`}>{option.label}</Link>
+            </MenuItemStyling>
+          )}
 
-                        {option.type === "link" && <MenuItem href={option.href}>{option.display}</MenuItem>}
-
-                        {option.type === "function" && <MenuItem onClick={option.function}>{option.display}</MenuItem>}
-
-                        {option.type === "subItem" && 
-                        <SubMenu label={option.display}>
-                            { option.subItems?.map((subItem)=>(
-                                <>
-                                    { option.type === "route" && 
-                                    <MenuItem>
-                                        <Link to={`${subItem.path}`}>{subItem.display}</Link>
-                                    </MenuItem> }
-
-                                    {subItem.type === "link" && <MenuItem href={subItem.href}>{subItem.display}</MenuItem>}
-
-                                    {subItem.type === "functon" && <MenuItem onClick={subItem.function}>{subItem.display}</MenuItem>}
-                                </>
-                            ))}
-                        </SubMenu>}
-                    </>
-                ))
-            }
-        </Menu>
-    )
+          {option.type === 'function' && (
+            <MenuItemStyling onClick={option.func}>{option.label}</MenuItemStyling>
+          )}
+        </>
+      ))}
+    </Menu>
+  );
 }
+
+const MenuButtonStyling = styled(MenuButton)`
+  background: transparent;
+  border: transparent;
+  cursor: pointer;
+`;
+
+const MenuItemStyling = styled(MenuItem)`
+  text-transform: capitalize;
+    font-size: ${pxToRem(16)};
+    color: var(--color-gray-500);
+    font-weight: normal;
+  a {
+    width: 100%;
+    height: 100%;
+    font-size: ${pxToRem(16)};
+    color: var(--color-gray-500);
+    font-weight: normal;
+  }
+`;
