@@ -1,3 +1,5 @@
+import React from 'react';
+import UiIcon from './UiIcon';
 import { Menu, MenuItem, MenuButton, SubMenu } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/slide.css';
@@ -13,18 +15,19 @@ interface Data {
 }
 
 interface Props {
-    data: Data[]
+    data: Data[];
+    trigger?: React.ReactNode;
 }
 
-export default function UidropdownMenu ({data}: Props) {
+export default function UidropdownMenu ({data, trigger}: Props) {
     return (
-        <Menu menuButton={<MenuButton>Open menu</MenuButton>}>
+        <Menu menuButton={<MenuButton>{trigger || <UiIcon icon='DotsThreeBold' size='20'/>}</MenuButton>}>
             {
                 data.map((option)=>(
                     <>
                         { option.type === "route" && 
                         <MenuItem>
-                            <Link to={`${option.path}`}>{option.display}</Link>
+                            <Link to={`${option.path}`}>{option.display}</Link> 
                         </MenuItem> }
 
                         {option.type === "link" && <MenuItem href={option.href}>{option.display}</MenuItem>}

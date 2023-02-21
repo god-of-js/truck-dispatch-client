@@ -142,7 +142,7 @@ function ComponentsView() {
           </>
         )}
       </UiForm>
-      <UidropdownMenu data={dropDownData}/>
+      <UidropdownMenu data={dropDownData} />
     </div>
   );
 }
