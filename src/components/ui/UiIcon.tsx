@@ -9,9 +9,10 @@ import {
   House,
   Money,
   Suitcase,
+  SignOut,
   Truck,
   User,
-  UsersThree,
+  UsersThree
 } from 'phosphor-react';
 import styled from 'styled-components';
 
@@ -25,6 +26,7 @@ const icons = {
   House: <House />,
   Money: <Money />,
   Suitcase: <Suitcase />,
+  SignOut:<SignOut/>,
   Truck: <Truck />,
   User: <User />,
   UsersThree: <UsersThree />,
