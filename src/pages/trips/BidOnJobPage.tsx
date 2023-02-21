@@ -19,14 +19,11 @@ import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
 import uuidv4 from 'utils/uuid';
 import BidForJobSchema from 'utils/validations/BidForJobSchema';
-import UiOverlay from 'ui/UiOverlay';
-import InformUserOfVerification from 'components/verification/InformUserOfVerification';
 
 export default function BidOnJob() {
   const { tripId } = useParams();
   const user = useSelector(selectDashboardUser);
   const bid = useSelector(selectBid(user?.id || '', 'transporterId'));
-
   const dispatch = useDispatch();
   const [formData, setFormData] = useState<Bid>({
     price: NaN,
@@ -36,6 +33,8 @@ export default function BidOnJob() {
     transporterId: user?.id || '',
     tripId: tripId || '',
     status: 'pending',
+    driverName: '',
+    truckPlateNumber: '',
   });
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
@@ -109,6 +108,22 @@ export default function BidOnJob() {
                       label="Present Truck Location"
                       name="presentLocation"
                       error={errors.presentLocation}
+                      onChange={setValues}
+                    />
+                  </GridContainer>
+                  <GridContainer>
+                    <UiInput
+                      name="driverName"
+                      value={formData.driverName}
+                      label="Driver Name"
+                      error={errors.driverName}
+                      onChange={setValues}
+                    />
+                    <UiInput
+                      label="Truck Plate Number"
+                      name="truckPlateNumber"
+                      value={formData.truckPlateNumber}
+                      error={errors.truckPlateNumber}
                       onChange={setValues}
                     />
                   </GridContainer>

@@ -18,6 +18,7 @@ import Trip from 'types/Trip';
 import Bid from 'types/Bid';
 import Payment from 'types/Payment';
 import Rating from 'types/Rating';
+import PaymentRequest from 'types/PaymentRequest';
 
 class ApiService {
   createUserWithEmailAndPassword(email: string, password: string) {
@@ -103,6 +104,18 @@ class ApiService {
 
   createOrUpdatePayment(data: Payment) {
     return this.setDoc('payment', data.id, data);
+  }
+
+  requestPaymentByTransporter(data: PaymentRequest) {
+    return this.setDoc('payment-request', data.id, data);
+  }
+  getPaymentRequestsOfDriver(id: string) {
+    return this.query<PaymentRequest>({
+      collectionName: 'payment-request',
+      key: 'transporterId',
+      condition: '==',
+      value: id,
+    });
   }
 
   getBidsWithTripId(tripId: string) {

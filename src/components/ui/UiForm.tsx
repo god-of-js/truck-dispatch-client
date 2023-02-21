@@ -19,6 +19,7 @@ export default function UiForm({
   onSubmit,
 }: Props) {
   function validateForm() {
+    if (!schema) return {};
     let errors = {};
     try {
       schema.validateSync(formData, { abortEarly: false });
