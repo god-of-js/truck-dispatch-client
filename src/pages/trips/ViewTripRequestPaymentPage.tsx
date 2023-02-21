@@ -19,6 +19,7 @@ import {
 } from 'modules/Payments';
 import MessageWithImage from 'ui/MessageWithImage';
 import Loader from 'components/layout/Loader';
+import RequestPaymentSchema from 'utils/validations/RequestPaymentSchema';
 
 export default function ViewTripRequestPayment() {
     const { tripId } = useParams();
@@ -97,7 +98,7 @@ export default function ViewTripRequestPayment() {
                         <li>Driver Name</li>
                         <li>Driver Phone Number</li>
                     </ul>
-                    <UiForm formData={formData} onSubmit={requestPayment}>
+                    <UiForm formData={formData} schema={RequestPaymentSchema} onSubmit={requestPayment}>
                         {({ errors }) => (
                             <>
                                 <GridContainer>
@@ -105,6 +106,7 @@ export default function ViewTripRequestPayment() {
                                         label="Driver Full Name"
                                         value={formData.driverName}
                                         name="driverName"
+                                        error={errors.driverName}
                                         onChange={setData}
                                     />
                                     <UiInput
@@ -112,12 +114,14 @@ export default function ViewTripRequestPayment() {
                                         type="phone"
                                         value={formData.driverPhoneNumber}
                                         name="driverPhoneNumber"
+                                        error={errors.driverPhoneNumber}
                                         onChange={setData}
                                     />
                                     <FileUploadWidget
                                         label="Video of the container on truck"
                                         fileType="video"
                                         name="containerVideo"
+                                        error={errors.containerVideo}
                                         value={formData.containerVideo as File}
                                         onChange={setData}
                                     />
