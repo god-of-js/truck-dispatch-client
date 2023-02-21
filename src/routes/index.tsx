@@ -35,6 +35,9 @@ const ViewTripPage = lazy(() => import('../pages/trips/ViewTripPage'));
 const ViewTripStatusPage = lazy(
   () => import('../pages/trips/ViewTripStatusPage'),
 );
+const ViewTripRequestPaymentPage = lazy(
+  () => import('../pages/trips/ViewTripRequestPaymentPage'),
+);
 const ViewTripTDOPage = lazy(() => import('../pages/trips/ViewTripTDOPage'));
 const ViewTripBidsPage = lazy(() => import('../pages/trips/ViewTripBidsPage'));
 const ViewTripBidPage = lazy(() => import('../pages/trips/ViewTripBidPage'));
@@ -111,6 +114,11 @@ const router = createBrowserRouter([
                 path: '/my-trips/:tripId/terminal-delivery-order',
                 id: 'View Trip TDO',
                 element: <ViewTripTDOPage />,
+              },
+              {
+                path: '/my-trips/:tripId/request-payment-for-trip',
+                id: 'Request payment for trip',
+                element: <ViewTripRequestPaymentPage />,
               },
               {
                 path: '/my-trips/:tripId/bids',

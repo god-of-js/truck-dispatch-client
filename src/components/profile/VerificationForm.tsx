@@ -41,7 +41,7 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
       homeAddress: '',
       idType: '',
       idDoc: null,
-    }
+    },
   });
 
   const [loading, setLoading] = useState(false);
@@ -88,7 +88,10 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
       .finally(() => setLoading(false));
   }
 
-  function setData(event: { name: string; value: string | File | File[] | null }) {
+  function setData(event: {
+    name: string;
+    value: string | File | File[] | null;
+  }) {
     if (event.name.includes('guarantor')) {
       const fieldName = event.name.split('guarantor.');
       setFormData((state) => ({
@@ -96,9 +99,8 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
         guarantor: {
           ...state.guarantor,
           [fieldName[1]]: event.value,
-        }
+        },
       }));
-
     }
     setFormData((state) => ({
       ...state,

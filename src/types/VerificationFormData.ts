@@ -16,5 +16,5 @@ export default interface VerificationFormData {
     homeAddress: string;
     idType: string;
     idDoc: File | null | Asset;
-  }
+  };
 }

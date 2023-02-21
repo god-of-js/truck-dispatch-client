@@ -7,7 +7,7 @@ interface Props {
   label?: string;
   value: File[] | File | null;
   acceptMultiple?: boolean;
-  fileType?: 'image' | 'document';
+  fileType?: 'image' | 'document' | 'video';
   onChange: (event: { name: string; value: File | File[] }) => void;
   children?: React.ReactNode;
   error?: string;
@@ -28,6 +28,7 @@ export default function FileUploadWidget({
     image: 'image/*',
     document:
       'application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation, application/rtf, text/plain',
+    video: 'video/mp4,video/x-m4v,video/*',
   };
   function pickImages() {
     document.getElementById('input')?.click();
