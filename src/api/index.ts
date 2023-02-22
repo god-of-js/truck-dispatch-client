@@ -19,6 +19,7 @@ import Bid from 'types/Bid';
 import Payment from 'types/Payment';
 import Rating from 'types/Rating';
 import PaymentRequest from 'types/PaymentRequest';
+import Chat from 'types/Chat';
 
 class ApiService {
   createUserWithEmailAndPassword(email: string, password: string) {
@@ -124,6 +125,19 @@ class ApiService {
       key: 'tripId',
       condition: '==',
       value: tripId,
+    });
+  }
+
+  sendChat(chat: Chat) {
+    return this.setDoc('chat', chat.id, chat);
+  }
+
+  getChatsInvolvingUser(id: string, query: 'transporterId' | 'agentId') {
+    return this.query<Chat>({
+      collectionName: 'chat',
+      key: query,
+      condition: '==',
+      value: id,
     });
   }
 
