@@ -10,6 +10,7 @@ import {
   House,
   MapPin,
   Money,
+  SignOut,
   Suitcase,
   Star,
   Truck,
@@ -20,7 +21,7 @@ import {
 import styled from 'styled-components';
 
 // These icons should be arranged alphabetically for easy sorting
-const icons = {
+export const icons = {
   ArrowLeft: <ArrowLeft />,
   ArrowRight: <ArrowRight />,
   CaretDown: <CaretDown />,
@@ -30,6 +31,7 @@ const icons = {
   House: <House />,
   Money: <Money />,
   MapPin: <MapPin />,
+  SignOut: <SignOut />,
   Suitcase: <Suitcase />,
   Star: <Star />,
   Truck: <Truck />,
