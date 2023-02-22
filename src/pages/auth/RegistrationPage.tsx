@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -32,6 +32,13 @@ export default function RegistrationPage() {
     rating: 0,
   });
   const [loading, setLoading] = useState(false);
+
+  useEffect(()=>{
+    const user = localStorage.getItem("uid");
+    if(user){
+      navigate("/");
+    }
+}, [])
 
   function handleChange(event: { name: string; value: string | null }) {
     setFormData({
