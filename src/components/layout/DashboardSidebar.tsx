@@ -7,6 +7,7 @@ import sizes from 'utils/sizes';
 import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
 import UiIcon, { Icons } from '../ui/UiIcon';
 import { selectDashboardUser, selectUser } from 'modules/Account';
+import Logout from "../../utils/Logout"
 
 interface Route {
   iconName: Icons;
@@ -76,7 +77,6 @@ export default function DashboardSidebar() {
       <LogoContainer>
         <TDLogo src={TruckDispatchLogo} alt="truck-dispatch" />
       </LogoContainer>
-
       <TabList>
         {routes.map((route, index) => (
           <Link to={route.path} key={index}>
@@ -86,6 +86,7 @@ export default function DashboardSidebar() {
           </Link>
         ))}
       </TabList>
+      <Logout/>
     </Sidebar>
   );
 }
