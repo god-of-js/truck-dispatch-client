@@ -46,11 +46,8 @@ export default function ChatPage() {
       transporterId: transporterId!,
     };
     setFormData(defaultFormData);
-    dispatch(toAnyAction(sendChat(data))).then(() => {
-      console.log(data);
-    });
+    dispatch(toAnyAction(sendChat(data)));
   }
-
 
   useEffect(() => {
     const element = chatWindowRef.current;

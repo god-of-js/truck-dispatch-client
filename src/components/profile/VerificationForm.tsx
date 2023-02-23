@@ -92,6 +92,7 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
     name: string;
     value: string | File | File[] | null;
   }) {
+    console.log({ name: event.name, value: event.value });
     if (event.name.includes('guarantor')) {
       const fieldName = event.name.split('guarantor.');
       setFormData((state) => ({

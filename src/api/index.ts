@@ -7,7 +7,9 @@ import {
   query,
   where,
   WhereFilterOp,
+  onSnapshot,
 } from 'firebase/firestore';
+import 'firebase/firestore';
 import User from '../types/User';
 import {
   createUserWithEmailAndPassword,
@@ -110,6 +112,7 @@ class ApiService {
   requestPaymentByTransporter(data: PaymentRequest) {
     return this.setDoc('payment-request', data.id, data);
   }
+
   getPaymentRequestsOfDriver(id: string) {
     return this.query<PaymentRequest>({
       collectionName: 'payment-request',
@@ -134,6 +137,15 @@ class ApiService {
 
   getChatsInvolvingUser(id: string, query: 'transporterId' | 'agentId') {
     return this.query<Chat>({
+      collectionName: 'chat',
+      key: query,
+      condition: '==',
+      value: id,
+    });
+  }
+
+  listenForChatsInvolvingUser(id: string, query: 'transporterId' | 'agentId') {
+    return this.listen<Chat>({
       collectionName: 'chat',
       key: query,
       condition: '==',
@@ -176,6 +188,29 @@ class ApiService {
       documentList.push(doc.data() as T);
     });
     return documentList;
+  }
+
+  private async listen<T = unknown>({
+    collectionName,
+    key,
+    condition,
+    value,
+  }: {
+    collectionName: string;
+    key: string;
+    condition: WhereFilterOp;
+    value: string;
+  }) {
+    const q = query(
+      collection(db, collectionName),
+      where(key, condition, value),
+    );
+    onSnapshot(q, (querySnapshot) => {
+      const docs: T[] = [];
+      querySnapshot.forEach((doc) => {
+        docs.push(doc.data() as T);
+      });
+    });
   }
 
   private async getItem<T>(key: string, value: string): Promise<T> {

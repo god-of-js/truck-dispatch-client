@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toAnyAction } from 'utils/helpers';
 import { getChats } from 'modules/Chat';
 import { selectDashboardUser } from 'modules/Account';
+import { collection, query } from 'firebase/firestore';
 
 export default function ChatLayout() {
   const location = useLocation();
@@ -14,15 +15,28 @@ export default function ChatLayout() {
   const user = useSelector(selectDashboardUser);
 
   useEffect(() => {
-    dispatch(
-      toAnyAction(
-        getChats(
-          user?.id!,
-          user?.userType === 'agent' ? 'agentId' : 'transporterId',
+    // const q = query(
+    //   collection(db, 'chat'),
+    //   where(key, condition, value),
+    //   );
+    //   onSnapshot(q, (querySnapshot) => {
+    //   const docs: T[] = [];
+    //   querySnapshot.forEach((doc) => {
+    //     docs.push(doc.data() as T);
+    //   });
+    // });
+    Promise.all([
+      dispatch(
+        toAnyAction(
+          getChats(
+            user?.id!,
+            user?.userType === 'agent' ? 'agentId' : 'transporterId',
+          ),
         ),
       ),
-    );
+    ]);
   });
+
   return (
     <ChatLayoutDesign>
       <div className="card">
@@ -31,11 +45,14 @@ export default function ChatLayout() {
         </div>
         <div className="outlet-container" key={location.pathname}>
           <Outlet />
+          {location.pathname === '/chat' && (
+            <div className="create-message-"></div>
+          )}
         </div>
         <div className="mobile-display">
           {location.pathname === '/chat' && <ChatHeads />}
-          
-          <Outlet key={location.pathname}/>
+
+          <Outlet key={location.pathname} />
         </div>
       </div>
     </ChatLayoutDesign>
@@ -69,7 +86,7 @@ const ChatLayoutDesign = styled.div`
     .mobile-display {
       display: block;
       width: 100%;
-      
+
       @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
         display: none;
       }

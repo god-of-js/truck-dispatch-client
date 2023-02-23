@@ -30,8 +30,9 @@ export default function FileUploadWidget({
       'application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation, application/rtf, text/plain',
     video: 'video/mp4,video/x-m4v,video/*',
   };
+
   function pickImages() {
-    document.getElementById('input')?.click();
+    document.getElementById(name)?.click();
   }
 
   function handleFileChange() {
@@ -62,7 +63,9 @@ export default function FileUploadWidget({
   function defaultComponent() {
     return (
       <DefaultUploadTrigger>
-        <span>Choose file{acceptMultiple ? 's' : ''}</span>
+        <span>
+          Choose file{acceptMultiple ? 's' : ''} {name}
+        </span>
         {!acceptMultiple ? <div>{getFileName(value as File)}</div> : ''}
       </DefaultUploadTrigger>
     );
@@ -72,7 +75,7 @@ export default function FileUploadWidget({
     <UiField name={name} label={label} error={error}>
       <FileUploadWidgetStyle onClick={pickImages}>
         <input
-          id="input"
+          id={name}
           type="file"
           onChange={handleFileChange}
           multiple={acceptMultiple}
