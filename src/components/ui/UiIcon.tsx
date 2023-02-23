@@ -21,7 +21,7 @@ import {
 import styled from 'styled-components';
 
 // These icons should be arranged alphabetically for easy sorting
-export const icons = {
+const icons = {
   ArrowLeft: <ArrowLeft />,
   ArrowRight: <ArrowRight />,
   CaretDown: <CaretDown />,
