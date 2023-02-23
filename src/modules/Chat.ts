@@ -33,6 +33,22 @@ export const selectChatByChatId = (selectedChatId: string) =>
       .sort((a, b) => getTime(a.createdAt) - getTime(b.createdAt));
   });
 
+export const selectChatHeads = createSelector(chats, (chatArr) => {
+  const chatObj: Record<string, Chat[]> = {};
+  chatArr.forEach((chat) => {
+    if (chatObj[chat.chatId]) chatObj[chat.chatId].push(chat);
+    else {
+      chatObj[chat.chatId] = [chat];
+    }
+  });
+
+  const refinedChats = Object.values(chatObj).map(
+    (arr) => arr.sort((a, b) => getTime(a.createdAt) - getTime(b.createdAt))[arr.length - 1],
+  );
+
+  return refinedChats;
+});
+
 export const sendChat = (chat: Chat) => {
   return () => {
     return Api.sendChat(chat);

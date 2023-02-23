@@ -1,10 +1,25 @@
 import React from 'react';
+import { RootState } from 'modules/index';
+import { selectDashboardUser } from 'modules/Account';
+import { selectChatHeads } from 'modules/Chat';
+import { useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import UiAvatar from 'ui/UiAvatar';
+import Chat from 'types/Chat';
 
 export default function ChatLayout() {
-  const chatHeads: string[] = ['', '', '', '', ''];
+  const users = useSelector((state: RootState) => state.account.users);
+  const user = useSelector(selectDashboardUser);
+  const chatHeads = useSelector(selectChatHeads);
+
+  function alternateUser(chat: Chat) {
+    const alternateUserId = user?.id === chat.agentId ? chat.transporterId : chat.agentId;
+    const foundUser = users.find(({ id }) => id === alternateUserId);
+    if (!foundUser) throw new Error('user does not exist')
+    return foundUser;
+  }
+
   return (
     <ChatLayoutDesign>
       <div className="card">
@@ -13,11 +28,8 @@ export default function ChatLayout() {
             <li key={index}>
               <UiAvatar />
               <div className="content-container">
-                <div className="name">Eze Henry</div>
-                <div className="last-text">
-                  Lorem ipsum dolor, sit amet dolor kage bunshin no jutsu dolor
-                  amet and what ever you say concine your papa
-                </div>
+                <div className="name">{`${alternateUser(val).firstName} ${alternateUser(val).lastName}`}</div>
+                <div className="last-text">{val.message}</div>
               </div>
             </li>
           ))}
@@ -35,7 +47,7 @@ const ChatLayoutDesign = styled.div`
   height: 85vh;
 
   .card {
-    background: #ffffff;
+    background: var(--color-gray-100);
     width: 90%;
     height: 100%;
     margin: auto;
@@ -49,6 +61,7 @@ const ChatLayoutDesign = styled.div`
   .chat-heads {
     padding: 0;
     position: relative;
+    background: #ffffff;
     margin: 0;
     list-style-type: none;
     width: 30%;

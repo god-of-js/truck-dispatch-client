@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -19,6 +19,7 @@ import UiForm from 'ui/UiForm';
 export default function ChatPage() {
   const { agentId, transporterId } = useParams();
   const dispatch = useDispatch();
+  const chatWindowRef = useRef(null);
   const user = useSelector(selectDashboardUser);
   const chats = useSelector(selectChatByChatId(`${agentId}-${transporterId}`));
   const users = useSelector((state: RootState) => state.account.users);
@@ -61,6 +62,15 @@ export default function ChatPage() {
     );
   });
 
+  useEffect(() => {
+    const element = chatWindowRef.current;
+    if (element) {
+      // 👇 Will scroll smoothly to the bottom of the chat window
+      // @ts-ignore
+      element.scrollTo(0, element.scrollHeight);
+    }
+  }, [chats]);
+
   return (
     <ChatPageStyling>
       <Header>
@@ -69,12 +79,15 @@ export default function ChatPage() {
           <div>{alternateUser?.firstName + ' ' + alternateUser?.lastName}</div>
         </div>
       </Header>
+
       <ChatContainer>
-        {chats.map((chat) => (
-          <ChatBubble isMine={chat.senderId === user?.id}>
-            <div className="chat-bubble-inner">{chat.message}</div>
-          </ChatBubble>
-        ))}
+        <div id="chat-window" ref={chatWindowRef}>
+          {chats.map((chat) => (
+            <ChatBubble isMine={chat.senderId === user?.id}>
+              <div className="chat-bubble-inner">{chat.message}</div>
+            </ChatBubble>
+          ))}
+        </div>
       </ChatContainer>
       <InputContainer>
         <UiForm formData={formData} onSubmit={sendMessage}>
