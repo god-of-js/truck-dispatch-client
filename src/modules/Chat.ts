@@ -42,9 +42,14 @@ export const selectChatHeads = createSelector(chats, (chatArr) => {
     }
   });
 
-  const refinedChats = Object.values(chatObj).map(
-    (arr) => arr.sort((a, b) => getTime(a.createdAt) - getTime(b.createdAt))[arr.length - 1],
-  );
+  const refinedChats = Object.values(chatObj)
+    .map(
+      (arr) =>
+        arr.sort((a, b) => getTime(a.createdAt) - getTime(b.createdAt))[
+          arr.length - 1
+        ],
+    )
+    .sort((a, b) => getTime(b.createdAt) - getTime(a.createdAt));
 
   return refinedChats;
 });
@@ -58,7 +63,6 @@ export const sendChat = (chat: Chat) => {
 export const getChats = (id: string, query: 'transporterId' | 'agentId') => {
   return (dispatch: AppDispatch) => {
     return Api.getChatsInvolvingUser(id, query).then((data) => {
-      console.log(data);
       dispatch(setChats(data));
     });
   };

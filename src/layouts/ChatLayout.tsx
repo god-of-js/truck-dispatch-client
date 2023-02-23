@@ -1,41 +1,41 @@
-import React from 'react';
-import { RootState } from 'modules/index';
-import { selectDashboardUser } from 'modules/Account';
-import { selectChatHeads } from 'modules/Chat';
-import { useSelector } from 'react-redux';
-import { Outlet } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import UiAvatar from 'ui/UiAvatar';
-import Chat from 'types/Chat';
+import ChatHeads from 'components/chat/ChatHeads';
+import sizes from 'utils/sizes';
+import { useDispatch, useSelector } from 'react-redux';
+import { toAnyAction } from 'utils/helpers';
+import { getChats } from 'modules/Chat';
+import { selectDashboardUser } from 'modules/Account';
 
 export default function ChatLayout() {
-  const users = useSelector((state: RootState) => state.account.users);
+  const location = useLocation();
+  const dispatch = useDispatch();
   const user = useSelector(selectDashboardUser);
-  const chatHeads = useSelector(selectChatHeads);
 
-  function alternateUser(chat: Chat) {
-    const alternateUserId = user?.id === chat.agentId ? chat.transporterId : chat.agentId;
-    const foundUser = users.find(({ id }) => id === alternateUserId);
-    if (!foundUser) throw new Error('user does not exist')
-    return foundUser;
-  }
-
+  useEffect(() => {
+    dispatch(
+      toAnyAction(
+        getChats(
+          user?.id!,
+          user?.userType === 'agent' ? 'agentId' : 'transporterId',
+        ),
+      ),
+    );
+  });
   return (
     <ChatLayoutDesign>
       <div className="card">
-        <ul className="chat-heads">
-          {chatHeads.map((val, index) => (
-            <li key={index}>
-              <UiAvatar />
-              <div className="content-container">
-                <div className="name">{`${alternateUser(val).firstName} ${alternateUser(val).lastName}`}</div>
-                <div className="last-text">{val.message}</div>
-              </div>
-            </li>
-          ))}
-        </ul>
-        <div className="outlet-container">
+        <div className="chat-heads-container">
+          <ChatHeads />
+        </div>
+        <div className="outlet-container" key={location.pathname}>
           <Outlet />
+        </div>
+        <div className="mobile-display">
+          {location.pathname === '/chat' && <ChatHeads />}
+          
+          <Outlet key={location.pathname}/>
         </div>
       </div>
     </ChatLayoutDesign>
@@ -56,54 +56,31 @@ const ChatLayoutDesign = styled.div`
     color: var(--color-gray-600);
     display: flex;
     overflow: hidden;
-  }
 
-  .chat-heads {
-    padding: 0;
-    position: relative;
-    background: #ffffff;
-    margin: 0;
-    list-style-type: none;
-    width: 30%;
-    border-right: 1px solid var(--color-gray-200);
-    height: 100%;
-
-    li {
-      padding: ${pxToRem(12)};
-      gap: ${pxToRem(12)};
-      border-bottom: 1px solid var(--color-gray-200);
-      display: flex;
-      align-items: flex-end;
-      cursor: pointer;
-      &:last-child {
-        border-bottom: transparent;
+    .chat-heads-container {
+      display: none;
+      width: 30%;
+      border-right: 1px solid var(--color-gray-200);
+      @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+        display: block;
       }
+    }
 
-      .content-container {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        width: 100%;
-      }
-
-      .name {
-        font-size: ${pxToRem(16)};
-        font-weight: bold;
-      }
-
-      .last-text {
-        font-size: ${pxToRem(14)};
-        font-weight: 400;
-        color: var(--color-gray-500);
-        flex: 1;
-      }
-      :hover {
-        background: var(--color-gray-50);
+    .mobile-display {
+      display: block;
+      width: 100%;
+      
+      @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+        display: none;
       }
     }
   }
 
   .outlet-container {
+    display: none;
     width: 70%;
+    @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+      display: block;
+    }
   }
 `;

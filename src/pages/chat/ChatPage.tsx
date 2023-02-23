@@ -51,16 +51,6 @@ export default function ChatPage() {
     });
   }
 
-  useEffect(() => {
-    dispatch(
-      toAnyAction(
-        getChats(
-          user?.id!,
-          user?.userType === 'agent' ? 'agentId' : 'transporterId',
-        ),
-      ),
-    );
-  });
 
   useEffect(() => {
     const element = chatWindowRef.current;
@@ -82,8 +72,8 @@ export default function ChatPage() {
 
       <ChatContainer>
         <div id="chat-window" ref={chatWindowRef}>
-          {chats.map((chat) => (
-            <ChatBubble isMine={chat.senderId === user?.id}>
+          {chats.map((chat, index) => (
+            <ChatBubble isMine={chat.senderId === user?.id} key={index}>
               <div className="chat-bubble-inner">{chat.message}</div>
             </ChatBubble>
           ))}

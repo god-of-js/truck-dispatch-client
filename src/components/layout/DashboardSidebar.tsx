@@ -45,10 +45,15 @@ export default function DashboardSidebar() {
       name: 'Payments',
       iconName: 'Money',
     },
+    // {
+    //   path: '/referrals',
+    //   name: 'Referrals & Bonuses',
+    //   iconName: 'UsersThree',
+    // },
     {
-      path: '/referrals',
-      name: 'Referrals & Bonuses',
-      iconName: 'UsersThree',
+      path: '/chat',
+      name: 'Chat',
+      iconName: 'Chats',
     },
   ];
 
@@ -68,10 +73,15 @@ export default function DashboardSidebar() {
       name: 'Transactions',
       iconName: 'Money',
     },
+    // {
+    //   path: '/referrals',
+    //   name: 'Referrals and Bonuses',
+    //   iconName: 'UsersThree',
+    // },
     {
-      path: '/referrals',
-      name: 'Referrals and Bonuses',
-      iconName: 'UsersThree',
+      path: '/chat',
+      name: 'Chat',
+      iconName: 'Chats',
     },
   ];
 
