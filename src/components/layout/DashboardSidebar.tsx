@@ -2,12 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../modules';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import sizes from 'utils/sizes';
 import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
 import UiIcon, { Icons } from '../ui/UiIcon';
 import { selectDashboardUser, selectUser } from 'modules/Account';
-import Logout from "../../utils/Logout"
 
 interface Route {
   iconName: Icons;
@@ -17,6 +16,12 @@ interface Route {
 
 export default function DashboardSidebar() {
   const user = useSelector(selectDashboardUser);
+  const navigate = useNavigate();
+
+  const logOutUser = () => {
+    localStorage.removeItem('uid');
+    navigate('auth/login');
+  };
 
   const transporterRoutes: Route[] = [
     {
@@ -86,7 +91,9 @@ export default function DashboardSidebar() {
           </Link>
         ))}
       </TabList>
-      <Logout/>
+      <LogOutContainer onClick={() => logOutUser()}>
+        <UiIcon icon="SignOut" />
+      </LogOutContainer>
     </Sidebar>
   );
 }
@@ -132,6 +139,22 @@ const TabList = styled.ul`
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     display: block;
+  }
+`;
+
+const LogOutContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-gray-500);
+  font-size: ${pxToRem(25)};
+  opacity: 0.6;
+  font-weight: 600;
+  border-left: ${pxToRem(4)} solid transparent;
+
+  &:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
   }
 `;
 
