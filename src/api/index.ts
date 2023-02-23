@@ -144,15 +144,6 @@ class ApiService {
     });
   }
 
-  listenForChatsInvolvingUser(id: string, query: 'transporterId' | 'agentId') {
-    return this.listen<Chat>({
-      collectionName: 'chat',
-      key: query,
-      condition: '==',
-      value: id,
-    });
-  }
-
   private setDoc(
     collectionName: string,
     id: string,
@@ -188,29 +179,6 @@ class ApiService {
       documentList.push(doc.data() as T);
     });
     return documentList;
-  }
-
-  private async listen<T = unknown>({
-    collectionName,
-    key,
-    condition,
-    value,
-  }: {
-    collectionName: string;
-    key: string;
-    condition: WhereFilterOp;
-    value: string;
-  }) {
-    const q = query(
-      collection(db, collectionName),
-      where(key, condition, value),
-    );
-    onSnapshot(q, (querySnapshot) => {
-      const docs: T[] = [];
-      querySnapshot.forEach((doc) => {
-        docs.push(doc.data() as T);
-      });
-    });
   }
 
   private async getItem<T>(key: string, value: string): Promise<T> {

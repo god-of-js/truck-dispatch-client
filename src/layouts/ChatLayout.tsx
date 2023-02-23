@@ -5,9 +5,11 @@ import ChatHeads from 'components/chat/ChatHeads';
 import sizes from 'utils/sizes';
 import { useDispatch, useSelector } from 'react-redux';
 import { toAnyAction } from 'utils/helpers';
-import { getChats } from 'modules/Chat';
+import { setChats } from 'modules/Chat';
 import { selectDashboardUser } from 'modules/Account';
-import { collection, query } from 'firebase/firestore';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import db from '../api/firebase';
+import Chat from 'types/Chat';
 
 export default function ChatLayout() {
   const location = useLocation();
@@ -15,26 +17,15 @@ export default function ChatLayout() {
   const user = useSelector(selectDashboardUser);
 
   useEffect(() => {
-    // const q = query(
-    //   collection(db, 'chat'),
-    //   where(key, condition, value),
-    //   );
-    //   onSnapshot(q, (querySnapshot) => {
-    //   const docs: T[] = [];
-    //   querySnapshot.forEach((doc) => {
-    //     docs.push(doc.data() as T);
-    //   });
-    // });
-    Promise.all([
-      dispatch(
-        toAnyAction(
-          getChats(
-            user?.id!,
-            user?.userType === 'agent' ? 'agentId' : 'transporterId',
-          ),
-        ),
-      ),
-    ]);
+    const key = user?.userType === 'agent' ? 'agentId' : 'transporterId';
+    const q = query(collection(db, 'chat'), where(key, '==', user?.id!));
+    onSnapshot(q, (querySnapshot) => {
+      const chats: Chat[] = [];
+      querySnapshot.forEach((doc) => {
+        chats.push(doc.data() as Chat);
+      });
+      dispatch(setChats(chats));
+    });
   });
 
   return (

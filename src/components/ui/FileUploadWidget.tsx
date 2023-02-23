@@ -40,7 +40,7 @@ export default function FileUploadWidget({
   function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
     const fileInput = e.target as HTMLInputElement | null;
     const selectedFiles = fileInput?.files ? fileInput.files : null;
-    
+
     if (!selectedFiles) return;
     if (!acceptMultiple) {
       onChange({ name, value: selectedFiles[0] });
@@ -64,9 +64,7 @@ export default function FileUploadWidget({
   function defaultComponent() {
     return (
       <DefaultUploadTrigger>
-        <span>
-          Choose file{acceptMultiple ? 's' : ''} {name}
-        </span>
+        <span>Choose file{acceptMultiple ? 's' : ''}</span>
         {!acceptMultiple ? <div>{getFileName(value as File)}</div> : ''}
       </DefaultUploadTrigger>
     );

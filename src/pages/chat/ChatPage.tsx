@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { RootState } from 'modules/index';
 import { selectDashboardUser } from 'modules/Account';
-import { getChats, selectChatByChatId, sendChat } from 'modules/Chat';
+import { selectChatByChatId, sendChat } from 'modules/Chat';
 
 import { toAnyAction } from 'utils/helpers';
 import uuidv4 from 'utils/uuid';
@@ -15,6 +15,7 @@ import Chat from 'types/Chat';
 import UiAvatar from 'ui/UiAvatar';
 import UiIcon from 'ui/UiIcon';
 import UiForm from 'ui/UiForm';
+import ChatSchema from 'utils/validations/ChatSchema';
 
 export default function ChatPage() {
   const { agentId, transporterId } = useParams();
@@ -77,17 +78,20 @@ export default function ChatPage() {
         </div>
       </ChatContainer>
       <InputContainer>
-        <UiForm formData={formData} onSubmit={sendMessage}>
-          {() => (
-            <div className="inner">
-              <input
-                placeholder="Enter Message"
-                value={formData.message}
-                onChange={updateMessage}
-              />
-              <button type="submit">
-                <UiIcon icon="PaperPlaneTilt" />
-              </button>
+        <UiForm formData={formData} schema={ChatSchema} onSubmit={sendMessage}>
+          {({ errors }) => (
+            <div className="input-group">
+              {errors.message && <div className="error-message-container">{errors.message}</div>}
+              <div className="inner">
+                <input
+                  placeholder="Enter Message"
+                  value={formData.message}
+                  onChange={updateMessage}
+                />
+                <button type="submit" disabled={!formData.message}>
+                  <UiIcon icon="PaperPlaneTilt" />
+                </button>
+              </div>
             </div>
           )}
         </UiForm>
@@ -146,6 +150,20 @@ const InputContainer = styled.div`
   right: 0;
   left: 0;
   padding-bottom: ${pxToRem(16)};
+  .input-group {
+    width: 90%;
+    margin: auto;
+  }
+  .error-message-container {
+    font-size: ${pxToRem(14)};
+    color: var(--color-danger);
+    padding: ${pxToRem(4)};
+    background: white;
+    border-top-left-radius: ${pxToRem(4)};
+    border-top-right-radius: ${pxToRem(4)};
+    border: 1px solid var(--color-gray-200);
+    border-bottom: transparent;
+  }
   .inner {
     padding: ${pxToRem(12)};
     display: flex;
@@ -154,8 +172,6 @@ const InputContainer = styled.div`
     margin-bottom: ${pxToRem(12)};
     border: 1px solid var(--color-gray-200);
     border-radius: ${pxToRem(4)};
-    width: 90%;
-    margin: auto;
     input {
       width: 100%;
       border: transparent;
