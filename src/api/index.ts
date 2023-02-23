@@ -135,14 +135,6 @@ class ApiService {
     return this.setDoc('chat', chat.id, chat);
   }
 
-  getChatsInvolvingUser(id: string, query: 'transporterId' | 'agentId') {
-    return this.query<Chat>({
-      collectionName: 'chat',
-      key: query,
-      condition: '==',
-      value: id,
-    });
-  }
 
   private setDoc(
     collectionName: string,

@@ -60,10 +60,3 @@ export const sendChat = (chat: Chat) => {
   };
 };
 
-export const getChats = (id: string, query: 'transporterId' | 'agentId') => {
-  return (dispatch: AppDispatch) => {
-    return Api.getChatsInvolvingUser(id, query).then((data) => {
-      dispatch(setChats(data));
-    });
-  };
-};
