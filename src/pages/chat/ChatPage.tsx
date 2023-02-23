@@ -20,7 +20,7 @@ import ChatSchema from 'utils/validations/ChatSchema';
 export default function ChatPage() {
   const { agentId, transporterId } = useParams();
   const dispatch = useDispatch();
-  const chatWindowRef = useRef(null);
+  const chatBottomRef = useRef(null);
   const user = useSelector(selectDashboardUser);
   const chats = useSelector(selectChatByChatId(`${agentId}-${transporterId}`));
   const users = useSelector((state: RootState) => state.account.users);
@@ -51,11 +51,11 @@ export default function ChatPage() {
   }
 
   useEffect(() => {
-    const element = chatWindowRef.current;
+    const element = chatBottomRef.current;
     if (element) {
       // 👇 Will scroll smoothly to the bottom of the chat window
       // @ts-ignore
-      element.scrollTo(0, element.scrollHeight);
+      element.scrollIntoView({ behavior: 'smooth' });
     }
   }, [chats]);
 
@@ -69,13 +69,14 @@ export default function ChatPage() {
       </Header>
 
       <ChatContainer>
-        <div id="chat-window" ref={chatWindowRef}>
+        <div id="chat-window">
           {chats.map((chat, index) => (
             <ChatBubble isMine={chat.senderId === user?.id} key={index}>
               <div className="chat-bubble-inner">{chat.message}</div>
             </ChatBubble>
           ))}
         </div>
+        <div  ref={chatBottomRef}/>
       </ChatContainer>
       <InputContainer>
         <UiForm formData={formData} schema={ChatSchema} onSubmit={sendMessage}>
