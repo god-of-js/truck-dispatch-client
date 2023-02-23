@@ -33,8 +33,6 @@ export default function RegistrationPage() {
   });
   const [loading, setLoading] = useState(false);
 
-  
-
   function handleChange(event: { name: string; value: string | null }) {
     setFormData({
       ...formData,

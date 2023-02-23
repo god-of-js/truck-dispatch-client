@@ -36,7 +36,9 @@ export default function UidropdownMenu({ data, trigger }: Props) {
           )}
 
           {option.type === 'function' && (
-            <MenuItemStyling onClick={option.func}>{option.label}</MenuItemStyling>
+            <MenuItemStyling onClick={option.func}>
+              {option.label}
+            </MenuItemStyling>
           )}
         </>
       ))}
@@ -52,9 +54,9 @@ const MenuButtonStyling = styled(MenuButton)`
 
 const MenuItemStyling = styled(MenuItem)`
   text-transform: capitalize;
-    font-size: ${pxToRem(16)};
-    color: var(--color-gray-500);
-    font-weight: normal;
+  font-size: ${pxToRem(16)};
+  color: var(--color-gray-500);
+  font-weight: normal;
   a {
     width: 100%;
     height: 100%;

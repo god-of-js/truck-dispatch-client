@@ -1,5 +1,5 @@
-import React, {useEffect, Suspense } from 'react';
-import { Outlet, useParams, Link, useNavigate, } from 'react-router-dom';
+import React, { useEffect, Suspense } from 'react';
+import { Outlet, useParams, Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import sizes from '../utils/sizes';
@@ -19,12 +19,12 @@ export default function AuthLayout() {
     ? 'Get access to the most profitable orders, steepest discounts, and fastest payments in Nigeria.'
     : 'We provide you with the most competitive rates, verified drivers, and best deals. Become part of our success story d profit from a wide range of advantages';
 
-    useEffect(()=>{
-      const user = localStorage.getItem("uid");
-      if(user){
-        navigate("/");
-      }
-  }, [])
+  useEffect(() => {
+    const user = localStorage.getItem('uid');
+    if (user) {
+      navigate('/');
+    }
+  }, []);
 
   return (
     <>

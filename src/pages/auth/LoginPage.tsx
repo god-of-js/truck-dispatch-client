@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { loginUser } from '../../modules/Account';
 
@@ -21,9 +21,6 @@ export default function LoginPage() {
     },
   );
   const [loading, setLoading] = useState(false);
-
-  
-
 
   function handleChange(event: { name: string; value: string | null }) {
     setFormData({
