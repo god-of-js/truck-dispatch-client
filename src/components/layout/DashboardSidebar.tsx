@@ -21,6 +21,7 @@ export default function DashboardSidebar() {
   const logOutUser = () => {
     localStorage.removeItem('uid');
     navigate('auth/login');
+    location.reload();
   };
 
   const transporterRoutes: Route[] = [
@@ -91,9 +92,14 @@ export default function DashboardSidebar() {
           </Link>
         ))}
       </TabList>
-      <LogOutContainer onClick={() => logOutUser()}>
-        <UiIcon icon="SignOut" />
-      </LogOutContainer>
+
+      <BottomActions>
+        <div className="bottom-actions-inner">
+          <LogOutContainer onClick={() => logOutUser()}>
+            <UiIcon icon="SignOut" size="24" />
+          </LogOutContainer>
+        </div>
+      </BottomActions>
     </Sidebar>
   );
 }
@@ -147,14 +153,11 @@ const LogOutContainer = styled.div`
   justify-content: center;
   cursor: pointer;
   color: var(--color-gray-500);
-  font-size: ${pxToRem(25)};
-  opacity: 0.6;
+  width: 100%;
   font-weight: 600;
-  border-left: ${pxToRem(4)} solid transparent;
 
   &:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
+    color: var(--color-danger);
   }
 `;
 
@@ -179,5 +182,20 @@ const Tab = styled.li`
     border-bottom: none;
     border-left: ${pxToRem(4)} solid transparent;
     margin: ${pxToRem(8)} 0;
+  }
+`;
+
+const BottomActions = styled.div`
+  position: relative;
+  height: calc(100% - ${pxToRem(460)});
+  display: none;
+
+  .bottom-actions-inner {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+    display: block;
   }
 `;

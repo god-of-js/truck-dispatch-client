@@ -15,5 +15,5 @@ export default Yup.object({
     homeAddress: Yup.string().required(isRequiredMessage),
     idType: Yup.string().required(isRequiredMessage),
     idDoc: Yup.mixed().required(isRequiredMessage),
-  })
+  }),
 });
