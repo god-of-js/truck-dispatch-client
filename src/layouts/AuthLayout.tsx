@@ -23,7 +23,6 @@ export default function AuthLayout() {
     const user = localStorage.getItem('uid');
     if (user) {
       navigate('/');
-      return;
     }
   }, []);
 
