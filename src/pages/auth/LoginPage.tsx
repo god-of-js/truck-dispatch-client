@@ -120,6 +120,6 @@ const ForgotPassword = styled.p`
 
 const LinkToRegisteration = styled.p`
   text-align: center;
-  font-size: 14px;
+  font-size: ${pxToRem(14)};
   color: var(--color-gray-400);
 `;

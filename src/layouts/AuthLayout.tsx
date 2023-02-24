@@ -24,6 +24,7 @@ export default function AuthLayout() {
     if (user) {
       navigate('/');
     }
+    return
   }, []);
 
   return (

@@ -23,6 +23,8 @@ export default function DashboardLayout() {
     const user = localStorage.getItem('uid');
     if (!user) {
       navigate('auth/join/transporter');
+    } else{
+      return
     }
     dispatch(toAnyAction(getUsers()))
       .catch((err: Error) => {
