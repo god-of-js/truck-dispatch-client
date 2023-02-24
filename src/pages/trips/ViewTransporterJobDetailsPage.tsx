@@ -41,9 +41,11 @@ export default function ViewTransporterJobDetailsPage() {
     }
     navigate(`/available-jobs/${tripId}/bid`);
   }
+
   function goBack() {
     navigate(-1);
   }
+
   useEffect(() => {
     if (tripId) {
       Promise.all([
