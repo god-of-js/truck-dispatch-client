@@ -91,9 +91,10 @@ export default function LoginPage() {
             Can't login? try{' '}
             <Link to="/auth/join/transporter">forgot password</Link>
           </ForgotPassword>
-          <DontHaveAnAccount>
-            Don't have an account? <Link to="/auth/join/transporter">register with us</Link>
-          </DontHaveAnAccount>
+          <LinkToRegisteration>
+            Don't have an account?{' '}
+            <Link to="/auth/join/transporter">register with us</Link>
+          </LinkToRegisteration>
         </>
       )}
     </UiForm>
@@ -120,8 +121,9 @@ const ForgotPassword = styled.p`
   font-size: ${pxToRem(14)};
   color: var(--color-gray-400);
 `;
-const DontHaveAnAccount = styled.p`
+
+const LinkToRegisteration = styled.p`
   text-align: center;
-  font-size: 14px;
+  font-size: ${pxToRem(14)};
   color: var(--color-gray-400);
 `;
