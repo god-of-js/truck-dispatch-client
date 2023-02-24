@@ -1,4 +1,5 @@
 import Ratings from 'components/ratings/Ratings';
+import { selectDashboardUser } from 'modules/Account';
 import { RootState } from 'modules/index';
 import { getTransporterTrips, selectBid } from 'modules/Trips';
 import React, { useEffect, useState } from 'react';
@@ -16,6 +17,7 @@ export default function ViewTripBidPage() {
   const dispatch = useDispatch();
   const bid = useSelector(selectBid(bidId as string));
   const users = useSelector((state: RootState) => state.account.users);
+  const user = useSelector(selectDashboardUser);
 
   const [noOfTransporterTrips, setNoOfTransporterTrips] = useState<
     string | number
@@ -86,11 +88,13 @@ export default function ViewTripBidPage() {
           <div className="value">{bid?.extraNotes || 'N/A'}</div>
         </Section>
         <SubmitButtonContainer className="submit-button-container">
-          {/* <UiButton variant="secondary-outlined" onClick={prevHandler}>
-              Go Back
-            </UiButton> */}
+          <Link to={`/chat/${user?.id}/${bid?.transporterId}`}>
+            <UiButton variant="secondary-outlined">
+              Negotiate/Chat with Transporter
+            </UiButton>
+          </Link>
           <Link to={`/my-trips/${tripId}/bids/${bidId}/checkout`}>
-            <UiButton>Accept Bid</UiButton>
+            <UiButton>Accept Transporter Bid</UiButton>
           </Link>
         </SubmitButtonContainer>
       </CardContainer>

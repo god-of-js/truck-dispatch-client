@@ -10,6 +10,7 @@ const ProfileLayout = lazy(() => import('../layouts/ProfileLayout'));
 const ViewTripLayout = lazy(() => import('../layouts/ViewTripLayout'));
 const ViewTripBidsLayout = lazy(() => import('../layouts/ViewTripBidsLayout'));
 const TripsLayout = lazy(() => import('../layouts/TripsLayout'));
+const ChatLayout = lazy(() => import('../layouts/ChatLayout'));
 
 const ComponentsView = lazy(() => import('../pages/Components'));
 
@@ -51,6 +52,8 @@ const ViewTransporterJobDetailsPage = lazy(
 );
 const BidOnJobPage = lazy(() => import('../pages/trips/BidOnJobPage'));
 
+const ChatPage = lazy(() => import('../pages/chat/ChatPage'));
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -77,6 +80,18 @@ const router = createBrowserRouter([
             path: 'accounts',
             id: 'Accounts',
             element: <TransporterAccountsPage />,
+          },
+        ],
+      },
+      {
+        path: '/chat',
+        id: 'Chat',
+        element: <ChatLayout />,
+        children: [
+          {
+            path: '/chat/:agentId/:transporterId',
+            id: 'Message',
+            element: <ChatPage />,
           },
         ],
       },

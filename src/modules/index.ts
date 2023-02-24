@@ -5,6 +5,7 @@ import Account, { AccountState } from './Account';
 import Trips, { TripState } from './Trips';
 import Ratings, { RatingsState } from './Ratings';
 import Payment, { PaymentsState } from './Payments';
+import Chat, { ChatState } from './Chat';
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     trips: Trips,
     payment: Payment,
     ratings: Ratings,
+    chat: Chat,
   },
   middleware: [thunk],
 });
@@ -23,7 +25,9 @@ export interface RootState {
   trips: TripState;
   payment: PaymentsState;
   ratings: RatingsState;
+  chat: ChatState;
 }
+
 export default function getStore() {
   return store;
 }

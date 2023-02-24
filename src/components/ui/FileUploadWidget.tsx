@@ -40,7 +40,7 @@ export default function FileUploadWidget({
   function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
     const fileInput = e.target as HTMLInputElement | null;
     const selectedFiles = fileInput?.files ? fileInput.files : null;
-    
+
     if (!selectedFiles) return;
     if (!acceptMultiple) {
       onChange({ name, value: selectedFiles[0] });
@@ -74,7 +74,7 @@ export default function FileUploadWidget({
     <UiField name={name} label={label} error={error}>
       <FileUploadWidgetStyle onClick={pickImages}>
         <input
-          id="input"
+          id={name}
           type="file"
           name={name}
           ref={inputRef}

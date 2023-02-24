@@ -90,7 +90,7 @@ export default function BidCheckoutPage() {
       ),
     ])
       .then(() => {
-        navigate(`my-trips/${tripId}`);
+        navigate(`/my-trips/${tripId}`);
       })
       .finally(() => setLoading(false));
   }

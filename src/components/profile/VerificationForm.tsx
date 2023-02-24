@@ -67,15 +67,21 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
   async function verifyUser() {
     setLoading(true);
     const idDocUrl = await uploadItem(formData.idDoc as File);
+    const homeUtilityBill = await uploadItem(formData.homeUtilityBill as File);
+    const guarantorIdDoc = await uploadItem(formData.guarantor.idDoc as File);
 
     if (!user?.id) return;
-
     dispatch(
       toAnyAction(
         sendVerificationDetailsToAdmin({
           ...formData,
           idDoc: idDocUrl,
           userId: user?.id,
+          homeUtilityBill,
+          guarantor: {
+            ...formData.guarantor,
+            idDoc: guarantorIdDoc,
+          },
         }),
       ),
     )
@@ -93,14 +99,15 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
     value: string | File | File[] | null;
   }) {
     if (event.name.includes('guarantor')) {
-      const fieldName = event.name.split('guarantor.');
+      const fieldName = event.name.split('guarantor.')[1];
       setFormData((state) => ({
         ...state,
         guarantor: {
           ...state.guarantor,
-          [fieldName[1]]: event.value,
+          [fieldName]: event.value,
         },
       }));
+      return;
     }
     setFormData((state) => ({
       ...state,
