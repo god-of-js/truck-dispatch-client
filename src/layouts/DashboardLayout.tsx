@@ -69,6 +69,7 @@ const Body = styled.div`
   position: relative;
   overflow-x: auto;
   width: 100%;
+  padding-bottom: ${pxToRem(48)};
   .alert-container {
     padding: ${pxToRem(16)};
   }

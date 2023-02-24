@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import sizes from 'utils/sizes';
+import UidropdownMenu, { DropDownData } from './UiDropdownMenu';
 
 interface Header {
   title: string;
@@ -22,7 +24,7 @@ interface Props {
   tableTitle: string;
   data: Row[];
   headers: Header[];
-  options: [];
+  options: DropDownData[];
   onRowClick?: (id: string) => void;
 }
 
@@ -33,6 +35,7 @@ export default function UiTable({
   options = [],
   onRowClick,
 }: Props) {
+  const tableHeaders = [...headers, { title: '', query: 'actions' }];
   return (
     <TableContainer>
       <TableContainerHeader>
@@ -41,7 +44,7 @@ export default function UiTable({
       <Table>
         <TableHeader>
           <TableRow>
-            {headers.map((header, index) => (
+            {tableHeaders.map((header, index) => (
               <TableHeadItem key={index}>{header.title}</TableHeadItem>
             ))}
           </TableRow>
@@ -49,14 +52,21 @@ export default function UiTable({
         <tbody>
           {data.map((item) => {
             return (
-              <TableRow key={item.id} onClick={() => onRowClick?.(item.id)}>
+              <TableRow key={item.id}>
                 {headers.map((header, index) => {
                   return (
-                    <TableDataItem key={index}>
-                      {item[header.query]}
+                    <TableDataItem
+                      key={index}
+                      onClick={() => onRowClick?.(item.id)}
+                    >
+                      <div className="mobile-title">{header.title}</div>
+                      <div>{item[header.query]}</div>
                     </TableDataItem>
                   );
                 })}
+                <td className="menu-container">
+                  <UidropdownMenu options={options} />
+                </td>
               </TableRow>
             );
           })}
@@ -92,13 +102,45 @@ const Table = styled.table`
 `;
 
 const TableHeader = styled.thead`
-  border-bottom: ${pxToRem(1)} solid var(--color-gray-200);
+  display: none;
+
+  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+    display: table-header-group;
+    background-color: var(--color-gray-50);
+    width: 100%;
+    border-bottom: ${pxToRem(1)} solid var(--color-gray-200);
+  }
 `;
 
 const TableRow = styled.tr`
   border-bottom: ${pxToRem(1)} solid var(--color-gray-200);
   text-align: left;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  .mobile-title {
+    font-size: ${pxToRem(12)};
+  }
+
+  .menu-container {
+    height: 100%;
+    width: fit-content;
+    position: absolute;
+    display: flex;
+    align-items: flex-start;
+    right: 0;
+    @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+      align-items: center;
+    }
+  }
+  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+    display: table-row;
+    .mobile-title {
+      display: none;
+    }
+  }
   &:last-child {
     border-bottom: transparent;
   }
@@ -106,7 +148,6 @@ const TableRow = styled.tr`
 
 const TableHeadItem = styled.th`
   padding: ${pxToRem(12)} ${pxToRem(24)};
-  background: var(--color-gray-50);
   color: var(--color-gray-500);
   font-size: ${pxToRem(12)};
 `;
