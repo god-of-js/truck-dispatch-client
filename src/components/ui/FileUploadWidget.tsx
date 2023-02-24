@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent, useRef } from 'react';
 import styled from 'styled-components';
 import UiField from './UiField';
 
@@ -30,15 +30,17 @@ export default function FileUploadWidget({
       'application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation, application/rtf, text/plain',
     video: 'video/mp4,video/x-m4v,video/*',
   };
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
   function pickImages() {
-    document.getElementById('input')?.click();
+    inputRef.current?.click();
   }
 
-  function handleFileChange() {
-    const fileInput = document.getElementById(
-      'input',
-    ) as HTMLInputElement | null;
+  function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
+    const fileInput = e.target as HTMLInputElement | null;
     const selectedFiles = fileInput?.files ? fileInput.files : null;
+
     if (!selectedFiles) return;
     if (!acceptMultiple) {
       onChange({ name, value: selectedFiles[0] });
@@ -72,9 +74,11 @@ export default function FileUploadWidget({
     <UiField name={name} label={label} error={error}>
       <FileUploadWidgetStyle onClick={pickImages}>
         <input
-          id="input"
+          id={name}
           type="file"
-          onChange={handleFileChange}
+          name={name}
+          ref={inputRef}
+          onChange={(e) => handleFileChange(e)}
           multiple={acceptMultiple}
           accept={fileTypeSelector[fileType]}
         />
