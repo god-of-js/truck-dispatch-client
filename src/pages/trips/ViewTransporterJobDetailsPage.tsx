@@ -69,8 +69,7 @@ export default function ViewTransporterJobDetailsPage() {
               nextHandler={bidForJob}
               prevHandler={goBack}
               loading={loading}
-              isActionButtonDisabled={!!bid}
-              actionText={!!bid ? 'Bid Has been sent to Agent' : 'Bid For Job'}
+              actionText={!!bid ? 'Edit Bid' : 'Bid For Job'}
             />
           </CardContainer>
         )) || <NotFoundError />

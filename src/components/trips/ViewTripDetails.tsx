@@ -64,6 +64,10 @@ export default function ConfirmTripDetails({
         <div className="title">Weight of Goods(Tonnage)</div>
         <div className="value">{data.weight}Tons</div>
       </Section>
+      <Section>
+        <div className="title">Description of Goods</div>
+        <div className="value">{data.description}</div>
+      </Section>
       {!hideActionButtons && (
         <SubmitButtonContainer className="submit-button-container">
           <UiButton variant="secondary-outlined" onClick={prevHandler}>

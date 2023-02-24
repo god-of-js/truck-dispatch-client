@@ -90,15 +90,13 @@ export function getJobs() {
 export function createOrUpdateBid(data: Bid) {
   return () => {
     if (!data.tripId) throw new Error('400: No trip id been sent');
-    console.log(data);
-    return Api.createOrUpdateBid(data).catch((err) => console.log(err));
+    return Api.createOrUpdateBid(data);
   };
 }
 
 export function getBidsWithTripId(tripId: string) {
   return (dispatch: AppDispatch) => {
     return Api.getBidsWithTripId(tripId).then((data) => {
-      console.log(data);
       dispatch(setBids(data));
     });
   };
