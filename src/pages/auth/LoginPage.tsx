@@ -89,7 +89,8 @@ export default function LoginPage() {
             <Link to="/auth/join/transporter">forgot password</Link>
           </ForgotPassword>
           <LinkToRegisteration>
-            Don't have an account?  <Link to="/auth/join/transporter">register with us</Link>
+            Don't have an account?{' '}
+            <Link to="/auth/join/transporter">register with us</Link>
           </LinkToRegisteration>
         </>
       )}
