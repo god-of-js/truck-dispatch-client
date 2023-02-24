@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { toAnyAction } from 'utils/helpers';
@@ -15,15 +15,21 @@ import UiAlert from 'ui/UiAlert';
 
 export default function DashboardLayout() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isLoading, setLoading] = useState(true);
   const user = useSelector(selectDashboardUser);
 
   useEffect(() => {
-    dispatch(toAnyAction(getUsers()))
-      .catch((err: Error) => {
-        console.log(err.message);
-      })
-      .finally(() => setLoading(false));
+    const user = localStorage.getItem('uid');
+    if (!user) {
+      navigate('auth/join/transporter');
+    } else {
+      dispatch(toAnyAction(getUsers()))
+        .catch((err: Error) => {
+          console.log(err.message);
+        })
+        .finally(() => setLoading(false));
+    }
   }, []);
 
   const Component = isLoading ? (

@@ -91,6 +91,10 @@ export default function LoginPage() {
             Can't login? try{' '}
             <Link to="/auth/join/transporter">forgot password</Link>
           </ForgotPassword>
+          <LinkToRegisteration>
+            Don't have an account?{' '}
+            <Link to="/auth/join/transporter">register with us</Link>
+          </LinkToRegisteration>
         </>
       )}
     </UiForm>
@@ -113,6 +117,12 @@ const PrivacyPolicyParagraph = styled.p`
 `;
 
 const ForgotPassword = styled.p`
+  text-align: center;
+  font-size: ${pxToRem(14)};
+  color: var(--color-gray-400);
+`;
+
+const LinkToRegisteration = styled.p`
   text-align: center;
   font-size: ${pxToRem(14)};
   color: var(--color-gray-400);
