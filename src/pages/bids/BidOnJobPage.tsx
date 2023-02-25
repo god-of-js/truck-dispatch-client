@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { toAnyAction } from 'utils/helpers';
+import { aValueHasBeenChanged, toAnyAction } from 'utils/helpers';
 import styled from 'styled-components';
 
 import sizes from 'utils/sizes';
@@ -49,22 +49,7 @@ export default function BidOnJob() {
   const [notFound, setNotFound] = useState(false);
 
   const disableButton = useMemo(() => {
-    // Get the keys of both objects
-    if (!bid) return false;
-    const bidKeys = Object.keys(bid!) as (keyof typeof formData)[];
-    const formDataKeys = Object.keys(formData);
-
-    if (bidKeys.length !== formDataKeys.length) {
-      return false;
-    }
-
-    for (let key of bidKeys) {
-      if (bid[key] !== formData[key]) {
-        return false;
-      }
-    }
-
-    return true;
+    return aValueHasBeenChanged<Bid>(bid!, formData)
   }, [bid, formData]);
 
   function sendJobBid() {

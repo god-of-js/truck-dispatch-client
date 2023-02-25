@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
@@ -8,7 +8,7 @@ import {
   selectDashboardUser,
   sendVerificationDetailsToAdmin,
 } from 'modules/Account';
-import { toAnyAction } from 'utils/helpers';
+import { aValueHasBeenChanged, toAnyAction } from 'utils/helpers';
 import TransporterValidationSchema from 'utils/validations/TransporterValidationSchema';
 
 import UiForm from 'ui/UiForm';
@@ -66,6 +66,10 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
       value: 'driver-license',
     },
   ];
+
+  const disableButton = useMemo(() => {
+    return aValueHasBeenChanged<Verification>(verification, formData)
+  }, [verification, formData])
   function initUpload(item: File | Asset) {
     
     if (item instanceof File) {
@@ -255,7 +259,7 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
               onChange={setData}
             />
           </GapGrid>
-          <UiButton isFullWidth loading={loading}>
+          <UiButton isFullWidth loading={loading} disabled={disableButton}>
             Submit Verification Details
           </UiButton>
         </Gap>
