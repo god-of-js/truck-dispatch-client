@@ -20,6 +20,7 @@ import Verification from 'types/Verification';
 import UiInput from 'ui/UiInput';
 import sizes from 'utils/sizes';
 import { RootState } from 'modules/index';
+import Asset from 'types/Asset';
 
 interface Props {
   onVerified: () => void;
@@ -65,20 +66,38 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
       value: 'driver-license',
     },
   ];
-
+  function initUpload(item: File | Asset) {
+    
+    if (item instanceof File) {
+      console.log('yep')
+      return uploadItem(item);
+    }
+    
+    return item;
+  }
   async function verifyUser() {
     setLoading(true);
-    const idDocUrl = await uploadItem(formData.idDoc as File);
-    const homeUtilityBill = await uploadItem(formData.homeUtilityBill as File);
-    const guarantorIdDoc = await uploadItem(formData.guarantor.idDoc as File);
+    const idDocUrl = await initUpload(formData.idDoc as File);
+    const homeUtilityBill = await initUpload(formData.homeUtilityBill as File);
+    const guarantorIdDoc = await initUpload(formData.guarantor.idDoc as File);
 
     if (!user?.id) return;
+    console.log({
+      ...formData,
+      idDoc: idDocUrl,
+      userId: user?.id,
+      homeUtilityBill,
+      guarantor: {
+        ...formData.guarantor,
+        idDoc: guarantorIdDoc,
+      },
+    });
     dispatch(
       toAnyAction(
         sendVerificationDetailsToAdmin({
           ...formData,
           idDoc: idDocUrl,
-          userId: user?.id,
+          userId: user.id,
           homeUtilityBill,
           guarantor: {
             ...formData.guarantor,
@@ -216,7 +235,7 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
             <UiLocationsInput
               label="Guarantor Home Address"
               name="guarantor.homeAddress"
-              value="New York, NY"
+              value={formData.guarantor.homeAddress}
               error={errors['guarantor.homeAddress']}
               onChange={setData}
             />

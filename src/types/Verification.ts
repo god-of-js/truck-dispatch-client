@@ -17,4 +17,5 @@ export default interface Verification {
     idType: string;
     idDoc: File | null | Asset;
   };
+  adminMessage?: string;
 }

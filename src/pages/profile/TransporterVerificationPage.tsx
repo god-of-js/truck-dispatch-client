@@ -39,6 +39,10 @@ export default function TransporterVerificationPage() {
   );
 
   const componentBasedOnVerificationStatus = useMemo(() => {
+    if (isVerified || user?.status === 'pending_verification') {
+      return userIsAwaitingVerification;
+    }
+
     if (!isVerified && user?.status === 'unverified' || user?.status === 'rejected') {
       return <VerificationForm onVerified={setVerificationStatus} />;
     }
@@ -47,9 +51,6 @@ export default function TransporterVerificationPage() {
       return userHasBeenVerified;
     }
 
-    if (isVerified || user?.status === 'pending_verification') {
-      return userIsAwaitingVerification;
-    }
   }, [isVerified]);
 
   function setVerificationStatus() {
@@ -71,7 +72,10 @@ export default function TransporterVerificationPage() {
       <TransportVerificationCard>
         {componentBasedOnVerificationStatus}
       </TransportVerificationCard>
-      <FeedbackCard></FeedbackCard>
+      {user?.status === 'rejected' && <FeedbackCard>
+        <h2>Admin Remark</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea praesentium libero esse nihil asperiores quidem est itaque, quos et maiores doloremque pariatur inventore illo fuga, neque totam eius cupiditate distinctio.</p>
+      </FeedbackCard>}
     </VerificationPageStyling>
   );
 }
@@ -110,4 +114,12 @@ const FeedbackCard = styled.div`
   border: 1px solid var(--color-gray-200);
   padding: ${pxToRem(20)};
   border-radius: ${pxToRem(8)};
+
+  h2 {
+      font-size: ${pxToRem(20)};
+  }
+  p {
+
+    font-size: ${pxToRem(16)};
+  }
 `;
