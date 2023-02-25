@@ -104,7 +104,7 @@ const Table = styled.table`
 const TableHeader = styled.thead`
   display: none;
 
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+  @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
     display: table-header-group;
     background-color: var(--color-gray-50);
     width: 100%;
@@ -131,11 +131,11 @@ const TableRow = styled.tr`
     display: flex;
     align-items: flex-start;
     right: 0;
-    @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+    @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
       align-items: center;
     }
   }
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+  @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
     display: table-row;
     .mobile-title {
       display: none;
