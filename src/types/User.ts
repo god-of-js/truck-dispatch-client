@@ -8,6 +8,11 @@ export default interface User {
   phone: string;
   avatar?: Asset;
   userType: 'agent' | 'transporter';
-  status?: 'pending_verification' | 'verified' | 'unverified' | 'rejected';
+  status?:
+    | 'pending_verification'
+    | 'verified'
+    | 'unverified'
+    | 'rejected'
+    | 'fraudulent';
   rating: number;
 }

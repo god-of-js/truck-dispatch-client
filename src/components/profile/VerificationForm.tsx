@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { uploadItem } from '../../api/Cloudinary';
 import {
+  getUserVerification,
   selectDashboardUser,
   sendVerificationDetailsToAdmin,
 } from 'modules/Account';
@@ -15,9 +16,10 @@ import UiSelect from 'ui/UiSelect';
 import FileUploadWidget from 'ui/FileUploadWidget';
 import UiLocationsInput from 'ui/UiLocationsInput';
 import UiButton from 'ui/UiButton';
-import VerificationFormData from 'types/VerificationFormData';
+import Verification from 'types/Verification';
 import UiInput from 'ui/UiInput';
 import sizes from 'utils/sizes';
+import { RootState } from 'modules/index';
 
 interface Props {
   onVerified: () => void;
@@ -26,7 +28,7 @@ interface Props {
 export default function VerificationForm({ onVerified = () => {} }: Props) {
   const user = useSelector(selectDashboardUser);
   const dispatch = useDispatch();
-  const [formData, setFormData] = useState<VerificationFormData>({
+  const [formData, setFormData] = useState<Verification>({
     idType: '',
     idDoc: null,
     homeAddress: '',
@@ -43,7 +45,7 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
       idDoc: null,
     },
   });
-
+  const verification = useSelector((state: RootState) => state.account.verification)
   const [loading, setLoading] = useState(false);
   const idTypeOptions = [
     {
@@ -115,6 +117,16 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
     }));
   }
 
+  useEffect(() => {
+    if (user?.status === 'rejected') {
+      setLoading(false);
+      dispatch(toAnyAction(getUserVerification()));
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (!formData.userId && verification) setFormData(verification)
+  }, [verification]);
   return (
     <UiForm
       formData={formData}
@@ -141,6 +153,7 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
           <UiLocationsInput
             label="Home Address"
             name="homeAddress"
+            value={formData.homeAddress}
             error={errors.homeAddress}
             onChange={setData}
           />
@@ -154,12 +167,14 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
           <UiLocationsInput
             label="Office Address"
             name="officeAddress"
+            value={formData.officeAddress}
             error={errors.officeAddress}
             onChange={setData}
           />
           <UiLocationsInput
             label="Garage Address"
             name="garageAddress"
+            value={formData.garageAddress}
             error={errors.garageAddress}
             onChange={setData}
           />
@@ -201,6 +216,7 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
             <UiLocationsInput
               label="Guarantor Home Address"
               name="guarantor.homeAddress"
+              value="New York, NY"
               error={errors['guarantor.homeAddress']}
               onChange={setData}
             />

@@ -107,6 +107,7 @@ export default function BidOnJob() {
                     <UiLocationsInput
                       label="Present Truck Location"
                       name="presentLocation"
+                      value={formData.presentLocation!}
                       error={errors.presentLocation}
                       onChange={setValues}
                     />
