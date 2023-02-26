@@ -2,19 +2,25 @@ import axios from 'axios';
 import Asset from '../types/Asset';
 import uuid from '../utils/uuid';
 import Api from './index';
+
 const CLOUDINARY_UPLOAD_URL =
   'https://api.cloudinary.com/v1_1/dh8mksait/image/upload';
+const CLOUDINARY_UPLOAD_VIDEO_URL =
+  'https://api.cloudinary.com/v1_1/dh8mksait/video/upload';
 
 const urls: Asset[] = [];
 
-function uploadItem(file: File): Promise<Asset> {
+function uploadItem(file: File, isImage = true): Promise<Asset> {
   return new Promise((resolve) => {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', 'mib8y8vc');
 
     return axios
-      .post(CLOUDINARY_UPLOAD_URL, formData)
+      .post(
+        isImage ? CLOUDINARY_UPLOAD_URL : CLOUDINARY_UPLOAD_VIDEO_URL,
+        formData,
+      )
       .then((response) => {
         urls.push(response.data.url);
         const assetId = uuid();

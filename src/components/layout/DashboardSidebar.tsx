@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../modules';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import sizes from 'utils/sizes';
 import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
 import UiIcon, { Icons } from '../ui/UiIcon';
@@ -16,6 +16,13 @@ interface Route {
 
 export default function DashboardSidebar() {
   const user = useSelector(selectDashboardUser);
+  const navigate = useNavigate();
+
+  const logOutUser = () => {
+    localStorage.removeItem('uid');
+    navigate('auth/login');
+    location.reload();
+  };
 
   const transporterRoutes: Route[] = [
     {
@@ -38,10 +45,15 @@ export default function DashboardSidebar() {
       name: 'Payments',
       iconName: 'Money',
     },
+    // {
+    //   path: '/referrals',
+    //   name: 'Referrals & Bonuses',
+    //   iconName: 'UsersThree',
+    // },
     {
-      path: '/referrals',
-      name: 'Referrals & Bonuses',
-      iconName: 'UsersThree',
+      path: '/chat',
+      name: 'Chat',
+      iconName: 'Chats',
     },
   ];
 
@@ -61,10 +73,15 @@ export default function DashboardSidebar() {
       name: 'Transactions',
       iconName: 'Money',
     },
+    // {
+    //   path: '/referrals',
+    //   name: 'Referrals and Bonuses',
+    //   iconName: 'UsersThree',
+    // },
     {
-      path: '/referrals',
-      name: 'Referrals and Bonuses',
-      iconName: 'UsersThree',
+      path: '/chat',
+      name: 'Chat',
+      iconName: 'Chats',
     },
   ];
 
@@ -76,7 +93,6 @@ export default function DashboardSidebar() {
       <LogoContainer>
         <TDLogo src={TruckDispatchLogo} alt="truck-dispatch" />
       </LogoContainer>
-
       <TabList>
         {routes.map((route, index) => (
           <Link to={route.path} key={index}>
@@ -86,6 +102,14 @@ export default function DashboardSidebar() {
           </Link>
         ))}
       </TabList>
+
+      <BottomActions>
+        <div className="bottom-actions-inner">
+          <LogOutContainer onClick={() => logOutUser()}>
+            <UiIcon icon="SignOut" size="24" />
+          </LogOutContainer>
+        </div>
+      </BottomActions>
     </Sidebar>
   );
 }
@@ -134,6 +158,19 @@ const TabList = styled.ul`
   }
 `;
 
+const LogOutContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-gray-500);
+  width: 100%;
+  font-weight: 600;
+
+  &:hover {
+    color: var(--color-danger);
+  }
+`;
+
 const Tab = styled.li`
   list-style-type: none;
   padding: ${pxToRem(12)} ${pxToRem(20)};
@@ -155,5 +192,20 @@ const Tab = styled.li`
     border-bottom: none;
     border-left: ${pxToRem(4)} solid transparent;
     margin: ${pxToRem(8)} 0;
+  }
+`;
+
+const BottomActions = styled.div`
+  position: relative;
+  height: calc(100% - ${pxToRem(460)});
+  display: none;
+
+  .bottom-actions-inner {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+    display: block;
   }
 `;

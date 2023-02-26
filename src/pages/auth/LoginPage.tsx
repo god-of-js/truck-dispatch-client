@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { loginUser } from '../../modules/Account';
 
@@ -14,6 +14,7 @@ import loginSchema from 'utils/validations/loginSchema';
 
 export default function LoginPage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<{ email: string; password: string }>(
     {
       email: '',
@@ -33,7 +34,9 @@ export default function LoginPage() {
     // Search for solution.
     setLoading(true);
     dispatch(toAnyAction(loginUser(formData)))
-      .then(() => {})
+      .then(() => {
+        navigate('/');
+      })
       .catch((err: { message: string }) => {
         let msg = err.message;
 
@@ -88,6 +91,10 @@ export default function LoginPage() {
             Can't login? try{' '}
             <Link to="/auth/join/transporter">forgot password</Link>
           </ForgotPassword>
+          <LinkToRegisteration>
+            Don't have an account?{' '}
+            <Link to="/auth/join/transporter">register with us</Link>
+          </LinkToRegisteration>
         </>
       )}
     </UiForm>
@@ -110,6 +117,12 @@ const PrivacyPolicyParagraph = styled.p`
 `;
 
 const ForgotPassword = styled.p`
+  text-align: center;
+  font-size: ${pxToRem(14)};
+  color: var(--color-gray-400);
+`;
+
+const LinkToRegisteration = styled.p`
   text-align: center;
   font-size: ${pxToRem(14)};
   color: var(--color-gray-400);

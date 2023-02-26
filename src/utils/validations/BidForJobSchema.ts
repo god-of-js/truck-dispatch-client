@@ -4,4 +4,6 @@ import { isRequiredMessage, isNumberMessage } from './validationVariables';
 export default Yup.object({
   price: Yup.number().required(isRequiredMessage).typeError(isNumberMessage),
   presentLocation: Yup.string().required(isRequiredMessage),
+  driverName: Yup.string().required(isRequiredMessage),
+  truckPlateNumber: Yup.string().required(isRequiredMessage),
 });

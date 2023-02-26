@@ -7,7 +7,9 @@ import {
   query,
   where,
   WhereFilterOp,
+  onSnapshot,
 } from 'firebase/firestore';
+import 'firebase/firestore';
 import User from '../types/User';
 import {
   createUserWithEmailAndPassword,
@@ -18,6 +20,8 @@ import Trip from 'types/Trip';
 import Bid from 'types/Bid';
 import Payment from 'types/Payment';
 import Rating from 'types/Rating';
+import PaymentRequest from 'types/PaymentRequest';
+import Chat from 'types/Chat';
 
 class ApiService {
   createUserWithEmailAndPassword(email: string, password: string) {
@@ -105,6 +109,19 @@ class ApiService {
     return this.setDoc('payment', data.id, data);
   }
 
+  requestPaymentByTransporter(data: PaymentRequest) {
+    return this.setDoc('payment-request', data.id, data);
+  }
+
+  getPaymentRequestsOfDriver(id: string) {
+    return this.query<PaymentRequest>({
+      collectionName: 'payment-request',
+      key: 'transporterId',
+      condition: '==',
+      value: id,
+    });
+  }
+
   getBidsWithTripId(tripId: string) {
     return this.query<Bid>({
       collectionName: 'bid',
@@ -113,6 +130,11 @@ class ApiService {
       value: tripId,
     });
   }
+
+  sendChat(chat: Chat) {
+    return this.setDoc('chat', chat.id, chat);
+  }
+
 
   private setDoc(
     collectionName: string,

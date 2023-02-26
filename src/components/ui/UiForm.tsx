@@ -1,5 +1,5 @@
 import { Formik, FormikErrors } from 'formik';
-import React, { useState } from 'react';
+import React from 'react';
 
 interface Props {
   formData: Record<string, any>;
@@ -19,6 +19,7 @@ export default function UiForm({
   onSubmit,
 }: Props) {
   function validateForm() {
+    if (!schema) return {};
     let errors = {};
     try {
       schema.validateSync(formData, { abortEarly: false });

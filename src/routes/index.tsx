@@ -10,6 +10,7 @@ const ProfileLayout = lazy(() => import('../layouts/ProfileLayout'));
 const ViewTripLayout = lazy(() => import('../layouts/ViewTripLayout'));
 const ViewTripBidsLayout = lazy(() => import('../layouts/ViewTripBidsLayout'));
 const TripsLayout = lazy(() => import('../layouts/TripsLayout'));
+const ChatLayout = lazy(() => import('../layouts/ChatLayout'));
 
 const ComponentsView = lazy(() => import('../pages/Components'));
 
@@ -35,6 +36,9 @@ const ViewTripPage = lazy(() => import('../pages/trips/ViewTripPage'));
 const ViewTripStatusPage = lazy(
   () => import('../pages/trips/ViewTripStatusPage'),
 );
+const ViewTripRequestPaymentPage = lazy(
+  () => import('../pages/trips/ViewTripRequestPaymentPage'),
+);
 const ViewTripTDOPage = lazy(() => import('../pages/trips/ViewTripTDOPage'));
 const ViewTripBidsPage = lazy(() => import('../pages/trips/ViewTripBidsPage'));
 const ViewTripBidPage = lazy(() => import('../pages/trips/ViewTripBidPage'));
@@ -47,6 +51,8 @@ const ViewTransporterJobDetailsPage = lazy(
   () => import('../pages/trips/ViewTransporterJobDetailsPage'),
 );
 const BidOnJobPage = lazy(() => import('../pages/trips/BidOnJobPage'));
+
+const ChatPage = lazy(() => import('../pages/chat/ChatPage'));
 
 const router = createBrowserRouter([
   {
@@ -74,6 +80,18 @@ const router = createBrowserRouter([
             path: 'accounts',
             id: 'Accounts',
             element: <TransporterAccountsPage />,
+          },
+        ],
+      },
+      {
+        path: '/chat',
+        id: 'Chat',
+        element: <ChatLayout />,
+        children: [
+          {
+            path: '/chat/:agentId/:transporterId',
+            id: 'Message',
+            element: <ChatPage />,
           },
         ],
       },
@@ -111,6 +129,11 @@ const router = createBrowserRouter([
                 path: '/my-trips/:tripId/terminal-delivery-order',
                 id: 'View Trip TDO',
                 element: <ViewTripTDOPage />,
+              },
+              {
+                path: '/my-trips/:tripId/request-payment-for-trip',
+                id: 'Request payment for trip',
+                element: <ViewTripRequestPaymentPage />,
               },
               {
                 path: '/my-trips/:tripId/bids',

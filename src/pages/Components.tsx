@@ -5,6 +5,7 @@ import UiButton from '../components/ui/UiButton';
 import UiForm from '../components/ui/UiForm';
 import UiInput from '../components/ui/UiInput';
 import UiSelect from '../components/ui/UiSelect';
+import UidropdownMenu, { DropDownData } from 'components/ui/UiDropdownMenu';
 
 function ComponentsView() {
   const [isFocused, setIsFocused] = useState<string | null>('');
@@ -45,6 +46,25 @@ function ComponentsView() {
     });
   }
 
+  function dropdownfunc1() {
+    console.log('this is function 1');
+  }
+  function dropdownfunc2() {
+    console.log('this is function 2');
+  }
+
+  const dropDownData: DropDownData[] = [
+    {
+      type: 'route',
+      path: '/auth',
+      label: 'route option',
+    },
+    {
+      type: 'function',
+      func: dropdownfunc1,
+      label: 'function option1 lorem ipsum dolor amet',
+    },
+  ];
   return (
     <div className="App">
       <UiButton onClick={() => alert('henry is a god')}>Submit</UiButton>
@@ -85,6 +105,7 @@ function ComponentsView() {
           </>
         )}
       </UiForm>
+      <UidropdownMenu data={dropDownData} />
     </div>
   );
 }

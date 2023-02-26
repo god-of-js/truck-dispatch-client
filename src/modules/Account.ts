@@ -37,7 +37,9 @@ export const selectDashboardUser = createSelector(
   (usersArr): User | null => {
     const userId = localStorage.getItem('uid');
     if (!userId) return null;
-    return usersArr.find((user) => user.id === userId) || null;
+    const user = usersArr.find((user) => user.id === userId);
+    console.log(user);
+    return user || null;
   },
 );
 
