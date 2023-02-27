@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import UiButton from 'ui/UiButton';
 import UiIcon, { Icons } from 'ui/UiIcon';
@@ -22,12 +23,16 @@ export default function HeroSection() {
             experience.
           </p>
           <div className="btn-container">
-            <UiButton isSquare variant="primary">
-              Get Started <UiIcon icon="ArrowUpRight" />
-            </UiButton>
-            <UiButton isSquare variant="secondary">
-              I am a transporter
-            </UiButton>
+            <Link to="/auth/join/agent">
+              <UiButton isSquare variant="primary">
+                Get Started <UiIcon icon="ArrowUpRight" />
+              </UiButton>
+            </Link>
+            <Link to="/auth/join/transporter">
+              <UiButton isSquare variant="secondary">
+                I am a transporter
+              </UiButton>
+            </Link>
           </div>
         </div>
       </div>
@@ -62,6 +67,7 @@ const HeroSectionStyling = styled.section`
 
       h2 {
         font-size: ${pxToRem(32)};
+        font-family: 'thiccboi-extrabold';
         font-weight: normal;
         margin: 0;
       }

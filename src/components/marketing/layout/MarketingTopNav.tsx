@@ -10,13 +10,12 @@ export default function MarketingTopNav() {
       <div className="top-nav-inner">
         <img src={TDLogo} alt="Truckdispatch logo" width="250" />
         <div className="actions-container">
-          <Link to="/">Transporter</Link>
           <Link to="/">About Us</Link>
-          <Link to="/">Referral System</Link>
+          <Link to="/">FAQs</Link>
           <Link to="/">Blog</Link>
         </div>
         <div className="actions-container">
-          <Link to="/auth/join/transporter">
+          <Link to="/auth/join/agent">
             <UiButton size="s" textCasing="capitalize" isSquare>
               Get Started
             </UiButton>

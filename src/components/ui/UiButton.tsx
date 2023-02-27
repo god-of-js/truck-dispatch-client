@@ -52,13 +52,23 @@ export default function UiButton({
   );
 }
 
-function sizePadding(size: Sizes) {
-  if (size === 's') return `${pxToRem(8)} ${pxToRem(16)}`;
-  if (size === 'md') return pxToRem(12);
+function sizeVariant(size: Sizes) {
+  if (size === 's') return `padding: 0 ${pxToRem(16)}; height: ${pxToRem(36)};`;
+  if (size === 'md')
+    return `
+  padding: 0 ${pxToRem(16)};
+  height: ${pxToRem(44)};
+  `;
+  if (size === 'large')
+    return `
+  padding: 0 ${pxToRem(16)};
+  height: ${pxToRem(52)};
+    
+  `;
 }
 
 const ButtonContainer = styled.button<Props>`
-  padding: ${({ size }) => sizePadding(size!)};
+  ${({ size }) => sizeVariant(size!)}
   border: none;
   cursor: ${({ disabled }) => (disabled ? '' : 'pointer')};
   display: inline-flex;

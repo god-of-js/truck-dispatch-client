@@ -5,6 +5,7 @@ import UiIcon, { Icons } from 'ui/UiIcon';
 import sizes from 'utils/sizes';
 import PersonalInteraction from 'components/marketing/pages-component/PersonalInteraction';
 import BecomeOurPartner from 'components/marketing/pages-component/BecomeOurPartner';
+import FAQs from 'components/marketing/pages-component/FAQs';
 
 interface BenefitObj {
   icon: Icons;
@@ -51,6 +52,7 @@ export default function MarketingLandingPage() {
       </Benefits>
       <PersonalInteraction />
       <BecomeOurPartner />
+      <FAQs />
     </>
   );
 }
