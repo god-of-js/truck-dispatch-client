@@ -16,7 +16,7 @@ interface Props {
   nextHandler?: () => void;
   prevHandler?: () => void;
 }
-export default function ConfirmTripDetails({
+export default function ViewTripDetails({
   data,
   isActionButtonDisabled,
   loading,
