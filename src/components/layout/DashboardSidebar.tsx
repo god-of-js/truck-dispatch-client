@@ -20,38 +20,28 @@ export default function DashboardSidebar() {
 
   const logOutUser = () => {
     localStorage.removeItem('uid');
-    navigate('auth/login');
+    navigate('/auth/login');
     location.reload();
   };
 
   const transporterRoutes: Route[] = [
     {
-      path: '/',
-      name: 'Home',
-      iconName: 'House',
-    },
-    {
-      path: '/available-jobs',
+      path: '/dashboard/available-jobs',
       name: 'Available Jobs',
       iconName: 'Suitcase',
     },
     {
-      path: '/my-trips',
+      path: '/dashboard/my-trips',
       name: 'My Trips',
       iconName: 'Truck',
     },
     {
-      path: '/payments',
+      path: '/dashboard/payments',
       name: 'Payments',
       iconName: 'Money',
     },
-    // {
-    //   path: '/referrals',
-    //   name: 'Referrals & Bonuses',
-    //   iconName: 'UsersThree',
-    // },
     {
-      path: '/chat',
+      path: '/dashboard/chat',
       name: 'Chat',
       iconName: 'Chats',
     },
@@ -59,27 +49,17 @@ export default function DashboardSidebar() {
 
   const agentRoutes: Route[] = [
     {
-      path: '/',
-      name: 'Home',
-      iconName: 'House',
-    },
-    {
-      path: '/my-trips',
+      path: '/dashboard/my-trips',
       name: 'My Trips',
       iconName: 'Truck',
     },
     {
-      path: '/transactions',
+      path: '/dashboard/transactions',
       name: 'Transactions',
       iconName: 'Money',
     },
-    // {
-    //   path: '/referrals',
-    //   name: 'Referrals and Bonuses',
-    //   iconName: 'UsersThree',
-    // },
     {
-      path: '/chat',
+      path: '/dashboard/chat',
       name: 'Chat',
       iconName: 'Chats',
     },

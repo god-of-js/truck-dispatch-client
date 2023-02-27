@@ -28,23 +28,23 @@ export default function ViewTrip() {
   const unfilteredTabs = [
     {
       label: 'Trip Details',
-      path: `/my-trips/${tripId}`,
+      path: `/dashboard/my-trips/${tripId}`,
     },
     {
       label: 'View Bids',
-      path: `/my-trips/${tripId}/bids`,
+      path: `/dashboard/my-trips/${tripId}/bids`,
     },
     {
       label: 'Trip Status',
-      path: `/my-trips/${tripId}/status`,
+      path: `/dashboard/my-trips/${tripId}/status`,
     },
     {
       label: 'Terminal Delivery Order',
-      path: `/my-trips/${tripId}/terminal-delivery-order`,
+      path: `/dashboard/my-trips/${tripId}/terminal-delivery-order`,
     },
     {
       label: 'Request Payment For Trip',
-      path: `/my-trips/${tripId}/request-payment-for-trip`,
+      path: `/dashboard/my-trips/${tripId}/request-payment-for-trip`,
     },
   ];
 

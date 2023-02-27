@@ -39,7 +39,7 @@ export default function ViewTransporterJobDetailsPage() {
       setIsInformUserOfVerificationModalVisible(true);
       return;
     }
-    navigate(`/available-jobs/${tripId}/bid`);
+    navigate(`/dashboard/available-jobs/${tripId}/bid`);
   }
   function goBack() {
     navigate(-1);

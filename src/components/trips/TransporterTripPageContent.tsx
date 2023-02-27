@@ -67,7 +67,7 @@ export default function AgentTripPageContent() {
   }, [trips]);
 
   function navigateToTrip(id: string) {
-    navigate(`/my-trips/${id}`);
+    navigate(`/dashboard/my-trips/${id}`);
   }
 
   return (

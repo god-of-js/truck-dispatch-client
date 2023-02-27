@@ -135,7 +135,6 @@ class ApiService {
     return this.setDoc('chat', chat.id, chat);
   }
 
-
   private setDoc(
     collectionName: string,
     id: string,
