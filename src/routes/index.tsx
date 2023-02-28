@@ -20,6 +20,9 @@ const MarketingLandingPage = lazy(
   () => import('../pages/marketing/MarketingLandingPage'),
 );
 const FAQsPage = lazy(() => import('../pages/marketing/FAQsPage'));
+const PrivacyPolicyPage = lazy(
+  () => import('../pages/marketing/PrivacyPolicyPage'),
+);
 
 // Auth
 const RegistrationPage = lazy(() => import('../pages/auth/RegistrationPage'));
@@ -73,6 +76,10 @@ const router = createBrowserRouter([
       {
         path: '/faqs',
         element: <FAQsPage />,
+      },
+      {
+        path: '/privacy-policy',
+        element: <PrivacyPolicyPage />,
       },
     ],
   },

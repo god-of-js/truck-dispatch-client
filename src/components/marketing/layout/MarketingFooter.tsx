@@ -9,13 +9,13 @@ export default function MarketingFooter() {
     {
       title: 'TruckDispatch',
       children: [
-        {
-          title: 'About Us',
-          link: '/about-us',
-        },
+        // {
+        //   title: 'About Us',
+        //   link: '/about-us',
+        // },
         {
           title: 'Frequently Asked Questions',
-          link: '/about-us',
+          link: '/faqs',
         },
       ],
     },

@@ -12,11 +12,6 @@ export default function MarketingTopNav() {
           <img src={TDLogo} alt="Truckdispatch logo" width="250" />
         </Link>
         <div className="actions-container">
-          <Link to="/">About Us</Link>
-          <Link to="/">FAQs</Link>
-          <Link to="/">Blog</Link>
-        </div>
-        <div className="actions-container">
           <Link to="/auth/join/agent">
             <UiButton size="s" textCasing="capitalize" isSquare>
               Get Started

@@ -16,7 +16,9 @@ export default function FAQsPage() {
         <p>
           Contact our team and we would help resolve your questions or problems.
         </p>
-        <UiButton isSquare variant='dark-outlined'>contact us</UiButton>
+        <UiButton isSquare variant="dark-outlined">
+          contact us
+        </UiButton>
       </div>
     </FAQsStyling>
   );
