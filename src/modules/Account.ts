@@ -38,7 +38,6 @@ export const selectDashboardUser = createSelector(
     const userId = localStorage.getItem('uid');
     if (!userId) return null;
     const user = usersArr.find((user) => user.id === userId);
-    console.log(user);
     return user || null;
   },
 );
@@ -83,7 +82,6 @@ export function loginUser(AuthUser: { email: string; password: string }) {
   return () => {
     return Api.signInWithEmailAndPassword(AuthUser.email, AuthUser.password!)
       .then((data) => {
-        console.log(data);
         localStorage.setItem('uid', data.uid);
       })
       .catch((err) => {

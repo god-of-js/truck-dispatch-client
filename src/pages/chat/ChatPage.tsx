@@ -76,13 +76,15 @@ export default function ChatPage() {
             </ChatBubble>
           ))}
         </div>
-        <div  ref={chatBottomRef}/>
+        <div ref={chatBottomRef} />
       </ChatContainer>
       <InputContainer>
         <UiForm formData={formData} schema={ChatSchema} onSubmit={sendMessage}>
           {({ errors }) => (
             <div className="input-group">
-              {errors.message && <div className="error-message-container">{errors.message}</div>}
+              {errors.message && (
+                <div className="error-message-container">{errors.message}</div>
+              )}
               <div className="inner">
                 <input
                   placeholder="Enter Message"
