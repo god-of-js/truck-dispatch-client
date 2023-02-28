@@ -1,17 +1,20 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { AppDispatch, AppState, RootState } from '.';
+import { removeKeyValuePairsFromObject, toAnyAction } from 'utils/helpers';
 import Api from 'Api';
 import User from '../types/User';
 import UserWithPassword from '../types/UserWithPassword';
-import VerificationFormData from '../types/VerificationFormData';
-import { removeKeyValuePairsFromObject, toAnyAction } from 'utils/helpers';
+import Verification from '../types/Verification';
 import Rating from 'types/Rating';
 
 export interface AccountState {
   users: User[];
+  verification: Verification | null;
 }
+
 const initialState: AccountState = {
   users: [] as User[],
+  verification: null,
 };
 export const accountSlice = createSlice({
   name: 'account',
@@ -20,18 +23,26 @@ export const accountSlice = createSlice({
     setUsers: (state: AccountState, action: { payload: User[] }) => {
       state.users = action.payload;
     },
+    setVerification: (
+      state: AccountState,
+      action: { payload: Verification },
+    ) => {
+      state.verification = action.payload;
+    },
   },
 });
 
-export const { setUsers } = accountSlice.actions;
+export const { setUsers, setVerification } = accountSlice.actions;
 
 export default accountSlice.reducer;
 
 const users = (state: RootState) => state.account.users;
+
 export const selectUser = (userId: string) =>
   createSelector(users, (usersArr) =>
     usersArr.find((user) => user.id === userId),
   );
+
 export const selectDashboardUser = createSelector(
   users,
   (usersArr): User | null => {
@@ -45,10 +56,12 @@ export const selectDashboardUser = createSelector(
 export const selectTransporters = createSelector(users, (usersArr: User[]) =>
   usersArr.filter(({ userType }) => userType === 'transporter'),
 );
+
 export const selectTransporter = (transporterId: string) =>
   createSelector(users, (usersArr: User[]) =>
     usersArr.find(({ id }) => id === transporterId),
   );
+
 export const selectAgents = createSelector(users, (usersArr: User[]) =>
   usersArr.filter(({ userType }) => userType === 'agent'),
 );
@@ -105,7 +118,7 @@ export function getUsers() {
 }
 
 export const sendVerificationDetailsToAdmin = (
-  verificationData: VerificationFormData,
+  verificationData: Verification,
 ) => {
   return (dispatch: AppDispatch, state: AppState) => {
     const userId = localStorage.getItem('uid');
@@ -117,5 +130,15 @@ export const sendVerificationDetailsToAdmin = (
 export const publishUserRating = (data: Rating) => {
   return () => {
     return Api.publishUserRating(data);
+  };
+};
+
+export const getUserVerification = () => {
+  return (dispatch: AppDispatch) => {
+    const userId = localStorage.getItem('uid');
+    if (!userId) throw new Error('user is not authenticated');
+    return Api.getVerificationByUserId(userId).then((data) => {
+      dispatch(setVerification(data));
+    });
   };
 };
