@@ -94,7 +94,7 @@ const Footer = styled.footer`
     .list-container {
       width: 75%;
       display: grid;
-      grid-template-columns: auto auto;
+      grid-template-columns: auto;
       ul {
         list-style: none;
 
@@ -106,7 +106,6 @@ const Footer = styled.footer`
         li {
           margin: ${pxToRem(12)} 0;
           a {
-
             color: var(--color-gray-500);
             font-weight: 400;
           }
@@ -114,6 +113,15 @@ const Footer = styled.footer`
       }
     }
 
+    @media only screen and (min-width: ${sizes.mobile}) {
+      width: 80%;
+      flex-direction: row;
+      .list-container {
+        padding-top: ${pxToRem(32)};
+        display: grid;
+        grid-template-columns: auto auto;
+      }
+    }
     @media only screen and (min-width: ${sizes.tabletMidWidth}) {
       width: 80%;
       flex-direction: row;

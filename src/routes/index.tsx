@@ -19,6 +19,7 @@ const ComponentsView = lazy(() => import('../pages/Components'));
 const MarketingLandingPage = lazy(
   () => import('../pages/marketing/MarketingLandingPage'),
 );
+const FAQsPage = lazy(() => import('../pages/marketing/FAQsPage'));
 
 // Auth
 const RegistrationPage = lazy(() => import('../pages/auth/RegistrationPage'));
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
       {
         path: '',
         element: <MarketingLandingPage />,
+      },
+      {
+        path: '/faqs',
+        element: <FAQsPage />,
       },
     ],
   },

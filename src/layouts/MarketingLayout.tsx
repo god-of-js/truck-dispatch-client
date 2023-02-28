@@ -6,13 +6,15 @@ import MarketingFooter from 'components/marketing/layout/MarketingFooter';
 
 export default function MarketingLayout() {
   return (
-    <>
+    <Body>
       <MarketingTopNav />
       <Outlet />
 
       <MarketingFooter />
-    </>
+    </Body>
   );
 }
 
-const Body = styled.div``;
+const Body = styled.div`
+  overflow-x: hidden;
+`;

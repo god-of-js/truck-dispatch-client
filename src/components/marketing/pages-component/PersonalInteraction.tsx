@@ -75,7 +75,7 @@ const PersonalInteractionStyling = styled.section`
     width: 100%;
 
     h3 {
-      font-size: ${pxToRem(44)};
+      font-size: ${pxToRem(36)};
       margin: 0;
       color: var(--color-gray-700);
     }
@@ -131,12 +131,20 @@ const PersonalInteractionStyling = styled.section`
     }
   }
 
+  @media only screen and (max-width: ${sizes.mobile}) {
+    .text-content {
+    }
+  }
+
   @media only screen and (min-width: ${sizes.tabletMidWidth}) {
     flex-direction: row;
     width: 80%;
 
     .text-content {
       width: 35%;
+      h3 {
+        font-size: ${pxToRem(48)};
+      }
     }
     .img-container {
       width: 55%;

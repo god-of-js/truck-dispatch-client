@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import UiButton from 'ui/UiButton';
 import UiIcon from 'ui/UiIcon';
@@ -11,16 +12,20 @@ export default function FAQs() {
         <div className="go-to-faqs">
           <h3>DO YOU HAVE ANY QUESTIONS ABOUT TRUCKDISPATCH?</h3>
           <div className="action-btns">
-            <UiButton isSquare>
-              Go To FAQs <UiIcon icon="ArrowUpRight" />
-            </UiButton>
-            <UiButton isSquare variant="secondary">
-              CONTACT US
-            </UiButton>
+            <Link to="/faqs">
+              <UiButton isSquare>
+                Go To FAQs <UiIcon icon="ArrowUpRight" />
+              </UiButton>
+            </Link>
+            <Link to="/contact-us">
+              <UiButton isSquare variant="secondary">
+                CONTACT US
+              </UiButton>
+            </Link>
           </div>
         </div>
         <div className="faq-list">
-          <FAQList />
+          <FAQList isMini />
         </div>
       </div>
     </FAQStyling>

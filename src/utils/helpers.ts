@@ -32,7 +32,8 @@ export function aValueHasBeenChanged<T = unknown>(source: T, formData: T) {
     }
   }
 
-  return true;}
+  return true;
+}
 export function abbreviateNumber(
   num: number,
   ranges = [

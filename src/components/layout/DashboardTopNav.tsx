@@ -45,7 +45,8 @@ export default function DashboardTopNav() {
           return [routeNames[path as RouteNames], params];
         }
         return null;
-      }).filter(x => x)
+      })
+      .filter((x) => x);
 
     if (patterns.length) {
       // @ts-ignore
@@ -53,7 +54,7 @@ export default function DashboardTopNav() {
       if (Object.keys(params).length) {
         return name.replace(/:(\w+)/g, (_: string, key: string) => {
           console.log(params[key]);
-           return params[key];
+          return params[key];
         });
       }
       return name;

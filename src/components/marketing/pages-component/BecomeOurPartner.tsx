@@ -88,7 +88,7 @@ const BecomeOurPartnerStyling = styled.section`
 
     .main-content {
       h3 {
-        font-size: ${pxToRem(36)};
+        font-size: ${pxToRem(24)};
         color: white;
         margin-bottom: ${pxToRem(16)};
         font-weight: 900;
@@ -124,6 +124,9 @@ const BecomeOurPartnerStyling = styled.section`
       }
       .main-content {
         padding-right: ${pxToRem(60)};
+        h3 {
+          font-size: ${pxToRem(36)};
+        }
       }
     }
   }
