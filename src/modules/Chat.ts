@@ -59,4 +59,3 @@ export const sendChat = (chat: Chat) => {
     return Api.sendChat(chat);
   };
 };
-

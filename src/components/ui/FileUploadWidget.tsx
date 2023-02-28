@@ -1,11 +1,12 @@
 import React, { ChangeEvent, useRef } from 'react';
 import styled from 'styled-components';
+import Asset from 'types/Asset';
 import UiField from './UiField';
 
 interface Props {
   name: string;
   label?: string;
-  value: File[] | File | null;
+  value: File[] | File | Asset | null;
   acceptMultiple?: boolean;
   fileType?: 'image' | 'document' | 'video';
   onChange: (event: { name: string; value: File | File[] }) => void;
@@ -57,15 +58,22 @@ export default function FileUploadWidget({
     onChange(dataToSend);
   }
 
-  function getFileName(item: File) {
-    return item?.name || '';
+  function getFileName(item: File | Asset | File[]) {
+    if (item instanceof File) {
+      return item.name;
+    } else if (Array.isArray(item)) {
+      // Handle array files later when needed
+      return;
+    }
+
+    return item?.url.split('/').pop() || '';
   }
 
   function defaultComponent() {
     return (
       <DefaultUploadTrigger>
         <span>Choose file{acceptMultiple ? 's' : ''}</span>
-        {!acceptMultiple ? <div>{getFileName(value as File)}</div> : ''}
+        {!acceptMultiple ? <div>{value && getFileName(value)}</div> : ''}
       </DefaultUploadTrigger>
     );
   }

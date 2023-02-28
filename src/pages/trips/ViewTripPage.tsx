@@ -45,6 +45,7 @@ const CardContainer = styled.div`
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     width: 70%;
   }
+
   @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
     width: 50%;
   }
