@@ -16,7 +16,7 @@ interface Props {
   nextHandler?: () => void;
   prevHandler?: () => void;
 }
-export default function ConfirmTripDetails({
+export default function ViewTripDetails({
   data,
   isActionButtonDisabled,
   loading,
@@ -63,6 +63,10 @@ export default function ConfirmTripDetails({
       <Section>
         <div className="title">Weight of Goods(Tonnage)</div>
         <div className="value">{data.weight}Tons</div>
+      </Section>
+      <Section>
+        <div className="title">Description of Goods</div>
+        <div className="value">{data.description}</div>
       </Section>
       {!hideActionButtons && (
         <SubmitButtonContainer className="submit-button-container">

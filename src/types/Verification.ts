@@ -1,6 +1,6 @@
 import Asset from './Asset';
 
-export default interface VerificationFormData {
+export default interface Verification {
   idType: string;
   idDoc: File | null | Asset;
   homeAddress: string;
@@ -17,4 +17,5 @@ export default interface VerificationFormData {
     idType: string;
     idDoc: File | null | Asset;
   };
+  adminMessage?: string;
 }

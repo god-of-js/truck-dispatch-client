@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../modules';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import sizes from 'utils/sizes';
 import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
 import UiIcon, { Icons } from '../ui/UiIcon';
-import { selectDashboardUser, selectUser } from 'modules/Account';
+import { selectDashboardUser } from 'modules/Account';
 
 interface Route {
   iconName: Icons;
@@ -17,7 +16,7 @@ interface Route {
 export default function DashboardSidebar() {
   const user = useSelector(selectDashboardUser);
   const navigate = useNavigate();
-
+  const appLocation = useLocation();
   const logOutUser = () => {
     localStorage.removeItem('uid');
     navigate('/auth/login');
@@ -65,8 +64,17 @@ export default function DashboardSidebar() {
     },
   ];
 
-  const routes =
-    user?.userType === 'transporter' ? transporterRoutes : agentRoutes;
+  const routes = useMemo(() => {
+    if (!user) return [];
+
+    return user?.userType === 'transporter' ? transporterRoutes : agentRoutes;
+  }, [user]);
+
+  function isRouteActive(route: string) {
+    if (route === '/') return route === appLocation.pathname;
+
+    return appLocation.pathname.includes(route);
+  }
 
   return (
     <Sidebar>
@@ -76,7 +84,7 @@ export default function DashboardSidebar() {
       <TabList>
         {routes.map((route, index) => (
           <Link to={route.path} key={index}>
-            <Tab>
+            <Tab isActive={isRouteActive(route.path)}>
               <UiIcon icon={route.iconName} size="24" />
             </Tab>
           </Link>
@@ -98,6 +106,7 @@ const Sidebar = styled.nav`
   background: #ffffff;
   border-top: 1px solid var(--color-gray-200);
   position: fixed;
+  z-index: 2;
   bottom: 0;
   right: 0;
   left: 0;
@@ -155,13 +164,13 @@ const Tab = styled.li`
   list-style-type: none;
   padding: ${pxToRem(12)} ${pxToRem(20)};
   font-size: ${pxToRem(14)};
-  color: var(--color-gray-500);
+  color: ${({ isActive }: { isActive: boolean }) =>
+    isActive ? 'var(--color-primary)' : 'var(--color-gray-500)'};
   font-weight: 600;
   opacity: 0.6;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: ${pxToRem(4)} solid transparent;
 
   &:hover {
     border-color: var(--color-primary);
@@ -170,7 +179,9 @@ const Tab = styled.li`
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     border-bottom: none;
-    border-left: ${pxToRem(4)} solid transparent;
+    border-left: ${pxToRem(4)} solid
+      ${({ isActive }: { isActive: boolean }) =>
+        isActive ? 'var(--color-primary)' : 'transparent'};
     margin: ${pxToRem(8)} 0;
   }
 `;

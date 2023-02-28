@@ -41,9 +41,11 @@ export default function ViewTransporterJobDetailsPage() {
     }
     navigate(`/dashboard/available-jobs/${tripId}/bid`);
   }
+
   function goBack() {
     navigate(-1);
   }
+
   useEffect(() => {
     if (tripId) {
       Promise.all([
@@ -67,8 +69,7 @@ export default function ViewTransporterJobDetailsPage() {
               nextHandler={bidForJob}
               prevHandler={goBack}
               loading={loading}
-              isActionButtonDisabled={!!bid}
-              actionText={!!bid ? 'Bid Has been sent to Agent' : 'Bid For Job'}
+              actionText={!!bid ? 'Edit Bid' : 'Bid For Job'}
             />
           </CardContainer>
         )) || <NotFoundError />

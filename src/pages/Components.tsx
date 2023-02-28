@@ -100,12 +100,13 @@ function ComponentsView() {
               onChange={handleFormChange}
               label="Location"
               name="location"
+              value={formData.location}
             />
             <UiButton> Submit </UiButton>
           </>
         )}
       </UiForm>
-      <UidropdownMenu data={dropDownData} />
+      {/* <UidropdownMenu options={dropDownData} /> */}
     </div>
   );
 }

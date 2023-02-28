@@ -22,6 +22,7 @@ import Payment from 'types/Payment';
 import Rating from 'types/Rating';
 import PaymentRequest from 'types/PaymentRequest';
 import Chat from 'types/Chat';
+import Verification from 'types/Verification';
 
 class ApiService {
   createUserWithEmailAndPassword(email: string, password: string) {
@@ -46,6 +47,9 @@ class ApiService {
 
   sendVerificationDetailsToAdmin(userId: string, data: unknown) {
     return this.setDoc('verification', userId, data);
+  }
+  getVerificationByUserId(userId: string): Promise<Verification> {
+    return this.getItem('verification', userId);
   }
 
   saveAsset(id: string, url: string) {

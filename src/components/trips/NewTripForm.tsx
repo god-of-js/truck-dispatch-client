@@ -51,12 +51,14 @@ export default function NewTripForm({ defaultFormData, nextHandler }: Props) {
             <UiLocationsInput
               label="Pickup Address(Terminal)"
               name="pickUpAddress"
+              value={formData.pickUpAddress}
               error={errors.pickUpAddress}
               onChange={handleChange}
             />
             <UiLocationsInput
               label="Delivery address"
               name="deliveryAddress"
+              value={formData.deliveryAddress}
               error={errors.deliveryAddress}
               onChange={handleChange}
             />
