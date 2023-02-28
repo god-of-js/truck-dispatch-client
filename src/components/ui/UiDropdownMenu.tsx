@@ -1,15 +1,16 @@
 import React from 'react';
 import UiIcon from './UiIcon';
-import { Menu, MenuItem, MenuButton, SubMenu } from '@szhsin/react-menu';
+import { Menu  , MenuItem, MenuButton, MenuDivider,  } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/slide.css';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export interface DropDownData {
-  type?: 'route' | 'function';
-  label: string;
+  type?: 'route' | 'function' | 'divider';
+  label?: string;
   path?: string;
+  icon?:React.ReactNode;
   func?: () => void;
 }
 
@@ -23,28 +24,40 @@ export default function UidropdownMenu({ data, trigger }: Props) {
     <Menu
       menuButton={
         <MenuButtonStyling>
-          {trigger || <UiIcon icon="DotsThreeVertical" size="20" />}
+          {trigger || <UiIcon icon="DotsThreeVertical" size="20" />} 
         </MenuButtonStyling>
       }
+      
     >
-      {data.map((option) => (
-        <>
+      {data.map((option, index) => (
+        <div key={index}>
           {option.type === 'route' && (
             <MenuItemStyling>
+              {option.icon && option.icon}
               <Link to={`${option.path}`}>{option.label}</Link>
             </MenuItemStyling>
           )}
 
           {option.type === 'function' && (
             <MenuItemStyling onClick={option.func}>
+              {option.icon && option.icon}
               {option.label}
             </MenuItemStyling>
           )}
-        </>
+          {option.type === "divider" && (
+            <MenuDivider />
+          )
+
+          }
+        </div>
       ))}
     </Menu>
   );
 }
+
+
+
+
 
 const MenuButtonStyling = styled(MenuButton)`
   background: transparent;
@@ -57,11 +70,17 @@ const MenuItemStyling = styled(MenuItem)`
   font-size: ${pxToRem(16)};
   color: var(--color-gray-500);
   font-weight: normal;
+  display: flex;
+  align-items: center;
+  gap: ${pxToRem(8)};
   a {
     width: 100%;
     height: 100%;
     font-size: ${pxToRem(16)};
     color: var(--color-gray-500);
     font-weight: normal;
+  }
+  span {
+    margin-top: 2px;
   }
 `;

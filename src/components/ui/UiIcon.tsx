@@ -6,6 +6,7 @@ import {
   CaretDown,
   CaretUp,
   Chats,
+  CreditCard,
   DotsThree,
   DotsThreeVertical,
   Eye,
@@ -31,6 +32,7 @@ const icons = {
   CaretDown: <CaretDown />,
   CaretUp: <CaretUp />,
   Chats: <Chats />,
+  CreditCard: <CreditCard />,
   DotsThree: <DotsThree />,
   DotsThreeVertical: <DotsThreeVertical />,
   Eye: <Eye />,
@@ -55,7 +57,7 @@ interface Props {
   size?: string;
 }
 export default function UiIcon({ icon, size = '16' }: Props) {
-  return <IconStyle size={size}>{icons[icon]}</IconStyle>;
+  return <IconStyle size={size}  >{icons[icon]}</IconStyle>;
 }
 
 const IconStyle = styled.span`
