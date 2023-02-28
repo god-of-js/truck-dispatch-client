@@ -75,6 +75,7 @@ export default function BidOnJob() {
           setIsBidCreationSuccessfulModalVisible(true);
         } else Toast.success({ msg: 'Bid has been updated successfully' });
         setFormData(state => ({ ...state, tripId: tripId! }))
+        dispatch(toAnyAction(getBidsWithTripId(tripId!)))
       })
       .catch((e: Error) => {
         Toast.error({
