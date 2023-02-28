@@ -35,7 +35,7 @@ export default function LoginPage() {
     setLoading(true);
     dispatch(toAnyAction(loginUser(formData)))
       .then(() => {
-        navigate('/');
+        navigate('/dashboard');
       })
       .catch((err: { message: string }) => {
         let msg = err.message;

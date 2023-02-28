@@ -23,7 +23,7 @@ export default function ChatHeads() {
   }
 
   function navigateToChat(agentId: string, transporterId: string) {
-    navigate(`/chat/${agentId}/${transporterId}`);
+    navigate(`/dashboard/chat/${agentId}/${transporterId}`);
   }
 
   return (

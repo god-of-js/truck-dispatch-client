@@ -47,7 +47,7 @@ export default function RegistrationPage() {
     setLoading(true);
     dispatch(toAnyAction(RegisterUser(formData)))
       .then(() => {
-        navigate('/');
+        navigate('/dashboard');
       })
       .catch((err: { message: string }) => {
         let msg: string = err.message;

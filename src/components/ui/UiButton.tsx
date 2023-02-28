@@ -11,24 +11,29 @@ interface Props {
     | 'neutral'
     | 'primary-outlined'
     | 'secondary-outlined'
-    | 'primary-text';
-  size?: 'large' | 'md' | 's';
+    | 'primary-text'
+    | 'dark';
+  size?: Sizes;
   type?: 'submit' | 'button';
   textCasing?: 'uppercase' | 'lowercase' | 'capitalize';
+  isSquare?: boolean;
   /** This prop decides if we want the button to fit the content or be full width */
   isFullWidth?: boolean;
   onClick?: () => void;
 }
+
+type Sizes = 'large' | 'md' | 's';
 
 export default function UiButton({
   children,
   onClick,
   disabled = false,
   loading = false,
+  isSquare = false,
   variant = 'primary',
   type = 'submit',
   textCasing = 'uppercase',
-  size = 'large',
+  size = 'md',
   isFullWidth = false,
 }: Props) {
   return (
@@ -40,14 +45,30 @@ export default function UiButton({
       textCasing={textCasing}
       size={size}
       isFullWidth={isFullWidth}
+      isSquare={isSquare}
     >
       {loading ? <span>Loading...</span> : children}
     </ButtonContainer>
   );
 }
 
+function sizeVariant(size: Sizes) {
+  if (size === 's') return `padding: 0 ${pxToRem(16)}; height: ${pxToRem(36)};`;
+  if (size === 'md')
+    return `
+  padding: 0 ${pxToRem(16)};
+  height: ${pxToRem(44)};
+  `;
+  if (size === 'large')
+    return `
+  padding: 0 ${pxToRem(16)};
+  height: ${pxToRem(52)};
+    
+  `;
+}
+
 const ButtonContainer = styled.button<Props>`
-  padding: ${pxToRem(12)};
+  ${({ size }) => sizeVariant(size!)}
   border: none;
   cursor: ${({ disabled }) => (disabled ? '' : 'pointer')};
   display: inline-flex;
@@ -58,7 +79,7 @@ const ButtonContainer = styled.button<Props>`
   line-height: 1.45;
   text-align: center;
   text-transform: uppercase;
-  border-radius: ${pxToRem(4)};
+  border-radius: ${({ isSquare }) => (isSquare ? '' : pxToRem(4))};
   font-weight: 900;
   text-transform: ${({ textCasing }) => textCasing};
   width: ${({ isFullWidth }) => (isFullWidth ? '100%' : 'fit-content')};
@@ -93,7 +114,16 @@ const ButtonContainer = styled.button<Props>`
     background-color: var(--color-gray-100);
     color: var(--color-gray-700);
     &:hover {
-      background: var(--color-gray-100);
+      background: var(--color-gray-200);
+    }
+  }
+
+  &.dark {
+    background: var(--color-gray-900);
+    color: white;
+
+    &:hover {
+      background: var(--color-gray-700);
     }
   }
 
