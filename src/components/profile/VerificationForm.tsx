@@ -7,6 +7,7 @@ import {
   getUserVerification,
   selectDashboardUser,
   sendVerificationDetailsToAdmin,
+  setVerification,
 } from 'modules/Account';
 import { aValueHasBeenChanged, toAnyAction } from 'utils/helpers';
 import TransporterValidationSchema from 'utils/validations/TransporterValidationSchema';
@@ -68,7 +69,7 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
   ];
 
   const disableButton = useMemo(() => {
-    return aValueHasBeenChanged<Verification>(verification, formData)
+    return aValueHasBeenChanged<Verification>(verification!, formData)
   }, [verification, formData])
   function initUpload(item: File | Asset) {
     
@@ -86,16 +87,6 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
     const guarantorIdDoc = await initUpload(formData.guarantor.idDoc as File);
 
     if (!user?.id) return;
-    console.log({
-      ...formData,
-      idDoc: idDocUrl,
-      userId: user?.id,
-      homeUtilityBill,
-      guarantor: {
-        ...formData.guarantor,
-        idDoc: guarantorIdDoc,
-      },
-    });
     dispatch(
       toAnyAction(
         sendVerificationDetailsToAdmin({
@@ -111,6 +102,16 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
       ),
     )
       .then(() => {
+        dispatch(setVerification({
+          ...formData,
+          idDoc: idDocUrl,
+          userId: user.id,
+          homeUtilityBill,
+          guarantor: {
+            ...formData.guarantor,
+            idDoc: guarantorIdDoc,
+          },
+        }))
         onVerified();
       })
       .catch((err: Error) => {
