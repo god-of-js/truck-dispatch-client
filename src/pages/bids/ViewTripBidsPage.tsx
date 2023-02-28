@@ -41,7 +41,7 @@ export default function ViewTripBidsPage() {
   ];
 
   function viewBid(bidId: string) {
-    navigate(`/my-trips/${tripId}/bids/${bidId}`);
+    navigate(`/dashboard/my-trips/${tripId}/bids/${bidId}`);
   }
 
   function getUser(userId: string) {
