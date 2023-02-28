@@ -40,9 +40,9 @@ const ViewTripRequestPaymentPage = lazy(
   () => import('../pages/trips/ViewTripRequestPaymentPage'),
 );
 const ViewTripTDOPage = lazy(() => import('../pages/trips/ViewTripTDOPage'));
-const ViewTripBidsPage = lazy(() => import('../pages/trips/ViewTripBidsPage'));
-const ViewTripBidPage = lazy(() => import('../pages/trips/ViewTripBidPage'));
-const BidCheckoutPage = lazy(() => import('../pages/trips/BidCheckoutPage'));
+const ViewTripBidsPage = lazy(() => import('../pages/bids/ViewTripBidsPage'));
+const ViewTripBidPage = lazy(() => import('../pages/bids/ViewTripBidPage'));
+const BidCheckoutPage = lazy(() => import('../pages/bids/BidCheckoutPage'));
 
 const TransporterJobsPage = lazy(
   () => import('../pages/trips/TransporterJobsPage'),
@@ -50,7 +50,7 @@ const TransporterJobsPage = lazy(
 const ViewTransporterJobDetailsPage = lazy(
   () => import('../pages/trips/ViewTransporterJobDetailsPage'),
 );
-const BidOnJobPage = lazy(() => import('../pages/trips/BidOnJobPage'));
+const BidOnJobPage = lazy(() => import('../pages/bids/BidOnJobPage'));
 
 const ChatPage = lazy(() => import('../pages/chat/ChatPage'));
 
