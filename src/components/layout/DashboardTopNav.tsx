@@ -51,7 +51,7 @@ export default function DashboardTopNav() {
 
 const TopNav = styled.nav`
   background-color: #ffffff;
-  border-bottom: ${pxToRem(1)} solid var(--color-gray-200);
+  border-bottom: ${pxToRem(1)} solid var(--color-gray-200);    
   padding: ${pxToRem(12)} ${pxToRem(24)};
   display: flex;
   align-items: center;
