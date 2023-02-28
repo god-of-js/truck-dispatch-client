@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import UiButton from 'ui/UiButton';
 import UiIcon, { Icons } from 'ui/UiIcon';
 import sizes from 'utils/sizes';
-import ScaniaTruck from '../../../assets/img/truck-image.jpeg';
+import TruckImage from '../../../assets/img/truck-image.jpeg';
 
 export default function HeroSection() {
   return (
@@ -37,7 +37,7 @@ export default function HeroSection() {
         </div>
       </div>
       <div className="image-container">
-        <img src={ScaniaTruck} alt="" />
+        <img src={TruckImage} alt="" />
       </div>
     </HeroSectionStyling>
   );
