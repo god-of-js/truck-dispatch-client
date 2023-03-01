@@ -19,7 +19,7 @@ interface Props {
   trigger?: React.ReactNode;
 }
 
-export default function UidropdownMenu({ options, trigger }: Props) {
+export default function UiDropDownMenu({ options, trigger }: Props) {
   return (
     <Menu
       menuButton={
@@ -28,11 +28,12 @@ export default function UidropdownMenu({ options, trigger }: Props) {
         </MenuButtonStyling>
       }
     >
-      {data.map((option, index) => (
+      {options.map((option, index) => (
         <div key={index}>
           {option.type === 'route' && (
             <MenuItemStyling>
               {option.icon && option.icon}
+
               <Link to={`${option.path}`}>{option.label}</Link>
             </MenuItemStyling>
           )}
@@ -40,6 +41,7 @@ export default function UidropdownMenu({ options, trigger }: Props) {
           {option.type === 'function' && (
             <MenuItemStyling onClick={option.func}>
               {option.icon && option.icon}
+              
               {option.label}
             </MenuItemStyling>
           )}

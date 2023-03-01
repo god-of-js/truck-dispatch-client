@@ -4,16 +4,16 @@ import { pathToRegexp, Key } from 'path-to-regexp';
 import styled from 'styled-components';
 import UiIcon from 'ui/UiIcon';
 import UiAvatar from 'ui/UiAvatar';
-import UidropdownMenu, { DropDownData } from 'ui/UiDropdownMenu';
+import UiDropDownMenu, { DropDownData } from 'ui/UiDropdownMenu';
 import { useNavigate } from 'react-router-dom';
 interface Params {
   [key: string]: string;
 }
 export default function DashboardTopNav() {
   const navigate = useNavigate();
-  const logOutUser = () => {
+  function logOutUser () {
     localStorage.removeItem('uid');
-    navigate('auth/login');
+    navigate('/auth/login');
   };
 
   const dropDownData : DropDownData[] = [
@@ -85,7 +85,7 @@ export default function DashboardTopNav() {
       if (Object.keys(params).length) {
         return name.replace(/:(\w+)/g, (_: string, key: string) => {
           console.log(params[key]);
-           return params[key];
+          return params[key];
         });
       }
       return name;
@@ -95,11 +95,17 @@ export default function DashboardTopNav() {
 
   return (
     <TopNav>
-      <span>Home</span>
-      <UidropdownMenu 
-      data={dropDownData} 
-      trigger={ <UiAvatar />}
+      <span>{routeName}</span>
+      <UiDropDownMenu 
+      options={dropDownData} 
+      trigger={
+        <div className='avatar-caret-flex'>
+          <UiAvatar />
+          <UiIcon icon='CaretDown'/>
+        </div>
+      }
       />
+    </TopNav>
   );
 }
 
@@ -111,9 +117,20 @@ const TopNav = styled.nav`
   align-items: center;
   justify-content: space-between;
 
-  span {
-    font-size: ${pxToRem(16)};
-    font-weight: 600;
-    color: var(--color-gray-400);
+  .avatar-caret-flex{
+    display: flex;
+    align-items: center;
+    gap:${pxToRem(5)} ;
+
+    span {
+      font-size: ${pxToRem(16)};
+      font-weight: 600;
+      color: var(--color-gray-400);
+    }
+  }
+  .avatar-caret-flex:hover{
+    span{
+      color: var(--color-gray-600);
+    }
   }
 `;
