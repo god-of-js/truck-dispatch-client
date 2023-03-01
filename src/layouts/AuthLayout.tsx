@@ -22,7 +22,7 @@ export default function AuthLayout() {
   useEffect(() => {
     const user = localStorage.getItem('uid');
     if (user) {
-      navigate('/');
+      navigate('/dashboard');
     }
   }, []);
 

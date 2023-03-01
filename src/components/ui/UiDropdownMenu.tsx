@@ -14,20 +14,20 @@ export interface DropDownData {
 }
 
 interface Props {
-  data: DropDownData[];
+  options: DropDownData[];
   trigger?: React.ReactNode;
 }
 
-export default function UidropdownMenu({ data, trigger }: Props) {
+export default function UidropdownMenu({ options, trigger }: Props) {
   return (
     <Menu
       menuButton={
         <MenuButtonStyling>
-          {trigger || <UiIcon icon="DotsThreeVertical" size="20" />}
+          {trigger || <UiIcon icon="DotsThreeVertical" size="28" />}
         </MenuButtonStyling>
       }
     >
-      {data.map((option) => (
+      {options.map((option) => (
         <>
           {option.type === 'route' && (
             <MenuItemStyling>
@@ -50,6 +50,7 @@ const MenuButtonStyling = styled(MenuButton)`
   background: transparent;
   border: transparent;
   cursor: pointer;
+  width: fit-content;
 `;
 
 const MenuItemStyling = styled(MenuItem)`

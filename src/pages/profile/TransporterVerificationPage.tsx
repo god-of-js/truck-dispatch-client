@@ -26,7 +26,7 @@ export default function TransporterVerificationPage() {
     <MessageWithImage
       title="Verification details have been sent"
       subtitle={`Your verification details has been sent. expect a mail or text
-  message from the organization in 24 hours regarding if your profile
+  message from the organization in 3 working days regarding if your profile
   has been approved or declined`}
     />
   );
@@ -39,25 +39,23 @@ export default function TransporterVerificationPage() {
   );
 
   const componentBasedOnVerificationStatus = useMemo(() => {
-    if (!isVerified && user?.status === 'unverified') {
+    if (isVerified || user?.status === 'pending_verification') {
+      return userIsAwaitingVerification;
+    }
+
+    if (!isVerified && user?.status === 'unverified' || user?.status === 'rejected') {
       return <VerificationForm onVerified={setVerificationStatus} />;
     }
 
     if (user?.status === 'verified') {
       return userHasBeenVerified;
     }
-    if (user?.status === 'rejected') {
-      return userVerificationWasRejected;
-    }
 
-    if (isVerified || user?.status === 'pending_verification') {
-      return userIsAwaitingVerification;
-    }
   }, [isVerified]);
 
   function setVerificationStatus() {
     setIsVerified(true);
-    if (user === null) return;
+    if (!user) return;
     const verificationPendingUser: User = {
       ...user,
       status: 'pending_verification',
@@ -70,16 +68,27 @@ export default function TransporterVerificationPage() {
   }
 
   return (
-    <TransportVerificationCard>
-      {componentBasedOnVerificationStatus}
-    </TransportVerificationCard>
+    <VerificationPageStyling>
+      <TransportVerificationCard>
+        {componentBasedOnVerificationStatus}
+      </TransportVerificationCard>
+      {user?.status === 'rejected' && <FeedbackCard>
+        <h2>Admin Remark</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea praesentium libero esse nihil asperiores quidem est itaque, quos et maiores doloremque pariatur inventore illo fuga, neque totam eius cupiditate distinctio.</p>
+      </FeedbackCard>}
+    </VerificationPageStyling>
   );
 }
 
+const VerificationPageStyling = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: ${pxToRem(24)};
+  justify-content: center;
+`;
 const TransportVerificationCard = styled.div`
   background: #ffffff;
   width: 90%;
-  margin: auto;
   border: 1px solid var(--color-gray-200);
   padding: ${pxToRem(20)};
   border-radius: ${pxToRem(8)};
@@ -96,5 +105,21 @@ const TransportVerificationCard = styled.div`
   }
   @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
     width: 40%;
+  }
+`;
+
+const FeedbackCard = styled.div`
+  background: #ffffff;
+  width: 30%;
+  border: 1px solid var(--color-gray-200);
+  padding: ${pxToRem(20)};
+  border-radius: ${pxToRem(8)};
+
+  h2 {
+      font-size: ${pxToRem(20)};
+  }
+  p {
+
+    font-size: ${pxToRem(16)};
   }
 `;

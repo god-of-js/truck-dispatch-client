@@ -1,20 +1,23 @@
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import UiField from './UiField';
 
 interface Props {
   label?: string;
   name: string;
   error?: string;
+  value: string;
   onChange: (event: { name: string; value: string }) => void;
 }
+
 export default function UiLocationsInput({
   label,
   name,
+  value,
   error,
   onChange,
 }: Props) {
-  const autoCompleteRef = useRef();
-  const inputRef = useRef();
+  const autoCompleteRef = useRef<HTMLInputElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const options = {
     componentRestrictions: { country: 'ng' },
@@ -23,12 +26,14 @@ export default function UiLocationsInput({
     types: ['establishment'],
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     // TODO: implement prefilling of google input.
-    // if (inputRef.current?.value) inputRef.current?.value = formData[name] || '';
+    if (inputRef.current && value) {
+      inputRef.current.value = value;
+    }
     //   @ts-ignore
     autoCompleteRef.current = new window.google.maps.places.Autocomplete(
-      inputRef.current,
+      inputRef.current!,
       options,
     );
     // @ts-ignore
@@ -38,11 +43,11 @@ export default function UiLocationsInput({
       // TODO: correct transporter verification
       onChange({ name, value: place.formatted_address });
     });
-  }, []);
+  }, [value]);
 
   return (
     <UiField label={label} name={name} error={error}>
-      <input className="global-input" ref={inputRef as any} />
+      <input className="global-input" ref={inputRef} key={value} />
     </UiField>
   );
 }
