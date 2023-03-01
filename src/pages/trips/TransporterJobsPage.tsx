@@ -10,6 +10,7 @@ import { toAnyAction } from 'utils/helpers';
 
 export default function TransporterJobs() {
   const jobs = useSelector((state: RootState) => state.trips.jobs);
+  console.log(jobs);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const headers = [

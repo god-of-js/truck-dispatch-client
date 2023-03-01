@@ -60,6 +60,12 @@ const BidOnJobPage = lazy(() => import('../pages/bids/BidOnJobPage'));
 
 const ChatPage = lazy(() => import('../pages/chat/ChatPage'));
 
+//Transactions
+
+const ViewPaymentsPage = lazy(
+  () => import('../pages/payments/ViewPaymentsPage'),
+);
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -191,6 +197,11 @@ const router = createBrowserRouter([
         path: '/dashboard/available-jobs/:tripId/bid',
         id: 'Bid on Job',
         element: <BidOnJobPage />,
+      },
+      {
+        path: '/dashboard/payments',
+        id: 'Payments',
+        element: <ViewPaymentsPage />,
       },
     ],
   },
