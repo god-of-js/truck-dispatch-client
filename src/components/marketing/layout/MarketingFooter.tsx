@@ -106,7 +106,6 @@ const Footer = styled.footer`
         li {
           margin: ${pxToRem(12)} 0;
           a {
-
             color: var(--color-gray-500);
             font-weight: 400;
           }

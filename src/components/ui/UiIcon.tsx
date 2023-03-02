@@ -67,7 +67,7 @@ interface Props {
   size?: string;
 }
 export default function UiIcon({ icon, size = '16' }: Props) {
-  return <IconStyle size={size}  >{icons[icon]}</IconStyle>;
+  return <IconStyle size={size}>{icons[icon]}</IconStyle>;
 }
 
 const IconStyle = styled.span`

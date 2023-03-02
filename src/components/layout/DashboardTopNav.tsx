@@ -11,52 +11,48 @@ interface Params {
 }
 export default function DashboardTopNav() {
   const navigate = useNavigate();
-  function logOutUser () {
+  function logOutUser() {
     localStorage.removeItem('uid');
     navigate('/auth/login');
-  };
+  }
 
-  const dropDownData : DropDownData[] = [
+  const dropDownData: DropDownData[] = [
     {
-      label: "View Profile",
-      type: "route",
-      path: "profile",
-      icon: <UiIcon icon='User' />
-    }, 
-    {
-      label: "Bank Accounts",
-      type: "route",
-      path: "profile/accounts",
-      icon:<UiIcon icon='CreditCard' />
+      label: 'View Profile',
+      path: 'profile',
+      icon: <UiIcon icon="User" />,
     },
     {
-      type: 'divider'
+      label: 'Bank Accounts',
+      path: 'profile/accounts',
+      icon: <UiIcon icon="CreditCard" />,
     },
     {
-      label: "Log out",
-      type: "function",
+      label: 'Log out',
+      isDanger: true,
+      hasDivider: true,
       func: logOutUser,
-      icon: <UiIcon icon='SignOut' />
+      icon: <UiIcon icon="SignOut" />,
     },
-  ]
-  
+  ];
+
   const location = useLocation();
   const routeNames = {
-    '/': 'Dashboard',
-    '/available-jobs': 'Available Jobs',
-    '/available-jobs/:id': 'View Job Details',
-    '/available-jobs/:id/Bid': 'Bid On Job',
-    '/my-trips': 'My Trips',
-    '/my-trips/new': 'Create New Trip',
-    '/my-trips/:id': 'My Trip',
-    '/my-trips/:id/status': 'My Trip Status',
-    '/my-trips/:id/terminal-delivery-order': 'Manage Trip TDO',
-    '/my-trips/:id/request-payment-for-trip': 'Request Trip  Payment',
-    '/my-trips/:id/bids': 'Trip Bids',
-    '/my-trips/:id/bids/:id': 'Trip Bid',
-    '/my-trips/:id/bids/:id/checkout': 'Pay for Trip',
-    '/chat': 'Chat',
-    '/chat/:id/:id': 'Chat',
+    '/dashboard': 'Dashboard',
+    '/dashboard/available-jobs': 'Available Jobs',
+    '/dashboard/available-jobs/:id': 'View Job Details',
+    '/dashboard/available-jobs/:id/Bid': 'Bid On Job',
+    '/dashboard/my-trips': 'My Trips',
+    '/dashboard/my-trips/new': 'Create New Trip',
+    '/dashboard/my-trips/:id': 'My Trip',
+    '/dashboard/my-trips/:id/status': 'My Trip Status',
+    '/dashboard/my-trips/:id/terminal-delivery-order': 'Manage Trip TDO',
+    '/dashboard/my-trips/:id/request-payment-for-trip': 'Request Trip  Payment',
+    '/dashboard/my-trips/:id/bids': 'Trip Bids',
+    '/dashboard/my-trips/:id/bids/:id': 'Trip Bid',
+    '/dashboard/my-trips/:id/bids/:id/checkout': 'Pay for Trip',
+    '/dashboard/chat': 'Chat',
+    '/dashboard/chat/:id/:id': 'Chat',
   };
   type RouteNames = keyof typeof routeNames;
 
@@ -77,7 +73,8 @@ export default function DashboardTopNav() {
           return [routeNames[path as RouteNames], params];
         }
         return null;
-      }).filter(x => x)
+      })
+      .filter((x) => x);
 
     if (patterns.length) {
       // @ts-ignore
@@ -96,14 +93,14 @@ export default function DashboardTopNav() {
   return (
     <TopNav>
       <span>{routeName}</span>
-      <UiDropDownMenu 
-      options={dropDownData} 
-      trigger={
-        <div className='avatar-caret-flex'>
-          <UiAvatar />
-          <UiIcon icon='CaretDown'/>
-        </div>
-      }
+      <UiDropDownMenu
+        options={dropDownData}
+        trigger={
+          <div className="avatar-caret-flex">
+            <UiAvatar />
+            <UiIcon icon="CaretDown" />
+          </div>
+        }
       />
     </TopNav>
   );
@@ -111,16 +108,16 @@ export default function DashboardTopNav() {
 
 const TopNav = styled.nav`
   background-color: #ffffff;
-  border-bottom: ${pxToRem(1)} solid var(--color-gray-200);    
+  border-bottom: ${pxToRem(1)} solid var(--color-gray-200);
   padding: ${pxToRem(12)} ${pxToRem(24)};
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  .avatar-caret-flex{
+  .avatar-caret-flex {
     display: flex;
     align-items: center;
-    gap:${pxToRem(5)} ;
+    gap: ${pxToRem(5)};
 
     span {
       font-size: ${pxToRem(16)};
@@ -128,8 +125,8 @@ const TopNav = styled.nav`
       color: var(--color-gray-400);
     }
   }
-  .avatar-caret-flex:hover{
-    span{
+  .avatar-caret-flex:hover {
+    span {
       color: var(--color-gray-600);
     }
   }
