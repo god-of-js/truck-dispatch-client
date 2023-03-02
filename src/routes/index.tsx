@@ -23,6 +23,9 @@ const FAQsPage = lazy(() => import('../pages/marketing/FAQsPage'));
 const PrivacyPolicyPage = lazy(
   () => import('../pages/marketing/PrivacyPolicyPage'),
 );
+const AgentsTermsAndConditions = lazy(
+  () => import('../pages/marketing/AgentsTermsAndConditions'),
+);
 
 // Auth
 const RegistrationPage = lazy(() => import('../pages/auth/RegistrationPage'));
@@ -80,6 +83,10 @@ const router = createBrowserRouter([
       {
         path: '/privacy-policy',
         element: <PrivacyPolicyPage />,
+      },
+      {
+        path: '/agent-terms-and-conditions',
+        element: <AgentsTermsAndConditions />,
       },
     ],
   },

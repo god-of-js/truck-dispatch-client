@@ -1,7 +1,5 @@
-import FAQList from 'components/marketing/FAQList';
 import React from 'react';
 import styled from 'styled-components';
-import UiButton from 'ui/UiButton';
 import sizes from 'utils/sizes';
 
 export default function PrivacyPolicyPage() {
@@ -141,9 +139,10 @@ export default function PrivacyPolicyPage() {
           promotional emails from us either by "unsubscribing" to an email you
           receive from us or by contacting us as indicated below. As a User, if
           you unsubscribe from receiving emails from us, we may still send you
-          non-promotional emails, such as emails about your TruckDispatch account or
-          our ongoing business relations, unless you withdraw your consent to
-          receive electronic communications as provided in our Terms of Use.
+          non-promotional emails, such as emails about your TruckDispatch
+          account or our ongoing business relations, unless you withdraw your
+          consent to receive electronic communications as provided in our Terms
+          of Use.
         </p>
         <h4>How we share your information</h4>
         <p>We do not share your personal information with:</p>
@@ -152,24 +151,98 @@ export default function PrivacyPolicyPage() {
           <li>Affiliated companies for their everyday business.</li>
           <li>Any third party so they can market to you.</li>
         </ol>
-        <p>We may share your personal information with unaffiliated third parties:</p>
+        <p>
+          We may share your personal information with unaffiliated third
+          parties:
+        </p>
         <ol>
           <li>If you authorize it</li>
-          <li>If the information is provided to help complete a transaction for you.</li>
-          <li>If the information is provided to
-              <ul>
-                  <li>If the information is provided to help complete a transaction for you</li>
-                  <li>enforce our Terms of Use or other agreements</li>
-                  <li>protect our rights, property, or safety or the rights, property, or safety of our users or others (e.g., to a consumer reporting agency for fraud protection, etc.)</li>
-              </ul>
+          <li>
+            If the information is provided to help complete a transaction for
+            you.
           </li>
-          <li>If the disclosure is done as part of a purchase, transfer, or sale of services or assets (e.g., in the event that substantially all of our assets are acquired by another party, your Personal Information may be one of the transferred assets).</li>
-          <li>If the information is provided to our third-party service providers to perform functions on our behalf (e.g., analysing data, providing marketing assistance, providing customer service, processing orders, etc.);</li>
+          <li>
+            If the information is provided to
+            <ul>
+              <li>
+                If the information is provided to help complete a transaction
+                for you
+              </li>
+              <li>enforce our Terms of Use or other agreements</li>
+              <li>
+                protect our rights, property, or safety or the rights, property,
+                or safety of our users or others (e.g., to a consumer reporting
+                agency for fraud protection, etc.)
+              </li>
+            </ul>
+          </li>
+          <li>
+            If the disclosure is done as part of a purchase, transfer, or sale
+            of services or assets (e.g., in the event that substantially all of
+            our assets are acquired by another party, your Personal Information
+            may be one of the transferred assets).
+          </li>
+          <li>
+            If the information is provided to our third-party service providers
+            to perform functions on our behalf (e.g., analysing data, providing
+            marketing assistance, providing customer service, processing orders,
+            etc.);
+          </li>
           <li>For our everyday business purposes;</li>
-          <li>For publication of our events and competitions on digital and print media.</li>
+          <li>
+            For publication of our events and competitions on digital and print
+            media.
+          </li>
         </ol>
-        <p>When you are no longer our User, we may continue to share your information as described in this Privacy Policy.</p>
-        <p>We may disclose Analytics with third parties as described elsewhere in this Privacy Policy and for our commercial purposes.</p>
+        <p>
+          When you are no longer our User, we may continue to share your
+          information as described in this Privacy Policy.
+        </p>
+        <p>
+          We may disclose Analytics with third parties as described elsewhere in
+          this Privacy Policy and for our commercial purposes.
+        </p>
+      </section>
+      <section>
+        <h3>Links to Third-party websites</h3>
+        <p>
+          When you use our Services, you may be directed to other websites that
+          are beyond our control. We may also allow third-party websites or
+          applications to link to our Services. We are not responsible for the
+          privacy practices of any third parties or the content of linked
+          websites, but we do encourage you to read the applicable privacy
+          policies and terms and conditions of such parties and websites. This
+          Privacy Policy only applies to our Services.
+        </p>
+      </section>
+      <section>
+        <h3>Changes to our Privacy Policy</h3>
+        <p>
+          Subject to applicable law, we may revise this Privacy Policy at any
+          time and in our sole discretion. When we revise this Privacy Policy,
+          we will post the revised version via our Services and will update the
+          date at the top of this Privacy Policy. The revised Privacy Policy
+          will be effective upon posting via our Services, unless otherwise set
+          forth therein or as otherwise required by applicable law. You are free
+          to decide whether or not to accept a revised version of this Privacy
+          Policy, but accepting this Privacy Policy, as revised, is required for
+          you to continue accessing or using our Services. If you do not agree
+          to the terms of this Privacy Policy or any revised version of this
+          Privacy Policy, your sole recourse is to terminate your access and use
+          of our Services. Except as otherwise expressly stated by us, your
+          access and use of our Services are subject to the version of this
+          Privacy Policy in effect at the time of access or use.
+        </p>
+      </section>
+      <section>
+        <h3>How do I contact TruckDispatch</h3>
+        <p>
+          If you have questions, comments, suggestions, or concerns regarding
+          this privacy terms, you can reach out to us at{' '}
+          <a href="mailto:support@truckdispatch.ng">support@truckdispatch.ng</a>{' '}
+          You may also contact our customer care by clicking on the customer
+          care chat button at the bottom right
+        </p>
       </section>
     </PrivacyPolicyStyling>
   );
@@ -177,7 +250,7 @@ export default function PrivacyPolicyPage() {
 
 const PrivacyPolicyStyling = styled.div`
   min-height: 70vh;
-  padding-top: ${pxToRem(160)};
+  padding: ${pxToRem(160)} 0;
   width: 90%;
   margin: auto;
 

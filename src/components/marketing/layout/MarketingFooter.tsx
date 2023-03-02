@@ -28,7 +28,7 @@ export default function MarketingFooter() {
         },
         {
           title: 'T&C Agents',
-          link: '/terms-and-conditions-agents',
+          link: '/agent-terms-and-conditions',
         },
         {
           title: 'T&C Transporters',
