@@ -66,7 +66,7 @@ export default function ViewTripDetails({
       </Section>
       <Section>
         <div className="title">Description of Goods</div>
-        <div className="value">{data.description}</div>
+        <div className="value">{data.instructions}</div>
       </Section>
       {!hideActionButtons && (
         <SubmitButtonContainer className="submit-button-container">

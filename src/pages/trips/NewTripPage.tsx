@@ -70,7 +70,7 @@ export default function NewTripPage() {
     sizeOfContainer: '',
     shippingLine: '',
     weight: NaN,
-    description: '',
+    instructions: '',
     status: 'awaiting_bid',
   });
 

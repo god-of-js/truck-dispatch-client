@@ -122,7 +122,7 @@ export default function NewTripForm({ defaultFormData, nextHandler }: Props) {
           <UiTextArea
             label="Description Of Goods(optional)"
             name="description"
-            value={formData.description || ''}
+            value={formData.instructions || ''}
             error={errors.description}
             onChange={handleChange}
           />
