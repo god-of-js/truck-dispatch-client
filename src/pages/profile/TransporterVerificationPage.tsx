@@ -43,14 +43,16 @@ export default function TransporterVerificationPage() {
       return userIsAwaitingVerification;
     }
 
-    if (!isVerified && user?.status === 'unverified' || user?.status === 'rejected') {
+    if (
+      (!isVerified && user?.status === 'unverified') ||
+      user?.status === 'rejected'
+    ) {
       return <VerificationForm onVerified={setVerificationStatus} />;
     }
 
     if (user?.status === 'verified') {
       return userHasBeenVerified;
     }
-
   }, [isVerified]);
 
   function setVerificationStatus() {
@@ -72,10 +74,17 @@ export default function TransporterVerificationPage() {
       <TransportVerificationCard>
         {componentBasedOnVerificationStatus}
       </TransportVerificationCard>
-      {user?.status === 'rejected' && <FeedbackCard>
-        <h2>Admin Remark</h2>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea praesentium libero esse nihil asperiores quidem est itaque, quos et maiores doloremque pariatur inventore illo fuga, neque totam eius cupiditate distinctio.</p>
-      </FeedbackCard>}
+      {user?.status === 'rejected' && (
+        <FeedbackCard>
+          <h2>Admin Remark</h2>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea
+            praesentium libero esse nihil asperiores quidem est itaque, quos et
+            maiores doloremque pariatur inventore illo fuga, neque totam eius
+            cupiditate distinctio.
+          </p>
+        </FeedbackCard>
+      )}
     </VerificationPageStyling>
   );
 }
@@ -116,10 +125,9 @@ const FeedbackCard = styled.div`
   border-radius: ${pxToRem(8)};
 
   h2 {
-      font-size: ${pxToRem(20)};
+    font-size: ${pxToRem(20)};
   }
   p {
-
     font-size: ${pxToRem(16)};
   }
 `;
