@@ -120,8 +120,8 @@ export default function NewTripForm({ defaultFormData, nextHandler }: Props) {
             />
           </GridContainer>
           <UiTextArea
-            label="Description Of Goods(optional)"
-            name="description"
+            label="Instructions For Goods(optional)"
+            name="instructions"
             value={formData.instructions || ''}
             error={errors.description}
             onChange={handleChange}
