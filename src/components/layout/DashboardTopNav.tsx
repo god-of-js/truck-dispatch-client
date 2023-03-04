@@ -53,7 +53,6 @@ export default function DashboardTopNav() {
       const [name, params] = patterns[0];
       if (Object.keys(params).length) {
         return name.replace(/:(\w+)/g, (_: string, key: string) => {
-          console.log(params[key]);
           return params[key];
         });
       }
