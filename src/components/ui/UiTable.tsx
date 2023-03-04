@@ -35,7 +35,9 @@ export default function UiTable({
   options,
   onRowClick,
 }: Props) {
-  const tableHeaders = options ? [...headers, { title: '', query: 'actions' }] : headers;
+  const tableHeaders = options
+    ? [...headers, { title: '', query: 'actions' }]
+    : headers;
   return (
     <TableContainer>
       <TableContainerHeader>

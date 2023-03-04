@@ -191,24 +191,26 @@ export default function ViewTripStatus() {
               )}
             </>
           )}
-          {user?.userType === 'agent' && 
+          {user?.userType === 'agent' && (
             <>
               {trip?.status === 'payment_complete' && (
                 <>
                   <h3>Upload TDO</h3>
                   <p>
-                    Payment has been made and a transporter has been accepted by you. However, we need your Transfer Document Order to authorize the transporter to pick up your cargo.
-             
+                    Payment has been made and a transporter has been accepted by
+                    you. However, we need your Transfer Document Order to
+                    authorize the transporter to pick up your cargo.
                   </p>
                   <p>Kindly upload your TDO to proceed with your trip</p>
-                  <Link to={`/dashboard/my-trips/${tripId}/terminal-delivery-order`}>
-                  <UiButton>
-                    Upload TDO
-                  </UiButton>
+                  <Link
+                    to={`/dashboard/my-trips/${tripId}/terminal-delivery-order`}
+                  >
+                    <UiButton>Upload TDO</UiButton>
                   </Link>
                 </>
               )}
-            </>}
+            </>
+          )}
         </CardContainer>
       )}
     </PageStyling>
