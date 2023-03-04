@@ -49,7 +49,7 @@ export default function BidOnJob() {
   const [notFound, setNotFound] = useState(false);
 
   const disableButton = useMemo(() => {
-    return aValueHasBeenChanged<Bid>(bid!, formData)
+    return aValueHasBeenChanged<Bid>(bid!, formData);
   }, [bid, formData]);
 
   function sendJobBid() {
@@ -59,8 +59,8 @@ export default function BidOnJob() {
         if (!formData.tripId) {
           setIsBidCreationSuccessfulModalVisible(true);
         } else Toast.success({ msg: 'Bid has been updated successfully' });
-        setFormData(state => ({ ...state, tripId: tripId! }))
-        dispatch(toAnyAction(getBidsWithTripId(tripId!)))
+        setFormData((state) => ({ ...state, tripId: tripId! }));
+        dispatch(toAnyAction(getBidsWithTripId(tripId!)));
       })
       .catch((e: Error) => {
         Toast.error({

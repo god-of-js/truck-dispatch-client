@@ -21,9 +21,9 @@ export default function DashboardLayout() {
   const user = useSelector(selectDashboardUser);
 
   useEffect(() => {
-    const user = localStorage.getItem('uid');
-    if (!user) {
-      navigate('auth/join/transporter');
+    const userId = localStorage.getItem('uid');
+    if (!userId) {
+      navigate('/auth/login');
     } else {
       dispatch(toAnyAction(getUsers()))
         .catch((err: Error) => {
