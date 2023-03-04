@@ -5,11 +5,11 @@ import sizes from 'utils/sizes';
 export default function AgentsTermsAndConditions() {
   return (
     <AgentsTNCStyling>
-      <h2>General contracting terms and conditions for shippers</h2>
+      <h2>General contracting terms and conditions</h2>
       <p>
-        Welcome to TruckDispatch, an online platform connecting shippers with
-        carriers in Nigeria. By using our services, you agree to comply with the
-        following terms and conditions:
+        Welcome to TruckDispatch, an online platform connecting agents with
+        transporters in Nigeria. By using our services, you agree to comply with
+        the following terms and conditions:
       </p>
       <section>
         <h3>SERVICES</h3>
@@ -27,8 +27,8 @@ export default function AgentsTermsAndConditions() {
         <h4>Account Creation</h4>
         <p>
           To contract a carriage service through the TruckDispatch platform, it
-          is an essential pre-requisite that the effective Agent first
-          formally registers as a "User".
+          is an essential pre-requisite that the effective Agent first formally
+          registers as a "User".
         </p>
       </section>
       <section>
@@ -36,18 +36,18 @@ export default function AgentsTermsAndConditions() {
         <p>
           TruckDispatch's authorisation is required for an Effective Agent to
           register as a User and TruckDispatch reserves the right to reject the
-          registration of any Agent, at its entire discretion, when it
-          considers that the Agent does not comply with the parameters and
-          meet the conditions set forth in these T&Cs and/or in the applicable
+          registration of any Agent, at its entire discretion, when it considers
+          that the Agent does not comply with the parameters and meet the
+          conditions set forth in these T&Cs and/or in the applicable
           regulations. In any case, TruckDispatch may reject registration
           requests made fraudulently or in violation of any law, regulation or
           right.
         </p>
         <p>
-          TruckDispatch may deregister any Effective Agent as a User without
-          the need for prior notice, without giving any reason and at any time,
-          if it infringes these T&Cs, has acted in a way that shows that it has
-          no intention or ability to comply with them, or it has not provided
+          TruckDispatch may deregister any Effective Agent as a User without the
+          need for prior notice, without giving any reason and at any time, if
+          it infringes these T&Cs, has acted in a way that shows that it has no
+          intention or ability to comply with them, or it has not provided
           TruckDispatch with the requested documentation. In any event,
           TruckDispatch may deregister as a User any Agent that has not
           contracted any Service during a period of three (3) consecutive
@@ -172,10 +172,10 @@ export default function AgentsTermsAndConditions() {
           which will be added any extra fees that may apply in each case.
         </p>
         <p>
-          In the exceptional event that the Agent requests the contracting of
-          a Service through a medium other than the Platform (by telephone,
-          email or any other medium that provides a verifiable record), the
-          provision of the Service will be carried out in accordance with the
+          In the exceptional event that the Agent requests the contracting of a
+          Service through a medium other than the Platform (by telephone, email
+          or any other medium that provides a verifiable record), the provision
+          of the Service will be carried out in accordance with the
           TruckDispatch T&C in force from time to time, which will have been
           accepted by the Agent when registering on the Platform.
         </p>
@@ -318,14 +318,77 @@ export default function AgentsTermsAndConditions() {
             <b>(vii) Payment for the Carriage Service: </b>
             The Agent shall pay TruckDispatch the Price in respect of the
             Carriage service. Under no circumstance shall the Agent pay the
-            price to the Transporter. The Effective Agent will assume, not only the
-            Price derived from the Transport Service, but also all those
+            price to the Transporter. The Effective Agent will assume, not only
+            the Price derived from the Transport Service, but also all those
             extraordinary services requested; among which are included the
             loading and unloading of goods, the stowage, handling and
             manipulation of the same, as well as any stoppages that may have
             been caused.
           </p>
         </div>
+      </section>
+      <section>
+        <h3>Obligations of the Transporter</h3>
+        <p>
+          By way of example, but without limitation, the Transporter's main
+          obligations in respect of the Carriage Service are:
+        </p>
+        <ol type="i">
+          <li>
+            <b>Vehicle availability: </b> The Transporter must make the vehicle
+            available to the Agent at the point of origin and for the time
+            specified in the Trip Order. Where applicable, the vehicle must be
+            available up to the maximum time specified in Annex I.
+          </li>
+          <li>
+            <b>Loading and unloading, stowage:</b> If expressly stated in the
+            Trip Order prior to the start of the transport service, the loading
+            and/or unloading, as well as the stowage of the goods to and from
+            the vehicle shall be borne by and theresponsibility of the
+            Transporter. Likewise, if the Trip Order provides for the obligation
+            of the Transporter to have transpalet/hand pallet and the
+            Transporter is unable to comply with this obligation, it must be
+            notified to TruckDispatch before starting the Transport Service,
+            otherwise the Transporter will be liable for any consequences
+            arising from this fact. In any event, should there be any delays
+            and/or standstills, the Transporter will have to wait up to the
+            maximum time specified in Annex 1 for each case.
+          </li>
+          <li>
+            <b>
+              Signing and handover of documents of carriage at the point of
+              origin:
+            </b>
+            At the moment the Transporter collects the goods at the point of
+            origin, the Agent or the Consignor, where appropriate, shall sign
+            and deliver a physical copy of the Transport Documents to the
+            Transporter, thus considering the merchandise delivered as per the
+            terms agreed. In turn, the Transporter shall sign the relevant
+            Control Document on the Platform. In the event that the goods
+            actually loaded do not match the details of the Service stated in
+            the Shipper Order, the Transporter must notify TruckDispatch so that
+            it can rectify the Control Document accordingly, the Transporter
+            being liable for any and all damages arising from a failure to
+            communicate such a circumstance to TruckDispatch.
+          </li>
+          <li>
+            <b>Delivery: </b> The Transporter must deliver the goods to the
+            Agent or the Consignee, where appropriate, at the destination
+            indicated in the Shipper Order.
+          </li>
+          <li>
+            <b>
+              Signing and handover of documents of carriage at the destination:{' '}
+            </b>
+            At the moment the Transporter delivers the goods at the destination, the
+            Agent or the Consignee, as the case may be, shall sign and deliver
+            a physical copy of Documents to the Transporter; the merchandise is then
+            deemed to have been delivered as per the terms agreed.
+          </li>
+          <li>
+            <b></b>
+          </li>
+        </ol>
       </section>
       <section>
         <h4>Documents of Carriage</h4>
@@ -472,9 +535,14 @@ export default function AgentsTermsAndConditions() {
       <section>
         <h4>Invoicing</h4>
         <h5>Issuance and Term</h5>
-        <p>TruckDispatch would issue an invoice the moment it becomes aware of any outstanding bill.</p>
+        <p>
+          TruckDispatch would issue an invoice the moment it becomes aware of
+          any outstanding bill.
+        </p>
         <h5>Means of Payment</h5>
-        <p>TruckDispatch accepts payments through our payment provider paystack.</p>
+        <p>
+          TruckDispatch accepts payments through our payment provider paystack.
+        </p>
       </section>
     </AgentsTNCStyling>
   );

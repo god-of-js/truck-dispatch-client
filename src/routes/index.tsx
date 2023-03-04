@@ -85,7 +85,7 @@ const router = createBrowserRouter([
         element: <PrivacyPolicyPage />,
       },
       {
-        path: '/agent-terms-and-conditions',
+        path: '/terms-and-conditions',
         element: <AgentsTermsAndConditions />,
       },
     ],

@@ -27,12 +27,8 @@ export default function MarketingFooter() {
           link: '/privacy-policy',
         },
         {
-          title: 'T&C Agents',
-          link: '/agent-terms-and-conditions',
-        },
-        {
-          title: 'T&C Transporters',
-          link: '/terms-and-conditions-transporters',
+          title: 'Terms and Conditions',
+          link: '/terms-and-conditions',
         },
       ],
     },
