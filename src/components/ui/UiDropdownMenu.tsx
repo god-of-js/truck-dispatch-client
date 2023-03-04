@@ -55,7 +55,8 @@ function getThemeBasedOn(props: ThemeProps) {
   return `
   ${props.hasDivider && 'border-top: 1px solid var(--color-gray-200);'}
   ${
-    props.isDanger && 'color: var(--color-danger); &:hover {background: var(--color-danger-100);}'
+    props.isDanger &&
+    'color: var(--color-danger); &:hover {background: var(--color-danger-100);}'
   }
   `;
 }

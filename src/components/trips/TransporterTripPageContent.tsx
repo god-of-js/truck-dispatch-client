@@ -75,7 +75,6 @@ export default function AgentTripPageContent() {
       <UiTable
         data={tripsData}
         headers={headers}
-        options={[]}
         tableTitle="My Trips"
         onRowClick={navigateToTrip}
       />

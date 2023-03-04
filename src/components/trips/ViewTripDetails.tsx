@@ -57,6 +57,10 @@ export default function ViewTripDetails({
         <div className="value">{data.shippingLine || 'N/A'}</div>
       </Section>
       <Section>
+        <div className="title">Job Type</div>
+        <div className="value">{data.jobType || 'N/A'}</div>
+      </Section>
+      <Section>
         <div className="title">Size Of Container</div>
         <div className="value">{data.sizeOfContainer || 'N/A'}</div>
       </Section>

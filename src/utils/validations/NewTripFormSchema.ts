@@ -15,5 +15,9 @@ export default Yup.object({
     is: 'container',
     then: Yup.string().required(isRequiredMessage),
   }),
+  jobType: Yup.string().when('typeOfGoods', {
+    is: 'container',
+    then: Yup.string().required(isRequiredMessage),
+  }),
   weight: Yup.number().required(isRequiredMessage).typeError(isNumberMessage),
 });

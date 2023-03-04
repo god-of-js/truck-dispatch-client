@@ -73,14 +73,13 @@ export default function AgentTripPageContent() {
   return (
     <>
       <CreateTripButtonContainer>
-        <Link to="/my-trips/new">
+        <Link to="/dashboard/my-trips/new">
           <UiButton size="md">Create New Trip</UiButton>
         </Link>
       </CreateTripButtonContainer>
       <UiTable
         data={tripsData}
         headers={headers}
-        options={[]}
         tableTitle="My Trips"
         onRowClick={navigateToTrip}
       />

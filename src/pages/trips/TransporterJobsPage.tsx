@@ -52,7 +52,6 @@ export default function TransporterJobs() {
           tableTitle="Available Jobs"
           data={jobs}
           headers={headers}
-          options={[]}
           onRowClick={viewJob}
         />
       ) : (

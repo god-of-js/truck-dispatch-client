@@ -12,11 +12,13 @@ import {
 } from 'modules/Trips';
 import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Trip from 'types/Trip';
+import User from 'types/User';
 import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
+import UiIcon from 'ui/UiIcon';
 import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
 
@@ -49,7 +51,7 @@ export default function ViewTripStatus() {
     if (trip?.status === 'in-progress') {
       heading = "Your cargo is on it's way";
       textContent =
-        'The transporter is on the way with your cargo;  PS: Payment to transporter would be tendered after dispatch is marked as completed; This is an extra security measure to curb fraudulent activities. Thank you for trusting us with your dispatch.';
+        'The transporter is on the way with your cargo. Thank you for trusting us with your dispatch.';
     }
     if (trip?.status === 'completed') {
       heading = 'Thank you for trusting us with your dispatch';
@@ -68,6 +70,18 @@ export default function ViewTripStatus() {
   const phoneNumberOfResponsibleUser = useMemo(() => {
     return user?.userType === 'agent' ? transporter?.phone : agent?.phone;
   }, [user, transporter, agent]);
+
+  function showInfoCard() {
+    if (user?.userType === 'transporter') return true;
+
+    if (trip?.status !== 'awaiting_bid' && !trip?.TDO) return true;
+  }
+  function getName(user?: User | null) {
+    if (!user) 'Not yet Assigned';
+
+    return `${user?.firstName} ${user?.lastName}`;
+  }
+
   function updateTrip(data: Partial<Trip>) {
     if (!trip || !user) return;
     setLoading(true);
@@ -101,8 +115,9 @@ export default function ViewTripStatus() {
         <div>{tripStatusMessage}</div>
 
         <div className="responsible-user-details">
-          {/* TODO: input user avatar when avatars are ready */}
-          <UiAvatar />
+          <div className="avatar-cont">
+            <UiAvatar />
+          </div>
           <div>
             <div className="title">
               {user?.userType === 'agent'
@@ -111,60 +126,89 @@ export default function ViewTripStatus() {
             </div>
             <div className="name">
               {user?.userType === 'agent'
-                ? transporter
-                  ? `${transporter?.firstName} ${transporter?.lastName}`
-                  : 'Not Yet Assigned'
-                : agent?.firstName + ' ' + agent?.lastName}
+                ? getName(transporter)
+                : getName(agent)}
             </div>
             {phoneNumberOfResponsibleUser && (
               <a href={`tel:${phoneNumberOfResponsibleUser}`} className="phone">
                 {phoneNumberOfResponsibleUser}
               </a>
             )}
+            <div className="message-btn-container">
+              <Link to={`/dashboard/chat/${agent?.id}/${transporter?.id}`}>
+                <UiButton size="s" variant="secondary">
+                  <UiIcon icon="Chats" /> Message{' '}
+                  {user?.userType === 'agent' ? 'Transporter' : 'Agent'}
+                </UiButton>
+              </Link>
+            </div>
           </div>
         </div>
       </CardContainer>
-      {user?.userType === 'transporter' && (
+      {showInfoCard() && (
         <CardContainer isSmall>
-          {trip?.status === 'payment_complete' && (
+          {user?.userType === 'transporter' && (
             <>
-              <h3>Start Trip</h3>
-              <p>
-                Payment has been made and all documents have been sent hence the
-                trip is ready to go. To begin this trip, clicck the button below
-                to notify the Agent the trip is about to start.
-              </p>
-              <UiButton loading={loading} onClick={startTrip}>
-                Start Trip
-              </UiButton>
+              {trip?.status === 'payment_complete' && (
+                <>
+                  <h3>Start Trip</h3>
+                  <p>
+                    Payment has been made and all documents have been sent hence
+                    the trip is ready to go. To begin this trip, clicck the
+                    button below to notify the Agent the trip is about to start.
+                  </p>
+                  <UiButton loading={loading} onClick={startTrip}>
+                    Start Trip
+                  </UiButton>
+                </>
+              )}
+              {trip?.status === 'in-progress' && (
+                <>
+                  <h3>Complete Trip</h3>
+                  <p>
+                    Have you gotten to the location? If so, kindly click the
+                    button below to inform the agent that you have completed the
+                    trip.
+                    <br />
+                    You would be paid in full after clicking the button and we
+                    verify that the agents have gotten their goods.
+                  </p>
+                  <UiButton loading={loading} onClick={completeTrip}>
+                    Complete Trip
+                  </UiButton>
+                </>
+              )}
+              {trip?.status === 'completed' && (
+                <>
+                  <h3>Congratulations the Trip has been completed 🔥👍 </h3>
+                  <p>
+                    Thanks a lot for helping us with this dispatch; <br /> Your
+                    payment would be completed immediately the agent certifies
+                    that he has received his goods or if the agent does not
+                    respond within 3 days.
+                  </p>
+                </>
+              )}
             </>
           )}
-          {trip?.status === 'in-progress' && (
+          {user?.userType === 'agent' && 
             <>
-              <h3>Complete Trip</h3>
-              <p>
-                Have you gotten to the location? If so, kindly click the button
-                below to inform the agent that you have completed the trip.
-                <br />
-                You would be paid in full after clicking the button and we
-                verify that the agents have gotten their goods.
-              </p>
-              <UiButton loading={loading} onClick={completeTrip}>
-                Complete Trip
-              </UiButton>
-            </>
-          )}
-          {trip?.status === 'completed' && (
-            <>
-              <h3>Congratulations the Trip has been completed 🔥👍 </h3>
-              <p>
-                Thanks a lot for helping us with this dispatch; <br /> Your
-                payment would be completed immediately the agent certifies that
-                he has received his goods or if the agent does not respond
-                within 3 days.
-              </p>
-            </>
-          )}
+              {trip?.status === 'payment_complete' && (
+                <>
+                  <h3>Upload TDO</h3>
+                  <p>
+                    Payment has been made and a transporter has been accepted by you. However, we need your Transfer Document Order to authorize the transporter to pick up your cargo.
+             
+                  </p>
+                  <p>Kindly upload your TDO to proceed with your trip</p>
+                  <Link to={`/dashboard/my-trips/${tripId}/terminal-delivery-order`}>
+                  <UiButton>
+                    Upload TDO
+                  </UiButton>
+                  </Link>
+                </>
+              )}
+            </>}
         </CardContainer>
       )}
     </PageStyling>
@@ -181,6 +225,7 @@ const PageStyling = styled.div`
     flex-direction: row;
   }
 `;
+
 const CardContainer = styled.div`
   background: #ffffff;
   width: 90%;
@@ -188,35 +233,54 @@ const CardContainer = styled.div`
   border: 1px solid var(--color-gray-200);
   padding: ${pxToRem(20)};
   border-radius: ${pxToRem(8)};
+  height: fit-content;
 
   h3 {
     font-size: ${pxToRem(16)};
     color: var(--color-gray-500);
   }
+
   p {
     color: var(--color-gray-600);
-    font-size: ${pxToRem(14)};
+    font-size: ${pxToRem(16)};
   }
 
   .responsible-user-details {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     gap: ${pxToRem(8)};
+
+    .avatar-cont {
+      padding-bottom: ${pxToRem(20)};
+    }
+
     .title {
       font-size: ${pxToRem(14)};
       color: var(--color-gray-400);
       margin-bottom: ${pxToRem(4)};
     }
+
     .name {
       font-size: ${pxToRem(16)};
       font-weight: bold;
       color: var(--color-gray-600);
       margin-bottom: ${pxToRem(4)};
     }
+
     .phone {
       font-size: ${pxToRem(12)};
     }
+
+    .message-btn-container {
+      margin-top: ${pxToRem(8)};
+
+      button {
+        align-items: center;
+        gap: ${pxToRem(12)};
+      }
+    }
   }
+
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     width: 70%;
   }
