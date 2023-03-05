@@ -59,7 +59,6 @@ export default function DashboardSidebar() {
     },
   ];
   const unreadChatHeads = useMemo(() => {
-    console.log(chatHeads);
     return chatHeads.filter(
       (chat) => !chat.readAt && chat.senderId !== user?.id,
     ).length;
@@ -94,7 +93,9 @@ export default function DashboardSidebar() {
           <Tab isActive={isRouteActive('/dashboard/chat')}>
             <div className="chat-icon-container">
               <UiIcon icon="Chats" size="24" />
-              {unreadChatHeads !== 0 && <MessageCount>{unreadChatHeads}</MessageCount>}
+              {unreadChatHeads !== 0 && (
+                <MessageCount>{unreadChatHeads}</MessageCount>
+              )}
             </div>
           </Tab>
         </Link>
