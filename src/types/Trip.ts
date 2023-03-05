@@ -17,7 +17,7 @@ export default interface Trip {
   shippingLine?: (typeof shippingLines)[number];
   jobType?: (typeof jobTypes)[number];
   weight: number;
-  description?: string;
+  instructions?: string;
   agentId: string;
   transporterId?: string;
   TDO?: Asset;
