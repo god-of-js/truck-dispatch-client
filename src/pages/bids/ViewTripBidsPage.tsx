@@ -30,10 +30,10 @@ export default function ViewTripBidsPage() {
       title: 'Transporter Ratings',
       query: 'rating',
     },
-    {
-      title: 'No. of Completed Trips',
-      query: 'price',
-    },
+    // {
+    //   title: 'No. of Completed Trips',
+    //   query: 'price',
+    // },
     {
       title: 'Truck Present Location',
       query: 'presentLocation',
@@ -70,7 +70,6 @@ export default function ViewTripBidsPage() {
         data={bidsData}
         headers={headers}
         tableTitle="Bids by transporters"
-        options={[]}
         onRowClick={viewBid}
       />
     </PageStyling>

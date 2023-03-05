@@ -8,6 +8,7 @@ import { selectDashboardUser } from 'modules/Account';
 import {
   createOrUpdateBid,
   createOrUpdateTrip,
+  getAgentTrips,
   selectBid,
   selectTrip,
 } from 'modules/Trips';
@@ -90,7 +91,9 @@ export default function BidCheckoutPage() {
       ),
     ])
       .then(() => {
-        navigate(`/dashboard/my-trips/${tripId}`);
+        dispatch(toAnyAction(getAgentTrips(user.id))).then(() => {
+          navigate(`/dashboard/my-trips/${tripId}/status`);
+        });
       })
       .finally(() => setLoading(false));
   }

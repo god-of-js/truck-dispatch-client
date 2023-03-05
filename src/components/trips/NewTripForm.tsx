@@ -3,7 +3,12 @@ import styled from 'styled-components';
 
 import Trip from 'types/Trip';
 
-import { shippingLines, sizeOfContainer, typeOfGoods } from 'utils/constants';
+import {
+  jobTypes,
+  shippingLines,
+  sizeOfContainer,
+  typeOfGoods,
+} from 'utils/constants';
 import NewTripFormSchema from 'utils/validations/NewTripFormSchema';
 
 import UiForm from 'ui/UiForm';
@@ -22,6 +27,7 @@ export default function NewTripForm({ defaultFormData, nextHandler }: Props) {
   const [formData, setFormData] = useState(defaultFormData);
   const typeOfGoodsOptions = turnArrayToOptions(typeOfGoods);
   const shippingLinesOptions = turnArrayToOptions(shippingLines);
+  const jobTypesOptions = turnArrayToOptions(jobTypes);
   const sizeOfContainerOptions = turnArrayToOptions(sizeOfContainer);
 
   function onSubmit() {
@@ -100,6 +106,14 @@ export default function NewTripForm({ defaultFormData, nextHandler }: Props) {
               options={shippingLinesOptions}
               value={formData.shippingLine || ''}
               error={errors.shippingLine}
+              onChange={handleChange}
+            />
+            <UiSelect
+              label="Job Type"
+              name="jobType"
+              options={jobTypesOptions}
+              value={formData.jobType || ''}
+              error={errors.jobType}
               onChange={handleChange}
             />
             <UiSelect
