@@ -170,8 +170,7 @@ export default function ViewTripStatus() {
                     button below to inform the agent that you have completed the
                     trip.
                     <br />
-                    You would be paid in full after clicking the button and we
-                    verify that the agents have gotten their goods.
+                    Completing trips counts towards your ratings and validity.
                   </p>
                   <UiButton loading={loading} onClick={completeTrip}>
                     Complete Trip
