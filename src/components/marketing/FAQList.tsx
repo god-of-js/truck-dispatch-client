@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import UiIcon from 'ui/UiIcon';
-
-export default function FAQList() {
+interface Props {
+  isMini?: boolean;
+}
+export default function FAQList({ isMini }: Props) {
   const list = [
+    {
+      question: "What is TruckDispatch's misson",
+      answer: `The mission of TruckDispatch is to enhance the operational efficiency and efficacy of the freight industry while addressing the security and theft apprehensions of agents. By leveraging advanced technology and innovative solutions, we strive to optimize the supply chain ecosystem and ensure seamless, secure, and timely delivery of goods, thereby enabling businesses to thrive and prosper'`,
+    },
     {
       question: 'Is TruckDispatch free?',
       answer: `TruckDispatch is free for our transporters and they would be paid for every trip they carry out. However, agents are billed only 7% of the bid price they accept.`,
     },
     {
-      question: 'How does TruckDispatch assign trips?',
+      question: 'How does TruckDispatch assign trips to transporters?',
       answer: `At the moment, TruckDispatch does not assign trips to transporters. Instead, TruckDispatch broadcasts trips to our network of transporters. Any transporter interested in the trip sends a bid which can either be accepted by the agent or rejected.`,
     },
     {
@@ -25,6 +31,7 @@ export default function FAQList() {
       answer: `TruckDispatch transporters undergo a very thorough verification and vetting process which makes fraud almost impossible. However, TruckDispatch has penalties for transporters who are fraudulent and we eradicate their accounts in case of such. We are also working on a collaboration with the Nigeria Police Force(NPF) hence, all fraud cases would be directly handed over for further investigation and apprehension.`,
     },
   ];
+  const listToRender = isMini ? list.slice(0, 5) : list;
   const [active, setActive] = useState(list[0].question);
 
   function isActive(question: string) {
@@ -33,7 +40,7 @@ export default function FAQList() {
 
   return (
     <ListStyle>
-      {list.map((item, index) => (
+      {listToRender.map((item, index) => (
         <Item key={index} isActive={isActive(item.question)}>
           <div
             className="header"
