@@ -380,10 +380,11 @@ export default function AgentsTermsAndConditions() {
             <b>
               Signing and handover of documents of carriage at the destination:{' '}
             </b>
-            At the moment the Transporter delivers the goods at the destination, the
-            Agent or the Consignee, as the case may be, shall sign and deliver
-            a physical copy of Documents to the Transporter; the merchandise is then
-            deemed to have been delivered as per the terms agreed.
+            At the moment the Transporter delivers the goods at the destination,
+            the Agent or the Consignee, as the case may be, shall sign and
+            deliver a physical copy of Documents to the Transporter; the
+            merchandise is then deemed to have been delivered as per the terms
+            agreed.
           </li>
           <li>
             <b></b>

@@ -135,7 +135,7 @@ class ApiService {
     });
   }
 
-  sendChat(chat: Chat) {
+  createOrUpdateChat(chat: Chat) {
     return this.setDoc('chat', chat.id, chat);
   }
 

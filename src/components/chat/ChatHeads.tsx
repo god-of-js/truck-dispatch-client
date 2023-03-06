@@ -29,8 +29,9 @@ export default function ChatHeads() {
   return (
     <ChatHeadsList>
       {chatHeads.map((val, index) => (
-        <li
+        <ChatHead
           key={index}
+          hasBeenRead={!!val.readAt || val.senderId === user?.id}
           onClick={() => navigateToChat(val.agentId, val.transporterId)}
         >
           <UiAvatar />
@@ -40,7 +41,7 @@ export default function ChatHeads() {
             }`}</div>
             <div className="last-text">{val.message}</div>
           </div>
-        </li>
+        </ChatHead>
       ))}
     </ChatHeadsList>
   );
@@ -54,38 +55,40 @@ const ChatHeadsList = styled.ul`
   list-style-type: none;
   width: 100%;
   height: 100%;
+`;
 
-  li {
-    padding: ${pxToRem(12)};
-    gap: ${pxToRem(12)};
-    border-bottom: 1px solid var(--color-gray-200);
-    display: flex;
-    align-items: flex-end;
-    cursor: pointer;
-    &:last-child {
-      border-bottom: transparent;
-    }
+const ChatHead = styled.li`
+  padding: ${pxToRem(12)};
+  gap: ${pxToRem(12)};
+  border-bottom: 1px solid var(--color-gray-200);
+  background: ${({ hasBeenRead }: { hasBeenRead: boolean }) =>
+    !hasBeenRead && 'var(--color-gray-100);'};
+  display: flex;
+  align-items: flex-end;
+  cursor: pointer;
+  &:last-child {
+    border-bottom: transparent;
+  }
 
-    .content-container {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      width: 100%;
-    }
+  .content-container {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+  }
 
-    .name {
-      font-size: ${pxToRem(16)};
-      font-weight: bold;
-    }
+  .name {
+    font-size: ${pxToRem(16)};
+    font-weight: bold;
+  }
 
-    .last-text {
-      font-size: ${pxToRem(14)};
-      font-weight: 400;
-      color: var(--color-gray-500);
-      flex: 1;
-    }
-    :hover {
-      background: var(--color-gray-50);
-    }
+  .last-text {
+    font-size: ${pxToRem(14)};
+    font-weight: 400;
+    color: var(--color-gray-500);
+    flex: 1;
+  }
+  :hover {
+    background: var(--color-gray-50);
   }
 `;
