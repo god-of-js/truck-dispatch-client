@@ -113,7 +113,8 @@ export default function ViewTripStatus() {
           status={trip?.status}
         />
         <div>{tripStatusMessage}</div>
-
+        {
+          trip?.status !== 'awaiting_bid' &&
         <div className="responsible-user-details">
           <div className="avatar-cont">
             <UiAvatar />
@@ -144,6 +145,8 @@ export default function ViewTripStatus() {
             </div>
           </div>
         </div>
+
+        }
       </CardContainer>
       {showInfoCard() && (
         <CardContainer isSmall>

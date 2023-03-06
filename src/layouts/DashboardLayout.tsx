@@ -17,7 +17,7 @@ export default function DashboardLayout() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const [isLoading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const user = useSelector(selectDashboardUser);
 
   useEffect(() => {
@@ -31,9 +31,9 @@ export default function DashboardLayout() {
         })
         .finally(() => setLoading(false));
     }
-  }, []);
+  });
 
-  const Component = isLoading ? (
+  const Component = loading ? (
     <Loader />
   ) : (
     <Suspense fallback={<Loader />}>
