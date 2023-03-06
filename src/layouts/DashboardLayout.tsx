@@ -12,6 +12,10 @@ import DashboardSidebar from 'components/layout/DashboardSidebar';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
 import Loader from 'components/layout/Loader';
 import UiAlert from 'ui/UiAlert';
+import { setChats } from 'modules/Chat';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import db from '../api/firebase';
+import Chat from 'types/Chat';
 
 export default function DashboardLayout() {
   const dispatch = useDispatch();
@@ -30,6 +34,20 @@ export default function DashboardLayout() {
           console.log(err.message);
         })
         .finally(() => setLoading(false));
+    }
+  });
+
+  useEffect(() => {
+    if (user?.id) {
+      const key = user?.userType === 'agent' ? 'agentId' : 'transporterId';
+      const q = query(collection(db, 'chat'), where(key, '==', user?.id!));
+      onSnapshot(q, (querySnapshot) => {
+        const chats: Chat[] = [];
+        querySnapshot.forEach((doc) => {
+          chats.push(doc.data() as Chat);
+        });
+        dispatch(setChats(chats));
+      });
     }
   });
 

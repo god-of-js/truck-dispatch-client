@@ -50,12 +50,11 @@ export const selectChatHeads = createSelector(chats, (chatArr) => {
         ],
     )
     .sort((a, b) => getTime(b.createdAt) - getTime(a.createdAt));
-
   return refinedChats;
 });
 
-export const sendChat = (chat: Chat) => {
+export const createOrUpdateChat = (chat: Chat) => {
   return () => {
-    return Api.sendChat(chat);
+    return Api.createOrUpdateChat(chat);
   };
 };
