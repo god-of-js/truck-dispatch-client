@@ -8,4 +8,5 @@ export default interface Chat {
   transporterId: string;
   status?: 'success' | 'pending' | 'failed';
   readAt?: number;
+  stillSending?: boolean;
 }

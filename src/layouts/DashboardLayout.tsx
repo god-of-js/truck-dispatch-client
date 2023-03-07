@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -37,11 +37,14 @@ export default function DashboardLayout() {
     }
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    let unsubscribe: () => void;
+  
     if (user?.id) {
-      const key = user?.userType === 'agent' ? 'agentId' : 'transporterId';
-      const q = query(collection(db, 'chat'), where(key, '==', user?.id!));
-      onSnapshot(q, (querySnapshot) => {
+      const key = user.userType === 'agent' ? 'agentId' : 'transporterId';
+      const q = query(collection(db, 'chat'), where(key, '==', user.id));
+  
+      unsubscribe = onSnapshot(q, (querySnapshot) => {
         const chats: Chat[] = [];
         querySnapshot.forEach((doc) => {
           chats.push(doc.data() as Chat);
@@ -49,7 +52,13 @@ export default function DashboardLayout() {
         dispatch(setChats(chats));
       });
     }
-  });
+
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, [user]);
 
   const Component = loading ? (
     <Loader />

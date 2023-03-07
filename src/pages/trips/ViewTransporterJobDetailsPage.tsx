@@ -35,7 +35,7 @@ export default function ViewTransporterJobDetailsPage() {
   ] = useState(false);
 
   function bidForJob() {
-    if (user?.status === 'unverified') {
+    if (user?.status !== 'verified') {
       setIsInformUserOfVerificationModalVisible(true);
       return;
     }

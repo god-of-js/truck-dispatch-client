@@ -16,10 +16,13 @@ export const chatSlice = createSlice({
     setChats(state: ChatState, action: { payload: Chat[] }) {
       state.chats = action.payload;
     },
+    setChat(state: ChatState, action: { payload: Chat}) {
+      state.chats.push({ ...action.payload, stillSending: true})
+    }
   },
 });
 
-export const { setChats } = chatSlice.actions;
+export const { setChats, setChat } = chatSlice.actions;
 
 export default chatSlice.reducer;
 function getTime(createdAt: number) {

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { RootState } from 'modules/index';
 import { selectDashboardUser } from 'modules/Account';
-import { selectChatByChatId, createOrUpdateChat } from 'modules/Chat';
+import { selectChatByChatId, createOrUpdateChat, setChats, setChat } from 'modules/Chat';
 
 import { toAnyAction } from 'utils/helpers';
 import uuidv4 from 'utils/uuid';
@@ -46,7 +46,9 @@ export default function ChatPage() {
       agentId: agentId!,
       transporterId: transporterId!,
     };
+
     setFormData(defaultFormData);
+    dispatch(setChat(data));
     dispatch(toAnyAction(createOrUpdateChat(data)));
   }
 
