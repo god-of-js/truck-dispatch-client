@@ -55,7 +55,7 @@ export default function TransporterVerificationPage() {
   useEffect(() => {
     if (user?.status === 'rejected') {
       setLoading(true);
-      dispatch(toAnyAction(getUserVerification())).then(() => {setLoading(true)});
+      dispatch(toAnyAction(getUserVerification())).finally(() => {setLoading(false)});
     }
   }, [user]);
 
