@@ -13,7 +13,8 @@ interface Props {
     | 'secondary-outlined'
     | 'primary-text'
     | 'dark'
-    | 'dark-outlined';
+    | 'dark-outlined'
+    | 'icon';
   size?: Sizes;
   type?: 'submit' | 'button';
   textCasing?: 'uppercase' | 'lowercase' | 'capitalize';
@@ -64,7 +65,6 @@ function sizeVariant(size: Sizes) {
     return `
   padding: 0 ${pxToRem(16)};
   height: ${pxToRem(52)};
-    
   `;
 }
 
@@ -95,11 +95,25 @@ const ButtonContainer = styled.button<Props>`
       background-color: var(--color-primary-600);
     }
   }
+
   &.primary-text {
     background: transparent;
     border-color: transparent;
     color: var(--color-primary);
   }
+
+  &.icon {
+    background: transparent;
+    border-radius: 50%;
+    width: ${pxToRem(32)};
+    height: ${pxToRem(32)};
+    padding: ${pxToRem(12)};
+
+    &:hover {
+      background-color: var(--color-gray-100);
+    }
+  }
+
   &.neutral {
     background-color: var(--color-gray-200);
     color: var(--color-gray-900);

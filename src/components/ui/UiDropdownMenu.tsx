@@ -53,7 +53,10 @@ interface ThemeProps {
 }
 function getThemeBasedOn(props: ThemeProps) {
   return `
-  ${props.hasdivider === 'true' && 'border-top: 1px solid var(--color-gray-200);'}
+  ${
+    props.hasdivider === 'true' &&
+    'border-top: 1px solid var(--color-gray-200);'
+  }
   ${
     props.isdanger === 'true' &&
     'color: var(--color-danger); &:hover {background: var(--color-danger-100);}'
