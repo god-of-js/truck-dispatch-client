@@ -71,6 +71,12 @@ export default function DashboardLayout() {
     <Layout>
       <DashboardSidebar />
       <Body>
+        {!user?.avatar && 
+              <UiAlert variant="warning">
+                Kindly upload a profile image to foster trust between you and other individuals you may work with.
+                To upload a profile picture, 
+                <Link to="/dashboard/profile">Click Here</Link>
+              </UiAlert>}
         {location.pathname !== '/dashboard/profile/verification' && (
           <div>
             {user?.status === 'unverified' && (
