@@ -14,6 +14,7 @@ interface Props {
    */
   name: string;
   error?: string;
+  disabled?: boolean;
   onChange: (event: { name: string; value: string | null }) => void;
 }
 
@@ -22,6 +23,7 @@ export default function UiInput({
   type = 'text',
   name,
   value,
+  disabled,
   error,
   onChange,
 }: Props) {
@@ -57,6 +59,7 @@ export default function UiInput({
             value={value || ''}
             name={name}
             hasError={!!error}
+            disabled={disabled}
             onChange={sendValue}
           />
         )}

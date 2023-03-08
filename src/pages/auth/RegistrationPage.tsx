@@ -41,9 +41,6 @@ export default function RegistrationPage() {
   }
 
   function handleSubmit() {
-    if (formData.cPassword !== formData.password) {
-      alert('Passwords must match');
-    }
     setLoading(true);
     dispatch(toAnyAction(RegisterUser(formData)))
       .then(() => {
@@ -55,7 +52,6 @@ export default function RegistrationPage() {
         if (err.message === 'Firebase: Error (auth/email-already-in-use).') {
           msg = 'User with this email already exists';
         }
-        console.log(msg);
         Toast.error({ msg });
       })
       .finally(() => {

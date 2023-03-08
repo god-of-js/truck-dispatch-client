@@ -28,7 +28,10 @@ interface Props {
   parentLoading?: boolean;
 }
 
-export default function VerificationForm({ parentLoading,onVerified = () => {} }: Props) {
+export default function VerificationForm({
+  parentLoading,
+  onVerified = () => {},
+}: Props) {
   const user = useSelector(selectDashboardUser);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState<Verification>({
@@ -256,7 +259,11 @@ export default function VerificationForm({ parentLoading,onVerified = () => {} }
               onChange={setData}
             />
           </GapGrid>
-          <UiButton isFullWidth loading={loading || parentLoading} disabled={disableButton}>
+          <UiButton
+            isFullWidth
+            loading={loading || parentLoading}
+            disabled={disableButton}
+          >
             Submit Verification Details
           </UiButton>
         </Gap>

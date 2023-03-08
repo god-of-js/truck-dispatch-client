@@ -6,7 +6,7 @@ export default interface User {
   lastName: string;
   email: string;
   phone: string;
-  avatar?: Asset;
+  avatar?: Asset | File;
   userType: 'agent' | 'transporter';
   status?:
     | 'pending_verification'
