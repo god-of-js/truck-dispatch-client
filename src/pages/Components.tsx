@@ -55,12 +55,10 @@ function ComponentsView() {
 
   const dropDownData: DropDownData[] = [
     {
-      type: 'route',
       path: '/auth',
       label: 'route option',
     },
     {
-      type: 'function',
       func: dropdownfunc1,
       label: 'function option1 lorem ipsum dolor amet',
     },

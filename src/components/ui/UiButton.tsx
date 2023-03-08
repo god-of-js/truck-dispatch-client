@@ -12,7 +12,8 @@ interface Props {
     | 'primary-outlined'
     | 'secondary-outlined'
     | 'primary-text'
-    | 'dark';
+    | 'dark'
+    | 'dark-outlined';
   size?: Sizes;
   type?: 'submit' | 'button';
   textCasing?: 'uppercase' | 'lowercase' | 'capitalize';
@@ -108,6 +109,14 @@ const ButtonContainer = styled.button<Props>`
     background: white;
     color: var(--color-primary);
     border: 1px solid var(--color-primary);
+  }
+  &.dark-outlined {
+    color: var(--color-gray-900);
+    background: transparent;
+    border: 1px solid var(--color-gray-900);
+    &:hover {
+      background-color: var(--color-gray-100);
+    }
   }
 
   &.secondary {

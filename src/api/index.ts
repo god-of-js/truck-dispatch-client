@@ -48,6 +48,7 @@ class ApiService {
   sendVerificationDetailsToAdmin(userId: string, data: unknown) {
     return this.setDoc('verification', userId, data);
   }
+
   getVerificationByUserId(userId: string): Promise<Verification> {
     return this.getItem('verification', userId);
   }
@@ -135,7 +136,7 @@ class ApiService {
     });
   }
 
-  sendChat(chat: Chat) {
+  createOrUpdateChat(chat: Chat) {
     return this.setDoc('chat', chat.id, chat);
   }
 

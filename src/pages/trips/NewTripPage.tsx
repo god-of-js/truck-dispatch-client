@@ -47,14 +47,6 @@ export default function NewTripPage() {
       value: 'broadcast-successful',
       invincible: true,
     },
-    // {
-    //   name: 'Select Transporter',
-    //   value: 'select-transporter',
-    // },
-    // {
-    //   name: 'Payment',
-    //   value: 'payment',
-    // },
   ];
 
   const [loading, setLoading] = useState(false);
@@ -67,10 +59,11 @@ export default function NewTripPage() {
     pickUpDate: '',
     deliveryDate: '',
     typeOfGoods: '',
+    jobType: '',
     sizeOfContainer: '',
     shippingLine: '',
     weight: NaN,
-    description: '',
+    instructions: '',
     status: 'awaiting_bid',
   });
 
@@ -139,7 +132,7 @@ export default function NewTripPage() {
                   subtitle={`Your trip has been broadcasted to trusted transporters in our network. It usually takes a couple minutes to get matched with transporters. Expect several transporters to send bids on the trip you just created. You can view the bids created by transporters by clicking the button below. Thank you for trusting us with your dispatch. `}
                 />
                 <div className="button-container">
-                  <Link to={`/my-trips/${defaultFormData.id}/bids`}>
+                  <Link to={`/dashboard/my-trips/${defaultFormData.id}/bids`}>
                     <UiButton>View Trip Bids</UiButton>
                   </Link>
                 </div>

@@ -24,7 +24,7 @@ interface Props {
   tableTitle: string;
   data: Row[];
   headers: Header[];
-  options: DropDownData[];
+  options?: DropDownData[];
   onRowClick?: (id: string) => void;
 }
 
@@ -32,10 +32,12 @@ export default function UiTable({
   tableTitle,
   data,
   headers,
-  options = [],
+  options,
   onRowClick,
 }: Props) {
-  const tableHeaders = [...headers, { title: '', query: 'actions' }];
+  const tableHeaders = options
+    ? [...headers, { title: '', query: 'actions' }]
+    : headers;
   return (
     <TableContainer>
       <TableContainerHeader>
@@ -64,9 +66,11 @@ export default function UiTable({
                     </TableDataItem>
                   );
                 })}
-                <td className="menu-container">
-                  <UidropdownMenu options={options} />
-                </td>
+                {options && (
+                  <td className="menu-container">
+                    <UidropdownMenu options={options} />
+                  </td>
+                )}
               </TableRow>
             );
           })}

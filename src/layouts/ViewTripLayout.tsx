@@ -24,7 +24,6 @@ export default function ViewTrip() {
   const user = useSelector(selectDashboardUser);
   const trip = useSelector(selectTrip(tripId || ''));
   const [isRatingsModalVisible, setIsRatingsModalVisible] = useState(false);
-  const [is400, setIs400] = useState(false);
   const unfilteredTabs = [
     {
       label: 'Trip Details',
@@ -54,7 +53,7 @@ export default function ViewTrip() {
       else if (user?.userType === 'transporter')
         return transporterChecks(tab.path);
     });
-  }, [user]);
+  }, [user, trip]);
 
   function agentChecks(path: string) {
     if (path.includes('bids') && trip?.status !== 'awaiting_bid') return false;
@@ -79,8 +78,6 @@ export default function ViewTrip() {
   }
 
   useEffect(() => {
-    //   TODO: show user no trip id was found.
-    if (!tripId) setIs400(true);
     if (user?.userType === 'agent' && trip?.status === 'completed') {
       dispatch(toAnyAction(getTripRating(tripId!))).then((data: Rating[]) => {
         if (data.length === 0) setIsRatingsModalVisible(true);

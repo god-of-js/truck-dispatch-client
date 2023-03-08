@@ -3,7 +3,12 @@ import styled from 'styled-components';
 
 import Trip from 'types/Trip';
 
-import { shippingLines, sizeOfContainer, typeOfGoods } from 'utils/constants';
+import {
+  jobTypes,
+  shippingLines,
+  sizeOfContainer,
+  typeOfGoods,
+} from 'utils/constants';
 import NewTripFormSchema from 'utils/validations/NewTripFormSchema';
 
 import UiForm from 'ui/UiForm';
@@ -22,6 +27,7 @@ export default function NewTripForm({ defaultFormData, nextHandler }: Props) {
   const [formData, setFormData] = useState(defaultFormData);
   const typeOfGoodsOptions = turnArrayToOptions(typeOfGoods);
   const shippingLinesOptions = turnArrayToOptions(shippingLines);
+  const jobTypesOptions = turnArrayToOptions(jobTypes);
   const sizeOfContainerOptions = turnArrayToOptions(sizeOfContainer);
 
   function onSubmit() {
@@ -103,6 +109,14 @@ export default function NewTripForm({ defaultFormData, nextHandler }: Props) {
               onChange={handleChange}
             />
             <UiSelect
+              label="Job Type"
+              name="jobType"
+              options={jobTypesOptions}
+              value={formData.jobType || ''}
+              error={errors.jobType}
+              onChange={handleChange}
+            />
+            <UiSelect
               label="Size of Container"
               name="sizeOfContainer"
               options={sizeOfContainerOptions}
@@ -120,9 +134,9 @@ export default function NewTripForm({ defaultFormData, nextHandler }: Props) {
             />
           </GridContainer>
           <UiTextArea
-            label="Description Of Goods(optional)"
-            name="description"
-            value={formData.description || ''}
+            label="Instructions For Goods(optional)"
+            name="instructions"
+            value={formData.instructions || ''}
             error={errors.description}
             onChange={handleChange}
           />

@@ -19,20 +19,21 @@ export function toAnyAction(func: unknown) {
 
 export function aValueHasBeenChanged<T = unknown>(source: T, formData: T) {
   if (!source) return false;
-  const bidKeys = Object.keys(source) as (keyof typeof formData)[];
+  const keys = Object.keys(source) as (keyof typeof formData)[];
   const formDataKeys = Object.keys(formData);
 
-  if (bidKeys.length !== formDataKeys.length) {
+  if (keys.length !== formDataKeys.length) {
     return false;
   }
 
-  for (let key of bidKeys) {
+  for (let key of keys) {
     if (source[key] !== formData[key]) {
       return false;
     }
   }
 
-  return true;}
+  return true;
+}
 export function abbreviateNumber(
   num: number,
   ranges = [

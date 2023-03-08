@@ -11,15 +11,15 @@ export default function ProfileLayout() {
   const transporterRoutes = [
     {
       label: 'Profile',
-      path: '/profile',
+      path: '/dashboard/profile',
     },
     {
       label: 'Accounts',
-      path: '/profile/accounts',
+      path: '/dashboard/profile/accounts',
     },
     {
       label: 'Verification',
-      path: '/profile/verification',
+      path: '/dashboard/profile/verification',
     },
   ];
 

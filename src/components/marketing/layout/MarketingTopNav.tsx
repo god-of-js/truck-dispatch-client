@@ -8,12 +8,9 @@ export default function MarketingTopNav() {
   return (
     <TopNavStyle>
       <div className="top-nav-inner">
-        <img src={TDLogo} alt="Truckdispatch logo" width="250" />
-        <div className="actions-container">
-          <Link to="/">About Us</Link>
-          <Link to="/">FAQs</Link>
-          <Link to="/">Blog</Link>
-        </div>
+        <Link to="/">
+          <img src={TDLogo} alt="Truckdispatch logo" width="250" />
+        </Link>
         <div className="actions-container">
           <Link to="/auth/join/agent">
             <UiButton size="s" textCasing="capitalize" isSquare>

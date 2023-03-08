@@ -25,9 +25,10 @@ import Asset from 'types/Asset';
 
 interface Props {
   onVerified: () => void;
+  parentLoading?: boolean;
 }
 
-export default function VerificationForm({ onVerified = () => {} }: Props) {
+export default function VerificationForm({ parentLoading,onVerified = () => {} }: Props) {
   const user = useSelector(selectDashboardUser);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState<Verification>({
@@ -47,7 +48,9 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
       idDoc: null,
     },
   });
-  const verification = useSelector((state: RootState) => state.account.verification)
+  const verification = useSelector(
+    (state: RootState) => state.account.verification,
+  );
   const [loading, setLoading] = useState(false);
   const idTypeOptions = [
     {
@@ -69,15 +72,13 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
   ];
 
   const disableButton = useMemo(() => {
-    return aValueHasBeenChanged<Verification>(verification!, formData)
-  }, [verification, formData])
+    return aValueHasBeenChanged<Verification>(verification!, formData);
+  }, [verification, formData]);
   function initUpload(item: File | Asset) {
-    
     if (item instanceof File) {
-      console.log('yep')
       return uploadItem(item);
     }
-    
+
     return item;
   }
   async function verifyUser() {
@@ -102,16 +103,18 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
       ),
     )
       .then(() => {
-        dispatch(setVerification({
-          ...formData,
-          idDoc: idDocUrl,
-          userId: user.id,
-          homeUtilityBill,
-          guarantor: {
-            ...formData.guarantor,
-            idDoc: guarantorIdDoc,
-          },
-        }))
+        dispatch(
+          setVerification({
+            ...formData,
+            idDoc: idDocUrl,
+            userId: user.id,
+            homeUtilityBill,
+            guarantor: {
+              ...formData.guarantor,
+              idDoc: guarantorIdDoc,
+            },
+          }),
+        );
         onVerified();
       })
       .catch((err: Error) => {
@@ -142,14 +145,7 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
   }
 
   useEffect(() => {
-    if (user?.status === 'rejected') {
-      setLoading(false);
-      dispatch(toAnyAction(getUserVerification()));
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (!formData.userId && verification) setFormData(verification)
+    if (!formData.userId && verification) setFormData(verification);
   }, [verification]);
   return (
     <UiForm
@@ -260,7 +256,7 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
               onChange={setData}
             />
           </GapGrid>
-          <UiButton isFullWidth loading={loading} disabled={disableButton}>
+          <UiButton isFullWidth loading={loading || parentLoading} disabled={disableButton}>
             Submit Verification Details
           </UiButton>
         </Gap>

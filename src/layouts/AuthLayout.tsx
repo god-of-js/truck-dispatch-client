@@ -20,8 +20,8 @@ export default function AuthLayout() {
     : 'We provide you with the most competitive rates, verified drivers, and best deals. Become part of our success story d profit from a wide range of advantages';
 
   useEffect(() => {
-    const user = localStorage.getItem('uid');
-    if (user) {
+    const userId = localStorage.getItem('uid');
+    if (userId) {
       navigate('/dashboard');
     }
   }, []);

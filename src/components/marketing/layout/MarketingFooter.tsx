@@ -9,13 +9,13 @@ export default function MarketingFooter() {
     {
       title: 'TruckDispatch',
       children: [
-        {
-          title: 'About Us',
-          link: '/about-us',
-        },
+        // {
+        //   title: 'About Us',
+        //   link: '/about-us',
+        // },
         {
           title: 'Frequently Asked Questions',
-          link: '/about-us',
+          link: '/faqs',
         },
       ],
     },
@@ -27,12 +27,8 @@ export default function MarketingFooter() {
           link: '/privacy-policy',
         },
         {
-          title: 'T&C Agents',
-          link: '/terms-and-conditions-agents',
-        },
-        {
-          title: 'T&C Transporters',
-          link: '/terms-and-conditions-transporters',
+          title: 'Terms and Conditions',
+          link: '/terms-and-conditions',
         },
       ],
     },
@@ -94,7 +90,7 @@ const Footer = styled.footer`
     .list-container {
       width: 75%;
       display: grid;
-      grid-template-columns: auto auto;
+      grid-template-columns: auto;
       ul {
         list-style: none;
 
@@ -106,7 +102,6 @@ const Footer = styled.footer`
         li {
           margin: ${pxToRem(12)} 0;
           a {
-
             color: var(--color-gray-500);
             font-weight: 400;
           }
@@ -114,6 +109,15 @@ const Footer = styled.footer`
       }
     }
 
+    @media only screen and (min-width: ${sizes.mobile}) {
+      width: 80%;
+      flex-direction: row;
+      .list-container {
+        padding-top: ${pxToRem(32)};
+        display: grid;
+        grid-template-columns: auto auto;
+      }
+    }
     @media only screen and (min-width: ${sizes.tabletMidWidth}) {
       width: 80%;
       flex-direction: row;
