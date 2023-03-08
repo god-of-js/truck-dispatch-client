@@ -23,7 +23,9 @@ export default function TransporterVerificationPage() {
   const [isVerified, setIsVerified] = useState(false);
   const [loading, setLoading] = useState(false);
   const user = useSelector(selectDashboardUser);
-  const userVerification = useSelector((state: RootState) => state.account.verification);
+  const userVerification = useSelector(
+    (state: RootState) => state.account.verification,
+  );
   const userHasBeenVerified = <MessageWithImage />;
 
   const userIsAwaitingVerification = (
@@ -44,7 +46,12 @@ export default function TransporterVerificationPage() {
       (!isVerified && user?.status === 'unverified') ||
       user?.status === 'rejected'
     ) {
-      return <VerificationForm onVerified={setVerificationStatus} parentLoading={loading} />;
+      return (
+        <VerificationForm
+          onVerified={setVerificationStatus}
+          parentLoading={loading}
+        />
+      );
     }
 
     if (user?.status === 'verified') {
@@ -55,7 +62,9 @@ export default function TransporterVerificationPage() {
   useEffect(() => {
     if (user?.status === 'rejected') {
       setLoading(true);
-      dispatch(toAnyAction(getUserVerification())).finally(() => {setLoading(false)});
+      dispatch(toAnyAction(getUserVerification())).finally(() => {
+        setLoading(false);
+      });
     }
   }, [user]);
 
@@ -81,9 +90,7 @@ export default function TransporterVerificationPage() {
       {user?.status === 'rejected' && (
         <FeedbackCard>
           <h2>Admin Remark</h2>
-          <p>
-            {userVerification?.adminMessage}
-          </p>
+          <p>{userVerification?.adminMessage}</p>
         </FeedbackCard>
       )}
     </VerificationPageStyling>
@@ -97,7 +104,7 @@ const VerificationPageStyling = styled.div`
   gap: ${pxToRem(24)};
   justify-content: center;
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-  flex-direction: row;
+    flex-direction: row;
   }
 `;
 const TransportVerificationCard = styled.div`

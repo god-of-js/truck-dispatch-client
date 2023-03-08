@@ -17,9 +17,9 @@ export default function InformUserOfVerification({ onClose }: Props) {
       </TextContent>
       <TextContent>
         Kindly navigate to the{' '}
-        <Link to="/dashboard/profile/verification">Verification Page</Link> or click the
-        button below to verify your profile and our team would get back to you
-        shortly.
+        <Link to="/dashboard/profile/verification">Verification Page</Link> or
+        click the button below to verify your profile and our team would get
+        back to you shortly.
       </TextContent>
       <Link to="/dashboard/profile/verification">
         <UiButton>Verify Profile</UiButton>

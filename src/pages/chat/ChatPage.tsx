@@ -5,7 +5,12 @@ import styled from 'styled-components';
 
 import { RootState } from 'modules/index';
 import { selectDashboardUser } from 'modules/Account';
-import { selectChatByChatId, createOrUpdateChat, setChats, setChat } from 'modules/Chat';
+import {
+  selectChatByChatId,
+  createOrUpdateChat,
+  setChats,
+  setChat,
+} from 'modules/Chat';
 
 import { toAnyAction } from 'utils/helpers';
 import uuidv4 from 'utils/uuid';
@@ -80,7 +85,7 @@ export default function ChatPage() {
     <ChatPageStyling>
       <Header>
         <div className="user-details">
-          <UiAvatar />
+          <UiAvatar avatar={alternateUser?.avatar}/>
           <div>{alternateUser?.firstName + ' ' + alternateUser?.lastName}</div>
         </div>
       </Header>

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -21,6 +21,7 @@ export default function DashboardSidebar() {
   const chatHeads = useSelector(selectChatHeads);
   const navigate = useNavigate();
   const appLocation = useLocation();
+  const [isChatAvailable] = useState(false);
 
   const logOutUser = () => {
     localStorage.removeItem('uid');
@@ -89,16 +90,18 @@ export default function DashboardSidebar() {
             </Tab>
           </Link>
         ))}
-        <Link to="/dashboard/chat">
-          <Tab isActive={isRouteActive('/dashboard/chat')}>
-            <div className="chat-icon-container">
-              <UiIcon icon="Chats" size="24" />
-              {unreadChatHeads !== 0 && (
-                <MessageCount>{unreadChatHeads}</MessageCount>
-              )}
-            </div>
-          </Tab>
-        </Link>
+        {isChatAvailable && (
+          <Link to="/dashboard/chat">
+            <Tab isActive={isRouteActive('/dashboard/chat')}>
+              <div className="chat-icon-container">
+                <UiIcon icon="Chats" size="24" />
+                {unreadChatHeads !== 0 && (
+                  <MessageCount>{unreadChatHeads}</MessageCount>
+                )}
+              </div>
+            </Tab>
+          </Link>
+        )}
       </TabList>
 
       <BottomActions>

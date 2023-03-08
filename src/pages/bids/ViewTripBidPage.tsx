@@ -55,7 +55,7 @@ export default function ViewTripBidPage() {
           <div className="title">Transporter</div>
           <div className="value">
             <TransporterDetails>
-              <UiAvatar />
+              <UiAvatar avatar={getUser(bid?.transporterId || '')?.avatar}/>
               <span>{`${getUser(bid?.transporterId || '')?.firstName} ${
                 getUser(bid?.transporterId || '')?.lastName
               }`}</span>
@@ -88,11 +88,9 @@ export default function ViewTripBidPage() {
           <div className="value">{bid?.extraNotes || 'N/A'}</div>
         </Section>
         <SubmitButtonContainer className="submit-button-container">
-          <Link to={`/dashboard/chat/${user?.id}/${bid?.transporterId}`}>
-            <UiButton variant="secondary-outlined">
-              Negotiate Bid
-            </UiButton>
-          </Link>
+          {/* <Link to={`/dashboard/chat/${user?.id}/${bid?.transporterId}`}>
+            <UiButton variant="secondary-outlined">Negotiate Bid</UiButton>
+          </Link> */}
           <Link to={`/dashboard/my-trips/${tripId}/bids/${bidId}/checkout`}>
             <UiButton>Accept Bid</UiButton>
           </Link>

@@ -37,28 +37,28 @@ export default function DashboardLayout() {
     }
   });
 
-  useLayoutEffect(() => {
-    let unsubscribe: () => void;
-  
-    if (user?.id) {
-      const key = user.userType === 'agent' ? 'agentId' : 'transporterId';
-      const q = query(collection(db, 'chat'), where(key, '==', user.id));
-  
-      unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const chats: Chat[] = [];
-        querySnapshot.forEach((doc) => {
-          chats.push(doc.data() as Chat);
-        });
-        dispatch(setChats(chats));
-      });
-    }
+  // useLayoutEffect(() => {
+  //   let unsubscribe: () => void;
 
-    return () => {
-      if (unsubscribe) {
-        unsubscribe();
-      }
-    };
-  }, [user]);
+  //   if (user?.id) {
+  //     const key = user.userType === 'agent' ? 'agentId' : 'transporterId';
+  //     const q = query(collection(db, 'chat'), where(key, '==', user.id));
+
+  //     unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //       const chats: Chat[] = [];
+  //       querySnapshot.forEach((doc) => {
+  //         chats.push(doc.data() as Chat);
+  //       });
+  //       dispatch(setChats(chats));
+  //     });
+  //   }
+
+  //   return () => {
+  //     if (unsubscribe) {
+  //       unsubscribe();
+  //     }
+  //   };
+  // }, [user]);
 
   const Component = loading ? (
     <Loader />
@@ -71,13 +71,13 @@ export default function DashboardLayout() {
     <Layout>
       <DashboardSidebar />
       <Body>
-        {location.pathname !== '/profile/verification' && (
+        {location.pathname !== '/dashboard/profile/verification' && (
           <div>
             {user?.status === 'unverified' && (
               <UiAlert variant="warning">
                 Verification is required to access all core features of the
                 application. To complete verification,{' '}
-                <Link to="/profile/verification">Click Here</Link>
+                <Link to="/dashboard/profile/verification">Click Here</Link>
               </UiAlert>
             )}
             {user?.status === 'pending_verification' && (
@@ -90,7 +90,7 @@ export default function DashboardLayout() {
             {user?.status === 'rejected' && (
               <UiAlert variant="danger">
                 Your verification request was rejected. Kindly proceed back to
-                the <Link to="/profile/verification">Verification Page</Link> to
+                the <Link to="/dashboard/profile/verification">Verification Page</Link> to
                 view why it was rejected and fix the issue.
               </UiAlert>
             )}

@@ -71,6 +71,11 @@ export default function ViewTripStatus() {
     return user?.userType === 'agent' ? transporter?.phone : agent?.phone;
   }, [user, transporter, agent]);
 
+  const responsibleUserAvatar = useMemo(() => {
+    if (user?.userType === 'agent') return transporter?.avatar;
+
+    return agent?.avatar;
+  }, [user, transporter, agent])
   function showInfoCard() {
     if (user?.userType === 'transporter') return true;
 
@@ -113,40 +118,41 @@ export default function ViewTripStatus() {
           status={trip?.status}
         />
         <div>{tripStatusMessage}</div>
-        {
-          trip?.status !== 'awaiting_bid' &&
-        <div className="responsible-user-details">
-          <div className="avatar-cont">
-            <UiAvatar />
+        {trip?.status !== 'awaiting_bid' && (
+          <div className="responsible-user-details">
+            <div className="avatar-cont">
+              <UiAvatar avatar={responsibleUserAvatar}/>
+            </div>
+            <div>
+              <div className="title">
+                {user?.userType === 'agent'
+                  ? 'Assigned Transporter'
+                  : 'Responsible Agent'}
+              </div>
+              <div className="name">
+                {user?.userType === 'agent'
+                  ? getName(transporter)
+                  : getName(agent)}
+              </div>
+              {phoneNumberOfResponsibleUser && (
+                <a
+                  href={`tel:${phoneNumberOfResponsibleUser}`}
+                  className="phone"
+                >
+                  {phoneNumberOfResponsibleUser}
+                </a>
+              )}
+              {/* <div className="message-btn-container">
+                <Link to={`/dashboard/chat/${agent?.id}/${transporter?.id}`}>
+                  <UiButton size="s" variant="secondary">
+                    <UiIcon icon="Chats" /> Message{' '}
+                    {user?.userType === 'agent' ? 'Transporter' : 'Agent'}
+                  </UiButton>
+                </Link>
+              </div> */}
+            </div>
           </div>
-          <div>
-            <div className="title">
-              {user?.userType === 'agent'
-                ? 'Assigned Transporter'
-                : 'Responsible Agent'}
-            </div>
-            <div className="name">
-              {user?.userType === 'agent'
-                ? getName(transporter)
-                : getName(agent)}
-            </div>
-            {phoneNumberOfResponsibleUser && (
-              <a href={`tel:${phoneNumberOfResponsibleUser}`} className="phone">
-                {phoneNumberOfResponsibleUser}
-              </a>
-            )}
-            <div className="message-btn-container">
-              <Link to={`/dashboard/chat/${agent?.id}/${transporter?.id}`}>
-                <UiButton size="s" variant="secondary">
-                  <UiIcon icon="Chats" /> Message{' '}
-                  {user?.userType === 'agent' ? 'Transporter' : 'Agent'}
-                </UiButton>
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        }
+        )}
       </CardContainer>
       {showInfoCard() && (
         <CardContainer isSmall>
@@ -185,7 +191,8 @@ export default function ViewTripStatus() {
                   <h3>Congratulations the Trip has been completed 🔥👍 </h3>
                   <p>
                     Thanks a lot for helping us with this dispatch; <br />
-                    The team at TruckDispatch is lucky to have real ones like you.
+                    The team at TruckDispatch is lucky to have real ones like
+                    you.
                   </p>
                 </>
               )}

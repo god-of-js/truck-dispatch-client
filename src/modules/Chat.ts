@@ -16,9 +16,9 @@ export const chatSlice = createSlice({
     setChats(state: ChatState, action: { payload: Chat[] }) {
       state.chats = action.payload;
     },
-    setChat(state: ChatState, action: { payload: Chat}) {
-      state.chats.push({ ...action.payload, stillSending: true})
-    }
+    setChat(state: ChatState, action: { payload: Chat }) {
+      state.chats.push({ ...action.payload, stillSending: true });
+    },
   },
 });
 
