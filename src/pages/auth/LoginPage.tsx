@@ -31,11 +31,10 @@ export default function LoginPage() {
   }
 
   function handleSubmit() {
-    // Search for solution.
     setLoading(true);
     dispatch(toAnyAction(loginUser(formData)))
       .then(() => {
-        navigate('/dashboard');
+        navigate('/dashboard/my-trips');
       })
       .catch((err: { message: string }) => {
         let msg = err.message;

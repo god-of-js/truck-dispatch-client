@@ -34,8 +34,8 @@ export default function UiDropDownMenu({ options, trigger }: Props) {
         <MenuItemStyling
           onClick={() => option.func?.()}
           key={index}
-          isDanger={option.isDanger}
-          hasDivider={option.hasDivider}
+          isdanger={option.isDanger ? 'true' : 'false'}
+          hasdivider={option.hasDivider ? 'true' : 'false'}
         >
           {option.icon && option.icon}
 
@@ -48,14 +48,14 @@ export default function UiDropDownMenu({ options, trigger }: Props) {
 }
 
 interface ThemeProps {
-  hasDivider?: boolean;
-  isDanger?: boolean;
+  hasdivider?: string;
+  isdanger?: string;
 }
 function getThemeBasedOn(props: ThemeProps) {
   return `
-  ${props.hasDivider && 'border-top: 1px solid var(--color-gray-200);'}
+  ${props.hasdivider === 'true' && 'border-top: 1px solid var(--color-gray-200);'}
   ${
-    props.isDanger &&
+    props.isdanger === 'true' &&
     'color: var(--color-danger); &:hover {background: var(--color-danger-100);}'
   }
   `;

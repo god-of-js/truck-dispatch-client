@@ -113,7 +113,8 @@ export default function ViewTripStatus() {
           status={trip?.status}
         />
         <div>{tripStatusMessage}</div>
-
+        {
+          trip?.status !== 'awaiting_bid' &&
         <div className="responsible-user-details">
           <div className="avatar-cont">
             <UiAvatar />
@@ -144,6 +145,8 @@ export default function ViewTripStatus() {
             </div>
           </div>
         </div>
+
+        }
       </CardContainer>
       {showInfoCard() && (
         <CardContainer isSmall>
@@ -181,10 +184,8 @@ export default function ViewTripStatus() {
                 <>
                   <h3>Congratulations the Trip has been completed 🔥👍 </h3>
                   <p>
-                    Thanks a lot for helping us with this dispatch; <br /> Your
-                    payment would be completed immediately the agent certifies
-                    that he has received his goods or if the agent does not
-                    respond within 3 days.
+                    Thanks a lot for helping us with this dispatch; <br />
+                    The team at TruckDispatch is lucky to have real ones like you.
                   </p>
                 </>
               )}
