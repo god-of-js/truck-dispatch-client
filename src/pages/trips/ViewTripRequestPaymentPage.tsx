@@ -9,7 +9,6 @@ import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
 import UiInput from 'ui/UiInput';
 import sizes from 'utils/sizes';
-import uuidv4 from 'utils/uuid';
 import { uploadItem } from '../../api/Cloudinary';
 import { toAnyAction } from 'utils/helpers';
 import {
@@ -20,21 +19,24 @@ import {
 import MessageWithImage from 'ui/MessageWithImage';
 import Loader from 'components/layout/Loader';
 import RequestPaymentSchema from 'utils/validations/RequestPaymentSchema';
+import { selectTrip } from 'modules/Trips';
 
 export default function ViewTripRequestPayment() {
   const { tripId } = useParams();
   const user = useSelector(selectDashboardUser);
+  const trip = useSelector(selectTrip(tripId!))
   const paymentRequest = useSelector(selectPaymentRequestByTripId(tripId!));
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState<PaymentRequest>({
-    id: uuidv4(),
+    id: tripId!,
     status: 'pending',
     driverName: '',
     driverPhoneNumber: '',
     containerVideo: null,
     transporterId: user?.id || '',
     tripId: tripId!,
+    truckPlateNumber: '',
   });
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
@@ -51,6 +53,8 @@ export default function ViewTripRequestPayment() {
         requestPaymentByTransporter({
           ...formData,
           containerVideo: containerVideoAsset,
+          createdAt: Date.now(),
+          amount: 0
         }),
       ),
     ).finally(() => {
@@ -121,6 +125,13 @@ export default function ViewTripRequestPayment() {
                     value={formData.driverPhoneNumber}
                     name="driverPhoneNumber"
                     error={errors.driverPhoneNumber}
+                    onChange={setData}
+                  />
+                  <UiInput
+                    label="Truck Plate Number"
+                    value={formData.truckPlateNumber}
+                    name="truckPlateNumber"
+                    error={errors.truckPlateNumber}
                     onChange={setData}
                   />
                   <FileUploadWidget

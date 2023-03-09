@@ -50,7 +50,7 @@ export default function AgentTripPageContent() {
 
     return (
       <TransporterDetails>
-        <UiAvatar avatar={transporter.avatar}/>
+        <UiAvatar avatar={transporter.avatar} />
         <div>
           <div>{`${transporter.firstName} ${transporter.lastName}`}</div>
           <div className="transporter-phone">{transporter.phone}</div>

@@ -150,12 +150,12 @@ const PageStyling = styled.div`
 `;
 const CardContainer = styled.div`
   background: #ffffff;
-  width: 90%;
-  margin: auto;
-  margin-top: ${pxToRem(24)};
   border: 1px solid var(--color-gray-200);
   padding: ${pxToRem(20)};
   border-radius: ${pxToRem(8)};
+  width: 90%;
+  margin: auto;
+  margin-top: ${pxToRem(24)};
 
   .children-container {
     padding-top: ${pxToRem(16)};

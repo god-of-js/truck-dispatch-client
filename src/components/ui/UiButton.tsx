@@ -14,7 +14,8 @@ interface Props {
     | 'primary-text'
     | 'dark'
     | 'dark-outlined'
-    | 'icon';
+    | 'icon'
+    | 'danger';
   size?: Sizes;
   type?: 'submit' | 'button';
   textCasing?: 'uppercase' | 'lowercase' | 'capitalize';
@@ -93,6 +94,14 @@ const ButtonContainer = styled.button<Props>`
 
     &:hover {
       background-color: var(--color-primary-600);
+    }
+  }
+  &.danger {
+    background-color: var(--color-danger-600);
+    color: white;
+
+    &:hover {
+      background-color: var(--color-danger-700);
     }
   }
 

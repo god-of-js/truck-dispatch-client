@@ -157,7 +157,7 @@ export default function BidCheckoutPage() {
         />
         <div className="transporter-details">
           {/* TODO: input user avatar when avatars are ready */}
-          <UiAvatar avatar={responsibleTransporter?.avatar}/>
+          <UiAvatar avatar={responsibleTransporter?.avatar} />
           <div>
             <h4 className="your-transporter-header">Your Transporter</h4>
             <div className="transporter-name">{`${responsibleTransporter?.firstName} ${responsibleTransporter?.lastName}`}</div>

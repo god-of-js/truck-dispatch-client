@@ -127,6 +127,10 @@ class ApiService {
     });
   }
 
+  getPaymentRequestByTripId(id: string) {
+    return this.getItem<PaymentRequest>('payment-request', id);
+  }
+
   getBidsWithTripId(tripId: string) {
     return this.query<Bid>({
       collectionName: 'bid',
@@ -177,8 +181,8 @@ class ApiService {
     return documentList;
   }
 
-  private async getItem<T>(key: string, value: string): Promise<T> {
-    const docRef = doc(db, key, value);
+  private async getItem<T>(collectionName: string, id: string): Promise<T> {
+    const docRef = doc(db, collectionName, id);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {

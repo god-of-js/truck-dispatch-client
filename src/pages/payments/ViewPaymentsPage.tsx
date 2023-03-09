@@ -1,64 +1,64 @@
-import React from 'react';
+import { RootState } from 'modules/index';
+import { getPaymentRequestsOfDriver } from 'modules/Payments';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import UiPill from 'ui/UiPill';
 import UiTable from 'ui/UiTable';
+import { toAnyAction } from 'utils/helpers';
 
 const headers = [
   {
-    title: 'ID',
-    query: 'id',
+    title: 'Date',
+    query: 'createdAt',
+  },
+  {
+    title: 'Trip Reference',
+    query: 'tripId',
   },
   {
     title: 'Amount',
     query: 'amount',
   },
   {
-    title: 'Date',
-    query: 'date',
-  },
-  {
     title: 'Status',
     query: 'status',
   },
-];
-enum StatusEnum {
-  PENDING = 'pending',
-  REJECTED = 'rejected',
-  COMPLETED = 'completed',
-}
-const data = [
   {
-    id: '63d2bd5c16fac53d4e24a8fb',
-    date: '30-Oct-2020',
-    amount: '250000',
-    status: 'Rejected',
-  },
-  {
-    id: '23d2bd5c16fac53d4e24a8fb',
-    date: '15-Oct-2020',
-    amount: '150000',
-
-    status: 'Pending',
-  },
-  {
-    id: '73d2bd5c16fac53d4e24a8fb',
-    date: '12-Oct-2020',
-    amount: '5000',
-    status: 'Completed',
+    title: 'Reference',
+    query: 'reference',
   },
 ];
 
 function ViewPaymentsPage() {
+  const dispatch = useDispatch();
+  const paymentRequests = useSelector(
+    (state: RootState) => state.payment.paymentRequests,
+  );
+
+  function getVariant(status: string) {
+    if (status === 'pending') return 'warning';
+
+    if (status === 'rejected') return 'danger';
+
+    return 'success'
+  }
+
+  const data = useMemo(() => {
+    return paymentRequests.map((item) => ({
+      ...item,
+      status: <UiPill variant={getVariant(item.status)}>{item.status}</UiPill>,
+    }));
+  }, [paymentRequests]);
+
+  useEffect(() => {
+    dispatch(toAnyAction(getPaymentRequestsOfDriver()));
+  });
   return (
     <PageStyling>
       <UiTable
-        tableTitle={'Payments'}
-        data={data.map((payment) => {
-          return {
-            ...payment,
-            amount: Number(payment.amount).toLocaleString(),
-            status: <Status status={payment.status}>{payment.status}</Status>,
-          };
-        })}
+        tableTitle="Recent Payments"
+        data={data}
         headers={headers}
         options={[]}
       />
@@ -68,15 +68,6 @@ function ViewPaymentsPage() {
 
 const PageStyling = styled.div`
   padding: ${pxToRem(24)};
-`;
-
-const Status = styled.div<{ status: string }>`
-  color: ${({ status }) =>
-    status.toLowerCase() == StatusEnum.PENDING
-      ? '#FCA800'
-      : status.toLowerCase() === StatusEnum.REJECTED
-      ? '#ff5252'
-      : 'green'};
 `;
 
 export default ViewPaymentsPage;

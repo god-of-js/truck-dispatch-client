@@ -54,7 +54,7 @@ export default function ViewTripBidsPage() {
       price: <>&#8358; {abbreviateNumber(bid.price)}</>,
       transporter: (
         <TransporterDetails>
-          <UiAvatar avatar={getUser(bid.transporterId)?.avatar}/>
+          <UiAvatar avatar={getUser(bid.transporterId)?.avatar} />
           <span>{`${getUser(bid.transporterId)?.firstName} ${
             getUser(bid.transporterId)?.lastName
           }`}</span>

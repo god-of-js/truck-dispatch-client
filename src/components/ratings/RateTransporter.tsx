@@ -65,7 +65,7 @@ export default function RateTransporter({ onClose }: Props) {
         experience for yourself and other agents
       </Paragraph>
       <User>
-        <UiAvatar avatar={transporter?.avatar}/>
+        <UiAvatar avatar={transporter?.avatar} />
         <div>
           {transporter?.firstName} {transporter?.lastName}
         </div>

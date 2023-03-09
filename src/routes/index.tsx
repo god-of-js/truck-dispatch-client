@@ -53,6 +53,9 @@ const ViewTripRequestPaymentPage = lazy(
   () => import('../pages/trips/ViewTripRequestPaymentPage'),
 );
 const ViewTripTDOPage = lazy(() => import('../pages/trips/ViewTripTDOPage'));
+const ViewRequestForPayment = lazy(
+  () => import('../pages/trips/ViewRequestForPayment'),
+);
 const ViewTripBidsPage = lazy(() => import('../pages/bids/ViewTripBidsPage'));
 const ViewTripBidPage = lazy(() => import('../pages/bids/ViewTripBidPage'));
 const BidCheckoutPage = lazy(() => import('../pages/bids/BidCheckoutPage'));
@@ -175,6 +178,11 @@ const router = createBrowserRouter([
                 path: '/dashboard/my-trips/:tripId/request-payment-for-trip',
                 id: 'Request payment for trip',
                 element: <ViewTripRequestPaymentPage />,
+              },
+              {
+                path: '/dashboard/my-trips/:tripId/view-payment-request',
+                id: 'View Request payment for trip',
+                element: <ViewRequestForPayment />,
               },
               {
                 path: '/dashboard/my-trips/:tripId/bids',

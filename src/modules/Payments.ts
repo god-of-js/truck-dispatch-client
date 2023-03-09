@@ -7,10 +7,12 @@ import { AppDispatch, AppState, RootState } from '.';
 export interface PaymentsState {
   payment: Payment[];
   paymentRequests: PaymentRequest[];
+  paymentRequest: PaymentRequest | null;
 }
 const initialState: PaymentsState = {
   payment: [],
   paymentRequests: [],
+  paymentRequest: null,
 };
 export const paymentsSlice = createSlice({
   name: 'payment',
@@ -22,10 +24,16 @@ export const paymentsSlice = createSlice({
     ) {
       state.paymentRequests = action.payload;
     },
+    setPaymentRequest(
+      state: PaymentsState,
+      action: { payload: PaymentRequest },
+    ) {
+      state.paymentRequest = action.payload;
+    },
   },
 });
 
-export const { setPaymentRequests } = paymentsSlice.actions;
+export const { setPaymentRequests, setPaymentRequest } = paymentsSlice.actions;
 
 export default paymentsSlice.reducer;
 
@@ -58,5 +66,15 @@ export function getPaymentRequestsOfDriver() {
     return Api.getPaymentRequestsOfDriver(uid).then((data) =>
       dispatch(setPaymentRequests(data)),
     );
+  };
+}
+
+export function getPaymentRequestByTripId(tripId?: string) {
+  return (dispatch: AppDispatch) => {
+    if (!tripId) throw new Error('400: Trip ID was not sent.');
+
+    return Api.getPaymentRequestByTripId(tripId).then((paymentRequest) => {
+      dispatch(setPaymentRequest(paymentRequest));
+    });
   };
 }

@@ -55,7 +55,7 @@ export default function ViewTripBidPage() {
           <div className="title">Transporter</div>
           <div className="value">
             <TransporterDetails>
-              <UiAvatar avatar={getUser(bid?.transporterId || '')?.avatar}/>
+              <UiAvatar avatar={getUser(bid?.transporterId || '')?.avatar} />
               <span>{`${getUser(bid?.transporterId || '')?.firstName} ${
                 getUser(bid?.transporterId || '')?.lastName
               }`}</span>
