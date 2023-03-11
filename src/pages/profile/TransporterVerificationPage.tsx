@@ -87,7 +87,7 @@ const VerificationPageStyling = styled.div`
   justify-content: center;
 `;
 const TransportVerificationCard = styled.div`
-  background: #ffffff;
+  background: #ffff;
   width: 90%;
   border: 1px solid var(--color-gray-200);
   padding: ${pxToRem(20)};
