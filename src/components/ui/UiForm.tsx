@@ -18,7 +18,7 @@ export default function UiForm({
   formData,
   children,
   onSubmit,
-  onKeyUp
+  onKeyUp,
 }: Props) {
   function validateForm() {
     if (!schema) return {};

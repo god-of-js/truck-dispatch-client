@@ -14,13 +14,13 @@ let firebaseConfig = {
 // @ts-ignore
 if (process.env.NODE_ENV === 'production') {
   firebaseConfig = {
-    apiKey: "AIzaSyBfZ0JA-L7KEsGSjhRHeS5xpBg8BdEYTVo",
-    authDomain: "truckdispatch-bd60c.firebaseapp.com",
-    projectId: "truckdispatch-bd60c",
-    storageBucket: "truckdispatch-bd60c.appspot.com",
-    messagingSenderId: "74982091969",
-    appId: "1:74982091969:web:4953ce83c4de1731073840",
-    measurementId: "G-7QEDX9F755"
+    apiKey: 'AIzaSyBfZ0JA-L7KEsGSjhRHeS5xpBg8BdEYTVo',
+    authDomain: 'truckdispatch-bd60c.firebaseapp.com',
+    projectId: 'truckdispatch-bd60c',
+    storageBucket: 'truckdispatch-bd60c.appspot.com',
+    messagingSenderId: '74982091969',
+    appId: '1:74982091969:web:4953ce83c4de1731073840',
+    measurementId: 'G-7QEDX9F755',
   };
 }
 

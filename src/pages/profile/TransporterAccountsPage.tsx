@@ -1,43 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import UiButton from '../../components/ui/UiButton';
-import UiInput from '../../components/ui/UiInput';
-import UiSelect from '../../components/ui/UiSelect';
-import UiModal from '../../components/ui/UiModal';
-import UiOverlay from '../../components/ui/UiOverlay';
+import UiButton from 'components/ui/UiButton';
+import UiOverlay from 'components/ui/UiOverlay';
+import AddAccount from 'components/profile/AddAccount';
 
 export default function AccountDetailsPage() {
-  const [formData, setFormData] = useState<{
-    bankName: string;
-    accountNumber: string;
-  }>({
-    bankName: '',
-    accountNumber: '',
-  });
   const [loading, setLoading] = useState(false);
   const [changeBankModal, setChangeBankModal] = useState(false);
-
-  function handleChange(event: { name: string; value: string | null }) {
-    setFormData({
-      ...formData,
-      [event.name]: event.value,
-    });
-  }
-
-  const SelectData = [
-    {
-      label: 'First Bank',
-      value: 'First Bank',
-    },
-    {
-      label: 'UBA Bank',
-      value: 'Uba Bank',
-    },
-  ];
-
-  const closeChangeBankModal = () => {
-    setChangeBankModal(false);
-  };
 
   return (
     <>
@@ -53,34 +22,9 @@ export default function AccountDetailsPage() {
           </UiButton>
         </TrasporterAccountCard>
       </AccountPageStyling>
-      {/* modal */}
       <UiOverlay isVisible={changeBankModal}>
-        <UiModal onClose={closeChangeBankModal}>
-          <UiSelect
-            options={SelectData}
-            label="Bank Name"
-            onChange={handleChange}
-            value={formData.bankName}
-            name="bankName"
-          />
-          <TopSpacer>
-            <UiInput
-              label="Corporate Bank Account Number"
-              name="accountNumber"
-              value={formData.accountNumber}
-              onChange={handleChange}
-            />
-          </TopSpacer>
-          <TopSpacer>
-            <div>Account Name: CHUKWUEKE UZOMA MARTINS</div>
-          </TopSpacer>
-          <ButtonContainer>
-            <UiButton variant="neutral" onClick={closeChangeBankModal}>Cancel</UiButton>
-            <UiButton>Save</UiButton>
-          </ButtonContainer>
-        </UiModal>
+        <AddAccount onClose={() => setChangeBankModal(false)} />
       </UiOverlay>
-      {/* end modal */}
     </>
   );
 }
@@ -117,14 +61,4 @@ const TrasporterAccountCard = styled.div`
     font-size: ${pxToRem(12)};
     opacity: 0.6;
   }
-`;
-
-const TopSpacer = styled.div`
-  margin-top: ${pxToRem(30)};
-`
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: ${pxToRem(50)};
 `;

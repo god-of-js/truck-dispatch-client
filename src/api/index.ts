@@ -7,7 +7,6 @@ import {
   query,
   where,
   WhereFilterOp,
-  onSnapshot,
 } from 'firebase/firestore';
 import 'firebase/firestore';
 import User from '../types/User';
@@ -44,6 +43,7 @@ class ApiService {
   getUser(id: string) {
     return this.getItem<User>('user', id);
   }
+
   getUsers() {
     return this.getCollection<User>('user');
   }

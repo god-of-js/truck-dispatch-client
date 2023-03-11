@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import UiField from './UiField';
 import UiIcon from './UiIcon';
 
-interface Option {
+export interface Option {
   value: string;
   label: string;
 }

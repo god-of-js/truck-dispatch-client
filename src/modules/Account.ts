@@ -161,3 +161,14 @@ export const getUserVerification = () => {
     });
   };
 };
+
+export const saveUserAccount = () => {
+  return (dispatch: AppDispatch) => {
+    const userId = localStorage.getItem('uid');
+    if (!userId) throw new Error('user is not authenticated');
+    return Api.getVerificationByUserId(userId).then((data) => {
+      dispatch(setVerification(data));
+    });
+
+  }
+}
