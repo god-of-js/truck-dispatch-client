@@ -37,7 +37,7 @@ export default defineConfig({
       { find: 'components', replacement: path.resolve(__dirname, 'src/components') },
       { find: 'ui', replacement: path.resolve(__dirname, 'src/components/ui') },
       { find: 'assets', replacement: path.resolve(__dirname, 'src/assets') },
-      { find: 'Api', replacement: path.resolve(__dirname, 'src/Api/index') },
+      { find: 'Api', replacement: path.resolve(__dirname, 'src/Api') },
     ],
   },
 });
