@@ -10,6 +10,7 @@ interface Props {
     isSubmitting?: boolean;
   }) => React.ReactNode;
   onSubmit: () => void;
+  onKeyUp?: () => void;
 }
 
 export default function UiForm({
@@ -17,6 +18,7 @@ export default function UiForm({
   formData,
   children,
   onSubmit,
+  onKeyUp
 }: Props) {
   function validateForm() {
     if (!schema) return {};
