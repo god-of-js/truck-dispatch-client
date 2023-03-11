@@ -57,6 +57,10 @@ export default function ViewTripDetails({
         <div className="value">{data.shippingLine || 'N/A'}</div>
       </Section>
       <Section>
+        <div className="title">Job Type</div>
+        <div className="value">{data.jobType || 'N/A'}</div>
+      </Section>
+      <Section>
         <div className="title">Size Of Container</div>
         <div className="value">{data.sizeOfContainer || 'N/A'}</div>
       </Section>
@@ -65,8 +69,8 @@ export default function ViewTripDetails({
         <div className="value">{data.weight}Tons</div>
       </Section>
       <Section>
-        <div className="title">Description of Goods</div>
-        <div className="value">{data.description}</div>
+        <div className="title">Instructions for handling Goods</div>
+        <div className="value">{data.instructions}</div>
       </Section>
       {!hideActionButtons && (
         <SubmitButtonContainer className="submit-button-container">

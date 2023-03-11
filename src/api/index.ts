@@ -41,6 +41,9 @@ class ApiService {
     return this.setDoc('user', data.id, data);
   }
 
+  getUser(id: string) {
+    return this.getItem<User>('user', id);
+  }
   getUsers() {
     return this.getCollection<User>('user');
   }
@@ -48,6 +51,7 @@ class ApiService {
   sendVerificationDetailsToAdmin(userId: string, data: unknown) {
     return this.setDoc('verification', userId, data);
   }
+
   getVerificationByUserId(userId: string): Promise<Verification> {
     return this.getItem('verification', userId);
   }
@@ -126,6 +130,10 @@ class ApiService {
     });
   }
 
+  getPaymentRequestByTripId(id: string) {
+    return this.getItem<PaymentRequest>('payment-request', id);
+  }
+
   getBidsWithTripId(tripId: string) {
     return this.query<Bid>({
       collectionName: 'bid',
@@ -135,7 +143,7 @@ class ApiService {
     });
   }
 
-  sendChat(chat: Chat) {
+  createOrUpdateChat(chat: Chat) {
     return this.setDoc('chat', chat.id, chat);
   }
 
@@ -176,8 +184,8 @@ class ApiService {
     return documentList;
   }
 
-  private async getItem<T>(key: string, value: string): Promise<T> {
-    const docRef = doc(db, key, value);
+  private async getItem<T>(collectionName: string, id: string): Promise<T> {
+    const docRef = doc(db, collectionName, id);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {

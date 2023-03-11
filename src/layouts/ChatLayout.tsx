@@ -1,32 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import ChatHeads from 'components/chat/ChatHeads';
 import sizes from 'utils/sizes';
-import { useDispatch, useSelector } from 'react-redux';
-import { toAnyAction } from 'utils/helpers';
-import { setChats } from 'modules/Chat';
-import { selectDashboardUser } from 'modules/Account';
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
-import db from '../api/firebase';
-import Chat from 'types/Chat';
 
 export default function ChatLayout() {
   const location = useLocation();
-  const dispatch = useDispatch();
-  const user = useSelector(selectDashboardUser);
-
-  useEffect(() => {
-    const key = user?.userType === 'agent' ? 'agentId' : 'transporterId';
-    const q = query(collection(db, 'chat'), where(key, '==', user?.id!));
-    onSnapshot(q, (querySnapshot) => {
-      const chats: Chat[] = [];
-      querySnapshot.forEach((doc) => {
-        chats.push(doc.data() as Chat);
-      });
-      dispatch(setChats(chats));
-    });
-  });
 
   return (
     <ChatLayoutDesign>
@@ -36,12 +15,12 @@ export default function ChatLayout() {
         </div>
         <div className="outlet-container" key={location.pathname}>
           <Outlet />
-          {location.pathname === '/chat' && (
-            <div className="create-message-"></div>
+          {location.pathname === '/dashboard/chat' && (
+            <div className="create-message"></div>
           )}
         </div>
         <div className="mobile-display">
-          {location.pathname === '/chat' && <ChatHeads />}
+          {location.pathname === '/dashboard/chat' && <ChatHeads />}
 
           <Outlet key={location.pathname} />
         </div>

@@ -24,7 +24,6 @@ export default function ViewTrip() {
   const user = useSelector(selectDashboardUser);
   const trip = useSelector(selectTrip(tripId || ''));
   const [isRatingsModalVisible, setIsRatingsModalVisible] = useState(false);
-  const [is400, setIs400] = useState(false);
   const unfilteredTabs = [
     {
       label: 'Trip Details',
@@ -46,6 +45,10 @@ export default function ViewTrip() {
       label: 'Request Payment For Trip',
       path: `/dashboard/my-trips/${tripId}/request-payment-for-trip`,
     },
+    {
+      label: 'View Payment Request',
+      path: `/dashboard/my-trips/${tripId}/view-payment-request`,
+    },
   ];
 
   const tabs = useMemo(() => {
@@ -54,23 +57,31 @@ export default function ViewTrip() {
       else if (user?.userType === 'transporter')
         return transporterChecks(tab.path);
     });
-  }, [user]);
+  }, [user, trip]);
 
   function agentChecks(path: string) {
     if (path.includes('bids') && trip?.status !== 'awaiting_bid') return false;
+    if (
+      path.includes('view-payment-request') &&
+      trip?.status !== 'awaiting_bid'
+    ) {
+      return true;
+    }
 
     if (path.includes('payment')) return false;
     if (
       path.includes('terminal-delivery-order') &&
       trip?.status === 'awaiting_bid'
-    )
+    ) {
       return false;
+    }
 
     return true;
   }
 
   function transporterChecks(path: string) {
-    if (path.includes('bids')) return false;
+    if (path.includes('bids') || path.includes('view-payment-request'))
+      return false;
     return true;
   }
 
@@ -79,8 +90,6 @@ export default function ViewTrip() {
   }
 
   useEffect(() => {
-    //   TODO: show user no trip id was found.
-    if (!tripId) setIs400(true);
     if (user?.userType === 'agent' && trip?.status === 'completed') {
       dispatch(toAnyAction(getTripRating(tripId!))).then((data: Rating[]) => {
         if (data.length === 0) setIsRatingsModalVisible(true);

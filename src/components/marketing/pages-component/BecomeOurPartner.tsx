@@ -54,12 +54,16 @@ export default function BecomeOurPartner() {
             with TruckDispatch.
           </p>
           <div className="actions-container">
-            <UiButton isSquare>
-              Join Now <UiIcon icon="ArrowUpRight" />
-            </UiButton>
-            <UiButton variant="secondary" isSquare>
-              I am a transporter
-            </UiButton>
+            <Link to="/auth/join/transporter">
+              <UiButton isSquare>
+                Join Now <UiIcon icon="ArrowUpRight" />
+              </UiButton>
+            </Link>
+            <Link to="/auth/join/agent">
+              <UiButton variant="secondary" isSquare>
+                I am an Agent
+              </UiButton>
+            </Link>
           </div>
         </div>
         <div className="list-content">
@@ -88,7 +92,7 @@ const BecomeOurPartnerStyling = styled.section`
 
     .main-content {
       h3 {
-        font-size: ${pxToRem(36)};
+        font-size: ${pxToRem(24)};
         color: white;
         margin-bottom: ${pxToRem(16)};
         font-weight: 900;
@@ -124,6 +128,9 @@ const BecomeOurPartnerStyling = styled.section`
       }
       .main-content {
         padding-right: ${pxToRem(60)};
+        h3 {
+          font-size: ${pxToRem(36)};
+        }
       }
     }
   }

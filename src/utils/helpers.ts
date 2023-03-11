@@ -17,22 +17,24 @@ export function toAnyAction(func: unknown) {
   return func as AnyAction;
 }
 
-export function aValueHasBeenChanged<T = unknown>(source: T, formData: T) {
+export function aValueHasBeenChanged<T extends object>(source: T, formData: T) {
   if (!source) return false;
-  const bidKeys = Object.keys(source) as (keyof typeof formData)[];
+  const keys = Object.keys(source) as (keyof typeof formData)[];
   const formDataKeys = Object.keys(formData);
 
-  if (bidKeys.length !== formDataKeys.length) {
+  if (keys.length !== formDataKeys.length) {
     return false;
   }
 
-  for (let key of bidKeys) {
+  for (let key of keys) {
     if (source[key] !== formData[key]) {
       return false;
     }
   }
 
-  return true;}
+  return true;
+}
+
 export function abbreviateNumber(
   num: number,
   ranges = [
@@ -72,4 +74,58 @@ export function nairaToKobo(amount: string | number) {
     value = parseInt(`${amount}`);
   }
   return value * 100;
+}
+
+export function generateReference() {
+  const alphanumeric =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let key = '';
+  for (let i = 0; i < 6; i++) {
+    key += alphanumeric.charAt(Math.floor(Math.random() * alphanumeric.length));
+  }
+  return key;
+}
+
+export function convertDate(dateToConvert: number) {
+  const date = new Date(dateToConvert);
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
+  const dayOfWeek = days[date.getDay()];
+  const month = months[date.getMonth()];
+  const dayOfMonth = date.getDate();
+  const year = date.getFullYear();
+
+  const suffix = getNumberSuffix(dayOfMonth);
+
+  return `${dayOfWeek}, ${month} ${dayOfMonth}${suffix} ${year}`;
+}
+
+function getNumberSuffix(dayOfMonth: number) {
+  if (dayOfMonth >= 11 && dayOfMonth <= 13) {
+    return 'th';
+  }
+  switch (dayOfMonth % 10) {
+    case 1:
+      return 'st';
+    case 2:
+      return 'nd';
+    case 3:
+      return 'rd';
+    default:
+      return 'th';
+  }
 }

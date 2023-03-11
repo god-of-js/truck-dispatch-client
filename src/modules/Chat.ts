@@ -16,10 +16,13 @@ export const chatSlice = createSlice({
     setChats(state: ChatState, action: { payload: Chat[] }) {
       state.chats = action.payload;
     },
+    setChat(state: ChatState, action: { payload: Chat }) {
+      state.chats.push({ ...action.payload, stillSending: true });
+    },
   },
 });
 
-export const { setChats } = chatSlice.actions;
+export const { setChats, setChat } = chatSlice.actions;
 
 export default chatSlice.reducer;
 function getTime(createdAt: number) {
@@ -50,12 +53,11 @@ export const selectChatHeads = createSelector(chats, (chatArr) => {
         ],
     )
     .sort((a, b) => getTime(b.createdAt) - getTime(a.createdAt));
-
   return refinedChats;
 });
 
-export const sendChat = (chat: Chat) => {
+export const createOrUpdateChat = (chat: Chat) => {
   return () => {
-    return Api.sendChat(chat);
+    return Api.createOrUpdateChat(chat);
   };
 };

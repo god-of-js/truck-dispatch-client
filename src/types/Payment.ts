@@ -8,4 +8,7 @@ export default interface Payment {
   trans: string;
   transaction: string;
   trxref: string;
+  tripReference: string;
+  amountInBid: number;
+  totalAmountPaid: number;
 }

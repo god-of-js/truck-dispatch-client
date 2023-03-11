@@ -19,6 +19,13 @@ const ComponentsView = lazy(() => import('../pages/Components'));
 const MarketingLandingPage = lazy(
   () => import('../pages/marketing/MarketingLandingPage'),
 );
+const FAQsPage = lazy(() => import('../pages/marketing/FAQsPage'));
+const PrivacyPolicyPage = lazy(
+  () => import('../pages/marketing/PrivacyPolicyPage'),
+);
+const AgentsTermsAndConditions = lazy(
+  () => import('../pages/marketing/AgentsTermsAndConditions'),
+);
 
 // Auth
 const RegistrationPage = lazy(() => import('../pages/auth/RegistrationPage'));
@@ -46,6 +53,9 @@ const ViewTripRequestPaymentPage = lazy(
   () => import('../pages/trips/ViewTripRequestPaymentPage'),
 );
 const ViewTripTDOPage = lazy(() => import('../pages/trips/ViewTripTDOPage'));
+const ViewRequestForPayment = lazy(
+  () => import('../pages/trips/ViewRequestForPayment'),
+);
 const ViewTripBidsPage = lazy(() => import('../pages/bids/ViewTripBidsPage'));
 const ViewTripBidPage = lazy(() => import('../pages/bids/ViewTripBidPage'));
 const BidCheckoutPage = lazy(() => import('../pages/bids/BidCheckoutPage'));
@@ -60,6 +70,12 @@ const BidOnJobPage = lazy(() => import('../pages/bids/BidOnJobPage'));
 
 const ChatPage = lazy(() => import('../pages/chat/ChatPage'));
 
+//Transactions
+
+const ViewPaymentsPage = lazy(
+  () => import('../pages/payments/ViewPaymentsPage'),
+);
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -68,6 +84,18 @@ const router = createBrowserRouter([
       {
         path: '',
         element: <MarketingLandingPage />,
+      },
+      {
+        path: '/faqs',
+        element: <FAQsPage />,
+      },
+      {
+        path: '/privacy-policy',
+        element: <PrivacyPolicyPage />,
+      },
+      {
+        path: '/terms-and-conditions',
+        element: <AgentsTermsAndConditions />,
       },
     ],
   },
@@ -152,6 +180,11 @@ const router = createBrowserRouter([
                 element: <ViewTripRequestPaymentPage />,
               },
               {
+                path: '/dashboard/my-trips/:tripId/view-payment-request',
+                id: 'View Request payment for trip',
+                element: <ViewRequestForPayment />,
+              },
+              {
                 path: '/dashboard/my-trips/:tripId/bids',
                 id: 'View Trip Bids Layout',
                 element: <ViewTripBidsLayout />,
@@ -191,6 +224,11 @@ const router = createBrowserRouter([
         path: '/dashboard/available-jobs/:tripId/bid',
         id: 'Bid on Job',
         element: <BidOnJobPage />,
+      },
+      {
+        path: '/dashboard/payments',
+        id: 'Payments',
+        element: <ViewPaymentsPage />,
       },
     ],
   },

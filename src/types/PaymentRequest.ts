@@ -8,4 +8,11 @@ export default interface PaymentRequest {
   status: 'pending' | 'rejected' | 'completed';
   transporterId: string;
   tripId: string;
+  truckPlateNumber: string;
+  tripReference: string;
+  createdAt?: number;
+  updatedAt?: number;
+  reference?: string;
+  amount?: number;
+  agentRemark?: string;
 }

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Trip from 'types/Trip';
 import sizes from 'utils/sizes';
 import uuidv4 from 'utils/uuid';
-import { toAnyAction } from 'utils/helpers';
+import { generateReference, toAnyAction } from 'utils/helpers';
 import { createOrUpdateTrip, setTrips } from 'modules/Trips';
 
 import UiTimeline, { TimelineStep } from 'ui/UiTimeline';
@@ -32,7 +32,6 @@ export default function NewTripPage() {
   const user = useSelector(selectDashboardUser);
   const trips = useSelector((state: RootState) => state.trips.trips);
   const dispatch = useDispatch();
-
   const newTripSteps: Step[] = [
     {
       name: 'Trip Details',
@@ -47,31 +46,25 @@ export default function NewTripPage() {
       value: 'broadcast-successful',
       invincible: true,
     },
-    // {
-    //   name: 'Select Transporter',
-    //   value: 'select-transporter',
-    // },
-    // {
-    //   name: 'Payment',
-    //   value: 'payment',
-    // },
   ];
 
   const [loading, setLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState<CurrentStep>('trip-form');
   const [defaultFormData, setDefaultFormData] = useState<Trip>({
-    id: uuidv4(),
+    id: '',
     agentId: user?.id || '',
     pickUpAddress: '',
     deliveryAddress: '',
     pickUpDate: '',
     deliveryDate: '',
     typeOfGoods: '',
+    jobType: '',
     sizeOfContainer: '',
     shippingLine: '',
     weight: NaN,
-    description: '',
+    instructions: '',
     status: 'awaiting_bid',
+    reference: '',
   });
 
   function nextHandler(formData?: Trip) {
@@ -102,7 +95,12 @@ export default function NewTripPage() {
   function sendTripToDrivers() {
     if (!user?.id) return;
     setLoading(true);
-    return dispatch(toAnyAction(createOrUpdateTrip(defaultFormData)))
+    const id = uuidv4();
+    const reference = generateReference();
+    setDefaultFormData({ ...defaultFormData, id, reference });
+    return dispatch(
+      toAnyAction(createOrUpdateTrip({ ...defaultFormData, id, reference })),
+    )
       .then(() => {
         dispatch(setTrips([...trips, defaultFormData]));
       })
@@ -139,7 +137,7 @@ export default function NewTripPage() {
                   subtitle={`Your trip has been broadcasted to trusted transporters in our network. It usually takes a couple minutes to get matched with transporters. Expect several transporters to send bids on the trip you just created. You can view the bids created by transporters by clicking the button below. Thank you for trusting us with your dispatch. `}
                 />
                 <div className="button-container">
-                  <Link to={`/my-trips/${defaultFormData.id}/bids`}>
+                  <Link to={`/dashboard/my-trips/${defaultFormData.id}/bids`}>
                     <UiButton>View Trip Bids</UiButton>
                   </Link>
                 </div>
@@ -157,12 +155,12 @@ const PageStyling = styled.div`
 `;
 const CardContainer = styled.div`
   background: #ffffff;
-  width: 90%;
-  margin: auto;
-  margin-top: ${pxToRem(24)};
   border: 1px solid var(--color-gray-200);
   padding: ${pxToRem(20)};
   border-radius: ${pxToRem(8)};
+  width: 90%;
+  margin: auto;
+  margin-top: ${pxToRem(24)};
 
   .children-container {
     padding-top: ${pxToRem(16)};

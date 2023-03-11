@@ -27,7 +27,8 @@ export default function Ratings({ isActive = false, rating, onRate }: Props) {
         });
       });
     }
-  });
+  }, []);
+
   return (
     <div>
       {Array.from({ length: 5 }, (_, i) => i + 1).map((i) => (

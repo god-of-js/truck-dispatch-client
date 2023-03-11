@@ -7,4 +7,6 @@ export default interface Chat {
   agentId: string;
   transporterId: string;
   status?: 'success' | 'pending' | 'failed';
+  readAt?: number;
+  stillSending?: boolean;
 }

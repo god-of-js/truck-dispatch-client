@@ -1,4 +1,9 @@
-import { shippingLines, sizeOfContainer, typeOfGoods } from 'utils/constants';
+import {
+  jobTypes,
+  shippingLines,
+  sizeOfContainer,
+  typeOfGoods,
+} from 'utils/constants';
 import Asset from './Asset';
 
 export default interface Trip {
@@ -10,11 +15,13 @@ export default interface Trip {
   typeOfGoods: (typeof typeOfGoods)[number];
   sizeOfContainer?: (typeof sizeOfContainer)[number];
   shippingLine?: (typeof shippingLines)[number];
+  jobType?: (typeof jobTypes)[number];
   weight: number;
-  description?: string;
+  instructions?: string;
   agentId: string;
   transporterId?: string;
   TDO?: Asset;
   paymentId?: string;
+  reference: string;
   status: 'awaiting_bid' | 'payment_complete' | 'in-progress' | 'completed';
 }

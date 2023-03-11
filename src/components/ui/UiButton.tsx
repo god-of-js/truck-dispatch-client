@@ -12,7 +12,10 @@ interface Props {
     | 'primary-outlined'
     | 'secondary-outlined'
     | 'primary-text'
-    | 'dark';
+    | 'dark'
+    | 'dark-outlined'
+    | 'icon'
+    | 'danger';
   size?: Sizes;
   type?: 'submit' | 'button';
   textCasing?: 'uppercase' | 'lowercase' | 'capitalize';
@@ -63,7 +66,6 @@ function sizeVariant(size: Sizes) {
     return `
   padding: 0 ${pxToRem(16)};
   height: ${pxToRem(52)};
-    
   `;
 }
 
@@ -94,11 +96,33 @@ const ButtonContainer = styled.button<Props>`
       background-color: var(--color-primary-600);
     }
   }
+  &.danger {
+    background-color: var(--color-danger-600);
+    color: white;
+
+    &:hover {
+      background-color: var(--color-danger-700);
+    }
+  }
+
   &.primary-text {
     background: transparent;
     border-color: transparent;
     color: var(--color-primary);
   }
+
+  &.icon {
+    background: transparent;
+    border-radius: 50%;
+    width: ${pxToRem(32)};
+    height: ${pxToRem(32)};
+    padding: ${pxToRem(12)};
+
+    &:hover {
+      background-color: var(--color-gray-100);
+    }
+  }
+
   &.neutral {
     background-color: var(--color-gray-200);
     color: var(--color-gray-900);
@@ -108,6 +132,14 @@ const ButtonContainer = styled.button<Props>`
     background: white;
     color: var(--color-primary);
     border: 1px solid var(--color-primary);
+  }
+  &.dark-outlined {
+    color: var(--color-gray-900);
+    background: transparent;
+    border: 1px solid var(--color-gray-900);
+    &:hover {
+      background-color: var(--color-gray-100);
+    }
   }
 
   &.secondary {

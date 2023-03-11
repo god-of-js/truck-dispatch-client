@@ -5,7 +5,12 @@ import styled from 'styled-components';
 
 import { RootState } from 'modules/index';
 import { selectDashboardUser } from 'modules/Account';
-import { selectChatByChatId, sendChat } from 'modules/Chat';
+import {
+  selectChatByChatId,
+  createOrUpdateChat,
+  setChats,
+  setChat,
+} from 'modules/Chat';
 
 import { toAnyAction } from 'utils/helpers';
 import uuidv4 from 'utils/uuid';
@@ -46,8 +51,10 @@ export default function ChatPage() {
       agentId: agentId!,
       transporterId: transporterId!,
     };
+
     setFormData(defaultFormData);
-    dispatch(toAnyAction(sendChat(data)));
+    dispatch(setChat(data));
+    dispatch(toAnyAction(createOrUpdateChat(data)));
   }
 
   useEffect(() => {
@@ -59,11 +66,26 @@ export default function ChatPage() {
     }
   }, [chats]);
 
+  useEffect(() => {
+    const lastSentChat = chats[chats.length - 1];
+    if (
+      lastSentChat &&
+      lastSentChat.senderId !== user?.id &&
+      !lastSentChat.readAt
+    ) {
+      dispatch(
+        toAnyAction(
+          createOrUpdateChat({ ...lastSentChat, readAt: Date.now() }),
+        ),
+      );
+    }
+  }, [chats]);
+
   return (
     <ChatPageStyling>
       <Header>
         <div className="user-details">
-          <UiAvatar />
+          <UiAvatar avatar={alternateUser?.avatar} />
           <div>{alternateUser?.firstName + ' ' + alternateUser?.lastName}</div>
         </div>
       </Header>

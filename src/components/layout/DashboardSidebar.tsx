@@ -1,22 +1,28 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import sizes from 'utils/sizes';
-import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
-import UiIcon, { Icons } from '../ui/UiIcon';
+
 import { selectDashboardUser } from 'modules/Account';
+import { selectChatHeads } from 'modules/Chat';
+
+import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
+
+import UiIcon, { Icons } from '../ui/UiIcon';
 
 interface Route {
   iconName: Icons;
   path: string;
   name: string;
 }
-
 export default function DashboardSidebar() {
   const user = useSelector(selectDashboardUser);
+  const chatHeads = useSelector(selectChatHeads);
   const navigate = useNavigate();
   const appLocation = useLocation();
+  const [isChatAvailable] = useState(false);
+
   const logOutUser = () => {
     localStorage.removeItem('uid');
     navigate('/auth/login');
@@ -39,11 +45,6 @@ export default function DashboardSidebar() {
       name: 'Payments',
       iconName: 'Money',
     },
-    {
-      path: '/dashboard/chat',
-      name: 'Chat',
-      iconName: 'Chats',
-    },
   ];
 
   const agentRoutes: Route[] = [
@@ -52,17 +53,12 @@ export default function DashboardSidebar() {
       name: 'My Trips',
       iconName: 'Truck',
     },
-    {
-      path: '/dashboard/transactions',
-      name: 'Transactions',
-      iconName: 'Money',
-    },
-    {
-      path: '/dashboard/chat',
-      name: 'Chat',
-      iconName: 'Chats',
-    },
   ];
+  const unreadChatHeads = useMemo(() => {
+    return chatHeads.filter(
+      (chat) => !chat.readAt && chat.senderId !== user?.id,
+    ).length;
+  }, [chatHeads]);
 
   const routes = useMemo(() => {
     if (!user) return [];
@@ -78,26 +74,40 @@ export default function DashboardSidebar() {
 
   return (
     <Sidebar>
-      <LogoContainer>
-        <TDLogo src={TruckDispatchLogo} alt="truck-dispatch" />
-      </LogoContainer>
-      <TabList>
-        {routes.map((route, index) => (
-          <Link to={route.path} key={index}>
-            <Tab isActive={isRouteActive(route.path)}>
-              <UiIcon icon={route.iconName} size="24" />
-            </Tab>
-          </Link>
-        ))}
-      </TabList>
+      <div className="sidebar__inner">
+        <Link to="/dashboard">
+          <LogoContainer>
+            <TDLogo src={TruckDispatchLogo} alt="truck-dispatch" />
+          </LogoContainer>
+        </Link>
+        <TabList>
+          {routes.map((route, index) => (
+            <Link to={route.path} key={index}>
+              <Tab isActive={isRouteActive(route.path)}>
+                <UiIcon icon={route.iconName} size="24" />
+              </Tab>
+            </Link>
+          ))}
+          {isChatAvailable && (
+            <Link to="/dashboard/chat">
+              <Tab isActive={isRouteActive('/dashboard/chat')}>
+                <div className="chat-icon-container">
+                  <UiIcon icon="Chats" size="24" />
+                  {unreadChatHeads !== 0 && (
+                    <MessageCount>{unreadChatHeads}</MessageCount>
+                  )}
+                </div>
+              </Tab>
+            </Link>
+          )}
+        </TabList>
 
-      <BottomActions>
-        <div className="bottom-actions-inner">
+        <BottomActions>
           <LogOutContainer onClick={() => logOutUser()}>
             <UiIcon icon="SignOut" size="24" />
           </LogOutContainer>
-        </div>
-      </BottomActions>
+        </BottomActions>
+      </div>
     </Sidebar>
   );
 }
@@ -110,6 +120,12 @@ const Sidebar = styled.nav`
   bottom: 0;
   right: 0;
   left: 0;
+
+  .sidebar__inner {
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     width: 7%;
@@ -172,6 +188,11 @@ const Tab = styled.li`
   align-items: center;
   justify-content: center;
 
+  .chat-icon-container {
+    position: relative;
+    width: fit-content;
+  }
+
   &:hover {
     border-color: var(--color-primary);
     color: var(--color-primary);
@@ -188,15 +209,30 @@ const Tab = styled.li`
 
 const BottomActions = styled.div`
   position: relative;
-  height: calc(100% - ${pxToRem(460)});
   display: none;
-
-  .bottom-actions-inner {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-  }
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: ${pxToRem(48)} 0;
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     display: block;
   }
+`;
+
+const MessageCount = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  background: var(--color-danger-800);
+  color: white;
+  font-size: ${pxToRem(12)};
+  width: ${pxToRem(18)};
+  height: ${pxToRem(18)};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -${pxToRem(6)};
+  margin-right: -${pxToRem(6)};
+  border-radius: 50%;
 `;

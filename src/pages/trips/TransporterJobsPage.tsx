@@ -43,7 +43,7 @@ export default function TransporterJobs() {
     dispatch(toAnyAction(getJobs())).finally(() => {
       setLoading(false);
     });
-  });
+  }, []);
 
   return (
     <MyJobsPageStyle>
@@ -52,7 +52,6 @@ export default function TransporterJobs() {
           tableTitle="Available Jobs"
           data={jobs}
           headers={headers}
-          options={[]}
           onRowClick={viewJob}
         />
       ) : (
