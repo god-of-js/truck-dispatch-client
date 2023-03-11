@@ -17,7 +17,7 @@ export function toAnyAction(func: unknown) {
   return func as AnyAction;
 }
 
-export function aValueHasBeenChanged<T = unknown>(source: T, formData: T) {
+export function aValueHasBeenChanged<T extends object>(source: T, formData: T) {
   if (!source) return false;
   const keys = Object.keys(source) as (keyof typeof formData)[];
   const formDataKeys = Object.keys(formData);
@@ -34,6 +34,7 @@ export function aValueHasBeenChanged<T = unknown>(source: T, formData: T) {
 
   return true;
 }
+
 export function abbreviateNumber(
   num: number,
   ranges = [

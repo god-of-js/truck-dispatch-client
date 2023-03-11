@@ -51,7 +51,7 @@ export default function ViewTripRequestPayment() {
 
   const disableButton = useMemo(() => {
     if (formData.status !== 'rejected') return false;
-    return aValueHasBeenChanged(paymentRequest, formData);
+    return aValueHasBeenChanged(paymentRequest!, formData);
   }, [paymentRequest, formData]);
 
   async function requestPayment() {
