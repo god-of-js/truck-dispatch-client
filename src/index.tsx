@@ -16,8 +16,7 @@ import Api from 'Api';
 // @ts-ignore
 window.pxToRem = (px: number, baseSize = 16) => `${px / baseSize}rem`;
 // @ts-ignore
-window.Intercom("update");
-
+window.Intercom('update');
 
 const userId = localStorage.getItem('uid');
 
@@ -30,7 +29,7 @@ if (userId) {
       name: `${user?.firstName} ${user?.lastName}`,
       email: user.email,
       created_at: user.createdAt,
-      userType: user.userType
+      userType: user.userType,
     });
   });
 }

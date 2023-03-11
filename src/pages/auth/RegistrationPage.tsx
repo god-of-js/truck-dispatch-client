@@ -121,7 +121,8 @@ export default function RegistrationPage() {
           <PrivacyPolicyParagraph>
             By clicking on the following button, you are willing to become
             TruckDispatch's partner, and agree to our{' '}
-            <Link to="/">privacy policy</Link>
+            <Link to="/privacy-policy">Privacy Policy</Link> and our{' '}
+            <Link to="/terms-and-conditions">Terms of Service</Link>
           </PrivacyPolicyParagraph>
           <UiButton isFullWidth loading={loading}>
             Join as {isTransporter() ? 'a' : 'an'} {userType}

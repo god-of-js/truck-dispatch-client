@@ -9,13 +9,10 @@ export default function MarketingFooter() {
     {
       title: 'TruckDispatch',
       children: [
-        // {
-        //   title: 'About Us',
-        //   link: '/about-us',
-        // },
         {
           title: 'Frequently Asked Questions',
           link: '/faqs',
+          isExternal: false,
         },
       ],
     },
@@ -25,10 +22,12 @@ export default function MarketingFooter() {
         {
           title: 'Privacy Policy',
           link: '/privacy-policy',
+          isExternal: false,
         },
         {
           title: 'Terms and Conditions',
           link: '/terms-and-conditions',
+          isExternal: false,
         },
       ],
     },
@@ -36,12 +35,9 @@ export default function MarketingFooter() {
       title: 'Contact',
       children: [
         {
-          title: 'OUR_NUMBER',
-          link: '/privacy-policy',
-        },
-        {
           title: 'support@truckdispatch.ng',
-          link: '/terms-and-conditions-agents',
+          link: 'mailto:support@truckdispatch.ng',
+          isExternal: true,
         },
       ],
     },
@@ -58,7 +54,11 @@ export default function MarketingFooter() {
               <div className="list-title">{item.title}</div>
               {item.children.map((child, childIndex) => (
                 <li key={childIndex}>
-                  <Link to={child.link}>{child.title}</Link>
+                  {child.isExternal ? (
+                    <a href={child.link} target="_blank">{child.title}</a>
+                  ) : (
+                    <Link to={child.link}>{child.title}</Link>
+                  )}
                 </li>
               ))}
             </ul>

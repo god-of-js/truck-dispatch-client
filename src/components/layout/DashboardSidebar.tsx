@@ -75,9 +75,11 @@ export default function DashboardSidebar() {
   return (
     <Sidebar>
       <div className="sidebar__inner">
-        <LogoContainer>
-          <TDLogo src={TruckDispatchLogo} alt="truck-dispatch" />
-        </LogoContainer>
+        <Link to="/dashboard">
+          <LogoContainer>
+            <TDLogo src={TruckDispatchLogo} alt="truck-dispatch" />
+          </LogoContainer>
+        </Link>
         <TabList>
           {routes.map((route, index) => (
             <Link to={route.path} key={index}>

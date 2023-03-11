@@ -19,6 +19,7 @@ export default function AuthLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const isTransporter = userType === 'transporter';
+  const isAgent = userType === 'agent';
   const layoutTitle = isTransporter
     ? 'Take the road to prosperity'
     : "Customer's first Always";
@@ -36,15 +37,17 @@ export default function AuthLayout() {
   return (
     <>
       <Header>
-        <img
-          src={TruckDispatchLogo}
-          alt="truck-dispatch"
-          width="100"
-          height="100"
-        />
+        <Link to="/">
+          <img
+            src={TruckDispatchLogo}
+            alt="truck-dispatch"
+            width="100"
+            height="100"
+          />
+        </Link>
         <ButtonContainer>
           <Link
-            className={`route ${!isTransporter && 'isActive'}`}
+            className={`route ${isAgent && 'isActive'}`}
             to="/auth/join/agent"
           >
             For Agent

@@ -86,13 +86,13 @@ export default function LoginPage() {
           <UiButton isFullWidth loading={loading}>
             Sign In
           </UiButton>
-          <ForgotPassword>
+          {/* <ForgotPassword>
             Can't login? try{' '}
             <Link to="/auth/join/transporter">forgot password</Link>
-          </ForgotPassword>
+          </ForgotPassword> */}
           <LinkToRegisteration>
             Don't have an account?{' '}
-            <Link to="/auth/join/transporter">register with us</Link>
+            <Link to="/auth/join/agent">register with us</Link>
           </LinkToRegisteration>
         </>
       )}
