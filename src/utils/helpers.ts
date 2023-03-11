@@ -74,3 +74,50 @@ export function nairaToKobo(amount: string | number) {
   }
   return value * 100;
 }
+
+export function generateReference() {
+  const alphanumeric =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let key = '';
+  for (let i = 0; i < 6; i++) {
+    key += alphanumeric.charAt(Math.floor(Math.random() * alphanumeric.length));
+  }
+  return key;
+}
+
+export function convertDate(dateToConvert: number) {
+  const date = new Date(dateToConvert);
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  
+  const dayOfWeek = days[date.getDay()];
+  const month = months[date.getMonth()];
+  const dayOfMonth = date.getDate();
+  const year = date.getFullYear();
+  
+  const suffix = getNumberSuffix(dayOfMonth);
+  
+  return `${dayOfWeek}, ${month} ${dayOfMonth}${suffix} ${year}`;
+//   const date = new Date(dateToConvert);
+// const options = { weekday: 'short', day: 'numeric', month: 'long' };
+
+// return date.toLocaleDateString('en-US', options)
+//     .replace(/(\d)(?=(\d{2})+(?!\d))/g, '$1st, ') + '';
+
+}
+
+function getNumberSuffix(dayOfMonth: number) {
+  if (dayOfMonth >= 11 && dayOfMonth <= 13) {
+    return "th";
+  }
+  switch (dayOfMonth % 10) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
+  }
+}

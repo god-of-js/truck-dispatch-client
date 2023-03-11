@@ -14,7 +14,7 @@ export default function ViewTripBidsLayout() {
     dispatch(toAnyAction(getBidsWithTripId(tripId || ''))).finally(() =>
       setLoading(false),
     );
-  });
+  }, []);
 
   return <>{loading ? <Loader /> : <Outlet />}</>;
 }

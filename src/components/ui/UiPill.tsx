@@ -10,11 +10,12 @@ export default function ({ children, variant }: Props) {
 }
 
 const Pill = styled.div`
-background: ${({variant}: { variant: string}) => `var(--color-${variant}-100)`};
-color: ${({variant}: { variant: string}) => `var(--color-${variant}-600)`};
-width: fit-content;
-border-radius: ${pxToRem(20)};
-padding: ${pxToRem(4)} ${pxToRem(16)};
-font-size: ${pxToRem(14)};
-text-transform: capitalize;
+  background: ${({ variant }: { variant: string }) =>
+    `var(--color-${variant}-100)`};
+  color: ${({ variant }: { variant: string }) => `var(--color-${variant}-600)`};
+  width: fit-content;
+  border-radius: ${pxToRem(20)};
+  padding: ${pxToRem(4)} ${pxToRem(16)};
+  font-size: ${pxToRem(12)};
+  text-transform: capitalize;
 `;

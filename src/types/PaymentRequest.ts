@@ -9,7 +9,10 @@ export default interface PaymentRequest {
   transporterId: string;
   tripId: string;
   truckPlateNumber: string;
+  tripReference: string;
   createdAt?: number;
+  updatedAt?: number;
   reference?: string;
   amount?: number;
+  agentRemark?: string;
 }

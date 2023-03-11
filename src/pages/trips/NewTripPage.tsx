@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Trip from 'types/Trip';
 import sizes from 'utils/sizes';
 import uuidv4 from 'utils/uuid';
-import { toAnyAction } from 'utils/helpers';
+import { generateReference, toAnyAction } from 'utils/helpers';
 import { createOrUpdateTrip, setTrips } from 'modules/Trips';
 
 import UiTimeline, { TimelineStep } from 'ui/UiTimeline';
@@ -32,7 +32,6 @@ export default function NewTripPage() {
   const user = useSelector(selectDashboardUser);
   const trips = useSelector((state: RootState) => state.trips.trips);
   const dispatch = useDispatch();
-
   const newTripSteps: Step[] = [
     {
       name: 'Trip Details',
@@ -52,7 +51,7 @@ export default function NewTripPage() {
   const [loading, setLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState<CurrentStep>('trip-form');
   const [defaultFormData, setDefaultFormData] = useState<Trip>({
-    id: uuidv4(),
+    id: '',
     agentId: user?.id || '',
     pickUpAddress: '',
     deliveryAddress: '',
@@ -65,6 +64,7 @@ export default function NewTripPage() {
     weight: NaN,
     instructions: '',
     status: 'awaiting_bid',
+    reference: '',
   });
 
   function nextHandler(formData?: Trip) {
@@ -95,7 +95,12 @@ export default function NewTripPage() {
   function sendTripToDrivers() {
     if (!user?.id) return;
     setLoading(true);
-    return dispatch(toAnyAction(createOrUpdateTrip(defaultFormData)))
+    const id = uuidv4();
+    const reference = generateReference();
+    setDefaultFormData({ ...defaultFormData, id, reference });
+    return dispatch(
+      toAnyAction(createOrUpdateTrip({ ...defaultFormData, id, reference })),
+    )
       .then(() => {
         dispatch(setTrips([...trips, defaultFormData]));
       })

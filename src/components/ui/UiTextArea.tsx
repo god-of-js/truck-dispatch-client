@@ -48,6 +48,7 @@ const TextArea = styled.textarea`
   outline: none;
   border-radius: ${pxToRem(4)};
   box-sizing: border-box;
+  font-family: 'thiccboi-medium', sans-serif;
   &:focus {
     border-color: var(--color-primary);
   }

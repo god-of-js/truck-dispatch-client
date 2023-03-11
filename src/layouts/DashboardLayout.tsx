@@ -35,7 +35,7 @@ export default function DashboardLayout() {
         })
         .finally(() => setLoading(false));
     }
-  });
+  }, []);
 
   // useLayoutEffect(() => {
   //   let unsubscribe: () => void;

@@ -63,9 +63,10 @@ export function getPaymentRequestsOfDriver() {
   return (dispatch: AppDispatch, state: AppState) => {
     const uid = localStorage.getItem('uid');
     if (!uid) throw new Error('400: user is not authenticated');
-    return Api.getPaymentRequestsOfDriver(uid).then((data) =>
-      dispatch(setPaymentRequests(data)),
-    );
+    return Api.getPaymentRequestsOfDriver(uid).then((data) => {
+      dispatch(setPaymentRequests(data));
+      return data;
+    });
   };
 }
 

@@ -70,9 +70,10 @@ export function getAgentTrips(agentId: string) {
 }
 // Prevent default is used to notify the store that this is not the normal flow, hence we do not need to set the value to state.
 export function getTransporterTrips(
-  transporterId: string,
+  transporterId: string = localStorage.getItem('uid')!,
   preventDefault?: boolean,
 ) {
+  if (!transporterId) throw new Error('400: transporter ID is not present');
   return (dispatch: AppDispatch) => {
     return Api.getTransporterTrips(transporterId).then((data) => {
       !preventDefault && dispatch(toAnyAction(setTrips(data)));

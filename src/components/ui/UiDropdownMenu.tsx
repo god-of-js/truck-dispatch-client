@@ -12,16 +12,17 @@ export interface DropDownData {
   label?: string;
   path?: string;
   icon?: React.ReactNode;
-  func?: () => void;
+  func?: (id: string) => void;
   isDanger?: boolean;
 }
 
 interface Props {
   options: DropDownData[];
   trigger?: React.ReactNode;
+  itemId?: string;
 }
 
-export default function UiDropDownMenu({ options, trigger }: Props) {
+export default function UiDropDownMenu({ options, itemId, trigger }: Props) {
   return (
     <Menu
       menuButton={
@@ -32,7 +33,7 @@ export default function UiDropDownMenu({ options, trigger }: Props) {
     >
       {options.map((option, index) => (
         <MenuItemStyling
-          onClick={() => option.func?.()}
+          onClick={() => option.func?.(itemId!)}
           key={index}
           isdanger={option.isDanger ? 'true' : 'false'}
           hasdivider={option.hasDivider ? 'true' : 'false'}

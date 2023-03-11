@@ -1,4 +1,5 @@
 import Loader from 'components/layout/Loader';
+import RejectPaymentWithReason from 'components/payment/RejectPaymentWithReason';
 import { RootState } from 'modules/index';
 import { getPaymentRequestByTripId } from 'modules/Payments';
 import React, { useEffect, useState } from 'react';
@@ -8,6 +9,7 @@ import styled from 'styled-components';
 import Asset from 'types/Asset';
 import UiButton from 'ui/UiButton';
 import UiCard from 'ui/UiCard';
+import UiOverlay from 'ui/UiOverlay';
 import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
 
@@ -17,6 +19,7 @@ export default function ViewRequestForPayment() {
   const paymentRequest = useSelector(
     (state: RootState) => state.payment.paymentRequest,
   );
+  const [isRejectVisible, setIsRejectVisible] = useState(false);
 
   const [loading, setLoading] = useState(true);
 
@@ -76,10 +79,14 @@ export default function ViewRequestForPayment() {
                   </div>
                 </Section>
                 <div className="button-container">
-                  <UiButton variant="danger">
-                    Reject Payment With Reason
+                  <UiButton
+                    variant="danger"
+                    disabled={paymentRequest?.status === 'rejected'}
+                    onClick={() => setIsRejectVisible(true)}
+                  >
+                    Reject With Reason
                   </UiButton>
-                  <UiButton>Approve Payment To Transporter</UiButton>
+                  <UiButton>Approve Payment</UiButton>
                 </div>
               </>
             ) : (
@@ -88,6 +95,9 @@ export default function ViewRequestForPayment() {
           </>
         )}
       </UiCard>
+      <UiOverlay isVisible={isRejectVisible}>
+        <RejectPaymentWithReason onClose={() => setIsRejectVisible(false)} />
+      </UiOverlay>
     </CardContainer>
   );
 }
