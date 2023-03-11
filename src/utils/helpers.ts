@@ -98,12 +98,6 @@ export function convertDate(dateToConvert: number) {
   const suffix = getNumberSuffix(dayOfMonth);
   
   return `${dayOfWeek}, ${month} ${dayOfMonth}${suffix} ${year}`;
-//   const date = new Date(dateToConvert);
-// const options = { weekday: 'short', day: 'numeric', month: 'long' };
-
-// return date.toLocaleDateString('en-US', options)
-//     .replace(/(\d)(?=(\d{2})+(?!\d))/g, '$1st, ') + '';
-
 }
 
 function getNumberSuffix(dayOfMonth: number) {
