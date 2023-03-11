@@ -53,11 +53,6 @@ export default function DashboardSidebar() {
       name: 'My Trips',
       iconName: 'Truck',
     },
-    {
-      path: '/dashboard/transactions',
-      name: 'Transactions',
-      iconName: 'Money',
-    },
   ];
   const unreadChatHeads = useMemo(() => {
     return chatHeads.filter(
@@ -79,38 +74,38 @@ export default function DashboardSidebar() {
 
   return (
     <Sidebar>
-      <LogoContainer>
-        <TDLogo src={TruckDispatchLogo} alt="truck-dispatch" />
-      </LogoContainer>
-      <TabList>
-        {routes.map((route, index) => (
-          <Link to={route.path} key={index}>
-            <Tab isActive={isRouteActive(route.path)}>
-              <UiIcon icon={route.iconName} size="24" />
-            </Tab>
-          </Link>
-        ))}
-        {isChatAvailable && (
-          <Link to="/dashboard/chat">
-            <Tab isActive={isRouteActive('/dashboard/chat')}>
-              <div className="chat-icon-container">
-                <UiIcon icon="Chats" size="24" />
-                {unreadChatHeads !== 0 && (
-                  <MessageCount>{unreadChatHeads}</MessageCount>
-                )}
-              </div>
-            </Tab>
-          </Link>
-        )}
-      </TabList>
+      <div className="sidebar__inner">
+        <LogoContainer>
+          <TDLogo src={TruckDispatchLogo} alt="truck-dispatch" />
+        </LogoContainer>
+        <TabList>
+          {routes.map((route, index) => (
+            <Link to={route.path} key={index}>
+              <Tab isActive={isRouteActive(route.path)}>
+                <UiIcon icon={route.iconName} size="24" />
+              </Tab>
+            </Link>
+          ))}
+          {isChatAvailable && (
+            <Link to="/dashboard/chat">
+              <Tab isActive={isRouteActive('/dashboard/chat')}>
+                <div className="chat-icon-container">
+                  <UiIcon icon="Chats" size="24" />
+                  {unreadChatHeads !== 0 && (
+                    <MessageCount>{unreadChatHeads}</MessageCount>
+                  )}
+                </div>
+              </Tab>
+            </Link>
+          )}
+        </TabList>
 
-      <BottomActions>
-        <div className="bottom-actions-inner">
+        <BottomActions>
           <LogOutContainer onClick={() => logOutUser()}>
             <UiIcon icon="SignOut" size="24" />
           </LogOutContainer>
-        </div>
-      </BottomActions>
+        </BottomActions>
+      </div>
     </Sidebar>
   );
 }
@@ -123,6 +118,12 @@ const Sidebar = styled.nav`
   bottom: 0;
   right: 0;
   left: 0;
+
+  .sidebar__inner {
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     width: 7%;
@@ -206,14 +207,11 @@ const Tab = styled.li`
 
 const BottomActions = styled.div`
   position: relative;
-  height: calc(100% - ${pxToRem(460)});
   display: none;
-
-  .bottom-actions-inner {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-  }
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: ${pxToRem(48)} 0;
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     display: block;
   }

@@ -45,6 +45,10 @@ export default function ViewTrip() {
       label: 'Request Payment For Trip',
       path: `/dashboard/my-trips/${tripId}/request-payment-for-trip`,
     },
+    {
+      label: 'View Payment Request',
+      path: `/dashboard/my-trips/${tripId}/view-payment-request`,
+    },
   ];
 
   const tabs = useMemo(() => {
@@ -57,19 +61,27 @@ export default function ViewTrip() {
 
   function agentChecks(path: string) {
     if (path.includes('bids') && trip?.status !== 'awaiting_bid') return false;
+    if (
+      path.includes('view-payment-request') &&
+      trip?.status !== 'awaiting_bid'
+    ) {
+      return true;
+    }
 
     if (path.includes('payment')) return false;
     if (
       path.includes('terminal-delivery-order') &&
       trip?.status === 'awaiting_bid'
-    )
+    ) {
       return false;
+    }
 
     return true;
   }
 
   function transporterChecks(path: string) {
-    if (path.includes('bids')) return false;
+    if (path.includes('bids') || path.includes('view-payment-request'))
+      return false;
     return true;
   }
 

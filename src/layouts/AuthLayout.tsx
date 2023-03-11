@@ -1,5 +1,11 @@
 import React, { useEffect, Suspense } from 'react';
-import { Outlet, useParams, Link, useNavigate } from 'react-router-dom';
+import {
+  Outlet,
+  useParams,
+  Link,
+  useNavigate,
+  useLocation,
+} from 'react-router-dom';
 import styled from 'styled-components';
 
 import sizes from '../utils/sizes';
@@ -10,6 +16,7 @@ import Loader from 'components/layout/Loader';
 
 export default function AuthLayout() {
   const { userType } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
   const isTransporter = userType === 'transporter';
   const layoutTitle = isTransporter
@@ -58,7 +65,7 @@ export default function AuthLayout() {
           </div>
         </ImageContainer>
         <FormContainer>
-          <div className="form-container-inner">
+          <div className="form-container-inner" key={location.pathname}>
             <Suspense fallback={<Loader />}>
               <Outlet />
             </Suspense>

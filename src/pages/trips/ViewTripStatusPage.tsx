@@ -75,7 +75,7 @@ export default function ViewTripStatus() {
     if (user?.userType === 'agent') return transporter?.avatar;
 
     return agent?.avatar;
-  }, [user, transporter, agent])
+  }, [user, transporter, agent]);
   function showInfoCard() {
     if (user?.userType === 'transporter') return true;
 
@@ -121,7 +121,7 @@ export default function ViewTripStatus() {
         {trip?.status !== 'awaiting_bid' && (
           <div className="responsible-user-details">
             <div className="avatar-cont">
-              <UiAvatar avatar={responsibleUserAvatar}/>
+              <UiAvatar avatar={responsibleUserAvatar} />
             </div>
             <div>
               <div className="title">

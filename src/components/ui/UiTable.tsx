@@ -68,7 +68,7 @@ export default function UiTable({
                 })}
                 {options && (
                   <td className="menu-container">
-                    <UidropdownMenu options={options} />
+                    <UidropdownMenu options={options} itemId={item.id} />
                   </td>
                 )}
               </TableRow>

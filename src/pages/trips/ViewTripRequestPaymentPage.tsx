@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -9,9 +9,12 @@ import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
 import UiInput from 'ui/UiInput';
 import sizes from 'utils/sizes';
-import uuidv4 from 'utils/uuid';
 import { uploadItem } from '../../api/Cloudinary';
-import { toAnyAction } from 'utils/helpers';
+import {
+  aValueHasBeenChanged,
+  generateReference,
+  toAnyAction,
+} from 'utils/helpers';
 import {
   getPaymentRequestsOfDriver,
   requestPaymentByTransporter,
@@ -20,42 +23,69 @@ import {
 import MessageWithImage from 'ui/MessageWithImage';
 import Loader from 'components/layout/Loader';
 import RequestPaymentSchema from 'utils/validations/RequestPaymentSchema';
+import { getBidsWithTripId, selectBid, selectTrip } from 'modules/Trips';
 
 export default function ViewTripRequestPayment() {
   const { tripId } = useParams();
   const user = useSelector(selectDashboardUser);
+  const trip = useSelector(selectTrip(tripId!));
+  const bid = useSelector(selectBid(user?.id!, 'transporterId'));
   const paymentRequest = useSelector(selectPaymentRequestByTripId(tripId!));
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState<PaymentRequest>({
-    id: uuidv4(),
+    id: tripId!,
     status: 'pending',
     driverName: '',
     driverPhoneNumber: '',
     containerVideo: null,
     transporterId: user?.id || '',
     tripId: tripId!,
+    truckPlateNumber: '',
+    amount: 0,
+    reference: '',
+    tripReference: '',
   });
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
 
+  const disableButton = useMemo(() => {
+    if (formData.status !== 'rejected') return false;
+    return aValueHasBeenChanged(paymentRequest, formData);
+  }, [paymentRequest, formData]);
+
   async function requestPayment() {
     setLoading(true);
-    const containerVideoAsset = await uploadItem(
-      formData.containerVideo as File,
-      false,
-    );
+    let containerVideoAsset;
+    if (formData.containerVideo instanceof File) {
+      containerVideoAsset = await uploadItem(
+        formData.containerVideo as File,
+        false,
+      );
+    } else containerVideoAsset = formData.containerVideo;
+
+    if (!bid) throw new Error('Bid does not exist');
 
     dispatch(
       toAnyAction(
         requestPaymentByTransporter({
           ...formData,
           containerVideo: containerVideoAsset,
+          createdAt: formData.createdAt || Date.now(),
+          updatedAt: Date.now(),
+          amount: bid?.price,
+          tripReference: trip?.reference!,
+          reference: generateReference(),
+          status: 'pending',
         }),
       ),
-    ).finally(() => {
-      setLoading(false);
-    });
+    )
+      .then(() => {
+        getDriversPaymentRequests();
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   function setData(event: {
@@ -68,17 +98,34 @@ export default function ViewTripRequestPayment() {
     }));
   }
 
+  function getDriversPaymentRequests() {
+    return dispatch(toAnyAction(getPaymentRequestsOfDriver())).then(
+      (data: PaymentRequest[]) => {
+        const tripPaymentRequest = data.find((req) => req.tripId === tripId);
+
+        if (
+          tripPaymentRequest?.status === 'rejected' &&
+          formData.status !== 'rejected'
+        )
+          setFormData(tripPaymentRequest);
+      },
+    );
+  }
+
   useEffect(() => {
-    dispatch(toAnyAction(getPaymentRequestsOfDriver())).finally(() => {
+    Promise.all([
+      getDriversPaymentRequests(),
+      dispatch(toAnyAction(getBidsWithTripId(tripId!))),
+    ]).finally(() => {
       setPageLoading(false);
     });
-  });
+  }, []);
 
   return (
     <PageStyling>
       {pageLoading ? (
         <Loader />
-      ) : paymentRequest ? (
+      ) : paymentRequest && paymentRequest?.status !== 'rejected' ? (
         <>
           <MessageWithImage
             title="Payment request has been received"
@@ -123,6 +170,13 @@ export default function ViewTripRequestPayment() {
                     error={errors.driverPhoneNumber}
                     onChange={setData}
                   />
+                  <UiInput
+                    label="Truck Plate Number"
+                    value={formData.truckPlateNumber}
+                    name="truckPlateNumber"
+                    error={errors.truckPlateNumber}
+                    onChange={setData}
+                  />
                   <FileUploadWidget
                     label="Video of the container on truck"
                     fileType="video"
@@ -132,7 +186,11 @@ export default function ViewTripRequestPayment() {
                     onChange={setData}
                   />
                 </GridContainer>
-                <UiButton loading={loading}>Request Payment</UiButton>
+                <UiButton loading={loading} disabled={disableButton}>
+                  {formData.status === 'rejected'
+                    ? 'Update Payment Request'
+                    : 'Request Payment'}
+                </UiButton>
               </>
             )}
           </UiForm>

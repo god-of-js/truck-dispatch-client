@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { abbreviateNumber } from 'utils/helpers';
+import { abbreviateNumber, priceWithTDPercent } from 'utils/helpers';
 
 import UiTable from 'ui/UiTable';
 import { RootState } from 'modules/index';
@@ -51,10 +51,10 @@ export default function ViewTripBidsPage() {
   const bidsData = useMemo(() => {
     return bids.map((bid: Bid) => ({
       ...bid,
-      price: <>&#8358; {abbreviateNumber(bid.price)}</>,
+      price: <>&#8358; {abbreviateNumber(priceWithTDPercent(bid.price))}</>,
       transporter: (
         <TransporterDetails>
-          <UiAvatar avatar={getUser(bid.transporterId)?.avatar}/>
+          <UiAvatar avatar={getUser(bid.transporterId)?.avatar} />
           <span>{`${getUser(bid.transporterId)?.firstName} ${
             getUser(bid.transporterId)?.lastName
           }`}</span>

@@ -23,12 +23,12 @@ export default function DashboardTopNav() {
   const dropDownData: DropDownData[] = [
     {
       label: 'View Profile',
-      path: 'profile',
+      path: '/dashboard/profile',
       icon: <UiIcon icon="User" />,
     },
     {
       label: 'Bank Accounts',
-      path: 'profile/accounts',
+      path: '/dashboard/profile/accounts',
       icon: <UiIcon icon="CreditCard" />,
     },
     {
@@ -38,7 +38,12 @@ export default function DashboardTopNav() {
       func: logOutUser,
       icon: <UiIcon icon="SignOut" />,
     },
-  ];
+  ].filter(({ path }) => {
+    if (path === '/dashboard/profile/accounts' && user?.userType === 'agent')
+      return false;
+
+    return true;
+  });
 
   const location = useLocation();
 
@@ -57,10 +62,12 @@ export default function DashboardTopNav() {
     '/dashboard/my-trips/:id/bids/:id': 'Trip Bid',
     '/dashboard/my-trips/:id/bids/:id/checkout': 'Pay for Trip',
     '/dashboard/chat': 'Chat',
+    '/dashboard/payments': 'Payments',
     '/dashboard/chat/:id/:id': 'Chat',
     '/dashboard/profile': 'Profile',
     '/dashboard/profile/accounts': 'Account',
-    '/dashboard/profile/verification': 'Verification'
+    '/dashboard/profile/verification': 'Verification',
+    '/dashboard/my-trips/:id/view-payment-request': 'View Payment Request',
   };
 
   type RouteNames = keyof typeof routeNames;
@@ -105,7 +112,7 @@ export default function DashboardTopNav() {
         options={dropDownData}
         trigger={
           <div className="avatar-caret-flex">
-            <UiAvatar avatar={user?.avatar}/>
+            <UiAvatar avatar={user?.avatar} />
             <UiIcon icon="CaretDown" />
           </div>
         }

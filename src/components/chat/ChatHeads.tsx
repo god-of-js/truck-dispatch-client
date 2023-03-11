@@ -34,7 +34,7 @@ export default function ChatHeads() {
           hasBeenRead={!!val.readAt || val.senderId === user?.id}
           onClick={() => navigateToChat(val.agentId, val.transporterId)}
         >
-          <UiAvatar avatar={alternateUser(val).avatar}/>
+          <UiAvatar avatar={alternateUser(val).avatar} />
           <div className="content-container">
             <div className="name">{`${alternateUser(val).firstName} ${
               alternateUser(val).lastName

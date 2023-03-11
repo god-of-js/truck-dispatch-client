@@ -85,7 +85,7 @@ export default function ChatPage() {
     <ChatPageStyling>
       <Header>
         <div className="user-details">
-          <UiAvatar avatar={alternateUser?.avatar}/>
+          <UiAvatar avatar={alternateUser?.avatar} />
           <div>{alternateUser?.firstName + ' ' + alternateUser?.lastName}</div>
         </div>
       </Header>
