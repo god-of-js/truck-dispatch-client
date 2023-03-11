@@ -41,6 +41,9 @@ class ApiService {
     return this.setDoc('user', data.id, data);
   }
 
+  getUser(id: string) {
+    return this.getItem<User>('user', id);
+  }
   getUsers() {
     return this.getCollection<User>('user');
   }

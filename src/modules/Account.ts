@@ -10,16 +10,21 @@ import Rating from 'types/Rating';
 export interface AccountState {
   users: User[];
   verification: Verification | null;
+  user: User | null;
 }
 
 const initialState: AccountState = {
   users: [] as User[],
+  user: null,
   verification: null,
 };
 export const accountSlice = createSlice({
   name: 'account',
   initialState,
   reducers: {
+    setUser: (state: AccountState, action: { payload: User }) => {
+      state.user = action.payload;
+    },
     setUsers: (state: AccountState, action: { payload: User[] }) => {
       state.users = action.payload;
     },
@@ -32,7 +37,7 @@ export const accountSlice = createSlice({
   },
 });
 
-export const { setUsers, setVerification } = accountSlice.actions;
+export const { setUsers, setUser, setVerification } = accountSlice.actions;
 
 export default accountSlice.reducer;
 
@@ -110,6 +115,20 @@ export function getUsers() {
     return Api.getUsers()
       .then((data) => {
         dispatch(setUsers(data));
+      })
+      .catch((err) => {
+        throw new Error(err.message);
+      });
+  };
+}
+export function getDashboardUser() {
+  return (dispatch: AppDispatch) => {
+    const uid = localStorage.getItem('uid');
+    if (!uid) return;
+    return Api.getUser(uid)
+      .then((data) => {
+        dispatch(setUser(data));
+        return data;
       })
       .catch((err) => {
         throw new Error(err.message);

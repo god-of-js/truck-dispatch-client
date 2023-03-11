@@ -42,7 +42,7 @@ export default function RegistrationPage() {
 
   function handleSubmit() {
     setLoading(true);
-    dispatch(toAnyAction(RegisterUser(formData)))
+    dispatch(toAnyAction(RegisterUser({ ...formData, createdAt: Date.now() })))
       .then(() => {
         navigate('/dashboard/my-trips');
       })

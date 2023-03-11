@@ -49,7 +49,7 @@ export default function ViewTripBidPage() {
     } else {
       loadTransporterCompletedTrips();
     }
-  },[]);
+  }, []);
 
   return (
     <PageStyling>

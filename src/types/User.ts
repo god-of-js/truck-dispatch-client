@@ -15,4 +15,5 @@ export default interface User {
     | 'rejected'
     | 'fraudulent';
   rating: number;
+  createdAt?: number;
 }
