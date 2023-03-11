@@ -179,13 +179,14 @@ const ImageContainer = styled.div`
 
 const FormContainer = styled.div`
   width: 100%;
-  padding: ${pxToRem(24)};
+  padding: ${pxToRem(32)} ${pxToRem(28)};
 
   img {
     display: block;
   }
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+    padding: ${pxToRem(28)};
     width: 35%;
 
     img {
