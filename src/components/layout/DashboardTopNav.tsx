@@ -11,6 +11,7 @@ export default function DashboardTopNav() {
   const location = useLocation();
   const routeNames = {
     '/': 'Dashboard',
+    '/profile/accounts':"Accounts",
     '/available-jobs': 'Available Jobs',
     '/available-jobs/:id': 'View Job Details',
     '/available-jobs/:id/Bid': 'Bid On Job',
