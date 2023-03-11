@@ -2,11 +2,17 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
 import svgrPlugin from 'vite-plugin-svgr';
+import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
     outDir: 'dist',
+    rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, 'index.html'),
+      },
+    },
   },
   server: {
     open: true,
@@ -27,11 +33,11 @@ export default defineConfig({
   },
   plugins: [react(), viteTsconfigPaths(), svgrPlugin()],
   resolve: {
-    alias: {
-      components: './src/components',
-      ui: './src/components/ui',
-      assets: './src/assets',
-      Api: './src/Api/index',
-    },
+    alias: [
+      { find: 'components', replacement: path.resolve(__dirname, 'src/components') },
+      { find: 'ui', replacement: path.resolve(__dirname, 'src/components/ui') },
+      { find: 'assets', replacement: path.resolve(__dirname, 'src/assets') },
+      { find: 'Api', replacement: path.resolve(__dirname, 'src/Api/index') },
+    ],
   },
 });
