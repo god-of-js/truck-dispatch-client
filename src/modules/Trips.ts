@@ -1,6 +1,6 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import Trip from 'types/Trip';
-import { AppDispatch, RootState } from '.';
+import { AppDispatch, AppState, RootState } from '.';
 import Api from 'Api';
 import { toAnyAction } from 'utils/helpers';
 import Bid from 'types/Bid';
@@ -21,6 +21,7 @@ export const TripsSlice = createSlice({
   initialState,
   reducers: {
     setTrips: (state: TripState, action: { payload: Trip[] }) => {
+      console.log(action.payload);
       state.trips = action.payload;
     },
     setJobs: (state: TripState, action: { payload: Trip[] }) => {
@@ -56,15 +57,26 @@ export const selectBid = (
 
 // ASYNC THUNKS
 export function createOrUpdateTrip(data: Trip) {
-  return () => {
-    return Api.createOrUpdateTrip(data);
+  return (dispatch: AppDispatch, state: AppState) => {
+    return Api.createOrUpdateTrip(data).then(() => {
+      const currentTripIndex = state().trips.trips.findIndex(
+        (trip) => trip.id === data.id,
+      );
+      if (currentTripIndex === -1) {
+        dispatch(setTrips([...state().trips.trips, data]));
+        return;
+      }
+      const trips = state().trips.trips;
+      trips.splice(currentTripIndex, 1, data);
+      dispatch(setTrips(trips));
+    });
   };
 }
 
 export function getAgentTrips(agentId: string) {
   return (dispatch: AppDispatch) => {
     return Api.getAgentTrips(agentId).then((data) =>
-      dispatch(toAnyAction(setTrips(data))),
+      dispatch(setTrips(data))
     );
   };
 }

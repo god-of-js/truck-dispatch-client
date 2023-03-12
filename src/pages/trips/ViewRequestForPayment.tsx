@@ -1,42 +1,39 @@
-import Loader from 'components/layout/Loader';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import RejectPaymentWithReason from 'components/payment/RejectPaymentWithReason';
 import { RootState } from 'modules/index';
-import { getPaymentRequestByTripId } from 'modules/Payments';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
+import { setPaymentRequest } from 'modules/Payments';
 import Asset from 'types/Asset';
 import UiButton from 'ui/UiButton';
 import UiCard from 'ui/UiCard';
 import UiOverlay from 'ui/UiOverlay';
-import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
+import ConfirmApprovePayment from 'components/payment/ConfirmApprovePayment';
+import PaymentRequest from 'types/PaymentRequest';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function ViewRequestForPayment() {
-  const { tripId } = useParams();
   const dispatch = useDispatch();
+  const { tripId } = useParams();
+  const navigate = useNavigate()
   const paymentRequest = useSelector(
     (state: RootState) => state.payment.paymentRequest,
   );
   const [isRejectVisible, setIsRejectVisible] = useState(false);
-
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    dispatch(toAnyAction(getPaymentRequestByTripId(tripId))).finally(() => {
-      setLoading(false);
-    });
-  }, [tripId]);
-
+  const [isConfirmVisible, setIsConfirmVisible] = useState(false);
+    function setUpdatedPaymentRequest(request: PaymentRequest) {
+      dispatch(setPaymentRequest(request));
+      navigate(`/dashboard/my-trips/${tripId}/status`)
+    }
   return (
     <CardContainer>
       <UiCard>
-        {loading ? (
-          <Loader />
-        ) : (
+        {paymentRequest ? (
           <>
-            {paymentRequest ? (
+            {paymentRequest.status === 'completed' ? (
+              <>Payment request has been approved.</>
+            ) : (
               <>
                 <h2>Verify validity of payment request</h2>
                 <p>
@@ -86,17 +83,34 @@ export default function ViewRequestForPayment() {
                   >
                     Reject With Reason
                   </UiButton>
-                  <UiButton>Approve Payment</UiButton>
+                  <UiButton
+                    onClick={() => {
+                      setIsConfirmVisible(true);
+                    }}
+                  >
+                    Approve Payment
+                  </UiButton>
                 </div>
               </>
-            ) : (
-              <>Proof of Loading has not been uploaded yet. </>
             )}
           </>
+        ) : (
+          // TODO: Design proof of loading has not been uploaded yet
+          <>Proof of Loading has not been uploaded yet. </>
         )}
       </UiCard>
       <UiOverlay isVisible={isRejectVisible}>
-        <RejectPaymentWithReason onClose={() => setIsRejectVisible(false)} />
+        <RejectPaymentWithReason
+          paymentRequest={paymentRequest}
+          onClose={() => setIsRejectVisible(false)}
+        />
+      </UiOverlay>
+      <UiOverlay isVisible={isConfirmVisible}>
+        <ConfirmApprovePayment
+          paymentRequest={paymentRequest}
+          onClose={() => setIsConfirmVisible(false)}
+          setPaymentRequest={setUpdatedPaymentRequest}
+        />
       </UiOverlay>
     </CardContainer>
   );
