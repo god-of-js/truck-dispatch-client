@@ -22,6 +22,7 @@ import Rating from 'types/Rating';
 import PaymentRequest from 'types/PaymentRequest';
 import Chat from 'types/Chat';
 import Verification from 'types/Verification';
+import BankAccount from 'types/BankAccount';
 
 class ApiService {
   createUserWithEmailAndPassword(email: string, password: string) {
@@ -59,6 +60,14 @@ class ApiService {
   saveAsset(id: string, url: string) {
     // In case of future migrations to different asset servers.
     return this.setDoc('assets', id, { id, url });
+  }
+
+  saveAccountNumber(accountDetails: BankAccount) {
+    return this.setDoc('bank-account', accountDetails.id, accountDetails);
+  }
+
+  getAccountNumber(id: string) {
+    return this.getItem<BankAccount>('bank-account', id);
   }
 
   publishUserRating(data: Rating) {

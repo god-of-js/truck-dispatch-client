@@ -3,13 +3,13 @@ import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
 let firebaseConfig = {
-  apiKey: 'AIzaSyCseX2pxV3j0FUYBCt1ifNto5Fdj0fpuW4',
-  authDomain: 'td-dev-c20a2.firebaseapp.com',
-  projectId: 'td-dev-c20a2',
-  storageBucket: 'td-dev-c20a2.appspot.com',
-  messagingSenderId: '926041702630',
-  appId: '1:926041702630:web:4ca168cb3f90d7f0527b27',
-  measurementId: 'G-M2LDKSM2BT',
+  apiKey: 'AIzaSyCLyjacirS_zPH6VtVHMBLmcVJCrNPeR70',
+  authDomain: 'truckdispatch-dev-a1507.firebaseapp.com',
+  projectId: 'truckdispatch-dev-a1507',
+  storageBucket: 'truckdispatch-dev-a1507.appspot.com',
+  messagingSenderId: '719504794862',
+  appId: '1:719504794862:web:22fd09976742bff55bbfff',
+  measurementId: 'G-2Z959Q0MBY',
 };
 // @ts-ignore
 if (process.env.NODE_ENV === 'production') {

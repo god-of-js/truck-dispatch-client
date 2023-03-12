@@ -7,18 +7,18 @@ const instance = axios.create({
     Authorization: `Bearer ${paystackSecretKey}`,
   },
 });
+
 export interface Bank {
   name: string;
   code: string;
 }
+
 export function loadBanks(): Promise<Bank[]> {
   return instance.get('/bank?currency=NGN').then(({ data }) => data.data);
 }
 
-export function loadAccountDetails( bankCode: string, accountNumber: string) {
+export function loadAccountDetails(bankCode: string, accountNumber: string) {
   return instance
-    .get(
-      `/bank/resolve?account_number=${accountNumber}&bank_code=${bankCode}`,
-    )
-    .then(({ data }) => data);
+    .get(`/bank/resolve?account_number=${accountNumber}&bank_code=${bankCode}`)
+    .then(({ data }) => data.data);
 }

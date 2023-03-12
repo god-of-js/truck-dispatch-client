@@ -38,8 +38,9 @@ export default function UiSelect({
   };
 
   const selectedOption = useMemo(() => {
+    if (!value) return null;
     return options.find((option) => option.value === value) || null;
-  }, [value]);
+  }, [value, options]);
 
   return (
     <OutsideClickHandler onOutsideClick={() => setIsOpen(false)}>

@@ -24,10 +24,16 @@ import MessageWithImage from 'ui/MessageWithImage';
 import Loader from 'components/layout/Loader';
 import RequestPaymentSchema from 'utils/validations/RequestPaymentSchema';
 import { getBidsWithTripId, selectBid, selectTrip } from 'modules/Trips';
+import UiOverlay from 'ui/UiOverlay';
+import NotifyUserToAddAccount from 'components/profile/NotifyUserToAddAccount';
+import { RootState } from 'modules/index';
 
 export default function ViewTripRequestPayment() {
   const { tripId } = useParams();
   const user = useSelector(selectDashboardUser);
+  const accountDetails = useSelector(
+    (state: RootState) => state.account.bankAccountDetails,
+  );
   const trip = useSelector(selectTrip(tripId!));
   const bid = useSelector(selectBid(user?.id!, 'transporterId'));
   const paymentRequest = useSelector(selectPaymentRequestByTripId(tripId!));
@@ -47,6 +53,8 @@ export default function ViewTripRequestPayment() {
     tripReference: '',
   });
   const [loading, setLoading] = useState(false);
+  const [isNotifyUserToAddAccountVisible, setIsNotifyUserToAddAccountVisible] =
+    useState(false);
   const [pageLoading, setPageLoading] = useState(true);
 
   const disableButton = useMemo(() => {
@@ -55,6 +63,10 @@ export default function ViewTripRequestPayment() {
   }, [paymentRequest, formData]);
 
   async function requestPayment() {
+    if (!accountDetails) {
+      setIsNotifyUserToAddAccountVisible(true);
+      return;
+    }
     setLoading(true);
     let containerVideoAsset;
     if (formData.containerVideo instanceof File) {
@@ -196,6 +208,14 @@ export default function ViewTripRequestPayment() {
           </UiForm>
         </>
       )}
+
+      <UiOverlay isVisible={isNotifyUserToAddAccountVisible}>
+        <NotifyUserToAddAccount
+          onClose={() => {
+            setIsNotifyUserToAddAccountVisible(false);
+          }}
+        />
+      </UiOverlay>
     </PageStyling>
   );
 }
