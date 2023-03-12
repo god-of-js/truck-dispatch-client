@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { selectDashboardUser } from 'modules/Account';
 import PaymentRequest from 'types/PaymentRequest';
@@ -144,7 +144,10 @@ export default function ViewTripRequestPayment() {
             subtitle="We have received your payment request. We would validate your trip status and get back to you. It normally takes a couple minutes for it to be verified. To view the status of the payment, navigate to the transcations page or click the button below"
           />
           <div className="btn-container">
-            <UiButton>View Payment Request</UiButton>
+            <Link to="/dashboard/payments">
+
+            <UiButton>View Payments</UiButton>
+            </Link>
           </div>
         </>
       ) : (
