@@ -124,8 +124,13 @@ const ButtonContainer = styled.button<Props>`
   }
 
   &.neutral {
-    background-color: var(--color-gray-200);
-    color: var(--color-gray-900);
+    background-color: var(--color-gray-100);
+    border: 1px solid var(--color-gray-200);
+    color: var(--color-gray-500);
+
+    &:hover {
+      background-color: var(--color-gray-200);
+    }
   }
 
   &.primary-outlined {
