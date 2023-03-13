@@ -75,7 +75,7 @@ export default function DashboardSidebar() {
   return (
     <Sidebar>
       <div className="sidebar__inner">
-        <Link to="/dashboard">
+        <Link to="/dashboard/my-trips">
           <LogoContainer>
             <TDLogo src={TruckDispatchLogo} alt="truck-dispatch" />
           </LogoContainer>

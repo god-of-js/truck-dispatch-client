@@ -6,7 +6,7 @@ import Trip from 'types/Trip';
 import sizes from 'utils/sizes';
 import uuidv4 from 'utils/uuid';
 import { generateReference, toAnyAction } from 'utils/helpers';
-import { createOrUpdateTrip, setTrips } from 'modules/Trips';
+import { createOrUpdateTrip } from 'modules/Trips';
 
 import UiTimeline, { TimelineStep } from 'ui/UiTimeline';
 import NewTripForm from 'components/trips/NewTripForm';
@@ -104,7 +104,6 @@ export default function NewTripPage() {
       toAnyAction(createOrUpdateTrip({ ...defaultFormData, id, reference })),
     )
       .then(() => {
-        dispatch(setTrips([...trips, defaultFormData]));
         if(defaultFormData.id) {
           Toast.success({msg:'Trip has been updated'})
           navigate(`/dashboard/my-trips/${defaultFormData.id}`)
@@ -141,10 +140,10 @@ export default function NewTripPage() {
                 {/* TODO: check why newly added trip details does not reflect when you go from here to trip bids */}
                 <MessageWithImage
                   title="Your Trip has been broadcasted"
-                  subtitle={`Your trip has been broadcasted to trusted transporters in our network. It usually takes a couple minutes to get matched with transporters. Expect several transporters to send bids on the trip you just created. You can view your trips by pressing the button below. Thank you for trusting us with your dispatch. `}
+                  subtitle={`Your trip has been broadcasted to trusted transporters in our network. It usually takes a couple minutes to get matched with transporters. Expect several transporters to send bids on the trip you just created. You can view bids sent by transporters by clicking the button below. Thank you for trusting us with your dispatch. `}
                 />
                 <div className="button-container">
-                  <Link to={`/dashboard/my-trips`}>
+                  <Link to={`/dashboard/my-trips/${defaultFormData.id}/bids`}>
                     <UiButton>View Trips</UiButton>
                   </Link>
                 </div>
