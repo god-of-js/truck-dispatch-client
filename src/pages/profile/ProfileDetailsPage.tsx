@@ -32,6 +32,7 @@ export default function ProfileDetailsPage() {
 
     dispatch(toAnyAction(createOrUpdateUser(data))).then(() => {
       Toast.success({ msg: 'Profile has been updated'});
+      setIsEditable(false)
     }).finally(() => {
       setLoading(false);
     });
