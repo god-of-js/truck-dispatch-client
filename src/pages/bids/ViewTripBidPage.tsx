@@ -9,7 +9,11 @@ import styled from 'styled-components';
 import Trip from 'types/Trip';
 import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
-import { toAnyAction } from 'utils/helpers';
+import {
+  abbreviateNumber,
+  priceWithTDPercent,
+  toAnyAction,
+} from 'utils/helpers';
 import sizes from 'utils/sizes';
 
 export default function ViewTripBidPage() {
@@ -45,7 +49,7 @@ export default function ViewTripBidPage() {
     } else {
       loadTransporterCompletedTrips();
     }
-  });
+  }, []);
 
   return (
     <PageStyling>
@@ -55,7 +59,7 @@ export default function ViewTripBidPage() {
           <div className="title">Transporter</div>
           <div className="value">
             <TransporterDetails>
-              <UiAvatar />
+              <UiAvatar avatar={getUser(bid?.transporterId || '')?.avatar} />
               <span>{`${getUser(bid?.transporterId || '')?.firstName} ${
                 getUser(bid?.transporterId || '')?.lastName
               }`}</span>
@@ -77,7 +81,9 @@ export default function ViewTripBidPage() {
         </Section>
         <Section>
           <div className="title">Price of trip</div>
-          <div className="value">&#8358;{bid?.price}</div>
+          <div className="value">
+            &#8358;{abbreviateNumber(priceWithTDPercent(bid?.price!))}
+          </div>
         </Section>
         <Section>
           <div className="title">Truck's present location</div>
@@ -88,13 +94,11 @@ export default function ViewTripBidPage() {
           <div className="value">{bid?.extraNotes || 'N/A'}</div>
         </Section>
         <SubmitButtonContainer className="submit-button-container">
-          <Link to={`/dashboard/chat/${user?.id}/${bid?.transporterId}`}>
-            <UiButton variant="secondary-outlined">
-              Negotiate/Chat with Transporter
-            </UiButton>
-          </Link>
+          {/* <Link to={`/dashboard/chat/${user?.id}/${bid?.transporterId}`}>
+            <UiButton variant="secondary-outlined">Negotiate Bid</UiButton>
+          </Link> */}
           <Link to={`/dashboard/my-trips/${tripId}/bids/${bidId}/checkout`}>
-            <UiButton>Accept Transporter Bid</UiButton>
+            <UiButton>Accept Bid</UiButton>
           </Link>
         </SubmitButtonContainer>
       </CardContainer>

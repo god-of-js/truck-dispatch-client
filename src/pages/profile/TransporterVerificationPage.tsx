@@ -1,10 +1,11 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
   createOrUpdateUser,
   getUsers,
+  getUserVerification,
   selectDashboardUser,
 } from '../../modules/Account';
 
@@ -15,26 +16,24 @@ import sizes from 'utils/sizes';
 
 import VerificationForm from 'components/profile/VerificationForm';
 import MessageWithImage from 'ui/MessageWithImage';
-import AccessDenied from '../../assets/img/access-denied.svg';
+import { RootState } from 'modules/index';
 
 export default function TransporterVerificationPage() {
   const dispatch = useDispatch();
   const [isVerified, setIsVerified] = useState(false);
+  const [loading, setLoading] = useState(false);
   const user = useSelector(selectDashboardUser);
+  const userVerification = useSelector(
+    (state: RootState) => state.account.verification,
+  );
   const userHasBeenVerified = <MessageWithImage />;
+
   const userIsAwaitingVerification = (
     <MessageWithImage
       title="Verification details have been sent"
       subtitle={`Your verification details has been sent. expect a mail or text
   message from the organization in 3 working days regarding if your profile
   has been approved or declined`}
-    />
-  );
-  const userVerificationWasRejected = (
-    <MessageWithImage
-      img={AccessDenied}
-      title="Your verification has been declined"
-      subtitle="Kindly reach out to support@truckdispatch.ng for more assistance and further clarification "
     />
   );
 
@@ -47,13 +46,27 @@ export default function TransporterVerificationPage() {
       (!isVerified && user?.status === 'unverified') ||
       user?.status === 'rejected'
     ) {
-      return <VerificationForm onVerified={setVerificationStatus} />;
+      return (
+        <VerificationForm
+          onVerified={setVerificationStatus}
+          parentLoading={loading}
+        />
+      );
     }
 
     if (user?.status === 'verified') {
       return userHasBeenVerified;
     }
   }, [isVerified]);
+
+  useEffect(() => {
+    if (user?.status === 'rejected') {
+      setLoading(true);
+      dispatch(toAnyAction(getUserVerification())).finally(() => {
+        setLoading(false);
+      });
+    }
+  }, [user]);
 
   function setVerificationStatus() {
     setIsVerified(true);
@@ -77,12 +90,7 @@ export default function TransporterVerificationPage() {
       {user?.status === 'rejected' && (
         <FeedbackCard>
           <h2>Admin Remark</h2>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea
-            praesentium libero esse nihil asperiores quidem est itaque, quos et
-            maiores doloremque pariatur inventore illo fuga, neque totam eius
-            cupiditate distinctio.
-          </p>
+          <p>{userVerification?.adminMessage}</p>
         </FeedbackCard>
       )}
     </VerificationPageStyling>
@@ -91,12 +99,16 @@ export default function TransporterVerificationPage() {
 
 const VerificationPageStyling = styled.div`
   display: flex;
+  flex-direction: column-reverse;
   align-items: flex-start;
   gap: ${pxToRem(24)};
   justify-content: center;
+  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+    flex-direction: row;
+  }
 `;
 const TransportVerificationCard = styled.div`
-  background: #ffffff;
+  background: #ffff;
   width: 90%;
   border: 1px solid var(--color-gray-200);
   padding: ${pxToRem(20)};
@@ -119,7 +131,7 @@ const TransportVerificationCard = styled.div`
 
 const FeedbackCard = styled.div`
   background: #ffffff;
-  width: 30%;
+  width: 90%;
   border: 1px solid var(--color-gray-200);
   padding: ${pxToRem(20)};
   border-radius: ${pxToRem(8)};
@@ -129,5 +141,8 @@ const FeedbackCard = styled.div`
   }
   p {
     font-size: ${pxToRem(16)};
+  }
+  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+    width: 30%;
   }
 `;

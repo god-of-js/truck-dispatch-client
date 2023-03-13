@@ -17,12 +17,17 @@ import RateTransporter from 'components/ratings/RateTransporter';
 import { toAnyAction } from 'utils/helpers';
 import { getTripRating } from 'modules/Ratings';
 import Rating from 'types/Rating';
+import { getPaymentRequestByTripId } from 'modules/Payments';
+import { RootState } from 'modules/index';
 
 export default function ViewTrip() {
   const { tripId } = useParams();
   const dispatch = useDispatch();
   const user = useSelector(selectDashboardUser);
-  const trip = useSelector(selectTrip(tripId || ''));
+  const paymentRequest = useSelector(
+    (state: RootState) => state.payment.paymentRequest,
+  );
+  const trip = useSelector(selectTrip(tripId!));
   const [isRatingsModalVisible, setIsRatingsModalVisible] = useState(false);
   const unfilteredTabs = [
     {
@@ -45,6 +50,10 @@ export default function ViewTrip() {
       label: 'Request Payment For Trip',
       path: `/dashboard/my-trips/${tripId}/request-payment-for-trip`,
     },
+    {
+      label: 'View Payment Request',
+      path: `/dashboard/my-trips/${tripId}/view-payment-request`,
+    },
   ];
 
   const tabs = useMemo(() => {
@@ -53,23 +62,32 @@ export default function ViewTrip() {
       else if (user?.userType === 'transporter')
         return transporterChecks(tab.path);
     });
-  }, [user, trip]);
+  }, [user, trip, paymentRequest?.status]);
 
   function agentChecks(path: string) {
     if (path.includes('bids') && trip?.status !== 'awaiting_bid') return false;
+    if (
+      path.includes('view-payment-request') &&
+      trip?.status !== 'awaiting_bid' &&
+      paymentRequest?.status !== 'completed'
+    ) {
+      return true;
+    }
 
     if (path.includes('payment')) return false;
     if (
       path.includes('terminal-delivery-order') &&
       trip?.status === 'awaiting_bid'
-    )
+    ) {
       return false;
+    }
 
     return true;
   }
 
   function transporterChecks(path: string) {
-    if (path.includes('bids')) return false;
+    if (path.includes('bids') || path.includes('view-payment-request'))
+      return false;
     return true;
   }
 
@@ -84,6 +102,10 @@ export default function ViewTrip() {
       });
     }
   }, [tripId, trip]);
+
+  useEffect(() => {
+    dispatch(toAnyAction(getPaymentRequestByTripId(tripId)));
+  }, [tripId]);
 
   return (
     <>

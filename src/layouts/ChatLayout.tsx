@@ -3,12 +3,9 @@ import { Outlet, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import ChatHeads from 'components/chat/ChatHeads';
 import sizes from 'utils/sizes';
-import { useSelector } from 'react-redux';
-import { selectDashboardUser } from 'modules/Account';
 
 export default function ChatLayout() {
   const location = useLocation();
-  const user = useSelector(selectDashboardUser);
 
   return (
     <ChatLayoutDesign>

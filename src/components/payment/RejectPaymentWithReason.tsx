@@ -1,0 +1,92 @@
+import { RootState } from 'modules/index';
+import { requestPaymentByTransporter } from 'modules/Payments';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import PaymentRequest from 'types/PaymentRequest';
+import UiButton from 'ui/UiButton';
+import UiForm from 'ui/UiForm';
+import UiModal from 'ui/UiModal';
+import UiTextArea from 'ui/UiTextArea';
+import { toAnyAction } from 'utils/helpers';
+import { Toast } from 'utils/toast';
+import RejectPaymentSchema from 'utils/validations/RejectPaymentSchema';
+
+interface Props {
+  onClose: () => void;
+  paymentRequest?: PaymentRequest | null;
+  setPaymentRequest: (param: PaymentRequest) => Promise<void>;
+}
+export default function RejectPaymentWithReason({
+  paymentRequest,
+  onClose,
+  setPaymentRequest,
+}: Props) {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    reasonForReject: '',
+  });
+
+  function rejectPayment() {
+    if (!paymentRequest) throw new Error('payment request does not exist');
+    setLoading(true);
+    setPaymentRequest({
+      ...paymentRequest,
+      status: 'rejected',
+      agentRemark: formData.reasonForReject,
+      updatedAt: Date.now(),
+    })
+      .then(() => {
+        Toast.success({
+          msg: 'Reject reason sent. Transporter would revert back to you with an updated request.',
+        });
+        onClose();
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+  return (
+    <UiModal onClose={onClose}>
+      <h2>Reject Payment</h2>
+      <p>
+        Inform the transporter of the reason his request for payment was
+        declined. When the transporter corrects his request, you can proceed
+        with the payment by clicking the "Approve Payment" button.
+      </p>
+      <UiForm
+        formData={formData}
+        schema={RejectPaymentSchema}
+        onSubmit={rejectPayment}
+      >
+        {({ errors }) => (
+          <>
+            <UiTextArea
+              value={formData.reasonForReject}
+              name="reasonForReject"
+              label="Reason for Rejection"
+              error={errors.reasonForReject}
+              onChange={({ value }) => setFormData({ reasonForReject: value })}
+            />
+            <ButtonContainer>
+              <UiButton variant="secondary" type="button" onClick={onClose}>
+                Cancel Reject
+              </UiButton>
+              <UiButton variant="danger" loading={loading}>
+                Reject Payment
+              </UiButton>
+            </ButtonContainer>
+          </>
+        )}
+      </UiForm>
+    </UiModal>
+  );
+}
+
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: ${pxToRem(12)};
+  justify-content: flex-end;
+  margin-top: ${pxToRem(16)};
+`;

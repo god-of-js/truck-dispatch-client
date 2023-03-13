@@ -6,7 +6,7 @@ export default interface User {
   lastName: string;
   email: string;
   phone: string;
-  avatar?: Asset;
+  avatar?: Asset | File;
   userType: 'agent' | 'transporter';
   status?:
     | 'pending_verification'
@@ -15,4 +15,5 @@ export default interface User {
     | 'rejected'
     | 'fraudulent';
   rating: number;
+  createdAt?: number;
 }

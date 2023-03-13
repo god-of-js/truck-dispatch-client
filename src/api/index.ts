@@ -7,7 +7,6 @@ import {
   query,
   where,
   WhereFilterOp,
-  onSnapshot,
 } from 'firebase/firestore';
 import 'firebase/firestore';
 import User from '../types/User';
@@ -23,6 +22,7 @@ import Rating from 'types/Rating';
 import PaymentRequest from 'types/PaymentRequest';
 import Chat from 'types/Chat';
 import Verification from 'types/Verification';
+import BankAccount from 'types/BankAccount';
 
 class ApiService {
   createUserWithEmailAndPassword(email: string, password: string) {
@@ -41,6 +41,10 @@ class ApiService {
     return this.setDoc('user', data.id, data);
   }
 
+  getUser(id: string) {
+    return this.getItem<User>('user', id);
+  }
+
   getUsers() {
     return this.getCollection<User>('user');
   }
@@ -48,6 +52,7 @@ class ApiService {
   sendVerificationDetailsToAdmin(userId: string, data: unknown) {
     return this.setDoc('verification', userId, data);
   }
+
   getVerificationByUserId(userId: string): Promise<Verification> {
     return this.getItem('verification', userId);
   }
@@ -55,6 +60,14 @@ class ApiService {
   saveAsset(id: string, url: string) {
     // In case of future migrations to different asset servers.
     return this.setDoc('assets', id, { id, url });
+  }
+
+  saveAccountNumber(accountDetails: BankAccount) {
+    return this.setDoc('bank-account', accountDetails.id, accountDetails);
+  }
+
+  getAccountNumber(id: string) {
+    return this.getItem<BankAccount>('bank-account', id);
   }
 
   publishUserRating(data: Rating) {
@@ -126,6 +139,10 @@ class ApiService {
     });
   }
 
+  getPaymentRequestByTripId(id: string) {
+    return this.getItem<PaymentRequest>('payment-request', id);
+  }
+
   getBidsWithTripId(tripId: string) {
     return this.query<Bid>({
       collectionName: 'bid',
@@ -176,8 +193,8 @@ class ApiService {
     return documentList;
   }
 
-  private async getItem<T>(key: string, value: string): Promise<T> {
-    const docRef = doc(db, key, value);
+  private async getItem<T>(collectionName: string, id: string): Promise<T> {
+    const docRef = doc(db, collectionName, id);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {

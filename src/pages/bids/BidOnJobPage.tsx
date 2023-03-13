@@ -33,7 +33,7 @@ export default function BidOnJob() {
       presentLocation: '',
       extraNotes: '',
       id: uuidv4(),
-      transporterId: user?.id || '',
+      transporterId: user?.id!,
       tripId: '',
       status: 'pending',
       driverName: '',

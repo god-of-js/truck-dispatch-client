@@ -6,20 +6,28 @@ import User from '../types/User';
 import UserWithPassword from '../types/UserWithPassword';
 import Verification from '../types/Verification';
 import Rating from 'types/Rating';
+import BankAccount from 'types/BankAccount';
 
 export interface AccountState {
   users: User[];
   verification: Verification | null;
+  user: User | null;
+  bankAccountDetails: BankAccount | null;
 }
 
 const initialState: AccountState = {
   users: [] as User[],
+  user: null,
   verification: null,
+  bankAccountDetails: null,
 };
 export const accountSlice = createSlice({
   name: 'account',
   initialState,
   reducers: {
+    setUser: (state: AccountState, action: { payload: User }) => {
+      state.user = action.payload;
+    },
     setUsers: (state: AccountState, action: { payload: User[] }) => {
       state.users = action.payload;
     },
@@ -29,10 +37,17 @@ export const accountSlice = createSlice({
     ) => {
       state.verification = action.payload;
     },
+    setBankAccountDetails: (
+      state: AccountState,
+      action: { payload: BankAccount },
+    ) => {
+      state.bankAccountDetails = action.payload;
+    },
   },
 });
 
-export const { setUsers, setVerification } = accountSlice.actions;
+export const { setUsers, setUser, setVerification, setBankAccountDetails } =
+  accountSlice.actions;
 
 export default accountSlice.reducer;
 
@@ -116,6 +131,20 @@ export function getUsers() {
       });
   };
 }
+export function getDashboardUser() {
+  return (dispatch: AppDispatch) => {
+    const uid = localStorage.getItem('uid');
+    if (!uid) return;
+    return Api.getUser(uid)
+      .then((data) => {
+        dispatch(setUser(data));
+        return data;
+      })
+      .catch((err) => {
+        throw new Error(err.message);
+      });
+  };
+}
 
 export const sendVerificationDetailsToAdmin = (
   verificationData: Verification,
@@ -139,6 +168,24 @@ export const getUserVerification = () => {
     if (!userId) throw new Error('user is not authenticated');
     return Api.getVerificationByUserId(userId).then((data) => {
       dispatch(setVerification(data));
+    });
+  };
+};
+
+export const saveUserAccount = (accountDetails: BankAccount) => {
+  return (dispatch: AppDispatch) => {
+    return Api.saveAccountNumber(accountDetails).then(() => {
+      dispatch(setBankAccountDetails(accountDetails));
+    });
+  };
+};
+
+export const getUserAccountNumber = () => {
+  return (dispatch: AppDispatch, state: AppState) => {
+    const userId = localStorage.getItem('uid');
+    if (!userId) throw new Error('user is not authenticated');
+    return Api.getAccountNumber(userId).then((data) => {
+      dispatch(setBankAccountDetails(data));
     });
   };
 };

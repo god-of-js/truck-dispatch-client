@@ -67,6 +67,9 @@ export default function BidCheckoutPage() {
             userId: user.id || '',
             tripId,
             bidId,
+            tripReference: trip.reference,
+            amountInBid: bid.price,
+            totalAmountPaid: priceWithTDPercent(bid.price),
           }),
         ),
       ),
@@ -157,7 +160,7 @@ export default function BidCheckoutPage() {
         />
         <div className="transporter-details">
           {/* TODO: input user avatar when avatars are ready */}
-          <UiAvatar />
+          <UiAvatar avatar={responsibleTransporter?.avatar} />
           <div>
             <h4 className="your-transporter-header">Your Transporter</h4>
             <div className="transporter-name">{`${responsibleTransporter?.firstName} ${responsibleTransporter?.lastName}`}</div>

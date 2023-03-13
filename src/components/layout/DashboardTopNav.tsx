@@ -6,11 +6,15 @@ import UiIcon from 'ui/UiIcon';
 import UiAvatar from 'ui/UiAvatar';
 import UiDropDownMenu, { DropDownData } from 'ui/UiDropdownMenu';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectDashboardUser } from 'modules/Account';
+
 interface Params {
   [key: string]: string;
 }
 export default function DashboardTopNav() {
   const navigate = useNavigate();
+  const user = useSelector(selectDashboardUser);
   function logOutUser() {
     localStorage.removeItem('uid');
     navigate('/auth/login');
@@ -19,12 +23,12 @@ export default function DashboardTopNav() {
   const dropDownData: DropDownData[] = [
     {
       label: 'View Profile',
-      path: 'profile',
+      path: '/dashboard/profile',
       icon: <UiIcon icon="User" />,
     },
     {
       label: 'Bank Accounts',
-      path: 'profile/accounts',
+      path: '/dashboard/profile/accounts',
       icon: <UiIcon icon="CreditCard" />,
     },
     {
@@ -34,9 +38,15 @@ export default function DashboardTopNav() {
       func: logOutUser,
       icon: <UiIcon icon="SignOut" />,
     },
-  ];
+  ].filter(({ path }) => {
+    if (path === '/dashboard/profile/accounts' && user?.userType === 'agent')
+      return false;
+
+    return true;
+  });
 
   const location = useLocation();
+
   const routeNames = {
     '/dashboard': 'Dashboard',
     '/dashboard/available-jobs': 'Available Jobs',
@@ -52,8 +62,14 @@ export default function DashboardTopNav() {
     '/dashboard/my-trips/:id/bids/:id': 'Trip Bid',
     '/dashboard/my-trips/:id/bids/:id/checkout': 'Pay for Trip',
     '/dashboard/chat': 'Chat',
+    '/dashboard/payments': 'Payments',
     '/dashboard/chat/:id/:id': 'Chat',
+    '/dashboard/profile': 'Profile',
+    '/dashboard/profile/accounts': 'Account',
+    '/dashboard/profile/verification': 'Verification',
+    '/dashboard/my-trips/:id/view-payment-request': 'View Payment Request',
   };
+
   type RouteNames = keyof typeof routeNames;
 
   const routeName = useMemo(() => {
@@ -96,7 +112,7 @@ export default function DashboardTopNav() {
         options={dropDownData}
         trigger={
           <div className="avatar-caret-flex">
-            <UiAvatar />
+            <UiAvatar avatar={user?.avatar} />
             <UiIcon icon="CaretDown" />
           </div>
         }

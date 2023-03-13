@@ -43,7 +43,7 @@ export default function TransporterJobs() {
     dispatch(toAnyAction(getJobs())).finally(() => {
       setLoading(false);
     });
-  });
+  }, []);
 
   return (
     <MyJobsPageStyle>

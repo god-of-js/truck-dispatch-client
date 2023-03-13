@@ -66,7 +66,7 @@ const dropDownData: DropDownData[] = trips.flatMap((trip)=> {
 
     return (
       <TransporterDetails>
-        <UiAvatar />
+        <UiAvatar avatar={transporter.avatar} />
         <div>
           <div>{`${transporter.firstName} ${transporter.lastName}`}</div>
           <div className="transporter-phone">{transporter.phone}</div>

@@ -1,5 +1,11 @@
 import React, { useEffect, Suspense } from 'react';
-import { Outlet, useParams, Link, useNavigate } from 'react-router-dom';
+import {
+  Outlet,
+  useParams,
+  Link,
+  useNavigate,
+  useLocation,
+} from 'react-router-dom';
 import styled from 'styled-components';
 
 import sizes from '../utils/sizes';
@@ -10,8 +16,10 @@ import Loader from 'components/layout/Loader';
 
 export default function AuthLayout() {
   const { userType } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
   const isTransporter = userType === 'transporter';
+  const isAgent = userType === 'agent';
   const layoutTitle = isTransporter
     ? 'Take the road to prosperity'
     : "Customer's first Always";
@@ -29,15 +37,17 @@ export default function AuthLayout() {
   return (
     <>
       <Header>
-        <img
-          src={TruckDispatchLogo}
-          alt="truck-dispatch"
-          width="100"
-          height="100"
-        />
+        <Link to="/">
+          <img
+            src={TruckDispatchLogo}
+            alt="truck-dispatch"
+            width="100"
+            height="100"
+          />
+        </Link>
         <ButtonContainer>
           <Link
-            className={`route ${!isTransporter && 'isActive'}`}
+            className={`route ${isAgent && 'isActive'}`}
             to="/auth/join/agent"
           >
             For Agent
@@ -58,7 +68,7 @@ export default function AuthLayout() {
           </div>
         </ImageContainer>
         <FormContainer>
-          <div className="form-container-inner">
+          <div className="form-container-inner" key={location.pathname}>
             <Suspense fallback={<Loader />}>
               <Outlet />
             </Suspense>
@@ -169,13 +179,14 @@ const ImageContainer = styled.div`
 
 const FormContainer = styled.div`
   width: 100%;
-  padding: ${pxToRem(24)};
+  padding: ${pxToRem(32)} ${pxToRem(28)};
 
   img {
     display: block;
   }
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+    padding: ${pxToRem(28)};
     width: 35%;
 
     img {

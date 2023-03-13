@@ -27,7 +27,7 @@ export default function RegistrationPage() {
     phone: '',
     password: '',
     cPassword: '',
-    userType: (userType as UserWithPassword['userType']) || 'transporter',
+    userType: userType! as UserWithPassword['userType'],
     status: userType === 'transporter' ? 'unverified' : undefined,
     rating: 0,
   });
@@ -41,13 +41,10 @@ export default function RegistrationPage() {
   }
 
   function handleSubmit() {
-    if (formData.cPassword !== formData.password) {
-      alert('Passwords must match');
-    }
     setLoading(true);
-    dispatch(toAnyAction(RegisterUser(formData)))
+    dispatch(toAnyAction(RegisterUser({ ...formData, createdAt: Date.now() })))
       .then(() => {
-        navigate('/dashboard');
+        navigate('/dashboard/my-trips');
       })
       .catch((err: { message: string }) => {
         let msg: string = err.message;
@@ -55,7 +52,6 @@ export default function RegistrationPage() {
         if (err.message === 'Firebase: Error (auth/email-already-in-use).') {
           msg = 'User with this email already exists';
         }
-        console.log(msg);
         Toast.error({ msg });
       })
       .finally(() => {
@@ -125,7 +121,8 @@ export default function RegistrationPage() {
           <PrivacyPolicyParagraph>
             By clicking on the following button, you are willing to become
             TruckDispatch's partner, and agree to our{' '}
-            <Link to="/">privacy policy</Link>
+            <Link to="/privacy-policy">Privacy Policy</Link> and our{' '}
+            <Link to="/terms-and-conditions">Terms of Service</Link>
           </PrivacyPolicyParagraph>
           <UiButton isFullWidth loading={loading}>
             Join as {isTransporter() ? 'a' : 'an'} {userType}

@@ -54,12 +54,16 @@ export default function BecomeOurPartner() {
             with TruckDispatch.
           </p>
           <div className="actions-container">
-            <UiButton isSquare>
-              Join Now <UiIcon icon="ArrowUpRight" />
-            </UiButton>
-            <UiButton variant="secondary" isSquare>
-              I am a transporter
-            </UiButton>
+            <Link to="/auth/join/transporter">
+              <UiButton isSquare>
+                Join Now <UiIcon icon="ArrowUpRight" />
+              </UiButton>
+            </Link>
+            <Link to="/auth/join/agent">
+              <UiButton variant="secondary" isSquare>
+                I am an Agent
+              </UiButton>
+            </Link>
           </div>
         </div>
         <div className="list-content">

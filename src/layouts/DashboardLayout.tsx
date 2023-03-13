@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -6,7 +6,11 @@ import styled from 'styled-components';
 import { toAnyAction } from 'utils/helpers';
 import sizes from '../utils/sizes';
 
-import { getUsers, selectDashboardUser } from 'modules/Account';
+import {
+  getUserAccountNumber,
+  getUsers,
+  selectDashboardUser,
+} from 'modules/Account';
 
 import DashboardSidebar from 'components/layout/DashboardSidebar';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
@@ -16,19 +20,24 @@ import { setChats } from 'modules/Chat';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import db from '../api/firebase';
 import Chat from 'types/Chat';
+import { RootState } from 'modules/index';
 
 export default function DashboardLayout() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const [isLoading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const user = useSelector(selectDashboardUser);
+  const accountDetails = useSelector(
+    (state: RootState) => state.account.bankAccountDetails,
+  );
 
   useEffect(() => {
     const userId = localStorage.getItem('uid');
     if (!userId) {
       navigate('/auth/login');
     } else {
+      dispatch(toAnyAction(getUserAccountNumber()));
       dispatch(toAnyAction(getUsers()))
         .catch((err: Error) => {
           console.log(err.message);
@@ -36,22 +45,35 @@ export default function DashboardLayout() {
         .finally(() => setLoading(false));
     }
   }, []);
-
   useEffect(() => {
-    if (user?.id) {
-      const key = user?.userType === 'agent' ? 'agentId' : 'transporterId';
-      const q = query(collection(db, 'chat'), where(key, '==', user?.id!));
-      onSnapshot(q, (querySnapshot) => {
-        const chats: Chat[] = [];
-        querySnapshot.forEach((doc) => {
-          chats.push(doc.data() as Chat);
-        });
-        dispatch(setChats(chats));
-      });
-    }
-  });
+    if (user?.userType === 'transporter')
+      dispatch(toAnyAction(getUserAccountNumber()));
+  }, [user?.userType]);
 
-  const Component = isLoading ? (
+  // useLayoutEffect(() => {
+  //   let unsubscribe: () => void;
+
+  //   if (user?.id) {
+  //     const key = user.userType === 'agent' ? 'agentId' : 'transporterId';
+  //     const q = query(collection(db, 'chat'), where(key, '==', user.id));
+
+  //     unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //       const chats: Chat[] = [];
+  //       querySnapshot.forEach((doc) => {
+  //         chats.push(doc.data() as Chat);
+  //       });
+  //       dispatch(setChats(chats));
+  //     });
+  //   }
+
+  //   return () => {
+  //     if (unsubscribe) {
+  //       unsubscribe();
+  //     }
+  //   };
+  // }, [user]);
+
+  const Component = loading ? (
     <Loader />
   ) : (
     <Suspense fallback={<Loader />}>
@@ -62,13 +84,27 @@ export default function DashboardLayout() {
     <Layout>
       <DashboardSidebar />
       <Body>
-        {location.pathname !== '/profile/verification' && (
+        {!user?.avatar && (
+          <UiAlert variant="warning">
+            Kindly upload a profile image to foster trust between you and other
+            individuals you may work with. To upload a profile picture,
+            <Link to="/dashboard/profile">Click Here</Link>
+          </UiAlert>
+        )}
+        {!accountDetails && user?.userType === 'transporter' && (
+          <UiAlert variant="warning">
+            Kindly add your bank Account number to be eligible to receive
+            payment from TruckDispatch
+            <Link to="/dashboard/profile/accounts">Click Here</Link>
+          </UiAlert>
+        )}
+        {location.pathname !== '/dashboard/profile/verification' && (
           <div>
             {user?.status === 'unverified' && (
               <UiAlert variant="warning">
                 Verification is required to access all core features of the
                 application. To complete verification,{' '}
-                <Link to="/profile/verification">Click Here</Link>
+                <Link to="/dashboard/profile/verification">Click Here</Link>
               </UiAlert>
             )}
             {user?.status === 'pending_verification' && (
@@ -81,8 +117,11 @@ export default function DashboardLayout() {
             {user?.status === 'rejected' && (
               <UiAlert variant="danger">
                 Your verification request was rejected. Kindly proceed back to
-                the <Link to="/profile/verification">Verification Page</Link> to
-                view why it was rejected and fix the issue.
+                the{' '}
+                <Link to="/dashboard/profile/verification">
+                  Verification Page
+                </Link>{' '}
+                to view why it was rejected and fix the issue.
               </UiAlert>
             )}
           </div>

@@ -25,9 +25,13 @@ import Asset from 'types/Asset';
 
 interface Props {
   onVerified: () => void;
+  parentLoading?: boolean;
 }
 
-export default function VerificationForm({ onVerified = () => {} }: Props) {
+export default function VerificationForm({
+  parentLoading,
+  onVerified = () => {},
+}: Props) {
   const user = useSelector(selectDashboardUser);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState<Verification>({
@@ -75,7 +79,6 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
   }, [verification, formData]);
   function initUpload(item: File | Asset) {
     if (item instanceof File) {
-      console.log('yep');
       return uploadItem(item);
     }
 
@@ -143,13 +146,6 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
       [event.name]: event.value,
     }));
   }
-
-  useEffect(() => {
-    if (user?.status === 'rejected') {
-      setLoading(false);
-      dispatch(toAnyAction(getUserVerification()));
-    }
-  }, [user]);
 
   useEffect(() => {
     if (!formData.userId && verification) setFormData(verification);
@@ -263,7 +259,11 @@ export default function VerificationForm({ onVerified = () => {} }: Props) {
               onChange={setData}
             />
           </GapGrid>
-          <UiButton isFullWidth loading={loading} disabled={disableButton}>
+          <UiButton
+            isFullWidth
+            loading={loading || parentLoading}
+            disabled={disableButton}
+          >
             Submit Verification Details
           </UiButton>
         </Gap>
