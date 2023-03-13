@@ -27,6 +27,7 @@ import { getBidsWithTripId, selectBid, selectTrip } from 'modules/Trips';
 import UiOverlay from 'ui/UiOverlay';
 import NotifyUserToAddAccount from 'components/profile/NotifyUserToAddAccount';
 import { RootState } from 'modules/index';
+import uuidv4 from 'utils/uuid';
 
 export default function ViewTripRequestPayment() {
   const { tripId } = useParams();
@@ -42,6 +43,7 @@ export default function ViewTripRequestPayment() {
   const [formData, setFormData] = useState<PaymentRequest>({
     id: tripId!,
     status: 'pending',
+    paymentReference: uuidv4(),
     driverName: '',
     driverPhoneNumber: '',
     containerVideo: null,
@@ -51,7 +53,9 @@ export default function ViewTripRequestPayment() {
     amount: 0,
     reference: '',
     tripReference: '',
+    paystackRecipient: '',
   });
+
   const [loading, setLoading] = useState(false);
   const [isNotifyUserToAddAccountVisible, setIsNotifyUserToAddAccountVisible] =
     useState(false);
@@ -77,7 +81,6 @@ export default function ViewTripRequestPayment() {
     } else containerVideoAsset = formData.containerVideo;
 
     if (!bid) throw new Error('Bid does not exist');
-
     dispatch(
       toAnyAction(
         requestPaymentByTransporter({
@@ -88,6 +91,7 @@ export default function ViewTripRequestPayment() {
           amount: bid?.price,
           tripReference: trip?.reference!,
           reference: generateReference(),
+          paystackRecipient: accountDetails.paystackRecipientCode,
           status: 'pending',
         }),
       ),
@@ -145,8 +149,7 @@ export default function ViewTripRequestPayment() {
           />
           <div className="btn-container">
             <Link to="/dashboard/payments">
-
-            <UiButton>View Payments</UiButton>
+              <UiButton>View Payments</UiButton>
             </Link>
           </div>
         </>

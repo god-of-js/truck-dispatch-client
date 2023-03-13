@@ -5,7 +5,11 @@ import UiInput from 'components/ui/UiInput';
 import UiSelect, { Option } from 'components/ui/UiSelect';
 import UiModal from 'components/ui/UiModal';
 import UiButton from 'components/ui/UiButton';
-import { loadAccountDetails, loadBanks } from '../../api/paystackIntegrations';
+import {
+  createTransferRecipient,
+  loadAccountDetails,
+  loadBanks,
+} from '../../api/paystackIntegrations';
 import Loader from 'components/layout/Loader';
 import CreateAccountNumberSchema from 'utils/validations/CreateAccountNumberSchema';
 import { useDispatch } from 'react-redux';
@@ -46,7 +50,7 @@ export default function AddAccount({ bankAccountDetails, onClose }: Props) {
     });
   }
 
-  function createAccount() {
+  async function createAccount() {
     const uid = localStorage.getItem('uid');
 
     if (!uid) throw new Error('400: User id not found');
@@ -54,18 +58,22 @@ export default function AddAccount({ bankAccountDetails, onClose }: Props) {
     setLoading(true);
     const bank = banks.find(({ value }) => value === formData.bankCode);
 
-    const data: BankAccount = {
+    const data = {
       type: 'nuban',
       name: accountDetails.account_name,
       account_number: accountDetails.account_number,
       bank_code: formData.bankCode,
       bank_name: bank?.label!,
       currency: 'NGN',
+    };
+    const recipient = await createTransferRecipient(data);
+    const bankAccount = {
+      ...data,
       userId: uid,
       id: uid,
-    };
-
-    dispatch(toAnyAction(saveUserAccount(data)))
+      paystackRecipientCode: recipient.recipient_code,
+    } as BankAccount;
+    dispatch(toAnyAction(saveUserAccount(bankAccount)))
       .then(() => {
         onClose();
         Toast.success({ msg: 'Account Number has been changed' });

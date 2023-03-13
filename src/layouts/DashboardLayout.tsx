@@ -43,10 +43,12 @@ export default function DashboardLayout() {
           console.log(err.message);
         })
         .finally(() => setLoading(false));
-
-      dispatch(toAnyAction(getUserAccountNumber()));
     }
   }, []);
+  useEffect(() => {
+    if (user?.userType === 'transporter')
+      dispatch(toAnyAction(getUserAccountNumber()));
+  }, [user?.userType]);
 
   // useLayoutEffect(() => {
   //   let unsubscribe: () => void;
