@@ -81,6 +81,7 @@ export default function ViewTripStatus() {
 
     if (trip?.status !== 'awaiting_bid' && !trip?.TDO) return true;
   }
+
   function getName(user?: User | null) {
     if (!user) 'Not yet Assigned';
 
@@ -198,9 +199,9 @@ export default function ViewTripStatus() {
               )}
             </>
           )}
-          {user?.userType === 'agent' && (
+          {user?.userType === 'agent' &&  (
             <>
-              {trip?.status === 'payment_complete' && (
+              {trip?.status !== 'awaiting_bid' && !trip?.TDO && (
                 <>
                   <h3>Upload TDO</h3>
                   <p>

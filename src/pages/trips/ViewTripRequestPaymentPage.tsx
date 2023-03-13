@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { selectDashboardUser } from 'modules/Account';
 import PaymentRequest from 'types/PaymentRequest';
@@ -24,10 +24,17 @@ import MessageWithImage from 'ui/MessageWithImage';
 import Loader from 'components/layout/Loader';
 import RequestPaymentSchema from 'utils/validations/RequestPaymentSchema';
 import { getBidsWithTripId, selectBid, selectTrip } from 'modules/Trips';
+import UiOverlay from 'ui/UiOverlay';
+import NotifyUserToAddAccount from 'components/profile/NotifyUserToAddAccount';
+import { RootState } from 'modules/index';
+import uuidv4 from 'utils/uuid';
 
 export default function ViewTripRequestPayment() {
   const { tripId } = useParams();
   const user = useSelector(selectDashboardUser);
+  const accountDetails = useSelector(
+    (state: RootState) => state.account.bankAccountDetails,
+  );
   const trip = useSelector(selectTrip(tripId!));
   const bid = useSelector(selectBid(user?.id!, 'transporterId'));
   const paymentRequest = useSelector(selectPaymentRequestByTripId(tripId!));
@@ -36,6 +43,7 @@ export default function ViewTripRequestPayment() {
   const [formData, setFormData] = useState<PaymentRequest>({
     id: tripId!,
     status: 'pending',
+    paymentReference: uuidv4(),
     driverName: '',
     driverPhoneNumber: '',
     containerVideo: null,
@@ -45,8 +53,12 @@ export default function ViewTripRequestPayment() {
     amount: 0,
     reference: '',
     tripReference: '',
+    paystackRecipient: '',
   });
+
   const [loading, setLoading] = useState(false);
+  const [isNotifyUserToAddAccountVisible, setIsNotifyUserToAddAccountVisible] =
+    useState(false);
   const [pageLoading, setPageLoading] = useState(true);
 
   const disableButton = useMemo(() => {
@@ -55,6 +67,10 @@ export default function ViewTripRequestPayment() {
   }, [paymentRequest, formData]);
 
   async function requestPayment() {
+    if (!accountDetails) {
+      setIsNotifyUserToAddAccountVisible(true);
+      return;
+    }
     setLoading(true);
     let containerVideoAsset;
     if (formData.containerVideo instanceof File) {
@@ -65,7 +81,6 @@ export default function ViewTripRequestPayment() {
     } else containerVideoAsset = formData.containerVideo;
 
     if (!bid) throw new Error('Bid does not exist');
-
     dispatch(
       toAnyAction(
         requestPaymentByTransporter({
@@ -76,6 +91,7 @@ export default function ViewTripRequestPayment() {
           amount: bid?.price,
           tripReference: trip?.reference!,
           reference: generateReference(),
+          paystackRecipient: accountDetails.paystackRecipientCode,
           status: 'pending',
         }),
       ),
@@ -132,7 +148,9 @@ export default function ViewTripRequestPayment() {
             subtitle="We have received your payment request. We would validate your trip status and get back to you. It normally takes a couple minutes for it to be verified. To view the status of the payment, navigate to the transcations page or click the button below"
           />
           <div className="btn-container">
-            <UiButton>View Payment Request</UiButton>
+            <Link to="/dashboard/payments">
+              <UiButton>View Payments</UiButton>
+            </Link>
           </div>
         </>
       ) : (
@@ -196,6 +214,14 @@ export default function ViewTripRequestPayment() {
           </UiForm>
         </>
       )}
+
+      <UiOverlay isVisible={isNotifyUserToAddAccountVisible}>
+        <NotifyUserToAddAccount
+          onClose={() => {
+            setIsNotifyUserToAddAccountVisible(false);
+          }}
+        />
+      </UiOverlay>
     </PageStyling>
   );
 }

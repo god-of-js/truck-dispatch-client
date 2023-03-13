@@ -4,13 +4,15 @@ import OutsideClickHandler from 'react-outside-click-handler';
 import sizes from 'utils/sizes';
 import UiIcon from './UiIcon';
 
+type Size = 'lg' | 'sm';
 interface Props {
   children: React.ReactNode;
+  size?: Size;
   onClose: () => void;
 }
-export default function UiModal({ children, onClose }: Props) {
+export default function UiModal({ children, size = 'lg', onClose }: Props) {
   return (
-    <ModalCard>
+    <ModalCard size={size}>
       <OutsideClickHandler onOutsideClick={onClose}>
         <div className="modal-inner">
           <div className="close-button-container">
@@ -33,11 +35,16 @@ const ModalCard = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
+  overflow-y: auto;
+  max-height: 80%;
+
   .modal-inner {
     padding: ${pxToRem(16)};
   }
+
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    width: 40%;
+    width: ${({ size }: { size: Size }) =>
+      size === 'lg' ? '40%' : pxToRem(480)};
     position: static;
     margin: auto;
     border-radius: ${pxToRem(8)};

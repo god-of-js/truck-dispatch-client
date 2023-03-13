@@ -6,7 +6,11 @@ import styled from 'styled-components';
 import { toAnyAction } from 'utils/helpers';
 import sizes from '../utils/sizes';
 
-import { getUsers, selectDashboardUser } from 'modules/Account';
+import {
+  getUserAccountNumber,
+  getUsers,
+  selectDashboardUser,
+} from 'modules/Account';
 
 import DashboardSidebar from 'components/layout/DashboardSidebar';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
@@ -16,6 +20,7 @@ import { setChats } from 'modules/Chat';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import db from '../api/firebase';
 import Chat from 'types/Chat';
+import { RootState } from 'modules/index';
 
 export default function DashboardLayout() {
   const dispatch = useDispatch();
@@ -23,12 +28,16 @@ export default function DashboardLayout() {
   const location = useLocation();
   const [loading, setLoading] = useState(true);
   const user = useSelector(selectDashboardUser);
+  const accountDetails = useSelector(
+    (state: RootState) => state.account.bankAccountDetails,
+  );
 
   useEffect(() => {
     const userId = localStorage.getItem('uid');
     if (!userId) {
       navigate('/auth/login');
     } else {
+      dispatch(toAnyAction(getUserAccountNumber()));
       dispatch(toAnyAction(getUsers()))
         .catch((err: Error) => {
           console.log(err.message);
@@ -36,6 +45,10 @@ export default function DashboardLayout() {
         .finally(() => setLoading(false));
     }
   }, []);
+  useEffect(() => {
+    if (user?.userType === 'transporter')
+      dispatch(toAnyAction(getUserAccountNumber()));
+  }, [user?.userType]);
 
   // useLayoutEffect(() => {
   //   let unsubscribe: () => void;
@@ -74,8 +87,15 @@ export default function DashboardLayout() {
         {!user?.avatar && (
           <UiAlert variant="warning">
             Kindly upload a profile image to foster trust between you and other
-            individuals you may work with. To upload a profile picture,
+            individuals you may work with. To upload a profile picture,{' '}
             <Link to="/dashboard/profile">Click Here</Link>
+          </UiAlert>
+        )}
+        {!accountDetails && user?.userType === 'transporter' && (
+          <UiAlert variant="warning">
+            Kindly add your bank Account number to be eligible to receive
+            payment from TruckDispatch{' '}
+            <Link to="/dashboard/profile/accounts">Click Here</Link>
           </UiAlert>
         )}
         {location.pathname !== '/dashboard/profile/verification' && (

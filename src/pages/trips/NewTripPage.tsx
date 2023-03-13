@@ -6,7 +6,7 @@ import Trip from 'types/Trip';
 import sizes from 'utils/sizes';
 import uuidv4 from 'utils/uuid';
 import { generateReference, toAnyAction } from 'utils/helpers';
-import { createOrUpdateTrip, setTrips } from 'modules/Trips';
+import { createOrUpdateTrip } from 'modules/Trips';
 
 import UiTimeline, { TimelineStep } from 'ui/UiTimeline';
 import NewTripForm from 'components/trips/NewTripForm';
@@ -15,8 +15,9 @@ import MessageWithImage from 'ui/MessageWithImage';
 import UiButton from 'ui/UiButton';
 import UiBackButton from 'ui/UiBackButton';
 import { selectDashboardUser } from 'modules/Account';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { RootState } from 'modules/index';
+import { Toast } from 'utils/toast';
 
 interface Step extends TimelineStep {
   value: CurrentStep;
@@ -32,6 +33,7 @@ export default function NewTripPage() {
   const user = useSelector(selectDashboardUser);
   const trips = useSelector((state: RootState) => state.trips.trips);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const newTripSteps: Step[] = [
     {
       name: 'Trip Details',
@@ -95,14 +97,17 @@ export default function NewTripPage() {
   function sendTripToDrivers() {
     if (!user?.id) return;
     setLoading(true);
-    const id = uuidv4();
+    const id = defaultFormData.id || uuidv4();
     const reference = generateReference();
     setDefaultFormData({ ...defaultFormData, id, reference });
     return dispatch(
       toAnyAction(createOrUpdateTrip({ ...defaultFormData, id, reference })),
     )
       .then(() => {
-        dispatch(setTrips([...trips, defaultFormData]));
+        if (defaultFormData.id) {
+          Toast.success({ msg: 'Trip has been updated' });
+          navigate(`/dashboard/my-trips/${defaultFormData.id}`);
+        }
       })
       .finally(() => {
         setLoading(false);
@@ -130,11 +135,13 @@ export default function NewTripPage() {
                 loading={loading}
               />
             )}
+
             {currentStep === 'broadcast-successful' && (
               <>
+                {/* TODO: check why newly added trip details does not reflect when you go from here to trip bids */}
                 <MessageWithImage
                   title="Your Trip has been broadcasted"
-                  subtitle={`Your trip has been broadcasted to trusted transporters in our network. It usually takes a couple minutes to get matched with transporters. Expect several transporters to send bids on the trip you just created. You can view the bids created by transporters by clicking the button below. Thank you for trusting us with your dispatch. `}
+                  subtitle={`Your trip has been broadcasted to trusted transporters in our network. It usually takes a couple minutes to get matched with transporters. Expect several transporters to send bids on the trip you just created. You can view bids sent by transporters by clicking the button below. Thank you for trusting us with your dispatch. `}
                 />
                 <div className="button-container">
                   <Link to={`/dashboard/my-trips/${defaultFormData.id}/bids`}>

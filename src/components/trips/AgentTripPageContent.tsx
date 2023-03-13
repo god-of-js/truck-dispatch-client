@@ -9,6 +9,8 @@ import UiAvatar from 'ui/UiAvatar';
 
 import UiButton from 'ui/UiButton';
 import UiTable from 'ui/UiTable';
+import UiIcon from 'ui/UiIcon';
+import { DropDownData } from 'ui/UiDropdownMenu';
 
 export default function AgentTripPageContent() {
   const navigate = useNavigate();
@@ -42,6 +44,17 @@ export default function AgentTripPageContent() {
     },
   ];
 
+  const dropDownData: DropDownData[] = [
+    {
+      label: 'View Trip',
+      func: navigateToTrip,
+    },
+    {
+      label: 'Edit Trip',
+      func: editTrip,
+    },
+  ];
+
   function responsibleTransporterDetails(transporterId?: string) {
     if (!transporterId) return 'Not yet assigned';
     const transporter = transporters.find(({ id }) => id === transporterId);
@@ -65,9 +78,14 @@ export default function AgentTripPageContent() {
       responsibleTransporter: responsibleTransporterDetails(trip.transporterId),
     }));
   }, [trips]);
+  console.log(tripsData);
 
   function navigateToTrip(id: string) {
     navigate(`/dashboard/my-trips/${id}`);
+  }
+
+  function editTrip(id: string) {
+    navigate(`/dashboard/my-trips/${id}/edit`);
   }
 
   return (
@@ -82,6 +100,7 @@ export default function AgentTripPageContent() {
         headers={headers}
         tableTitle="My Trips"
         onRowClick={navigateToTrip}
+        options={dropDownData}
       />
     </>
   );

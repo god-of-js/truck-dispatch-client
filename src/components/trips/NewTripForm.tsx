@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Trip from 'types/Trip';
@@ -18,17 +19,24 @@ import UiSelect from 'ui/UiSelect';
 import sizes from 'utils/sizes';
 import UiTextArea from 'ui/UiTextArea';
 import UiButton from 'ui/UiButton';
+import { useSelector } from 'react-redux';
+import { selectTrip } from 'modules/Trips';
 
 interface Props {
   defaultFormData: Trip;
   nextHandler: (param: Trip) => void;
 }
 export default function NewTripForm({ defaultFormData, nextHandler }: Props) {
+  const { tripId } = useParams();
+  const trip = useSelector(selectTrip(tripId || ''));
   const [formData, setFormData] = useState(defaultFormData);
   const typeOfGoodsOptions = turnArrayToOptions(typeOfGoods);
   const shippingLinesOptions = turnArrayToOptions(shippingLines);
   const jobTypesOptions = turnArrayToOptions(jobTypes);
   const sizeOfContainerOptions = turnArrayToOptions(sizeOfContainer);
+
+  const { pathname } = useLocation();
+  const editMode = pathname.includes('edit');
 
   function onSubmit() {
     nextHandler(formData);
@@ -47,6 +55,12 @@ export default function NewTripForm({ defaultFormData, nextHandler }: Props) {
       label: value,
     }));
   }
+
+  useEffect(() => {
+    if (tripId && !formData.id && trip?.id) {
+      setFormData(trip);
+    }
+  }, [tripId, trip]);
 
   return (
     <UiForm formData={formData} schema={NewTripFormSchema} onSubmit={onSubmit}>
@@ -141,7 +155,7 @@ export default function NewTripForm({ defaultFormData, nextHandler }: Props) {
             onChange={handleChange}
           />
           <SubmitButtonContainer className="submit-button-container">
-            <UiButton>Confirm Trip Details</UiButton>
+            <UiButton> {editMode ? 'Update' : 'Confirm'} Trip Details</UiButton>
           </SubmitButtonContainer>
         </div>
       )}

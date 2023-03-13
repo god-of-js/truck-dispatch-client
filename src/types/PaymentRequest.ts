@@ -3,6 +3,7 @@ import Asset from './Asset';
 export default interface PaymentRequest {
   id: string;
   driverName: string;
+  paystackRecipient: string;
   driverPhoneNumber: string;
   containerVideo: File | null | Asset;
   status: 'pending' | 'rejected' | 'completed';
@@ -12,6 +13,7 @@ export default interface PaymentRequest {
   tripReference: string;
   createdAt?: number;
   updatedAt?: number;
+  paymentReference?: string;
   reference?: string;
   amount?: number;
   agentRemark?: string;

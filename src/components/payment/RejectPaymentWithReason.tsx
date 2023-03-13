@@ -3,6 +3,7 @@ import { requestPaymentByTransporter } from 'modules/Payments';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import PaymentRequest from 'types/PaymentRequest';
 import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
 import UiModal from 'ui/UiModal';
@@ -13,11 +14,14 @@ import RejectPaymentSchema from 'utils/validations/RejectPaymentSchema';
 
 interface Props {
   onClose: () => void;
+  paymentRequest?: PaymentRequest | null;
+  setPaymentRequest: (param: PaymentRequest) => Promise<void>;
 }
-export default function RejectPaymentWithReason({ onClose }: Props) {
-  const paymentRequest = useSelector(
-    (state: RootState) => state.payment.paymentRequest,
-  );
+export default function RejectPaymentWithReason({
+  paymentRequest,
+  onClose,
+  setPaymentRequest,
+}: Props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -27,16 +31,12 @@ export default function RejectPaymentWithReason({ onClose }: Props) {
   function rejectPayment() {
     if (!paymentRequest) throw new Error('payment request does not exist');
     setLoading(true);
-    dispatch(
-      toAnyAction(
-        requestPaymentByTransporter({
-          ...paymentRequest,
-          status: 'rejected',
-          agentRemark: formData.reasonForReject,
-          updatedAt: Date.now(),
-        }),
-      ),
-    )
+    setPaymentRequest({
+      ...paymentRequest,
+      status: 'rejected',
+      agentRemark: formData.reasonForReject,
+      updatedAt: Date.now(),
+    })
       .then(() => {
         Toast.success({
           msg: 'Reject reason sent. Transporter would revert back to you with an updated request.',

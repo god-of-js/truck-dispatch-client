@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import UiField from './UiField';
 import UiIcon from './UiIcon';
 
-interface Option {
+export interface Option {
   value: string;
   label: string;
 }
@@ -38,8 +38,9 @@ export default function UiSelect({
   };
 
   const selectedOption = useMemo(() => {
+    if (!value) return null;
     return options.find((option) => option.value === value) || null;
-  }, [value]);
+  }, [value, options]);
 
   return (
     <OutsideClickHandler onOutsideClick={() => setIsOpen(false)}>

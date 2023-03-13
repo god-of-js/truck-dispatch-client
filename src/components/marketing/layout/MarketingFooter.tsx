@@ -55,7 +55,9 @@ export default function MarketingFooter() {
               {item.children.map((child, childIndex) => (
                 <li key={childIndex}>
                   {child.isExternal ? (
-                    <a href={child.link} target="_blank">{child.title}</a>
+                    <a href={child.link} target="_blank">
+                      {child.title}
+                    </a>
                   ) : (
                     <Link to={child.link}>{child.title}</Link>
                   )}
