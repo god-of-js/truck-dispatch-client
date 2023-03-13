@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Trip from 'types/Trip';
@@ -30,8 +31,11 @@ export default function NewTripForm({ defaultFormData, nextHandler }: Props) {
   const jobTypesOptions = turnArrayToOptions(jobTypes);
   const sizeOfContainerOptions = turnArrayToOptions(sizeOfContainer);
 
+  const {pathname} = useLocation();
+  const editMode = pathname.includes('edit')
+  
   function onSubmit() {
-    nextHandler(formData);
+      nextHandler(formData);
   }
 
   function handleChange(event: { name: string; value: string | null }) {
@@ -141,7 +145,7 @@ export default function NewTripForm({ defaultFormData, nextHandler }: Props) {
             onChange={handleChange}
           />
           <SubmitButtonContainer className="submit-button-container">
-            <UiButton>Confirm Trip Details</UiButton>
+            <UiButton> { editMode? 'Update': 'Confirm' } Trip Details</UiButton>
           </SubmitButtonContainer>
         </div>
       )}

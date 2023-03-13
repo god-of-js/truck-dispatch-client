@@ -1,6 +1,7 @@
 import React, { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
+
 const PageError = lazy(() => import('../components/errors/PageError'));
 
 // LAYOUTS
@@ -45,6 +46,7 @@ const TransporterAccountsPage = lazy(
 // DASHBOARD
 const MyTripsPage = lazy(() => import('../pages/trips/MyTripsPage'));
 const NewTripPage = lazy(() => import('../pages/trips/NewTripPage'));
+const EditTripPage = lazy(() => import('../pages/trips/EditTripPage'))
 const ViewTripPage = lazy(() => import('../pages/trips/ViewTripPage'));
 const ViewTripStatusPage = lazy(
   () => import('../pages/trips/ViewTripStatusPage'),
@@ -144,6 +146,11 @@ const router = createBrowserRouter([
             path: '/dashboard/my-trips/new',
             id: 'New Trip',
             element: <NewTripPage />,
+          },
+          {
+            path: '/dashboard/my-trips/:tripId/edit',
+            id: 'Edit Trip',
+            element: <EditTripPage />,
           },
           {
             path: '/dashboard/my-trips/:tripId',

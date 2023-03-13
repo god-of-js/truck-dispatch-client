@@ -9,10 +9,13 @@ import UiAvatar from 'ui/UiAvatar';
 
 import UiButton from 'ui/UiButton';
 import UiTable from 'ui/UiTable';
+import UiIcon from 'ui/UiIcon';
+import { DropDownData }  from 'ui/UiDropdownMenu';
 
 export default function AgentTripPageContent() {
   const navigate = useNavigate();
   const trips = useSelector((state: RootState) => state.trips.trips);
+  console.log(trips)
   const transporters = useSelector(selectTransporters);
 
   const headers = [
@@ -42,6 +45,19 @@ export default function AgentTripPageContent() {
     },
   ];
 
+const dropDownData: DropDownData[] = trips.flatMap((trip)=> {
+  return[
+    {
+      label: 'View Trip',
+      path: `${trip.id}`
+    },
+    {
+      label: 'Edit Trip',
+      path: `/dashboard/my-trips/${trip.id}/edit`
+    },
+] 
+})
+
   function responsibleTransporterDetails(transporterId?: string) {
     if (!transporterId) return 'Not yet assigned';
     const transporter = transporters.find(({ id }) => id === transporterId);
@@ -65,6 +81,8 @@ export default function AgentTripPageContent() {
       responsibleTransporter: responsibleTransporterDetails(trip.transporterId),
     }));
   }, [trips]);
+  console.log(tripsData);
+  
 
   function navigateToTrip(id: string) {
     navigate(`/dashboard/my-trips/${id}`);
@@ -82,6 +100,7 @@ export default function AgentTripPageContent() {
         headers={headers}
         tableTitle="My Trips"
         onRowClick={navigateToTrip}
+        options={dropDownData}
       />
     </>
   );
