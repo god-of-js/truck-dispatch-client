@@ -53,7 +53,6 @@ export default function ViewTripRequestPayment() {
     amount: 0,
     reference: '',
     tripReference: '',
-    paystackRecipient: '',
   });
 
   const [loading, setLoading] = useState(false);
@@ -91,7 +90,6 @@ export default function ViewTripRequestPayment() {
           amount: bid?.price,
           tripReference: trip?.reference!,
           reference: generateReference(),
-          paystackRecipient: accountDetails.paystackRecipientCode,
           status: 'pending',
         }),
       ),

@@ -1,11 +1,11 @@
 import axios from 'axios';
-import BankAccount from 'types/BankAccount';
-const paystackSecretKey = 'sk_test_1c16bbc1f932d4269d744f67211c30fab3961dda';
+import TransferRecipient from 'types/TransferRecipient';
+import { paystackPrivateKey } from 'utils/privateKeys';
 
 const instance = axios.create({
   baseURL: 'https://api.paystack.co',
   headers: {
-    Authorization: `Bearer ${paystackSecretKey}`,
+    Authorization: `Bearer ${paystackPrivateKey}`,
   },
 });
 
@@ -23,11 +23,16 @@ export function loadAccountDetails(bankCode: string, accountNumber: string) {
     .then(({ data }) => data.data);
 }
 
-export function createTransferRecipient(details: Record<string, string>) {
+export function createTransferRecipient(details: TransferRecipient) {
   return instance
     .post('/transferrecipient', details)
     .then(({ data }) => data.data);
 }
+
+export function deleteTransferRecipient(recipientId: string) {
+  return instance.delete(`/transferrecipient/${recipientId}`);
+}
+
 export function makeTransfer(details: Record<string, string | number>) {
   return instance.post('/transfer', details).then(({ data }) => data);
 }
