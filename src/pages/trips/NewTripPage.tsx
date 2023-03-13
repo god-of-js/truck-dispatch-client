@@ -135,6 +135,7 @@ export default function NewTripPage() {
                 loading={loading}
               />
             )}
+
             {currentStep === 'broadcast-successful' && (
               <>
                 {/* TODO: check why newly added trip details does not reflect when you go from here to trip bids */}
