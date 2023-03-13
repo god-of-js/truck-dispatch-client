@@ -21,7 +21,6 @@ export const TripsSlice = createSlice({
   initialState,
   reducers: {
     setTrips: (state: TripState, action: { payload: Trip[] }) => {
-      console.log(action.payload);
       state.trips = action.payload;
     },
     setJobs: (state: TripState, action: { payload: Trip[] }) => {
@@ -75,9 +74,7 @@ export function createOrUpdateTrip(data: Trip) {
 
 export function getAgentTrips(agentId: string) {
   return (dispatch: AppDispatch) => {
-    return Api.getAgentTrips(agentId).then((data) =>
-      dispatch(setTrips(data))
-    );
+    return Api.getAgentTrips(agentId).then((data) => dispatch(setTrips(data)));
   };
 }
 // Prevent default is used to notify the store that this is not the normal flow, hence we do not need to set the value to state.

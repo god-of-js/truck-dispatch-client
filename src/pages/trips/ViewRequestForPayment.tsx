@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import RejectPaymentWithReason from 'components/payment/RejectPaymentWithReason';
 import { RootState } from 'modules/index';
-import { setPaymentRequest } from 'modules/Payments';
+import {
+  requestPaymentByTransporter,
+  setPaymentRequest,
+} from 'modules/Payments';
 import Asset from 'types/Asset';
 import UiButton from 'ui/UiButton';
 import UiCard from 'ui/UiCard';
@@ -12,20 +15,22 @@ import sizes from 'utils/sizes';
 import ConfirmApprovePayment from 'components/payment/ConfirmApprovePayment';
 import PaymentRequest from 'types/PaymentRequest';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toAnyAction } from 'utils/helpers';
 
 export default function ViewRequestForPayment() {
   const dispatch = useDispatch();
-  const { tripId } = useParams();
-  const navigate = useNavigate()
   const paymentRequest = useSelector(
     (state: RootState) => state.payment.paymentRequest,
   );
   const [isRejectVisible, setIsRejectVisible] = useState(false);
   const [isConfirmVisible, setIsConfirmVisible] = useState(false);
-    function setUpdatedPaymentRequest(request: PaymentRequest) {
-      dispatch(setPaymentRequest(request));
-      navigate(`/dashboard/my-trips/${tripId}/status`)
-    }
+  function setUpdatedPaymentRequest(request: PaymentRequest) {
+    return dispatch(toAnyAction(requestPaymentByTransporter(request))).then(
+      () => {
+        dispatch(setPaymentRequest(request));
+      },
+    );
+  }
   return (
     <CardContainer>
       <UiCard>
@@ -103,6 +108,7 @@ export default function ViewRequestForPayment() {
         <RejectPaymentWithReason
           paymentRequest={paymentRequest}
           onClose={() => setIsRejectVisible(false)}
+          setPaymentRequest={setUpdatedPaymentRequest}
         />
       </UiOverlay>
       <UiOverlay isVisible={isConfirmVisible}>

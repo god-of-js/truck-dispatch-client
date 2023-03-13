@@ -132,7 +132,7 @@ export default function NewTripPage() {
             )}
             {currentStep === 'broadcast-successful' && (
               <>
-              {/* TODO: check why newly added trip details does not reflect when you go from here to trip bids */}
+                {/* TODO: check why newly added trip details does not reflect when you go from here to trip bids */}
                 <MessageWithImage
                   title="Your Trip has been broadcasted"
                   subtitle={`Your trip has been broadcasted to trusted transporters in our network. It usually takes a couple minutes to get matched with transporters. Expect several transporters to send bids on the trip you just created. You can view your trips by pressing the button below. Thank you for trusting us with your dispatch. `}

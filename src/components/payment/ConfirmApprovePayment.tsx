@@ -1,46 +1,38 @@
-import { requestPaymentByTransporter } from 'modules/Payments';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import PaymentRequest from 'types/PaymentRequest';
 import UiButton from 'ui/UiButton';
 
 import UiModal from 'ui/UiModal';
-import { nairaToKobo, toAnyAction } from 'utils/helpers';
+import { nairaToKobo } from 'utils/helpers';
 import { Toast } from 'utils/toast';
 import { makeTransfer } from '../../api/paystackIntegrations';
 
 interface Props {
   onClose: () => void;
   paymentRequest?: PaymentRequest | null;
-  setPaymentRequest: (param: PaymentRequest) => void;
+  setPaymentRequest: (param: PaymentRequest) => Promise<void>;
 }
 export default function ConfirmApprovePayment({
   paymentRequest,
   onClose,
-  setPaymentRequest
+  setPaymentRequest,
 }: Props) {
-  const dispatch = useDispatch();
+  const { tripId } = useParams();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   function setStatusOfPaymentToComplete(paymentDetails: PaymentRequest) {
-    return dispatch(
-      toAnyAction(
-        requestPaymentByTransporter({
-          ...paymentDetails,
-          status: 'completed',
-          updatedAt: Date.now(),
-        }),
-      ),
-    ).then(() => {
-      setPaymentRequest({
-        ...paymentDetails,
-        status: 'completed',
-        updatedAt: Date.now(),
-      })
+    return setPaymentRequest({
+      ...paymentDetails,
+      status: 'completed',
+      updatedAt: Date.now(),
+    }).then(() => {
       Toast.success({
         msg: 'Payment request has been approved.',
       });
+      navigate(`/dashboard/my-trips/${tripId}/status`);
       onClose();
     });
   }
