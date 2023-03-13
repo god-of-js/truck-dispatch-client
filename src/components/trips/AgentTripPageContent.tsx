@@ -15,7 +15,6 @@ import { DropDownData } from 'ui/UiDropdownMenu';
 export default function AgentTripPageContent() {
   const navigate = useNavigate();
   const trips = useSelector((state: RootState) => state.trips.trips);
-  console.log(trips);
   const transporters = useSelector(selectTransporters);
 
   const headers = [

@@ -27,7 +27,7 @@ interface Props {
   nextHandler: (param: Trip) => void;
 }
 export default function NewTripForm({ defaultFormData, nextHandler }: Props) {
-  const {tripId} = useParams();
+  const { tripId } = useParams();
   const trip = useSelector(selectTrip(tripId || ''));
   const [formData, setFormData] = useState(defaultFormData);
   const typeOfGoodsOptions = turnArrayToOptions(typeOfGoods);
@@ -56,11 +56,11 @@ export default function NewTripForm({ defaultFormData, nextHandler }: Props) {
     }));
   }
 
-  useEffect(()=>{
-    if(tripId && !formData.id && trip?.id){
-      setFormData(trip)
+  useEffect(() => {
+    if (tripId && !formData.id && trip?.id) {
+      setFormData(trip);
     }
-  }, [tripId, trip])
+  }, [tripId, trip]);
 
   return (
     <UiForm formData={formData} schema={NewTripFormSchema} onSubmit={onSubmit}>
