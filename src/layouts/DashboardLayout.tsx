@@ -87,14 +87,14 @@ export default function DashboardLayout() {
         {!user?.avatar && (
           <UiAlert variant="warning">
             Kindly upload a profile image to foster trust between you and other
-            individuals you may work with. To upload a profile picture,
+            individuals you may work with. To upload a profile picture,{' '}
             <Link to="/dashboard/profile">Click Here</Link>
           </UiAlert>
         )}
         {!accountDetails && user?.userType === 'transporter' && (
           <UiAlert variant="warning">
             Kindly add your bank Account number to be eligible to receive
-            payment from TruckDispatch
+            payment from TruckDispatch{' '}
             <Link to="/dashboard/profile/accounts">Click Here</Link>
           </UiAlert>
         )}

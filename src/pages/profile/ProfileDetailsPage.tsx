@@ -10,6 +10,8 @@ import UiIcon from 'ui/UiIcon';
 import UiInput from 'ui/UiInput';
 import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
+import { Toast } from 'utils/toast';
+import EditProfileSchema from 'utils/validations/EditProfileSchema';
 import { uploadItem } from '../../api/Cloudinary';
 
 export default function ProfileDetailsPage() {
@@ -28,7 +30,9 @@ export default function ProfileDetailsPage() {
       data.avatar = avatar;
     }
 
-    dispatch(toAnyAction(createOrUpdateUser(data))).finally(() => {
+    dispatch(toAnyAction(createOrUpdateUser(data))).then(() => {
+      Toast.success({ msg: 'Profile has been updated'});
+    }).finally(() => {
       setLoading(false);
     });
   }
@@ -53,13 +57,17 @@ export default function ProfileDetailsPage() {
       <header>
         <h2>{isEditable && 'Edit'} Profile Details</h2>
         {!isEditable && (
-          <UiButton variant="icon" onClick={() => setIsEditable(true)}>
+          <div className="edit-btn">
+
+          <UiButton size="s" variant="neutral" onClick={() => setIsEditable(true)}>
+            Edit Profile
             <UiIcon icon="PencilSimple" size="20" />
           </UiButton>
+          </div>
         )}
       </header>
 
-      <UiForm formData={formData} onSubmit={editProfile}>
+      <UiForm formData={formData} schema={EditProfileSchema} onSubmit={editProfile}>
         {({ errors }) => (
           <>
             <div className="avatar-container">
@@ -77,12 +85,14 @@ export default function ProfileDetailsPage() {
                 value={formData.firstName}
                 name="firstName"
                 disabled={!isEditable}
+                error={errors.firstName}
                 onChange={onChange}
               />
               <UiInput
                 label="Last Name"
                 value={formData.lastName}
                 name="lastName"
+                error={errors.lastName}
                 disabled={!isEditable}
                 onChange={onChange}
               />
@@ -90,13 +100,15 @@ export default function ProfileDetailsPage() {
                 label="Email"
                 value={formData.email}
                 name="email"
-                disabled={!isEditable}
+                error={errors.email}
+                disabled
                 onChange={onChange}
               />
               <UiInput
                 label="Phone Number"
                 value={formData.phone}
                 name="phone"
+                error={errors.phone}
                 disabled={!isEditable}
                 onChange={onChange}
               />
@@ -147,6 +159,12 @@ const CardContainer = styled.div`
   .button-container {
     display: flex;
     gap: ${pxToRem(8)};
+  }
+  .edit-btn {
+    button {
+      display: flex;
+      gap: ${pxToRem(8)};
+    }
   }
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
