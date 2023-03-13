@@ -155,6 +155,11 @@ const router = createBrowserRouter([
             element: <NewTripPage />,
           },
           {
+            path: '/dashboard/my-trips/:tripId/edit',
+            id: 'Edit Trip',
+            element: <NewTripPage />,
+          },
+          {
             path: '/dashboard/my-trips/:tripId',
             id: 'View Trip Layout',
             element: <ViewTripLayout />,

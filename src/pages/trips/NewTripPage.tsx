@@ -15,8 +15,9 @@ import MessageWithImage from 'ui/MessageWithImage';
 import UiButton from 'ui/UiButton';
 import UiBackButton from 'ui/UiBackButton';
 import { selectDashboardUser } from 'modules/Account';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { RootState } from 'modules/index';
+import { Toast } from 'utils/toast';
 
 interface Step extends TimelineStep {
   value: CurrentStep;
@@ -32,6 +33,7 @@ export default function NewTripPage() {
   const user = useSelector(selectDashboardUser);
   const trips = useSelector((state: RootState) => state.trips.trips);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const newTripSteps: Step[] = [
     {
       name: 'Trip Details',
@@ -95,7 +97,7 @@ export default function NewTripPage() {
   function sendTripToDrivers() {
     if (!user?.id) return;
     setLoading(true);
-    const id = uuidv4();
+    const id = defaultFormData.id || uuidv4();
     const reference = generateReference();
     setDefaultFormData({ ...defaultFormData, id, reference });
     return dispatch(
@@ -103,6 +105,10 @@ export default function NewTripPage() {
     )
       .then(() => {
         dispatch(setTrips([...trips, defaultFormData]));
+        if(defaultFormData.id) {
+          Toast.success({msg:'Trip has been updated'})
+          navigate(`/dashboard/my-trips/${defaultFormData.id}`)
+        }
       })
       .finally(() => {
         setLoading(false);

@@ -65,7 +65,7 @@ export function createOrUpdateTrip(data: Trip) {
         dispatch(setTrips([...state().trips.trips, data]));
         return;
       }
-      const trips = state().trips.trips;
+      const trips = [...state().trips.trips];
       trips.splice(currentTripIndex, 1, data);
       dispatch(setTrips(trips));
     });
