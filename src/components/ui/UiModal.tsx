@@ -35,6 +35,9 @@ const ModalCard = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
+  overflow-y: auto;
+  max-height: 80%;
+
   .modal-inner {
     padding: ${pxToRem(16)};
   }

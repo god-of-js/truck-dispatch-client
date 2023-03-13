@@ -30,12 +30,14 @@ export default function ProfileDetailsPage() {
       data.avatar = avatar;
     }
 
-    dispatch(toAnyAction(createOrUpdateUser(data))).then(() => {
-      Toast.success({ msg: 'Profile has been updated'});
-      setIsEditable(false)
-    }).finally(() => {
-      setLoading(false);
-    });
+    dispatch(toAnyAction(createOrUpdateUser(data)))
+      .then(() => {
+        Toast.success({ msg: 'Profile has been updated' });
+        setIsEditable(false);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   function onChange(event: {
@@ -59,16 +61,23 @@ export default function ProfileDetailsPage() {
         <h2>{isEditable && 'Edit'} Profile Details</h2>
         {!isEditable && (
           <div className="edit-btn">
-
-          <UiButton size="s" variant="neutral" onClick={() => setIsEditable(true)}>
-            Edit Profile
-            <UiIcon icon="PencilSimple" size="20" />
-          </UiButton>
+            <UiButton
+              size="s"
+              variant="neutral"
+              onClick={() => setIsEditable(true)}
+            >
+              Edit Profile
+              <UiIcon icon="PencilSimple" size="20" />
+            </UiButton>
           </div>
         )}
       </header>
 
-      <UiForm formData={formData} schema={EditProfileSchema} onSubmit={editProfile}>
+      <UiForm
+        formData={formData}
+        schema={EditProfileSchema}
+        onSubmit={editProfile}
+      >
         {({ errors }) => (
           <>
             <div className="avatar-container">

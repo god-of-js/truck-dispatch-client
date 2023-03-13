@@ -145,7 +145,7 @@ export default function NewTripPage() {
                 />
                 <div className="button-container">
                   <Link to={`/dashboard/my-trips/${defaultFormData.id}/bids`}>
-                    <UiButton>View Trips</UiButton>
+                    <UiButton>View Trip Bids</UiButton>
                   </Link>
                 </div>
               </>

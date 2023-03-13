@@ -88,6 +88,13 @@ export default function ViewTrip() {
   function transporterChecks(path: string) {
     if (path.includes('bids') || path.includes('view-payment-request'))
       return false;
+
+    if (
+      path.includes('request-payment-for-trip') &&
+      paymentRequest?.status === 'completed'
+    ) {
+      return false;
+    }
     return true;
   }
 
