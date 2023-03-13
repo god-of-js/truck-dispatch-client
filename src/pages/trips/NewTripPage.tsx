@@ -104,9 +104,9 @@ export default function NewTripPage() {
       toAnyAction(createOrUpdateTrip({ ...defaultFormData, id, reference })),
     )
       .then(() => {
-        if(defaultFormData.id) {
-          Toast.success({msg:'Trip has been updated'})
-          navigate(`/dashboard/my-trips/${defaultFormData.id}`)
+        if (defaultFormData.id) {
+          Toast.success({ msg: 'Trip has been updated' });
+          navigate(`/dashboard/my-trips/${defaultFormData.id}`);
         }
       })
       .finally(() => {

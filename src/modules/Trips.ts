@@ -59,17 +59,13 @@ export function createOrUpdateTrip(data: Trip) {
   return (dispatch: AppDispatch, state: AppState) => {
     return Api.createOrUpdateTrip(data).then(() => {
       const currentTripIndex = state().trips.trips.findIndex(
-        (trip) => {
-          return trip.id === data.id},
+        (trip) => trip.id === data.id,
       );
-      console.log(currentTripIndex)
       if (currentTripIndex === -1) {
-        console.log('it\'s not ment to bee here');
         dispatch(setTrips([...state().trips.trips, data]));
         return;
       }
       const trips = [...state().trips.trips];
-      console.log(data, currentTripIndex);
       trips[currentTripIndex] = data;
       dispatch(setTrips(trips));
     });
