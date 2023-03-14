@@ -78,7 +78,6 @@ export default function AgentTripPageContent() {
       responsibleTransporter: responsibleTransporterDetails(trip.transporterId),
     }));
   }, [trips]);
-  console.log(tripsData);
 
   function navigateToTrip(id: string) {
     navigate(`/dashboard/my-trips/${id}`);
