@@ -7,6 +7,7 @@ import UiModal from 'components/ui/UiModal';
 import UiButton from 'components/ui/UiButton';
 import {
   createTransferRecipient,
+  deleteTransferRecipient,
   loadAccountDetails,
   loadBanks,
 } from '../../api/paystackIntegrations';
@@ -17,6 +18,7 @@ import { toAnyAction } from 'utils/helpers';
 import { saveUserAccount } from 'modules/Account';
 import { Toast } from 'utils/toast';
 import BankAccount from 'types/BankAccount';
+import TransferRecipient from 'types/TransferRecipient';
 
 interface Props {
   onClose: () => void;
@@ -37,6 +39,7 @@ export default function AddAccount({ bankAccountDetails, onClose }: Props) {
     account_number: '',
     bank_id: '',
   };
+
   const [accountDetails, setAccountDetails] = useState(defaultAccountDetails);
   const [banks, setBanks] = useState<Option[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
@@ -48,6 +51,15 @@ export default function AddAccount({ bankAccountDetails, onClose }: Props) {
       ...formData,
       [event.name]: event.value,
     });
+  }
+
+  function saveTransferRecipient(data: TransferRecipient) {
+    if (bankAccountDetails) {
+      return deleteTransferRecipient(
+        bankAccountDetails.paystackRecipientId,
+      ).then(() => createTransferRecipient(data));
+    }
+    return createTransferRecipient(data);
   }
 
   async function createAccount() {
@@ -66,17 +78,21 @@ export default function AddAccount({ bankAccountDetails, onClose }: Props) {
       bank_name: bank?.label!,
       currency: 'NGN',
     };
-    const recipient = await createTransferRecipient(data);
-    const bankAccount = {
+
+    const recipient = await saveTransferRecipient(data);
+
+    const bankAccount: BankAccount = {
       ...data,
       userId: uid,
       id: uid,
+      paystackRecipientId:  recipient.id,
       paystackRecipientCode: recipient.recipient_code,
-    } as BankAccount;
+    };
+
     dispatch(toAnyAction(saveUserAccount(bankAccount)))
       .then(() => {
         onClose();
-        Toast.success({ msg: 'Account Number has been changed' });
+        Toast.success({ msg: 'Account Number has been updated.' });
       })
       .finally(() => setLoading(false));
   }

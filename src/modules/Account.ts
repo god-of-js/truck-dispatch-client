@@ -180,12 +180,12 @@ export const saveUserAccount = (accountDetails: BankAccount) => {
   };
 };
 
-export const getUserAccountNumber = () => {
-  return (dispatch: AppDispatch, state: AppState) => {
-    const userId = localStorage.getItem('uid');
-    if (!userId) throw new Error('user is not authenticated');
-    return Api.getAccountNumber(userId).then((data) => {
+export const getUserAccountNumber = (uid = localStorage.getItem('uid')) => {
+  return (dispatch: AppDispatch) => {
+    if (!uid) throw new Error('No user id was provided');
+    return Api.getAccountNumber(uid).then((data) => {
       dispatch(setBankAccountDetails(data));
+      return data;
     });
   };
 };
