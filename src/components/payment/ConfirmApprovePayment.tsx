@@ -1,11 +1,13 @@
+import { getUserAccountNumber } from 'modules/Account';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import PaymentRequest from 'types/PaymentRequest';
 import UiButton from 'ui/UiButton';
 
 import UiModal from 'ui/UiModal';
-import { nairaToKobo } from 'utils/helpers';
+import { nairaToKobo, toAnyAction } from 'utils/helpers';
 import { Toast } from 'utils/toast';
 import { makeTransfer } from '../../api/paystackIntegrations';
 
@@ -21,6 +23,7 @@ export default function ConfirmApprovePayment({
 }: Props) {
   const { tripId } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
   function setStatusOfPaymentToComplete(paymentDetails: PaymentRequest) {
@@ -37,20 +40,29 @@ export default function ConfirmApprovePayment({
     });
   }
 
-  function getTransferData(paymentDetails: PaymentRequest) {
+  function getTransferData(
+    paymentDetails: PaymentRequest,
+    recipientCode: string,
+  ) {
     return {
       source: 'balance',
       reason: `TruckDispatch trip-${paymentRequest?.tripReference} payment-${paymentRequest?.reference}`,
       reference: paymentDetails.paymentReference!,
-      recipient: paymentDetails.paystackRecipient,
+      recipient: recipientCode,
       amount: nairaToKobo(paymentDetails.amount!),
     };
   }
 
-  function approvePayment() {
+  async function approvePayment() {
     if (!paymentRequest) throw new Error('Payment request was not provided');
     setLoading(true);
-    const transferData = getTransferData(paymentRequest);
+    const transporterAccountDetails = await dispatch(
+      toAnyAction(getUserAccountNumber(paymentRequest.transporterId)),
+    );
+    const transferData = getTransferData(
+      paymentRequest,
+      transporterAccountDetails.paystackRecipientCode,
+    );
 
     makeTransfer(transferData)
       .then(() => setStatusOfPaymentToComplete(paymentRequest))

@@ -199,7 +199,7 @@ export default function ViewTripStatus() {
               )}
             </>
           )}
-          {user?.userType === 'agent' &&  (
+          {user?.userType === 'agent' && (
             <>
               {trip?.status !== 'awaiting_bid' && !trip?.TDO && (
                 <>
