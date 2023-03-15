@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import sizes from 'utils/sizes';
 import UidropdownMenu, { DropDownData } from './UiDropdownMenu';
+import UiIcon from './UiIcon';
 
 interface Header {
   title: string;
@@ -26,6 +27,9 @@ interface Props {
   headers: Header[];
   options?: DropDownData[];
   onRowClick?: (id: string) => void;
+  noDataHeaderText?: string;
+  noDataImage?: any;
+  noDataParagraphText?: string;
 }
 
 export default function UiTable({
@@ -34,6 +38,9 @@ export default function UiTable({
   headers,
   options,
   onRowClick,
+  noDataHeaderText,
+  noDataImage = "FolderNotchOpen",
+  noDataParagraphText  = "You Have No Data",
 }: Props) {
   const tableHeaders = options
     ? [...headers, { title: '', query: 'actions' }]
@@ -51,30 +58,40 @@ export default function UiTable({
             ))}
           </TableRow>
         </TableHeader>
-        <tbody>
-          {data.map((item) => {
-            return (
-              <TableRow key={item.id}>
-                {headers.map((header, index) => {
-                  return (
-                    <TableDataItem
-                      key={index}
-                      onClick={() => onRowClick?.(item.id)}
-                    >
-                      <div className="mobile-title">{header.title}</div>
-                      <div>{item[header.query]}</div>
-                    </TableDataItem>
-                  );
-                })}
-                {options && (
-                  <td className="menu-container">
-                    <UidropdownMenu options={options} itemId={item.id} />
-                  </td>
-                )}
-              </TableRow>
-            );
-          })}
-        </tbody>
+        {data.length <= 0 ? (
+          <NoDataBox>
+            <h3>{noDataHeaderText}</h3>
+            <div className="icon-container">
+              <UiIcon icon={noDataImage} size="70" />
+            </div>
+            <div className="no-data-text">{noDataParagraphText}</div>
+          </NoDataBox>
+        ) : (
+          <tbody>
+            {data.map((item) => {
+              return (
+                <TableRow key={item.id}>
+                  {headers.map((header, index) => {
+                    return (
+                      <TableDataItem
+                        key={index}
+                        onClick={() => onRowClick?.(item.id)}
+                      >
+                        <div className="mobile-title">{header.title}</div>
+                        <div>{item[header.query]}</div>
+                      </TableDataItem>
+                    );
+                  })}
+                  {options && (
+                    <td className="menu-container">
+                      <UidropdownMenu options={options} itemId={item.id} />
+                    </td>
+                  )}
+                </TableRow>
+              );
+            })}
+          </tbody>
+        )}
       </Table>
     </TableContainer>
   );
@@ -100,6 +117,7 @@ const TableTitle = styled.h2`
 `;
 
 const Table = styled.table`
+  position: relative;
   table-layout: fixed;
   width: 100%;
   border-collapse: collapse;
@@ -162,4 +180,27 @@ const TableDataItem = styled.td`
   font-weight: 700;
   font-size: ${pxToRem(14)};
   line-height: ${pxToRem(20)};
+`;
+
+const NoDataBox = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: ${pxToRem(400)};
+  width: 100%;
+  background: var(--color-gray);
+  text-align: center;
+
+  h3,
+  .icon-container {
+    color: var(--color-gray-500);
+  }
+
+  .no-data-text {
+    color: var(--color-gray-500);
+    font-weight: 700;
+    font-size: ${pxToRem(14)};
+  }
 `;
