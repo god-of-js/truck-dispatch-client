@@ -20,7 +20,6 @@ window.pxToRem = (px: number, baseSize = 16) => `${px / baseSize}rem`;
 window.Intercom('update');
 
 const userId = localStorage.getItem('uid');
-console.log(paystackPrivateKey, CLOUDINARY_IMAGE_UPLOAD_URL, CLOUDINARY_VIDEO_UPLOAD_URL, 'private key');
 if (userId) {
   Api.getUser(userId).then((user: User) => {
     // @ts-ignore
