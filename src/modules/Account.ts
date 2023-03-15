@@ -131,6 +131,7 @@ export function getUsers() {
       });
   };
 }
+
 export function getDashboardUser() {
   return (dispatch: AppDispatch) => {
     const uid = localStorage.getItem('uid');
