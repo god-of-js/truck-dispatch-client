@@ -85,7 +85,7 @@ export default function AddAccount({ bankAccountDetails, onClose }: Props) {
       ...data,
       userId: uid,
       id: uid,
-      paystackRecipientId:  recipient.id,
+      paystackRecipientId: recipient.id,
       paystackRecipientCode: recipient.recipient_code,
     };
 
