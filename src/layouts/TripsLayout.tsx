@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 
@@ -31,7 +31,9 @@ export default function DashboardLayout() {
   const Component = isLoading ? (
     <Loader />
   ) : (
+    <Suspense fallback={<Loader />}>
       <Outlet />
+    </Suspense>
   );
   return <div className="body-components-container">{Component}</div>;
 }
