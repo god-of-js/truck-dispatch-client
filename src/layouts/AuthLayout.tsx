@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense } from 'react';
+import React, { useEffect } from 'react';
 import {
   Outlet,
   useParams,
@@ -69,9 +69,7 @@ export default function AuthLayout() {
         </ImageContainer>
         <FormContainer>
           <div className="form-container-inner" key={location.pathname}>
-            <Suspense fallback={<Loader />}>
               <Outlet />
-            </Suspense>
           </div>
         </FormContainer>
       </Layout>

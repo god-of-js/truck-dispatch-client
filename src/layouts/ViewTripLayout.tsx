@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Suspense } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -122,9 +121,7 @@ export default function ViewTrip() {
       </TabContainer>
       <OutletContainer>
         <UiBackButton />
-        <Suspense fallback={<Loader />}>
           <Outlet />
-        </Suspense>
       </OutletContainer>
       <UiOverlay isVisible={isRatingsModalVisible}>
         <RateTransporter onClose={closeRateTransporter} />

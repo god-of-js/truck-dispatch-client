@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -40,9 +40,7 @@ export default function ProfileLayout() {
         <UiTabs tabs={routes} />
       </TabContainer>
       <OutletContainer>
-        <Suspense fallback={<Loader />}>
           <Outlet />
-        </Suspense>
       </OutletContainer>
     </>
   );
