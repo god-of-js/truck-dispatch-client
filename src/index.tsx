@@ -12,11 +12,7 @@ import getStore from './modules';
 import Loader from 'components/layout/Loader';
 import User from 'types/User';
 import Api from 'Api';
-import {
-  CLOUDINARY_IMAGE_UPLOAD_URL,
-  CLOUDINARY_VIDEO_UPLOAD_URL,
-  paystackPrivateKey,
-} from 'utils/privateKeys';
+
 
 // @ts-ignore
 window.pxToRem = (px: number, baseSize = 16) => `${px / baseSize}rem`;
@@ -24,12 +20,6 @@ window.pxToRem = (px: number, baseSize = 16) => `${px / baseSize}rem`;
 window.Intercom('update');
 
 const userId = localStorage.getItem('uid');
-console.log(
-  paystackPrivateKey,
-  CLOUDINARY_IMAGE_UPLOAD_URL,
-  CLOUDINARY_VIDEO_UPLOAD_URL,
-  'private key',
-);
 if (userId) {
   Api.getUser(userId).then((user: User) => {
     // @ts-ignore
