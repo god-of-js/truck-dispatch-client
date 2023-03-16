@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import sizes from 'utils/sizes';
 import UidropdownMenu, { DropDownData } from './UiDropdownMenu';
-import UiIcon from './UiIcon';
+import UiIcon, { Icons } from './UiIcon';
 
 interface Header {
   title: string;
@@ -28,8 +28,9 @@ interface Props {
   options?: DropDownData[];
   onRowClick?: (id: string) => void;
   noDataHeaderText?: string;
-  noDataImage?: any;
+  noDataImage?: Icons;
   noDataParagraphText?: string;
+  noDataPlaceHolder?: ReactNode;
 }
 
 export default function UiTable({
@@ -39,12 +40,28 @@ export default function UiTable({
   options,
   onRowClick,
   noDataHeaderText,
-  noDataImage = "FolderNotchOpen",
-  noDataParagraphText  = "You Have No Data",
+  noDataImage = 'FolderNotchOpen',
+  noDataParagraphText = 'You Have No Data',
+  noDataPlaceHolder,
 }: Props) {
   const tableHeaders = options
     ? [...headers, { title: '', query: 'actions' }]
     : headers;
+
+  function emptyTablePlaceholder() {
+    return noDataPlaceHolder ? (
+      noDataPlaceHolder
+    ) : (
+      <NoDataBox>
+        <h3>{noDataHeaderText}</h3>
+        <div className="icon-container">
+          <UiIcon icon={noDataImage} size="70" />
+        </div>
+        <div className="no-data-text">{noDataParagraphText}</div>
+      </NoDataBox>
+    );
+  }
+
   return (
     <TableContainer>
       <TableContainerHeader>
@@ -58,14 +75,8 @@ export default function UiTable({
             ))}
           </TableRow>
         </TableHeader>
-        {data.length <= 0 ? (
-          <NoDataBox>
-            <h3>{noDataHeaderText}</h3>
-            <div className="icon-container">
-              <UiIcon icon={noDataImage} size="70" />
-            </div>
-            <div className="no-data-text">{noDataParagraphText}</div>
-          </NoDataBox>
+        {!data.length ? (
+          emptyTablePlaceholder()
         ) : (
           <tbody>
             {data.map((item) => {
