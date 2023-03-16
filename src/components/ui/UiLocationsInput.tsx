@@ -9,6 +9,7 @@ interface Props {
   onChange: (event: { name: string; value: string }) => void;
 }
 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQxjDeHDJjJgpH3dAEI-UsVODM58A3iEI&libraries=places&callback=initMap" async></script>
 export default function UiLocationsInput({
   label,
   name,
