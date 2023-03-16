@@ -9,7 +9,7 @@ export default function MarketingTopNav() {
     <TopNavStyle>
       <div className="top-nav-inner">
         <Link to="/">
-          <img src={TDLogo} alt="Truckdispatch logo" width="250" />
+          <img src={TDLogo} alt="Truckdispatch logo" width="250" height="250" />
         </Link>
         <div className="actions-container">
           <Link to="/auth/join/agent">

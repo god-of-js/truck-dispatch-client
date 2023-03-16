@@ -46,7 +46,9 @@ export default function MarketingFooter() {
     <Footer>
       <div className="footer-inner">
         <div className="logo-container">
-          <img src={TDLogo} alt="" width="350" />
+          <Link to="/">
+            <img src={TDLogo} alt="" width="350" height="250" />
+          </Link>
         </div>
         <div className="list-container">
           {lists.map((item, index) => (
