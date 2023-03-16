@@ -17,11 +17,6 @@ export default function FAQs() {
                 Go To FAQs <UiIcon icon="ArrowUpRight" />
               </UiButton>
             </Link>
-            <Link to="/contact-us">
-              <UiButton isSquare variant="secondary">
-                CONTACT US
-              </UiButton>
-            </Link>
           </div>
         </div>
         <div className="faq-list">
