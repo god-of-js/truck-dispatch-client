@@ -7,3 +7,5 @@ export const CLOUDINARY_IMAGE_UPLOAD_URL = import.meta.env
   .VITE_CLOUDINARY_IMAGE_UPLOAD_URL;
 export const CLOUDINARY_VIDEO_UPLOAD_URL = import.meta.env
   .VITE_CLOUDINARY_VIDEO_UPLOAD_URL;
+
+export const GOOGLE_MAPS_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
