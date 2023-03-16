@@ -77,7 +77,7 @@ export default function AgentTripPageContent() {
         headers={headers}
         tableTitle="My Trips"
         onRowClick={navigateToTrip}
-        noDataHeaderText= "My Trips"
+        noDataHeaderText="My Trips"
       />
     </>
   );
