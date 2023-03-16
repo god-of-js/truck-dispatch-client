@@ -1,4 +1,3 @@
-const isDev = import.meta.env.MODE === 'development';
 export const paystackPublickKey = import.meta.env.VITE_PAYSTACK_PUBLIC_KEY;
 
 export const paystackPrivateKey = import.meta.env.VITE_PAYSTACK_PRIVATE_KEY;
