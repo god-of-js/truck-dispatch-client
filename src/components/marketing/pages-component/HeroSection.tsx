@@ -37,7 +37,7 @@ export default function HeroSection() {
         </div>
       </div>
       <div className="image-container">
-        <img src={TruckImage} alt="" />
+        <img src={TruckImage} alt="Truckdispatch hero" loading='lazy' />
       </div>
     </HeroSectionStyling>
   );
