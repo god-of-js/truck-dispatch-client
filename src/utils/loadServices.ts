@@ -1,29 +1,13 @@
-import Api from 'Api';
-import User from 'types/User';
-import { GOOGLE_MAPS_KEY } from './privateKeys';
+import Api from "Api";
+import User from "types/User";
+import { GOOGLE_MAPS_KEY } from "./privateKeys";
 
-function loadCacheService() {
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function () {
-      navigator.serviceWorker.register('/sw.js').then(
-        function (registration) {
-          console.log(
-            'Service Worker registration successful with scope: ',
-            registration.scope,
-          );
-        },
-        function (err) {
-          console.log('Service Worker registration failed: ', err);
-        },
-      );
-    });
-  }
-}
-
-function loadIntercom() {
-  let intercomScript: HTMLScriptElement | null =
-    document.createElement('script');
-  intercomScript.innerHTML = `
+export default function loadServices() {
+    // Load external scripts after website has completely mounted.
+  
+    let intercomScript: HTMLScriptElement | null =
+      document.createElement('script');
+    intercomScript.innerHTML = `
       (function(){
         var w=window;
         var ic=w.Intercom;
@@ -53,41 +37,33 @@ function loadIntercom() {
         }
       })();
     `;
-  document.head.appendChild(intercomScript);
-  // @ts-ignore
-  window.intercomSettings = {
-    api_base: 'https://api-iam.intercom.io',
-    app_id: 'rglp4uhl',
-  };
-  // @ts-ignore
-  window.Intercom('update');
-
-  const userId = localStorage.getItem('uid');
-  if (userId) {
-    Api.getUser(userId).then((user: User) => {
-      // @ts-ignore
-      window.Intercom('boot', {
-        api_base: 'https://api-iam.intercom.io',
-        app_id: 'rglp4uhl',
-        name: `${user?.firstName} ${user?.lastName}`,
-        email: user.email,
-        created_at: user.createdAt,
-        userType: user.userType,
+    document.head.appendChild(intercomScript);
+    // @ts-ignore
+    window.intercomSettings = {
+      api_base: 'https://api-iam.intercom.io',
+      app_id: 'rglp4uhl',
+    };
+    // @ts-ignore
+    window.Intercom('update');
+  
+    const userId = localStorage.getItem('uid');
+    if (userId) {
+      Api.getUser(userId).then((user: User) => {
+        // @ts-ignore
+        window.Intercom('boot', {
+          api_base: 'https://api-iam.intercom.io',
+          app_id: 'rglp4uhl',
+          name: `${user?.firstName} ${user?.lastName}`,
+          email: user.email,
+          created_at: user.createdAt,
+          userType: user.userType,
+        });
       });
-    });
-  }
-}
-
-function loadGoogleMap() {
-  let script: HTMLScriptElement | null = document.createElement('script');
-  script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_KEY}&libraries=places&callback=initMap`;
-  script.async = true;
-  script.defer = true;
-  document.head.appendChild(script);
-}
-export default function loadServices() {
-  // Load external scripts after website has completely mounted.
-  loadCacheService();
-  loadIntercom();
-  loadGoogleMap();
-}
+    }
+  
+    let script: HTMLScriptElement | null = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_KEY}&libraries=places&callback=initMap`;
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+  };
