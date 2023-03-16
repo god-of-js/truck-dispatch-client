@@ -1,5 +1,8 @@
 import axios from 'axios';
-import { CLOUDINARY_IMAGE_UPLOAD_URL, CLOUDINARY_VIDEO_UPLOAD_URL } from 'utils/privateKeys';
+import {
+  CLOUDINARY_IMAGE_UPLOAD_URL,
+  CLOUDINARY_VIDEO_UPLOAD_URL,
+} from 'utils/privateKeys';
 import Asset from '../types/Asset';
 import uuid from '../utils/uuid';
 import Api from './index';
