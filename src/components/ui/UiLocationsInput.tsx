@@ -27,7 +27,6 @@ export default function UiLocationsInput({
   };
 
   useEffect(() => {
-    // TODO: implement prefilling of google input.
     if (inputRef.current && value) {
       inputRef.current.value = value;
     }
@@ -40,7 +39,6 @@ export default function UiLocationsInput({
     autoCompleteRef.current.addListener('place_changed', async function () {
       // @ts-ignore
       const place = await autoCompleteRef.current.getPlace();
-      // TODO: correct transporter verification
       onChange({ name, value: place.formatted_address });
     });
   }, [value]);

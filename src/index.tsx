@@ -10,29 +10,13 @@ import './variables.css';
 import reportWebVitals from './reportWebVitals';
 import getStore from './modules';
 import Loader from 'components/layout/Loader';
-import User from 'types/User';
-import Api from 'Api';
-
+import loadServices from 'utils/loadServices';
 
 // @ts-ignore
 window.pxToRem = (px: number, baseSize = 16) => `${px / baseSize}rem`;
-// @ts-ignore
-window.Intercom('update');
 
-const userId = localStorage.getItem('uid');
-if (userId) {
-  Api.getUser(userId).then((user: User) => {
-    // @ts-ignore
-    window.Intercom('boot', {
-      api_base: 'https://api-iam.intercom.io',
-      app_id: 'rglp4uhl',
-      name: `${user?.firstName} ${user?.lastName}`,
-      email: user.email,
-      created_at: user.createdAt,
-      userType: user.userType,
-    });
-  });
-}
+window.onload = loadServices;
+
 const root = createRoot(document.getElementById('root')!);
 root.render(
   <React.StrictMode>
