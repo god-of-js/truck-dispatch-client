@@ -90,6 +90,7 @@ function ViewPaymentsPage() {
         headers={headers}
         options={options}
         onRowClick={showPaymentDetails}
+        noDataHeaderText="Recent Payments"
       />
       <UiOverlay isVisible={isViewPaymentVisible}>
         {selectedPayment && (
