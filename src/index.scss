@@ -6,16 +6,19 @@
 @font-face {
   font-family: 'Audiowide';
   src: url('./assets/fonts/Audiowide/Audiowide-Regular.ttf');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'thiccboi-extrabold';
   src: url('./assets/fonts/thicccboi/TTF/THICCCBOI-ExtraBold.ttf');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'thiccboi-medium';
   src: url('./assets/fonts/thicccboi/TTF/THICCCBOI-Medium.ttf');
+  font-display: swap;
 }
 
 body {
