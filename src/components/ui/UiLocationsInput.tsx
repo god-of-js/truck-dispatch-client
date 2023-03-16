@@ -27,25 +27,57 @@ export default function UiLocationsInput({
     types: ['establishment'],
   };
 
-  useEffect(() => {
-    // TODO: implement prefilling of google input.
-    if (inputRef.current && value) {
-      inputRef.current.value = value;
-    }
-    //   @ts-ignore
-    autoCompleteRef.current = new window.google.maps.places.Autocomplete(
-      inputRef.current!,
-      options,
-    );
-    // @ts-ignore
-    autoCompleteRef.current.addListener('place_changed', async function () {
-      // @ts-ignore
-      const place = await autoCompleteRef.current.getPlace();
-      // TODO: correct transporter verification
-      onChange({ name, value: place.formatted_address });
-    });
-  }, [value]);
+  // useEffect(() => {
+  //   // TODO: implement prefilling of google input.
+  //   if (inputRef.current && value) {
+  //     inputRef.current.value = value;
+  //   }
+  //   //   @ts-ignore
+  //   autoCompleteRef.current = new window.google.maps.places.Autocomplete(
+  //     inputRef.current!,
+  //     options,
+  //   );
+  //   // @ts-ignore
+  //   autoCompleteRef.current.addListener('place_changed', async function () {
+  //     // @ts-ignore
+  //     const place = await autoCompleteRef.current.getPlace();
+  //     // TODO: correct transporter verification
+  //     onChange({ name, value: place.formatted_address });
+  //   });
+  // }, [value]);
 
+  useEffect(() => {
+    let script: HTMLScriptElement | null = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBQxjDeHDJjJgpH3dAEI-UsVODM58A3iEI&libraries=places&callback=initMap`;
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+
+    script.onload = () => {
+      if (inputRef.current && value) {
+        inputRef.current.value = value;
+      }
+      //   @ts-ignore
+      autoCompleteRef.current = new window.google.maps.places.Autocomplete(
+        inputRef.current!,
+        options,
+      );
+      // @ts-ignore
+      autoCompleteRef.current.addListener('place_changed', async function () {
+        // @ts-ignore
+        const place = await autoCompleteRef.current.getPlace();
+        // TODO: correct transporter verification
+        onChange({ name, value: place.formatted_address });
+      });
+    };
+
+    return () => {
+      // Remove the script tag when the component is unmounted
+      if (script) {
+        script.remove();
+      }
+    };
+  }, [value]);
   return (
     <UiField label={label} name={name} error={error}>
       <input className="global-input" ref={inputRef} key={value} />
