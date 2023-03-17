@@ -2,6 +2,7 @@ import React, { Suspense, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { Toaster } from 'react-hot-toast';
 
 import { toAnyAction } from 'utils/helpers';
 import sizes from '../utils/sizes';
@@ -76,9 +77,12 @@ export default function DashboardLayout() {
   const Component = loading ? (
     <Loader />
   ) : (
+    <>
     <Suspense fallback={<Loader />}>
       <Outlet />
     </Suspense>
+      <Toaster position="bottom-right" reverseOrder={true} />
+    </>
   );
   return (
     <Layout>

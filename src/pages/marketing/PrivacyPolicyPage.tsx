@@ -1,10 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
+import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
+
 import sizes from 'utils/sizes';
 
 export default function PrivacyPolicyPage() {
   return (
     <PrivacyPolicyStyling>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Privacy Policy - TruckDispatch</title>
+        <link
+          rel="canonical"
+          href="https://www.gettruckdispatch.com/privacy-policy"
+        />
+        <meta property="og:image" content={Logo} />
+      </Helmet>
       <h2>Privacy Policy</h2>
       <p>
         This privacy policy (this "Privacy Policy") explains how personal

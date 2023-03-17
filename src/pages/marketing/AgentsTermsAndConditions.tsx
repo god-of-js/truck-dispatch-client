@@ -1,10 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
+import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
+
 import sizes from 'utils/sizes';
 
 export default function AgentsTermsAndConditions() {
   return (
     <AgentsTNCStyling>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Terms and Conditions - TruckDispatch</title>
+        <link
+          rel="canonical"
+          href="https://www.gettruckdispatch.com/terms-and-conditions"
+        />
+        <meta property="og:image" content={Logo} />
+      </Helmet>
       <h2>General contracting terms and conditions</h2>
       <p>
         Welcome to TruckDispatch, an online platform connecting agents with

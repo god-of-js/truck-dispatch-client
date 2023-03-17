@@ -1,12 +1,23 @@
-import FAQList from 'components/marketing/FAQList';
 import React from 'react';
 import styled from 'styled-components';
+
+import { Helmet } from 'react-helmet';
+import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
+
+import FAQList from 'components/marketing/FAQList';
 import UiButton from 'ui/UiButton';
 import sizes from 'utils/sizes';
 
 export default function FAQsPage() {
   return (
     <FAQsStyling>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Frequently Asked Questions - TruckDispatch</title>
+        <meta name="description" content="Frequently asked questions about TruckDispatch operations."></meta>
+        <link rel="canonical" href="https://www.gettruckdispatch.com/faqs" />
+        <meta property="og:image" content={Logo} />
+      </Helmet>
       <div className="inner">
         <h3>Frequently Asked Questions</h3>
         <FAQList />

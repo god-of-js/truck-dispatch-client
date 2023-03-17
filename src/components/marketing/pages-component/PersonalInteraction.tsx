@@ -56,7 +56,7 @@ export default function PersonalInteraction() {
         </Link>
       </div>
       <div className="img-container">
-        <img src={AgentWithTrailer} alt="Truck dispatch agent" loading='lazy' />
+        <img src={AgentWithTrailer} alt="Truck dispatch agent" loading="lazy" />
       </div>
     </PersonalInteractionStyling>
   );
