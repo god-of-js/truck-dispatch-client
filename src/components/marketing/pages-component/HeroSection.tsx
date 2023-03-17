@@ -55,7 +55,6 @@ const HeroSectionStyling = styled.section`
     height: 100%;
     display: flex;
     width: 100%;
-
     &-inner {
       width: 100%;
       height: 100%;
@@ -63,10 +62,10 @@ const HeroSectionStyling = styled.section`
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: ${pxToRem(40)};
+      padding: ${pxToRem(40)} ${pxToRem(25)};
 
       h2 {
-        font-size: ${pxToRem(32)};
+        font-size: ${pxToRem(27)};
         font-family: 'thiccboi-extrabold';
         font-weight: normal;
         margin: 0;
@@ -76,12 +75,14 @@ const HeroSectionStyling = styled.section`
       }
       .btn-container {
         display: flex;
-        gap: ${pxToRem(16)};
-        margin-top: ${pxToRem(56)};
+        gap: ${pxToRem(10)};
+        margin-top: ${pxToRem(35)};
         width: 100%;
 
         button {
-          gap: ${pxToRem(16)};
+          gap: ${pxToRem(9)};
+          font-size: ${pxToRem(10)};
+          padding: 0 ${pxToRem(10)};
         }
       }
     }
@@ -98,6 +99,35 @@ const HeroSectionStyling = styled.section`
       height: 100%;
     }
   }
+  @media only screen and (min-width: ${sizes.tabletMidWidth}) {
+    flex-direction: row;
+    padding: 0;
+    .text-content {
+      width: 50%;
+      &-inner{
+        padding: ${pxToRem(40)};
+        h2{
+          font-size: ${pxToRem(32)};
+        }
+        .btn-container{
+          gap: ${pxToRem(16)};
+          margin-top: ${pxToRem(56)};
+          button{
+            gap: ${pxToRem(16)};
+            font-size: ${pxToRem(12)};
+            padding: 0 ${pxToRem(16)};
+          }
+        }
+      }
+    }
+    .image-container {
+      width: 65%;
+      padding: 0;
+      img {
+        width: 100%;
+      }
+    }
+  }
   @media only screen and (min-width: ${sizes.tablet}) {
     height: 100vh;
     .text-content {
@@ -112,18 +142,4 @@ const HeroSectionStyling = styled.section`
     }
   }
 
-  @media only screen and (min-width: ${sizes.tabletMidWidth}) {
-    flex-direction: row;
-    padding: 0;
-    .text-content {
-      width: 50%;
-    }
-    .image-container {
-      width: 65%;
-      padding: 0;
-      img {
-        width: 100%;
-      }
-    }
-  }
 `;
