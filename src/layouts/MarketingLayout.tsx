@@ -16,5 +16,5 @@ export default function MarketingLayout() {
 }
 
 const Body = styled.div`
-  /* overflow-x: hidden; */
+  overflow-x: hidden;
 `;
