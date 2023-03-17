@@ -78,9 +78,9 @@ export default function DashboardLayout() {
     <Loader />
   ) : (
     <>
-    <Suspense fallback={<Loader />}>
-      <Outlet />
-    </Suspense>
+      <Suspense fallback={<Loader />}>
+        <Outlet />
+      </Suspense>
       <Toaster position="bottom-right" reverseOrder={true} />
     </>
   );

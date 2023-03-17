@@ -14,7 +14,10 @@ export default function FAQsPage() {
       <Helmet>
         <meta charSet="utf-8" />
         <title>Frequently Asked Questions - TruckDispatch</title>
-        <meta name="description" content="Frequently asked questions about TruckDispatch operations."></meta>
+        <meta
+          name="description"
+          content="Frequently asked questions about TruckDispatch operations."
+        ></meta>
         <link rel="canonical" href="https://www.gettruckdispatch.com/faqs" />
         <meta property="og:image" content={Logo} />
       </Helmet>

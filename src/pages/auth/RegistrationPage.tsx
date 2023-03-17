@@ -62,7 +62,7 @@ export default function RegistrationPage() {
       });
   }
 
-  const isTransporter =  userType === 'transporter';
+  const isTransporter = userType === 'transporter';
   const isAgent = userType === 'agent';
   const heading = isTransporter ? 'Join Our Team' : 'Deliver with us';
 
@@ -70,7 +70,9 @@ export default function RegistrationPage() {
     <>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>{`Join us as a${isAgent ? 'n' : ''} ${userType}`} - TruckDispatch</title>
+        <title>
+          {`Join us as a${isAgent ? 'n' : ''} ${userType}`} - TruckDispatch
+        </title>
         <link
           rel="canonical"
           href="https://www.gettruckdispatch.com/terms-and-conditions"
