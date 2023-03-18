@@ -3,24 +3,24 @@ import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
 let firebaseConfig = {
-  apiKey: 'AIzaSyCLyjacirS_zPH6VtVHMBLmcVJCrNPeR70',
-  authDomain: 'truckdispatch-dev-a1507.firebaseapp.com',
-  projectId: 'truckdispatch-dev-a1507',
-  storageBucket: 'truckdispatch-dev-a1507.appspot.com',
-  messagingSenderId: '719504794862',
-  appId: '1:719504794862:web:22fd09976742bff55bbfff',
-  measurementId: 'G-2Z959Q0MBY',
+  apiKey: "AIzaSyBQvKF_vSVJ5NdG2xUw9BxIGpwJ2J_Wr7M",
+  authDomain: "truckdispatch-dev-f91c5.firebaseapp.com",
+  projectId: "truckdispatch-dev-f91c5",
+  storageBucket: "truckdispatch-dev-f91c5.appspot.com",
+  messagingSenderId: "933361691211",
+  appId: "1:933361691211:web:8be58978b0a426a25dbbce",
+  measurementId: "G-1VGQYX724K"
 };
 // @ts-ignore
 if (process.env.NODE_ENV === 'production') {
   firebaseConfig = {
-    apiKey: 'AIzaSyBfZ0JA-L7KEsGSjhRHeS5xpBg8BdEYTVo',
-    authDomain: 'truckdispatch-bd60c.firebaseapp.com',
-    projectId: 'truckdispatch-bd60c',
-    storageBucket: 'truckdispatch-bd60c.appspot.com',
-    messagingSenderId: '74982091969',
-    appId: '1:74982091969:web:4953ce83c4de1731073840',
-    measurementId: 'G-7QEDX9F755',
+    apiKey: "AIzaSyCJPLkHg56lgScrtj6HSS08BAkuvmSutgY",
+    authDomain: "truckdispatch-prod.firebaseapp.com",
+    projectId: "truckdispatch-prod",
+    storageBucket: "truckdispatch-prod.appspot.com",
+    messagingSenderId: "1032360007058",
+    appId: "1:1032360007058:web:c6bacf9e6ae3b2b1de5d4b",
+    measurementId: "G-PWFKVW0ZSK"
   };
 }
 
