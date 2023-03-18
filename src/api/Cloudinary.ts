@@ -4,6 +4,7 @@ import {
   CLOUDINARY_UPLOAD_PRESET,
   CLOUDINARY_VIDEO_UPLOAD_URL,
 } from 'utils/privateKeys';
+import { Toast } from 'utils/toast';
 import Asset from '../types/Asset';
 import uuid from '../utils/uuid';
 import Api from './index';
@@ -31,8 +32,7 @@ function uploadItem(file: File, isImage = true): Promise<Asset> {
         });
       })
       .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.error(err);
+        Toast.error({ msg: err.response.data.error.message });
       });
   });
 }

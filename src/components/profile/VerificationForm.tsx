@@ -75,6 +75,7 @@ export default function VerificationForm({
   const disableButton = useMemo(() => {
     return aValueHasBeenChanged<Verification>(verification!, formData);
   }, [verification, formData]);
+
   function initUpload(item: File | Asset) {
     if (item instanceof File) {
       return uploadItem(item);
@@ -83,29 +84,18 @@ export default function VerificationForm({
     return item;
   }
   async function verifyUser() {
-    setLoading(true);
-    const idDocUrl = await initUpload(formData.idDoc as File);
-    const homeUtilityBill = await initUpload(formData.homeUtilityBill as File);
-    const guarantorIdDoc = await initUpload(formData.guarantor.idDoc as File);
+    try {
+      setLoading(true);
+      const idDocUrl = await initUpload(formData.idDoc as File);
+      const homeUtilityBill = await initUpload(
+        formData.homeUtilityBill as File,
+      );
+      const guarantorIdDoc = await initUpload(formData.guarantor.idDoc as File);
 
-    if (!user?.id) return;
-    dispatch(
-      toAnyAction(
-        sendVerificationDetailsToAdmin({
-          ...formData,
-          idDoc: idDocUrl,
-          userId: user.id,
-          homeUtilityBill,
-          guarantor: {
-            ...formData.guarantor,
-            idDoc: guarantorIdDoc,
-          },
-        }),
-      ),
-    )
-      .then(() => {
-        dispatch(
-          setVerification({
+      if (!user?.id) return;
+      dispatch(
+        toAnyAction(
+          sendVerificationDetailsToAdmin({
             ...formData,
             idDoc: idDocUrl,
             userId: user.id,
@@ -115,13 +105,30 @@ export default function VerificationForm({
               idDoc: guarantorIdDoc,
             },
           }),
-        );
-        onVerified();
-      })
-      .catch((err: Error) => {
-        console.log(err);
-      })
-      .finally(() => setLoading(false));
+        ),
+      )
+        .then(() => {
+          dispatch(
+            setVerification({
+              ...formData,
+              idDoc: idDocUrl,
+              userId: user.id,
+              homeUtilityBill,
+              guarantor: {
+                ...formData.guarantor,
+                idDoc: guarantorIdDoc,
+              },
+            }),
+          );
+          onVerified();
+        })
+        .catch((err: Error) => {
+          console.log(err);
+        })
+        .finally(() => setLoading(false));
+    } catch (e) {
+      setLoading(false);
+    }
   }
 
   function setData(event: {

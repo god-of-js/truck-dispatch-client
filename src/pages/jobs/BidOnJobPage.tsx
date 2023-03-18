@@ -88,10 +88,6 @@ export default function BidOnJob() {
       setNotFound(true);
     }
 
-    if (bid?.transporterId === user?.id) {
-      navigate(`/my-trips/${bid?.id}`);
-      return;
-    }
     if (bid && !formData.tripId) setFormData(bid);
     if (tripId && !bid) {
       dispatch(toAnyAction(getBidsWithTripId(tripId))).finally(() =>
