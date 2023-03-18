@@ -74,9 +74,7 @@ export default function AuthLayout() {
         </ImageContainer>
         <FormContainer>
           <div className="form-container-inner" key={location.pathname}>
-            <Suspense fallback={<Loader />}>
-              <Outlet />
-            </Suspense>
+            <Outlet />
           </div>
         </FormContainer>
       </Layout>
