@@ -12,8 +12,6 @@ const ViewTripBidsLayout = lazy(() => import('../layouts/ViewTripBidsLayout'));
 const TripsLayout = lazy(() => import('../layouts/TripsLayout'));
 const ChatLayout = lazy(() => import('../layouts/ChatLayout'));
 
-const ComponentsView = lazy(() => import('../pages/Components'));
-
 // Auth
 const RegistrationPage = lazy(() => import('../pages/auth/RegistrationPage'));
 const LoginPage = lazy(() => import('../pages/auth/LoginPage'));
@@ -201,10 +199,6 @@ const router = createBrowserRouter([
         element: <ViewPaymentsPage />,
       },
     ],
-  },
-  {
-    path: '/components',
-    element: <ComponentsView />,
   },
   {
     path: 'auth',

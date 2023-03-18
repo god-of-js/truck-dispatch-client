@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { usePaystackPayment } from 'react-paystack';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
 
 import {
   createOrUpdateBid,
@@ -101,76 +103,85 @@ export default function BidCheckoutPage() {
   }
 
   return (
-    <CardContainer>
-      <header>
-        <img src={TruckDispatchLogo} alt="Truck dispatch logo" />
-        <div>
-          <span className="price-title">Total: </span>
-          <span className="price">
-            &#8358;{abbreviateNumber(priceWithTDPercent(bid?.price || 0))}
-          </span>
-        </div>
-      </header>
-      <h2>Thanks for trusting us to handle your dispatch, {user?.firstName}</h2>
-      <h4>We wish you a safe trucking run.</h4>
-      <Receipt>
-        <Section>
-          <div>Total</div>
+    <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Checkout - TruckDispatch</title>
+        <meta property="og:image" content={Logo} />
+      </Helmet>
+      <CardContainer>
+        <header>
+          <img src={TruckDispatchLogo} alt="Truck dispatch logo" />
           <div>
-            &#8358;{abbreviateNumber(priceWithTDPercent(bid?.price || 0))}
+            <span className="price-title">Total: </span>
+            <span className="price">
+              &#8358;{abbreviateNumber(priceWithTDPercent(bid?.price || 0))}
+            </span>
           </div>
-        </Section>
-        <Section>
-          <div>Base Fare</div>
-          <div>&#8358;{abbreviateNumber(bid?.price || 0)}</div>
-        </Section>
-        <Section>
-          <div>Agency Fee</div>
-          <div>&#8358;{abbreviateNumber(tdPercentage(bid?.price || 0))}</div>
-        </Section>
-        <Section>
-          <UiButton
-            loading={loading}
-            onClick={() => initializePayment(onSuccess)}
-          >
-            Complete Payment
-          </UiButton>
-        </Section>
-      </Receipt>
-      <SafetyPrecautions>
-        <h2>The safety of your goods is our priority</h2>
-        <p>
-          We are committed to improving your experience and are always looking
-          for ways to ensure your goods are as safe as possible when dispatching
-          with us.{' '}
-        </p>
-        {/* TODO: replace link with link to blog */}
-        <Link to="/">
-          {' '}
-          <div className="learn-more-text">Learn More</div>{' '}
-          <UiIcon icon="ArrowRight" size="20" />
-        </Link>
-      </SafetyPrecautions>
-      <TripDetails>
-        <h2>Trip Details</h2>
-        <TripPickupAndDropOff
-          pickup={trip?.pickUpAddress || ''}
-          dropOff={trip?.deliveryAddress || ''}
-        />
-        <div className="transporter-details">
-          {/* TODO: input user avatar when avatars are ready */}
-          <UiAvatar avatar={responsibleTransporter?.avatar} />
-          <div>
-            <h4 className="your-transporter-header">Your Transporter</h4>
-            <div className="transporter-name">{`${responsibleTransporter?.firstName} ${responsibleTransporter?.lastName}`}</div>
+        </header>
+        <h2>
+          Thanks for trusting us to handle your dispatch, {user?.firstName}
+        </h2>
+        <h4>We wish you a safe trucking run.</h4>
+        <Receipt>
+          <Section>
+            <div>Total</div>
+            <div>
+              &#8358;{abbreviateNumber(priceWithTDPercent(bid?.price || 0))}
+            </div>
+          </Section>
+          <Section>
+            <div>Base Fare</div>
+            <div>&#8358;{abbreviateNumber(bid?.price || 0)}</div>
+          </Section>
+          <Section>
+            <div>Agency Fee</div>
+            <div>&#8358;{abbreviateNumber(tdPercentage(bid?.price || 0))}</div>
+          </Section>
+          <Section>
+            <UiButton
+              loading={loading}
+              onClick={() => initializePayment(onSuccess)}
+            >
+              Complete Payment
+            </UiButton>
+          </Section>
+        </Receipt>
+        <SafetyPrecautions>
+          <h2>The safety of your goods is our priority</h2>
+          <p>
+            We are committed to improving your experience and are always looking
+            for ways to ensure your goods are as safe as possible when
+            dispatching with us.{' '}
+          </p>
+          {/* TODO: replace link with link to blog */}
+          <Link to="/">
+            {' '}
+            <div className="learn-more-text">Learn More</div>{' '}
+            <UiIcon icon="ArrowRight" size="20" />
+          </Link>
+        </SafetyPrecautions>
+        <TripDetails>
+          <h2>Trip Details</h2>
+          <TripPickupAndDropOff
+            pickup={trip?.pickUpAddress || ''}
+            dropOff={trip?.deliveryAddress || ''}
+          />
+          <div className="transporter-details">
+            {/* TODO: input user avatar when avatars are ready */}
+            <UiAvatar avatar={responsibleTransporter?.avatar} />
+            <div>
+              <h4 className="your-transporter-header">Your Transporter</h4>
+              <div className="transporter-name">{`${responsibleTransporter?.firstName} ${responsibleTransporter?.lastName}`}</div>
+            </div>
           </div>
-        </div>
-      </TripDetails>
-      {/* TODO: input referral details for user to refer another client or driver to enable him earn bonuses */}
-      <ContactSupportMessage>
-        If you need help, contact support
-      </ContactSupportMessage>
-    </CardContainer>
+        </TripDetails>
+        {/* TODO: input referral details for user to refer another client or driver to enable him earn bonuses */}
+        <ContactSupportMessage>
+          If you need help, contact support
+        </ContactSupportMessage>
+      </CardContainer>
+    </>
   );
 }
 

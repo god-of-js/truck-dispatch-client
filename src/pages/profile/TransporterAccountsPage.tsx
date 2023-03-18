@@ -1,4 +1,6 @@
 import React, { useMemo, useState } from 'react';
+import { Helmet } from 'react-helmet';
+import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
 import styled from 'styled-components';
 import UiButton from 'components/ui/UiButton';
 import UiOverlay from 'components/ui/UiOverlay';
@@ -7,7 +9,6 @@ import { useSelector } from 'react-redux';
 import sizes from 'utils/sizes';
 import UiCard from 'ui/UiCard';
 import { RootState } from 'modules/index';
-import Loader from 'components/layout/Loader';
 
 export default function AccountDetailsPage() {
   const accountDetails = useSelector(
@@ -57,6 +58,11 @@ export default function AccountDetailsPage() {
 
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Bank Account - TruckDispatch</title>
+        <meta property="og:image" content={Logo} />
+      </Helmet>
       <AccountPageStyling>
         <UiCard>
           <header>

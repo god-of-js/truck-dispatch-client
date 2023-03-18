@@ -27,8 +27,7 @@ export default function FileUploadWidget({
   const displayComponent = children || defaultComponent();
   const fileTypeSelector = {
     image: 'image/*',
-    document:
-      'application/pdf',
+    document: 'application/pdf',
     video: 'video/mp4,video/x-m4v,video/*',
   };
 

@@ -9,4 +9,5 @@ export const CLOUDINARY_VIDEO_UPLOAD_URL = import.meta.env
 
 export const GOOGLE_MAPS_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
 
-export const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+export const CLOUDINARY_UPLOAD_PRESET = import.meta.env
+  .VITE_CLOUDINARY_UPLOAD_PRESET;

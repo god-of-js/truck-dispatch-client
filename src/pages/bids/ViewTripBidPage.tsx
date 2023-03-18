@@ -1,12 +1,13 @@
-import Ratings from 'components/ratings/Ratings';
-
 import { RootState } from 'modules/index';
 import { getTransporterTrips, selectBid } from 'modules/Trips';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
+import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
 import Trip from 'types/Trip';
+import Ratings from 'components/ratings/Ratings';
 import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
 import {
@@ -52,57 +53,67 @@ export default function ViewTripBidPage() {
   }, []);
 
   return (
-    <PageStyling>
-      <CardContainer>
-        <Heading>View Bid Details</Heading>
-        <Section>
-          <div className="title">Transporter</div>
-          <div className="value">
-            <TransporterDetails>
-              <UiAvatar avatar={getUser(bid?.transporterId || '')?.avatar} />
-              <span>{`${getUser(bid?.transporterId || '')?.firstName} ${
-                getUser(bid?.transporterId || '')?.lastName
-              }`}</span>
-            </TransporterDetails>
-          </div>
-        </Section>
-        <Section>
-          <div className="title">Transporter Ratings</div>
-          <div className="value">
-            <Ratings rating={getUser(bid?.transporterId || '')?.rating || 0} />
-          </div>
-        </Section>
-        <Section>
+    <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>View Bid - TruckDispatch</title>
+        <meta property="og:image" content={Logo} />
+      </Helmet>
+      <PageStyling>
+        <CardContainer>
+          <Heading>View Bid Details</Heading>
+          <Section>
+            <div className="title">Transporter</div>
+            <div className="value">
+              <TransporterDetails>
+                <UiAvatar avatar={getUser(bid?.transporterId || '')?.avatar} />
+                <span>{`${getUser(bid?.transporterId || '')?.firstName} ${
+                  getUser(bid?.transporterId || '')?.lastName
+                }`}</span>
+              </TransporterDetails>
+            </div>
+          </Section>
+          <Section>
+            <div className="title">Transporter Ratings</div>
+            <div className="value">
+              <Ratings
+                rating={getUser(bid?.transporterId || '')?.rating || 0}
+              />
+            </div>
+          </Section>
+          {/* TODO: implement number of completed trips */}
+          {/* <Section>
           <div className="title">Number of completed trips</div>
           <div className="value">
             {noOfTransporterTrips} completed trips
             <></>
           </div>
-        </Section>
-        <Section>
-          <div className="title">Price of trip</div>
-          <div className="value">
-            &#8358;{abbreviateNumber(priceWithTDPercent(bid?.price!))}
-          </div>
-        </Section>
-        <Section>
-          <div className="title">Truck's present location</div>
-          <div className="value">{bid?.presentLocation}</div>
-        </Section>
-        <Section>
-          <div className="title">Extra Notes</div>
-          <div className="value">{bid?.extraNotes || 'N/A'}</div>
-        </Section>
-        <SubmitButtonContainer className="submit-button-container">
-          {/* <Link to={`/chat/${user?.id}/${bid?.transporterId}`}>
+        </Section> */}
+          <Section>
+            <div className="title">Price of trip</div>
+            <div className="value">
+              &#8358;{abbreviateNumber(priceWithTDPercent(bid?.price!))}
+            </div>
+          </Section>
+          <Section>
+            <div className="title">Truck's present location</div>
+            <div className="value">{bid?.presentLocation}</div>
+          </Section>
+          <Section>
+            <div className="title">Extra Notes</div>
+            <div className="value">{bid?.extraNotes || 'N/A'}</div>
+          </Section>
+          <SubmitButtonContainer className="submit-button-container">
+            {/* <Link to={`/chat/${user?.id}/${bid?.transporterId}`}>
             <UiButton variant="secondary-outlined">Negotiate Bid</UiButton>
           </Link> */}
-          <Link to={`/my-trips/${tripId}/bids/${bidId}/checkout`}>
-            <UiButton>Accept Bid</UiButton>
-          </Link>
-        </SubmitButtonContainer>
-      </CardContainer>
-    </PageStyling>
+            <Link to={`/my-trips/${tripId}/bids/${bidId}/checkout`}>
+              <UiButton>Accept Bid</UiButton>
+            </Link>
+          </SubmitButtonContainer>
+        </CardContainer>
+      </PageStyling>
+    </>
   );
 }
 

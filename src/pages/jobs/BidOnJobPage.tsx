@@ -4,6 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { aValueHasBeenChanged, toAnyAction } from 'utils/helpers';
 import styled from 'styled-components';
 
+import { Helmet } from 'react-helmet';
+import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
 import sizes from 'utils/sizes';
 import uuidv4 from 'utils/uuid';
 import { Toast } from 'utils/toast';
@@ -86,7 +88,10 @@ export default function BidOnJob() {
       setNotFound(true);
     }
 
-    if (bid?.transporterId === user?.id) {navigate(`/my-trips/${bid?.id}`); return;}
+    if (bid?.transporterId === user?.id) {
+      navigate(`/my-trips/${bid?.id}`);
+      return;
+    }
     if (bid && !formData.tripId) setFormData(bid);
     if (tripId && !bid) {
       dispatch(toAnyAction(getBidsWithTripId(tripId))).finally(() =>
@@ -96,79 +101,86 @@ export default function BidOnJob() {
   }, [bid]);
 
   return (
-    <BidOnJobPageStyle>
-      <UiBackButton />
-      <CardContainer>
-        {pageLoading ? (
-          <Loader />
-        ) : notFound ? (
-          <NotFoundError />
-        ) : (
-          <>
-            <h2>Bid on Job</h2>
-            <UiForm
-              formData={formData}
-              schema={BidForJobSchema}
-              onSubmit={sendJobBid}
-            >
-              {({ errors }) => (
-                <>
-                  <GridContainer>
-                    <UiInput
-                      name="price"
-                      value={formData.price}
-                      label="Price Of Trip(in Naira)"
-                      type="number"
-                      error={errors.price}
+    <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Submit Bid - TruckDispatch</title>
+        <meta property="og:image" content={Logo} />
+      </Helmet>
+      <BidOnJobPageStyle>
+        <UiBackButton />
+        <CardContainer>
+          {pageLoading ? (
+            <Loader />
+          ) : notFound ? (
+            <NotFoundError />
+          ) : (
+            <>
+              <h2>Bid on Job</h2>
+              <UiForm
+                formData={formData}
+                schema={BidForJobSchema}
+                onSubmit={sendJobBid}
+              >
+                {({ errors }) => (
+                  <>
+                    <GridContainer>
+                      <UiInput
+                        name="price"
+                        value={formData.price}
+                        label="Price Of Trip(in Naira)"
+                        type="number"
+                        error={errors.price}
+                        onChange={setValues}
+                      />
+                      <UiLocationsInput
+                        label="Present Truck Location"
+                        name="presentLocation"
+                        value={formData.presentLocation!}
+                        error={errors.presentLocation}
+                        onChange={setValues}
+                      />
+                    </GridContainer>
+                    <GridContainer>
+                      <UiInput
+                        name="driverName"
+                        value={formData.driverName}
+                        label="Driver Name"
+                        error={errors.driverName}
+                        onChange={setValues}
+                      />
+                      <UiInput
+                        label="Truck Plate Number"
+                        name="truckPlateNumber"
+                        value={formData.truckPlateNumber}
+                        error={errors.truckPlateNumber}
+                        onChange={setValues}
+                      />
+                    </GridContainer>
+                    <UiTextArea
+                      name="extraNotes"
+                      value={formData.extraNotes || ''}
+                      label="Extra Notes(optional)"
                       onChange={setValues}
                     />
-                    <UiLocationsInput
-                      label="Present Truck Location"
-                      name="presentLocation"
-                      value={formData.presentLocation!}
-                      error={errors.presentLocation}
-                      onChange={setValues}
-                    />
-                  </GridContainer>
-                  <GridContainer>
-                    <UiInput
-                      name="driverName"
-                      value={formData.driverName}
-                      label="Driver Name"
-                      error={errors.driverName}
-                      onChange={setValues}
-                    />
-                    <UiInput
-                      label="Truck Plate Number"
-                      name="truckPlateNumber"
-                      value={formData.truckPlateNumber}
-                      error={errors.truckPlateNumber}
-                      onChange={setValues}
-                    />
-                  </GridContainer>
-                  <UiTextArea
-                    name="extraNotes"
-                    value={formData.extraNotes || ''}
-                    label="Extra Notes(optional)"
-                    onChange={setValues}
-                  />
-                  <div className="button-container">
-                    <UiButton loading={loading} disabled={disableButton}>
-                      {bid ? 'Update Bid' : 'Send Bid to Agent'}
-                    </UiButton>
-                  </div>
-                </>
-              )}
-            </UiForm>
-          </>
-        )}
-      </CardContainer>
-      <UiOverlay isVisible={isBidCreationSuccessfulModalVisible}>
-        <BidCreationSuccessful
-          onClose={() => setIsBidCreationSuccessfulModalVisible(false)}
-        />
-      </UiOverlay>
-    </BidOnJobPageStyle>
+                    <div className="button-container">
+                      <UiButton loading={loading} disabled={disableButton}>
+                        {bid ? 'Update Bid' : 'Send Bid to Agent'}
+                      </UiButton>
+                    </div>
+                  </>
+                )}
+              </UiForm>
+            </>
+          )}
+        </CardContainer>
+        <UiOverlay isVisible={isBidCreationSuccessfulModalVisible}>
+          <BidCreationSuccessful
+            onClose={() => setIsBidCreationSuccessfulModalVisible(false)}
+          />
+        </UiOverlay>
+      </BidOnJobPageStyle>
+    </>
   );
 }
 

@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { Helmet } from 'react-helmet';
+import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
 import PaymentRequest from 'types/PaymentRequest';
 import FileUploadWidget from 'ui/FileUploadWidget';
 import UiButton from 'ui/UiButton';
@@ -136,91 +138,98 @@ export default function ViewTripRequestPayment() {
   }, []);
 
   return (
-    <PageStyling>
-      {pageLoading ? (
-        <Loader />
-      ) : paymentRequest && paymentRequest?.status !== 'rejected' ? (
-        <>
-          <MessageWithImage
-            title="Payment request has been received"
-            subtitle="We have received your payment request. We would validate your trip status and get back to you. It normally takes a couple minutes for it to be verified. To view the status of the payment, navigate to the transcations page or click the button below"
-          />
-          <div className="btn-container">
-            <Link to="/payments">
-              <UiButton>View Payments</UiButton>
-            </Link>
-          </div>
-        </>
-      ) : (
-        <>
-          <h2>Request Payment</h2>
-          <p>To request payment, the following are required:</p>
-          <ul>
-            <li>
-              A video showing the container on the truck as well as the truck
-              plate number.
-            </li>
-            <li>Driver Name</li>
-            <li>Driver Phone Number</li>
-          </ul>
-          <UiForm
-            formData={formData}
-            schema={RequestPaymentSchema}
-            onSubmit={requestPayment}
-          >
-            {({ errors }) => (
-              <>
-                <GridContainer>
-                  <UiInput
-                    label="Driver Full Name"
-                    value={formData.driverName}
-                    name="driverName"
-                    error={errors.driverName}
-                    onChange={setData}
-                  />
-                  <UiInput
-                    label="Driver Phone Number"
-                    type="phone"
-                    value={formData.driverPhoneNumber}
-                    name="driverPhoneNumber"
-                    error={errors.driverPhoneNumber}
-                    onChange={setData}
-                  />
-                  <UiInput
-                    label="Truck Plate Number"
-                    value={formData.truckPlateNumber}
-                    name="truckPlateNumber"
-                    error={errors.truckPlateNumber}
-                    onChange={setData}
-                  />
-                  <FileUploadWidget
-                    label="Video of the container on truck"
-                    fileType="video"
-                    name="containerVideo"
-                    error={errors.containerVideo}
-                    value={formData.containerVideo as File}
-                    onChange={setData}
-                  />
-                </GridContainer>
-                <UiButton loading={loading} disabled={disableButton}>
-                  {formData.status === 'rejected'
-                    ? 'Update Payment Request'
-                    : 'Request Payment'}
-                </UiButton>
-              </>
-            )}
-          </UiForm>
-        </>
-      )}
+    <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Request Payment - TruckDispatch</title>
+        <meta property="og:image" content={Logo} />
+      </Helmet>
+      <PageStyling>
+        {pageLoading ? (
+          <Loader />
+        ) : paymentRequest && paymentRequest?.status !== 'rejected' ? (
+          <>
+            <MessageWithImage
+              title="Payment request has been received"
+              subtitle="We have received your payment request. We would validate your trip status and get back to you. It normally takes a couple minutes for it to be verified. To view the status of the payment, navigate to the transcations page or click the button below"
+            />
+            <div className="btn-container">
+              <Link to="/payments">
+                <UiButton>View Payments</UiButton>
+              </Link>
+            </div>
+          </>
+        ) : (
+          <>
+            <h2>Request Payment</h2>
+            <p>To request payment, the following are required:</p>
+            <ul>
+              <li>
+                A video showing the container on the truck as well as the truck
+                plate number.
+              </li>
+              <li>Driver Name</li>
+              <li>Driver Phone Number</li>
+            </ul>
+            <UiForm
+              formData={formData}
+              schema={RequestPaymentSchema}
+              onSubmit={requestPayment}
+            >
+              {({ errors }) => (
+                <>
+                  <GridContainer>
+                    <UiInput
+                      label="Driver Full Name"
+                      value={formData.driverName}
+                      name="driverName"
+                      error={errors.driverName}
+                      onChange={setData}
+                    />
+                    <UiInput
+                      label="Driver Phone Number"
+                      type="phone"
+                      value={formData.driverPhoneNumber}
+                      name="driverPhoneNumber"
+                      error={errors.driverPhoneNumber}
+                      onChange={setData}
+                    />
+                    <UiInput
+                      label="Truck Plate Number"
+                      value={formData.truckPlateNumber}
+                      name="truckPlateNumber"
+                      error={errors.truckPlateNumber}
+                      onChange={setData}
+                    />
+                    <FileUploadWidget
+                      label="Video of the container on truck"
+                      fileType="video"
+                      name="containerVideo"
+                      error={errors.containerVideo}
+                      value={formData.containerVideo as File}
+                      onChange={setData}
+                    />
+                  </GridContainer>
+                  <UiButton loading={loading} disabled={disableButton}>
+                    {formData.status === 'rejected'
+                      ? 'Update Payment Request'
+                      : 'Request Payment'}
+                  </UiButton>
+                </>
+              )}
+            </UiForm>
+          </>
+        )}
 
-      <UiOverlay isVisible={isNotifyUserToAddAccountVisible}>
-        <NotifyUserToAddAccount
-          onClose={() => {
-            setIsNotifyUserToAddAccountVisible(false);
-          }}
-        />
-      </UiOverlay>
-    </PageStyling>
+        <UiOverlay isVisible={isNotifyUserToAddAccountVisible}>
+          <NotifyUserToAddAccount
+            onClose={() => {
+              setIsNotifyUserToAddAccountVisible(false);
+            }}
+          />
+        </UiOverlay>
+      </PageStyling>
+    </>
   );
 }
 
