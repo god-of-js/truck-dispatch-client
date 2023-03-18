@@ -2,7 +2,6 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Toaster } from 'react-hot-toast';
 
 import { toAnyAction } from 'utils/helpers';
 import sizes from '../utils/sizes';
@@ -49,29 +48,6 @@ export default function DashboardLayout() {
       dispatch(toAnyAction(getUserAccountNumber()));
   }, [user?.userType]);
 
-  // useLayoutEffect(() => {
-  //   let unsubscribe: () => void;
-
-  //   if (user?.id) {
-  //     const key = user.userType === 'agent' ? 'agentId' : 'transporterId';
-  //     const q = query(collection(db, 'chat'), where(key, '==', user.id));
-
-  //     unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //       const chats: Chat[] = [];
-  //       querySnapshot.forEach((doc) => {
-  //         chats.push(doc.data() as Chat);
-  //       });
-  //       dispatch(setChats(chats));
-  //     });
-  //   }
-
-  //   return () => {
-  //     if (unsubscribe) {
-  //       unsubscribe();
-  //     }
-  //   };
-  // }, [user]);
-
   const Component = loading ? (
     <Loader />
   ) : (
@@ -79,7 +55,6 @@ export default function DashboardLayout() {
       <Suspense fallback={<Loader />}>
         <Outlet />
       </Suspense>
-      <Toaster position="bottom-right" reverseOrder={true} />
     </>
   );
   return (
