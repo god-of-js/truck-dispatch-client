@@ -1,14 +1,16 @@
-import { selectAgents, selectTransporters } from 'modules/Account';
-import { RootState } from 'modules/index';
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { selectAgents } from 'modules/Account';
+import { RootState } from 'modules/index';
 import Trip from 'types/Trip';
 import UiAvatar from 'ui/UiAvatar';
 
 import UiButton from 'ui/UiButton';
+import UiIcon from 'ui/UiIcon';
 import UiTable from 'ui/UiTable';
+import sizes from 'utils/sizes';
 
 export default function AgentTripPageContent() {
   const navigate = useNavigate();
@@ -67,9 +69,22 @@ export default function AgentTripPageContent() {
   }, [trips]);
 
   function navigateToTrip(id: string) {
-    navigate(`/dashboard/my-trips/${id}`);
+    navigate(`/my-trips/${id}`);
   }
 
+  const noTripsYet = (
+    <NoTripsYet>
+      <UiIcon icon="FolderNotchOpen" size="70" />
+      <p>
+        You have not been assigned any trips yet. Kindly head over to the{' '}
+        <Link to="/available-jobs">Jobs</Link> page to bid for mouthwatering
+        trips.
+      </p>
+      <Link to="/available-jobs">
+        <UiButton variant="neutral">Bid for jobs</UiButton>
+      </Link>
+    </NoTripsYet>
+  );
   return (
     <>
       <UiTable
@@ -77,17 +92,11 @@ export default function AgentTripPageContent() {
         headers={headers}
         tableTitle="My Trips"
         onRowClick={navigateToTrip}
-        noDataHeaderText="My Trips"
+        noDataPlaceHolder={noTripsYet}
       />
     </>
   );
 }
-
-const CreateTripButtonContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: ${pxToRem(8)};
-`;
 
 const AgentDetails = styled.div`
   display: flex;
@@ -96,5 +105,20 @@ const AgentDetails = styled.div`
   .transporter-phone {
     font-weight: 400;
     font-size: ${pxToRem(14)};
+  }
+`;
+
+const NoTripsYet = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  p {
+    width: 80%;
+    font-size: ${pxToRem(14)};
+    @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
+      width: 60%;
+    }
   }
 `;

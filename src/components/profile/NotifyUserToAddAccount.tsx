@@ -22,7 +22,7 @@ export default function NotifyUserToAddAccount({ onClose }: Props) {
       </TextContent>
 
       <ButtonContainer>
-        <Link to="/dashboard/profile/accounts">
+        <Link to="/profile/accounts">
           <UiButton size="s">Add Account</UiButton>
         </Link>
       </ButtonContainer>

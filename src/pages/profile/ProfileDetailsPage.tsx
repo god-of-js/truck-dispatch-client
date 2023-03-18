@@ -1,7 +1,10 @@
-import { createOrUpdateUser, selectDashboardUser } from 'modules/Account';
+import { RootState } from 'modules/index';
+import { createOrUpdateUser, setUser } from 'modules/Account';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
+import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
 import User from 'types/User';
 import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
@@ -15,7 +18,7 @@ import EditProfileSchema from 'utils/validations/EditProfileSchema';
 import { uploadItem } from '../../api/Cloudinary';
 
 export default function ProfileDetailsPage() {
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState(user || ({} as User));
   const [isEditable, setIsEditable] = useState(false);
@@ -32,6 +35,7 @@ export default function ProfileDetailsPage() {
 
     dispatch(toAnyAction(createOrUpdateUser(data)))
       .then(() => {
+        dispatch(setUser(data));
         Toast.success({ msg: 'Profile has been updated' });
         setIsEditable(false);
       })
@@ -56,89 +60,96 @@ export default function ProfileDetailsPage() {
   }
 
   return (
-    <CardContainer>
-      <header>
-        <h2>{isEditable && 'Edit'} Profile Details</h2>
-        {!isEditable && (
-          <div className="edit-btn">
-            <UiButton
-              size="s"
-              variant="neutral"
-              onClick={() => setIsEditable(true)}
-            >
-              Edit Profile
-              <UiIcon icon="PencilSimple" size="20" />
-            </UiButton>
-          </div>
-        )}
-      </header>
-
-      <UiForm
-        formData={formData}
-        schema={EditProfileSchema}
-        onSubmit={editProfile}
-      >
-        {({ errors }) => (
-          <>
-            <div className="avatar-container">
-              <UiAvatar
-                size="lg"
-                isEdit={isEditable}
-                name="avatar"
-                avatar={formData.avatar}
-                onChange={onChange}
-              />
+    <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Profile - TruckDispatch</title>
+        <meta property="og:image" content={Logo} />
+      </Helmet>
+      <CardContainer>
+        <header>
+          <h2>{isEditable && 'Edit'} Profile Details</h2>
+          {!isEditable && (
+            <div className="edit-btn">
+              <UiButton
+                size="s"
+                variant="neutral"
+                onClick={() => setIsEditable(true)}
+              >
+                Edit Profile
+                <UiIcon icon="PencilSimple" size="20" />
+              </UiButton>
             </div>
-            <GridSpacer>
-              <UiInput
-                label="First Name"
-                value={formData.firstName}
-                name="firstName"
-                disabled={!isEditable}
-                error={errors.firstName}
-                onChange={onChange}
-              />
-              <UiInput
-                label="Last Name"
-                value={formData.lastName}
-                name="lastName"
-                error={errors.lastName}
-                disabled={!isEditable}
-                onChange={onChange}
-              />
-              <UiInput
-                label="Email"
-                value={formData.email}
-                name="email"
-                error={errors.email}
-                disabled
-                onChange={onChange}
-              />
-              <UiInput
-                label="Phone Number"
-                value={formData.phone}
-                name="phone"
-                error={errors.phone}
-                disabled={!isEditable}
-                onChange={onChange}
-              />
-            </GridSpacer>
-            {isEditable && (
-              <div className="button-container">
-                <UiButton loading={loading}>Update Profile</UiButton>
-                <UiButton
-                  variant="secondary"
-                  type="button"
-                  onClick={cancelEdit}
-                >
-                  Cancel
-                </UiButton>
+          )}
+        </header>
+
+        <UiForm
+          formData={formData}
+          schema={EditProfileSchema}
+          onSubmit={editProfile}
+        >
+          {({ errors }) => (
+            <>
+              <div className="avatar-container">
+                <UiAvatar
+                  size="lg"
+                  isEdit={isEditable}
+                  name="avatar"
+                  avatar={formData.avatar}
+                  onChange={onChange}
+                />
               </div>
-            )}
-          </>
-        )}
-      </UiForm>
-    </CardContainer>
+              <GridSpacer>
+                <UiInput
+                  label="First Name"
+                  value={formData.firstName}
+                  name="firstName"
+                  disabled={!isEditable}
+                  error={errors.firstName}
+                  onChange={onChange}
+                />
+                <UiInput
+                  label="Last Name"
+                  value={formData.lastName}
+                  name="lastName"
+                  error={errors.lastName}
+                  disabled={!isEditable}
+                  onChange={onChange}
+                />
+                <UiInput
+                  label="Email"
+                  value={formData.email}
+                  name="email"
+                  error={errors.email}
+                  disabled
+                  onChange={onChange}
+                />
+                <UiInput
+                  label="Phone Number"
+                  value={formData.phone}
+                  name="phone"
+                  error={errors.phone}
+                  disabled={!isEditable}
+                  onChange={onChange}
+                />
+              </GridSpacer>
+              {isEditable && (
+                <div className="button-container">
+                  <UiButton loading={loading}>Update Profile</UiButton>
+                  <UiButton
+                    variant="secondary"
+                    type="button"
+                    onClick={cancelEdit}
+                  >
+                    Cancel
+                  </UiButton>
+                </div>
+              )}
+            </>
+          )}
+        </UiForm>
+      </CardContainer>
+    </>
   );
 }
 

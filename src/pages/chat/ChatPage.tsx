@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { RootState } from 'modules/index';
-import { selectDashboardUser } from 'modules/Account';
+
 import {
   selectChatByChatId,
   createOrUpdateChat,
@@ -26,7 +26,7 @@ export default function ChatPage() {
   const { agentId, transporterId } = useParams();
   const dispatch = useDispatch();
   const chatBottomRef = useRef(null);
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
   const chats = useSelector(selectChatByChatId(`${agentId}-${transporterId}`));
   const users = useSelector((state: RootState) => state.account.users);
   const alternateUsersId = user?.id === transporterId ? agentId : transporterId;

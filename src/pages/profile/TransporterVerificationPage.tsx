@@ -1,12 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import { Helmet } from 'react-helmet';
+import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
 
 import {
   createOrUpdateUser,
   getUsers,
   getUserVerification,
-  selectDashboardUser,
 } from '../../modules/Account';
 
 import User from 'types/User';
@@ -22,7 +23,7 @@ export default function TransporterVerificationPage() {
   const dispatch = useDispatch();
   const [isVerified, setIsVerified] = useState(false);
   const [loading, setLoading] = useState(false);
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
   const userVerification = useSelector(
     (state: RootState) => state.account.verification,
   );
@@ -83,17 +84,24 @@ export default function TransporterVerificationPage() {
   }
 
   return (
-    <VerificationPageStyling>
-      <TransportVerificationCard>
-        {componentBasedOnVerificationStatus}
-      </TransportVerificationCard>
-      {user?.status === 'rejected' && (
-        <FeedbackCard>
-          <h2>Admin Remark</h2>
-          <p>{userVerification?.adminMessage}</p>
-        </FeedbackCard>
-      )}
-    </VerificationPageStyling>
+    <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>KYC - TruckDispatch</title>
+        <meta property="og:image" content={Logo} />
+      </Helmet>
+      <VerificationPageStyling>
+        <TransportVerificationCard>
+          {componentBasedOnVerificationStatus}
+        </TransportVerificationCard>
+        {user?.status === 'rejected' && (
+          <FeedbackCard>
+            <h2>Admin Remark</h2>
+            <p>{userVerification?.adminMessage}</p>
+          </FeedbackCard>
+        )}
+      </VerificationPageStyling>
+    </>
   );
 }
 

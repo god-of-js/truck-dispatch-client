@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
 
 import { loginUser } from '../../modules/Account';
 
@@ -34,7 +36,7 @@ export default function LoginPage() {
     setLoading(true);
     dispatch(toAnyAction(loginUser(formData)))
       .then(() => {
-        navigate('/dashboard/my-trips');
+        navigate('/my-trips');
       })
       .catch((err: { message: string }) => {
         let msg = err.message;
@@ -55,48 +57,59 @@ export default function LoginPage() {
   }
 
   return (
-    <UiForm schema={loginSchema} formData={formData} onSubmit={handleSubmit}>
-      {({ errors }) => (
-        <>
-          <Heading>Sign in</Heading>
-          <Margin>
-            <UiInput
-              label="Email*"
-              value={formData.email}
-              name="email"
-              error={errors.email}
-              onChange={handleChange}
-            />
-          </Margin>
-          <Margin>
-            <UiInput
-              type="password"
-              label="Password*"
-              name="password"
-              value={formData.password!}
-              error={errors.password}
-              onChange={handleChange}
-            />
-          </Margin>
-          <PrivacyPolicyParagraph>
-            By clicking on the following button, you are willing to become
-            TruckDispatch's partner, and agree to our{' '}
-            <Link to="/">privacy policy</Link>
-          </PrivacyPolicyParagraph>
-          <UiButton isFullWidth loading={loading}>
-            Sign In
-          </UiButton>
-          {/* <ForgotPassword>
+    <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Login - TruckDispatch</title>
+        <link
+          rel="canonical"
+          href="https://dashboard.gettruckdispatch.com/auth/login"
+        />
+        <meta property="og:image" content={Logo} />
+      </Helmet>
+      <UiForm schema={loginSchema} formData={formData} onSubmit={handleSubmit}>
+        {({ errors }) => (
+          <>
+            <Heading>Sign in</Heading>
+            <Margin>
+              <UiInput
+                label="Email*"
+                value={formData.email}
+                name="email"
+                error={errors.email}
+                onChange={handleChange}
+              />
+            </Margin>
+            <Margin>
+              <UiInput
+                type="password"
+                label="Password*"
+                name="password"
+                value={formData.password!}
+                error={errors.password}
+                onChange={handleChange}
+              />
+            </Margin>
+            <PrivacyPolicyParagraph>
+              By clicking on the following button, you are willing to become
+              TruckDispatch's partner, and agree to our{' '}
+              <Link to="/">privacy policy</Link>
+            </PrivacyPolicyParagraph>
+            <UiButton isFullWidth loading={loading}>
+              Sign In
+            </UiButton>
+            {/* <ForgotPassword>
             Can't login? try{' '}
             <Link to="/auth/join/transporter">forgot password</Link>
           </ForgotPassword> */}
-          <LinkToRegisteration>
-            Don't have an account?{' '}
-            <Link to="/auth/join/agent">register with us</Link>
-          </LinkToRegisteration>
-        </>
-      )}
-    </UiForm>
+            <LinkToRegisteration>
+              Don't have an account?{' '}
+              <Link to="/auth/join/agent">register with us</Link>
+            </LinkToRegisteration>
+          </>
+        )}
+      </UiForm>
+    </>
   );
 }
 

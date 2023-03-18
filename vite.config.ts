@@ -12,6 +12,12 @@ export default defineConfig({
       input: {
         main: path.resolve(__dirname, 'index.html'),
       },
+      output: {
+        manualChunks: {
+          react: ['react', 'react-dom'],
+          helmet: ['react-helmet-async'],
+        },
+      },
     },
   },
   server: {
@@ -39,5 +45,8 @@ export default defineConfig({
       { find: 'assets', replacement: path.resolve(__dirname, 'src/assets') },
       { find: 'Api', replacement: path.resolve(__dirname, 'src/api') },
     ],
+  },
+  optimizeDeps: {
+    include: ['react-helmet-async'],
   },
 });

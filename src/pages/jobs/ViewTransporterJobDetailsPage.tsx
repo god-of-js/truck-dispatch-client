@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { Helmet } from 'react-helmet';
+import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
 import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
 
@@ -17,7 +19,7 @@ import UiBackButton from 'ui/UiBackButton';
 import Loader from 'components/layout/Loader';
 import ViewTripDetails from 'components/trips/ViewTripDetails';
 import NotFoundError from 'components/errors/NotFoundError';
-import { selectDashboardUser } from 'modules/Account';
+
 import UiOverlay from 'ui/UiOverlay';
 import InformUserOfVerification from 'components/verification/InformUserOfVerification';
 
@@ -26,7 +28,7 @@ export default function ViewTransporterJobDetailsPage() {
   const navigate = useNavigate();
   const job = tripId ? useSelector(selectJob(tripId)) : null;
   const [loading, setLoading] = useState(true);
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
   const bid = useSelector(selectBid(user?.id || '', 'transporterId'));
   const dispatch = useDispatch();
   const [
@@ -39,7 +41,7 @@ export default function ViewTransporterJobDetailsPage() {
       setIsInformUserOfVerificationModalVisible(true);
       return;
     }
-    navigate(`/dashboard/available-jobs/${tripId}/bid`);
+    navigate(`/available-jobs/${tripId}/bid`);
   }
 
   function goBack() {
@@ -57,29 +59,36 @@ export default function ViewTransporterJobDetailsPage() {
     }
   }, [bid]);
   return (
-    <ViewTransporterJobPageStyle>
-      <UiBackButton />
-      {loading ? (
-        <Loader />
-      ) : (
-        (job && (
-          <CardContainer>
-            <ViewTripDetails
-              data={job}
-              nextHandler={bidForJob}
-              prevHandler={goBack}
-              loading={loading}
-              actionText={!!bid ? 'Edit Bid' : 'Bid For Job'}
-            />
-          </CardContainer>
-        )) || <NotFoundError />
-      )}
-      <UiOverlay isVisible={isInformUserOfVerificationModalVisible}>
-        <InformUserOfVerification
-          onClose={() => setIsInformUserOfVerificationModalVisible(false)}
-        />
-      </UiOverlay>
-    </ViewTransporterJobPageStyle>
+    <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Job details - TruckDispatch</title>
+        <meta property="og:image" content={Logo} />
+      </Helmet>
+      <ViewTransporterJobPageStyle>
+        <UiBackButton />
+        {loading ? (
+          <Loader />
+        ) : (
+          (job && (
+            <CardContainer>
+              <ViewTripDetails
+                data={job}
+                nextHandler={bidForJob}
+                prevHandler={goBack}
+                loading={loading}
+                actionText={!!bid ? 'Edit Bid' : 'Bid For Job'}
+              />
+            </CardContainer>
+          )) || <NotFoundError />
+        )}
+        <UiOverlay isVisible={isInformUserOfVerificationModalVisible}>
+          <InformUserOfVerification
+            onClose={() => setIsInformUserOfVerificationModalVisible(false)}
+          />
+        </UiOverlay>
+      </ViewTransporterJobPageStyle>
+    </>
   );
 }
 

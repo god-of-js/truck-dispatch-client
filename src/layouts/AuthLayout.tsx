@@ -13,6 +13,7 @@ import TransporterImage from '../assets/img/truck-image.jpeg';
 import AgentImage from '../assets/img/agent-mono-effect.jpg';
 import TruckDispatchLogo from '../assets/img/truck-dispatch-full-logo.svg';
 import Loader from 'components/layout/Loader';
+import { userTypes } from 'utils/constants';
 
 export default function AuthLayout() {
   const { userType } = useParams();
@@ -31,6 +32,10 @@ export default function AuthLayout() {
     const userId = localStorage.getItem('uid');
     if (userId) {
       navigate('/dashboard');
+      return;
+    }
+    if (location.pathname.includes('join') && !userTypes.includes(userType!)) {
+      navigate('/auth/join/agent');
     }
   }, []);
 

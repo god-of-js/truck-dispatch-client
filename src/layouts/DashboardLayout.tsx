@@ -1,25 +1,22 @@
-import React, { Suspense, useEffect, useLayoutEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { Toaster } from 'react-hot-toast';
 
 import { toAnyAction } from 'utils/helpers';
 import sizes from '../utils/sizes';
 
 import {
+  getDashboardUser,
   getUserAccountNumber,
   getUsers,
-  selectDashboardUser,
 } from 'modules/Account';
 
 import DashboardSidebar from 'components/layout/DashboardSidebar';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
 import Loader from 'components/layout/Loader';
 import UiAlert from 'ui/UiAlert';
-import { setChats } from 'modules/Chat';
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
-import db from '../api/firebase';
-import Chat from 'types/Chat';
 import { RootState } from 'modules/index';
 
 export default function DashboardLayout() {
@@ -27,7 +24,7 @@ export default function DashboardLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(true);
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
   const accountDetails = useSelector(
     (state: RootState) => state.account.bankAccountDetails,
   );
@@ -37,12 +34,14 @@ export default function DashboardLayout() {
     if (!userId) {
       navigate('/auth/login');
     } else {
-      dispatch(toAnyAction(getUserAccountNumber()));
-      dispatch(toAnyAction(getUsers()))
+      dispatch(toAnyAction(getDashboardUser()))
         .catch((err: Error) => {
           console.log(err.message);
         })
         .finally(() => setLoading(false));
+      dispatch(toAnyAction(getUserAccountNumber()));
+      // Would be removed when the backend is ready.
+      dispatch(toAnyAction(getUsers()));
     }
   }, []);
   useEffect(() => {
@@ -76,9 +75,12 @@ export default function DashboardLayout() {
   const Component = loading ? (
     <Loader />
   ) : (
-    <Suspense fallback={<Loader />}>
-      <Outlet />
-    </Suspense>
+    <>
+      <Suspense fallback={<Loader />}>
+        <Outlet />
+      </Suspense>
+      <Toaster position="bottom-right" reverseOrder={true} />
+    </>
   );
   return (
     <Layout>
@@ -88,23 +90,16 @@ export default function DashboardLayout() {
           <UiAlert variant="warning">
             Kindly upload a profile image to foster trust between you and other
             individuals you may work with. To upload a profile picture,{' '}
-            <Link to="/dashboard/profile">Click Here</Link>
+            <Link to="/profile">Click Here</Link>
           </UiAlert>
         )}
-        {!accountDetails && user?.userType === 'transporter' && (
-          <UiAlert variant="warning">
-            Kindly add your bank Account number to be eligible to receive
-            payment from TruckDispatch{' '}
-            <Link to="/dashboard/profile/accounts">Click Here</Link>
-          </UiAlert>
-        )}
-        {location.pathname !== '/dashboard/profile/verification' && (
+        {location.pathname !== '/profile/verification' && (
           <div>
             {user?.status === 'unverified' && (
               <UiAlert variant="warning">
                 Verification is required to access all core features of the
                 application. To complete verification,{' '}
-                <Link to="/dashboard/profile/verification">Click Here</Link>
+                <Link to="/profile/verification">Click Here</Link>
               </UiAlert>
             )}
             {user?.status === 'pending_verification' && (
@@ -117,11 +112,8 @@ export default function DashboardLayout() {
             {user?.status === 'rejected' && (
               <UiAlert variant="danger">
                 Your verification request was rejected. Kindly proceed back to
-                the{' '}
-                <Link to="/dashboard/profile/verification">
-                  Verification Page
-                </Link>{' '}
-                to view why it was rejected and fix the issue.
+                the <Link to="/profile/verification">Verification Page</Link> to
+                view why it was rejected and fix the issue.
               </UiAlert>
             )}
           </div>

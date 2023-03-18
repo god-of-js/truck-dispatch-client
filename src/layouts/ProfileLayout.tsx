@@ -3,33 +3,33 @@ import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
 import sizes from '../utils/sizes';
+import { RootState } from 'modules/index';
 
 import Loader from 'components/layout/Loader';
 import UiTabs from 'components/ui/UiTabs';
 import { useSelector } from 'react-redux';
-import { selectDashboardUser } from 'modules/Account';
 
 export default function ProfileLayout() {
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
 
   const routes = [
     {
       label: 'Profile',
-      path: '/dashboard/profile',
+      path: '/profile',
     },
     {
       label: 'Accounts',
-      path: '/dashboard/profile/accounts',
+      path: '/profile/accounts',
     },
     {
       label: 'Verification',
-      path: '/dashboard/profile/verification',
+      path: '/profile/verification',
     },
   ].filter((route) => {
-    if (user?.userType === 'agent') return route.path === '/dashboard/profile';
+    if (user?.userType === 'agent') return route.path === '/profile';
 
     if (user?.status === 'verified')
-      return route.path !== '/dashboard/profile/verification';
+      return route.path !== '/profile/verification';
 
     return true;
   });

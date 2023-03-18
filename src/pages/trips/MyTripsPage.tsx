@@ -1,23 +1,31 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
+import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
 
+import { RootState } from 'modules/index';
 import AgentTripPageContent from 'components/trips/AgentTripPageContent';
 import TransporterTripPageContent from 'components/trips/TransporterTripPageContent';
-import { selectDashboardUser } from 'modules/Account';
 
 export default function MyTripsPage() {
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
 
   return (
-    <MyTripsPageStyle>
-      {/* TODO: put a message for transporter to verify if not yet verified */}
-      {user?.userType === 'agent' ? (
-        <AgentTripPageContent />
-      ) : (
-        <TransporterTripPageContent />
-      )}
-    </MyTripsPageStyle>
+    <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>My Trips- TruckDispatch</title>
+        <meta property="og:image" content={Logo} />
+      </Helmet>
+      <MyTripsPageStyle>
+        {user?.userType === 'agent' ? (
+          <AgentTripPageContent />
+        ) : (
+          <TransporterTripPageContent />
+        )}
+      </MyTripsPageStyle>
+    </>
   );
 }
 

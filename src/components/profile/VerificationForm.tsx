@@ -4,8 +4,6 @@ import styled from 'styled-components';
 
 import { uploadItem } from '../../api/Cloudinary';
 import {
-  getUserVerification,
-  selectDashboardUser,
   sendVerificationDetailsToAdmin,
   setVerification,
 } from 'modules/Account';
@@ -32,7 +30,7 @@ export default function VerificationForm({
   parentLoading,
   onVerified = () => {},
 }: Props) {
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState<Verification>({
     idType: '',

@@ -3,6 +3,9 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { Helmet } from 'react-helmet';
+import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
+
 import { abbreviateNumber, priceWithTDPercent } from 'utils/helpers';
 
 import UiTable from 'ui/UiTable';
@@ -41,7 +44,7 @@ export default function ViewTripBidsPage() {
   ];
 
   function viewBid(bidId: string) {
-    navigate(`/dashboard/my-trips/${tripId}/bids/${bidId}`);
+    navigate(`/my-trips/${tripId}/bids/${bidId}`);
   }
 
   function getUser(userId: string) {
@@ -65,14 +68,22 @@ export default function ViewTripBidsPage() {
   }, [bids]);
 
   return (
-    <PageStyling>
-      <UiTable
-        data={bidsData}
-        headers={headers}
-        tableTitle="Bids by transporters"
-        onRowClick={viewBid}
-      />
-    </PageStyling>
+    <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>View Bids- TruckDispatch</title>
+        <meta property="og:image" content={Logo} />
+      </Helmet>
+      <PageStyling>
+        <UiTable
+          data={bidsData}
+          headers={headers}
+          tableTitle="Bids by transporters"
+          noDataParagraphText="We have broadcasted your trip to our network of transporters. If it's been a couple of minutes since the trip was created, kindly reload the page."
+          onRowClick={viewBid}
+        />
+      </PageStyling>
+    </>
   );
 }
 

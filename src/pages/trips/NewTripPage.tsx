@@ -14,7 +14,9 @@ import ViewTripDetails from 'components/trips/ViewTripDetails';
 import MessageWithImage from 'ui/MessageWithImage';
 import UiButton from 'ui/UiButton';
 import UiBackButton from 'ui/UiBackButton';
-import { selectDashboardUser } from 'modules/Account';
+import { Helmet } from 'react-helmet';
+import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
+
 import { Link, useNavigate } from 'react-router-dom';
 import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
@@ -30,7 +32,7 @@ type CurrentStep =
   | 'payment';
 
 export default function NewTripPage() {
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
   const trips = useSelector((state: RootState) => state.trips.trips);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -106,7 +108,7 @@ export default function NewTripPage() {
       .then(() => {
         if (defaultFormData.id) {
           Toast.success({ msg: 'Trip has been updated' });
-          navigate(`/dashboard/my-trips/${defaultFormData.id}`);
+          navigate(`/my-trips/${defaultFormData.id}`);
         }
       })
       .finally(() => {
@@ -115,45 +117,52 @@ export default function NewTripPage() {
   }
 
   return (
-    <PageStyling>
-      <UiBackButton />
-      <CardContainer>
-        <UiTimeline steps={newTripSteps} currentStep={currentStep} />
-        <React.Suspense>
-          <div className="children-container">
-            {currentStep === 'trip-form' && (
-              <NewTripForm
-                defaultFormData={defaultFormData}
-                nextHandler={nextHandler}
-              />
-            )}
-            {currentStep === 'confirm-details' && (
-              <ViewTripDetails
-                data={defaultFormData}
-                nextHandler={nextHandler}
-                prevHandler={prevHandler}
-                loading={loading}
-              />
-            )}
-
-            {currentStep === 'broadcast-successful' && (
-              <>
-                {/* TODO: check why newly added trip details does not reflect when you go from here to trip bids */}
-                <MessageWithImage
-                  title="Your Trip has been broadcasted"
-                  subtitle={`Your trip has been broadcasted to trusted transporters in our network. It usually takes a couple minutes to get matched with transporters. Expect several transporters to send bids on the trip you just created. You can view bids sent by transporters by clicking the button below. Thank you for trusting us with your dispatch. `}
+    <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>New Trip - TruckDispatch</title>
+        <meta property="og:image" content={Logo} />
+      </Helmet>
+      <PageStyling>
+        <UiBackButton />
+        <CardContainer>
+          <UiTimeline steps={newTripSteps} currentStep={currentStep} />
+          <React.Suspense>
+            <div className="children-container">
+              {currentStep === 'trip-form' && (
+                <NewTripForm
+                  defaultFormData={defaultFormData}
+                  nextHandler={nextHandler}
                 />
-                <div className="button-container">
-                  <Link to={`/dashboard/my-trips/${defaultFormData.id}/bids`}>
-                    <UiButton>View Trip Bids</UiButton>
-                  </Link>
-                </div>
-              </>
-            )}
-          </div>
-        </React.Suspense>
-      </CardContainer>
-    </PageStyling>
+              )}
+              {currentStep === 'confirm-details' && (
+                <ViewTripDetails
+                  data={defaultFormData}
+                  nextHandler={nextHandler}
+                  prevHandler={prevHandler}
+                  loading={loading}
+                />
+              )}
+
+              {currentStep === 'broadcast-successful' && (
+                <>
+                  {/* TODO: check why newly added trip details does not reflect when you go from here to trip bids */}
+                  <MessageWithImage
+                    title="Your Trip has been broadcasted"
+                    subtitle={`Your trip has been broadcasted to trusted transporters in our network. It usually takes a couple minutes to get matched with transporters. Expect several transporters to send bids on the trip you just created. You can view bids sent by transporters by clicking the button below. Thank you for trusting us with your dispatch. `}
+                  />
+                  <div className="button-container">
+                    <Link to={`/my-trips/${defaultFormData.id}/bids`}>
+                      <UiButton>View Trip Bids</UiButton>
+                    </Link>
+                  </div>
+                </>
+              )}
+            </div>
+          </React.Suspense>
+        </CardContainer>
+      </PageStyling>
+    </>
   );
 }
 

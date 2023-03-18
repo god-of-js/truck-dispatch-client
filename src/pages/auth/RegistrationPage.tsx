@@ -3,6 +3,9 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
+import { Helmet } from 'react-helmet';
+import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
+
 import { RegisterUser } from 'modules/Account';
 
 import { Toast } from 'utils/toast';
@@ -44,7 +47,7 @@ export default function RegistrationPage() {
     setLoading(true);
     dispatch(toAnyAction(RegisterUser({ ...formData, createdAt: Date.now() })))
       .then(() => {
-        navigate('/dashboard/my-trips');
+        navigate('/my-trips');
       })
       .catch((err: { message: string }) => {
         let msg: string = err.message;
@@ -59,80 +62,105 @@ export default function RegistrationPage() {
       });
   }
 
-  const isTransporter = () => userType === 'transporter';
-  const heading = isTransporter() ? 'Join Our Team' : 'Deliver with us';
+  const isTransporter = userType === 'transporter';
+  const isAgent = userType === 'agent';
+  const heading = isTransporter ? 'Join Our Team' : 'Deliver with us';
 
   return (
-    <UiForm
-      schema={registrationSchema}
-      formData={formData}
-      onSubmit={handleSubmit}
-    >
-      {({ errors }) => (
-        <>
-          <JoinUsHeading>{heading}</JoinUsHeading>
-          <GridSpacer>
-            <UiInput
-              label="First Name*"
-              value={formData.firstName}
-              name="firstName"
-              error={errors.firstName}
-              onChange={handleChange}
-            />
-            <UiInput
-              label="Last Name*"
-              value={formData.lastName}
-              name="lastName"
-              error={errors.lastName}
-              onChange={handleChange}
-            />
-            <UiInput
-              label="Email*"
-              value={formData.email}
-              name="email"
-              error={errors.email}
-              onChange={handleChange}
-            />
-            <UiInput
-              label="Phone Number*"
-              type="phone"
-              value={formData.phone}
-              name="phone"
-              error={errors.phone}
-              onChange={handleChange}
-            />
-            <UiInput
-              type="password"
-              label="Password*"
-              name="password"
-              value={formData.password!}
-              error={errors.password}
-              onChange={handleChange}
-            />
-            <UiInput
-              type="password"
-              label="Confirm Password*"
-              value={formData.cPassword!}
-              name="cPassword"
-              error={errors.cPassword}
-              onChange={handleChange}
-            />
-          </GridSpacer>
-          <PrivacyPolicyParagraph>
-            By clicking on the following button, you are willing to become
-            TruckDispatch's partner, and agree to our{' '}
-            <Link to="/privacy-policy">Privacy Policy</Link> and our{' '}
-            <Link to="/terms-and-conditions">Terms of Service</Link>
-          </PrivacyPolicyParagraph>
-          <UiButton isFullWidth loading={loading}>
-            Join as {isTransporter() ? 'a' : 'an'} {userType}
-          </UiButton>
-          <AlreadyAMember>
-            Already a member? <Link to="/auth/login">Sign In</Link>
-          </AlreadyAMember>
-        </>
-      )}
-    </UiForm>
+    <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>
+          {`Join us as a${isAgent ? 'n' : ''} ${userType}`} - TruckDispatch
+        </title>
+        <link
+          rel="canonical"
+          href="https://dashboard.gettruckdispatch.com/auth/join/agent"
+        />
+        <meta property="og:image" content={Logo} />
+      </Helmet>
+      <UiForm
+        schema={registrationSchema}
+        formData={formData}
+        onSubmit={handleSubmit}
+      >
+        {({ errors }) => (
+          <>
+            <JoinUsHeading>{heading}</JoinUsHeading>
+            <GridSpacer>
+              <UiInput
+                label="First Name*"
+                value={formData.firstName}
+                name="firstName"
+                error={errors.firstName}
+                onChange={handleChange}
+              />
+              <UiInput
+                label="Last Name*"
+                value={formData.lastName}
+                name="lastName"
+                error={errors.lastName}
+                onChange={handleChange}
+              />
+              <UiInput
+                label="Email*"
+                value={formData.email}
+                name="email"
+                error={errors.email}
+                onChange={handleChange}
+              />
+              <UiInput
+                label="Phone Number*"
+                type="phone"
+                value={formData.phone}
+                name="phone"
+                error={errors.phone}
+                onChange={handleChange}
+              />
+              <UiInput
+                type="password"
+                label="Password*"
+                name="password"
+                value={formData.password!}
+                error={errors.password}
+                onChange={handleChange}
+              />
+              <UiInput
+                type="password"
+                label="Confirm Password*"
+                value={formData.cPassword!}
+                name="cPassword"
+                error={errors.cPassword}
+                onChange={handleChange}
+              />
+            </GridSpacer>
+            <PrivacyPolicyParagraph>
+              By clicking on the following button, you are willing to become
+              TruckDispatch's partner, and agree to our{' '}
+              <a
+                href="https://gettruckdispatch.com/privacy-policy"
+                target="_blank"
+              >
+                Privacy Policy
+              </a>{' '}
+              and our{' '}
+              <a
+                href="https://gettruckdispatch.com/terms-and-conditions"
+                target="_blank"
+              >
+                Terms of Service
+              </a>
+            </PrivacyPolicyParagraph>
+            <UiButton isFullWidth loading={loading}>
+              Join as a{isAgent && 'n'} {userType}
+            </UiButton>
+            <AlreadyAMember>
+              Already a member? <Link to="/auth/login">Sign In</Link>
+            </AlreadyAMember>
+          </>
+        )}
+      </UiForm>
+    </>
   );
 }
 

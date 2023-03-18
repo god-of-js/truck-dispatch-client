@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { RootState } from 'modules/index';
-import { selectDashboardUser } from 'modules/Account';
 import { selectChatHeads } from 'modules/Chat';
 import UiAvatar from 'ui/UiAvatar';
 import Chat from 'types/Chat';
@@ -11,7 +10,7 @@ import Chat from 'types/Chat';
 export default function ChatHeads() {
   const navigate = useNavigate();
   const users = useSelector((state: RootState) => state.account.users);
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
   const chatHeads = useSelector(selectChatHeads);
 
   function alternateUser(chat: Chat) {
@@ -23,7 +22,7 @@ export default function ChatHeads() {
   }
 
   function navigateToChat(agentId: string, transporterId: string) {
-    navigate(`/dashboard/chat/${agentId}/${transporterId}`);
+    navigate(`/chat/${agentId}/${transporterId}`);
   }
 
   return (
