@@ -7,14 +7,14 @@ import UiAvatar from 'ui/UiAvatar';
 import UiDropDownMenu, { DropDownData } from 'ui/UiDropdownMenu';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { selectDashboardUser } from 'modules/Account';
+import { RootState } from 'modules/index';
 
 interface Params {
   [key: string]: string;
 }
 export default function DashboardTopNav() {
   const navigate = useNavigate();
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
   function logOutUser() {
     localStorage.removeItem('uid');
     navigate('/auth/login');
@@ -23,12 +23,12 @@ export default function DashboardTopNav() {
   const dropDownData: DropDownData[] = [
     {
       label: 'View Profile',
-      path: '/dashboard/profile',
+      path: '/profile',
       icon: <UiIcon icon="User" />,
     },
     {
       label: 'Bank Accounts',
-      path: '/dashboard/profile/accounts',
+      path: '/profile/accounts',
       icon: <UiIcon icon="CreditCard" />,
     },
     {
@@ -39,7 +39,7 @@ export default function DashboardTopNav() {
       icon: <UiIcon icon="SignOut" />,
     },
   ].filter(({ path }) => {
-    if (path === '/dashboard/profile/accounts' && user?.userType === 'agent')
+    if (path === '/profile/accounts' && user?.userType === 'agent')
       return false;
 
     return true;
@@ -49,25 +49,25 @@ export default function DashboardTopNav() {
 
   const routeNames = {
     '/dashboard': 'Dashboard',
-    '/dashboard/available-jobs': 'Available Jobs',
-    '/dashboard/available-jobs/:id': 'View Job Details',
-    '/dashboard/available-jobs/:id/Bid': 'Bid On Job',
-    '/dashboard/my-trips': 'My Trips',
-    '/dashboard/my-trips/new': 'Create New Trip',
-    '/dashboard/my-trips/:id': 'My Trip',
-    '/dashboard/my-trips/:id/status': 'My Trip Status',
-    '/dashboard/my-trips/:id/terminal-delivery-order': 'Manage Trip TDO',
-    '/dashboard/my-trips/:id/request-payment-for-trip': 'Request Trip  Payment',
-    '/dashboard/my-trips/:id/bids': 'Trip Bids',
-    '/dashboard/my-trips/:id/bids/:id': 'Trip Bid',
-    '/dashboard/my-trips/:id/bids/:id/checkout': 'Pay for Trip',
-    '/dashboard/chat': 'Chat',
-    '/dashboard/payments': 'Payments',
-    '/dashboard/chat/:id/:id': 'Chat',
-    '/dashboard/profile': 'Profile',
-    '/dashboard/profile/accounts': 'Account',
-    '/dashboard/profile/verification': 'Verification',
-    '/dashboard/my-trips/:id/view-payment-request': 'View Payment Request',
+    '/available-jobs': 'Available Jobs',
+    '/available-jobs/:id': 'View Job Details',
+    '/available-jobs/:id/Bid': 'Bid On Job',
+    '/my-trips': 'My Trips',
+    '/my-trips/new': 'Create New Trip',
+    '/my-trips/:id': 'My Trip',
+    '/my-trips/:id/status': 'My Trip Status',
+    '/my-trips/:id/terminal-delivery-order': 'Manage Trip TDO',
+    '/my-trips/:id/request-payment-for-trip': 'Request Trip  Payment',
+    '/my-trips/:id/bids': 'Trip Bids',
+    '/my-trips/:id/bids/:id': 'Trip Bid',
+    '/my-trips/:id/bids/:id/checkout': 'Pay for Trip',
+    '/chat': 'Chat',
+    '/payments': 'Payments',
+    '/chat/:id/:id': 'Chat',
+    '/profile': 'Profile',
+    '/profile/accounts': 'Account',
+    '/profile/verification': 'Verification',
+    '/my-trips/:id/view-payment-request': 'View Payment Request',
   };
 
   type RouteNames = keyof typeof routeNames;
@@ -109,6 +109,7 @@ export default function DashboardTopNav() {
     <TopNav>
       <span>{routeName}</span>
       <UiDropDownMenu
+        key={`${user?.avatar}`}
         options={dropDownData}
         trigger={
           <div className="avatar-caret-flex">

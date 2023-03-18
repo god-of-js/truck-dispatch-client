@@ -2,12 +2,12 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
+import { RootState } from 'modules/index';
 import AgentTripPageContent from 'components/trips/AgentTripPageContent';
 import TransporterTripPageContent from 'components/trips/TransporterTripPageContent';
-import { selectDashboardUser } from 'modules/Account';
 
 export default function MyTripsPage() {
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
 
   return (
     <MyTripsPageStyle>

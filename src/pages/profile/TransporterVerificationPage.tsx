@@ -6,7 +6,6 @@ import {
   createOrUpdateUser,
   getUsers,
   getUserVerification,
-  selectDashboardUser,
 } from '../../modules/Account';
 
 import User from 'types/User';
@@ -22,7 +21,7 @@ export default function TransporterVerificationPage() {
   const dispatch = useDispatch();
   const [isVerified, setIsVerified] = useState(false);
   const [loading, setLoading] = useState(false);
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
   const userVerification = useSelector(
     (state: RootState) => state.account.verification,
   );

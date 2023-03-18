@@ -58,16 +58,6 @@ export const selectUser = (userId: string) =>
     usersArr.find((user) => user.id === userId),
   );
 
-export const selectDashboardUser = createSelector(
-  users,
-  (usersArr): User | null => {
-    const userId = localStorage.getItem('uid');
-    if (!userId) return null;
-    const user = usersArr.find((user) => user.id === userId);
-    return user || null;
-  },
-);
-
 export const selectTransporters = createSelector(users, (usersArr: User[]) =>
   usersArr.filter(({ userType }) => userType === 'transporter'),
 );

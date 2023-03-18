@@ -10,7 +10,7 @@ import { toAnyAction } from 'utils/helpers';
 import UploadTDO from 'utils/validations/UploadTDO';
 
 import { createOrUpdateTrip, selectTrip, setTrips } from 'modules/Trips';
-import { selectDashboardUser } from 'modules/Account';
+
 import { RootState } from 'modules/index';
 
 import FileUploadWidget from 'ui/FileUploadWidget';
@@ -25,7 +25,7 @@ export default function ViewTripTDO() {
   const dispatch = useDispatch();
   const trips = useSelector((state: RootState) => state.trips.trips);
   const trip = useSelector(selectTrip(tripId!));
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
   const [formData, setformData] = useState<{ TDO: null | File }>({ TDO: null });
   const [loading, setLoading] = useState(false);
 
@@ -38,6 +38,7 @@ export default function ViewTripTDO() {
     try {
       if (!formData.TDO || !trip) return;
       setLoading(true);
+      console.log(formData.TDO);
       const TDO = await uploadItem(formData.TDO);
       const tripWithTDO = {
         ...trip,

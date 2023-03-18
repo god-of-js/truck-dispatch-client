@@ -35,7 +35,7 @@ export default function ConfirmApprovePayment({
       Toast.success({
         msg: 'Payment request has been approved.',
       });
-      navigate(`/dashboard/my-trips/${tripId}/status`);
+      navigate(`/my-trips/${tripId}/status`);
       onClose();
     });
   }

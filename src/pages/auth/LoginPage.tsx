@@ -36,7 +36,7 @@ export default function LoginPage() {
     setLoading(true);
     dispatch(toAnyAction(loginUser(formData)))
       .then(() => {
-        navigate('/dashboard/my-trips');
+        navigate('/my-trips');
       })
       .catch((err: { message: string }) => {
         let msg = err.message;
@@ -63,7 +63,7 @@ export default function LoginPage() {
         <title>Login - TruckDispatch</title>
         <link
           rel="canonical"
-          href="https://www.gettruckdispatch.com/terms-and-conditions"
+          href="https://dashboard.gettruckdispatch.com/auth/login"
         />
         <meta property="og:image" content={Logo} />
       </Helmet>

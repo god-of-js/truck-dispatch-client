@@ -5,10 +5,10 @@ import { Outlet } from 'react-router-dom';
 import { toAnyAction } from 'utils/helpers';
 import Loader from 'components/layout/Loader';
 import { getAgentTrips, getTransporterTrips } from 'modules/Trips';
-import { selectDashboardUser } from 'modules/Account';
+import { RootState } from 'modules/index';
 
 export default function DashboardLayout() {
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
   const dispatch = useDispatch();
   const [isLoading, setLoading] = useState(true);
 

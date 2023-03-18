@@ -4,12 +4,12 @@ import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import sizes from 'utils/sizes';
 
-import { selectDashboardUser } from 'modules/Account';
 import { selectChatHeads } from 'modules/Chat';
 
 import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
 
 import UiIcon, { Icons } from '../ui/UiIcon';
+import { RootState } from 'modules/index';
 
 interface Route {
   iconName: Icons;
@@ -17,7 +17,7 @@ interface Route {
   name: string;
 }
 export default function DashboardSidebar() {
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
   const chatHeads = useSelector(selectChatHeads);
   const navigate = useNavigate();
   const appLocation = useLocation();
@@ -31,17 +31,17 @@ export default function DashboardSidebar() {
 
   const transporterRoutes: Route[] = [
     {
-      path: '/dashboard/available-jobs',
+      path: '/available-jobs',
       name: 'Available Jobs',
       iconName: 'Suitcase',
     },
     {
-      path: '/dashboard/my-trips',
+      path: '/my-trips',
       name: 'My Trips',
       iconName: 'Truck',
     },
     {
-      path: '/dashboard/payments',
+      path: '/payments',
       name: 'Payments',
       iconName: 'Money',
     },
@@ -49,7 +49,7 @@ export default function DashboardSidebar() {
 
   const agentRoutes: Route[] = [
     {
-      path: '/dashboard/my-trips',
+      path: '/my-trips',
       name: 'My Trips',
       iconName: 'Truck',
     },
@@ -75,7 +75,7 @@ export default function DashboardSidebar() {
   return (
     <Sidebar>
       <div className="sidebar__inner">
-        <Link to="/dashboard/my-trips">
+        <Link to="/my-trips">
           <LogoContainer>
             <TDLogo src={TruckDispatchLogo} alt="truck-dispatch" />
           </LogoContainer>
@@ -89,8 +89,8 @@ export default function DashboardSidebar() {
             </Link>
           ))}
           {isChatAvailable && (
-            <Link to="/dashboard/chat">
-              <Tab isActive={isRouteActive('/dashboard/chat')}>
+            <Link to="/chat">
+              <Tab isActive={isRouteActive('/chat')}>
                 <div className="chat-icon-container">
                   <UiIcon icon="Chats" size="24" />
                   {unreadChatHeads !== 0 && (

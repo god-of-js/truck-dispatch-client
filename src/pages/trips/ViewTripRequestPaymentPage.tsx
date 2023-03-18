@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { selectDashboardUser } from 'modules/Account';
+
 import PaymentRequest from 'types/PaymentRequest';
 import FileUploadWidget from 'ui/FileUploadWidget';
 import UiButton from 'ui/UiButton';
@@ -31,7 +31,7 @@ import uuidv4 from 'utils/uuid';
 
 export default function ViewTripRequestPayment() {
   const { tripId } = useParams();
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
   const accountDetails = useSelector(
     (state: RootState) => state.account.bankAccountDetails,
   );
@@ -146,7 +146,7 @@ export default function ViewTripRequestPayment() {
             subtitle="We have received your payment request. We would validate your trip status and get back to you. It normally takes a couple minutes for it to be verified. To view the status of the payment, navigate to the transcations page or click the button below"
           />
           <div className="btn-container">
-            <Link to="/dashboard/payments">
+            <Link to="/payments">
               <UiButton>View Payments</UiButton>
             </Link>
           </div>

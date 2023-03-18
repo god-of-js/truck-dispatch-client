@@ -17,7 +17,7 @@ import UiBackButton from 'ui/UiBackButton';
 import Loader from 'components/layout/Loader';
 import ViewTripDetails from 'components/trips/ViewTripDetails';
 import NotFoundError from 'components/errors/NotFoundError';
-import { selectDashboardUser } from 'modules/Account';
+
 import UiOverlay from 'ui/UiOverlay';
 import InformUserOfVerification from 'components/verification/InformUserOfVerification';
 
@@ -26,7 +26,7 @@ export default function ViewTransporterJobDetailsPage() {
   const navigate = useNavigate();
   const job = tripId ? useSelector(selectJob(tripId)) : null;
   const [loading, setLoading] = useState(true);
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
   const bid = useSelector(selectBid(user?.id || '', 'transporterId'));
   const dispatch = useDispatch();
   const [
@@ -39,7 +39,7 @@ export default function ViewTransporterJobDetailsPage() {
       setIsInformUserOfVerificationModalVisible(true);
       return;
     }
-    navigate(`/dashboard/available-jobs/${tripId}/bid`);
+    navigate(`/available-jobs/${tripId}/bid`);
   }
 
   function goBack() {

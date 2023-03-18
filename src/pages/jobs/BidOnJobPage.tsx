@@ -1,13 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { aValueHasBeenChanged, toAnyAction } from 'utils/helpers';
 import styled from 'styled-components';
 
 import sizes from 'utils/sizes';
 import uuidv4 from 'utils/uuid';
 import { Toast } from 'utils/toast';
-import { selectDashboardUser } from 'modules/Account';
+import { RootState } from 'modules/index';
+
 import { getBidsWithTripId, selectBid, createOrUpdateBid } from 'modules/Trips';
 import Bid from 'types/Bid';
 import NotFoundError from 'components/errors/NotFoundError';
@@ -24,9 +25,10 @@ import UiOverlay from 'ui/UiOverlay';
 
 export default function BidOnJob() {
   const { tripId } = useParams();
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
   const bid = useSelector(selectBid(user?.id || '', 'transporterId'));
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<Bid>(
     bid || {
       price: NaN,
@@ -84,6 +86,7 @@ export default function BidOnJob() {
       setNotFound(true);
     }
 
+    if (bid?.transporterId === user?.id) {navigate(`/my-trips/${bid?.id}`); return;}
     if (bid && !formData.tripId) setFormData(bid);
     if (tripId && !bid) {
       dispatch(toAnyAction(getBidsWithTripId(tripId))).finally(() =>

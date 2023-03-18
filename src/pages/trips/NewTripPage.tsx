@@ -14,7 +14,7 @@ import ViewTripDetails from 'components/trips/ViewTripDetails';
 import MessageWithImage from 'ui/MessageWithImage';
 import UiButton from 'ui/UiButton';
 import UiBackButton from 'ui/UiBackButton';
-import { selectDashboardUser } from 'modules/Account';
+
 import { Link, useNavigate } from 'react-router-dom';
 import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
@@ -30,7 +30,7 @@ type CurrentStep =
   | 'payment';
 
 export default function NewTripPage() {
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
   const trips = useSelector((state: RootState) => state.trips.trips);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -106,7 +106,7 @@ export default function NewTripPage() {
       .then(() => {
         if (defaultFormData.id) {
           Toast.success({ msg: 'Trip has been updated' });
-          navigate(`/dashboard/my-trips/${defaultFormData.id}`);
+          navigate(`/my-trips/${defaultFormData.id}`);
         }
       })
       .finally(() => {
@@ -144,7 +144,7 @@ export default function NewTripPage() {
                   subtitle={`Your trip has been broadcasted to trusted transporters in our network. It usually takes a couple minutes to get matched with transporters. Expect several transporters to send bids on the trip you just created. You can view bids sent by transporters by clicking the button below. Thank you for trusting us with your dispatch. `}
                 />
                 <div className="button-container">
-                  <Link to={`/dashboard/my-trips/${defaultFormData.id}/bids`}>
+                  <Link to={`/my-trips/${defaultFormData.id}/bids`}>
                     <UiButton>View Trip Bids</UiButton>
                   </Link>
                 </div>

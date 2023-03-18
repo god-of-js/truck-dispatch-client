@@ -1,5 +1,5 @@
 import Ratings from 'components/ratings/Ratings';
-import { selectDashboardUser } from 'modules/Account';
+
 import { RootState } from 'modules/index';
 import { getTransporterTrips, selectBid } from 'modules/Trips';
 import React, { useEffect, useState } from 'react';
@@ -21,7 +21,7 @@ export default function ViewTripBidPage() {
   const dispatch = useDispatch();
   const bid = useSelector(selectBid(bidId as string));
   const users = useSelector((state: RootState) => state.account.users);
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
 
   const [noOfTransporterTrips, setNoOfTransporterTrips] = useState<
     string | number
@@ -94,10 +94,10 @@ export default function ViewTripBidPage() {
           <div className="value">{bid?.extraNotes || 'N/A'}</div>
         </Section>
         <SubmitButtonContainer className="submit-button-container">
-          {/* <Link to={`/dashboard/chat/${user?.id}/${bid?.transporterId}`}>
+          {/* <Link to={`/chat/${user?.id}/${bid?.transporterId}`}>
             <UiButton variant="secondary-outlined">Negotiate Bid</UiButton>
           </Link> */}
-          <Link to={`/dashboard/my-trips/${tripId}/bids/${bidId}/checkout`}>
+          <Link to={`/my-trips/${tripId}/bids/${bidId}/checkout`}>
             <UiButton>Accept Bid</UiButton>
           </Link>
         </SubmitButtonContainer>

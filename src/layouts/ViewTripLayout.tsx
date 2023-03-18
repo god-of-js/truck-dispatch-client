@@ -4,7 +4,6 @@ import { Outlet, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { selectDashboardUser } from 'modules/Account';
 import { selectTrip } from 'modules/Trips';
 
 import sizes from 'utils/sizes';
@@ -23,7 +22,7 @@ import { RootState } from 'modules/index';
 export default function ViewTrip() {
   const { tripId } = useParams();
   const dispatch = useDispatch();
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
   const paymentRequest = useSelector(
     (state: RootState) => state.payment.paymentRequest,
   );
@@ -32,27 +31,27 @@ export default function ViewTrip() {
   const unfilteredTabs = [
     {
       label: 'Trip Details',
-      path: `/dashboard/my-trips/${tripId}`,
+      path: `/my-trips/${tripId}`,
     },
     {
       label: 'View Bids',
-      path: `/dashboard/my-trips/${tripId}/bids`,
+      path: `/my-trips/${tripId}/bids`,
     },
     {
       label: 'Trip Status',
-      path: `/dashboard/my-trips/${tripId}/status`,
+      path: `/my-trips/${tripId}/status`,
     },
     {
       label: 'Terminal Delivery Order',
-      path: `/dashboard/my-trips/${tripId}/terminal-delivery-order`,
+      path: `/my-trips/${tripId}/terminal-delivery-order`,
     },
     {
       label: 'Request Payment For Trip',
-      path: `/dashboard/my-trips/${tripId}/request-payment-for-trip`,
+      path: `/my-trips/${tripId}/request-payment-for-trip`,
     },
     {
       label: 'View Payment Request',
-      path: `/dashboard/my-trips/${tripId}/view-payment-request`,
+      path: `/my-trips/${tripId}/view-payment-request`,
     },
   ];
 

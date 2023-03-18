@@ -47,7 +47,7 @@ export default function RegistrationPage() {
     setLoading(true);
     dispatch(toAnyAction(RegisterUser({ ...formData, createdAt: Date.now() })))
       .then(() => {
-        navigate('/dashboard/my-trips');
+        navigate('/my-trips');
       })
       .catch((err: { message: string }) => {
         let msg: string = err.message;
@@ -75,7 +75,7 @@ export default function RegistrationPage() {
         </title>
         <link
           rel="canonical"
-          href="https://www.gettruckdispatch.com/terms-and-conditions"
+          href="https://dashboard.gettruckdispatch.com/auth/join/agent"
         />
         <meta property="og:image" content={Logo} />
       </Helmet>
@@ -137,8 +137,19 @@ export default function RegistrationPage() {
             <PrivacyPolicyParagraph>
               By clicking on the following button, you are willing to become
               TruckDispatch's partner, and agree to our{' '}
-              <Link to="/privacy-policy">Privacy Policy</Link> and our{' '}
-              <Link to="/terms-and-conditions">Terms of Service</Link>
+              <a
+                href="https://gettruckdispatch.com/privacy-policy"
+                target="_blank"
+              >
+                Privacy Policy
+              </a>{' '}
+              and our{' '}
+              <a
+                href="https://gettruckdispatch.com/terms-and-conditions"
+                target="_blank"
+              >
+                Terms of Service
+              </a>
             </PrivacyPolicyParagraph>
             <UiButton isFullWidth loading={loading}>
               Join as a{isAgent && 'n'} {userType}

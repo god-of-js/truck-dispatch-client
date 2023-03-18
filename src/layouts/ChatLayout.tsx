@@ -15,12 +15,12 @@ export default function ChatLayout() {
         </div>
         <div className="outlet-container" key={location.pathname}>
           <Outlet />
-          {location.pathname === '/dashboard/chat' && (
+          {location.pathname === '/chat' && (
             <div className="create-message"></div>
           )}
         </div>
         <div className="mobile-display">
-          {location.pathname === '/dashboard/chat' && <ChatHeads />}
+          {location.pathname === '/chat' && <ChatHeads />}
 
           <Outlet key={location.pathname} />
         </div>

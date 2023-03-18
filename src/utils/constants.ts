@@ -15,3 +15,5 @@ export const typeOfGoods = ['container', 'cargo'];
 export const jobTypes = ['Empty', 'Import', 'Export'];
 
 export const sizeOfContainer = ['20ft', '2 By 20ft', '40ft', '45ft'];
+
+export const userTypes = ['transporter', 'agent', 'company'];

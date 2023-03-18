@@ -49,15 +49,19 @@ export default function UiTable({
     : headers;
 
   function emptyTablePlaceholder() {
-    return noDataPlaceHolder ? (
-      noDataPlaceHolder
-    ) : (
+    return (
       <NoDataBox>
-        <h3>{noDataHeaderText}</h3>
-        <div className="icon-container">
-          <UiIcon icon={noDataImage} size="70" />
-        </div>
-        <div className="no-data-text">{noDataParagraphText}</div>
+        {noDataPlaceHolder ? (
+          noDataPlaceHolder
+        ) : (
+          <>
+            <h3>{noDataHeaderText}</h3>
+            <div className="icon-container">
+              <UiIcon icon={noDataImage} size="70" />
+            </div>
+            <p className="no-data-text">{noDataParagraphText}</p>
+          </>
+        )}
       </NoDataBox>
     );
   }
@@ -212,6 +216,10 @@ const NoDataBox = styled.div`
   .no-data-text {
     color: var(--color-gray-500);
     font-weight: 700;
+    width: 80%;
     font-size: ${pxToRem(14)};
+    @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
+      width: 40%;
+    }
   }
 `;

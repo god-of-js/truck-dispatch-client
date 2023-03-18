@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { usePaystackPayment } from 'react-paystack';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { selectDashboardUser } from 'modules/Account';
 import {
   createOrUpdateBid,
   createOrUpdateTrip,
@@ -35,7 +34,7 @@ export default function BidCheckoutPage() {
   const { bidId, tripId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
   const users = useSelector((state: RootState) => state.account.users);
   const bid = useSelector(selectBid(bidId || ''));
   const trip = useSelector(selectTrip(tripId || ''));
@@ -95,7 +94,7 @@ export default function BidCheckoutPage() {
     ])
       .then(() => {
         dispatch(toAnyAction(getAgentTrips(user.id))).then(() => {
-          navigate(`/dashboard/my-trips/${tripId}/status`);
+          navigate(`/my-trips/${tripId}/status`);
         });
       })
       .finally(() => setLoading(false));

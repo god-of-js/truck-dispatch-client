@@ -80,17 +80,17 @@ export default function AgentTripPageContent() {
   }, [trips]);
 
   function navigateToTrip(id: string) {
-    navigate(`/dashboard/my-trips/${id}`);
+    navigate(`/my-trips/${id}`);
   }
 
   function editTrip(id: string) {
-    navigate(`/dashboard/my-trips/${id}/edit`);
+    navigate(`/my-trips/${id}/edit`);
   }
 
   return (
     <>
       <CreateTripButtonContainer>
-        <Link to="/dashboard/my-trips/new">
+        <Link to="/my-trips/new">
           <UiButton size="md">Create New Trip</UiButton>
         </Link>
       </CreateTripButtonContainer>
@@ -100,6 +100,7 @@ export default function AgentTripPageContent() {
         tableTitle="My Trips"
         onRowClick={navigateToTrip}
         options={dropDownData}
+        noDataParagraphText="You have no trips. Create new trip by clicking the button above."
       />
     </>
   );

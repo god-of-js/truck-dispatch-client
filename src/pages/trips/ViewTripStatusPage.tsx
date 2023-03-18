@@ -1,9 +1,5 @@
 import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
-import {
-  selectAgents,
-  selectDashboardUser,
-  selectTransporters,
-} from 'modules/Account';
+import { selectAgents, selectTransporters } from 'modules/Account';
 import {
   createOrUpdateTrip,
   getAgentTrips,
@@ -18,7 +14,7 @@ import Trip from 'types/Trip';
 import User from 'types/User';
 import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
-import UiIcon from 'ui/UiIcon';
+import { RootState } from 'modules/index';
 import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
 
@@ -28,7 +24,7 @@ export default function ViewTripStatus() {
   const trip = useSelector(selectTrip(tripId || ''));
   const transporters = useSelector(selectTransporters);
   const agents = useSelector(selectAgents);
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
   const [loading, setLoading] = useState(false);
 
   const transporter = useMemo(() => {
@@ -144,7 +140,7 @@ export default function ViewTripStatus() {
                 </a>
               )}
               {/* <div className="message-btn-container">
-                <Link to={`/dashboard/chat/${agent?.id}/${transporter?.id}`}>
+                <Link to={`/chat/${agent?.id}/${transporter?.id}`}>
                   <UiButton size="s" variant="secondary">
                     <UiIcon icon="Chats" /> Message{' '}
                     {user?.userType === 'agent' ? 'Transporter' : 'Agent'}
@@ -210,9 +206,7 @@ export default function ViewTripStatus() {
                     authorize the transporter to pick up your cargo.
                   </p>
                   <p>Kindly upload your TDO to proceed with your trip</p>
-                  <Link
-                    to={`/dashboard/my-trips/${tripId}/terminal-delivery-order`}
-                  >
+                  <Link to={`/my-trips/${tripId}/terminal-delivery-order`}>
                     <UiButton>Upload TDO</UiButton>
                   </Link>
                 </>

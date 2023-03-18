@@ -1,4 +1,5 @@
-import { createOrUpdateUser, selectDashboardUser } from 'modules/Account';
+import { RootState } from 'modules/index';
+import { createOrUpdateUser, setUser } from 'modules/Account';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -15,7 +16,7 @@ import EditProfileSchema from 'utils/validations/EditProfileSchema';
 import { uploadItem } from '../../api/Cloudinary';
 
 export default function ProfileDetailsPage() {
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState(user || ({} as User));
   const [isEditable, setIsEditable] = useState(false);
@@ -32,6 +33,7 @@ export default function ProfileDetailsPage() {
 
     dispatch(toAnyAction(createOrUpdateUser(data)))
       .then(() => {
+        dispatch(setUser(data));
         Toast.success({ msg: 'Profile has been updated' });
         setIsEditable(false);
       })
