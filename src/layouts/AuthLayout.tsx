@@ -42,14 +42,14 @@ export default function AuthLayout() {
   return (
     <>
       <Header>
-        <Link to="/">
+        <a href="https://gettruckdispatch.com">
           <img
             src={TruckDispatchLogo}
             alt="truck-dispatch"
             width="100"
             height="100"
           />
-        </Link>
+        </a>
         <ButtonContainer>
           <Link
             className={`route ${isAgent && 'isActive'}`}
@@ -74,9 +74,7 @@ export default function AuthLayout() {
         </ImageContainer>
         <FormContainer>
           <div className="form-container-inner" key={location.pathname}>
-            <Suspense fallback={<Loader />}>
-              <Outlet />
-            </Suspense>
+            <Outlet />
           </div>
         </FormContainer>
       </Layout>

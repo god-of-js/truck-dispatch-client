@@ -68,40 +68,44 @@ export default function ViewTripRequestPayment() {
   }, [paymentRequest, formData]);
 
   async function requestPayment() {
-    if (!accountDetails) {
-      setIsNotifyUserToAddAccountVisible(true);
-      return;
-    }
-    setLoading(true);
-    let containerVideoAsset;
-    if (formData.containerVideo instanceof File) {
-      containerVideoAsset = await uploadItem(
-        formData.containerVideo as File,
-        false,
-      );
-    } else containerVideoAsset = formData.containerVideo;
+    try {
+      if (!accountDetails) {
+        setIsNotifyUserToAddAccountVisible(true);
+        return;
+      }
+      setLoading(true);
+      let containerVideoAsset;
+      if (formData.containerVideo instanceof File) {
+        containerVideoAsset = await uploadItem(
+          formData.containerVideo as File,
+          false,
+        );
+      } else containerVideoAsset = formData.containerVideo;
 
-    if (!bid) throw new Error('Bid does not exist');
-    dispatch(
-      toAnyAction(
-        requestPaymentByTransporter({
-          ...formData,
-          containerVideo: containerVideoAsset,
-          createdAt: formData.createdAt || Date.now(),
-          updatedAt: Date.now(),
-          amount: bid?.price,
-          tripReference: trip?.reference!,
-          reference: generateReference(),
-          status: 'pending',
-        }),
-      ),
-    )
-      .then(() => {
-        getDriversPaymentRequests();
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      if (!bid) throw new Error('Bid does not exist');
+      dispatch(
+        toAnyAction(
+          requestPaymentByTransporter({
+            ...formData,
+            containerVideo: containerVideoAsset,
+            createdAt: formData.createdAt || Date.now(),
+            updatedAt: Date.now(),
+            amount: bid?.price,
+            tripReference: trip?.reference!,
+            reference: generateReference(),
+            status: 'pending',
+          }),
+        ),
+      )
+        .then(() => {
+          getDriversPaymentRequests();
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } catch (err) {
+      setLoading(false);
+    }
   }
 
   function setData(event: {

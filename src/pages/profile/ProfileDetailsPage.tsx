@@ -25,23 +25,27 @@ export default function ProfileDetailsPage() {
   const [loading, setLoading] = useState(false);
 
   async function editProfile() {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const data = formData;
-    if (data.avatar instanceof File) {
-      const avatar = await uploadItem(formData.avatar as File);
-      data.avatar = avatar;
+      const data = formData;
+      if (data.avatar instanceof File) {
+        const avatar = await uploadItem(formData.avatar as File);
+        data.avatar = avatar;
+      }
+
+      dispatch(toAnyAction(createOrUpdateUser(data)))
+        .then(() => {
+          dispatch(setUser(data));
+          Toast.success({ msg: 'Profile has been updated' });
+          setIsEditable(false);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } catch {
+      setLoading(false);
     }
-
-    dispatch(toAnyAction(createOrUpdateUser(data)))
-      .then(() => {
-        dispatch(setUser(data));
-        Toast.success({ msg: 'Profile has been updated' });
-        setIsEditable(false);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
   }
 
   function onChange(event: {
