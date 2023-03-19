@@ -164,9 +164,6 @@ export default function RegistrationPage() {
   );
 }
 
-const Form = styled.form`
-  width: 100%;
-`;
 const JoinUsHeading = styled.h3`
   color: var(--color-primary);
   font-family: 'Audiowide';
