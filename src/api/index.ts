@@ -15,6 +15,7 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import db, { auth } from './firebase';
+import axiosInstance from './AxiosInstance';
 import Trip from 'types/Trip';
 import Bid from 'types/Bid';
 import Payment from 'types/Payment';
@@ -152,8 +153,20 @@ class ApiService {
     });
   }
 
-  createOrUpdateChat(chat: Chat) {
-    return this.setDoc('chat', chat.id, chat);
+  createChat(chat: Chat) {
+    return this.post('/chat', chat);
+  }
+
+  getChatsByUserId(userId: string) {
+    return this.getRequest<Chat[]>(`/chat/user/${userId}`);
+  }
+
+  private getRequest<T>(url: string): Promise<T> {
+    return axiosInstance.get(url).then(({ data}) => data.data) as Promise<T>;
+  }
+
+  private post(url: string, data: unknown) {
+    return axiosInstance.post(url, data);
   }
 
   private setDoc(

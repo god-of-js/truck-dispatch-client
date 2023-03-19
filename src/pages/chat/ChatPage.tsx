@@ -7,9 +7,9 @@ import { RootState } from 'modules/index';
 
 import {
   selectChatByChatId,
-  createOrUpdateChat,
-  setChats,
   setChat,
+  createChat,
+  updateChat,
 } from 'modules/Chat';
 
 import { toAnyAction } from 'utils/helpers';
@@ -43,18 +43,17 @@ export default function ChatPage() {
 
   function sendMessage() {
     const data: Chat = {
-      id: uuidv4(),
       chatId: `${agentId}-${transporterId}`,
       message: formData.message,
-      createdAt: Date.now(),
       senderId: user?.id || '',
-      agentId: agentId!,
       transporterId: transporterId!,
+      agentId: agentId!,
+      receiverId: `${user?.id === agentId ? transporterId : agentId}`,
     };
 
     setFormData(defaultFormData);
     dispatch(setChat(data));
-    dispatch(toAnyAction(createOrUpdateChat(data)));
+    dispatch(toAnyAction(createChat(data)));
   }
 
   useEffect(() => {
@@ -74,9 +73,7 @@ export default function ChatPage() {
       !lastSentChat.readAt
     ) {
       dispatch(
-        toAnyAction(
-          createOrUpdateChat({ ...lastSentChat, readAt: Date.now() }),
-        ),
+        toAnyAction(updateChat({ ...lastSentChat, readAt: Date.now() })),
       );
     }
   }, [chats]);

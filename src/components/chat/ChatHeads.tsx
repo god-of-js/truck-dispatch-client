@@ -15,7 +15,7 @@ export default function ChatHeads() {
 
   function alternateUser(chat: Chat) {
     const alternateUserId =
-      user?.id === chat.agentId ? chat.transporterId : chat.agentId;
+      user?.id === chat.receiverId ? chat.senderId : chat.receiverId;
     const foundUser = users.find(({ id }) => id === alternateUserId);
     if (!foundUser) throw new Error('user does not exist');
     return foundUser;

@@ -64,7 +64,9 @@ export default function RegistrationPage() {
 
   const isTransporter = userType === 'transporter';
   const isAgent = userType === 'agent';
-  const heading = isTransporter ? 'Join Our Team' : 'Deliver with us';
+  const heading = isTransporter
+    ? 'Join Our Team Of Transporters'
+    : 'Deliver with us As An Agent';
 
   return (
     <>

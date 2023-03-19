@@ -104,9 +104,9 @@ export default function ViewTripBidPage() {
             <div className="value">{bid?.extraNotes || 'N/A'}</div>
           </Section>
           <SubmitButtonContainer className="submit-button-container">
-            {/* <Link to={`/chat/${user?.id}/${bid?.transporterId}`}>
-            <UiButton variant="secondary-outlined">Negotiate Bid</UiButton>
-          </Link> */}
+            <Link to={`/chat/${user?.id}/${bid?.transporterId}`}>
+              <UiButton variant="neutral">Negotiate Bid</UiButton>
+            </Link>
             <Link to={`/my-trips/${tripId}/bids/${bidId}/checkout`}>
               <UiButton>Accept Bid</UiButton>
             </Link>

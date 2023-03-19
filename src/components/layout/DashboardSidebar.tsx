@@ -21,7 +21,7 @@ export default function DashboardSidebar() {
   const chatHeads = useSelector(selectChatHeads);
   const navigate = useNavigate();
   const appLocation = useLocation();
-  const [isChatAvailable] = useState(false);
+  const [isChatAvailable] = useState(true);
 
   const logOutUser = () => {
     localStorage.removeItem('uid');
