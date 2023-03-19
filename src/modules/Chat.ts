@@ -72,9 +72,9 @@ export const getUsersChat = (userId: string) => {
   return (dispatch: AppDispatch) => {
     return Api.getChatsByUserId(userId).then((data) => {
       console.log(data);
-      dispatch(setChats(data))
+      dispatch(setChats(data));
     });
-  }
+  };
 };
 
 export const updateChat = (chat: Chat) => {

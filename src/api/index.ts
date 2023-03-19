@@ -162,7 +162,7 @@ class ApiService {
   }
 
   private getRequest<T>(url: string): Promise<T> {
-    return axiosInstance.get(url).then(({ data}) => data.data) as Promise<T>;
+    return axiosInstance.get(url).then(({ data }) => data.data) as Promise<T>;
   }
 
   private post(url: string, data: unknown) {

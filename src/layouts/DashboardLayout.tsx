@@ -2,6 +2,7 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { io, Socket } from 'socket.io-client';
 
 import { toAnyAction } from 'utils/helpers';
 import sizes from '../utils/sizes';
@@ -15,10 +16,12 @@ import UiAlert from 'ui/UiAlert';
 import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
 import { getUsersChat } from 'modules/Chat';
+import { BACKEND_URL } from 'utils/privateKeys';
 
 export default function DashboardLayout() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [socket, setSocket] = useState<Socket>();
   const location = useLocation();
   const [loading, setLoading] = useState(true);
   const user = useSelector((state: RootState) => state.account.user);
@@ -36,6 +39,22 @@ export default function DashboardLayout() {
       // Would be removed when the backend is ready.
       dispatch(toAnyAction(getUsers()));
       dispatch(toAnyAction(getUsersChat(userId)));
+    }
+  }, []);
+
+  useEffect(() => {
+    const userId = localStorage.getItem('uid');
+    if (userId) {
+      const newSocket = io(BACKEND_URL);
+      newSocket.on('connect', () => {
+        console.log('Connected to server');
+        newSocket.emit('join', { userId });
+        setSocket(newSocket);
+      });
+
+      return () => {
+        newSocket.disconnect();
+      };
     }
   }, []);
 
