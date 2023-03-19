@@ -31,7 +31,7 @@ export default function AuthLayout() {
   useEffect(() => {
     const userId = localStorage.getItem('uid');
     if (userId) {
-      navigate('/dashboard');
+      navigate('/my-trips');
       return;
     }
     if (location.pathname.includes('join') && !userTypes.includes(userType!)) {
