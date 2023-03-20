@@ -24,7 +24,7 @@ function uploadItem(file: File, isImage = true): Promise<Asset> {
       )
       .then((response) => {
         const assetId = uuid();
-        const fileUrl = response.data.url.replace("http://", "https://");
+        const fileUrl = response.data.secure_url;
         Api.saveAsset(assetId, fileUrl);
         return resolve({
           id: assetId,
