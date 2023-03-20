@@ -31,6 +31,7 @@ import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
 import UiAvatar from 'ui/UiAvatar';
 import Payment from 'types/Payment';
 import { createOrUpdatePayment } from 'modules/Payments';
+import { Toast } from 'utils/toast';
 
 export default function BidCheckoutPage() {
   const { bidId, tripId } = useParams();
@@ -98,6 +99,9 @@ export default function BidCheckoutPage() {
         dispatch(toAnyAction(getAgentTrips(user.id))).then(() => {
           navigate(`/my-trips/${tripId}/status`);
         });
+      })
+      .catch((err) => {
+        Toast.error({ msg: err.message });
       })
       .finally(() => setLoading(false));
   }
