@@ -66,7 +66,7 @@ export default function AgentTripPageContent() {
     if (status === 'pending') return 'warning';
     if (status === 'rejected') return 'danger';
     if (status === 'awaiting_bid') return 'gray';
-    if (status === 'in-progress') return 'info';
+    if (status === 'In Progress') return 'info';
     if (status === 'completed') return 'success';
 
     return 'success';
