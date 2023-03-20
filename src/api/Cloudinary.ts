@@ -23,9 +23,9 @@ function uploadItem(file: File, isImage = true): Promise<Asset> {
         formData,
       )
       .then((response) => {
-        urls.push(response.data.url);
         const assetId = uuid();
-        Api.saveAsset(assetId, response.data.url);
+        const fileUrl = response.data.url.replace("http://", "https://");
+        Api.saveAsset(assetId, fileUrl);
         return resolve({
           id: assetId,
           url: response.data.url,
