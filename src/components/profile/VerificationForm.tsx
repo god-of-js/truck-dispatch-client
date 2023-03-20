@@ -20,6 +20,7 @@ import UiInput from 'ui/UiInput';
 import sizes from 'utils/sizes';
 import { RootState } from 'modules/index';
 import Asset from 'types/Asset';
+import { Toast } from 'utils/toast';
 
 interface Props {
   onVerified: () => void;
@@ -123,7 +124,7 @@ export default function VerificationForm({
           onVerified();
         })
         .catch((err: Error) => {
-          console.log(err);
+          Toast.error({ msg: err.message })
         })
         .finally(() => setLoading(false));
     } catch (e) {

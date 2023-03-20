@@ -17,6 +17,7 @@ import DashboardTopNav from 'components/layout/DashboardTopNav';
 import Loader from 'components/layout/Loader';
 import UiAlert from 'ui/UiAlert';
 import { RootState } from 'modules/index';
+import { Toast } from 'utils/toast';
 
 export default function DashboardLayout() {
   const dispatch = useDispatch();
@@ -24,9 +25,6 @@ export default function DashboardLayout() {
   const location = useLocation();
   const [loading, setLoading] = useState(true);
   const user = useSelector((state: RootState) => state.account.user);
-  const accountDetails = useSelector(
-    (state: RootState) => state.account.bankAccountDetails,
-  );
 
   useEffect(() => {
     const userId = localStorage.getItem('uid');
@@ -35,7 +33,7 @@ export default function DashboardLayout() {
     } else {
       dispatch(toAnyAction(getDashboardUser()))
         .catch((err: Error) => {
-          console.log(err.message);
+          Toast.error({msg: err.message});
         })
         .finally(() => setLoading(false));
       dispatch(toAnyAction(getUserAccountNumber()));
@@ -43,6 +41,7 @@ export default function DashboardLayout() {
       dispatch(toAnyAction(getUsers()));
     }
   }, []);
+
   useEffect(() => {
     if (user?.userType === 'transporter')
       dispatch(toAnyAction(getUserAccountNumber()));

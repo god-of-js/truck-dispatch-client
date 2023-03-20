@@ -22,6 +22,7 @@ import UiForm from 'ui/UiForm';
 import MessageWithImage from 'ui/MessageWithImage';
 import FileSent from '../../assets/img/file-sent.svg';
 import WaitingForUpload from '../../assets/img/waiting-for-upload.svg';
+import { Toast } from 'utils/toast';
 
 export default function ViewTripTDO() {
   const { tripId } = useParams();
@@ -41,7 +42,6 @@ export default function ViewTripTDO() {
     try {
       if (!formData.TDO || !trip) return;
       setLoading(true);
-      console.log(formData.TDO);
       const TDO = await uploadItem(formData.TDO);
       const tripWithTDO = {
         ...trip,
@@ -58,7 +58,7 @@ export default function ViewTripTDO() {
           setLoading(false);
         });
     } catch (err) {
-      console.log(err);
+      Toast.error({msg: (err as Error).message});
       setLoading(false);
     }
   }
