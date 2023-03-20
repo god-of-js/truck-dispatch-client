@@ -2,7 +2,7 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { io, Socket } from 'socket.io-client';
+import { io } from 'socket.io-client';
 
 import { toAnyAction } from 'utils/helpers';
 import sizes from '../utils/sizes';
