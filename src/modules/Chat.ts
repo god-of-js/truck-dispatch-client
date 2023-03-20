@@ -17,7 +17,7 @@ export const chatSlice = createSlice({
       state.chats = action.payload;
     },
     setChat(state: ChatState, action: { payload: Chat }) {
-      state.chats.push({ ...action.payload });
+      state.chats.push(action.payload);
     },
   },
 });
@@ -71,7 +71,6 @@ export const createChat = (chat: Chat) => {
 export const getUsersChat = (userId: string) => {
   return (dispatch: AppDispatch) => {
     return Api.getChatsByUserId(userId).then((data) => {
-      console.log(data);
       dispatch(setChats(data));
     });
   };

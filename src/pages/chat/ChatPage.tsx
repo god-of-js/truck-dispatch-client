@@ -13,7 +13,6 @@ import {
 } from 'modules/Chat';
 
 import { toAnyAction } from 'utils/helpers';
-import uuidv4 from 'utils/uuid';
 
 import Chat from 'types/Chat';
 
@@ -50,9 +49,9 @@ export default function ChatPage() {
       agentId: agentId!,
       receiverId: `${user?.id === agentId ? transporterId : agentId}`,
     };
+    console.log(data);
 
     setFormData(defaultFormData);
-    dispatch(setChat(data));
     dispatch(toAnyAction(createChat(data)));
   }
 

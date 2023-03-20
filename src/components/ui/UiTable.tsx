@@ -79,35 +79,35 @@ export default function UiTable({
             ))}
           </TableRow>
         </TableHeader>
-        {!data.length ? (
-          emptyTablePlaceholder()
-        ) : (
-          <tbody>
-            {data.map((item) => {
-              return (
-                <TableRow key={item.id}>
-                  {headers.map((header, index) => {
-                    return (
-                      <TableDataItem
-                        key={index}
-                        onClick={() => onRowClick?.(item.id)}
-                      >
-                        <div className="mobile-title">{header.title}</div>
-                        <div>{item[header.query]}</div>
-                      </TableDataItem>
-                    );
-                  })}
-                  {options && (
-                    <td className="menu-container">
-                      <UidropdownMenu options={options} itemId={item.id} />
-                    </td>
-                  )}
-                </TableRow>
-              );
-            })}
-          </tbody>
-        )}
+        <tbody>
+          {data.map((item) => {
+            return (
+              <TableRow key={item.id}>
+                {headers.map((header, index) => {
+                  return (
+                    <TableDataItem
+                      key={index}
+                      onClick={() => onRowClick?.(item.id)}
+                    >
+                      <div className="mobile-title">{header.title}</div>
+                      <div>{item[header.query]}</div>
+                    </TableDataItem>
+                  );
+                })}
+                {options && (
+                  <td className="menu-container">
+                    <UidropdownMenu options={options} itemId={item.id} />
+                  </td>
+                )}
+              </TableRow>
+            );
+          })}
+        </tbody>
       </Table>
+
+      {!data.length &&
+        emptyTablePlaceholder()
+      }
     </TableContainer>
   );
 }
@@ -198,7 +198,6 @@ const TableDataItem = styled.td`
 `;
 
 const NoDataBox = styled.div`
-  position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: center;

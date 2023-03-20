@@ -15,13 +15,12 @@ import Loader from 'components/layout/Loader';
 import UiAlert from 'ui/UiAlert';
 import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
-import { getUsersChat } from 'modules/Chat';
-import { BACKEND_URL } from 'utils/privateKeys';
+import { getUsersChat, setChat } from 'modules/Chat';
+import { WEB_SOCKET_URL } from 'utils/privateKeys';
 
 export default function DashboardLayout() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [socket, setSocket] = useState<Socket>();
   const location = useLocation();
   const [loading, setLoading] = useState(true);
   const user = useSelector((state: RootState) => state.account.user);
@@ -45,12 +44,14 @@ export default function DashboardLayout() {
   useEffect(() => {
     const userId = localStorage.getItem('uid');
     if (userId) {
-      const newSocket = io(BACKEND_URL);
+      const newSocket = io(WEB_SOCKET_URL);
       newSocket.on('connect', () => {
-        console.log('Connected to server');
         newSocket.emit('join', { userId });
-        setSocket(newSocket);
       });
+
+      newSocket.on('message', (message) => {
+        dispatch(setChat(message));
+      })
 
       return () => {
         newSocket.disconnect();
