@@ -10,6 +10,7 @@ import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
 import UiTable from 'ui/UiTable';
 import UiIcon from 'ui/UiIcon';
+import UiPill from 'ui/UiPill';
 import { DropDownData } from 'ui/UiDropdownMenu';
 
 export default function AgentTripPageContent() {
@@ -42,6 +43,10 @@ export default function AgentTripPageContent() {
       title: 'Delivery Date',
       query: 'deliveryDate',
     },
+    {
+      title: 'status', 
+      query: 'status'
+    }
   ];
 
   const dropDownData: DropDownData[] = [
@@ -72,10 +77,21 @@ export default function AgentTripPageContent() {
     );
   }
 
+  function getPillVariant(status: string) {
+    if (status === 'pending') return 'warning';
+    if (status === 'rejected') return 'danger';
+    if (status === 'awaiting_bid') return 'gray';
+    if (status === 'in-progress') return 'info';
+    if (status === 'completed') return 'success';
+
+    return 'success';
+  }
+
   const tripsData = useMemo(() => {
     return trips.map((trip: Trip) => ({
       ...trip,
       responsibleTransporter: responsibleTransporterDetails(trip.transporterId),
+      status: <UiPill variant={getPillVariant(trip.status)}>{trip.status}</UiPill>,
     }));
   }, [trips]);
 

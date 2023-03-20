@@ -10,6 +10,7 @@ import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
 import UiIcon from 'ui/UiIcon';
 import UiTable from 'ui/UiTable';
+import UiPill from 'ui/UiPill';
 import sizes from 'utils/sizes';
 
 export default function AgentTripPageContent() {
@@ -43,6 +44,7 @@ export default function AgentTripPageContent() {
       query: 'deliveryDate',
     },
   ];
+  
 
   function agentDetails(agentId?: string) {
     if (!agentId) return 'No agent present';
@@ -60,13 +62,24 @@ export default function AgentTripPageContent() {
       </AgentDetails>
     );
   }
+  function getPillVariant(status: string) {
+    if (status === 'pending') return 'warning';
+    if (status === 'rejected') return 'danger';
+    if (status === 'awaiting_bid') return 'gray';
+    if (status === 'in-progress') return 'info';
+    if (status === 'completed') return 'success';
+
+    return 'success';
+  }
 
   const tripsData = useMemo(() => {
     return trips.map((trip: Trip) => ({
       ...trip,
       agent: agentDetails(trip.agentId),
+      status: <UiPill variant={getPillVariant(trip.status)}>{trip.status}</UiPill>,
     }));
   }, [trips]);
+
 
   function navigateToTrip(id: string) {
     navigate(`/my-trips/${id}`);
