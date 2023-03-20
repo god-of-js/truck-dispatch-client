@@ -29,7 +29,7 @@ function uploadItem(file: File, isImage = true): Promise<Asset> {
         Api.saveAsset(assetId, fileUrl);
         return resolve({
           id: assetId,
-          url: response.data.url,
+          url: fileUrl,
         });
       })
       .catch((err) => {
