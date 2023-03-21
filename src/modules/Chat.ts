@@ -19,7 +19,7 @@ export const chatSlice = createSlice({
     setChat(state: ChatState, action: { payload: Chat }) {
       state.chats.push(action.payload);
     },
-    removeOrReplaceChatById(
+    removeChatById(
       state: ChatState,
       action: { payload: { chatToRemoveId: string; } },
     ) {
@@ -31,7 +31,7 @@ export const chatSlice = createSlice({
   },
 });
 
-export const { setChats, setChat, removeOrReplaceChatById } = chatSlice.actions;
+export const { setChats, setChat, removeChatById } = chatSlice.actions;
 
 export default chatSlice.reducer;
 function getTime(createdAt: number) {
@@ -75,7 +75,7 @@ export const createChat = (chat: Chat) => {
   return (dispatch: AppDispatch) => {
     dispatch(setChat(chat));
     return Api.createChat(chat).catch(() => {
-      dispatch(removeOrReplaceChatById({ chatToRemoveId: chat.temporaryId! }));
+      dispatch(removeChatById({ chatToRemoveId: chat.temporaryId! }));
     });
   };
 };
@@ -88,11 +88,9 @@ export const getUsersChat = (userId: string) => {
   };
 };
 
-export const updateChat = (chat: Chat) => {
-  return (dispatch: AppDispatch) => {
+export const readChat = (chat: Chat) => {
+  return () => {
     if (!chat._id) return;
-    return Api.setChatHasBeenRead(chat._id).then((data) => {
-      console.log(data);
-    })
+    return Api.setChatHasBeenRead(chat._id);
   };
 };

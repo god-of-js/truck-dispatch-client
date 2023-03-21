@@ -50,6 +50,7 @@ export default function DashboardLayout() {
       });
 
       newSocket.on('message', (message) => {
+        console.log(message)
         dispatch(setChat(message));
       });
 

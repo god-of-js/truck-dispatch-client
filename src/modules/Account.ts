@@ -111,7 +111,8 @@ export function loginUser(AuthUser: { email: string; password: string }) {
 export function getUsers() {
   return (dispatch: AppDispatch) => {
     const uid = localStorage.getItem('uid');
-    if (!uid) throw new Error('400: User is not authenticated');
+    // Log user out in this situation
+    if (!uid) return;
     return Api.getUsers()
       .then((data) => {
         dispatch(setUsers(data));

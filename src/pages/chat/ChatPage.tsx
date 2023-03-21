@@ -7,9 +7,8 @@ import { RootState } from 'modules/index';
 
 import {
   selectChatByChatId,
-  setChat,
   createChat,
-  updateChat,
+  readChat,
 } from 'modules/Chat';
 
 import { toAnyAction } from 'utils/helpers';
@@ -26,6 +25,7 @@ export default function ChatPage() {
   const { agentId, transporterId } = useParams();
   const dispatch = useDispatch();
   const chatBottomRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const user = useSelector((state: RootState) => state.account.user);
   const chats = useSelector(selectChatByChatId(`${agentId}-${transporterId}`));
   const users = useSelector((state: RootState) => state.account.users);
@@ -36,6 +36,7 @@ export default function ChatPage() {
     message: '',
   };
   const [formData, setFormData] = useState(defaultFormData);
+  const [currentLengthOfChats, setCurrentLengthOfChats] = useState(0);
 
   function updateMessage(e: { target: { value: string } }) {
     setFormData({ message: e.target.value });
@@ -57,6 +58,19 @@ export default function ChatPage() {
     dispatch(toAnyAction(createChat(data)));
   }
 
+  function initReadChat() {
+    const lastSentChat = chats[chats.length - 1];
+    if (
+      lastSentChat &&
+      lastSentChat.senderId !== user?.id &&
+      !lastSentChat.readAt
+    ) {
+      dispatch(
+        toAnyAction(readChat({ ...lastSentChat, readAt: Date.now() })),
+      );
+    }
+  }
+
   useEffect(() => {
     const element = chatBottomRef.current;
     if (element) {
@@ -67,18 +81,17 @@ export default function ChatPage() {
   }, [chats]);
 
   useEffect(() => {
-    const lastSentChat = chats[chats.length - 1];
-    console.log(lastSentChat);
-    if (
-      lastSentChat &&
-      lastSentChat.senderId !== user?.id &&
-      !lastSentChat.readAt
-    ) {
-      dispatch(
-        toAnyAction(updateChat({ ...lastSentChat, readAt: Date.now() })),
-      );
+    if (chats.length > currentLengthOfChats) {
+      setCurrentLengthOfChats(chats.length)
+      initReadChat();
     }
   }, [chats]);
+
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
 
   return (
     <ChatPageStyling>
@@ -108,8 +121,10 @@ export default function ChatPage() {
               )}
               <div className="inner">
                 <input
+                   ref={inputRef}
                   placeholder="Enter Message"
                   value={formData.message}
+
                   onChange={updateMessage}
                 />
                 <button type="submit" disabled={!formData.message}>
