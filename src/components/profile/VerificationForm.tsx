@@ -123,7 +123,7 @@ export default function VerificationForm({
           onVerified();
         })
         .catch((err: Error) => {
-          Toast.error({ msg: err.message })
+          Toast.error({ msg: err.message });
         })
         .finally(() => setLoading(false));
     } catch (e) {

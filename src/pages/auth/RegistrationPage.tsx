@@ -3,9 +3,6 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { Helmet } from 'react-helmet';
-import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
-
 import { RegisterUser } from 'modules/Account';
 
 import { Toast } from 'utils/toast';
@@ -68,17 +65,6 @@ export default function RegistrationPage() {
 
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>
-          {`Join us as a${isAgent ? 'n' : ''} ${userType}`} - TruckDispatch
-        </title>
-        <link
-          rel="canonical"
-          href="https://dashboard.gettruckdispatch.com/auth/join/agent"
-        />
-        <meta property="og:image" content={Logo} />
-      </Helmet>
       <UiForm
         schema={registrationSchema}
         formData={formData}

@@ -3,9 +3,6 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { Helmet } from 'react-helmet';
-import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
-
 import { uploadItem } from '../../api/Cloudinary';
 
 import sizes from 'utils/sizes';
@@ -58,7 +55,7 @@ export default function ViewTripTDO() {
           setLoading(false);
         });
     } catch (err) {
-      Toast.error({msg: (err as Error).message});
+      Toast.error({ msg: (err as Error).message });
       setLoading(false);
     }
   }
@@ -75,11 +72,6 @@ export default function ViewTripTDO() {
 
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Transfer Delivery Order - TruckDispatch</title>
-        <meta property="og:image" content={Logo} />
-      </Helmet>
       <CardContainer>
         {showUploadTDO && (
           <>

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { Helmet } from 'react-helmet';
-import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
 import RejectPaymentWithReason from 'components/payment/RejectPaymentWithReason';
 import { RootState } from 'modules/index';
 import {
@@ -33,11 +31,6 @@ export default function ViewRequestForPayment() {
   }
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>View Payment Request - TruckDispatch</title>
-        <meta property="og:image" content={Logo} />
-      </Helmet>
       <CardContainer>
         <UiCard>
           {paymentRequest ? (

@@ -8,9 +8,6 @@ import styled from 'styled-components';
 import UiTable from 'ui/UiTable';
 import { toAnyAction } from 'utils/helpers';
 
-import { Helmet } from 'react-helmet';
-import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
-
 export default function TransporterJobs() {
   const jobs = useSelector((state: RootState) => state.trips.jobs);
   const dispatch = useDispatch();
@@ -50,11 +47,6 @@ export default function TransporterJobs() {
 
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Jobs - TruckDispatch</title>
-        <meta property="og:image" content={Logo} />
-      </Helmet>
       <MyJobsPageStyle>
         {!loading ? (
           <UiTable
