@@ -21,7 +21,6 @@ export default function DashboardSidebar() {
   const chatHeads = useSelector(selectChatHeads);
   const navigate = useNavigate();
   const appLocation = useLocation();
-  const [isChatAvailable] = useState(true);
 
   const logOutUser = () => {
     localStorage.removeItem('uid');
@@ -88,18 +87,16 @@ export default function DashboardSidebar() {
               </Tab>
             </Link>
           ))}
-          {isChatAvailable && (
-            <Link to="/chat">
-              <Tab isActive={isRouteActive('/chat')}>
-                <div className="chat-icon-container">
-                  <UiIcon icon="Chats" size="24" />
-                  {unreadChatHeads !== 0 && (
-                    <MessageCount>{unreadChatHeads}</MessageCount>
-                  )}
-                </div>
-              </Tab>
-            </Link>
-          )}
+          <Link to="/chat">
+            <Tab isActive={isRouteActive('/chat')}>
+              <div className="chat-icon-container">
+                <UiIcon icon="Chats" size="24" />
+                {unreadChatHeads !== 0 && (
+                  <MessageCount>{unreadChatHeads}</MessageCount>
+                )}
+              </div>
+            </Tab>
+          </Link>
         </TabList>
 
         <BottomActions>

@@ -21,7 +21,7 @@ export const chatSlice = createSlice({
     },
     removeChatById(
       state: ChatState,
-      action: { payload: { chatToRemoveId: string; } },
+      action: { payload: { chatToRemoveId: string } },
     ) {
       const chatIndex = state.chats.findIndex(
         ({ temporaryId }) => temporaryId === action.payload.chatToRemoveId,

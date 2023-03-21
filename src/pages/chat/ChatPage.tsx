@@ -5,11 +5,7 @@ import styled from 'styled-components';
 
 import { RootState } from 'modules/index';
 
-import {
-  selectChatByChatId,
-  createChat,
-  readChat,
-} from 'modules/Chat';
+import { selectChatByChatId, createChat, readChat } from 'modules/Chat';
 
 import { toAnyAction } from 'utils/helpers';
 
@@ -65,9 +61,7 @@ export default function ChatPage() {
       lastSentChat.senderId !== user?.id &&
       !lastSentChat.readAt
     ) {
-      dispatch(
-        toAnyAction(readChat({ ...lastSentChat, readAt: Date.now() })),
-      );
+      dispatch(toAnyAction(readChat({ ...lastSentChat, readAt: Date.now() })));
     }
   }
 
@@ -82,16 +76,14 @@ export default function ChatPage() {
 
   useEffect(() => {
     if (chats.length > currentLengthOfChats) {
-      setCurrentLengthOfChats(chats.length)
+      setCurrentLengthOfChats(chats.length);
       initReadChat();
     }
   }, [chats]);
 
-
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
-
 
   return (
     <ChatPageStyling>
@@ -121,10 +113,9 @@ export default function ChatPage() {
               )}
               <div className="inner">
                 <input
-                   ref={inputRef}
+                  ref={inputRef}
                   placeholder="Enter Message"
                   value={formData.message}
-
                   onChange={updateMessage}
                 />
                 <button type="submit" disabled={!formData.message}>
