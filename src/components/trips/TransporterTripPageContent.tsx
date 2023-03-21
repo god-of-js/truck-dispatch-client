@@ -71,12 +71,20 @@ export default function AgentTripPageContent() {
 
     return 'success';
   }
+  function formatStatus (status: string) {
+    if (status === 'pending') return '  Pending';
+    if (status === 'rejected') return ' Rejected';
+    if (status === 'awaiting_bid') return 'Awaiting Bid';
+    if (status === 'in-progress') return 'In Progress';
+    if (status === 'completed') return 'Completed';
+  }
+
 
   const tripsData = useMemo(() => {
     return trips.map((trip: Trip) => ({
       ...trip,
       agent: agentDetails(trip.agentId),
-      status: <UiPill variant={getPillVariant(trip.status)}>{trip.status}</UiPill>,
+      status: <UiPill variant={getPillVariant(trip.status)}>{formatStatus(trip.status)}</UiPill>,
     }));
   }, [trips]);
 

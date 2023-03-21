@@ -81,17 +81,24 @@ export default function AgentTripPageContent() {
     if (status === 'pending') return 'warning';
     if (status === 'rejected') return 'danger';
     if (status === 'awaiting_bid') return 'gray';
-    if (status === 'In Progress') return 'info';
+    if (status === 'in-progress') return 'info';
     if (status === 'completed') return 'success';
 
     return 'success';
+  }
+  function formatStatus (status: string) {
+    if (status === 'pending') return '  Pending';
+    if (status === 'rejected') return ' Rejected';
+    if (status === 'awaiting_bid') return 'Awaiting Bid';
+    if (status === 'in-progress') return 'In Progress';
+    if (status === 'completed') return 'Completed';
   }
 
   const tripsData = useMemo(() => {
     return trips.map((trip: Trip) => ({
       ...trip,
       responsibleTransporter: responsibleTransporterDetails(trip.transporterId),
-      status: <UiPill variant={getPillVariant(trip.status)}>{trip.status}</UiPill>,
+      status: <UiPill variant={getPillVariant(trip.status)}>{formatStatus(trip.status)}</UiPill>,
     }));
   }, [trips]);
 
