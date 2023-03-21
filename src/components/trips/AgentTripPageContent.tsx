@@ -44,9 +44,9 @@ export default function AgentTripPageContent() {
       query: 'deliveryDate',
     },
     {
-      title: 'status', 
-      query: 'status'
-    }
+      title: 'Trip Status',
+      query: 'status',
+    },
   ];
 
   const dropDownData: DropDownData[] = [
@@ -77,18 +77,16 @@ export default function AgentTripPageContent() {
     );
   }
 
-  function getPillVariant(status: string) {
-    if (status === 'pending') return 'warning';
-    if (status === 'rejected') return 'danger';
+  function getPillVariant(status:Trip['status']) {
+    if (status === 'payment_complete') return 'warning';
     if (status === 'awaiting_bid') return 'gray';
     if (status === 'in-progress') return 'info';
     if (status === 'completed') return 'success';
 
     return 'success';
   }
-  function formatStatus (status: string) {
-    if (status === 'pending') return '  Pending';
-    if (status === 'rejected') return ' Rejected';
+  function formatStatus(status: Trip['status']) {
+    if (status === 'payment_complete') return 'Pending';
     if (status === 'awaiting_bid') return 'Awaiting Bid';
     if (status === 'in-progress') return 'In Progress';
     if (status === 'completed') return 'Completed';
@@ -98,7 +96,11 @@ export default function AgentTripPageContent() {
     return trips.map((trip: Trip) => ({
       ...trip,
       responsibleTransporter: responsibleTransporterDetails(trip.transporterId),
-      status: <UiPill variant={getPillVariant(trip.status)}>{formatStatus(trip.status)}</UiPill>,
+      status: (
+        <UiPill variant={getPillVariant(trip.status)}>
+          {formatStatus(trip.status)}
+        </UiPill>
+      ),
     }));
   }, [trips]);
 
