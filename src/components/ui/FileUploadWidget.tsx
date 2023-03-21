@@ -1,12 +1,11 @@
 import React, { ChangeEvent, useRef } from 'react';
 import styled from 'styled-components';
-import Asset from 'types/Asset';
 import UiField from './UiField';
 
 interface Props {
   name: string;
   label?: string;
-  value: File[] | File | Asset | null;
+  value: File[] | File | string | null;
   acceptMultiple?: boolean;
   fileType?: 'image' | 'document' | 'video';
   onChange: (event: { name: string; value: File | File[] }) => void;
@@ -57,7 +56,7 @@ export default function FileUploadWidget({
     onChange(dataToSend);
   }
 
-  function getFileName(item: File | Asset | File[]) {
+  function getFileName(item: File | string | File[]) {
     if (item instanceof File) {
       return item.name;
     } else if (Array.isArray(item)) {
@@ -65,7 +64,7 @@ export default function FileUploadWidget({
       return;
     }
 
-    return item?.url.split('/').pop() || '';
+    return item?.split('/').pop() || '';
   }
 
   function defaultComponent() {

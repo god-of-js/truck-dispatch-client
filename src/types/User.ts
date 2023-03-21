@@ -1,12 +1,10 @@
-import Asset from './Asset';
-
 export default interface User {
   id: string;
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
-  avatar?: Asset | File;
+  avatar?: string | File;
   userType: 'agent' | 'transporter';
   status?:
     | 'pending_verification'

@@ -3,9 +3,6 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { Helmet } from 'react-helmet';
-import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
-
 import { uploadItem } from '../../api/Cloudinary';
 
 import sizes from 'utils/sizes';
@@ -75,11 +72,6 @@ export default function ViewTripTDO() {
 
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Transfer Delivery Order - TruckDispatch</title>
-        <meta property="og:image" content={Logo} />
-      </Helmet>
       <CardContainer>
         {showUploadTDO && (
           <>
@@ -121,7 +113,7 @@ export default function ViewTripTDO() {
               subtitle="The TDO of your trip has been uploaded and is now accessible by the responsible transporter. Expect the transporter to reach out to you via phone or text for any other needed information."
             />
             <div className="button-container view-tdo-btn-container">
-              <a href={trip?.TDO?.url} target="_blank">
+              <a href={trip?.TDO} target="_blank">
                 <UiButton>View TDO</UiButton>
               </a>
             </div>
@@ -135,7 +127,7 @@ export default function ViewTripTDO() {
               subtitle="The agent has uploaded the TDO for this trip. This document authorizes the release of cargo from a shipping terminal or port and contains information about the shipment, including the name of the consignee, the destination address, and any special handling instructions. Kindly click the button below to view TDO "
             />
             <div className="button-container view-tdo-btn-container">
-              <a href={trip?.TDO?.url} target="_blank">
+              <a href={trip?.TDO} target="_blank">
                 <UiButton>View TDO</UiButton>
               </a>
             </div>

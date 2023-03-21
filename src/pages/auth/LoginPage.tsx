@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
-import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
 
 import { loginUser } from '../../modules/Account';
 
@@ -58,15 +56,6 @@ export default function LoginPage() {
 
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Login - TruckDispatch</title>
-        <link
-          rel="canonical"
-          href="https://dashboard.gettruckdispatch.com/auth/login"
-        />
-        <meta property="og:image" content={Logo} />
-      </Helmet>
       <UiForm schema={loginSchema} formData={formData} onSubmit={handleSubmit}>
         {({ errors }) => (
           <>

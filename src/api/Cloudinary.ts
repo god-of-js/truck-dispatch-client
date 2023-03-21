@@ -5,31 +5,32 @@ import {
   CLOUDINARY_VIDEO_UPLOAD_URL,
 } from 'utils/privateKeys';
 import { Toast } from 'utils/toast';
-import Asset from '../types/Asset';
-import uuid from '../utils/uuid';
-import Api from './index';
+import uuidv4 from 'utils/uuid';
 
-const urls: Asset[] = [];
-
-function uploadItem(file: File, isImage = true): Promise<Asset> {
+/**
+ *
+ * @param file This is the image, pdf or video being uploaded. it is of tile File
+ * @param isImage this is used to cater for situations where we need to upload videos.
+ * Cloudinary requires that we notify it of the type of file we are sending.
+ * @returns url of image uploaded
+ */
+function uploadItem(file: File, isImage = true): Promise<string> {
   return new Promise((resolve) => {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    const public_id = uuidv4();
 
     return axios
       .post(
-        isImage ? CLOUDINARY_IMAGE_UPLOAD_URL : CLOUDINARY_VIDEO_UPLOAD_URL,
+        `${
+          isImage ? CLOUDINARY_IMAGE_UPLOAD_URL : CLOUDINARY_VIDEO_UPLOAD_URL
+        }?public_id=${public_id}`,
         formData,
       )
       .then((response) => {
-        const assetId = uuid();
         const fileUrl = response.data.secure_url;
-        Api.saveAsset(assetId, fileUrl);
-        return resolve({
-          id: assetId,
-          url: fileUrl,
-        });
+        return resolve(fileUrl);
       })
       .catch((err) => {
         Toast.error({ msg: err.response.data.error.message });
@@ -37,12 +38,4 @@ function uploadItem(file: File, isImage = true): Promise<Asset> {
   });
 }
 
-async function upload(files: File[]): Promise<Asset[]> {
-  const promises: Promise<Asset>[] = [];
-  files.forEach((file) => promises.push(uploadItem(file)));
-  await Promise.all(promises);
-
-  return urls;
-}
-
-export { upload, uploadItem };
+export { uploadItem };

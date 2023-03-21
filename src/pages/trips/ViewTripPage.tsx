@@ -2,8 +2,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
-import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
 
 import sizes from 'utils/sizes';
 
@@ -18,11 +16,6 @@ export default function ViewTripDetailsPage() {
 
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Trip - TruckDispatch</title>
-        <meta property="og:image" content={Logo} />
-      </Helmet>
       {(trip && (
         <>
           <CardContainer>

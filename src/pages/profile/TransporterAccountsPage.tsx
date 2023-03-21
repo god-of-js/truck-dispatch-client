@@ -1,6 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { Helmet } from 'react-helmet';
-import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import UiButton from 'components/ui/UiButton';
 import UiOverlay from 'components/ui/UiOverlay';
@@ -58,11 +56,6 @@ export default function AccountDetailsPage() {
 
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Bank Account - TruckDispatch</title>
-        <meta property="og:image" content={Logo} />
-      </Helmet>
       <AccountPageStyling>
         <UiCard>
           <header>

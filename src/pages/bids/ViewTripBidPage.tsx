@@ -4,8 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { Helmet } from 'react-helmet';
-import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
 import Trip from 'types/Trip';
 import Ratings from 'components/ratings/Ratings';
 import UiAvatar from 'ui/UiAvatar';
@@ -54,11 +52,6 @@ export default function ViewTripBidPage() {
 
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>View Bid - TruckDispatch</title>
-        <meta property="og:image" content={Logo} />
-      </Helmet>
       <PageStyling>
         <CardContainer>
           <Heading>View Bid Details</Heading>

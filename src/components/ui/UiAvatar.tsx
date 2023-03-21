@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
-import Asset from 'types/Asset';
 import FileUploadWidget from './FileUploadWidget';
 import UiButton from './UiButton';
 import UiIcon from './UiIcon';
@@ -8,7 +7,7 @@ import UiIcon from './UiIcon';
 type Size = 'sm' | 'lg';
 
 interface Props {
-  avatar?: Asset | File;
+  avatar?: string | File;
   size?: Size;
   isEdit?: boolean;
   name?: string;
@@ -28,7 +27,7 @@ export default function UiAvatar({
     if (avatar instanceof File) {
       return avatarDataUrl;
     }
-    return avatar?.url as string;
+    return avatar as string;
   }, [avatar, avatarDataUrl]);
 
   const handleAvatarChange = (event: {

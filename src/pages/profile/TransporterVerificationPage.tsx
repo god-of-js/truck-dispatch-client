@@ -1,8 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { Helmet } from 'react-helmet';
-import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
 
 import {
   createOrUpdateUser,
@@ -85,11 +83,6 @@ export default function TransporterVerificationPage() {
 
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>KYC - TruckDispatch</title>
-        <meta property="og:image" content={Logo} />
-      </Helmet>
       <VerificationPageStyling>
         <TransportVerificationCard>
           {componentBasedOnVerificationStatus}

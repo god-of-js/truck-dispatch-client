@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Helmet } from 'react-helmet';
-import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
 import PaymentRequest from 'types/PaymentRequest';
 import FileUploadWidget from 'ui/FileUploadWidget';
 import UiButton from 'ui/UiButton';
@@ -143,11 +141,6 @@ export default function ViewTripRequestPayment() {
 
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Request Payment - TruckDispatch</title>
-        <meta property="og:image" content={Logo} />
-      </Helmet>
       <PageStyling>
         {pageLoading ? (
           <Loader />
