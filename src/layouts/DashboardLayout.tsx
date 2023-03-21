@@ -51,7 +51,7 @@ export default function DashboardLayout() {
 
       newSocket.on('message', (message) => {
         dispatch(setChat(message));
-      })
+      });
 
       return () => {
         newSocket.disconnect();
@@ -133,6 +133,7 @@ const Body = styled.div`
     position: static;
     border-right: ${pxToRem(1)} solid var(--color-gray-200);
   }
+
   @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
     width: 95%;
   }

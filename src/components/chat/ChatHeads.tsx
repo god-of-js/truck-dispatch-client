@@ -38,7 +38,7 @@ export default function ChatHeads() {
             <div className="name">{`${alternateUser(val).firstName} ${
               alternateUser(val).lastName
             }`}</div>
-            <div className="last-text">{val.message}</div>
+            <div className="last-text">{val.message}{`${val.readAt}`}</div>
           </div>
         </ChatHead>
       ))}

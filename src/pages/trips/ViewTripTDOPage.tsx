@@ -58,7 +58,7 @@ export default function ViewTripTDO() {
           setLoading(false);
         });
     } catch (err) {
-      Toast.error({msg: (err as Error).message});
+      Toast.error({ msg: (err as Error).message });
       setLoading(false);
     }
   }

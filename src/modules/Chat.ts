@@ -19,10 +19,19 @@ export const chatSlice = createSlice({
     setChat(state: ChatState, action: { payload: Chat }) {
       state.chats.push(action.payload);
     },
+    removeOrReplaceChatById(
+      state: ChatState,
+      action: { payload: { chatToRemoveId: string; } },
+    ) {
+      const chatIndex = state.chats.findIndex(
+        ({ temporaryId }) => temporaryId === action.payload.chatToRemoveId,
+      );
+      state.chats.splice(chatIndex, 0);
+    },
   },
 });
 
-export const { setChats, setChat } = chatSlice.actions;
+export const { setChats, setChat, removeOrReplaceChatById } = chatSlice.actions;
 
 export default chatSlice.reducer;
 function getTime(createdAt: number) {
@@ -63,8 +72,11 @@ export const selectChatHeads = createSelector(chats, (chatArr) => {
 });
 
 export const createChat = (chat: Chat) => {
-  return () => {
-    return Api.createChat(chat);
+  return (dispatch: AppDispatch) => {
+    dispatch(setChat(chat));
+    return Api.createChat(chat).catch(() => {
+      dispatch(removeOrReplaceChatById({ chatToRemoveId: chat.temporaryId! }));
+    });
   };
 };
 
@@ -77,5 +89,10 @@ export const getUsersChat = (userId: string) => {
 };
 
 export const updateChat = (chat: Chat) => {
-  return () => {};
+  return (dispatch: AppDispatch) => {
+    if (!chat._id) return;
+    return Api.setChatHasBeenRead(chat._id).then((data) => {
+      console.log(data);
+    })
+  };
 };

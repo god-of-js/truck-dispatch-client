@@ -161,6 +161,10 @@ class ApiService {
     return this.getRequest<Chat[]>(`/chat/user/${userId}`);
   }
 
+  setChatHasBeenRead(chatId: string) {
+    return this.patch<Chat>(`/chat/read/${chatId}`);
+  }
+
   private getRequest<T>(url: string): Promise<T> {
     return axiosInstance.get(url).then(({ data }) => data.data) as Promise<T>;
   }
@@ -217,8 +221,8 @@ class ApiService {
     }
   }
 
-  private patch(url: string, data: unknown): unknown {
-    return { url, data };
+  private patch<T>(url: string, data?: unknown): Promise<T> {
+    return axiosInstance.patch(url, data);
   }
 
   private remove(url: string) {

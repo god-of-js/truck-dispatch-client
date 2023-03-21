@@ -20,6 +20,7 @@ import UiAvatar from 'ui/UiAvatar';
 import UiIcon from 'ui/UiIcon';
 import UiForm from 'ui/UiForm';
 import ChatSchema from 'utils/validations/ChatSchema';
+import uuidv4 from 'utils/uuid';
 
 export default function ChatPage() {
   const { agentId, transporterId } = useParams();
@@ -48,8 +49,9 @@ export default function ChatPage() {
       transporterId: transporterId!,
       agentId: agentId!,
       receiverId: `${user?.id === agentId ? transporterId : agentId}`,
+      temporaryId: uuidv4(),
+      createdAt: Date.now(),
     };
-    console.log(data);
 
     setFormData(defaultFormData);
     dispatch(toAnyAction(createChat(data)));
@@ -66,6 +68,7 @@ export default function ChatPage() {
 
   useEffect(() => {
     const lastSentChat = chats[chats.length - 1];
+    console.log(lastSentChat);
     if (
       lastSentChat &&
       lastSentChat.senderId !== user?.id &&
