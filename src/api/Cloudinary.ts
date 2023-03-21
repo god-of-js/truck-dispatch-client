@@ -5,13 +5,8 @@ import {
   CLOUDINARY_VIDEO_UPLOAD_URL,
 } from 'utils/privateKeys';
 import { Toast } from 'utils/toast';
-import Asset from '../types/Asset';
-import uuid from '../utils/uuid';
-import Api from './index';
 
-const urls: Asset[] = [];
-
-function uploadItem(file: File, isImage = true): Promise<Asset> {
+function uploadItem(file: File, isImage = true): Promise<string> {
   return new Promise((resolve) => {
     const formData = new FormData();
     formData.append('file', file);
@@ -23,13 +18,8 @@ function uploadItem(file: File, isImage = true): Promise<Asset> {
         formData,
       )
       .then((response) => {
-        const assetId = uuid();
         const fileUrl = response.data.secure_url;
-        Api.saveAsset(assetId, fileUrl);
-        return resolve({
-          id: assetId,
-          url: fileUrl,
-        });
+        return resolve(fileUrl);
       })
       .catch((err) => {
         Toast.error({ msg: err.response.data.error.message });
@@ -37,12 +27,4 @@ function uploadItem(file: File, isImage = true): Promise<Asset> {
   });
 }
 
-async function upload(files: File[]): Promise<Asset[]> {
-  const promises: Promise<Asset>[] = [];
-  files.forEach((file) => promises.push(uploadItem(file)));
-  await Promise.all(promises);
-
-  return urls;
-}
-
-export { upload, uploadItem };
+export { uploadItem };

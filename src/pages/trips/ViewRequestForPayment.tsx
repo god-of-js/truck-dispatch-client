@@ -9,7 +9,6 @@ import {
   requestPaymentByTransporter,
   setPaymentRequest,
 } from 'modules/Payments';
-import Asset from 'types/Asset';
 import UiButton from 'ui/UiButton';
 import UiCard from 'ui/UiCard';
 import UiOverlay from 'ui/UiOverlay';
@@ -80,7 +79,7 @@ export default function ViewRequestForPayment() {
                     <div className="value">
                       <video controls>
                         <source
-                          src={(paymentRequest?.containerVideo as Asset).url}
+                          src={paymentRequest?.containerVideo as string}
                           type="video/mp4"
                         />
                         Your browser does not support the video tag.

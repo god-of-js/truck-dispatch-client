@@ -153,7 +153,7 @@ class ApiService {
   }
 
   createOrUpdateChat(chat: Chat) {
-    return this.setDoc('chat', chat.id, chat);
+    return this.setDoc('chat', 'chat.id', chat);
   }
 
   private setDoc(
