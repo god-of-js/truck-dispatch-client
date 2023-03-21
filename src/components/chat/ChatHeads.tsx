@@ -34,9 +34,9 @@ export default function ChatHeads() {
         >
           <UiAvatar avatar={alternateUser(val)?.avatar} />
           <div className="content-container">
-            <div className="name">{`${alternateUser(val)?.firstName} ${
+            <div className="name">{alternateUser(val) ? `${alternateUser(val)?.firstName} ${
               alternateUser(val)?.lastName
-            }`}</div>
+            }` : 'Truckdispatch User'}</div>
             <div className="last-text">{val.message}</div>
           </div>
         </ChatHead>
