@@ -7,7 +7,7 @@ import { io } from 'socket.io-client';
 import { toAnyAction } from 'utils/helpers';
 import sizes from '../utils/sizes';
 
-import { getDashboardUser, getUsers } from 'modules/Account';
+import { getDashboardUser, getUserAccountNumber, getUsers } from 'modules/Account';
 
 import DashboardSidebar from 'components/layout/DashboardSidebar';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
@@ -50,7 +50,6 @@ export default function DashboardLayout() {
       });
 
       newSocket.on('message', (message) => {
-        console.log(message);
         dispatch(setChat(message));
       });
 
@@ -58,6 +57,10 @@ export default function DashboardLayout() {
         newSocket.disconnect();
       };
     }
+  }, []);
+
+  useEffect(() => {
+    dispatch(toAnyAction(getUserAccountNumber()));
   }, []);
 
   const Component = loading ? (

@@ -5,15 +5,12 @@ import styled from 'styled-components';
 import UiButton from 'components/ui/UiButton';
 import UiOverlay from 'components/ui/UiOverlay';
 import AddAccount from 'components/profile/AddAccount';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import sizes from 'utils/sizes';
 import UiCard from 'ui/UiCard';
 import { RootState } from 'modules/index';
-import { toAnyAction } from 'utils/helpers';
-import { getUserAccountNumber } from 'modules/Account';
 
 export default function AccountDetailsPage() {
-  const dispatch = useDispatch();
   const accountDetails = useSelector(
     (state: RootState) => state.account.bankAccountDetails,
   );
@@ -58,10 +55,6 @@ export default function AccountDetailsPage() {
       </div>
     );
   }, [accountDetails]);
-
-  useEffect(() => {
-    dispatch(toAnyAction(getUserAccountNumber()));
-  }, []);
 
   return (
     <>
