@@ -14,9 +14,6 @@ import ViewTripDetails from 'components/trips/ViewTripDetails';
 import MessageWithImage from 'ui/MessageWithImage';
 import UiButton from 'ui/UiButton';
 import UiBackButton from 'ui/UiBackButton';
-import { Helmet } from 'react-helmet';
-import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
-
 import { Link, useNavigate } from 'react-router-dom';
 import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
@@ -118,11 +115,6 @@ export default function NewTripPage() {
 
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>New Trip - TruckDispatch</title>
-        <meta property="og:image" content={Logo} />
-      </Helmet>
       <PageStyling>
         <UiBackButton />
         <CardContainer>

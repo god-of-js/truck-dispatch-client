@@ -19,7 +19,6 @@ import Verification from 'types/Verification';
 import UiInput from 'ui/UiInput';
 import sizes from 'utils/sizes';
 import { RootState } from 'modules/index';
-import Asset from 'types/Asset';
 import { Toast } from 'utils/toast';
 
 interface Props {
@@ -77,7 +76,7 @@ export default function VerificationForm({
     return aValueHasBeenChanged<Verification>(verification!, formData);
   }, [verification, formData]);
 
-  function initUpload(item: File | Asset) {
+  function initUpload(item: File | string) {
     if (item instanceof File) {
       return uploadItem(item);
     }
@@ -124,7 +123,7 @@ export default function VerificationForm({
           onVerified();
         })
         .catch((err: Error) => {
-          Toast.error({ msg: err.message })
+          Toast.error({ msg: err.message });
         })
         .finally(() => setLoading(false));
     } catch (e) {

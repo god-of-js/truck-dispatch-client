@@ -3,9 +3,6 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { Helmet } from 'react-helmet';
-import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
-
 import { abbreviateNumber, priceWithTDPercent } from 'utils/helpers';
 
 import UiTable from 'ui/UiTable';
@@ -69,11 +66,6 @@ export default function ViewTripBidsPage() {
 
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>View Bids- TruckDispatch</title>
-        <meta property="og:image" content={Logo} />
-      </Helmet>
       <PageStyling>
         <UiTable
           data={bidsData}

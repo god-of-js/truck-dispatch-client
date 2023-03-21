@@ -6,8 +6,6 @@ import {
   getTransporterTrips,
   selectTrip,
 } from 'modules/Trips';
-import { Helmet } from 'react-helmet';
-import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
 import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
@@ -110,11 +108,6 @@ export default function ViewTripStatus() {
 
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Trip Status - TruckDispatch</title>
-        <meta property="og:image" content={Logo} />
-      </Helmet>
       <PageStyling>
         <CardContainer>
           <TripPickupAndDropOff

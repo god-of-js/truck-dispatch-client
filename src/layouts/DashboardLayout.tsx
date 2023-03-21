@@ -33,7 +33,7 @@ export default function DashboardLayout() {
     } else {
       dispatch(toAnyAction(getDashboardUser()))
         .catch((err: Error) => {
-          Toast.error({msg: err.message});
+          Toast.error({ msg: err.message });
         })
         .finally(() => setLoading(false));
       dispatch(toAnyAction(getUserAccountNumber()));

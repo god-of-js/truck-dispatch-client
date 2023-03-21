@@ -4,8 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { aValueHasBeenChanged, toAnyAction } from 'utils/helpers';
 import styled from 'styled-components';
 
-import { Helmet } from 'react-helmet';
-import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
 import sizes from 'utils/sizes';
 import uuidv4 from 'utils/uuid';
 import { Toast } from 'utils/toast';
@@ -98,11 +96,6 @@ export default function BidOnJob() {
 
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Submit Bid - TruckDispatch</title>
-        <meta property="og:image" content={Logo} />
-      </Helmet>
       <BidOnJobPageStyle>
         <UiBackButton />
         <CardContainer>

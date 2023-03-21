@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { Helmet } from 'react-helmet';
-import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
 import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
 
@@ -60,11 +58,6 @@ export default function ViewTransporterJobDetailsPage() {
   }, [bid]);
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Job details - TruckDispatch</title>
-        <meta property="og:image" content={Logo} />
-      </Helmet>
       <ViewTransporterJobPageStyle>
         <UiBackButton />
         {loading ? (
