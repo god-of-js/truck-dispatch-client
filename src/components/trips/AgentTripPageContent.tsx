@@ -81,6 +81,7 @@ export default function AgentTripPageContent() {
     if (status === 'pending') return 'warning';
     if (status === 'rejected') return 'danger';
     if (status === 'awaiting_bid') return 'gray';
+    if (status === 'payment_complete') return 'warning';
     if (status === 'in-progress') return 'info';
     if (status === 'completed') return 'success';
 
@@ -90,6 +91,7 @@ export default function AgentTripPageContent() {
     if (status === 'pending') return '  Pending';
     if (status === 'rejected') return ' Rejected';
     if (status === 'awaiting_bid') return 'Awaiting Bid';
+    if (status === 'payment_complete') return ' Pending';
     if (status === 'in-progress') return 'In Progress';
     if (status === 'completed') return 'Completed';
   }
@@ -101,6 +103,7 @@ export default function AgentTripPageContent() {
       status: <UiPill variant={getPillVariant(trip.status)}>{formatStatus(trip.status)}</UiPill>,
     }));
   }, [trips]);
+  console.log(tripsData)
 
   function navigateToTrip(id: string) {
     navigate(`/my-trips/${id}`);

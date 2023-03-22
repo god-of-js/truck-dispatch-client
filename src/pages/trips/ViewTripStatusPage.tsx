@@ -16,6 +16,8 @@ import Trip from 'types/Trip';
 import User from 'types/User';
 import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
+import UiOverlay from 'ui/UiOverlay';
+import GoodsInspectionConfirmation from 'components/trips/GoodsInspectionConfirmation';
 import { RootState } from 'modules/index';
 import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
@@ -27,6 +29,7 @@ export default function ViewTripStatus() {
   const transporters = useSelector(selectTransporters);
   const agents = useSelector(selectAgents);
   const user = useSelector((state: RootState) => state.account.user);
+  const [isGoodsInspectionConfModalVisible, setIsGoodsInspectionConfModalVisible] = useState(false)
   const [loading, setLoading] = useState(false);
 
   const transporter = useMemo(() => {
@@ -172,7 +175,7 @@ export default function ViewTripStatus() {
                       the button below to notify the Agent the trip is about to
                       start.
                     </p>
-                    <UiButton loading={loading} onClick={startTrip}>
+                    <UiButton loading={loading} onClick={() => setIsGoodsInspectionConfModalVisible(true)}>
                       Start Trip
                     </UiButton>
                   </>
@@ -225,6 +228,9 @@ export default function ViewTripStatus() {
           </CardContainer>
         )}
       </PageStyling>
+      <UiOverlay isVisible={isGoodsInspectionConfModalVisible}>
+        <GoodsInspectionConfirmation onClose={()=> setIsGoodsInspectionConfModalVisible(false)} startTrip={startTrip} transporterName={transporter?.firstName}/>
+      </UiOverlay>
     </>
   );
 }
