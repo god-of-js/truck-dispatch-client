@@ -30,8 +30,8 @@ export default function DashboardLayout() {
   const user = useSelector((state: RootState) => state.account.user);
 
   useEffect(() => {
-    const userId = localStorage.getItem('uid');
-    if (!userId) {
+    const jwt = localStorage.getItem('jwt');
+    if (!jwt) {
       navigate('/auth/login');
     } else {
       dispatch(toAnyAction(getDashboardUser()))
@@ -41,7 +41,7 @@ export default function DashboardLayout() {
         .finally(() => setLoading(false));
       // Would be removed when the backend is ready.
       dispatch(toAnyAction(getUsers()));
-      dispatch(toAnyAction(getUsersChat(userId)));
+      // dispatch(toAnyAction(getUsersChat(userId)));
     }
   }, []);
 
