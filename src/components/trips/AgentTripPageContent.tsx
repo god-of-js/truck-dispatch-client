@@ -44,9 +44,9 @@ export default function AgentTripPageContent() {
       query: 'deliveryDate',
     },
     {
-      title: 'status', 
-      query: 'status'
-    }
+      title: 'status',
+      query: 'status',
+    },
   ];
 
   const dropDownData: DropDownData[] = [
@@ -87,7 +87,7 @@ export default function AgentTripPageContent() {
 
     return 'success';
   }
-  function formatStatus (status: string) {
+  function formatStatus(status: string) {
     if (status === 'pending') return '  Pending';
     if (status === 'rejected') return ' Rejected';
     if (status === 'awaiting_bid') return 'Awaiting Bid';
@@ -100,10 +100,14 @@ export default function AgentTripPageContent() {
     return trips.map((trip: Trip) => ({
       ...trip,
       responsibleTransporter: responsibleTransporterDetails(trip.transporterId),
-      status: <UiPill variant={getPillVariant(trip.status)}>{formatStatus(trip.status)}</UiPill>,
+      status: (
+        <UiPill variant={getPillVariant(trip.status)}>
+          {formatStatus(trip.status)}
+        </UiPill>
+      ),
     }));
   }, [trips]);
-  console.log(tripsData)
+  console.log(tripsData);
 
   function navigateToTrip(id: string) {
     navigate(`/my-trips/${id}`);

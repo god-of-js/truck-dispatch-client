@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 interface Props {
   children: React.ReactNode;
-  variant: 'primary' | 'warning' | 'danger' | 'info' | 'success'| 'gray';
+  variant: 'primary' | 'warning' | 'danger' | 'info' | 'success' | 'gray';
 }
 export default function ({ children, variant }: Props) {
   return <Pill variant={variant}>{children}</Pill>;

@@ -44,7 +44,6 @@ export default function AgentTripPageContent() {
       query: 'deliveryDate',
     },
   ];
-  
 
   function agentDetails(agentId?: string) {
     if (!agentId) return 'No agent present';
@@ -71,7 +70,7 @@ export default function AgentTripPageContent() {
 
     return 'success';
   }
-  function formatStatus (status: string) {
+  function formatStatus(status: string) {
     if (status === 'pending') return '  Pending';
     if (status === 'rejected') return ' Rejected';
     if (status === 'awaiting_bid') return 'Awaiting Bid';
@@ -79,15 +78,17 @@ export default function AgentTripPageContent() {
     if (status === 'completed') return 'Completed';
   }
 
-
   const tripsData = useMemo(() => {
     return trips.map((trip: Trip) => ({
       ...trip,
       agent: agentDetails(trip.agentId),
-      status: <UiPill variant={getPillVariant(trip.status)}>{formatStatus(trip.status)}</UiPill>,
+      status: (
+        <UiPill variant={getPillVariant(trip.status)}>
+          {formatStatus(trip.status)}
+        </UiPill>
+      ),
     }));
   }, [trips]);
-
 
   function navigateToTrip(id: string) {
     navigate(`/my-trips/${id}`);
