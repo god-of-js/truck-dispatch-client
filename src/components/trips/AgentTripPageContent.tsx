@@ -10,6 +10,7 @@ import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
 import UiTable from 'ui/UiTable';
 import UiIcon from 'ui/UiIcon';
+import UiPill from 'ui/UiPill';
 import { DropDownData } from 'ui/UiDropdownMenu';
 
 export default function AgentTripPageContent() {
@@ -42,6 +43,10 @@ export default function AgentTripPageContent() {
       title: 'Delivery Date',
       query: 'deliveryDate',
     },
+    {
+      title: 'status',
+      query: 'status',
+    },
   ];
 
   const dropDownData: DropDownData[] = [
@@ -72,12 +77,37 @@ export default function AgentTripPageContent() {
     );
   }
 
+  function getPillVariant(status: string) {
+    if (status === 'pending') return 'warning';
+    if (status === 'rejected') return 'danger';
+    if (status === 'awaiting_bid') return 'gray';
+    if (status === 'payment_complete') return 'warning';
+    if (status === 'in-progress') return 'info';
+    if (status === 'completed') return 'success';
+
+    return 'success';
+  }
+  function formatStatus(status: string) {
+    if (status === 'pending') return '  Pending';
+    if (status === 'rejected') return ' Rejected';
+    if (status === 'awaiting_bid') return 'Awaiting Bid';
+    if (status === 'payment_complete') return ' Pending';
+    if (status === 'in-progress') return 'In Progress';
+    if (status === 'completed') return 'Completed';
+  }
+
   const tripsData = useMemo(() => {
     return trips.map((trip: Trip) => ({
       ...trip,
       responsibleTransporter: responsibleTransporterDetails(trip.transporterId),
+      status: (
+        <UiPill variant={getPillVariant(trip.status)}>
+          {formatStatus(trip.status)}
+        </UiPill>
+      ),
     }));
   }, [trips]);
+  console.log(tripsData);
 
   function navigateToTrip(id: string) {
     navigate(`/my-trips/${id}`);
