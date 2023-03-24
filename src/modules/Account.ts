@@ -1,12 +1,12 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { AppDispatch, AppState, RootState } from '.';
-import { removeKeyValuePairsFromObject, toAnyAction } from 'utils/helpers';
 import Api from 'Api';
 import User from '../types/User';
 import UserWithPassword from '../types/UserWithPassword';
 import Verification from '../types/Verification';
 import Rating from 'types/Rating';
 import BankAccount from 'types/BankAccount';
+import { saveTokenVerificationInfo } from 'utils/helpers';
 
 export interface AccountState {
   users: User[];
@@ -55,7 +55,7 @@ const users = (state: RootState) => state.account.users;
 
 export const selectUser = (userId: string) =>
   createSelector(users, (usersArr) =>
-    usersArr.find((user) => user.id === userId),
+    usersArr.find((user) => user._id === userId),
   );
 
 export const selectTransporters = createSelector(users, (usersArr: User[]) =>
@@ -64,7 +64,7 @@ export const selectTransporters = createSelector(users, (usersArr: User[]) =>
 
 export const selectTransporter = (transporterId: string) =>
   createSelector(users, (usersArr: User[]) =>
-    usersArr.find(({ id }) => id === transporterId),
+    usersArr.find(({ _id }) => _id === transporterId),
   );
 
 export const selectAgents = createSelector(users, (usersArr: User[]) =>
@@ -72,39 +72,58 @@ export const selectAgents = createSelector(users, (usersArr: User[]) =>
 );
 
 export function RegisterUser(AuthUser: UserWithPassword) {
-  return async (dispatch: AppDispatch) => {
-    await Api.createUserWithEmailAndPassword(
-      AuthUser.email,
-      AuthUser.password!,
-    ).then((data) => {
-      const user = removeKeyValuePairsFromObject<User>(AuthUser, [
-        'password',
-        'cPassword',
-        AuthUser.userType !== 'agent' ? '' : 'status',
-      ]);
-      user.id = data.uid;
-
-      localStorage.setItem('uid', user.id);
-      dispatch(toAnyAction(createOrUpdateUser(user)));
+  return async () => {
+    await Api.createUser(AuthUser).then((data) => {
+      saveTokenVerificationInfo(data.data);
     });
   };
 }
 
+export function sendOTP(phone: string) {
+  return () => {
+    return Api.requestVerificationCode({ phone }).then((data) => {
+      saveTokenVerificationInfo(data.data)
+    });
+  };
+}
+export function VerifyOtp(pin: string) {
+  return async () => {
+    const otpPinId = localStorage.getItem('otp-pin-id');
+    const otpPhone = localStorage.getItem('otp-phone-number');
+
+    if (!otpPinId || !otpPhone)
+      throw new Error(
+        'Something went wrong. Kindly request a new OTP for verification',
+      );
+
+    const data = {
+      pin,
+      pin_id: otpPinId,
+      phone: otpPhone,
+    };
+    return Api.verifyPhone(data).then(() => {
+      localStorage.removeItem('otp-pin-id');
+      localStorage.removeItem('otp-phone-number');
+    }).catch((err) => Promise.reject(err.data));
+  };
+}
+
 export function createOrUpdateUser(user: User) {
-  return async (dispatch: AppDispatch) => {
+  return async () => {
     return Api.recordAccountDetails(user);
   };
 }
 
 export function loginUser(AuthUser: { email: string; password: string }) {
   return () => {
-    return Api.signInWithEmailAndPassword(AuthUser.email, AuthUser.password!)
-      .then((data) => {
-        localStorage.setItem('uid', data.uid);
-      })
-      .catch((err) => {
-        throw new Error(err.message);
-      });
+    return Api.signInWithEmailAndPassword(AuthUser).then((data) => {
+      localStorage.setItem('jwt', data.data.jwt);
+    }).catch((err) => {
+      if (err.data.message === 'Phone has not been verified') {
+        saveTokenVerificationInfo(err.data.data)
+      }
+      return Promise.reject(err.data);
+    });
   };
 }
 

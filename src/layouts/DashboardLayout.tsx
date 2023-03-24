@@ -7,7 +7,11 @@ import { io } from 'socket.io-client';
 import { toAnyAction } from 'utils/helpers';
 import sizes from '../utils/sizes';
 
-import { getDashboardUser, getUserAccountNumber, getUsers } from 'modules/Account';
+import {
+  getDashboardUser,
+  getUserAccountNumber,
+  getUsers,
+} from 'modules/Account';
 
 import DashboardSidebar from 'components/layout/DashboardSidebar';
 import DashboardTopNav from 'components/layout/DashboardTopNav';

@@ -15,7 +15,9 @@ instance.interceptors.response.use(
         msg: "we couldn't reach our servers. Kindly check your connection. However, the team is on the issue.",
       });
     }
-    Promise.reject(err);
+    // TODO: remove for deploy
+    console.log(err);
+    return Promise.reject(err.response);
   },
 );
 export default instance;

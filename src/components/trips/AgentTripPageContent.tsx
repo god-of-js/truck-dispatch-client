@@ -77,7 +77,7 @@ export default function AgentTripPageContent() {
     );
   }
 
-  function getPillVariant(status:Trip['status']) {
+  function getPillVariant(status: Trip['status']) {
     if (status === 'payment_complete') return 'warning';
     if (status === 'awaiting_bid') return 'gray';
     if (status === 'in-progress') return 'info';

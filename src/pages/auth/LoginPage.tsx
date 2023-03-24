@@ -34,19 +34,14 @@ export default function LoginPage() {
     setLoading(true);
     dispatch(toAnyAction(loginUser(formData)))
       .then(() => {
-        navigate('/my-trips');
+        // navigate('/my-trips');
       })
-      .catch((err: { message: string }) => {
+      .catch((err: Error) => {
         let msg = err.message;
-
-        if (msg === 'Firebase: Error (auth/wrong-password).') {
-          msg = 'Email and password do not match';
+        if (msg === 'Phone has not been verified') {
+          navigate('/auth/verify-phone')
         }
-
-        if (msg === 'Firebase: Error (auth/user-not-found).') {
-          msg = 'A user with this email does not exist';
-        }
-
+        console.log(err);
         Toast.error({ msg });
       })
       .finally(() => {

@@ -10,11 +10,7 @@ import {
 } from 'firebase/firestore';
 import 'firebase/firestore';
 import User from '../types/User';
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from 'firebase/auth';
-import db, { auth } from './firebase';
+import db from './firebase';
 import axiosInstance from './AxiosInstance';
 import Trip from 'types/Trip';
 import Bid from 'types/Bid';
@@ -24,22 +20,25 @@ import PaymentRequest from 'types/PaymentRequest';
 import Chat from 'types/Chat';
 import Verification from 'types/Verification';
 import BankAccount from 'types/BankAccount';
+import VerifyPhoneData from 'types/VerifyPhoneData';
 
 class ApiService {
-  createUserWithEmailAndPassword(email: string, password: string) {
-    return createUserWithEmailAndPassword(auth, email, password).then(
-      ({ user }) => user,
-    );
+  createUser(userData: User) {
+    return this.post('/auth/join', userData);
   }
 
-  signInWithEmailAndPassword(email: string, password: string) {
-    return signInWithEmailAndPassword(auth, email, password).then(
-      ({ user }) => user,
-    );
+  signInWithEmailAndPassword(data: { email: string; password: string }) {
+    return this.post('/auth/login', data);
+  }
+  requestVerificationCode(data: { phone: string }) {
+    return this.post('/auth/request-sms', data);
+  }
+  verifyPhone(data: VerifyPhoneData) {
+    return this.post('/auth/verify-phone', data);
   }
 
   recordAccountDetails(data: User) {
-    return this.setDoc('user', data.id, data);
+    return this.setDoc('user', data._id, data);
   }
 
   getUser(id: string) {
@@ -170,7 +169,7 @@ class ApiService {
   }
 
   private post(url: string, data: unknown) {
-    return axiosInstance.post(url, data);
+    return axiosInstance.post(url, data).then(({ data }) => data);
   }
 
   private setDoc(
