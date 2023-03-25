@@ -43,6 +43,10 @@ export default function AgentTripPageContent() {
       title: 'Delivery Date',
       query: 'deliveryDate',
     },
+    {
+      title: 'status',
+      query: 'status',
+    },
   ];
 
   function agentDetails(agentId?: string) {
@@ -65,6 +69,7 @@ export default function AgentTripPageContent() {
     if (status === 'pending') return 'warning';
     if (status === 'rejected') return 'danger';
     if (status === 'awaiting_bid') return 'gray';
+    if (status === 'payment_complete') return 'warning';
     if (status === 'In Progress') return 'info';
     if (status === 'completed') return 'success';
 
@@ -74,6 +79,7 @@ export default function AgentTripPageContent() {
     if (status === 'pending') return '  Pending';
     if (status === 'rejected') return ' Rejected';
     if (status === 'awaiting_bid') return 'Awaiting Bid';
+    if (status === 'payment_complete') return ' Pending';
     if (status === 'in-progress') return 'In Progress';
     if (status === 'completed') return 'Completed';
   }
@@ -89,7 +95,7 @@ export default function AgentTripPageContent() {
       ),
     }));
   }, [trips]);
-
+  console.log(tripsData);
   function navigateToTrip(id: string) {
     navigate(`/my-trips/${id}`);
   }
