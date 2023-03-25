@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { BACKEND_URL } from 'utils/privateKeys';
 import { Toast } from 'utils/toast';
+import { getUserSessionId } from 'utils/userSession';
 
 const instance = axios.create({
   baseURL: BACKEND_URL,
@@ -17,7 +18,15 @@ instance.interceptors.response.use(
     }
     // TODO: remove for deploy
     console.log(err);
-    return Promise.reject(err.response);
+    return Promise.reject(err.response.data);
   },
 );
-export default instance;
+
+function authorizedInstance() {
+  if (!instance.defaults.headers.Authorization) {
+    const token = getUserSessionId();
+    if (token) instance.defaults.headers.Authorization = `Bearer ${token}`;
+  }
+  return instance;
+}
+export default authorizedInstance;

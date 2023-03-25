@@ -7,6 +7,7 @@ import Verification from '../types/Verification';
 import Rating from 'types/Rating';
 import BankAccount from 'types/BankAccount';
 import { saveTokenVerificationInfo } from 'utils/helpers';
+import { saveUserSessionId } from 'utils/userSession';
 
 export interface AccountState {
   users: User[];
@@ -74,7 +75,7 @@ export const selectAgents = createSelector(users, (usersArr: User[]) =>
 export function RegisterUser(AuthUser: UserWithPassword) {
   return async () => {
     await Api.createUser(AuthUser).then((data) => {
-      saveTokenVerificationInfo(data.data);
+      saveTokenVerificationInfo(data);
     });
   };
 }
@@ -82,7 +83,7 @@ export function RegisterUser(AuthUser: UserWithPassword) {
 export function sendOTP(phone: string) {
   return () => {
     return Api.requestVerificationCode({ phone }).then((data) => {
-      saveTokenVerificationInfo(data.data)
+      saveTokenVerificationInfo(data);
     });
   };
 }
@@ -101,10 +102,12 @@ export function VerifyOtp(pin: string) {
       pin_id: otpPinId,
       phone: otpPhone,
     };
-    return Api.verifyPhone(data).then(() => {
-      localStorage.removeItem('otp-pin-id');
-      localStorage.removeItem('otp-phone-number');
-    }).catch((err) => Promise.reject(err.data));
+    return Api.verifyPhone(data)
+      .then(() => {
+        localStorage.removeItem('otp-pin-id');
+        localStorage.removeItem('otp-phone-number');
+      })
+      .catch((err) => Promise.reject(err.data));
   };
 }
 
@@ -116,14 +119,16 @@ export function createOrUpdateUser(user: User) {
 
 export function loginUser(AuthUser: { email: string; password: string }) {
   return () => {
-    return Api.signInWithEmailAndPassword(AuthUser).then((data) => {
-      localStorage.setItem('jwt', data.data.jwt);
-    }).catch((err) => {
-      if (err.data.message === 'Phone has not been verified') {
-        saveTokenVerificationInfo(err.data.data)
-      }
-      return Promise.reject(err.data);
-    });
+    return Api.signInWithEmailAndPassword(AuthUser)
+      .then((data) => {
+        saveUserSessionId(data.jwt);
+      })
+      .catch((err) => {
+        if (err.message === 'Phone has not been verified') {
+          saveTokenVerificationInfo(err.data);
+        }
+        return Promise.reject(err);
+      });
   };
 }
 
@@ -144,9 +149,7 @@ export function getUsers() {
 
 export function getDashboardUser() {
   return (dispatch: AppDispatch) => {
-    const uid = localStorage.getItem('uid');
-    if (!uid) return;
-    return Api.getUser(uid)
+    return Api.getUser()
       .then((data) => {
         dispatch(setUser(data));
         return data;

@@ -34,12 +34,12 @@ export default function LoginPage() {
     setLoading(true);
     dispatch(toAnyAction(loginUser(formData)))
       .then(() => {
-        // navigate('/my-trips');
+        navigate('/my-trips');
       })
       .catch((err: Error) => {
         let msg = err.message;
         if (msg === 'Phone has not been verified') {
-          navigate('/auth/verify-phone')
+          navigate('/auth/verify-phone');
         }
         console.log(err);
         Toast.error({ msg });

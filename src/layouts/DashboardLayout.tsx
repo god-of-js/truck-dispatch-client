@@ -7,11 +7,7 @@ import { io } from 'socket.io-client';
 import { toAnyAction } from 'utils/helpers';
 import sizes from '../utils/sizes';
 
-import {
-  getDashboardUser,
-  getUserAccountNumber,
-  getUsers,
-} from 'modules/Account';
+import { getDashboardUser } from 'modules/Account';
 
 import DashboardSidebar from 'components/layout/DashboardSidebar';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
@@ -39,14 +35,12 @@ export default function DashboardLayout() {
           Toast.error({ msg: err.message });
         })
         .finally(() => setLoading(false));
-      // Would be removed when the backend is ready.
-      dispatch(toAnyAction(getUsers()));
       // dispatch(toAnyAction(getUsersChat(userId)));
     }
   }, []);
 
   useEffect(() => {
-    const userId = localStorage.getItem('uid');
+    const userId = user?._id;
     if (userId) {
       const newSocket = io(WEB_SOCKET_URL);
       newSocket.on('connect', () => {
@@ -61,21 +55,9 @@ export default function DashboardLayout() {
         newSocket.disconnect();
       };
     }
-  }, []);
+  }, [user]);
 
-  useEffect(() => {
-    dispatch(toAnyAction(getUserAccountNumber()));
-  }, []);
-
-  const Component = loading ? (
-    <Loader />
-  ) : (
-    <>
-      <Suspense fallback={<Loader />}>
-        <Outlet />
-      </Suspense>
-    </>
-  );
+  const Component = loading ? <Loader /> : <Outlet />;
   return (
     <Layout>
       <DashboardSidebar />

@@ -46,7 +46,7 @@ export default function loadServices() {
   // @ts-ignore
   window.Intercom('update');
 
-  const userId = localStorage.getItem('uid');
+  const userId = localStorage.getItem('jwt');
   if (userId) {
     Api.getUser(userId).then((user: User) => {
       // @ts-ignore

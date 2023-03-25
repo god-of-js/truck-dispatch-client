@@ -4,6 +4,7 @@ import { AppDispatch, AppState, RootState } from '.';
 import Api from 'Api';
 import { toAnyAction } from 'utils/helpers';
 import Bid from 'types/Bid';
+import NewTrip from 'types/NewTrip';
 
 export interface TripState {
   trips: Trip[];
@@ -39,11 +40,11 @@ export default TripsSlice.reducer;
 const trips = (state: RootState) => state.trips.trips;
 export const selectTrip = (tripId: string) =>
   createSelector(trips, (trips: Trip[]) =>
-    trips.find((trip) => trip.id === tripId),
+    trips.find((trip) => trip._id === tripId),
   );
 const jobs = (state: RootState) => state.trips.jobs;
 export const selectJob = (jobId: string) =>
-  createSelector(jobs, (jobs: Trip[]) => jobs.find(({ id }) => id === jobId));
+  createSelector(jobs, (jobs: Trip[]) => jobs.find(({ _id }) => _id === jobId));
 
 const bids = (state: RootState) => state.trips.bids;
 export const selectBid = (
@@ -55,16 +56,20 @@ export const selectBid = (
   });
 
 // ASYNC THUNKS
-export function createOrUpdateTrip(data: Trip) {
+export function createTrip(trip: NewTrip) {
   return (dispatch: AppDispatch, state: AppState) => {
-    return Api.createOrUpdateTrip(data).then(() => {
+    return Api.createTrip(trip).then((data) => {
+      dispatch(setTrips([...state().trips.trips, data]));
+      return data;
+    });
+  };
+}
+export function updateTrip(formData: Trip) {
+  return (dispatch: AppDispatch, state: AppState) => {
+    return Api.updateTrip(formData).then((data) => {
       const currentTripIndex = state().trips.trips.findIndex(
-        (trip) => trip.id === data.id,
+        (trip) => trip._id === data._id,
       );
-      if (currentTripIndex === -1) {
-        dispatch(setTrips([...state().trips.trips, data]));
-        return;
-      }
       const trips = [...state().trips.trips];
       trips[currentTripIndex] = data;
       dispatch(setTrips(trips));

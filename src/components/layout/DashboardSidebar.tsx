@@ -10,6 +10,7 @@ import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
 
 import UiIcon, { Icons } from '../ui/UiIcon';
 import { RootState } from 'modules/index';
+import { removeUserSessionId } from 'utils/userSession';
 
 interface Route {
   iconName: Icons;
@@ -23,9 +24,8 @@ export default function DashboardSidebar() {
   const appLocation = useLocation();
 
   const logOutUser = () => {
-    localStorage.removeItem('uid');
+    removeUserSessionId();
     navigate('/auth/login');
-    location.reload();
   };
 
   const transporterRoutes: Route[] = [
@@ -55,7 +55,7 @@ export default function DashboardSidebar() {
   ];
   const unreadChatHeads = useMemo(() => {
     return chatHeads.filter(
-      (chat) => !chat.readAt && chat.senderId !== user?.id,
+      (chat) => !chat.readAt && chat.senderId !== user?._id,
     ).length;
   }, [chatHeads]);
 

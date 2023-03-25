@@ -10,19 +10,19 @@ import { RootState } from 'modules/index';
 export default function DashboardLayout() {
   const user = useSelector((state: RootState) => state.account.user);
   const dispatch = useDispatch();
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
 
   function loadTrips() {
     if (!user) return;
-    if (user.userType === 'agent') {
-      dispatch(toAnyAction(getAgentTrips(user.id))).finally(() => {
-        setLoading(false);
-      });
-    } else if (user.userType === 'transporter') {
-      dispatch(toAnyAction(getTransporterTrips(user.id))).finally(() => {
-        setLoading(false);
-      });
-    }
+    // if (user.userType === 'agent') {
+    //   dispatch(toAnyAction(getAgentTrips(user.id))).finally(() => {
+    //     setLoading(false);
+    //   });
+    // } else if (user.userType === 'transporter') {
+    //   dispatch(toAnyAction(getTransporterTrips(user.id))).finally(() => {
+    //     setLoading(false);
+    //   });
+    // }
   }
   useEffect(() => {
     loadTrips();

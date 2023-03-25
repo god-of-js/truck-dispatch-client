@@ -21,15 +21,16 @@ import UiTextArea from 'ui/UiTextArea';
 import UiButton from 'ui/UiButton';
 import { useSelector } from 'react-redux';
 import { selectTrip } from 'modules/Trips';
+import NewTrip from 'types/NewTrip';
 
 interface Props {
-  defaultFormData: Trip;
-  nextHandler: (param: Trip) => void;
+  tripFormData: Trip | NewTrip;
+  nextHandler: (param: NewTrip | Trip) => void;
 }
-export default function NewTripForm({ defaultFormData, nextHandler }: Props) {
+export default function NewTripForm({ tripFormData, nextHandler }: Props) {
   const { tripId } = useParams();
   const trip = useSelector(selectTrip(tripId || ''));
-  const [formData, setFormData] = useState(defaultFormData);
+  const [formData, setFormData] = useState(tripFormData);
   const typeOfGoodsOptions = turnArrayToOptions(typeOfGoods);
   const shippingLinesOptions = turnArrayToOptions(shippingLines);
   const jobTypesOptions = turnArrayToOptions(jobTypes);
@@ -57,7 +58,7 @@ export default function NewTripForm({ defaultFormData, nextHandler }: Props) {
   }
 
   useEffect(() => {
-    if (tripId && !formData.id && trip?.id) {
+    if (tripId && trip?._id) {
       setFormData(trip);
     }
   }, [tripId, trip]);

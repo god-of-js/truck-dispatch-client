@@ -114,8 +114,7 @@ export function convertDate(dateToConvert: number) {
   return `${dayOfWeek}, ${month} ${dayOfMonth}${suffix} ${year}`;
 }
 
-export function saveTokenVerificationInfo(data: {pinId: string, to: string}) {
-
+export function saveTokenVerificationInfo(data: { pinId: string; to: string }) {
   localStorage.setItem('otp-pin-id', data.pinId);
   localStorage.setItem('otp-phone-number', data.to);
 }

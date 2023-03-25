@@ -21,6 +21,8 @@ import Chat from 'types/Chat';
 import Verification from 'types/Verification';
 import BankAccount from 'types/BankAccount';
 import VerifyPhoneData from 'types/VerifyPhoneData';
+import NewTrip from 'types/NewTrip';
+import { Toast } from 'utils/toast';
 
 class ApiService {
   createUser(userData: User) {
@@ -41,8 +43,8 @@ class ApiService {
     return this.setDoc('user', data._id, data);
   }
 
-  getUser(id: string) {
-    return this.getItem<User>('user', id);
+  getUser() {
+    return this.get<User>('/user');
   }
 
   getUsers() {
@@ -74,8 +76,12 @@ class ApiService {
     return this.setDoc('rating', data.id, data);
   }
 
-  createOrUpdateTrip(data: Trip) {
-    return this.setDoc('trip', data.id, data);
+  createTrip(data: NewTrip): Promise<Trip> {
+    return this.post('/trips/new', data);
+  }
+
+  updateTrip(data: Trip): Promise<Trip> {
+    return this.post('/trip/' + data._id, data);
   }
 
   getAgentTrips(agentId: string) {
@@ -157,19 +163,26 @@ class ApiService {
   }
 
   getChatsByUserId(userId: string) {
-    return this.getRequest<Chat[]>(`/chat/user/${userId}`);
+    return this.get<Chat[]>(`/chat/user/${userId}`);
   }
 
   setChatHasBeenRead(chatId: string) {
     return this.patch<Chat>(`/chat/read/${chatId}`);
   }
 
-  private getRequest<T>(url: string): Promise<T> {
-    return axiosInstance.get(url).then(({ data }) => data.data) as Promise<T>;
+  private get<T>(url: string): Promise<T> {
+    return axiosInstance()
+      .get(url)
+      .then(({ data }) => data.data) as Promise<T>;
   }
 
   private post(url: string, data: unknown) {
-    return axiosInstance.post(url, data).then(({ data }) => data);
+    return axiosInstance()
+      .post(url, data)
+      .then(({ data }) => {
+        Toast.success({ msg: data.msg });
+        return data.data
+      });
   }
 
   private setDoc(
@@ -221,7 +234,7 @@ class ApiService {
   }
 
   private patch<T>(url: string, data?: unknown): Promise<T> {
-    return axiosInstance.patch(url, data);
+    return axiosInstance().patch(url, data);
   }
 
   private remove(url: string) {
