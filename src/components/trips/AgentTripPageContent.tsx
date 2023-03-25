@@ -9,7 +9,6 @@ import UiAvatar from 'ui/UiAvatar';
 
 import UiButton from 'ui/UiButton';
 import UiTable from 'ui/UiTable';
-import UiIcon from 'ui/UiIcon';
 import UiPill from 'ui/UiPill';
 import { DropDownData } from 'ui/UiDropdownMenu';
 
@@ -77,7 +76,7 @@ export default function AgentTripPageContent() {
     );
   }
 
-  function getPillVariant(status: string) {
+  function getPillVariant(status: Trip['status']) {
     if (status === 'pending') return 'warning';
     if (status === 'rejected') return 'danger';
     if (status === 'awaiting_bid') return 'gray';
@@ -87,7 +86,7 @@ export default function AgentTripPageContent() {
 
     return 'success';
   }
-  function formatStatus(status: string) {
+  function formatStatus(status: Trip['status']) {
     if (status === 'pending') return '  Pending';
     if (status === 'rejected') return ' Rejected';
     if (status === 'awaiting_bid') return 'Awaiting Bid';

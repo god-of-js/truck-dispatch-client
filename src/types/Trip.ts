@@ -23,5 +23,5 @@ export default interface Trip {
   TDO?: Asset;
   paymentId?: string;
   reference: string;
-  status: 'awaiting_bid' | 'payment_complete' | 'in-progress' | 'completed';
+  status: 'awaiting_bid' | 'payment_complete' | 'in-progress' | 'completed' | 'pending' | 'rejected';
 }
