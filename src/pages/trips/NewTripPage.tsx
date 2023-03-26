@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import Trip from 'types/Trip';
 import sizes from 'utils/sizes';
-import { toAnyAction } from 'utils/helpers';
-import { createTrip } from 'modules/Trips';
+import { removeUneditedFields, toAnyAction } from 'utils/helpers';
+import { createTrip, selectTrip, updateTrip } from 'modules/Trips';
 
 import UiTimeline, { TimelineStep } from 'ui/UiTimeline';
 import NewTripForm from 'components/trips/NewTripForm';
@@ -13,7 +13,7 @@ import ViewTripDetails from 'components/trips/ViewTripDetails';
 import MessageWithImage from 'ui/MessageWithImage';
 import UiButton from 'ui/UiButton';
 import UiBackButton from 'ui/UiBackButton';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Toast } from 'utils/toast';
 import NewTrip from 'types/NewTrip';
 
@@ -30,6 +30,8 @@ type CurrentStep =
 export default function NewTripPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { tripId } = useParams();
+  const trip = useSelector(selectTrip(tripId || ''));
   const newTripSteps: Step[] = [
     {
       name: 'Trip Details',
@@ -69,9 +71,13 @@ export default function NewTripPage() {
     }
 
     if (currentStep === 'confirm-details') {
-      sendTripToDrivers().then(() => {
-        setCurrentStep('broadcast-successful');
-      });
+      if (!trip) {
+        sendTripToDrivers().then(() => {
+          setCurrentStep('broadcast-successful');
+        });
+      } else {
+        editTrip();
+      }
     }
   }
 
@@ -89,6 +95,19 @@ export default function NewTripPage() {
   function sendTripToDrivers() {
     setLoading(true);
     return dispatch(toAnyAction(createTrip(tripForm as NewTrip)))
+      .then((trip: Trip) => {
+        setTripForm(trip);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+
+  function editTrip() {
+    if (!trip) return;
+    setLoading(true);
+    const data = removeUneditedFields<Trip>(trip, tripForm);
+    return dispatch(toAnyAction(updateTrip({ ...data, _id: trip._id})))
       .then((trip: Trip) => {
         setTripForm(trip);
       })

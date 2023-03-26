@@ -39,6 +39,18 @@ class ApiService {
     return this.post('/auth/verify-phone', data);
   }
 
+  createTrip(data: NewTrip): Promise<Trip> {
+    return this.post('/trips', data);
+  }
+
+  updateTrip(data: Partial<Trip>): Promise<Trip> {
+    return this.patch(`/trips/${data._id}`, data);
+  }
+
+  getTrips(): Promise<Trip[]> {
+    return this.get('/trips');
+  }
+
   recordAccountDetails(data: User) {
     return this.setDoc('user', data._id, data);
   }
@@ -75,24 +87,6 @@ class ApiService {
   publishUserRating(data: Rating) {
     return this.setDoc('rating', data.id, data);
   }
-
-  createTrip(data: NewTrip): Promise<Trip> {
-    return this.post('/trips/new', data);
-  }
-
-  updateTrip(data: Trip): Promise<Trip> {
-    return this.post('/trip/' + data._id, data);
-  }
-
-  getAgentTrips(agentId: string) {
-    return this.query<Trip>({
-      collectionName: 'trip',
-      key: 'agentId',
-      condition: '==',
-      value: agentId,
-    });
-  }
-
   getRatings(
     value: string,
     queryKey: 'transporterId' | 'tripId' = 'transporterId',
@@ -102,15 +96,6 @@ class ApiService {
       key: queryKey,
       condition: '==',
       value,
-    });
-  }
-
-  getTransporterTrips(transporterId: string) {
-    return this.query<Trip>({
-      collectionName: 'trip',
-      key: 'transporterId',
-      condition: '==',
-      value: transporterId,
     });
   }
 
@@ -181,10 +166,18 @@ class ApiService {
       .post(url, data)
       .then(({ data }) => {
         Toast.success({ msg: data.msg });
-        return data.data
+        return data.data;
       });
   }
 
+  private patch<T>(url: string, data?: unknown): Promise<T> {
+    return axiosInstance()
+      .patch(url, data)
+      .then(({ data }) => {
+        Toast.success({ msg: data.msg });
+        return data.data;
+      });
+  }
   private setDoc(
     collectionName: string,
     id: string,
@@ -231,10 +224,6 @@ class ApiService {
     } else {
       throw new Error('404: Document not found');
     }
-  }
-
-  private patch<T>(url: string, data?: unknown): Promise<T> {
-    return axiosInstance().patch(url, data);
   }
 
   private remove(url: string) {

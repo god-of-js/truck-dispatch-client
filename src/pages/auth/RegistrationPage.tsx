@@ -46,7 +46,7 @@ export default function RegistrationPage() {
       .then(() => {
         navigate('/auth/verify-phone');
       })
-      .catch(({ message }:  { message: string }) => {
+      .catch(({ message }: { message: string }) => {
         Toast.error({ msg: message });
       })
       .finally(() => {

@@ -2,7 +2,7 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 import Trip from 'types/Trip';
 import { AppDispatch, AppState, RootState } from '.';
 import Api from 'Api';
-import { toAnyAction } from 'utils/helpers';
+import { replaceEditedItem, toAnyAction } from 'utils/helpers';
 import Bid from 'types/Bid';
 import NewTrip from 'types/NewTrip';
 
@@ -64,35 +64,19 @@ export function createTrip(trip: NewTrip) {
     });
   };
 }
-export function updateTrip(formData: Trip) {
+export function updateTrip(trip: Partial<Trip>) {
   return (dispatch: AppDispatch, state: AppState) => {
-    return Api.updateTrip(formData).then((data) => {
-      const currentTripIndex = state().trips.trips.findIndex(
-        (trip) => trip._id === data._id,
-      );
-      const trips = [...state().trips.trips];
-      trips[currentTripIndex] = data;
+    return Api.updateTrip(trip).then((data) => {
+      const trips = replaceEditedItem(state().trips.trips, data);
       dispatch(setTrips(trips));
+      return data;
     });
   };
 }
 
-export function getAgentTrips(agentId: string) {
+export function getTrips() {
   return (dispatch: AppDispatch) => {
-    return Api.getAgentTrips(agentId).then((data) => dispatch(setTrips(data)));
-  };
-}
-// Prevent default is used to notify the store that this is not the normal flow, hence we do not need to set the value to state.
-export function getTransporterTrips(
-  transporterId: string = localStorage.getItem('uid')!,
-  preventDefault?: boolean,
-) {
-  if (!transporterId) throw new Error('400: transporter ID is not present');
-  return (dispatch: AppDispatch) => {
-    return Api.getTransporterTrips(transporterId).then((data) => {
-      !preventDefault && dispatch(toAnyAction(setTrips(data)));
-      return data;
-    });
+    return Api.getTrips().then((data) => dispatch(setTrips(data)));
   };
 }
 

@@ -9,7 +9,6 @@ import UiAvatar from 'ui/UiAvatar';
 
 import UiButton from 'ui/UiButton';
 import UiTable from 'ui/UiTable';
-import UiIcon from 'ui/UiIcon';
 import UiPill from 'ui/UiPill';
 import { DropDownData } from 'ui/UiDropdownMenu';
 
@@ -62,7 +61,7 @@ export default function AgentTripPageContent() {
 
   function responsibleTransporterDetails(transporterId?: string) {
     if (!transporterId) return 'Not yet assigned';
-    const transporter = transporters.find(({ id }) => id === transporterId);
+    const transporter = transporters.find(({ _id }) => _id === transporterId);
 
     if (!transporter) return 'Invalid Transporter';
 
@@ -95,6 +94,7 @@ export default function AgentTripPageContent() {
   const tripsData = useMemo(() => {
     return trips.map((trip: Trip) => ({
       ...trip,
+      id: trip._id,
       responsibleTransporter: responsibleTransporterDetails(trip.transporterId),
       status: (
         <UiPill variant={getPillVariant(trip.status)}>

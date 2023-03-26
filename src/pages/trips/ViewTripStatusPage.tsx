@@ -1,11 +1,6 @@
 import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
 import { selectAgents, selectTransporters } from 'modules/Account';
-import {
-  createOrUpdateTrip,
-  getAgentTrips,
-  getTransporterTrips,
-  selectTrip,
-} from 'modules/Trips';
+import { updateTrip, selectTrip } from 'modules/Trips';
 import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
@@ -28,10 +23,10 @@ export default function ViewTripStatus() {
   const [loading, setLoading] = useState(false);
 
   const transporter = useMemo(() => {
-    return transporters.find(({ id }) => id === trip?.transporterId) || null;
+    return transporters.find(({ _id }) => _id === trip?.transporterId) || null;
   }, [transporters]);
   const agent = useMemo(() => {
-    return agents.find(({ id }) => id === trip?.agentId) || null;
+    return agents.find(({ _id }) => _id === trip?.agentId) || null;
   }, [transporters]);
 
   const tripStatusMessage = useMemo(() => {
@@ -85,17 +80,10 @@ export default function ViewTripStatus() {
   }
 
   function updateTrip(data: Partial<Trip>) {
-    if (!trip || !user) return;
     setLoading(true);
-    dispatch(toAnyAction(createOrUpdateTrip({ ...trip, ...data })))
-      .then(() => {
-        const actionToDispatch =
-          user.userType === 'agent'
-            ? getAgentTrips(user.id)
-            : getTransporterTrips(user.id);
-        dispatch(toAnyAction(actionToDispatch));
-      })
-      .finally(() => setLoading(false));
+    dispatch(toAnyAction(updateTrip({ ...trip, ...data }))).finally(() =>
+      setLoading(false),
+    );
   }
 
   function startTrip() {

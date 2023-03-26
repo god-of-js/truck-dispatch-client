@@ -76,6 +76,28 @@ export function nairaToKobo(amount: string | number) {
   return value * 100;
 }
 
+export function removeUneditedFields<T>(
+  sourceObj: Record<string, any>,
+  derivedObj: Record<string, any>,
+): T {
+  const editedFields = Object.keys(derivedObj).filter(
+    (field: string) => derivedObj[field] !== sourceObj[field],
+  );
+  const newDerivedObj: Record<string, any> = {};
+  editedFields.forEach((field) => (newDerivedObj[field] = derivedObj[field]));
+  return newDerivedObj as T;
+}
+export function replaceEditedItem<T extends { _id: any }>(
+  arr: T[],
+  item: T,
+): T[] {
+  const currentTripIndex = arr.findIndex((arrItem) => arrItem._id === item._id);
+  const data = [...arr];
+  data[currentTripIndex] = item;
+
+  return data;
+}
+
 export function generateReference() {
   const alphanumeric =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
