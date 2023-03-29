@@ -160,9 +160,14 @@ export function getDashboardUser() {
   };
 }
 
-export const sendVerificationDetailsToAdmin = (verificationData: FormData) => {
+export const startVerificationProcess = (verificationData: FormData) => {
   return (dispatch: AppDispatch, state: AppState) => {
-    return Api.sendVerificationDetailsToAdmin(verificationData);
+    return Api.startVerificationProcess(verificationData);
+  };
+};
+export const updateVerification = (verificationData: FormData) => {
+  return (dispatch: AppDispatch, state: AppState) => {
+    return Api.updateVerification(verificationData);
   };
 };
 

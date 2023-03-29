@@ -65,12 +65,15 @@ class ApiService {
     return this.getCollection<User>('user');
   }
 
-  sendVerificationDetailsToAdmin(data: FormData) {
-    return this.post('/verification', data, true);
+  startVerificationProcess(data: FormData) {
+    return this.post('/verification', data);
+  }
+  updateVerification(data: FormData) {
+    return this.patch('/verification', data);
   }
 
   getVerificationByUserId(userId: string): Promise<Verification> {
-    return this.getItem('verification', userId);
+    return this.get('/verification');
   }
 
   saveAsset(id: string, url: string) {

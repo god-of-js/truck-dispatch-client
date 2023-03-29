@@ -2,11 +2,11 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { uploadItem } from '../../api/Cloudinary';
-import { sendVerificationDetailsToAdmin } from 'modules/Account';
+import { startVerificationProcess, updateVerification } from 'modules/Account';
 import {
   aValueHasBeenChanged,
   deepRootedToFormData,
+  removeUneditedFields,
   toAnyAction,
 } from 'utils/helpers';
 import TransporterValidationSchema from 'utils/validations/TransporterValidationSchema';
@@ -74,10 +74,10 @@ export default function VerificationForm({ parentLoading, onVerified }: Props) {
     return aValueHasBeenChanged<Verification>(verification!, formData);
   }, [verification, formData]);
 
-  async function verifyUser() {
-    setLoading(true);
+  async function startUserVerificationProcess() {
     const data = deepRootedToFormData(formData);
-    dispatch(toAnyAction(sendVerificationDetailsToAdmin(data)))
+
+    dispatch(toAnyAction(startVerificationProcess(data)))
       .then(() => {
         onVerified();
       })
@@ -85,6 +85,29 @@ export default function VerificationForm({ parentLoading, onVerified }: Props) {
         Toast.error({ msg: err.message });
       })
       .finally(() => setLoading(false));
+    }
+  async function updateUserVerification() {
+    const changedData = removeUneditedFields<Verification>(verification!, formData)
+    const data = deepRootedToFormData(changedData);
+
+    dispatch(toAnyAction(updateVerification(data)))
+      .then(() => {
+        onVerified();
+      })
+      .catch((err: Error) => {
+        Toast.error({ msg: err.message });
+      })
+      .finally(() => setLoading(false));
+  }
+
+  async function verifyUser() {
+    setLoading(true);
+    if (!verification) {
+      startUserVerificationProcess()
+      return;
+    }
+
+    updateUserVerification();
   }
 
   function setData(event: {
@@ -111,6 +134,7 @@ export default function VerificationForm({ parentLoading, onVerified }: Props) {
   useEffect(() => {
     if (!formData._id && verification) setFormData(verification);
   }, [verification]);
+
   return (
     <UiForm
       formData={formData}
