@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { uploadItem } from '../../api/Cloudinary';
+import { sendVerificationDetailsToAdmin } from 'modules/Account';
 import {
-  sendVerificationDetailsToAdmin,
-  setVerification,
-} from 'modules/Account';
-import { aValueHasBeenChanged, toAnyAction } from 'utils/helpers';
+  aValueHasBeenChanged,
+  deepRootedToFormData,
+  toAnyAction,
+} from 'utils/helpers';
 import TransporterValidationSchema from 'utils/validations/TransporterValidationSchema';
 
 import UiForm from 'ui/UiForm';
@@ -22,22 +23,19 @@ import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
 
 interface Props {
-  onVerified: () => void;
   parentLoading?: boolean;
+  onVerified: () => void;
 }
 
-export default function VerificationForm({
-  parentLoading,
-  onVerified = () => {},
-}: Props) {
+export default function VerificationForm({ parentLoading, onVerified }: Props) {
   const user = useSelector((state: RootState) => state.account.user);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState<Verification>({
+    _id: '',
     idType: '',
     idDoc: null,
     homeAddress: '',
     homeUtilityBill: null,
-    userId: '',
     garageAddress: '',
     officeAddress: '',
     guarantor: {
@@ -76,59 +74,17 @@ export default function VerificationForm({
     return aValueHasBeenChanged<Verification>(verification!, formData);
   }, [verification, formData]);
 
-  function initUpload(item: File | string) {
-    if (item instanceof File) {
-      return uploadItem(item);
-    }
-
-    return item;
-  }
   async function verifyUser() {
-    try {
-      setLoading(true);
-      const idDocUrl = await initUpload(formData.idDoc as File);
-      const homeUtilityBill = await initUpload(
-        formData.homeUtilityBill as File,
-      );
-      const guarantorIdDoc = await initUpload(formData.guarantor.idDoc as File);
-
-      if (!user?.id) return;
-      dispatch(
-        toAnyAction(
-          sendVerificationDetailsToAdmin({
-            ...formData,
-            idDoc: idDocUrl,
-            userId: user.id,
-            homeUtilityBill,
-            guarantor: {
-              ...formData.guarantor,
-              idDoc: guarantorIdDoc,
-            },
-          }),
-        ),
-      )
-        .then(() => {
-          dispatch(
-            setVerification({
-              ...formData,
-              idDoc: idDocUrl,
-              userId: user.id,
-              homeUtilityBill,
-              guarantor: {
-                ...formData.guarantor,
-                idDoc: guarantorIdDoc,
-              },
-            }),
-          );
-          onVerified();
-        })
-        .catch((err: Error) => {
-          Toast.error({ msg: err.message });
-        })
-        .finally(() => setLoading(false));
-    } catch (e) {
-      setLoading(false);
-    }
+    setLoading(true);
+    const data = deepRootedToFormData(formData);
+    dispatch(toAnyAction(sendVerificationDetailsToAdmin(data)))
+      .then(() => {
+        onVerified();
+      })
+      .catch((err: Error) => {
+        Toast.error({ msg: err.message });
+      })
+      .finally(() => setLoading(false));
   }
 
   function setData(event: {
@@ -153,7 +109,7 @@ export default function VerificationForm({
   }
 
   useEffect(() => {
-    if (!formData.userId && verification) setFormData(verification);
+    if (!formData._id && verification) setFormData(verification);
   }, [verification]);
   return (
     <UiForm

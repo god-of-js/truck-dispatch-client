@@ -1,12 +1,11 @@
 export default interface Verification {
+  _id: string;
   idType: string;
   idDoc: File | null | string;
   homeAddress: string;
   homeUtilityBill: File | null | string;
   garageAddress: string;
   officeAddress: string;
-  userId: string;
-  response?: string;
   guarantor: {
     name: string;
     email: string;

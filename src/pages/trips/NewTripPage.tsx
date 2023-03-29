@@ -107,7 +107,7 @@ export default function NewTripPage() {
     if (!trip) return;
     setLoading(true);
     const data = removeUneditedFields<Trip>(trip, tripForm);
-    return dispatch(toAnyAction(updateTrip({ ...data, _id: trip._id})))
+    return dispatch(toAnyAction(updateTrip({ ...data, _id: trip._id })))
       .then((trip: Trip) => {
         setTripForm(trip);
       })

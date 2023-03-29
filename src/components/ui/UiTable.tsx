@@ -12,7 +12,7 @@ interface Header {
   query: string;
 }
 interface Row extends Record<string, any> {
-  id: string;
+  _id: string;
 }
 interface Props {
   // Any is forbidden in this codebase. However, for the sake of the flexibility this component needs,
@@ -82,12 +82,12 @@ export default function UiTable({
         <tbody>
           {data.map((item) => {
             return (
-              <TableRow key={item.id}>
+              <TableRow key={item._id}>
                 {headers.map((header, index) => {
                   return (
                     <TableDataItem
                       key={index}
-                      onClick={() => onRowClick?.(item.id)}
+                      onClick={() => onRowClick?.(item._id)}
                     >
                       <div className="mobile-title">{header.title}</div>
                       <div>{item[header.query]}</div>
@@ -96,7 +96,7 @@ export default function UiTable({
                 })}
                 {options && (
                   <td className="menu-container">
-                    <UidropdownMenu options={options} itemId={item.id} />
+                    <UidropdownMenu options={options} itemId={item._id} />
                   </td>
                 )}
               </TableRow>

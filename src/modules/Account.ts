@@ -160,13 +160,9 @@ export function getDashboardUser() {
   };
 }
 
-export const sendVerificationDetailsToAdmin = (
-  verificationData: Verification,
-) => {
+export const sendVerificationDetailsToAdmin = (verificationData: FormData) => {
   return (dispatch: AppDispatch, state: AppState) => {
-    const userId = localStorage.getItem('uid');
-    if (!userId) throw new Error('user is not authenticated');
-    return Api.sendVerificationDetailsToAdmin(userId, verificationData);
+    return Api.sendVerificationDetailsToAdmin(verificationData);
   };
 };
 

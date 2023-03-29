@@ -22,11 +22,12 @@ instance.interceptors.response.use(
   },
 );
 
-function authorizedInstance() {
+function authorizedInstance(isMultipart?: boolean) {
   if (!instance.defaults.headers.Authorization) {
     const token = getUserSessionId();
     if (token) instance.defaults.headers.Authorization = `Bearer ${token}`;
   }
+  if (isMultipart) instance.defaults.headers['Content-Type'] = 'multipart/form-data'
   return instance;
 }
 export default authorizedInstance;

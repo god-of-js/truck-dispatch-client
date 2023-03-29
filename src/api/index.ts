@@ -32,9 +32,11 @@ class ApiService {
   signInWithEmailAndPassword(data: { email: string; password: string }) {
     return this.post('/auth/login', data);
   }
+
   requestVerificationCode(data: { phone: string }) {
     return this.post('/auth/request-sms', data);
   }
+
   verifyPhone(data: VerifyPhoneData) {
     return this.post('/auth/verify-phone', data);
   }
@@ -63,8 +65,8 @@ class ApiService {
     return this.getCollection<User>('user');
   }
 
-  sendVerificationDetailsToAdmin(userId: string, data: unknown) {
-    return this.setDoc('verification', userId, data);
+  sendVerificationDetailsToAdmin(data: FormData) {
+    return this.post('/verification', data, true);
   }
 
   getVerificationByUserId(userId: string): Promise<Verification> {
@@ -100,13 +102,7 @@ class ApiService {
   }
 
   getJobs() {
-    // Jobs are trips that haven't been claimed by any transporter and
-    return this.query<Trip>({
-      collectionName: 'trip',
-      key: 'status',
-      condition: '==',
-      value: 'awaiting_bid',
-    });
+    return this.get<Trip[]>('/trips/jobs');
   }
 
   createOrUpdateBid(data: Bid) {
@@ -161,8 +157,8 @@ class ApiService {
       .then(({ data }) => data.data) as Promise<T>;
   }
 
-  private post(url: string, data: unknown) {
-    return axiosInstance()
+  private post(url: string, data: unknown, isMultipart = false) {
+    return axiosInstance(isMultipart)
       .post(url, data)
       .then(({ data }) => {
         Toast.success({ msg: data.msg });
