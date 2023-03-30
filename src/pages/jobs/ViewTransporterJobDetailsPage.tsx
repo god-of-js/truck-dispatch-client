@@ -7,7 +7,7 @@ import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
 
 import { getJobs, selectJob } from 'modules/Trips';
-import { getBidsWithTripId, selectBid } from 'modules/Bid';
+import { getBidsWithTripId, getTransporterBidWithTripId } from 'modules/Bid';
 import { RootState } from 'modules/index';
 import UiBackButton from 'ui/UiBackButton';
 import Loader from 'components/layout/Loader';
@@ -23,7 +23,7 @@ export default function ViewTransporterJobDetailsPage() {
   const job = tripId ? useSelector(selectJob(tripId)) : null;
   const [loading, setLoading] = useState(true);
   const user = useSelector((state: RootState) => state.account.user);
-  const bid = useSelector(selectBid(user?._id || '', 'transporterId'));
+  const bid = useSelector((state: RootState) => state.bid.bid);
   const dispatch = useDispatch();
   const [
     isInformUserOfVerificationModalVisible,
@@ -45,8 +45,8 @@ export default function ViewTransporterJobDetailsPage() {
   useEffect(() => {
     if (tripId) {
       Promise.all([
-        (dispatch(toAnyAction(getJobs())),
-        dispatch(toAnyAction(getBidsWithTripId(tripId)))),
+        dispatch(toAnyAction(getJobs())),
+        dispatch(toAnyAction(getTransporterBidWithTripId(tripId))),
       ]).finally(() => {
         setLoading(false);
       });

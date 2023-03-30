@@ -4,14 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { usePaystackPayment } from 'react-paystack';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import {
-  selectTrip,
-  getTrips
-} from 'modules/Trips';
-import {
-  createOrUpdateBid,
-  selectBid,
-} from 'modules/Bid';
+import { selectTrip, getTrips } from 'modules/Trips';
+import { createOrUpdateBid, selectBid } from 'modules/Bid';
 import sizes from 'utils/sizes';
 import { paystackPublickKey } from 'utils/privateKeys';
 import {
