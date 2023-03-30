@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { usePaystackPayment } from 'react-paystack';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
-import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
 
 import {
   createOrUpdateBid,
@@ -108,11 +106,6 @@ export default function BidCheckoutPage() {
 
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Checkout - TruckDispatch</title>
-        <meta property="og:image" content={Logo} />
-      </Helmet>
       <CardContainer>
         <header>
           <img src={TruckDispatchLogo} alt="Truck dispatch logo" />

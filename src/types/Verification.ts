@@ -1,10 +1,8 @@
-import Asset from './Asset';
-
 export default interface Verification {
   idType: string;
-  idDoc: File | null | Asset;
+  idDoc: File | null | string;
   homeAddress: string;
-  homeUtilityBill: File | null | Asset;
+  homeUtilityBill: File | null | string;
   garageAddress: string;
   officeAddress: string;
   userId: string;
@@ -15,7 +13,7 @@ export default interface Verification {
     phone: string;
     homeAddress: string;
     idType: string;
-    idDoc: File | null | Asset;
+    idDoc: File | null | string;
   };
   adminMessage?: string;
 }

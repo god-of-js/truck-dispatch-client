@@ -43,7 +43,7 @@ export default function AgentTripPageContent() {
       query: 'deliveryDate',
     },
     {
-      title: 'status',
+      title: 'Trip Status',
       query: 'status',
     },
   ];
@@ -77,8 +77,6 @@ export default function AgentTripPageContent() {
   }
 
   function getPillVariant(status: Trip['status']) {
-    if (status === 'pending') return 'warning';
-    if (status === 'rejected') return 'danger';
     if (status === 'awaiting_bid') return 'gray';
     if (status === 'payment_complete') return 'warning';
     if (status === 'in-progress') return 'info';
@@ -87,10 +85,8 @@ export default function AgentTripPageContent() {
     return 'success';
   }
   function formatStatus(status: Trip['status']) {
-    if (status === 'pending') return '  Pending';
-    if (status === 'rejected') return ' Rejected';
+    if (status === 'payment_complete') return 'Pending';
     if (status === 'awaiting_bid') return 'Awaiting Bid';
-    if (status === 'payment_complete') return ' Pending';
     if (status === 'in-progress') return 'In Progress';
     if (status === 'completed') return 'Completed';
   }

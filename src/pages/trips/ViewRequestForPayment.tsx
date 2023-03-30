@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { Helmet } from 'react-helmet';
-import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
 import RejectPaymentWithReason from 'components/payment/RejectPaymentWithReason';
 import { RootState } from 'modules/index';
 import {
   requestPaymentByTransporter,
   setPaymentRequest,
 } from 'modules/Payments';
-import Asset from 'types/Asset';
 import UiButton from 'ui/UiButton';
 import UiCard from 'ui/UiCard';
 import UiOverlay from 'ui/UiOverlay';
@@ -34,11 +31,6 @@ export default function ViewRequestForPayment() {
   }
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>View Payment Request - TruckDispatch</title>
-        <meta property="og:image" content={Logo} />
-      </Helmet>
       <CardContainer>
         <UiCard>
           {paymentRequest ? (
@@ -80,7 +72,7 @@ export default function ViewRequestForPayment() {
                     <div className="value">
                       <video controls>
                         <source
-                          src={(paymentRequest?.containerVideo as Asset).url}
+                          src={paymentRequest?.containerVideo as string}
                           type="video/mp4"
                         />
                         Your browser does not support the video tag.

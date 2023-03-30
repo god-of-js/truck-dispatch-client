@@ -3,8 +3,6 @@ import { createOrUpdateUser, setUser } from 'modules/Account';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { Helmet } from 'react-helmet';
-import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
 import User from 'types/User';
 import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
@@ -27,11 +25,9 @@ export default function ProfileDetailsPage() {
   async function editProfile() {
     try {
       setLoading(true);
-
       const data = formData;
       if (data.avatar instanceof File) {
-        const avatar = await uploadItem(formData.avatar as File);
-        data.avatar = avatar;
+        data.avatar = await uploadItem(formData.avatar as File);
       }
 
       dispatch(toAnyAction(createOrUpdateUser(data)))
@@ -65,11 +61,6 @@ export default function ProfileDetailsPage() {
 
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Profile - TruckDispatch</title>
-        <meta property="og:image" content={Logo} />
-      </Helmet>
       <CardContainer>
         <header>
           <h2>{isEditable && 'Edit'} Profile Details</h2>

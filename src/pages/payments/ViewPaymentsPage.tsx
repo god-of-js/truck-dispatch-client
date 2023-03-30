@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { Helmet } from 'react-helmet';
-import Logo from '../../assets/img/truck-dispatch-logo-with-text.png';
+
 import ViewPaymentDetails from 'components/payment/ViewPaymentDetails';
 import { RootState } from 'modules/index';
 import { getPaymentRequestsOfDriver } from 'modules/Payments';
@@ -86,12 +85,6 @@ function ViewPaymentsPage() {
 
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Payments - TruckDispatch</title>
-        <link rel="canonical" />
-        <meta property="og:image" content={Logo} />
-      </Helmet>
       <PageStyling>
         <UiTable
           tableTitle="Recent Payments"
