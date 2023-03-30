@@ -23,7 +23,8 @@ import {
 import MessageWithImage from 'ui/MessageWithImage';
 import Loader from 'components/layout/Loader';
 import RequestPaymentSchema from 'utils/validations/RequestPaymentSchema';
-import { getBidsWithTripId, selectBid, selectTrip } from 'modules/Trips';
+import { selectTrip } from 'modules/Trips';
+import { getBidsWithTripId, selectBid } from 'modules/Bid';
 import UiOverlay from 'ui/UiOverlay';
 import NotifyUserToAddAccount from 'components/profile/NotifyUserToAddAccount';
 import { RootState } from 'modules/index';
@@ -36,7 +37,7 @@ export default function ViewTripRequestPayment() {
     (state: RootState) => state.account.bankAccountDetails,
   );
   const trip = useSelector(selectTrip(tripId!));
-  const bid = useSelector(selectBid(user?.id!, 'transporterId'));
+  const bid = useSelector(selectBid(user?._id!, 'transporterId'));
   const paymentRequest = useSelector(selectPaymentRequestByTripId(tripId!));
   const dispatch = useDispatch();
 
@@ -47,7 +48,7 @@ export default function ViewTripRequestPayment() {
     driverName: '',
     driverPhoneNumber: '',
     containerVideo: null,
-    transporterId: user?.id || '',
+    transporterId: '',
     tripId: tripId!,
     truckPlateNumber: '',
     amount: 0,

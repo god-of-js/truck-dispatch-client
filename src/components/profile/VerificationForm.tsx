@@ -85,9 +85,12 @@ export default function VerificationForm({ parentLoading, onVerified }: Props) {
         Toast.error({ msg: err.message });
       })
       .finally(() => setLoading(false));
-    }
+  }
   async function updateUserVerification() {
-    const changedData = removeUneditedFields<Verification>(verification!, formData)
+    const changedData = removeUneditedFields<Verification>(
+      verification!,
+      formData,
+    );
     const data = deepRootedToFormData(changedData);
 
     dispatch(toAnyAction(updateVerification(data)))
@@ -103,7 +106,7 @@ export default function VerificationForm({ parentLoading, onVerified }: Props) {
   async function verifyUser() {
     setLoading(true);
     if (!verification) {
-      startUserVerificationProcess()
+      startUserVerificationProcess();
       return;
     }
 

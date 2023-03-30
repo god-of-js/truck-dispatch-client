@@ -72,8 +72,8 @@ class ApiService {
     return this.patch('/verification', data);
   }
 
-  getVerificationByUserId(userId: string): Promise<Verification> {
-    return this.get('/verification');
+  getVerificationByUserId() {
+    return this.get<Verification>('/verification');
   }
 
   saveAsset(id: string, url: string) {
@@ -109,7 +109,7 @@ class ApiService {
   }
 
   createOrUpdateBid(data: Bid) {
-    return this.setDoc('bid', data.id, data);
+    return this.post('/bids', data);
   }
 
   createOrUpdatePayment(data: Payment) {
@@ -134,12 +134,7 @@ class ApiService {
   }
 
   getBidsWithTripId(tripId: string) {
-    return this.query<Bid>({
-      collectionName: 'bid',
-      key: 'tripId',
-      condition: '==',
-      value: tripId,
-    });
+    return this.get<Bid[]>(`/bids/${tripId}`);
   }
 
   createChat(chat: Chat) {

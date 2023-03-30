@@ -6,12 +6,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
 
-import {
-  getBidsWithTripId,
-  getJobs,
-  selectBid,
-  selectJob,
-} from 'modules/Trips';
+import { getJobs, selectJob } from 'modules/Trips';
+import { getBidsWithTripId, selectBid } from 'modules/Bid';
 import { RootState } from 'modules/index';
 import UiBackButton from 'ui/UiBackButton';
 import Loader from 'components/layout/Loader';
@@ -27,7 +23,7 @@ export default function ViewTransporterJobDetailsPage() {
   const job = tripId ? useSelector(selectJob(tripId)) : null;
   const [loading, setLoading] = useState(true);
   const user = useSelector((state: RootState) => state.account.user);
-  const bid = useSelector(selectBid(user?.id || '', 'transporterId'));
+  const bid = useSelector(selectBid(user?._id || '', 'transporterId'));
   const dispatch = useDispatch();
   const [
     isInformUserOfVerificationModalVisible,
