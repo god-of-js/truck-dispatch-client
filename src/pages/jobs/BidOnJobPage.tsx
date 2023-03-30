@@ -70,7 +70,6 @@ export default function BidOnJob() {
     return dispatch(
       toAnyAction(updateBid({ ...dataToUpdate, tripId: tripId! })),
     ).then((data: Bid) => {
-      console.log(data)
       return data
     });
   }
@@ -83,7 +82,6 @@ export default function BidOnJob() {
         setFormData(data);
       })
       .catch((e: Error) => {
-        console.log(e)
         Toast.error({
           msg:
             e.message ||

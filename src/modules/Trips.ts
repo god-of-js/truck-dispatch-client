@@ -50,7 +50,7 @@ export function createTrip(trip: NewTrip) {
   };
 }
 
-export function assign(trip: Partial<Trip>) {
+export function assignTripToDriver(trip: Partial<Trip>) {
   return (dispatch: AppDispatch, state: AppState) => {
     return Api.updateTrip(trip).then((data) => {
       const trips = replaceEditedItem(state().trips.trips, data);

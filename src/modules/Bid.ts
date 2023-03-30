@@ -59,7 +59,6 @@ export function createBid(data: Bid) {
   return (dispatch: AppDispatch) => {
     if (!data.tripId) throw new Error('400: No trip id been sent');
     return Api.createBid(data).then((bid) => {
-      console.log(bid)
       dispatch(setBid(bid));
       return bid;
     });
@@ -70,7 +69,6 @@ export function updateBid(data: Bid) {
   return (dispatch: AppDispatch) => {
     if (!data.tripId) throw new Error('400: No trip id been sent');
     return Api.updateBid(data).then((bid) => {
-      console.log(bid)
       dispatch(setBid(bid));
       return bid;
     });

@@ -87,8 +87,9 @@ export default function VerificationForm({ parentLoading, onVerified }: Props) {
       .finally(() => setLoading(false));
   }
   async function updateUserVerification() {
+    if (!verification) throw new Error('verification is meant to be available at this point.');
     const changedData = removeUneditedFields<Verification>(
-      verification!,
+      verification,
       formData,
     );
     const data = deepRootedToFormData(changedData);

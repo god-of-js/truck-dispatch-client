@@ -165,7 +165,7 @@ class ApiService {
     return axiosInstance(isMultipart)
       .post(url, data)
       .then(({ data }) => {
-        Toast.success({ msg: data.msg });
+        Toast.success({ msg: data.message });
         return data.data;
       });
   }
@@ -174,7 +174,7 @@ class ApiService {
     return axiosInstance()
       .patch(url, data)
       .then(({ data }) => {
-        Toast.success({ msg: data.msg });
+        Toast.success({ msg: data.message });
         return data.data;
       });
   }
