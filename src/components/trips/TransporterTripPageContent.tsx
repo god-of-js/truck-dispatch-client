@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import { selectAgents } from 'modules/Account';
 import { RootState } from 'modules/index';
 import Trip from 'types/Trip';
-import UiAvatar from 'ui/UiAvatar';
 
+import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
 import UiIcon from 'ui/UiIcon';
 import UiTable from 'ui/UiTable';
@@ -43,6 +43,10 @@ export default function AgentTripPageContent() {
       title: 'Delivery Date',
       query: 'deliveryDate',
     },
+    {
+      title: 'status',
+      query: 'status',
+    },
   ];
 
   function agentDetails(agentId?: string) {
@@ -61,19 +65,21 @@ export default function AgentTripPageContent() {
       </AgentDetails>
     );
   }
-  function getPillVariant(status: string) {
+  function getPillVariant(status: Trip['status']) {
     if (status === 'pending') return 'warning';
     if (status === 'rejected') return 'danger';
     if (status === 'awaiting_bid') return 'gray';
-    if (status === 'In Progress') return 'info';
+    if (status === 'payment_complete') return 'warning';
+    if (status === 'in-progress') return 'info';
     if (status === 'completed') return 'success';
 
     return 'success';
   }
-  function formatStatus(status: string) {
+  function formatStatus(status: Trip['status']) {
     if (status === 'pending') return '  Pending';
     if (status === 'rejected') return ' Rejected';
     if (status === 'awaiting_bid') return 'Awaiting Bid';
+    if (status === 'payment_complete') return ' Pending';
     if (status === 'in-progress') return 'In Progress';
     if (status === 'completed') return 'Completed';
   }
@@ -89,7 +95,6 @@ export default function AgentTripPageContent() {
       ),
     }));
   }, [trips]);
-
   function navigateToTrip(id: string) {
     navigate(`/my-trips/${id}`);
   }
