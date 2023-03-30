@@ -27,7 +27,8 @@ function authorizedInstance(isMultipart?: boolean) {
     const token = getUserSessionId();
     if (token) instance.defaults.headers.Authorization = `Bearer ${token}`;
   }
-  if (isMultipart) instance.defaults.headers['Content-Type'] = 'multipart/form-data'
+  if (isMultipart)
+    instance.defaults.headers['Content-Type'] = 'multipart/form-data';
   return instance;
 }
 export default authorizedInstance;

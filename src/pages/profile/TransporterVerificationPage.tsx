@@ -2,9 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  getUserVerification,
-} from '../../modules/Account';
+import { getUserVerification } from '../../modules/Account';
 
 import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';

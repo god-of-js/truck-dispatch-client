@@ -1,5 +1,5 @@
 import { RootState } from 'modules/index';
-import { selectBid } from 'modules/Trips';
+import { selectBid } from 'modules/Bid';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
@@ -8,11 +8,7 @@ import Trip from 'types/Trip';
 import Ratings from 'components/ratings/Ratings';
 import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
-import {
-  abbreviateNumber,
-  priceWithTDPercent,
-  toAnyAction,
-} from 'utils/helpers';
+import { abbreviateNumber, priceWithTDPercent } from 'utils/helpers';
 import sizes from 'utils/sizes';
 
 export default function ViewTripBidPage() {
@@ -40,19 +36,15 @@ export default function ViewTripBidPage() {
             <div className="title">Transporter</div>
             <div className="value">
               <TransporterDetails>
-                <UiAvatar avatar={getUser(bid?.transporterId || '')?.avatar} />
-                <span>{`${getUser(bid?.transporterId || '')?.firstName} ${
-                  getUser(bid?.transporterId || '')?.lastName
-                }`}</span>
+                <UiAvatar avatar={bid?.transporter.avatar} />
+                <span>{`${bid?.transporter.firstName} ${bid?.transporter.lastName}`}</span>
               </TransporterDetails>
             </div>
           </Section>
           <Section>
             <div className="title">Transporter Ratings</div>
             <div className="value">
-              <Ratings
-                rating={getUser(bid?.transporterId || '')?.rating || 0}
-              />
+              <Ratings rating={bid?.transporter.rating || 0} />
             </div>
           </Section>
           {/* TODO: implement number of completed trips */}

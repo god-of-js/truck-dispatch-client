@@ -111,7 +111,8 @@ export function deepRootedToFormData(data: Record<string, any>): FormData {
       });
     } else {
       const value = data == null ? '' : data;
-      if (value instanceof Date) throw new Error('Value of type Date can\'t be converted to formData')
+      if (value instanceof Date)
+        throw new Error("Value of type Date can't be converted to formData");
       formData.append(rootName!, value);
     }
   }

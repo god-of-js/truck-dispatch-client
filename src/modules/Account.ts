@@ -165,6 +165,7 @@ export const startVerificationProcess = (verificationData: FormData) => {
     return Api.startVerificationProcess(verificationData);
   };
 };
+
 export const updateVerification = (verificationData: FormData) => {
   return (dispatch: AppDispatch, state: AppState) => {
     return Api.updateVerification(verificationData);
@@ -179,9 +180,7 @@ export const publishUserRating = (data: Rating) => {
 
 export const getUserVerification = () => {
   return (dispatch: AppDispatch) => {
-    const userId = localStorage.getItem('uid');
-    if (!userId) throw new Error('user is not authenticated');
-    return Api.getVerificationByUserId(userId).then((data) => {
+    return Api.getVerificationByUserId().then((data) => {
       dispatch(setVerification(data));
     });
   };

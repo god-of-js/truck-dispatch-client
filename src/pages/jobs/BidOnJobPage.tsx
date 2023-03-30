@@ -1,15 +1,18 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import { aValueHasBeenChanged, toAnyAction } from 'utils/helpers';
+import { useParams } from 'react-router-dom';
+import { aValueHasBeenChanged, removeUneditedFields, toAnyAction } from 'utils/helpers';
 import styled from 'styled-components';
 
 import sizes from 'utils/sizes';
-import uuidv4 from 'utils/uuid';
 import { Toast } from 'utils/toast';
 import { RootState } from 'modules/index';
 
-import { getBidsWithTripId, selectBid, createOrUpdateBid } from 'modules/Trips';
+import {
+  updateBid,
+  getTransporterBidWithTripId,
+  createBid,
+} from 'modules/Bid';
 import Bid from 'types/Bid';
 import NotFoundError from 'components/errors/NotFoundError';
 import Loader from 'components/layout/Loader';
@@ -26,20 +29,20 @@ import UiOverlay from 'ui/UiOverlay';
 export default function BidOnJob() {
   const { tripId } = useParams();
   const user = useSelector((state: RootState) => state.account.user);
-  const bid = useSelector(selectBid(user?.id || '', 'transporterId'));
+  const bid = useSelector((state: RootState) => state.bid.bid);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [formData, setFormData] = useState<Bid>(
     bid || {
+      _id: '',
       price: NaN,
       presentLocation: '',
       extraNotes: '',
-      id: uuidv4(),
-      transporterId: user?.id!,
+      transporterId: '',
       tripId: '',
       status: 'pending',
       driverName: '',
       truckPlateNumber: '',
+      transporter: user!,
     },
   );
   const [
@@ -54,15 +57,29 @@ export default function BidOnJob() {
     return aValueHasBeenChanged<Bid>(bid!, formData);
   }, [bid, formData]);
 
+  function createJobBid() {
+    return dispatch(
+      toAnyAction(createBid({ ...formData, tripId: tripId! })),
+    ).then((data: Bid) => {
+      setIsBidCreationSuccessfulModalVisible(true)
+      return data
+    });
+  }
+  function updateJobBid() {
+    const dataToUpdate = removeUneditedFields<Bid>(bid!, formData)
+    return dispatch(
+      toAnyAction(updateBid({ ...dataToUpdate, tripId: tripId! })),
+    ).then((data: Bid) => {
+      return data
+    });
+  }
   function sendJobBid() {
     setLoading(true);
-    dispatch(toAnyAction(createOrUpdateBid({ ...formData, tripId: tripId! })))
-      .then(() => {
-        if (!formData.tripId) {
-          setIsBidCreationSuccessfulModalVisible(true);
-        } else Toast.success({ msg: 'Bid has been updated successfully' });
-        setFormData((state) => ({ ...state, tripId: tripId! }));
-        dispatch(toAnyAction(getBidsWithTripId(tripId!)));
+    const actionToDispatch = bid ? updateJobBid : createJobBid;
+
+    actionToDispatch()
+      .then((data: Bid) => {
+        setFormData(data);
       })
       .catch((e: Error) => {
         Toast.error({
@@ -88,7 +105,7 @@ export default function BidOnJob() {
 
     if (bid && !formData.tripId) setFormData(bid);
     if (tripId && !bid) {
-      dispatch(toAnyAction(getBidsWithTripId(tripId))).finally(() =>
+      dispatch(toAnyAction(getTransporterBidWithTripId(tripId))).finally(() =>
         setPageLoading(false),
       );
     } else setPageLoading(false);

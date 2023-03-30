@@ -72,8 +72,8 @@ class ApiService {
     return this.patch('/verification', data);
   }
 
-  getVerificationByUserId(userId: string): Promise<Verification> {
-    return this.get('/verification');
+  getVerificationByUserId() {
+    return this.get<Verification>('/verification');
   }
 
   saveAsset(id: string, url: string) {
@@ -108,12 +108,15 @@ class ApiService {
     return this.get<Trip[]>('/trips/jobs');
   }
 
-  createOrUpdateBid(data: Bid) {
-    return this.setDoc('bid', data.id, data);
+  createBid(data: Bid) {
+    return this.post<Bid>('/bids', data);
+  }
+  updateBid(data: Bid): Promise<Bid> {
+    return this.patch<Bid>(`/bids/${data.tripId}`, data);
   }
 
   createOrUpdatePayment(data: Payment) {
-    return this.setDoc('payment', data.id, data);
+    return this.setDoc('payment', data._id, data);
   }
 
   requestPaymentByTransporter(data: PaymentRequest) {
@@ -134,12 +137,10 @@ class ApiService {
   }
 
   getBidsWithTripId(tripId: string) {
-    return this.query<Bid>({
-      collectionName: 'bid',
-      key: 'tripId',
-      condition: '==',
-      value: tripId,
-    });
+    return this.get<Bid[]>(`/bids/${tripId}`);
+  }
+  getTransporterBidWithTripId(tripId: string) {
+    return this.get<Bid>(`/bids/transporter-bid/${tripId}`);
   }
 
   createChat(chat: Chat) {
@@ -160,11 +161,11 @@ class ApiService {
       .then(({ data }) => data.data) as Promise<T>;
   }
 
-  private post(url: string, data: unknown, isMultipart = false) {
+  private post<T>(url: string, data: unknown, isMultipart = false): Promise<T> {
     return axiosInstance(isMultipart)
       .post(url, data)
       .then(({ data }) => {
-        Toast.success({ msg: data.msg });
+        Toast.success({ msg: data.message });
         return data.data;
       });
   }
@@ -173,7 +174,7 @@ class ApiService {
     return axiosInstance()
       .patch(url, data)
       .then(({ data }) => {
-        Toast.success({ msg: data.msg });
+        Toast.success({ msg: data.message });
         return data.data;
       });
   }
