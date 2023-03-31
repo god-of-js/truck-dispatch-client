@@ -75,7 +75,7 @@ export default function AgentTripPageContent() {
 
     return 'success';
   }
-  function formatStatus(status: Trip['status']) {
+  function formatStatus(status: Trip['status']) {  
     if (status === 'pending') return '  Pending';
     if (status === 'rejected') return ' Rejected';
     if (status === 'awaiting_bid') return 'Awaiting Bid';
