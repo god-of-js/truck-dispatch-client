@@ -11,6 +11,7 @@ import UiButton from 'ui/UiButton';
 import UiTable from 'ui/UiTable';
 import UiPill from 'ui/UiPill';
 import { DropDownData } from 'ui/UiDropdownMenu';
+import User from 'types/User';
 
 export default function AgentTripPageContent() {
   const navigate = useNavigate();
@@ -59,10 +60,9 @@ export default function AgentTripPageContent() {
     },
   ];
 
-  function responsibleTransporterDetails(transporterId?: string) {
-    if (!transporterId) return 'Not yet assigned';
-    const transporter = transporters.find(({ _id }) => _id === transporterId);
-
+  function responsibleTransporterDetails(transporter?: User) {
+    if (!transporter) return 'Not yet assigned';
+  
     if (!transporter) return 'Invalid Transporter';
 
     return (
@@ -95,7 +95,7 @@ export default function AgentTripPageContent() {
     return trips.map((trip: Trip) => ({
       ...trip,
       id: trip._id,
-      responsibleTransporter: responsibleTransporterDetails(trip.transporterId),
+      responsibleTransporter: responsibleTransporterDetails(trip.transporter),
       status: (
         <UiPill variant={getPillVariant(trip.status)}>
           {formatStatus(trip.status)}

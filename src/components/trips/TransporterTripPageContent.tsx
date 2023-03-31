@@ -12,6 +12,7 @@ import UiIcon from 'ui/UiIcon';
 import UiTable from 'ui/UiTable';
 import UiPill from 'ui/UiPill';
 import sizes from 'utils/sizes';
+import User from 'types/User';
 
 export default function AgentTripPageContent() {
   const navigate = useNavigate();
@@ -45,18 +46,15 @@ export default function AgentTripPageContent() {
     },
   ];
 
-  function agentDetails(agentId?: string) {
-    if (!agentId) return 'No agent present';
-    const agent = agents.find(({ id }) => id === agentId);
-
-    if (!agent) return 'This Agent does not exist';
+  function tripOwnerDetails(tripOwner?: User) {
+    if (!tripOwner) return 'This agent does not exist';
 
     return (
       <AgentDetails>
-        <UiAvatar avatar={agent.avatar} />
+        <UiAvatar avatar={tripOwner.avatar} />
         <div>
-          <div>{`${agent.firstName} ${agent.lastName}`}</div>
-          <div className="transporter-phone">{agent.phone}</div>
+          <div>{`${tripOwner.firstName} ${tripOwner.lastName}`}</div>
+          <div className="transporter-phone">{tripOwner.phone}</div>
         </div>
       </AgentDetails>
     );
@@ -81,7 +79,7 @@ export default function AgentTripPageContent() {
   const tripsData = useMemo(() => {
     return trips.map((trip: Trip) => ({
       ...trip,
-      agent: agentDetails(trip.agentId),
+      agent: tripOwnerDetails(trip?.tripOwner),
       status: (
         <UiPill variant={getPillVariant(trip.status)}>
           {formatStatus(trip.status)}

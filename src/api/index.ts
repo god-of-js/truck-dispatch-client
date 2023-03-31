@@ -23,6 +23,7 @@ import BankAccount from 'types/BankAccount';
 import VerifyPhoneData from 'types/VerifyPhoneData';
 import NewTrip from 'types/NewTrip';
 import { Toast } from 'utils/toast';
+import AssignTripFormData from 'types/AssignTripFormData';
 
 class ApiService {
   createUser(userData: User) {
@@ -68,12 +69,17 @@ class ApiService {
   startVerificationProcess(data: FormData) {
     return this.post('/verification', data);
   }
+
   updateVerification(data: FormData) {
     return this.patch('/verification', data);
   }
 
   getVerificationByUserId() {
     return this.get<Verification>('/verification');
+  }
+
+  assignTrip(data: AssignTripFormData) {
+    return this.post<Trip>(`/trips/${data.tripId}/assign-trip`, data);
   }
 
   saveAsset(id: string, url: string) {
@@ -167,6 +173,11 @@ class ApiService {
       .then(({ data }) => {
         Toast.success({ msg: data.message });
         return data.data;
+      })
+      .catch((e) => {
+        console.log(e)
+        Toast.error({ msg: e.message });
+        return Promise.reject(e);
       });
   }
 
@@ -176,6 +187,11 @@ class ApiService {
       .then(({ data }) => {
         Toast.success({ msg: data.message });
         return data.data;
+      })
+      .catch((e) => {
+        console.log(e)
+        Toast.error({ msg: e.message });
+        return Promise.reject(e);
       });
   }
   private setDoc(
