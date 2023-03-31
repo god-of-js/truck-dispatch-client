@@ -4,6 +4,7 @@ import { AppDispatch, AppState, RootState } from '.';
 import Api from 'Api';
 import { replaceEditedItem, toAnyAction } from 'utils/helpers';
 import NewTrip from 'types/NewTrip';
+import AssignTripFormData from 'types/AssignTripFormData';
 
 export interface TripState {
   trips: Trip[];
@@ -50,9 +51,9 @@ export function createTrip(trip: NewTrip) {
   };
 }
 
-export function assignTripToDriver(trip: Partial<Trip>) {
+export function assignTrip(trip: AssignTripFormData) {
   return (dispatch: AppDispatch, state: AppState) => {
-    return Api.updateTrip(trip).then((data) => {
+    return Api.assignTrip(trip).then((data) => {
       const trips = replaceEditedItem(state().trips.trips, data);
       dispatch(setTrips(trips));
       return data;

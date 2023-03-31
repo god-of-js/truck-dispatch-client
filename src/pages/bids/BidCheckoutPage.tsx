@@ -1,11 +1,11 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { usePaystackPayment } from 'react-paystack';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { selectTrip, getTrips } from 'modules/Trips';
-import { createOrUpdateBid, selectBid } from 'modules/Bid';
+import { selectTrip, assignTrip } from 'modules/Trips';
+import { selectBid } from 'modules/Bid';
 import sizes from 'utils/sizes';
 import { paystackPublickKey } from 'utils/privateKeys';
 import {
@@ -23,7 +23,7 @@ import { RootState } from 'modules/index';
 import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
 import UiAvatar from 'ui/UiAvatar';
 import Payment from 'types/Payment';
-import { createOrUpdatePayment } from 'modules/Payments';
+import AssignTripFormData from 'types/AssignTripFormData';
 import { Toast } from 'utils/toast';
 
 export default function BidCheckoutPage() {
@@ -31,7 +31,6 @@ export default function BidCheckoutPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.account.user);
-  const users = useSelector((state: RootState) => state.account.users);
   const bid = useSelector(selectBid(bidId || ''));
   const trip = useSelector(selectTrip(tripId || ''));
   const [loading, setLoading] = useState(false);
@@ -49,7 +48,26 @@ export default function BidCheckoutPage() {
   function onSuccess(payment?: Payment) {
     if (!bid || !trip || !payment || !user) return;
     setLoading(true);
-    console.log(payment);
+    if (!user || !tripId) {
+      Toast.error({ msg: 'User or Trip does not exist' });
+      return;
+    }
+    const paymentData = {
+      from: user?._id,
+      to: bid.transporterId,
+      tripId,
+      bidId: bid._id,
+      paymentReference: payment.reference,
+      amountInBid: bid?.price,
+      totalAmountPaid: priceWithTDPercent(bid?.price),
+      transaction: payment.transaction,
+    };
+
+    dispatch(toAnyAction(assignTrip(paymentData)))
+      .then(() => {
+        navigate(`/my-trips/${tripId}/status`);
+      })
+      .finally(() => setLoading(false));
     // Promise.all([
     //   dispatch(
     //     toAnyAction(
@@ -131,20 +149,19 @@ export default function BidCheckoutPage() {
             </UiButton>
           </Section>
         </Receipt>
-        <SafetyPrecautions>
+        {/* <SafetyPrecautions>
           <h2>The safety of your goods is our priority</h2>
           <p>
             We are committed to improving your experience and are always looking
             for ways to ensure your goods are as safe as possible when
             dispatching with us.{' '}
           </p>
-          {/* TODO: replace link with link to blog */}
+           TODO: replace link with link to blog 
           <Link to="/">
-            {' '}
-            <div className="learn-more-text">Learn More</div>{' '}
+            <div className="learn-more-text">Learn More</div>
             <UiIcon icon="ArrowRight" size="20" />
           </Link>
-        </SafetyPrecautions>
+        </SafetyPrecautions> */}
         <TripDetails>
           <h2>Trip Details</h2>
           <TripPickupAndDropOff

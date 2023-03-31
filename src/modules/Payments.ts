@@ -44,13 +44,6 @@ export const selectPaymentRequestByTripId = (id: string) =>
     requestArr.find(({ tripId }) => tripId === id),
   );
 
-export function createOrUpdatePayment(data: Payment) {
-  return () => {
-    if (!data.userId) throw new Error('400: user id been sent');
-    return Api.createOrUpdatePayment(data);
-  };
-}
-
 export function requestPaymentByTransporter(data: PaymentRequest) {
   return (dispatch: AppDispatch, state: AppState) => {
     return Api.requestPaymentByTransporter(data).then(() => {

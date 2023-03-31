@@ -1,18 +1,18 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { aValueHasBeenChanged, removeUneditedFields, toAnyAction } from 'utils/helpers';
+import {
+  aValueHasBeenChanged,
+  removeUneditedFields,
+  toAnyAction,
+} from 'utils/helpers';
 import styled from 'styled-components';
 
 import sizes from 'utils/sizes';
 import { Toast } from 'utils/toast';
 import { RootState } from 'modules/index';
 
-import {
-  updateBid,
-  getTransporterBidWithTripId,
-  createBid,
-} from 'modules/Bid';
+import { updateBid, getTransporterBidWithTripId, createBid } from 'modules/Bid';
 import Bid from 'types/Bid';
 import NotFoundError from 'components/errors/NotFoundError';
 import Loader from 'components/layout/Loader';
@@ -61,16 +61,16 @@ export default function BidOnJob() {
     return dispatch(
       toAnyAction(createBid({ ...formData, tripId: tripId! })),
     ).then((data: Bid) => {
-      setIsBidCreationSuccessfulModalVisible(true)
-      return data
+      setIsBidCreationSuccessfulModalVisible(true);
+      return data;
     });
   }
   function updateJobBid() {
-    const dataToUpdate = removeUneditedFields<Bid>(bid!, formData)
+    const dataToUpdate = removeUneditedFields<Bid>(bid!, formData);
     return dispatch(
       toAnyAction(updateBid({ ...dataToUpdate, tripId: tripId! })),
     ).then((data: Bid) => {
-      return data
+      return data;
     });
   }
   function sendJobBid() {
