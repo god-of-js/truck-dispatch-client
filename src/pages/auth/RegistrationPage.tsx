@@ -11,6 +11,7 @@ import sizes from 'utils/sizes';
 import UiInput from 'components/ui/UiInput';
 import UiButton from 'components/ui/UiButton';
 import UserWithPassword from 'types/UserWithPassword';
+import UiSelect from 'ui/UiSelect';
 import UiForm from 'components/ui/UiForm';
 import { toAnyAction } from 'utils/helpers';
 import registrationSchema from 'utils/validations/registrationSchema';
@@ -59,6 +60,25 @@ export default function RegistrationPage() {
   const heading = isTransporter
     ? 'Join Our Team Of Transporters'
     : 'Deliver with us As An Agent';
+    const idTypeOptions = [
+      {
+        label: 'National Identification Card(NIN)',
+        value: 'nin',
+      },
+      {
+        label: 'International Passport',
+        value: 'international-passport',
+      },
+      {
+        label: "Voter's Card",
+        value: 'voter-card',
+      },
+      {
+        label: 'Driver License',
+        value: 'driver-license',
+      },
+    ];
+  
 
   return (
     <>
@@ -78,6 +98,12 @@ export default function RegistrationPage() {
                 error={errors.firstName}
                 onChange={handleChange}
               />
+              <UiSelect 
+              label="Type Of Goods"
+              name="typeOfGoods"
+              options={idTypeOptions}
+              value={formData.firstName}
+              onChange={handleChange}/>
               <UiInput
                 label="Last Name*"
                 value={formData.lastName}
@@ -100,6 +126,7 @@ export default function RegistrationPage() {
                 error={errors.phone}
                 onChange={handleChange}
               />
+              
               <UiInput
                 type="password"
                 label="Password*"

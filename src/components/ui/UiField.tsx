@@ -24,6 +24,7 @@ const Message = styled.div`
 
 const Label = styled.label`
   font-size: ${pxToRem(14)};
-  color: var(--color-gray-500);
-  font-weight: bold;
+  color: black;
+  font-weight: 700;
+  line-height: ${pxToRem(32)};
 `;

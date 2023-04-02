@@ -56,16 +56,23 @@ export default function UiButton({
 }
 
 function sizeVariant(size: Sizes) {
-  if (size === 's') return `padding: 0 ${pxToRem(16)}; height: ${pxToRem(36)};`;
+  if (size === 's') 
+    return `
+    padding: ${pxToRem(8)} 
+    ${pxToRem(12)}; 
+    font-size: ${pxToRem(12)};
+    `;
+
   if (size === 'md')
     return `
-  padding: 0 ${pxToRem(16)};
-  height: ${pxToRem(44)};
+    padding: ${pxToRem(12)};
+    font-size: ${pxToRem(12)};
   `;
+
   if (size === 'large')
     return `
-  padding: 0 ${pxToRem(16)};
-  height: ${pxToRem(52)};
+    padding:  ${pxToRem(16)};
+    font-size: ${pxToRem(14)} ;
   `;
 }
 
@@ -76,24 +83,24 @@ const ButtonContainer = styled.button<Props>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
   letter-spacing: 0.4px;
   line-height: 1.45;
   text-align: center;
   text-transform: uppercase;
-  border-radius: ${({ isSquare }) => (isSquare ? '' : pxToRem(4))};
-  font-weight: 900;
+  border-radius: ${({ isSquare }) => (isSquare ? '' : pxToRem(8))};
+  font-weight: 500;
   text-transform: ${({ textCasing }) => textCasing};
   width: ${({ isFullWidth }) => (isFullWidth ? '100%' : 'fit-content')};
   white-space: nowrap;
   opacity: ${({ disabled }) => (disabled ? '0.6' : '1')};
+  transition :all .2s ease-in-out;
 
   &.primary {
     background-color: var(--color-primary);
     color: white;
 
     &:hover {
-      background-color: var(--color-primary-600);
+      background-color: var(--color-primary-400);
     }
   }
   &.danger {

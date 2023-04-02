@@ -37,7 +37,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: stretch;
-  padding: px(16) px(8);
+  padding: px(16);
   gap: px(8);
   width: 100%;
   height: var(--base-height);
@@ -45,10 +45,12 @@ a {
   border: 1px solid var(--color-gray-200);
   background: #ffffff;
   outline: none;
-  border-radius: px(4);
+  border-radius:0px  px(8) px(8) 0px;
   box-sizing: border-box;
+  transition :all .2s ease-in-out;
 }
 
 .global-input:focus {
-  border-color: var(--color-primary);
+  border: px(2) solid  var(--color-primary);
+  box-shadow: 0px 0px 0px px(4) rgba(16, 24, 40, 0.05);
 }

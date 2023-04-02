@@ -82,31 +82,40 @@ const StyledSelect = styled.div`
       hasError ? 'var(--color-danger)' : 'var(--color-gray-200)'};
     background: #ffffff;
     outline: none;
-    border-radius: ${pxToRem(4)};
+    border-radius: ${pxToRem(8)};
     box-sizing: border-box;
+    transition :all .2s ease-in-out;
   }
 `;
 
 const StyledOptions = styled.ul`
   list-style: none;
-  margin: 0;
-  padding: 0;
+  margin-top:${pxToRem(8)};
+  padding:${pxToRem(16)} ${pxToRem(8)} ;
   position: absolute;
   width: 100%;
   background: #fff;
   border: 1px solid var(--color-gray-200);
-  border-radius: ${pxToRem(4)};
+  border-radius: ${pxToRem(8)};
+  box-shadow: 0px ${pxToRem(8)} ${pxToRem(16)} rgba(0, 0, 0, 0.08);
   z-index: 1;
   overflow: auto;
-  max-height: ${pxToRem(200)};
-  display: ${({ isOpen }: { isOpen: boolean }) => (isOpen ? 'block' : 'none')};
+  /* max-height: ${pxToRem(100)}; */
+  /* display: ${({ isOpen }: { isOpen: boolean }) => (isOpen ? 'block' : 'none')}; */
+  visibility: ${({ isOpen }: { isOpen: boolean }) => (isOpen ? 'visible' : 'hidden')};
+  opacity: ${({ isOpen }: { isOpen: boolean }) => (isOpen ? '1' : '0')};
+  transition :all .2s ease-in-out;
+
 `;
 
 const StyledOption = styled.li`
-  padding: ${pxToRem(10)};
+  padding: ${pxToRem(8)} ${pxToRem(12)};
+  font-size:${pxToRem(14)};
+  border-radius:${pxToRem(4)};
+  color: black;
   cursor: pointer;
   text-transform: capitalize;
   &:hover {
-    background: var(--color-gray-50);
+    background: var(--color-primary-50);
   }
 `;

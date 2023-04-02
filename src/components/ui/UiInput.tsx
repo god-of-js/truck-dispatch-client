@@ -46,13 +46,18 @@ export default function UiInput({
     <UiField label={label} name={name} error={error}>
       <InputContainer>
         {inputType === 'phone' ? (
-          <PhoneInput
-            value={`${value}` || ''}
-            country="NG"
-            className={'global-input'}
-            placeholder="e.g: 08034283438"
-            onChange={(e) => sendPhone(e)}
-          />
+          <PhoneInputContainer>
+            <div className="phone-tag">
+              +234
+            </div>
+            <PhoneInput
+              value={`${value}` || ''}
+              country="NG"
+              className={'global-input'}
+              placeholder="e.g: 08034283438"
+              onChange={(e) => sendPhone(e)}
+            />
+          </PhoneInputContainer>
         ) : (
           <Input
             type={inputType}
@@ -74,8 +79,21 @@ export default function UiInput({
   );
 }
 
+const PhoneInputContainer = styled.div`
+  display:flex;
+  .phone-tag{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background-color:var(--color-gray-200);
+    font-size:${pxToRem(14)};
+    border-radius: ${pxToRem(8)} 0px 0px ${pxToRem(8)};
+    padding:${pxToRem(16)};
+  }
+`
+
 const Input = styled.input`
-  padding: ${pxToRem(16)} ${pxToRem(8)};
+  padding: ${pxToRem(16)};
   height: var(--base-height);
   gap: ${pxToRem(8)};
   width: 100%;
@@ -85,11 +103,12 @@ const Input = styled.input`
     hasError ? 'var(--color-danger)' : 'var(--color-gray-200)'};
   background: #ffffff;
   outline: none;
-  border-radius: ${pxToRem(4)};
+  border-radius: ${pxToRem(8)};
   box-sizing: border-box;
-
+  transition :all .2s ease-in-out;
   &:focus {
-    border-color: var(--color-primary);
+    border:${pxToRem(2)} solid  var(--color-primary);
+    box-shadow: 0px 0px 0px ${pxToRem(4)} rgba(16, 24, 40, 0.05);
   }
 `;
 
