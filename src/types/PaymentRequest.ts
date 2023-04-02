@@ -2,7 +2,7 @@ export default interface PaymentRequest {
   id: string;
   driverName: string;
   driverPhoneNumber: string;
-  containerVideo: File | null | string;
+  proofVideo: File | null | string;
   status: 'pending' | 'rejected' | 'completed';
   transporterId: string;
   tripId: string;

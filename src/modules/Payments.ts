@@ -44,11 +44,18 @@ export const selectPaymentRequestByTripId = (id: string) =>
     requestArr.find(({ tripId }) => tripId === id),
   );
 
-export function requestPaymentByTransporter(data: PaymentRequest) {
+export function requestPaymentByTransporter(data: FormData, tripId: string) {
   return (dispatch: AppDispatch, state: AppState) => {
-    return Api.requestPaymentByTransporter(data).then(() => {
-      dispatch(setPaymentRequests([...state().payment.paymentRequests, data]));
-    });
+    return Api.requestPaymentByTransporter(data, tripId).then(
+      (paymentRequestDetails) => {
+        dispatch(
+          setPaymentRequests([
+            ...state().payment.paymentRequests,
+            paymentRequestDetails,
+          ]),
+        );
+      },
+    );
   };
 }
 

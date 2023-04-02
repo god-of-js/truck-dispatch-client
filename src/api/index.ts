@@ -125,8 +125,8 @@ class ApiService {
     return this.setDoc('payment', data._id, data);
   }
 
-  requestPaymentByTransporter(data: PaymentRequest) {
-    return this.setDoc('payment-request', data.id, data);
+  requestPaymentByTransporter(data: FormData, tripId: string): Promise<PaymentRequest> {
+    return this.post(`/payment/request-payment/trip/`, data);
   }
 
   getPaymentRequestsOfDriver(id: string) {
@@ -175,7 +175,7 @@ class ApiService {
         return data.data;
       })
       .catch((e) => {
-        console.log(e)
+        console.log(e);
         Toast.error({ msg: e.message });
         return Promise.reject(e);
       });
@@ -189,7 +189,7 @@ class ApiService {
         return data.data;
       })
       .catch((e) => {
-        console.log(e)
+        console.log(e);
         Toast.error({ msg: e.message });
         return Promise.reject(e);
       });

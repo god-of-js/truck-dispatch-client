@@ -22,13 +22,6 @@ export default function ViewTripStatus() {
   const user = useSelector((state: RootState) => state.account.user);
   const [loading, setLoading] = useState(false);
 
-  const transporter = useMemo(() => {
-    return transporters.find(({ _id }) => _id === trip?.transporterId) || null;
-  }, [transporters]);
-  const agent = useMemo(() => {
-    return agents.find(({ _id }) => _id === trip?.agentId) || null;
-  }, [transporters]);
-
   const tripStatusMessage = useMemo(() => {
     let heading: string = 'Accept a bid to commence trip',
       textContent: string =
@@ -59,14 +52,16 @@ export default function ViewTripStatus() {
   }, [trip]);
 
   const phoneNumberOfResponsibleUser = useMemo(() => {
-    return user?.userType === 'agent' ? transporter?.phone : agent?.phone;
-  }, [user, transporter, agent]);
+    return user?.userType === 'agent'
+      ? trip?.transporter?.phone
+      : trip?.tripOwner?.phone;
+  }, [user, trip?.transporter, trip?.tripOwner]);
 
   const responsibleUserAvatar = useMemo(() => {
-    if (user?.userType === 'agent') return transporter?.avatar;
+    if (user?.userType === 'agent') return trip?.transporter?.avatar;
 
-    return agent?.avatar;
-  }, [user, transporter, agent]);
+    return trip?.tripOwner?.avatar;
+  }, [user, trip?.transporter, trip?.tripOwner]);
   function showInfoCard() {
     if (user?.userType === 'transporter') return true;
 
@@ -117,8 +112,8 @@ export default function ViewTripStatus() {
                 </div>
                 <div className="name">
                   {user?.userType === 'agent'
-                    ? getName(transporter)
-                    : getName(agent)}
+                    ? getName(trip?.transporter)
+                    : getName(trip?.tripOwner)}
                 </div>
                 {phoneNumberOfResponsibleUser && (
                   <a
