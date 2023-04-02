@@ -61,9 +61,11 @@ export default function ViewTripRequestPayment() {
       setLoading(true);
       if (!tripId) return;
       const data = deepRootedToFormData(formData);
-      dispatch(toAnyAction(requestPaymentByTransporter(data, tripId))).finally(() => {
-        setLoading(false);
-      });
+      dispatch(toAnyAction(requestPaymentByTransporter(data, tripId))).finally(
+        () => {
+          setLoading(false);
+        },
+      );
     } catch (err) {
       setLoading(false);
     }

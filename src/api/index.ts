@@ -19,11 +19,14 @@ import Rating from 'types/Rating';
 import PaymentRequest from 'types/PaymentRequest';
 import Chat from 'types/Chat';
 import Verification from 'types/Verification';
-import BankAccount from 'types/BankAccount';
+import BankAccount from 'types/BankDetails';
 import VerifyPhoneData from 'types/VerifyPhoneData';
 import NewTrip from 'types/NewTrip';
 import { Toast } from 'utils/toast';
 import AssignTripFormData from 'types/AssignTripFormData';
+import { Bank } from './paystackIntegrations';
+import AccountDetails from 'types/AccountDetails';
+import BankDetails from 'types/BankDetails';
 
 class ApiService {
   createUser(userData: User) {
@@ -87,12 +90,12 @@ class ApiService {
     return this.setDoc('assets', id, { id, url });
   }
 
-  saveAccountNumber(accountDetails: BankAccount) {
-    return this.setDoc('bank-account', accountDetails.id, accountDetails);
+  saveAccountNumber(accountDetails: BankDetails) {
+    return this.post('/user/bank-details', accountDetails)
   }
 
-  getAccountNumber(id: string) {
-    return this.getItem<BankAccount>('bank-account', id);
+  updateAccountNumber(accountDetails: BankDetails) {
+    return this.patch('/user/bank-details', accountDetails)
   }
 
   publishUserRating(data: Rating) {
@@ -125,7 +128,10 @@ class ApiService {
     return this.setDoc('payment', data._id, data);
   }
 
-  requestPaymentByTransporter(data: FormData, tripId: string): Promise<PaymentRequest> {
+  requestPaymentByTransporter(
+    data: FormData,
+    tripId: string,
+  ): Promise<PaymentRequest> {
     return this.post(`/payment/request-payment/trip/`, data);
   }
 
@@ -159,6 +165,16 @@ class ApiService {
 
   setChatHasBeenRead(chatId: string) {
     return this.patch<Chat>(`/chat/read/${chatId}`);
+  }
+
+  getBanks(): Promise<Bank[]> {
+    return this.get('/externals/banks');
+  }
+
+  loadAccountDetails(bankCode: string, accountNumber: string): Promise<AccountDetails> {
+    return this.get(
+      `/externals/banks/account?account_number=${accountNumber}&bank_code=${bankCode}`,
+    );
   }
 
   private get<T>(url: string): Promise<T> {
