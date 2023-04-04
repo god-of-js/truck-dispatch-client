@@ -84,14 +84,14 @@ const StyledSelect = styled.div`
     outline: none;
     border-radius: ${pxToRem(8)};
     box-sizing: border-box;
-    transition :all .2s ease-in-out;
+    transition: all 0.2s ease-in-out;
   }
 `;
 
 const StyledOptions = styled.ul`
   list-style: none;
-  margin-top:${pxToRem(8)};
-  padding:${pxToRem(16)} ${pxToRem(8)} ;
+  margin-top: ${pxToRem(8)};
+  padding: ${pxToRem(16)} ${pxToRem(8)};
   position: absolute;
   width: 100%;
   background: #fff;
@@ -102,17 +102,18 @@ const StyledOptions = styled.ul`
   overflow: auto;
   max-width: 100%;
   /* max-height: ${pxToRem(100)}; */
-  /* display: ${({ isOpen }: { isOpen: boolean }) => (isOpen ? 'block' : 'none')}; */
-  visibility: ${({ isOpen }: { isOpen: boolean }) => (isOpen ? 'visible' : 'hidden')};
+  /* display: ${({ isOpen }: { isOpen: boolean }) =>
+    isOpen ? 'block' : 'none'}; */
+  visibility: ${({ isOpen }: { isOpen: boolean }) =>
+    isOpen ? 'visible' : 'hidden'};
   opacity: ${({ isOpen }: { isOpen: boolean }) => (isOpen ? '1' : '0')};
-  transition :all .2s ease-in-out;
-
+  transition: all 0.2s ease-in-out;
 `;
 
 const StyledOption = styled.li`
   padding: ${pxToRem(8)} ${pxToRem(12)};
-  font-size:${pxToRem(14)};
-  border-radius:${pxToRem(4)};
+  font-size: ${pxToRem(14)};
+  border-radius: ${pxToRem(4)};
   color: black;
   cursor: pointer;
   text-transform: capitalize;

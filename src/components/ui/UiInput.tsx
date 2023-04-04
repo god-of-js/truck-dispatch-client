@@ -47,9 +47,7 @@ export default function UiInput({
       <InputContainer>
         {inputType === 'phone' ? (
           <PhoneInputContainer>
-            <div className="phone-tag">
-              +234
-            </div>
+            <div className="phone-tag">+234</div>
             <PhoneInput
               value={`${value}` || ''}
               country="NG"
@@ -80,17 +78,17 @@ export default function UiInput({
 }
 
 const PhoneInputContainer = styled.div`
-  display:flex;
-  .phone-tag{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background-color:var(--color-gray);
-    font-size:${pxToRem(14)};
+  display: flex;
+  .phone-tag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-gray);
+    font-size: ${pxToRem(14)};
     border-radius: ${pxToRem(8)} 0px 0px ${pxToRem(8)};
-    padding:${pxToRem(16)};
+    padding: ${pxToRem(16)};
   }
-`
+`;
 
 const Input = styled.input`
   padding: ${pxToRem(16)};
@@ -105,9 +103,9 @@ const Input = styled.input`
   outline: none;
   border-radius: ${pxToRem(8)};
   box-sizing: border-box;
-  transition :all .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
   &:focus {
-    border:${pxToRem(2)} solid  var(--color-primary);
+    border: ${pxToRem(2)} solid var(--color-primary);
     box-shadow: var(--box-shadow-primary);
   }
 `;

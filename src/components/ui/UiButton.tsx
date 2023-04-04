@@ -56,7 +56,7 @@ export default function UiButton({
 }
 
 function sizeVariant(size: Sizes) {
-  if (size === 's') 
+  if (size === 's')
     return `
     padding: ${pxToRem(8)} 
     ${pxToRem(12)}; 
@@ -67,21 +67,21 @@ function sizeVariant(size: Sizes) {
   if (size === 'md')
     return `
     padding: ${pxToRem(12)};
-    height:${pxToRem(38)};
+    height:${pxToRem(40)};
     font-size: ${pxToRem(12)};
   `;
 
   if (size === 'large')
     return `
     padding:  ${pxToRem(16)} 0; 
-    height:${pxToRem(50)};
+    height:${pxToRem(56)};
     font-size: ${pxToRem(14)} ;
   `;
 }
 
-function getDisabledColor(disabled: boolean, color: string) {
-  if (disabled) return `background: ${color} !important`;
-  return ''
+function getColor(condition: boolean, color: string) {
+  if (condition) return `background: ${color};`;
+  return '';
 }
 
 const ButtonContainer = styled.button<Props>`
@@ -97,20 +97,24 @@ const ButtonContainer = styled.button<Props>`
   text-transform: uppercase;
   border-radius: ${({ isSquare }) => (isSquare ? '' : pxToRem(8))};
   font-weight: 500;
+  font-family: 'thiccboi-semibold';
   text-transform: ${({ textCasing }) => textCasing};
   width: ${({ isFullWidth }) => (isFullWidth ? '100%' : 'fit-content')};
   white-space: nowrap;
-  transition :all .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 
   &.primary {
     background-color: var(--color-primary);
-    ${({ disabled }) => getDisabledColor(disabled!, 'var(--color-primary-20)')};
+    ${({ disabled }) => getColor(disabled!, 'var(--color-primary-20)')};
     color: white;
 
+    ${({ disabled }) =>
+      !disabled &&
+      `
     &:hover {
       background-color: var(--color-primary-50);
       box-shadow: var(--box-shadow-primary);
-    }
+    }`}
   }
   &.danger {
     background-color: var(--color-danger-600);
@@ -126,7 +130,6 @@ const ButtonContainer = styled.button<Props>`
     border-color: transparent;
     color: var(--color-primary);
   }
-
 
   &.neutral {
     background-color: var(--color-gray-100);
@@ -155,20 +158,27 @@ const ButtonContainer = styled.button<Props>`
   &.secondary {
     background-color: var(--color-primary-10);
     color: var(--color-primary);
+    ${({ disabled }) =>
+      !disabled &&
+      `
     &:hover {
       background: var(--color-primary-20);
       box-shadow: var(--box-shadow-primary);
-    }
+    }`}
   }
-  
+
   &.tertiary {
     background-color: #ffff;
     color: var(--color-primary);
 
+    ${({ disabled }) =>
+      !disabled &&
+      `
     &:hover {
       color: var(--color-primary-50);
-    }
+    }`}
   }
+
   &.dark {
     background: var(--color-gray-900);
     color: white;

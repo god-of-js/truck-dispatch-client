@@ -60,7 +60,6 @@ export default function RegistrationPage() {
   const heading = isTransporter
     ? 'Join Our Team Of Transporters'
     : 'Deliver with us As An Agent';
-  
 
   return (
     <>
@@ -102,7 +101,7 @@ export default function RegistrationPage() {
                 error={errors.phone}
                 onChange={handleChange}
               />
-              
+
               <UiInput
                 type="password"
                 label="Password*"
@@ -137,7 +136,7 @@ export default function RegistrationPage() {
                 Terms of Service
               </a>
             </PrivacyPolicyParagraph>
-            <UiButton isFullWidth loading={loading} size='large'>
+            <UiButton isFullWidth loading={loading} size="large">
               Join as a{isAgent && 'n'} {userType}
             </UiButton>
             <AlreadyAMember>
