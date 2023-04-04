@@ -39,7 +39,7 @@ const ViewTripStatusPage = lazy(
   () => import('../pages/trips/ViewTripStatusPage'),
 );
 const ViewTripRequestPaymentPage = lazy(
-  () => import('../pages/trips/ViewTripRequestPaymentPage'),
+  () => import('../pages/trips/RequestPaymentPage'),
 );
 const ViewTripTDOPage = lazy(() => import('../pages/trips/ViewTripTDOPage'));
 const ViewRequestForPayment = lazy(

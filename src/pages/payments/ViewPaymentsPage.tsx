@@ -54,7 +54,7 @@ function ViewPaymentsPage() {
   ];
 
   function showPaymentDetails(id: string) {
-    const req = paymentRequests.find((request) => request.id === id);
+    const req = paymentRequests.find((request) => request._id === id);
     if (!req) throw new Error('request does not exist');
     setSelectedPayment(req);
     setIsViewPaymentVisible(true);
@@ -98,7 +98,7 @@ function ViewPaymentsPage() {
             <ViewPaymentDetails
               onClose={() => setIsViewPaymentVisible(false)}
               payment={selectedPayment}
-              key={selectedPayment.id}
+              key={selectedPayment._id}
             />
           )}
         </UiOverlay>

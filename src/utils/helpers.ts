@@ -1,4 +1,5 @@
 import { AnyAction } from 'redux';
+import TokenVerificationData from 'types/TokenVerificationData';
 
 export function removeKeyValuePairsFromObject<T extends Object>(
   obj: T,
@@ -171,7 +172,7 @@ export function convertDate(dateToConvert: number) {
   return `${dayOfWeek}, ${month} ${dayOfMonth}${suffix} ${year}`;
 }
 
-export function saveTokenVerificationInfo(data: { pinId: string; to: string }) {
+export function saveTokenVerificationInfo(data: TokenVerificationData) {
   localStorage.setItem('otp-pin-id', data.pinId);
   localStorage.setItem('otp-phone-number', data.to);
 }

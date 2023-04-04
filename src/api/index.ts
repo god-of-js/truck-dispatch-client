@@ -19,23 +19,28 @@ import Rating from 'types/Rating';
 import PaymentRequest from 'types/PaymentRequest';
 import Chat from 'types/Chat';
 import Verification from 'types/Verification';
-import BankAccount from 'types/BankAccount';
+import BankAccount from 'types/BankDetails';
 import VerifyPhoneData from 'types/VerifyPhoneData';
 import NewTrip from 'types/NewTrip';
 import { Toast } from 'utils/toast';
 import AssignTripFormData from 'types/AssignTripFormData';
+import { Bank } from './paystackIntegrations';
+import AccountDetails from 'types/AccountDetails';
+import BankDetails from 'types/BankDetails';
+import TokenVerificationData from 'types/TokenVerificationData';
+import LoginResponse from 'types/LoginResponse';
 
 class ApiService {
   createUser(userData: User) {
-    return this.post('/auth/join', userData);
+    return this.post<TokenVerificationData>('/auth/join', userData);
   }
 
   signInWithEmailAndPassword(data: { email: string; password: string }) {
-    return this.post('/auth/login', data);
+    return this.post<LoginResponse>('/auth/login', data);
   }
 
   requestVerificationCode(data: { phone: string }) {
-    return this.post('/auth/request-sms', data);
+    return this.post<TokenVerificationData>('/auth/request-sms', data);
   }
 
   verifyPhone(data: VerifyPhoneData) {
@@ -87,12 +92,12 @@ class ApiService {
     return this.setDoc('assets', id, { id, url });
   }
 
-  saveAccountNumber(accountDetails: BankAccount) {
-    return this.setDoc('bank-account', accountDetails.id, accountDetails);
+  saveAccountNumber(accountDetails: BankDetails) {
+    return this.post<User>('/user/bank-details', accountDetails);
   }
 
-  getAccountNumber(id: string) {
-    return this.getItem<BankAccount>('bank-account', id);
+  updateAccountNumber(accountDetails: BankDetails) {
+    return this.patch<User>('/user/bank-details', accountDetails);
   }
 
   publishUserRating(data: Rating) {
@@ -125,21 +130,44 @@ class ApiService {
     return this.setDoc('payment', data._id, data);
   }
 
-  requestPaymentByTransporter(data: PaymentRequest) {
-    return this.setDoc('payment-request', data.id, data);
+  requestPaymentByTransporter(
+    data: FormData,
+    tripId: string,
+  ): Promise<PaymentRequest> {
+    return this.post(`/payment/request-payment/trip/${tripId}`, data);
+  }
+  updatePaymentRequest(
+    data: FormData,
+    tripId: string,
+    paymentRequestId: string,
+  ): Promise<PaymentRequest> {
+    return this.patch(
+      `/payment/request-payment/trip/${tripId}/update/${paymentRequestId}`,
+      data,
+    );
   }
 
-  getPaymentRequestsOfDriver(id: string) {
-    return this.query<PaymentRequest>({
-      collectionName: 'payment-request',
-      key: 'transporterId',
-      condition: '==',
-      value: id,
-    });
+  getPaymentRequestsOfDriver() {
+    return this.get<PaymentRequest[]>('/payment/payment-requests');
   }
 
-  getPaymentRequestByTripId(id: string) {
-    return this.getItem<PaymentRequest>('payment-request', id);
+  getPaymentRequestByTripId(tripId: string) {
+    return this.get<PaymentRequest>(`/payment/payment-request/trip/${tripId}`);
+  }
+  rejectPaymentRequest(
+    tripId: string,
+    paymentRequestId: string,
+    data: { reasonForReject: string },
+  ) {
+    return this.post<PaymentRequest>(
+      `/payment/payment-request/trip/${tripId}/reject/${paymentRequestId}`,
+      data,
+    );
+  }
+  approvePaymentRequest(tripId: string, paymentRequestId: string) {
+    return this.post<PaymentRequest>(
+      `/payment/payment-request/trip/${tripId}/approve/${paymentRequestId}`,
+    );
   }
 
   getBidsWithTripId(tripId: string) {
@@ -161,21 +189,34 @@ class ApiService {
     return this.patch<Chat>(`/chat/read/${chatId}`);
   }
 
+  getBanks(): Promise<Bank[]> {
+    return this.get('/externals/banks');
+  }
+
+  loadAccountDetails(
+    bankCode: string,
+    accountNumber: string,
+  ): Promise<AccountDetails> {
+    return this.get(
+      `/externals/banks/account?account_number=${accountNumber}&bank_code=${bankCode}`,
+    );
+  }
+
   private get<T>(url: string): Promise<T> {
     return axiosInstance()
       .get(url)
       .then(({ data }) => data.data) as Promise<T>;
   }
 
-  private post<T>(url: string, data: unknown, isMultipart = false): Promise<T> {
-    return axiosInstance(isMultipart)
+  private post<T>(url: string, data?: unknown): Promise<T> {
+    return axiosInstance()
       .post(url, data)
       .then(({ data }) => {
         Toast.success({ msg: data.message });
         return data.data;
       })
       .catch((e) => {
-        console.log(e)
+        console.log(e);
         Toast.error({ msg: e.message });
         return Promise.reject(e);
       });
@@ -189,7 +230,7 @@ class ApiService {
         return data.data;
       })
       .catch((e) => {
-        console.log(e)
+        console.log(e);
         Toast.error({ msg: e.message });
         return Promise.reject(e);
       });

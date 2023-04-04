@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { BACKEND_URL } from 'utils/privateKeys';
 import { Toast } from 'utils/toast';
-import { getUserSessionId } from 'utils/userSession';
+import { getUserSessionId, removeUserSessionId } from 'utils/userSession';
 
 const instance = axios.create({
   baseURL: BACKEND_URL,
@@ -17,18 +17,20 @@ instance.interceptors.response.use(
       });
     }
     // TODO: remove for deploy
-    console.log(err);
+    console.log(err.response.data);
+    if (err.response.data.message === 'jwt expired') {
+      removeUserSessionId();
+      location.reload();
+    }
     return Promise.reject(err.response.data);
   },
 );
 
-function authorizedInstance(isMultipart?: boolean) {
+function authorizedInstance() {
   if (!instance.defaults.headers.Authorization) {
     const token = getUserSessionId();
     if (token) instance.defaults.headers.Authorization = `Bearer ${token}`;
   }
-  if (isMultipart)
-    instance.defaults.headers['Content-Type'] = 'multipart/form-data';
   return instance;
 }
 export default authorizedInstance;

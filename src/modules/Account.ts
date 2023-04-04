@@ -5,7 +5,7 @@ import User from '../types/User';
 import UserWithPassword from '../types/UserWithPassword';
 import Verification from '../types/Verification';
 import Rating from 'types/Rating';
-import BankAccount from 'types/BankAccount';
+import BankAccount from 'types/BankDetails';
 import { saveTokenVerificationInfo } from 'utils/helpers';
 import { saveUserSessionId } from 'utils/userSession';
 
@@ -13,14 +13,12 @@ export interface AccountState {
   users: User[];
   verification: Verification | null;
   user: User | null;
-  bankAccountDetails: BankAccount | null;
 }
 
 const initialState: AccountState = {
   users: [] as User[],
   user: null,
   verification: null,
-  bankAccountDetails: null,
 };
 export const accountSlice = createSlice({
   name: 'account',
@@ -38,17 +36,10 @@ export const accountSlice = createSlice({
     ) => {
       state.verification = action.payload;
     },
-    setBankAccountDetails: (
-      state: AccountState,
-      action: { payload: BankAccount },
-    ) => {
-      state.bankAccountDetails = action.payload;
-    },
   },
 });
 
-export const { setUsers, setUser, setVerification, setBankAccountDetails } =
-  accountSlice.actions;
+export const { setUsers, setUser, setVerification } = accountSlice.actions;
 
 export default accountSlice.reducer;
 
@@ -120,8 +111,8 @@ export function createOrUpdateUser(user: User) {
 export function loginUser(AuthUser: { email: string; password: string }) {
   return () => {
     return Api.signInWithEmailAndPassword(AuthUser)
-      .then((data) => {
-        saveUserSessionId(data.jwt);
+      .then(({ jwt }) => {
+        saveUserSessionId(jwt);
       })
       .catch((err) => {
         if (err.message === 'Phone has not been verified') {
@@ -186,20 +177,17 @@ export const getUserVerification = () => {
   };
 };
 
-export const saveUserAccount = (accountDetails: BankAccount) => {
+export const createUserBankAccount = (accountDetails: BankAccount) => {
   return (dispatch: AppDispatch) => {
-    return Api.saveAccountNumber(accountDetails).then(() => {
-      dispatch(setBankAccountDetails(accountDetails));
+    return Api.saveAccountNumber(accountDetails).then((user) => {
+      dispatch(setUser(user));
     });
   };
 };
-
-export const getUserAccountNumber = (uid = localStorage.getItem('uid')) => {
+export const updateUserBankAccount = (accountDetails: BankAccount) => {
   return (dispatch: AppDispatch) => {
-    if (!uid) throw new Error('No user id was provided');
-    return Api.getAccountNumber(uid).then((data) => {
-      dispatch(setBankAccountDetails(data));
-      return data;
+    return Api.updateAccountNumber(accountDetails).then((user) => {
+      dispatch(setUser(user));
     });
   };
 };

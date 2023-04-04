@@ -9,7 +9,7 @@ import sizes from 'utils/sizes';
 import { toAnyAction } from 'utils/helpers';
 import UploadTDO from 'utils/validations/UploadTDO';
 
-import { createOrUpdateTrip, selectTrip, setTrips } from 'modules/Trips';
+import { selectTrip, setTrips } from 'modules/Trips';
 
 import { RootState } from 'modules/index';
 
@@ -44,16 +44,16 @@ export default function ViewTripTDO() {
         ...trip,
         TDO,
       };
-      dispatch(toAnyAction(createOrUpdateTrip(tripWithTDO)))
-        .then(() => {
-          const updatedTrips = trips.map((tripObj) =>
-            tripObj.id === tripWithTDO.id ? tripWithTDO : tripObj,
-          );
-          dispatch(setTrips(updatedTrips));
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      // dispatch(toAnyAction(createOrUpdateTrip(tripWithTDO)))
+      //   .then(() => {
+      //     const updatedTrips = trips.map((tripObj) =>
+      //       tripObj._id === tripWithTDO._id ? tripWithTDO : tripObj,
+      //     );
+      //     dispatch(setTrips(updatedTrips));
+      //   })
+      //   .finally(() => {
+      //     setLoading(false);
+      //   });
     } catch (err) {
       Toast.error({ msg: (err as Error).message });
       setLoading(false);

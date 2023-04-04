@@ -44,31 +44,70 @@ export const selectPaymentRequestByTripId = (id: string) =>
     requestArr.find(({ tripId }) => tripId === id),
   );
 
-export function requestPaymentByTransporter(data: PaymentRequest) {
+export function requestPaymentByTransporter(data: FormData, tripId: string) {
   return (dispatch: AppDispatch, state: AppState) => {
-    return Api.requestPaymentByTransporter(data).then(() => {
-      dispatch(setPaymentRequests([...state().payment.paymentRequests, data]));
-    });
+    return Api.requestPaymentByTransporter(data, tripId).then(
+      (paymentRequestDetails) => {
+        dispatch(setPaymentRequest(paymentRequestDetails));
+      },
+    );
+  };
+}
+
+export function updatePaymentRequestByTransporter(
+  data: FormData,
+  tripId: string,
+  paymentRequestId: string,
+) {
+  return (dispatch: AppDispatch, state: AppState) => {
+    return Api.updatePaymentRequest(data, tripId, paymentRequestId).then(
+      (paymentRequestDetails) => {
+        dispatch(setPaymentRequest(paymentRequestDetails));
+      },
+    );
   };
 }
 
 export function getPaymentRequestsOfDriver() {
   return (dispatch: AppDispatch, state: AppState) => {
-    const uid = localStorage.getItem('uid');
-    if (!uid) throw new Error('400: user is not authenticated');
-    return Api.getPaymentRequestsOfDriver(uid).then((data) => {
+    return Api.getPaymentRequestsOfDriver().then((data) => {
       dispatch(setPaymentRequests(data));
       return data;
     });
   };
 }
 
-export function getPaymentRequestByTripId(tripId?: string) {
+export function getPaymentRequestByTripId(tripId: string) {
   return (dispatch: AppDispatch) => {
-    if (!tripId) throw new Error('400: Trip ID was not sent.');
-
     return Api.getPaymentRequestByTripId(tripId).then((paymentRequest) => {
+      console.log(paymentRequest, 'payment request');
       dispatch(setPaymentRequest(paymentRequest));
     });
+  };
+}
+
+export function rejectPaymentRequest(
+  tripId: string,
+  paymentRequestId: string,
+  data: { reasonForReject: string },
+) {
+  return (dispatch: AppDispatch) => {
+    return Api.rejectPaymentRequest(tripId, paymentRequestId, data).then(
+      (paymentRequest) => {
+        dispatch(setPaymentRequest(paymentRequest));
+      },
+    );
+  };
+}
+export function approvePaymentRequest(
+  tripId: string,
+  paymentRequestId: string,
+) {
+  return (dispatch: AppDispatch) => {
+    return Api.approvePaymentRequest(tripId, paymentRequestId).then(
+      (paymentRequest) => {
+        dispatch(setPaymentRequest(paymentRequest));
+      },
+    );
   };
 }

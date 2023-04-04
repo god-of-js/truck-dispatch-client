@@ -10,7 +10,7 @@ import { RootState } from 'modules/index';
 
 export default function AccountDetailsPage() {
   const accountDetails = useSelector(
-    (state: RootState) => state.account.bankAccountDetails,
+    (state: RootState) => state.account.user?.bankDetails,
   );
   const [changeBankModal, setChangeBankModal] = useState(false);
 
@@ -73,7 +73,7 @@ export default function AccountDetailsPage() {
       </AccountPageStyling>
       <UiOverlay isVisible={changeBankModal}>
         <AddAccount
-          bankAccountDetails={accountDetails}
+          bankAccountDetails={accountDetails || null}
           onClose={() => setChangeBankModal(false)}
         />
       </UiOverlay>

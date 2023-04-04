@@ -40,7 +40,7 @@ export default function ViewPaymentDetails({ onClose, payment }: Props) {
         {payment.status === 'rejected' && (
           <Section>
             <div className="title">Reason for Reject</div>
-            <div className="value">{payment.agentRemark}</div>
+            <div className="value">{payment.reasonForReject}</div>
           </Section>
         )}
         <Section>

@@ -62,7 +62,7 @@ export default function AgentTripPageContent() {
 
   function responsibleTransporterDetails(transporter?: User) {
     if (!transporter) return 'Not yet assigned';
-  
+
     if (!transporter) return 'Invalid Transporter';
 
     return (

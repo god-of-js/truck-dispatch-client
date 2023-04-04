@@ -32,7 +32,7 @@ export const getTripRating = (tripId: string) => {
 
 export const compileUserRating = (userId: string) => {
   return async (dispatch: AppDispatch, state: AppState) => {
-    const user = state().account.users.find(({ id }) => id === userId);
+    const user = state().account.users.find(({ _id }) => _id === userId);
     if (!user) throw new Error('404: User not found.');
 
     const userRatings = await Api.getRatings(userId);
