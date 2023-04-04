@@ -39,8 +39,7 @@ export const accountSlice = createSlice({
   },
 });
 
-export const { setUsers, setUser, setVerification } =
-  accountSlice.actions;
+export const { setUsers, setUser, setVerification } = accountSlice.actions;
 
 export default accountSlice.reducer;
 
@@ -192,4 +191,3 @@ export const updateUserBankAccount = (accountDetails: BankAccount) => {
     });
   };
 };
-

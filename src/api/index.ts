@@ -91,11 +91,11 @@ class ApiService {
   }
 
   saveAccountNumber(accountDetails: BankDetails) {
-    return this.post('/user/bank-details', accountDetails)
+    return this.post('/user/bank-details', accountDetails);
   }
 
   updateAccountNumber(accountDetails: BankDetails) {
-    return this.patch('/user/bank-details', accountDetails)
+    return this.patch('/user/bank-details', accountDetails);
   }
 
   publishUserRating(data: Rating) {
@@ -132,20 +132,32 @@ class ApiService {
     data: FormData,
     tripId: string,
   ): Promise<PaymentRequest> {
-    return this.post(`/payment/request-payment/trip/`, data);
+    return this.post(`/payment/request-payment/trip/${tripId}`, data);
+  }
+  updatePaymentRequest(
+    data: FormData,
+    tripId: string,
+    paymentRequestId: string
+  ): Promise<PaymentRequest> {
+    return this.patch(`/payment/request-payment/trip/${tripId}/update/${paymentRequestId}`, data);
   }
 
-  getPaymentRequestsOfDriver(id: string) {
-    return this.query<PaymentRequest>({
-      collectionName: 'payment-request',
-      key: 'transporterId',
-      condition: '==',
-      value: id,
-    });
+  getPaymentRequestsOfDriver() {
+    return this.get<PaymentRequest[]>('/payment/payment-requests');
   }
 
-  getPaymentRequestByTripId(id: string) {
-    return this.getItem<PaymentRequest>('payment-request', id);
+  getPaymentRequestByTripId(tripId: string) {
+    return this.get<PaymentRequest>(`/payment/payment-request/trip/${tripId}`);
+  }
+  rejectPaymentRequest(
+    tripId: string,
+    paymentRequestId: string,
+    data: { reasonForReject: string },
+  ) {
+    return this.post<PaymentRequest>(
+      `/payment/payment-request/trip/${tripId}/reject/${paymentRequestId}`,
+      data,
+    );
   }
 
   getBidsWithTripId(tripId: string) {
@@ -171,7 +183,10 @@ class ApiService {
     return this.get('/externals/banks');
   }
 
-  loadAccountDetails(bankCode: string, accountNumber: string): Promise<AccountDetails> {
+  loadAccountDetails(
+    bankCode: string,
+    accountNumber: string,
+  ): Promise<AccountDetails> {
     return this.get(
       `/externals/banks/account?account_number=${accountNumber}&bank_code=${bankCode}`,
     );

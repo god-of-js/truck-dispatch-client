@@ -17,7 +17,7 @@ import {
 import {
   getPaymentRequestsOfDriver,
   requestPaymentByTransporter,
-  selectPaymentRequestByTripId,
+  updatePaymentRequestByTransporter,
 } from 'modules/Payments';
 
 import MessageWithImage from 'ui/MessageWithImage';
@@ -30,20 +30,22 @@ import { RootState } from 'modules/index';
 export default function ViewTripRequestPayment() {
   const { tripId } = useParams();
   const accountDetails = useSelector(
-    (state: RootState) => state.account.bankAccountDetails,
+    (state: RootState) => state.account.user?.bankDetails,
   );
-  const paymentRequest = useSelector(selectPaymentRequestByTripId(tripId!));
+  const paymentRequest = useSelector(
+    (state: RootState) => state.payment.paymentRequest,
+  );
   const dispatch = useDispatch();
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    proofVideo: File | string | null;
+  }>({
     proofVideo: null,
   });
 
   const [loading, setLoading] = useState(false);
   const [isNotifyUserToAddAccountVisible, setIsNotifyUserToAddAccountVisible] =
     useState(false);
-  const [pageLoading, setPageLoading] = useState(true);
-
   const disableButton = useMemo(() => {
     if (!paymentRequest) return false;
     return aValueHasBeenChanged(
@@ -60,8 +62,10 @@ export default function ViewTripRequestPayment() {
       }
       setLoading(true);
       if (!tripId) return;
+      console.log(formData)
       const data = deepRootedToFormData(formData);
-      dispatch(toAnyAction(requestPaymentByTransporter(data, tripId))).finally(
+      const request = paymentRequest ? updatePaymentRequestByTransporter(data, tripId, paymentRequest._id) :requestPaymentByTransporter(data, tripId)
+      dispatch(toAnyAction(request)).finally(
         () => {
           setLoading(false);
         },
@@ -81,75 +85,63 @@ export default function ViewTripRequestPayment() {
     }));
   }
 
-  function getDriversPaymentRequests() {
-    return dispatch(toAnyAction(getPaymentRequestsOfDriver())).then(
-      (data: PaymentRequest[]) => {
-        // const tripPaymentRequest = data.find((req) => req.tripId === tripId);
-        // if (
-        //   tripPaymentRequest?.status === 'rejected' &&
-        //   formData.status !== 'rejected'
-        // )
-        //   setFormData(tripPaymentRequest);
-      },
-    );
-  }
-
   useEffect(() => {
-    Promise.all([getDriversPaymentRequests()]).finally(() => {
-      setPageLoading(false);
-    });
-  }, []);
-
+    if (paymentRequest?.proofVideo && !formData.proofVideo) {
+      setFormData({ proofVideo: paymentRequest.proofVideo})
+    }
+  }, [paymentRequest])
   return (
     <>
       <PageStyling>
-        {pageLoading ? (
-          <Loader />
-        ) : paymentRequest && paymentRequest?.status !== 'rejected' ? (
-          <>
-            <MessageWithImage
-              title="Payment request has been received"
-              subtitle="We have received your payment request. We would validate your trip status and get back to you. It normally takes a couple minutes for it to be verified. To view the status of the payment, navigate to the transcations page or click the button below"
-            />
-            <div className="btn-container">
-              <Link to="/payments">
-                <UiButton>View Payments</UiButton>
-              </Link>
-            </div>
-          </>
+        {paymentRequest ? (
+          paymentRequest?.status !== 'rejected' ? (
+            <>
+              <MessageWithImage
+                title="Payment request has been received"
+                subtitle="We have received your payment request. We would validate your trip status and get back to you. It normally takes a couple minutes for it to be verified. To view the status of the payment, navigate to the transcations page or click the button below"
+              />
+              <div className="btn-container">
+                <Link to="/payments">
+                  <UiButton>View Payments</UiButton>
+                </Link>
+              </div>
+            </>
+          ) : (
+            <>
+              <h2>Request Payment</h2>
+              <p>
+                To request payment, upload A video showing the container on the
+                truck as well as the truck plate number.
+              </p>
+              <UiForm
+                formData={formData}
+                schema={RequestPaymentSchema}
+                onSubmit={requestPayment}
+              >
+                {({ errors }) => (
+                  <>
+                    <GridContainer>
+                      <FileUploadWidget
+                        label="Video of the container on truck"
+                        fileType="video"
+                        name="proofVideo"
+                        error={errors.proofVideo}
+                        value={formData.proofVideo}
+                        onChange={setData}
+                      />
+                    </GridContainer>
+                    <UiButton loading={loading} disabled={disableButton}>
+                      {paymentRequest?.status === 'rejected'
+                        ? 'Update Payment Request'
+                        : 'Request Payment'}
+                    </UiButton>
+                  </>
+                )}
+              </UiForm>
+            </>
+          )
         ) : (
-          <>
-            <h2>Request Payment</h2>
-            <p>
-              To request payment, upload A video showing the container on the
-              truck as well as the truck plate number.
-            </p>
-            <UiForm
-              formData={formData}
-              schema={RequestPaymentSchema}
-              onSubmit={requestPayment}
-            >
-              {({ errors }) => (
-                <>
-                  <GridContainer>
-                    <FileUploadWidget
-                      label="Video of the container on truck"
-                      fileType="video"
-                      name="proofVideo"
-                      error={errors.proofVideo}
-                      value={formData.proofVideo}
-                      onChange={setData}
-                    />
-                  </GridContainer>
-                  <UiButton loading={loading} disabled={disableButton}>
-                    {paymentRequest?.status === 'rejected'
-                      ? 'Update Payment Request'
-                      : 'Request Payment'}
-                  </UiButton>
-                </>
-              )}
-            </UiForm>
-          </>
+          <>Proof of loading has not been uploaded yet.</>
         )}
 
         <UiOverlay isVisible={isNotifyUserToAddAccountVisible}>

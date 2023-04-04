@@ -110,7 +110,7 @@ export default function ViewTrip() {
   }, [tripId, trip]);
 
   useEffect(() => {
-    dispatch(toAnyAction(getPaymentRequestByTripId(tripId)));
+    dispatch(toAnyAction(getPaymentRequestByTripId(tripId!)));
   }, [tripId]);
 
   return (

@@ -49,10 +49,19 @@ export function requestPaymentByTransporter(data: FormData, tripId: string) {
     return Api.requestPaymentByTransporter(data, tripId).then(
       (paymentRequestDetails) => {
         dispatch(
-          setPaymentRequests([
-            ...state().payment.paymentRequests,
-            paymentRequestDetails,
-          ]),
+          setPaymentRequest(paymentRequestDetails),
+        );
+      },
+    );
+  };
+}
+
+export function updatePaymentRequestByTransporter(data: FormData, tripId: string, paymentRequestId: string) {
+  return (dispatch: AppDispatch, state: AppState) => {
+    return Api.updatePaymentRequest(data, tripId, paymentRequestId).then(
+      (paymentRequestDetails) => {
+        dispatch(
+          setPaymentRequest(paymentRequestDetails)
         );
       },
     );
@@ -61,21 +70,32 @@ export function requestPaymentByTransporter(data: FormData, tripId: string) {
 
 export function getPaymentRequestsOfDriver() {
   return (dispatch: AppDispatch, state: AppState) => {
-    const uid = localStorage.getItem('uid');
-    if (!uid) throw new Error('400: user is not authenticated');
-    return Api.getPaymentRequestsOfDriver(uid).then((data) => {
+    return Api.getPaymentRequestsOfDriver().then((data) => {
       dispatch(setPaymentRequests(data));
       return data;
     });
   };
 }
 
-export function getPaymentRequestByTripId(tripId?: string) {
+export function getPaymentRequestByTripId(tripId: string) {
   return (dispatch: AppDispatch) => {
-    if (!tripId) throw new Error('400: Trip ID was not sent.');
-
     return Api.getPaymentRequestByTripId(tripId).then((paymentRequest) => {
+      console.log(paymentRequest, 'payment request');
       dispatch(setPaymentRequest(paymentRequest));
     });
+  };
+}
+
+export function rejectPaymentRequest(
+  tripId: string,
+  paymentRequestId: string,
+  data: { reasonForReject: string },
+) {
+  return (dispatch: AppDispatch) => {
+    return Api.rejectPaymentRequest(tripId, paymentRequestId, data).then(
+      (paymentRequest) => {
+        dispatch(setPaymentRequest(paymentRequest));
+      },
+    );
   };
 }

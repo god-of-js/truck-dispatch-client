@@ -1,4 +1,3 @@
-import { getUserAccountNumber } from 'modules/Account';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -9,35 +8,35 @@ import UiButton from 'ui/UiButton';
 import UiModal from 'ui/UiModal';
 import { nairaToKobo, toAnyAction } from 'utils/helpers';
 import { Toast } from 'utils/toast';
-import { makeTransfer } from '../../api/paystackIntegrations';
 
 interface Props {
   onClose: () => void;
+  tripId: string;
+  paymentRequestId: string;
   paymentRequest?: PaymentRequest | null;
-  setPaymentRequest: (param: PaymentRequest) => Promise<void>;
 }
 export default function ConfirmApprovePayment({
   paymentRequest,
+  tripId,
+  paymentRequestId,
   onClose,
-  setPaymentRequest,
 }: Props) {
-  const { tripId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
   function setStatusOfPaymentToComplete(paymentDetails: PaymentRequest) {
-    return setPaymentRequest({
-      ...paymentDetails,
-      status: 'completed',
-      updatedAt: Date.now(),
-    }).then(() => {
-      Toast.success({
-        msg: 'Payment request has been approved.',
-      });
-      navigate(`/my-trips/${tripId}/status`);
-      onClose();
-    });
+    // return setPaymentRequest({
+    //   ...paymentDetails,
+    //   status: 'completed',
+    //   updatedAt: Date.now(),
+    // }).then(() => {
+    //   Toast.success({
+    //     msg: 'Payment request has been approved.',
+    //   });
+    //   navigate(`/my-trips/${tripId}/status`);
+    //   onClose();
+    // });
   }
 
   function getTransferData(
@@ -56,28 +55,6 @@ export default function ConfirmApprovePayment({
   async function approvePayment() {
     if (!paymentRequest) throw new Error('Payment request was not provided');
     setLoading(true);
-    const transporterAccountDetails = await dispatch(
-      toAnyAction(getUserAccountNumber(paymentRequest.transporterId)),
-    );
-    const transferData = getTransferData(
-      paymentRequest,
-      transporterAccountDetails.paystackRecipientCode,
-    );
-
-    makeTransfer(transferData)
-      .then(() => setStatusOfPaymentToComplete(paymentRequest))
-      .catch((err) => {
-        if (
-          err.response.data.message ===
-          'Please provide a unique reference. Reference already exists on a transfer'
-        ) {
-          Toast.error({ msg: 'Payment has already been issued.' });
-          return;
-        }
-
-        Toast.error({ msg: err.response.data.message });
-      })
-      .finally(() => setLoading(false));
   }
 
   return (

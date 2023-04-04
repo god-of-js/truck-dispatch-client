@@ -58,7 +58,9 @@ export default function AddAccount({ bankAccountDetails, onClose }: Props) {
       bank_code: formData.bankCode,
       bank_name: bank?.label!,
     };
-    const request = user?.bankDetails ? updateUserBankAccount : createUserBankAccount;
+    const request = user?.bankDetails
+      ? updateUserBankAccount
+      : createUserBankAccount;
 
     dispatch(toAnyAction(request(data)))
       .then(() => {

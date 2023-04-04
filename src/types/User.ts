@@ -1,4 +1,4 @@
-import TransferRecipient from "./TransferRecipient";
+import TransferRecipient from './TransferRecipient';
 
 export default interface User {
   _id: string;
@@ -16,5 +16,5 @@ export default interface User {
     | 'fraudulent';
   rating: number;
   createdAt?: number;
-  bankDetails?: TransferRecipient
+  bankDetails?: TransferRecipient;
 }
