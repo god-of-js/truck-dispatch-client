@@ -11,6 +11,7 @@ import sizes from 'utils/sizes';
 import UiInput from 'components/ui/UiInput';
 import UiButton from 'components/ui/UiButton';
 import UserWithPassword from 'types/UserWithPassword';
+import UiSelect from 'ui/UiSelect';
 import UiForm from 'components/ui/UiForm';
 import { toAnyAction } from 'utils/helpers';
 import registrationSchema from 'utils/validations/registrationSchema';
@@ -100,6 +101,7 @@ export default function RegistrationPage() {
                 error={errors.phone}
                 onChange={handleChange}
               />
+
               <UiInput
                 type="password"
                 label="Password*"
@@ -134,7 +136,7 @@ export default function RegistrationPage() {
                 Terms of Service
               </a>
             </PrivacyPolicyParagraph>
-            <UiButton isFullWidth loading={loading}>
+            <UiButton isFullWidth loading={loading} size="large">
               Join as a{isAgent && 'n'} {userType}
             </UiButton>
             <AlreadyAMember>

@@ -8,13 +8,13 @@ interface Props {
   variant?:
     | 'primary'
     | 'secondary'
+    | 'tertiary'
     | 'neutral'
     | 'primary-outlined'
     | 'secondary-outlined'
     | 'primary-text'
     | 'dark'
     | 'dark-outlined'
-    | 'icon'
     | 'danger';
   size?: Sizes;
   type?: 'submit' | 'button';
@@ -25,7 +25,7 @@ interface Props {
   onClick?: () => void;
 }
 
-type Sizes = 'large' | 'md' | 's';
+type Sizes = 'large' | 'md' | 's' | 'icon';
 
 export default function UiButton({
   children,
@@ -56,17 +56,32 @@ export default function UiButton({
 }
 
 function sizeVariant(size: Sizes) {
-  if (size === 's') return `padding: 0 ${pxToRem(16)}; height: ${pxToRem(36)};`;
+  if (size === 's')
+    return `
+    padding: ${pxToRem(8)} 
+    ${pxToRem(12)}; 
+    height:${pxToRem(32)};
+    font-size: ${pxToRem(12)};
+    `;
+
   if (size === 'md')
     return `
-  padding: 0 ${pxToRem(16)};
-  height: ${pxToRem(44)};
+    padding: ${pxToRem(12)};
+    height:${pxToRem(40)};
+    font-size: ${pxToRem(12)};
   `;
+
   if (size === 'large')
     return `
-  padding: 0 ${pxToRem(16)};
-  height: ${pxToRem(52)};
+    padding:  ${pxToRem(16)} 0; 
+    height:${pxToRem(56)};
+    font-size: ${pxToRem(14)} ;
   `;
+}
+
+function getColor(condition: boolean, color: string) {
+  if (condition) return `background: ${color};`;
+  return '';
 }
 
 const ButtonContainer = styled.button<Props>`
@@ -76,25 +91,30 @@ const ButtonContainer = styled.button<Props>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
   letter-spacing: 0.4px;
   line-height: 1.45;
   text-align: center;
   text-transform: uppercase;
-  border-radius: ${({ isSquare }) => (isSquare ? '' : pxToRem(4))};
-  font-weight: 900;
+  border-radius: ${({ isSquare }) => (isSquare ? '' : pxToRem(8))};
+  font-weight: 500;
+  font-family: 'thiccboi-semibold';
   text-transform: ${({ textCasing }) => textCasing};
   width: ${({ isFullWidth }) => (isFullWidth ? '100%' : 'fit-content')};
   white-space: nowrap;
-  opacity: ${({ disabled }) => (disabled ? '0.6' : '1')};
+  transition: all 0.2s ease-in-out;
 
   &.primary {
     background-color: var(--color-primary);
+    ${({ disabled }) => getColor(disabled!, 'var(--color-primary-20)')};
     color: white;
 
+    ${({ disabled }) =>
+      !disabled &&
+      `
     &:hover {
-      background-color: var(--color-primary-600);
-    }
+      background-color: var(--color-primary-50);
+      box-shadow: var(--box-shadow-primary);
+    }`}
   }
   &.danger {
     background-color: var(--color-danger-600);
@@ -109,18 +129,6 @@ const ButtonContainer = styled.button<Props>`
     background: transparent;
     border-color: transparent;
     color: var(--color-primary);
-  }
-
-  &.icon {
-    background: transparent;
-    border-radius: 50%;
-    width: ${pxToRem(32)};
-    height: ${pxToRem(32)};
-    padding: ${pxToRem(12)};
-
-    &:hover {
-      background-color: var(--color-gray-100);
-    }
   }
 
   &.neutral {
@@ -148,11 +156,27 @@ const ButtonContainer = styled.button<Props>`
   }
 
   &.secondary {
-    background-color: var(--color-gray-100);
-    color: var(--color-gray-700);
+    background-color: var(--color-primary-10);
+    color: var(--color-primary);
+    ${({ disabled }) =>
+      !disabled &&
+      `
     &:hover {
-      background: var(--color-gray-200);
-    }
+      background: var(--color-primary-20);
+      box-shadow: var(--box-shadow-primary);
+    }`}
+  }
+
+  &.tertiary {
+    background-color: #ffff;
+    color: var(--color-primary);
+
+    ${({ disabled }) =>
+      !disabled &&
+      `
+    &:hover {
+      color: var(--color-primary-50);
+    }`}
   }
 
   &.dark {

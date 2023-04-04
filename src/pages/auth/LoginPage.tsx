@@ -79,7 +79,12 @@ export default function LoginPage() {
               TruckDispatch's partner, and agree to our{' '}
               <Link to="/">privacy policy</Link>
             </PrivacyPolicyParagraph>
-            <UiButton isFullWidth loading={loading}>
+            <UiButton
+              isFullWidth
+              loading={loading}
+              size="md"
+              variant="primary"
+            >
               Sign In
             </UiButton>
             {/* <ForgotPassword>
