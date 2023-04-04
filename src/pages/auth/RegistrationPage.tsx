@@ -15,6 +15,7 @@ import UiSelect from 'ui/UiSelect';
 import UiForm from 'components/ui/UiForm';
 import { toAnyAction } from 'utils/helpers';
 import registrationSchema from 'utils/validations/registrationSchema';
+import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
 
 export default function RegistrationPage() {
   const dispatch = useDispatch();
@@ -62,7 +63,7 @@ export default function RegistrationPage() {
     : 'Deliver with us As An Agent';
 
   return (
-    <>
+    <AuthLayoutStyling>
       <UiForm
         schema={registrationSchema}
         formData={formData}
@@ -71,54 +72,52 @@ export default function RegistrationPage() {
         {({ errors }) => (
           <>
             <JoinUsHeading>{heading}</JoinUsHeading>
-            <GridSpacer>
-              <UiInput
-                label="First Name*"
-                value={formData.firstName}
-                name="firstName"
-                error={errors.firstName}
-                onChange={handleChange}
-              />
-              <UiInput
-                label="Last Name*"
-                value={formData.lastName}
-                name="lastName"
-                error={errors.lastName}
-                onChange={handleChange}
-              />
-              <UiInput
-                label="Email*"
-                value={formData.email}
-                name="email"
-                error={errors.email}
-                onChange={handleChange}
-              />
-              <UiInput
-                label="Phone Number*"
-                type="phone"
-                value={formData.phone}
-                name="phone"
-                error={errors.phone}
-                onChange={handleChange}
-              />
+            <UiInput
+              label="First Name*"
+              value={formData.firstName}
+              name="firstName"
+              error={errors.firstName}
+              onChange={handleChange}
+            />
+            <UiInput
+              label="Last Name*"
+              value={formData.lastName}
+              name="lastName"
+              error={errors.lastName}
+              onChange={handleChange}
+            />
+            <UiInput
+              label="Email*"
+              value={formData.email}
+              name="email"
+              error={errors.email}
+              onChange={handleChange}
+            />
+            <UiInput
+              label="Phone Number*"
+              type="phone"
+              value={formData.phone}
+              name="phone"
+              error={errors.phone}
+              onChange={handleChange}
+            />
 
-              <UiInput
-                type="password"
-                label="Password*"
-                name="password"
-                value={formData.password!}
-                error={errors.password}
-                onChange={handleChange}
-              />
-              <UiInput
-                type="password"
-                label="Confirm Password*"
-                value={formData.cPassword!}
-                name="cPassword"
-                error={errors.cPassword}
-                onChange={handleChange}
-              />
-            </GridSpacer>
+            <UiInput
+              type="password"
+              label="Password*"
+              name="password"
+              value={formData.password!}
+              error={errors.password}
+              onChange={handleChange}
+            />
+            <UiInput
+              type="password"
+              label="Confirm Password*"
+              value={formData.cPassword!}
+              name="cPassword"
+              error={errors.cPassword}
+              onChange={handleChange}
+            />
             <PrivacyPolicyParagraph>
               By clicking on the following button, you are willing to become
               TruckDispatch's partner, and agree to our{' '}
@@ -145,7 +144,7 @@ export default function RegistrationPage() {
           </>
         )}
       </UiForm>
-    </>
+    </AuthLayoutStyling>
   );
 }
 

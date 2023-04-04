@@ -31,12 +31,14 @@ import {
   X,
 } from 'phosphor-react';
 import styled from 'styled-components';
+import CallReceived from './icons/CallReceived';
 
 // These icons should be arranged alphabetically for easy sorting
 const icons = {
   ArrowLeft: <ArrowLeft />,
   ArrowRight: <ArrowRight />,
   ArrowUpRight: <ArrowUpRight />,
+  CallReceived: <CallReceived />,
   CaretDown: <CaretDown />,
   CaretUp: <CaretUp />,
   Chats: <Chats />,

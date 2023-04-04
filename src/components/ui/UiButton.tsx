@@ -74,7 +74,7 @@ function sizeVariant(size: Sizes) {
   if (size === 'large')
     return `
     padding:  ${pxToRem(16)} 0; 
-    height:${pxToRem(56)};
+    height:${pxToRem(46)};
     font-size: ${pxToRem(14)} ;
   `;
 }
