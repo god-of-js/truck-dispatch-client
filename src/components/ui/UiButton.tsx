@@ -8,13 +8,13 @@ interface Props {
   variant?:
     | 'primary'
     | 'secondary'
+    | 'tertiary'
     | 'neutral'
     | 'primary-outlined'
     | 'secondary-outlined'
     | 'primary-text'
     | 'dark'
     | 'dark-outlined'
-    | 'icon'
     | 'danger';
   size?: Sizes;
   type?: 'submit' | 'button';
@@ -25,7 +25,7 @@ interface Props {
   onClick?: () => void;
 }
 
-type Sizes = 'large' | 'md' | 's';
+type Sizes = 'large' | 'md' | 's' | 'icon';
 
 export default function UiButton({
   children,
@@ -60,20 +60,28 @@ function sizeVariant(size: Sizes) {
     return `
     padding: ${pxToRem(8)} 
     ${pxToRem(12)}; 
+    height:${pxToRem(32)};
     font-size: ${pxToRem(12)};
     `;
 
   if (size === 'md')
     return `
     padding: ${pxToRem(12)};
+    height:${pxToRem(38)};
     font-size: ${pxToRem(12)};
   `;
 
   if (size === 'large')
     return `
-    padding:  ${pxToRem(16)};
+    padding:  ${pxToRem(16)} 0; 
+    height:${pxToRem(50)};
     font-size: ${pxToRem(14)} ;
   `;
+}
+
+function getDisabledColor(disabled: boolean, color: string) {
+  if (disabled) return `background: ${color} !important`;
+  return ''
 }
 
 const ButtonContainer = styled.button<Props>`
@@ -92,15 +100,16 @@ const ButtonContainer = styled.button<Props>`
   text-transform: ${({ textCasing }) => textCasing};
   width: ${({ isFullWidth }) => (isFullWidth ? '100%' : 'fit-content')};
   white-space: nowrap;
-  opacity: ${({ disabled }) => (disabled ? '0.6' : '1')};
   transition :all .2s ease-in-out;
 
   &.primary {
     background-color: var(--color-primary);
+    ${({ disabled }) => getDisabledColor(disabled!, 'var(--color-primary-20)')};
     color: white;
 
     &:hover {
-      background-color: var(--color-primary-400);
+      background-color: var(--color-primary-50);
+      box-shadow: var(--box-shadow-primary);
     }
   }
   &.danger {
@@ -118,17 +127,6 @@ const ButtonContainer = styled.button<Props>`
     color: var(--color-primary);
   }
 
-  &.icon {
-    background: transparent;
-    border-radius: 50%;
-    width: ${pxToRem(32)};
-    height: ${pxToRem(32)};
-    padding: ${pxToRem(12)};
-
-    &:hover {
-      background-color: var(--color-gray-100);
-    }
-  }
 
   &.neutral {
     background-color: var(--color-gray-100);
@@ -155,13 +153,22 @@ const ButtonContainer = styled.button<Props>`
   }
 
   &.secondary {
-    background-color: var(--color-gray-100);
-    color: var(--color-gray-700);
+    background-color: var(--color-primary-10);
+    color: var(--color-primary);
     &:hover {
-      background: var(--color-gray-200);
+      background: var(--color-primary-20);
+      box-shadow: var(--box-shadow-primary);
     }
   }
+  
+  &.tertiary {
+    background-color: #ffff;
+    color: var(--color-primary);
 
+    &:hover {
+      color: var(--color-primary-50);
+    }
+  }
   &.dark {
     background: var(--color-gray-900);
     color: white;

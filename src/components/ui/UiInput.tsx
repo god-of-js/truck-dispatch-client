@@ -85,7 +85,7 @@ const PhoneInputContainer = styled.div`
     display:flex;
     align-items:center;
     justify-content:center;
-    background-color:var(--color-gray-200);
+    background-color:var(--color-gray);
     font-size:${pxToRem(14)};
     border-radius: ${pxToRem(8)} 0px 0px ${pxToRem(8)};
     padding:${pxToRem(16)};
@@ -100,7 +100,7 @@ const Input = styled.input`
   font-size: ${pxToRem(12)};
   border: ${pxToRem(1)} solid;
   border-color: ${({ hasError }: { hasError: boolean }) =>
-    hasError ? 'var(--color-danger)' : 'var(--color-gray-200)'};
+    hasError ? 'var(--color-danger)' : 'var(--color-gray)'};
   background: #ffffff;
   outline: none;
   border-radius: ${pxToRem(8)};
@@ -108,7 +108,7 @@ const Input = styled.input`
   transition :all .2s ease-in-out;
   &:focus {
     border:${pxToRem(2)} solid  var(--color-primary);
-    box-shadow: 0px 0px 0px ${pxToRem(4)} rgba(16, 24, 40, 0.05);
+    box-shadow: var(--box-shadow-primary);
   }
 `;
 

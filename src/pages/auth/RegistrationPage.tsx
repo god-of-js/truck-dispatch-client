@@ -60,24 +60,6 @@ export default function RegistrationPage() {
   const heading = isTransporter
     ? 'Join Our Team Of Transporters'
     : 'Deliver with us As An Agent';
-    const idTypeOptions = [
-      {
-        label: 'National Identification Card(NIN)',
-        value: 'nin',
-      },
-      {
-        label: 'International Passport',
-        value: 'international-passport',
-      },
-      {
-        label: "Voter's Card",
-        value: 'voter-card',
-      },
-      {
-        label: 'Driver License',
-        value: 'driver-license',
-      },
-    ];
   
 
   return (
@@ -98,12 +80,6 @@ export default function RegistrationPage() {
                 error={errors.firstName}
                 onChange={handleChange}
               />
-              <UiSelect 
-              label="Type Of Goods"
-              name="typeOfGoods"
-              options={idTypeOptions}
-              value={formData.firstName}
-              onChange={handleChange}/>
               <UiInput
                 label="Last Name*"
                 value={formData.lastName}
@@ -161,7 +137,7 @@ export default function RegistrationPage() {
                 Terms of Service
               </a>
             </PrivacyPolicyParagraph>
-            <UiButton isFullWidth loading={loading}>
+            <UiButton isFullWidth loading={loading} size='large'>
               Join as a{isAgent && 'n'} {userType}
             </UiButton>
             <AlreadyAMember>

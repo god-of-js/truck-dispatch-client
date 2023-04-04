@@ -79,7 +79,7 @@ const StyledSelect = styled.div`
     font-size: ${pxToRem(12)};
     border: ${pxToRem(1)} solid;
     border-color: ${({ hasError }: { hasError: boolean }) =>
-      hasError ? 'var(--color-danger)' : 'var(--color-gray-200)'};
+      hasError ? 'var(--color-danger)' : 'var(--color-gray)'};
     background: #ffffff;
     outline: none;
     border-radius: ${pxToRem(8)};
@@ -95,11 +95,12 @@ const StyledOptions = styled.ul`
   position: absolute;
   width: 100%;
   background: #fff;
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid var(--color-gray-30);
   border-radius: ${pxToRem(8)};
   box-shadow: 0px ${pxToRem(8)} ${pxToRem(16)} rgba(0, 0, 0, 0.08);
   z-index: 1;
   overflow: auto;
+  max-width: 100%;
   /* max-height: ${pxToRem(100)}; */
   /* display: ${({ isOpen }: { isOpen: boolean }) => (isOpen ? 'block' : 'none')}; */
   visibility: ${({ isOpen }: { isOpen: boolean }) => (isOpen ? 'visible' : 'hidden')};
@@ -116,6 +117,6 @@ const StyledOption = styled.li`
   cursor: pointer;
   text-transform: capitalize;
   &:hover {
-    background: var(--color-primary-50);
+    background: var(--color-primary-10);
   }
 `;
