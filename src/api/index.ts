@@ -59,10 +59,6 @@ class ApiService {
     return this.get('/trips');
   }
 
-  recordAccountDetails(data: User) {
-    return this.setDoc('user', data._id, data);
-  }
-
   getUser() {
     return this.get<User>('/user');
   }
@@ -87,11 +83,6 @@ class ApiService {
     return this.post<Trip>(`/trips/${data.tripId}/assign-trip`, data);
   }
 
-  saveAsset(id: string, url: string) {
-    // In case of future migrations to different asset servers.
-    return this.setDoc('assets', id, { id, url });
-  }
-
   saveAccountNumber(accountDetails: BankDetails) {
     return this.post<User>('/user/bank-details', accountDetails);
   }
@@ -100,23 +91,12 @@ class ApiService {
     return this.patch<User>('/user/bank-details', accountDetails);
   }
 
-  publishUserRating(data: Rating) {
-    return this.setDoc('rating', data.id, data);
-  }
-  getRatings(
-    value: string,
-    queryKey: 'transporterId' | 'tripId' = 'transporterId',
-  ) {
-    return this.query<Rating>({
-      collectionName: 'rating',
-      key: queryKey,
-      condition: '==',
-      value,
-    });
-  }
 
   getJobs() {
     return this.get<Trip[]>('/trips/jobs');
+  }
+  uploadTDO(formData: FormData,tripId: string) {
+    return this.post<Trip>(`/trips/${tripId}/upload-tdo`, formData);
   }
 
   createBid(data: Bid) {
@@ -124,10 +104,6 @@ class ApiService {
   }
   updateBid(data: Bid): Promise<Bid> {
     return this.patch<Bid>(`/bids/${data.tripId}`, data);
-  }
-
-  createOrUpdatePayment(data: Payment) {
-    return this.setDoc('payment', data._id, data);
   }
 
   requestPaymentByTransporter(
@@ -235,6 +211,27 @@ class ApiService {
         return Promise.reject(e);
       });
   }
+
+
+  // FIREBASE TO BE REMOVED
+
+  recordAccountDetails(data: User) {
+    return this.setDoc('user', data._id, data);
+  }
+  publishUserRating(data: Rating) {
+    return this.setDoc('rating', data.id, data);
+  }
+  getRatings(
+    value: string,
+    queryKey: 'transporterId' | 'tripId' = 'transporterId',
+  ) {
+    return this.query<Rating>({
+      collectionName: 'rating',
+      key: queryKey,
+      condition: '==',
+      value,
+    });
+  }
   private setDoc(
     collectionName: string,
     id: string,
@@ -270,17 +267,6 @@ class ApiService {
       documentList.push(doc.data() as T);
     });
     return documentList;
-  }
-
-  private async getItem<T>(collectionName: string, id: string): Promise<T> {
-    const docRef = doc(db, collectionName, id);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      return docSnap.data() as T;
-    } else {
-      throw new Error('404: Document not found');
-    }
   }
 
   private remove(url: string) {

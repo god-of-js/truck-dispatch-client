@@ -72,12 +72,24 @@ export function updateTrip(trip: Partial<Trip>) {
 
 export function getTrips() {
   return (dispatch: AppDispatch) => {
-    return Api.getTrips().then((data) => dispatch(setTrips(data)));
+    return Api.getTrips().then((data) => {
+      dispatch(setTrips(data))
+    });
   };
 }
 
 export function getJobs() {
   return (dispatch: AppDispatch) => {
-    return Api.getJobs().then((data) => dispatch(toAnyAction(setJobs(data))));
+    return Api.getJobs().then((data) => dispatch(setJobs(data)));
+  };
+}
+
+export function uploadTDO(formData: FormData, tripId: string) {
+  return (dispatch: AppDispatch, state: AppState) => {
+    return Api.uploadTDO(formData, tripId).then((data) => {
+      const trips = replaceEditedItem(state().trips.trips, data);
+      dispatch(setTrips(trips));
+      return data;
+    });
   };
 }
