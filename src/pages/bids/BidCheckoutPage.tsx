@@ -1,16 +1,11 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { usePaystackPayment } from 'react-paystack';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import {
-  createOrUpdateBid,
-  createOrUpdateTrip,
-  getAgentTrips,
-  selectBid,
-  selectTrip,
-} from 'modules/Trips';
+import { selectTrip, assignTrip } from 'modules/Trips';
+import { selectBid } from 'modules/Bid';
 import sizes from 'utils/sizes';
 import { paystackPublickKey } from 'utils/privateKeys';
 import {
@@ -23,12 +18,10 @@ import {
 
 import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
 import UiButton from 'ui/UiButton';
-import UiIcon from 'ui/UiIcon';
 import { RootState } from 'modules/index';
 import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
 import UiAvatar from 'ui/UiAvatar';
 import Payment from 'types/Payment';
-import { createOrUpdatePayment } from 'modules/Payments';
 import { Toast } from 'utils/toast';
 
 export default function BidCheckoutPage() {
@@ -36,7 +29,6 @@ export default function BidCheckoutPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.account.user);
-  const users = useSelector((state: RootState) => state.account.users);
   const bid = useSelector(selectBid(bidId || ''));
   const trip = useSelector(selectTrip(tripId || ''));
   const [loading, setLoading] = useState(false);
@@ -51,55 +43,27 @@ export default function BidCheckoutPage() {
   };
   const initializePayment = usePaystackPayment(paystackConfig);
 
-  const responsibleTransporter = useMemo(() => {
-    return users.find(({ id }) => id === bid?.transporterId) || null;
-  }, [users, bid]);
-
   function onSuccess(payment?: Payment) {
     if (!bid || !trip || !payment || !user) return;
     setLoading(true);
-    Promise.all([
-      dispatch(
-        toAnyAction(
-          createOrUpdatePayment({
-            ...payment,
-            id: payment.reference || '',
-            userId: user.id || '',
-            tripId,
-            bidId,
-            tripReference: trip.reference,
-            amountInBid: bid.price,
-            totalAmountPaid: priceWithTDPercent(bid.price),
-          }),
-        ),
-      ),
-      dispatch(
-        toAnyAction(
-          createOrUpdateBid({
-            ...bid,
-            status: 'accepted',
-            paymentId: payment?.reference,
-          }),
-        ),
-      ),
-      dispatch(
-        toAnyAction(
-          createOrUpdateTrip({
-            ...trip,
-            status: 'payment_complete',
-            transporterId: bid.transporterId,
-            paymentId: payment?.reference,
-          }),
-        ),
-      ),
-    ])
+    if (!user || !tripId) {
+      Toast.error({ msg: 'User or Trip does not exist' });
+      return;
+    }
+    const paymentData = {
+      from: user._id,
+      to: bid.transporterId,
+      tripId,
+      bidId: bid._id,
+      paymentReference: payment.reference,
+      amountInBid: bid?.price,
+      totalAmountPaid: priceWithTDPercent(bid?.price),
+      transaction: payment.transaction,
+    };
+
+    dispatch(toAnyAction(assignTrip(paymentData)))
       .then(() => {
-        dispatch(toAnyAction(getAgentTrips(user.id))).then(() => {
-          navigate(`/my-trips/${tripId}/status`);
-        });
-      })
-      .catch((err) => {
-        Toast.error({ msg: err.message });
+        navigate(`/my-trips/${tripId}/status`);
       })
       .finally(() => setLoading(false));
   }
@@ -144,20 +108,19 @@ export default function BidCheckoutPage() {
             </UiButton>
           </Section>
         </Receipt>
-        <SafetyPrecautions>
+        {/* <SafetyPrecautions>
           <h2>The safety of your goods is our priority</h2>
           <p>
             We are committed to improving your experience and are always looking
             for ways to ensure your goods are as safe as possible when
             dispatching with us.{' '}
           </p>
-          {/* TODO: replace link with link to blog */}
+           TODO: replace link with link to blog 
           <Link to="/">
-            {' '}
-            <div className="learn-more-text">Learn More</div>{' '}
+            <div className="learn-more-text">Learn More</div>
             <UiIcon icon="ArrowRight" size="20" />
           </Link>
-        </SafetyPrecautions>
+        </SafetyPrecautions> */}
         <TripDetails>
           <h2>Trip Details</h2>
           <TripPickupAndDropOff
@@ -166,10 +129,10 @@ export default function BidCheckoutPage() {
           />
           <div className="transporter-details">
             {/* TODO: input user avatar when avatars are ready */}
-            <UiAvatar avatar={responsibleTransporter?.avatar} />
+            <UiAvatar avatar={bid?.transporter.avatar} />
             <div>
               <h4 className="your-transporter-header">Your Transporter</h4>
-              <div className="transporter-name">{`${responsibleTransporter?.firstName} ${responsibleTransporter?.lastName}`}</div>
+              <div className="transporter-name">{`${bid?.transporter?.firstName} ${bid?.transporter?.lastName}`}</div>
             </div>
           </div>
         </TripDetails>

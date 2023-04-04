@@ -46,9 +46,9 @@ export default function loadServices() {
   // @ts-ignore
   window.Intercom('update');
 
-  const userId = localStorage.getItem('uid');
-  if (userId) {
-    Api.getUser(userId).then((user: User) => {
+  const jwt = localStorage.getItem('jwt');
+  if (jwt) {
+    Api.getUser().then((user: User) => {
       // @ts-ignore
       window.Intercom('boot', {
         api_base: 'https://api-iam.intercom.io',

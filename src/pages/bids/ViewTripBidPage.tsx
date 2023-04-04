@@ -1,52 +1,29 @@
 import { RootState } from 'modules/index';
-import { getTransporterTrips, selectBid } from 'modules/Trips';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { selectBid } from 'modules/Bid';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Trip from 'types/Trip';
 import Ratings from 'components/ratings/Ratings';
 import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
-import {
-  abbreviateNumber,
-  priceWithTDPercent,
-  toAnyAction,
-} from 'utils/helpers';
+import { abbreviateNumber, priceWithTDPercent } from 'utils/helpers';
 import sizes from 'utils/sizes';
 
 export default function ViewTripBidPage() {
   const { bidId, tripId } = useParams();
-  const dispatch = useDispatch();
   const bid = useSelector(selectBid(bidId as string));
   const users = useSelector((state: RootState) => state.account.users);
   const user = useSelector((state: RootState) => state.account.user);
 
-  const [noOfTransporterTrips, setNoOfTransporterTrips] = useState<
-    string | number
-  >('Loading.....');
-
   function getUser(userId: string) {
-    return users.find(({ id }) => userId === id) || null;
-  }
-
-  function loadTransporterCompletedTrips() {
-    if (!bid?.transporterId) return;
-    dispatch(toAnyAction(getTransporterTrips(bid.transporterId, true))).then(
-      (data: Trip[]) => {
-        const completedTrips = data.filter(
-          ({ status }) => status === 'completed',
-        );
-        setNoOfTransporterTrips(completedTrips.length);
-      },
-    );
+    return users.find(({ _id }) => userId === _id) || null;
   }
 
   useEffect(() => {
     if (!bidId) {
       //   TODO: handle 400 if bidId is not sent.
-    } else {
-      loadTransporterCompletedTrips();
     }
   }, []);
 
@@ -59,19 +36,15 @@ export default function ViewTripBidPage() {
             <div className="title">Transporter</div>
             <div className="value">
               <TransporterDetails>
-                <UiAvatar avatar={getUser(bid?.transporterId || '')?.avatar} />
-                <span>{`${getUser(bid?.transporterId || '')?.firstName} ${
-                  getUser(bid?.transporterId || '')?.lastName
-                }`}</span>
+                <UiAvatar avatar={bid?.transporter.avatar} />
+                <span>{`${bid?.transporter.firstName} ${bid?.transporter.lastName}`}</span>
               </TransporterDetails>
             </div>
           </Section>
           <Section>
             <div className="title">Transporter Ratings</div>
             <div className="value">
-              <Ratings
-                rating={getUser(bid?.transporterId || '')?.rating || 0}
-              />
+              <Ratings rating={bid?.transporter.rating || 0} />
             </div>
           </Section>
           {/* TODO: implement number of completed trips */}
@@ -97,9 +70,9 @@ export default function ViewTripBidPage() {
             <div className="value">{bid?.extraNotes || 'N/A'}</div>
           </Section>
           <SubmitButtonContainer className="submit-button-container">
-            {/* <Link to={`/chat/${user?.id}/${bid?.transporterId}`}>
-            <UiButton variant="secondary-outlined">Negotiate Bid</UiButton>
-          </Link> */}
+            <Link to={`/chat/${user?._id}/${bid?.transporterId}`}>
+              <UiButton variant="neutral">Negotiate Bid</UiButton>
+            </Link>
             <Link to={`/my-trips/${tripId}/bids/${bidId}/checkout`}>
               <UiButton>Accept Bid</UiButton>
             </Link>

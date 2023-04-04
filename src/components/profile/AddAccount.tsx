@@ -5,20 +5,14 @@ import UiInput from 'components/ui/UiInput';
 import UiSelect, { Option } from 'components/ui/UiSelect';
 import UiModal from 'components/ui/UiModal';
 import UiButton from 'components/ui/UiButton';
-import {
-  createTransferRecipient,
-  deleteTransferRecipient,
-  loadAccountDetails,
-  loadBanks,
-} from '../../api/paystackIntegrations';
+import { loadAccountDetails, loadBanks } from '../../api/paystackIntegrations';
 import Loader from 'components/layout/Loader';
 import CreateAccountNumberSchema from 'utils/validations/CreateAccountNumberSchema';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toAnyAction } from 'utils/helpers';
-import { saveUserAccount } from 'modules/Account';
-import { Toast } from 'utils/toast';
-import BankAccount from 'types/BankAccount';
-import TransferRecipient from 'types/TransferRecipient';
+import { createUserBankAccount, updateUserBankAccount } from 'modules/Account';
+import BankAccount from 'types/BankDetails';
+import { RootState } from 'modules/index';
 
 interface Props {
   onClose: () => void;
@@ -26,6 +20,7 @@ interface Props {
 }
 export default function AddAccount({ bankAccountDetails, onClose }: Props) {
   const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.account.user);
   const [formData, setFormData] = useState<{
     accountNumber: string;
     bankCode: string;
@@ -37,7 +32,7 @@ export default function AddAccount({ bankAccountDetails, onClose }: Props) {
   const defaultAccountDetails = {
     account_name: '',
     account_number: '',
-    bank_id: '',
+    bank_id: NaN,
   };
 
   const [accountDetails, setAccountDetails] = useState(defaultAccountDetails);
@@ -53,46 +48,23 @@ export default function AddAccount({ bankAccountDetails, onClose }: Props) {
     });
   }
 
-  function saveTransferRecipient(data: TransferRecipient) {
-    if (bankAccountDetails) {
-      return deleteTransferRecipient(
-        bankAccountDetails.paystackRecipientId,
-      ).then(() => createTransferRecipient(data));
-    }
-    return createTransferRecipient(data);
-  }
-
-  async function createAccount() {
-    const uid = localStorage.getItem('uid');
-
-    if (!uid) throw new Error('400: User id not found');
-
+  async function saveBankAccount() {
     setLoading(true);
     const bank = banks.find(({ value }) => value === formData.bankCode);
 
     const data = {
-      type: 'nuban',
       name: accountDetails.account_name,
       account_number: accountDetails.account_number,
       bank_code: formData.bankCode,
       bank_name: bank?.label!,
-      currency: 'NGN',
     };
+    const request = user?.bankDetails
+      ? updateUserBankAccount
+      : createUserBankAccount;
 
-    const recipient = await saveTransferRecipient(data);
-
-    const bankAccount: BankAccount = {
-      ...data,
-      userId: uid,
-      id: uid,
-      paystackRecipientId: recipient.id,
-      paystackRecipientCode: recipient.recipient_code,
-    };
-
-    dispatch(toAnyAction(saveUserAccount(bankAccount)))
+    dispatch(toAnyAction(request(data)))
       .then(() => {
         onClose();
-        Toast.success({ msg: 'Account Number has been updated.' });
       })
       .finally(() => setLoading(false));
   }
@@ -145,7 +117,7 @@ export default function AddAccount({ bankAccountDetails, onClose }: Props) {
       <UiForm
         formData={{ ...formData, ...accountDetails }}
         schema={CreateAccountNumberSchema}
-        onSubmit={createAccount}
+        onSubmit={saveBankAccount}
       >
         {({ errors }) => (
           <AddAcountStyling>

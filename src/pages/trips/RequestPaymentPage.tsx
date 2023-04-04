@@ -7,62 +7,51 @@ import PaymentRequest from 'types/PaymentRequest';
 import FileUploadWidget from 'ui/FileUploadWidget';
 import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
-import UiInput from 'ui/UiInput';
 import sizes from 'utils/sizes';
-import { uploadItem } from '../../api/Cloudinary';
+
 import {
   aValueHasBeenChanged,
-  generateReference,
+  deepRootedToFormData,
   toAnyAction,
 } from 'utils/helpers';
 import {
   getPaymentRequestsOfDriver,
   requestPaymentByTransporter,
-  selectPaymentRequestByTripId,
+  updatePaymentRequestByTransporter,
 } from 'modules/Payments';
+
 import MessageWithImage from 'ui/MessageWithImage';
 import Loader from 'components/layout/Loader';
 import RequestPaymentSchema from 'utils/validations/RequestPaymentSchema';
-import { getBidsWithTripId, selectBid, selectTrip } from 'modules/Trips';
 import UiOverlay from 'ui/UiOverlay';
 import NotifyUserToAddAccount from 'components/profile/NotifyUserToAddAccount';
 import { RootState } from 'modules/index';
-import uuidv4 from 'utils/uuid';
 
 export default function ViewTripRequestPayment() {
   const { tripId } = useParams();
-  const user = useSelector((state: RootState) => state.account.user);
   const accountDetails = useSelector(
-    (state: RootState) => state.account.bankAccountDetails,
+    (state: RootState) => state.account.user?.bankDetails,
   );
-  const trip = useSelector(selectTrip(tripId!));
-  const bid = useSelector(selectBid(user?.id!, 'transporterId'));
-  const paymentRequest = useSelector(selectPaymentRequestByTripId(tripId!));
+  const paymentRequest = useSelector(
+    (state: RootState) => state.payment.paymentRequest,
+  );
   const dispatch = useDispatch();
 
-  const [formData, setFormData] = useState<PaymentRequest>({
-    id: tripId!,
-    status: 'pending',
-    paymentReference: uuidv4(),
-    driverName: '',
-    driverPhoneNumber: '',
-    containerVideo: null,
-    transporterId: user?.id || '',
-    tripId: tripId!,
-    truckPlateNumber: '',
-    amount: 0,
-    reference: '',
-    tripReference: '',
+  const [formData, setFormData] = useState<{
+    proofVideo: File | string | null;
+  }>({
+    proofVideo: null,
   });
 
   const [loading, setLoading] = useState(false);
   const [isNotifyUserToAddAccountVisible, setIsNotifyUserToAddAccountVisible] =
     useState(false);
-  const [pageLoading, setPageLoading] = useState(true);
-
   const disableButton = useMemo(() => {
-    if (formData.status !== 'rejected') return false;
-    return aValueHasBeenChanged(paymentRequest!, formData);
+    if (!paymentRequest) return false;
+    return aValueHasBeenChanged(
+      { proofVideo: paymentRequest.proofVideo },
+      formData,
+    );
   }, [paymentRequest, formData]);
 
   async function requestPayment() {
@@ -72,35 +61,15 @@ export default function ViewTripRequestPayment() {
         return;
       }
       setLoading(true);
-      let containerVideoAsset;
-      if (formData.containerVideo instanceof File) {
-        containerVideoAsset = await uploadItem(
-          formData.containerVideo as File,
-          false,
-        );
-      } else containerVideoAsset = formData.containerVideo;
-
-      if (!bid) throw new Error('Bid does not exist');
-      dispatch(
-        toAnyAction(
-          requestPaymentByTransporter({
-            ...formData,
-            containerVideo: containerVideoAsset,
-            createdAt: formData.createdAt || Date.now(),
-            updatedAt: Date.now(),
-            amount: bid?.price,
-            tripReference: trip?.reference!,
-            reference: generateReference(),
-            status: 'pending',
-          }),
-        ),
-      )
-        .then(() => {
-          getDriversPaymentRequests();
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      if (!tripId) return;
+      console.log(formData);
+      const data = deepRootedToFormData(formData);
+      const request = paymentRequest
+        ? updatePaymentRequestByTransporter(data, tripId, paymentRequest._id)
+        : requestPaymentByTransporter(data, tripId);
+      dispatch(toAnyAction(request)).finally(() => {
+        setLoading(false);
+      });
     } catch (err) {
       setLoading(false);
     }
@@ -116,35 +85,15 @@ export default function ViewTripRequestPayment() {
     }));
   }
 
-  function getDriversPaymentRequests() {
-    return dispatch(toAnyAction(getPaymentRequestsOfDriver())).then(
-      (data: PaymentRequest[]) => {
-        const tripPaymentRequest = data.find((req) => req.tripId === tripId);
-
-        if (
-          tripPaymentRequest?.status === 'rejected' &&
-          formData.status !== 'rejected'
-        )
-          setFormData(tripPaymentRequest);
-      },
-    );
-  }
-
   useEffect(() => {
-    Promise.all([
-      getDriversPaymentRequests(),
-      dispatch(toAnyAction(getBidsWithTripId(tripId!))),
-    ]).finally(() => {
-      setPageLoading(false);
-    });
-  }, []);
-
+    if (paymentRequest?.proofVideo && !formData.proofVideo) {
+      setFormData({ proofVideo: paymentRequest.proofVideo });
+    }
+  }, [paymentRequest]);
   return (
     <>
       <PageStyling>
-        {pageLoading ? (
-          <Loader />
-        ) : paymentRequest && paymentRequest?.status !== 'rejected' ? (
+        {paymentRequest && paymentRequest?.status !== 'rejected' ? (
           <>
             <MessageWithImage
               title="Payment request has been received"
@@ -159,15 +108,10 @@ export default function ViewTripRequestPayment() {
         ) : (
           <>
             <h2>Request Payment</h2>
-            <p>To request payment, the following are required:</p>
-            <ul>
-              <li>
-                A video showing the container on the truck as well as the truck
-                plate number.
-              </li>
-              <li>Driver Name</li>
-              <li>Driver Phone Number</li>
-            </ul>
+            <p>
+              To request payment, upload A video showing the container on the
+              truck as well as the truck plate number.
+            </p>
             <UiForm
               formData={formData}
               schema={RequestPaymentSchema}
@@ -176,39 +120,17 @@ export default function ViewTripRequestPayment() {
               {({ errors }) => (
                 <>
                   <GridContainer>
-                    <UiInput
-                      label="Driver Full Name"
-                      value={formData.driverName}
-                      name="driverName"
-                      error={errors.driverName}
-                      onChange={setData}
-                    />
-                    <UiInput
-                      label="Driver Phone Number"
-                      type="phone"
-                      value={formData.driverPhoneNumber}
-                      name="driverPhoneNumber"
-                      error={errors.driverPhoneNumber}
-                      onChange={setData}
-                    />
-                    <UiInput
-                      label="Truck Plate Number"
-                      value={formData.truckPlateNumber}
-                      name="truckPlateNumber"
-                      error={errors.truckPlateNumber}
-                      onChange={setData}
-                    />
                     <FileUploadWidget
                       label="Video of the container on truck"
                       fileType="video"
-                      name="containerVideo"
-                      error={errors.containerVideo}
-                      value={formData.containerVideo as File}
+                      name="proofVideo"
+                      error={errors.proofVideo}
+                      value={formData.proofVideo}
                       onChange={setData}
                     />
                   </GridContainer>
                   <UiButton loading={loading} disabled={disableButton}>
-                    {formData.status === 'rejected'
+                    {paymentRequest?.status === 'rejected'
                       ? 'Update Payment Request'
                       : 'Request Payment'}
                   </UiButton>

@@ -4,9 +4,10 @@ import {
   sizeOfContainer,
   typeOfGoods,
 } from 'utils/constants';
+import User from './User';
 
 export default interface Trip {
-  id: string;
+  _id: string;
   pickUpAddress: string;
   deliveryAddress: string;
   pickUpDate: string;
@@ -22,5 +23,7 @@ export default interface Trip {
   TDO?: string;
   paymentId?: string;
   reference: string;
+  transporter?: User;
+  tripOwner?: User;
   status: 'awaiting_bid' | 'payment_complete' | 'in-progress' | 'completed';
 }

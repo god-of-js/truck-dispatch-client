@@ -1,13 +1,12 @@
-import { selectTransporters } from 'modules/Account';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import NewTrip from 'types/NewTrip';
 import Trip from 'types/Trip';
 import UiButton from 'ui/UiButton';
 import sizes from 'utils/sizes';
 
 interface Props {
-  data: Trip;
+  data: Trip | NewTrip;
   loading?: boolean;
   actionText?: string;
   isActionButtonDisabled?: boolean;
@@ -26,11 +25,8 @@ export default function ViewTripDetails({
   prevHandler,
   nextHandler,
 }: Props) {
-  const transporters = useSelector(selectTransporters);
-
   return (
     <Layout>
-      {/* TODO: remove confirm text when not confirm */}
       <Heading>{notConfirm ? '' : 'Confirm'} Trip Details</Heading>
       <Section>
         <div className="title">Pick Up Address</div>

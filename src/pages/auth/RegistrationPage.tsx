@@ -20,7 +20,7 @@ export default function RegistrationPage() {
   const navigate = useNavigate();
   const { userType } = useParams();
   const [formData, setFormData] = useState<UserWithPassword>({
-    id: '',
+    _id: '',
     firstName: '',
     lastName: '',
     email: '',
@@ -44,15 +44,10 @@ export default function RegistrationPage() {
     setLoading(true);
     dispatch(toAnyAction(RegisterUser({ ...formData, createdAt: Date.now() })))
       .then(() => {
-        navigate('/my-trips');
+        navigate('/auth/verify-phone');
       })
-      .catch((err: { message: string }) => {
-        let msg: string = err.message;
-
-        if (err.message === 'Firebase: Error (auth/email-already-in-use).') {
-          msg = 'User with this email already exists';
-        }
-        Toast.error({ msg });
+      .catch(({ message }: { message: string }) => {
+        Toast.error({ msg: message });
       })
       .finally(() => {
         setLoading(false);
@@ -61,7 +56,9 @@ export default function RegistrationPage() {
 
   const isTransporter = userType === 'transporter';
   const isAgent = userType === 'agent';
-  const heading = isTransporter ? 'Join Our Team' : 'Deliver with us';
+  const heading = isTransporter
+    ? 'Join Our Team Of Transporters'
+    : 'Deliver with us As An Agent';
 
   return (
     <>

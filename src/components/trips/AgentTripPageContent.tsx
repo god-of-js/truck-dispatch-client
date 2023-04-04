@@ -9,9 +9,9 @@ import UiAvatar from 'ui/UiAvatar';
 
 import UiButton from 'ui/UiButton';
 import UiTable from 'ui/UiTable';
-import UiIcon from 'ui/UiIcon';
 import UiPill from 'ui/UiPill';
 import { DropDownData } from 'ui/UiDropdownMenu';
+import User from 'types/User';
 
 export default function AgentTripPageContent() {
   const navigate = useNavigate();
@@ -60,9 +60,8 @@ export default function AgentTripPageContent() {
     },
   ];
 
-  function responsibleTransporterDetails(transporterId?: string) {
-    if (!transporterId) return 'Not yet assigned';
-    const transporter = transporters.find(({ id }) => id === transporterId);
+  function responsibleTransporterDetails(transporter?: User) {
+    if (!transporter) return 'Not yet assigned';
 
     if (!transporter) return 'Invalid Transporter';
 
@@ -77,7 +76,7 @@ export default function AgentTripPageContent() {
     );
   }
 
-  function getPillVariant(status:Trip['status']) {
+  function getPillVariant(status: Trip['status']) {
     if (status === 'payment_complete') return 'warning';
     if (status === 'awaiting_bid') return 'gray';
     if (status === 'in-progress') return 'info';
@@ -95,7 +94,8 @@ export default function AgentTripPageContent() {
   const tripsData = useMemo(() => {
     return trips.map((trip: Trip) => ({
       ...trip,
-      responsibleTransporter: responsibleTransporterDetails(trip.transporterId),
+      id: trip._id,
+      responsibleTransporter: responsibleTransporterDetails(trip.transporter),
       status: (
         <UiPill variant={getPillVariant(trip.status)}>
           {formatStatus(trip.status)}

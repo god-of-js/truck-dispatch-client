@@ -1,11 +1,6 @@
 import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
 import { selectAgents, selectTransporters } from 'modules/Account';
-import {
-  createOrUpdateTrip,
-  getAgentTrips,
-  getTransporterTrips,
-  selectTrip,
-} from 'modules/Trips';
+import { updateTrip, selectTrip } from 'modules/Trips';
 import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
@@ -26,13 +21,6 @@ export default function ViewTripStatus() {
   const agents = useSelector(selectAgents);
   const user = useSelector((state: RootState) => state.account.user);
   const [loading, setLoading] = useState(false);
-
-  const transporter = useMemo(() => {
-    return transporters.find(({ id }) => id === trip?.transporterId) || null;
-  }, [transporters]);
-  const agent = useMemo(() => {
-    return agents.find(({ id }) => id === trip?.agentId) || null;
-  }, [transporters]);
 
   const tripStatusMessage = useMemo(() => {
     let heading: string = 'Accept a bid to commence trip',
@@ -64,14 +52,16 @@ export default function ViewTripStatus() {
   }, [trip]);
 
   const phoneNumberOfResponsibleUser = useMemo(() => {
-    return user?.userType === 'agent' ? transporter?.phone : agent?.phone;
-  }, [user, transporter, agent]);
+    return user?.userType === 'agent'
+      ? trip?.transporter?.phone
+      : trip?.tripOwner?.phone;
+  }, [user, trip?.transporter, trip?.tripOwner]);
 
   const responsibleUserAvatar = useMemo(() => {
-    if (user?.userType === 'agent') return transporter?.avatar;
+    if (user?.userType === 'agent') return trip?.transporter?.avatar;
 
-    return agent?.avatar;
-  }, [user, transporter, agent]);
+    return trip?.tripOwner?.avatar;
+  }, [user, trip?.transporter, trip?.tripOwner]);
   function showInfoCard() {
     if (user?.userType === 'transporter') return true;
 
@@ -85,17 +75,10 @@ export default function ViewTripStatus() {
   }
 
   function updateTrip(data: Partial<Trip>) {
-    if (!trip || !user) return;
     setLoading(true);
-    dispatch(toAnyAction(createOrUpdateTrip({ ...trip, ...data })))
-      .then(() => {
-        const actionToDispatch =
-          user.userType === 'agent'
-            ? getAgentTrips(user.id)
-            : getTransporterTrips(user.id);
-        dispatch(toAnyAction(actionToDispatch));
-      })
-      .finally(() => setLoading(false));
+    dispatch(toAnyAction(updateTrip({ ...trip, ...data }))).finally(() =>
+      setLoading(false),
+    );
   }
 
   function startTrip() {
@@ -129,8 +112,8 @@ export default function ViewTripStatus() {
                 </div>
                 <div className="name">
                   {user?.userType === 'agent'
-                    ? getName(transporter)
-                    : getName(agent)}
+                    ? getName(trip?.transporter)
+                    : getName(trip?.tripOwner)}
                 </div>
                 {phoneNumberOfResponsibleUser && (
                   <a

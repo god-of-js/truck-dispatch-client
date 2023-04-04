@@ -12,6 +12,7 @@ import UiIcon from 'ui/UiIcon';
 import UiTable from 'ui/UiTable';
 import UiPill from 'ui/UiPill';
 import sizes from 'utils/sizes';
+import User from 'types/User';
 
 export default function AgentTripPageContent() {
   const navigate = useNavigate();
@@ -45,34 +46,29 @@ export default function AgentTripPageContent() {
     },
   ];
 
-  function agentDetails(agentId?: string) {
-    if (!agentId) return 'No agent present';
-    const agent = agents.find(({ id }) => id === agentId);
-
-    if (!agent) return 'This Agent does not exist';
+  function tripOwnerDetails(tripOwner?: User) {
+    if (!tripOwner) return 'This agent does not exist';
 
     return (
       <AgentDetails>
-        <UiAvatar avatar={agent.avatar} />
+        <UiAvatar avatar={tripOwner.avatar} />
         <div>
-          <div>{`${agent.firstName} ${agent.lastName}`}</div>
-          <div className="transporter-phone">{agent.phone}</div>
+          <div>{`${tripOwner.firstName} ${tripOwner.lastName}`}</div>
+          <div className="transporter-phone">{tripOwner.phone}</div>
         </div>
       </AgentDetails>
     );
   }
-  function getPillVariant(status: string) {
-    if (status === 'pending') return 'warning';
-    if (status === 'rejected') return 'danger';
+  function getPillVariant(status: Trip['status']) {
+    if (status === 'payment_complete') return 'warning';
     if (status === 'awaiting_bid') return 'gray';
-    if (status === 'In Progress') return 'info';
+    if (status === 'in-progress') return 'info';
     if (status === 'completed') return 'success';
 
     return 'success';
   }
-  function formatStatus(status: string) {
-    if (status === 'pending') return '  Pending';
-    if (status === 'rejected') return ' Rejected';
+  function formatStatus(status: Trip['status']) {
+    if (status === 'payment_complete') return 'Pending';
     if (status === 'awaiting_bid') return 'Awaiting Bid';
     if (status === 'in-progress') return 'In Progress';
     if (status === 'completed') return 'Completed';
@@ -81,7 +77,7 @@ export default function AgentTripPageContent() {
   const tripsData = useMemo(() => {
     return trips.map((trip: Trip) => ({
       ...trip,
-      agent: agentDetails(trip.agentId),
+      agent: tripOwnerDetails(trip?.tripOwner),
       status: (
         <UiPill variant={getPillVariant(trip.status)}>
           {formatStatus(trip.status)}

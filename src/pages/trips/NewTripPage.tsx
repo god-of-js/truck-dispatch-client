@@ -4,9 +4,8 @@ import styled from 'styled-components';
 
 import Trip from 'types/Trip';
 import sizes from 'utils/sizes';
-import uuidv4 from 'utils/uuid';
-import { generateReference, toAnyAction } from 'utils/helpers';
-import { createOrUpdateTrip } from 'modules/Trips';
+import { removeUneditedFields, toAnyAction } from 'utils/helpers';
+import { createTrip, selectTrip, updateTrip } from 'modules/Trips';
 
 import UiTimeline, { TimelineStep } from 'ui/UiTimeline';
 import NewTripForm from 'components/trips/NewTripForm';
@@ -14,9 +13,9 @@ import ViewTripDetails from 'components/trips/ViewTripDetails';
 import MessageWithImage from 'ui/MessageWithImage';
 import UiButton from 'ui/UiButton';
 import UiBackButton from 'ui/UiBackButton';
-import { Link, useNavigate } from 'react-router-dom';
-import { RootState } from 'modules/index';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Toast } from 'utils/toast';
+import NewTrip from 'types/NewTrip';
 
 interface Step extends TimelineStep {
   value: CurrentStep;
@@ -29,10 +28,10 @@ type CurrentStep =
   | 'payment';
 
 export default function NewTripPage() {
-  const user = useSelector((state: RootState) => state.account.user);
-  const trips = useSelector((state: RootState) => state.trips.trips);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { tripId } = useParams();
+  const trip = useSelector(selectTrip(tripId || ''));
   const newTripSteps: Step[] = [
     {
       name: 'Trip Details',
@@ -51,9 +50,7 @@ export default function NewTripPage() {
 
   const [loading, setLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState<CurrentStep>('trip-form');
-  const [defaultFormData, setDefaultFormData] = useState<Trip>({
-    id: '',
-    agentId: user?.id || '',
+  const [tripForm, setTripForm] = useState<NewTrip | Trip>({
     pickUpAddress: '',
     deliveryAddress: '',
     pickUpDate: '',
@@ -64,21 +61,23 @@ export default function NewTripPage() {
     shippingLine: '',
     weight: NaN,
     instructions: '',
-    status: 'awaiting_bid',
-    reference: '',
   });
 
-  function nextHandler(formData?: Trip) {
+  function nextHandler(formData?: NewTrip | Trip) {
     if (currentStep === 'trip-form' && formData) {
-      setDefaultFormData(formData);
+      setTripForm(formData);
       setCurrentStep('confirm-details');
       return;
     }
 
     if (currentStep === 'confirm-details') {
-      sendTripToDrivers().then(() => {
-        setCurrentStep('broadcast-successful');
-      });
+      if (!trip) {
+        sendTripToDrivers().then(() => {
+          setCurrentStep('broadcast-successful');
+        });
+      } else {
+        editTrip();
+      }
     }
   }
 
@@ -94,19 +93,23 @@ export default function NewTripPage() {
   }
 
   function sendTripToDrivers() {
-    if (!user?.id) return;
     setLoading(true);
-    const id = defaultFormData.id || uuidv4();
-    const reference = generateReference();
-    setDefaultFormData({ ...defaultFormData, id, reference });
-    return dispatch(
-      toAnyAction(createOrUpdateTrip({ ...defaultFormData, id, reference })),
-    )
-      .then(() => {
-        if (defaultFormData.id) {
-          Toast.success({ msg: 'Trip has been updated' });
-          navigate(`/my-trips/${defaultFormData.id}`);
-        }
+    return dispatch(toAnyAction(createTrip(tripForm as NewTrip)))
+      .then((trip: Trip) => {
+        setTripForm(trip);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+
+  function editTrip() {
+    if (!trip) return;
+    setLoading(true);
+    const data = removeUneditedFields<Trip>(trip, tripForm);
+    return dispatch(toAnyAction(updateTrip({ ...data, _id: trip._id })))
+      .then((trip: Trip) => {
+        setTripForm(trip);
       })
       .finally(() => {
         setLoading(false);
@@ -114,47 +117,42 @@ export default function NewTripPage() {
   }
 
   return (
-    <>
-      <PageStyling>
-        <UiBackButton />
-        <CardContainer>
-          <UiTimeline steps={newTripSteps} currentStep={currentStep} />
-          <React.Suspense>
-            <div className="children-container">
-              {currentStep === 'trip-form' && (
-                <NewTripForm
-                  defaultFormData={defaultFormData}
-                  nextHandler={nextHandler}
-                />
-              )}
-              {currentStep === 'confirm-details' && (
-                <ViewTripDetails
-                  data={defaultFormData}
-                  nextHandler={nextHandler}
-                  prevHandler={prevHandler}
-                  loading={loading}
-                />
-              )}
+    <PageStyling>
+      <UiBackButton />
+      <CardContainer>
+        <UiTimeline steps={newTripSteps} currentStep={currentStep} />
+        <React.Suspense>
+          <div className="children-container">
+            {currentStep === 'trip-form' && (
+              <NewTripForm tripFormData={tripForm} nextHandler={nextHandler} />
+            )}
+            {currentStep === 'confirm-details' && (
+              <ViewTripDetails
+                data={tripForm}
+                nextHandler={nextHandler}
+                prevHandler={prevHandler}
+                loading={loading}
+              />
+            )}
 
-              {currentStep === 'broadcast-successful' && (
-                <>
-                  {/* TODO: check why newly added trip details does not reflect when you go from here to trip bids */}
-                  <MessageWithImage
-                    title="Your Trip has been broadcasted"
-                    subtitle={`Your trip has been broadcasted to trusted transporters in our network. It usually takes a couple minutes to get matched with transporters. Expect several transporters to send bids on the trip you just created. You can view bids sent by transporters by clicking the button below. Thank you for trusting us with your dispatch. `}
-                  />
-                  <div className="button-container">
-                    <Link to={`/my-trips/${defaultFormData.id}/bids`}>
-                      <UiButton>View Trip Bids</UiButton>
-                    </Link>
-                  </div>
-                </>
-              )}
-            </div>
-          </React.Suspense>
-        </CardContainer>
-      </PageStyling>
-    </>
+            {currentStep === 'broadcast-successful' && (
+              <>
+                {/* TODO: check why newly added trip details does not reflect when you go from here to trip bids */}
+                <MessageWithImage
+                  title="Your Trip has been broadcasted"
+                  subtitle={`Your trip has been broadcasted to trusted transporters in our network. It usually takes a couple minutes to get matched with transporters. Expect several transporters to send bids on the trip you just created. You can view bids sent by transporters by clicking the button below. Thank you for trusting us with your dispatch. `}
+                />
+                <div className="button-container">
+                  <Link to={`/my-trips/${(tripForm as Trip)._id}/bids`}>
+                    <UiButton>View Trip Bids</UiButton>
+                  </Link>
+                </div>
+              </>
+            )}
+          </div>
+        </React.Suspense>
+      </CardContainer>
+    </PageStyling>
   );
 }
 

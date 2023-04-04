@@ -1,5 +1,7 @@
+import User from './User';
+
 export default interface Bid {
-  id: string;
+  _id: string;
   paymentId?: string;
   extraNotes?: string;
   price: number;
@@ -8,5 +10,6 @@ export default interface Bid {
   driverName: string;
   truckPlateNumber: string;
   tripId: string;
-  status: 'pending' | 'accepted' | 'rejected';
+  status?: 'pending' | 'accepted' | 'rejected';
+  transporter: User;
 }

@@ -5,13 +5,13 @@ import styled from 'styled-components';
 import ViewPaymentDetails from 'components/payment/ViewPaymentDetails';
 import { RootState } from 'modules/index';
 import { getPaymentRequestsOfDriver } from 'modules/Payments';
-import { getTransporterTrips } from 'modules/Trips';
 import PaymentRequest from 'types/PaymentRequest';
 import { DropDownData } from 'ui/UiDropdownMenu';
 import UiOverlay from 'ui/UiOverlay';
 import UiPill from 'ui/UiPill';
 import UiTable from 'ui/UiTable';
 import { abbreviateNumber, convertDate, toAnyAction } from 'utils/helpers';
+import { getTrips } from 'modules/Trips';
 
 function ViewPaymentsPage() {
   const dispatch = useDispatch();
@@ -54,7 +54,7 @@ function ViewPaymentsPage() {
   ];
 
   function showPaymentDetails(id: string) {
-    const req = paymentRequests.find((request) => request.id === id);
+    const req = paymentRequests.find((request) => request._id === id);
     if (!req) throw new Error('request does not exist');
     setSelectedPayment(req);
     setIsViewPaymentVisible(true);
@@ -80,7 +80,7 @@ function ViewPaymentsPage() {
 
   useEffect(() => {
     dispatch(toAnyAction(getPaymentRequestsOfDriver()));
-    dispatch(toAnyAction(getTransporterTrips()));
+    dispatch(toAnyAction(getTrips()));
   }, []);
 
   return (
@@ -98,7 +98,7 @@ function ViewPaymentsPage() {
             <ViewPaymentDetails
               onClose={() => setIsViewPaymentVisible(false)}
               payment={selectedPayment}
-              key={selectedPayment.id}
+              key={selectedPayment._id}
             />
           )}
         </UiOverlay>

@@ -1,4 +1,5 @@
 import { AnyAction } from 'redux';
+import TokenVerificationData from 'types/TokenVerificationData';
 
 export function removeKeyValuePairsFromObject<T extends Object>(
   obj: T,
@@ -76,6 +77,63 @@ export function nairaToKobo(amount: string | number) {
   return value * 100;
 }
 
+export function removeUneditedFields<T>(
+  sourceObj: Record<string, any>,
+  derivedObj: Record<string, any>,
+): T {
+  const editedFields = Object.keys(derivedObj).filter(
+    (field: string) => derivedObj[field] !== sourceObj[field],
+  );
+  const newDerivedObj: Record<string, any> = {};
+  editedFields.forEach((field) => (newDerivedObj[field] = derivedObj[field]));
+  return newDerivedObj as T;
+}
+
+export function deepRootedToFormData(data: Record<string, any>): FormData {
+  const formData = new FormData();
+
+  function buildFormData(
+    formData: FormData,
+    data: Record<string, any> | Date | Blob | null,
+    rootName?: string,
+  ) {
+    if (
+      data &&
+      typeof data === 'object' &&
+      !(data instanceof Date) &&
+      !(data instanceof Blob)
+    ) {
+      Object.keys(data).forEach((key) => {
+        buildFormData(
+          formData,
+          data[key],
+          rootName ? `${rootName}.${key}` : key,
+        );
+      });
+    } else {
+      const value = data == null ? '' : data;
+      if (value instanceof Date)
+        throw new Error("Value of type Date can't be converted to formData");
+      formData.append(rootName!, value);
+    }
+  }
+
+  buildFormData(formData, data);
+
+  return formData;
+}
+
+export function replaceEditedItem<T extends { _id: any }>(
+  arr: T[],
+  item: T,
+): T[] {
+  const currentTripIndex = arr.findIndex((arrItem) => arrItem._id === item._id);
+  const data = [...arr];
+  data[currentTripIndex] = item;
+
+  return data;
+}
+
 export function generateReference() {
   const alphanumeric =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -112,6 +170,11 @@ export function convertDate(dateToConvert: number) {
   const suffix = getNumberSuffix(dayOfMonth);
 
   return `${dayOfWeek}, ${month} ${dayOfMonth}${suffix} ${year}`;
+}
+
+export function saveTokenVerificationInfo(data: TokenVerificationData) {
+  localStorage.setItem('otp-pin-id', data.pinId);
+  localStorage.setItem('otp-phone-number', data.to);
 }
 
 function getNumberSuffix(dayOfMonth: number) {
