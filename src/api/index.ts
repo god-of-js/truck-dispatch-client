@@ -137,9 +137,12 @@ class ApiService {
   updatePaymentRequest(
     data: FormData,
     tripId: string,
-    paymentRequestId: string
+    paymentRequestId: string,
   ): Promise<PaymentRequest> {
-    return this.patch(`/payment/request-payment/trip/${tripId}/update/${paymentRequestId}`, data);
+    return this.patch(
+      `/payment/request-payment/trip/${tripId}/update/${paymentRequestId}`,
+      data,
+    );
   }
 
   getPaymentRequestsOfDriver() {
@@ -157,6 +160,11 @@ class ApiService {
     return this.post<PaymentRequest>(
       `/payment/payment-request/trip/${tripId}/reject/${paymentRequestId}`,
       data,
+    );
+  }
+  approvePaymentRequest(tripId: string, paymentRequestId: string) {
+    return this.post<PaymentRequest>(
+      `/payment/payment-request/trip/${tripId}/approve/${paymentRequestId}`,
     );
   }
 
@@ -198,8 +206,8 @@ class ApiService {
       .then(({ data }) => data.data) as Promise<T>;
   }
 
-  private post<T>(url: string, data: unknown, isMultipart = false): Promise<T> {
-    return axiosInstance(isMultipart)
+  private post<T>(url: string, data?: unknown): Promise<T> {
+    return axiosInstance()
       .post(url, data)
       .then(({ data }) => {
         Toast.success({ msg: data.message });

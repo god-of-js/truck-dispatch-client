@@ -1,3 +1,4 @@
+import { approvePaymentRequest } from 'modules/Payments';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -13,10 +14,8 @@ interface Props {
   onClose: () => void;
   tripId: string;
   paymentRequestId: string;
-  paymentRequest?: PaymentRequest | null;
 }
 export default function ConfirmApprovePayment({
-  paymentRequest,
   tripId,
   paymentRequestId,
   onClose,
@@ -25,36 +24,16 @@ export default function ConfirmApprovePayment({
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
-  function setStatusOfPaymentToComplete(paymentDetails: PaymentRequest) {
-    // return setPaymentRequest({
-    //   ...paymentDetails,
-    //   status: 'completed',
-    //   updatedAt: Date.now(),
-    // }).then(() => {
-    //   Toast.success({
-    //     msg: 'Payment request has been approved.',
-    //   });
-    //   navigate(`/my-trips/${tripId}/status`);
-    //   onClose();
-    // });
-  }
-
-  function getTransferData(
-    paymentDetails: PaymentRequest,
-    recipientCode: string,
-  ) {
-    return {
-      source: 'balance',
-      reason: `TruckDispatch trip-${paymentRequest?.tripReference} payment-${paymentRequest?.reference}`,
-      reference: paymentDetails.paymentReference!,
-      recipient: recipientCode,
-      amount: nairaToKobo(paymentDetails.amount!),
-    };
-  }
-
   async function approvePayment() {
-    if (!paymentRequest) throw new Error('Payment request was not provided');
     setLoading(true);
+    dispatch(toAnyAction(approvePaymentRequest(tripId, paymentRequestId)))
+      .then(() => {
+        navigate(`/my-trips/${tripId}/status`);
+        onClose();
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   return (

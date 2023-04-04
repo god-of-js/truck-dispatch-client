@@ -48,21 +48,21 @@ export function requestPaymentByTransporter(data: FormData, tripId: string) {
   return (dispatch: AppDispatch, state: AppState) => {
     return Api.requestPaymentByTransporter(data, tripId).then(
       (paymentRequestDetails) => {
-        dispatch(
-          setPaymentRequest(paymentRequestDetails),
-        );
+        dispatch(setPaymentRequest(paymentRequestDetails));
       },
     );
   };
 }
 
-export function updatePaymentRequestByTransporter(data: FormData, tripId: string, paymentRequestId: string) {
+export function updatePaymentRequestByTransporter(
+  data: FormData,
+  tripId: string,
+  paymentRequestId: string,
+) {
   return (dispatch: AppDispatch, state: AppState) => {
     return Api.updatePaymentRequest(data, tripId, paymentRequestId).then(
       (paymentRequestDetails) => {
-        dispatch(
-          setPaymentRequest(paymentRequestDetails)
-        );
+        dispatch(setPaymentRequest(paymentRequestDetails));
       },
     );
   };
@@ -93,6 +93,18 @@ export function rejectPaymentRequest(
 ) {
   return (dispatch: AppDispatch) => {
     return Api.rejectPaymentRequest(tripId, paymentRequestId, data).then(
+      (paymentRequest) => {
+        dispatch(setPaymentRequest(paymentRequest));
+      },
+    );
+  };
+}
+export function approvePaymentRequest(
+  tripId: string,
+  paymentRequestId: string,
+) {
+  return (dispatch: AppDispatch) => {
+    return Api.approvePaymentRequest(tripId, paymentRequestId).then(
       (paymentRequest) => {
         dispatch(setPaymentRequest(paymentRequest));
       },
