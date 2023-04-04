@@ -111,8 +111,8 @@ export function createOrUpdateUser(user: User) {
 export function loginUser(AuthUser: { email: string; password: string }) {
   return () => {
     return Api.signInWithEmailAndPassword(AuthUser)
-      .then((data) => {
-        saveUserSessionId(data.jwt);
+      .then(({ jwt }) => {
+        saveUserSessionId(jwt);
       })
       .catch((err) => {
         if (err.message === 'Phone has not been verified') {

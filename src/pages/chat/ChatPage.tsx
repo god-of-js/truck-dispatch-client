@@ -25,8 +25,8 @@ export default function ChatPage() {
   const user = useSelector((state: RootState) => state.account.user);
   const chats = useSelector(selectChatByChatId(`${agentId}-${transporterId}`));
   const users = useSelector((state: RootState) => state.account.users);
-  const alternateUsersId = user?.id === transporterId ? agentId : transporterId;
-  const alternateUser = users.find(({ id }) => id === alternateUsersId);
+  const alternateUsersId = user?._id === transporterId ? agentId : transporterId;
+  const alternateUser = users.find(({ _id }) => _id === alternateUsersId);
 
   const defaultFormData = {
     message: '',
@@ -42,10 +42,10 @@ export default function ChatPage() {
     const data: Chat = {
       chatId: `${agentId}-${transporterId}`,
       message: formData.message,
-      senderId: user?.id || '',
+      senderId: user?._id || '',
       transporterId: transporterId!,
       agentId: agentId!,
-      receiverId: `${user?.id === agentId ? transporterId : agentId}`,
+      receiverId: `${user?._id === agentId ? transporterId : agentId}`,
       temporaryId: uuidv4(),
       createdAt: Date.now(),
     };
@@ -58,7 +58,7 @@ export default function ChatPage() {
     const lastSentChat = chats[chats.length - 1];
     if (
       lastSentChat &&
-      lastSentChat.senderId !== user?.id &&
+      lastSentChat.senderId !== user?._id &&
       !lastSentChat.readAt
     ) {
       dispatch(toAnyAction(readChat({ ...lastSentChat, readAt: Date.now() })));
@@ -97,7 +97,7 @@ export default function ChatPage() {
       <ChatContainer>
         <div id="chat-window">
           {chats.map((chat, index) => (
-            <ChatBubble isMine={chat.senderId === user?.id} key={index}>
+            <ChatBubble isMine={chat.senderId === user?._id} key={index}>
               <div className="chat-bubble-inner">{chat.message}</div>
             </ChatBubble>
           ))}

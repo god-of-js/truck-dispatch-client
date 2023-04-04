@@ -15,8 +15,8 @@ export default function ChatHeads() {
 
   function alternateUser(chat: Chat) {
     const alternateUserId =
-      user?.id === chat.receiverId ? chat.senderId : chat.receiverId;
-    const foundUser = users.find(({ id }) => id === alternateUserId);
+      user?._id === chat.receiverId ? chat.senderId : chat.receiverId;
+    const foundUser = users.find(({ _id }) => _id === alternateUserId);
     return foundUser;
   }
 
@@ -29,7 +29,7 @@ export default function ChatHeads() {
       {chatHeads.map((val, index) => (
         <ChatHead
           key={index}
-          hasBeenRead={!!val.readAt || val.senderId === user?.id}
+          hasBeenRead={!!val.readAt || val.senderId === user?._id}
           onClick={() => navigateToChat(val.agentId, val.transporterId)}
         >
           <UiAvatar avatar={alternateUser(val)?.avatar} />

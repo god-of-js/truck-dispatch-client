@@ -31,7 +31,7 @@ export default function RateTransporter({ onClose }: Props) {
     transporterId: trip?.transporterId || '',
     rating: 0,
     id: uuidv4(),
-    tripId: trip?.id || '',
+    tripId: trip?._id || '',
   });
   const [loading, setLoading] = useState(false);
 

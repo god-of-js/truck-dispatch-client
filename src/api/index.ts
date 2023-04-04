@@ -27,18 +27,20 @@ import AssignTripFormData from 'types/AssignTripFormData';
 import { Bank } from './paystackIntegrations';
 import AccountDetails from 'types/AccountDetails';
 import BankDetails from 'types/BankDetails';
+import TokenVerificationData from 'types/TokenVerificationData';
+import LoginResponse from 'types/LoginResponse';
 
 class ApiService {
   createUser(userData: User) {
-    return this.post('/auth/join', userData);
+    return this.post<TokenVerificationData>('/auth/join', userData);
   }
 
   signInWithEmailAndPassword(data: { email: string; password: string }) {
-    return this.post('/auth/login', data);
+    return this.post<LoginResponse>('/auth/login', data);
   }
 
   requestVerificationCode(data: { phone: string }) {
-    return this.post('/auth/request-sms', data);
+    return this.post<TokenVerificationData>('/auth/request-sms', data);
   }
 
   verifyPhone(data: VerifyPhoneData) {
@@ -91,11 +93,11 @@ class ApiService {
   }
 
   saveAccountNumber(accountDetails: BankDetails) {
-    return this.post('/user/bank-details', accountDetails);
+    return this.post<User>('/user/bank-details', accountDetails);
   }
 
   updateAccountNumber(accountDetails: BankDetails) {
-    return this.patch('/user/bank-details', accountDetails);
+    return this.patch<User>('/user/bank-details', accountDetails);
   }
 
   publishUserRating(data: Rating) {

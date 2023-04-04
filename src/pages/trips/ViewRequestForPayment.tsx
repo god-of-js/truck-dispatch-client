@@ -111,7 +111,6 @@ export default function ViewRequestForPayment() {
         </UiOverlay>
         <UiOverlay isVisible={isConfirmVisible}>
           <ConfirmApprovePayment
-            paymentRequest={paymentRequest}
             tripId={tripId!}
             paymentRequestId={paymentRequest?._id!}
             onClose={() => setIsConfirmVisible(false)}
