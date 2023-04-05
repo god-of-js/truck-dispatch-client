@@ -30,15 +30,20 @@ import {
   UsersThree,
   X,
 } from 'phosphor-react';
-import styled from 'styled-components';
+import Buildings from './icons/Building';
+import Car from './icons/Car';
 import CallReceived from './icons/CallReceived';
-
+import MagicStar from './icons/MagicStar';
+import styled from 'styled-components';
+import UserSquare from './icons/UserSquare';
 // These icons should be arranged alphabetically for easy sorting
 const icons = {
   ArrowLeft: <ArrowLeft />,
   ArrowRight: <ArrowRight />,
   ArrowUpRight: <ArrowUpRight />,
+  Buildings: <Buildings />,
   CallReceived: <CallReceived />,
+  Car: <Car />,
   CaretDown: <CaretDown />,
   CaretUp: <CaretUp />,
   Chats: <Chats />,
@@ -52,6 +57,7 @@ const icons = {
   FolderNotchOpen: <FolderNotchOpen />,
   House: <House />,
   Kanban: <Kanban />,
+  MagicStar: <MagicStar />,
   MapPin: <MapPin />,
   Money: <Money />,
   PaperPlaneTilt: <PaperPlaneTilt />,
@@ -63,6 +69,7 @@ const icons = {
   Truck: <Truck />,
   User: <User />,
   UsersThree: <UsersThree />,
+  UserSquare: <UserSquare />,
   X: <X />,
 };
 

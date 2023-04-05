@@ -23,27 +23,8 @@ export default function AuthLayout() {
 
   return (
     <main>
-      <Header>
-        <a href="https://gettruckdispatch.com">
-          <img
-            src={TruckDispatchLogo}
-            alt="truck-dispatch"
-            width="100"
-            height="100"
-          />
-        </a>
-      </Header>
       <Outlet />
     </main>
   );
 }
 
-const Header = styled.header`
-  padding: 0 ${pxToRem(16)};
-  z-index: 3;
-  left: 0;
-  right: 0;
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    position: absolute;
-  }
-`;

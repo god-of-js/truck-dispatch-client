@@ -16,6 +16,8 @@ import UiForm from 'components/ui/UiForm';
 import { toAnyAction } from 'utils/helpers';
 import registrationSchema from 'utils/validations/registrationSchema';
 import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
+import UserTypeSelect from 'components/auth/SelectUserType';
+import SelectUserType from 'components/auth/SelectUserType';
 
 export default function RegistrationPage() {
   const dispatch = useDispatch();
@@ -63,8 +65,9 @@ export default function RegistrationPage() {
     : 'Deliver with us As An Agent';
 
   return (
-    <AuthLayoutStyling>
-      <UiForm
+    <AuthLayoutStyling invert>
+      <SelectUserType />
+      {/* <UiForm
         schema={registrationSchema}
         formData={formData}
         onSubmit={handleSubmit}
@@ -143,7 +146,7 @@ export default function RegistrationPage() {
             </AlreadyAMember>
           </>
         )}
-      </UiForm>
+      </UiForm> */}
     </AuthLayoutStyling>
   );
 }

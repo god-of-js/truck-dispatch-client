@@ -62,6 +62,18 @@ function sizeVariant(size: Sizes) {
     ${pxToRem(12)}; 
     height:${pxToRem(32)};
     font-size: ${pxToRem(12)};
+    line-height: ${pxToRem(12)};
+    `;
+  if (size === 'icon')
+    return `
+    padding: ${pxToRem(8)} 
+    ${pxToRem(12)}; 
+    height:${pxToRem(32)};
+    font-size: ${pxToRem(12)};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: ${pxToRem(9.34)};  
     `;
 
   if (size === 'md')
@@ -69,13 +81,15 @@ function sizeVariant(size: Sizes) {
     padding: ${pxToRem(12)};
     height:${pxToRem(40)};
     font-size: ${pxToRem(12)};
+    line-height: ${pxToRem(12)};
   `;
 
   if (size === 'large')
     return `
-    padding:  ${pxToRem(16)} 0; 
-    height:${pxToRem(46)};
-    font-size: ${pxToRem(14)} ;
+    padding:  ${pxToRem(16)}; 
+    height: ${pxToRem(46)};
+    font-size: ${pxToRem(14)};
+    line-height: ${pxToRem(14)};
   `;
 }
 
@@ -88,11 +102,9 @@ const ButtonContainer = styled.button<Props>`
   ${({ size }) => sizeVariant(size!)}
   border: none;
   cursor: ${({ disabled }) => (disabled ? '' : 'pointer')};
-  display: inline-flex;
   align-items: center;
   justify-content: center;
-  letter-spacing: 0.4px;
-  line-height: 1.45;
+  letter-spacing: ${pxToRem(0.32)};
   text-align: center;
   text-transform: uppercase;
   border-radius: ${({ isSquare }) => (isSquare ? '' : pxToRem(8))};

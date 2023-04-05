@@ -12,9 +12,29 @@ export default function AuthLayoutStyling({
 }: Props) {
   return (
     <LayoutStyling invert={invert}>
-      <div className="info-content">{infoContent}</div>
+      <div className="info-content">
+        <div className="info-content__inner">
+        {
+          !invert || undefined  && <div className="logo">
+            <a href="https://gettruckdispatch.com">
+              TruckDispatch
+            </a>
+          </div>
+        }
+          {infoContent}
+        </div>
+      </div>
       <div className="main-content">
-        <div className="main-content__inner">{children}</div>
+        <div className="main-content__inner">
+        {
+          invert && <div className="logo">
+            <a href="https://gettruckdispatch.com">
+              TruckDispatch
+            </a>
+          </div>
+        }
+          {children}
+        </div>
       </div>
     </LayoutStyling>
   );
@@ -25,19 +45,37 @@ const LayoutStyling = styled.div`
   ${({ invert }: { invert?: boolean }) =>
     invert && 'flex-direction: row-reverse;'}
   min-height: 100vh;
-  gap: ${pxToRem(20)};
-
+  .logo{
+    margin-bottom:${pxToRem(114)};
+    a {
+      color: var(--color-neutralBlack);
+      font-size:${pxToRem(20)};
+      font-weight:700;
+    }
+    
+  }
   .main-content {
-    width: 60%;
-    display: flex;
+    ${({ invert }: { invert?: boolean }) =>  
+      !invert  && `
+      display: flex; 
+      justify-content: center; 
+      align-items: center;
+      `
+    }
+    width: 57%;
+    padding:${pxToRem(34)} 0 ${pxToRem(80)} ${pxToRem(121)};
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
     &__inner {
-      width: 40%;
+      width: 80%;
     }
   }
   .info-content {
-    width: 40%;
+    width: 43%;
     background: var(--color-primary-10);
+    &__inner {
+      width: 40%;
+    }
   }
 `;
