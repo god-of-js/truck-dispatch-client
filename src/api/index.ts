@@ -54,6 +54,9 @@ class ApiService {
   updateTrip(data: Partial<Trip>): Promise<Trip> {
     return this.patch(`/trips/${data._id}`, data);
   }
+  updateTripStatus(tripId: string, status: string): Promise<Trip> {
+    return this.patch(`/trips/${tripId}/change-status/${status}`);
+  }
 
   getTrips(): Promise<Trip[]> {
     return this.get('/trips');

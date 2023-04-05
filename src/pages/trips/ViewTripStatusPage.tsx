@@ -1,6 +1,6 @@
 import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
 import { selectAgents, selectTransporters } from 'modules/Account';
-import { updateTrip, selectTrip } from 'modules/Trips';
+import { updateTrip, selectTrip, updateTripStatus } from 'modules/Trips';
 import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
@@ -17,8 +17,6 @@ export default function ViewTripStatus() {
   const { tripId } = useParams();
   const dispatch = useDispatch();
   const trip = useSelector(selectTrip(tripId || ''));
-  const transporters = useSelector(selectTransporters);
-  const agents = useSelector(selectAgents);
   const user = useSelector((state: RootState) => state.account.user);
   const [loading, setLoading] = useState(false);
 
@@ -62,6 +60,7 @@ export default function ViewTripStatus() {
 
     return trip?.tripOwner?.avatar;
   }, [user, trip?.transporter, trip?.tripOwner]);
+
   function showInfoCard() {
     if (user?.userType === 'transporter') return true;
 
@@ -74,19 +73,19 @@ export default function ViewTripStatus() {
     return `${user?.firstName} ${user?.lastName}`;
   }
 
-  function updateTrip(data: Partial<Trip>) {
+  function changeStatus(status: Trip['status']) {
     setLoading(true);
-    dispatch(toAnyAction(updateTrip({ ...trip, ...data }))).finally(() =>
+    dispatch(toAnyAction(updateTripStatus(trip?._id!, status))).finally(() =>
       setLoading(false),
     );
   }
 
   function startTrip() {
-    updateTrip({ status: 'in-progress' });
+    changeStatus('in-progress');
   }
 
   function completeTrip() {
-    updateTrip({ status: 'completed' });
+    changeStatus( 'completed');
   }
 
   return (

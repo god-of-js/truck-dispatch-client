@@ -60,10 +60,22 @@ export function assignTrip(trip: AssignTripFormData) {
     });
   };
 }
+
 export function updateTrip(trip: Partial<Trip>) {
   return (dispatch: AppDispatch, state: AppState) => {
     return Api.updateTrip(trip).then((data) => {
       const trips = replaceEditedItem(state().trips.trips, data);
+      dispatch(setTrips(trips));
+      return data;
+    });
+  };
+}
+
+export function updateTripStatus(tripId: string, status: Trip['status']) {
+  return (dispatch: AppDispatch, state: AppState) => {
+    return Api.updateTripStatus(tripId, status).then((data) => {
+      const trip = state().trips.trips.find(({ _id }) => _id === tripId);
+      const trips = replaceEditedItem(state().trips.trips, { ...trip!, status: data.status});
       dispatch(setTrips(trips));
       return data;
     });
