@@ -213,7 +213,7 @@ export default function ViewTripStatus() {
         <GoodsInspectionConfirmation
           onClose={() => setIsGoodsInspectionConfModalVisible(false)}
           startTrip={startTrip}
-          transporterName={transporter?.firstName}
+          transporterName={user?.firstName}
         />
       </UiOverlay>
     </>
