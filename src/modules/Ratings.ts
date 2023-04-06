@@ -1,9 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Api from 'Api';
 import Rating from 'types/Rating';
-import { toAnyAction } from 'utils/helpers';
 import { AppDispatch, AppState } from '.';
-import { createOrUpdateUser } from './Account';
 
 export interface RatingsState {
   ratings: Rating[];
@@ -43,13 +41,13 @@ export const compileUserRating = (userId: string) => {
     const sumOfRatings = ratings.reduce((a, b) => a + b, 0);
     const newRating = (sumOfRatings / ratings.length).toFixed(1);
 
-    return dispatch(
-      toAnyAction(
-        createOrUpdateUser({
-          ...user,
-          rating: parseInt(newRating),
-        }),
-      ),
-    );
+    // return dispatch(
+    //   toAnyAction(
+    //     createOrUpdateUser({
+    //       ...user,
+    //       rating: parseInt(newRating),
+    //     }),
+    //   ),
+    // );
   };
 };
