@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-
 import sizes from 'utils/sizes';
 import { deepRootedToFormData, toAnyAction } from 'utils/helpers';
 import UploadTDO from 'utils/validations/UploadTDO';
@@ -35,11 +34,10 @@ export default function ViewTripTDO() {
   async function sendTDOToTransporter() {
     try {
       setLoading(true);
-      const data = deepRootedToFormData(formData)
-      dispatch(toAnyAction(uploadTDO(data, tripId!)))
-        .finally(() => {
-          setLoading(false);
-        });
+      const data = deepRootedToFormData(formData);
+      dispatch(toAnyAction(uploadTDO(data, tripId!))).finally(() => {
+        setLoading(false);
+      });
     } catch (err) {
       setLoading(false);
     }
@@ -70,7 +68,11 @@ export default function ViewTripTDO() {
               instructions.
             </p>
 
-            <UiForm schema={UploadTDO} formData={formData} onSubmit={sendTDOToTransporter}>
+            <UiForm
+              schema={UploadTDO}
+              formData={formData}
+              onSubmit={sendTDOToTransporter}
+            >
               {({ errors }) => (
                 <>
                   <FileUploadWidget

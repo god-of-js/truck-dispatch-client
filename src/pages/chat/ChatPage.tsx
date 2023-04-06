@@ -25,7 +25,8 @@ export default function ChatPage() {
   const user = useSelector((state: RootState) => state.account.user);
   const chats = useSelector(selectChatByChatId(`${agentId}-${transporterId}`));
   const users = useSelector((state: RootState) => state.account.users);
-  const alternateUsersId = user?._id === transporterId ? agentId : transporterId;
+  const alternateUsersId =
+    user?._id === transporterId ? agentId : transporterId;
   const alternateUser = users.find(({ _id }) => _id === alternateUsersId);
 
   const defaultFormData = {

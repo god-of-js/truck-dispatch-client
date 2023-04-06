@@ -1,3 +1,3 @@
 export default interface LoginResponse {
-    jwt: string;
+  jwt: string;
 }
