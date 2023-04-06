@@ -1,1 +1,4 @@
-export default interface TokenVerificationData { pinId: string; to: string }
+export default interface TokenVerificationData {
+  pinId: string;
+  to: string;
+}

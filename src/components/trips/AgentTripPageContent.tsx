@@ -77,8 +77,8 @@ export default function AgentTripPageContent() {
   }
 
   function getPillVariant(status: Trip['status']) {
-    if (status === 'payment_complete') return 'warning';
     if (status === 'awaiting_bid') return 'gray';
+    if (status === 'payment_complete') return 'warning';
     if (status === 'in-progress') return 'info';
     if (status === 'completed') return 'success';
 
@@ -103,6 +103,7 @@ export default function AgentTripPageContent() {
       ),
     }));
   }, [trips]);
+  console.log(tripsData);
 
   function navigateToTrip(id: string) {
     navigate(`/my-trips/${id}`);

@@ -94,11 +94,10 @@ class ApiService {
     return this.patch<User>('/user/bank-details', accountDetails);
   }
 
-
   getJobs() {
     return this.get<Trip[]>('/trips/jobs');
   }
-  uploadTDO(formData: FormData,tripId: string) {
+  uploadTDO(formData: FormData, tripId: string) {
     return this.post<Trip>(`/trips/${tripId}/upload-tdo`, formData);
   }
 
@@ -214,7 +213,6 @@ class ApiService {
         return Promise.reject(e);
       });
   }
-
 
   // FIREBASE TO BE REMOVED
 

@@ -75,7 +75,10 @@ export function updateTripStatus(tripId: string, status: Trip['status']) {
   return (dispatch: AppDispatch, state: AppState) => {
     return Api.updateTripStatus(tripId, status).then((data) => {
       const trip = state().trips.trips.find(({ _id }) => _id === tripId);
-      const trips = replaceEditedItem(state().trips.trips, { ...trip!, status: data.status});
+      const trips = replaceEditedItem(state().trips.trips, {
+        ...trip!,
+        status: data.status,
+      });
       dispatch(setTrips(trips));
       return data;
     });
@@ -85,7 +88,7 @@ export function updateTripStatus(tripId: string, status: Trip['status']) {
 export function getTrips() {
   return (dispatch: AppDispatch) => {
     return Api.getTrips().then((data) => {
-      dispatch(setTrips(data))
+      dispatch(setTrips(data));
     });
   };
 }
