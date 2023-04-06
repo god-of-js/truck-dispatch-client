@@ -47,6 +47,10 @@ class ApiService {
     return this.post('/auth/verify-phone', data);
   }
 
+  updateUser(data: FormData) {
+    return this.patch<User>('/user', data);
+  }
+
   createTrip(data: NewTrip): Promise<Trip> {
     return this.post('/trips', data);
   }
@@ -214,11 +218,6 @@ class ApiService {
       });
   }
 
-  // FIREBASE TO BE REMOVED
-
-  recordAccountDetails(data: User) {
-    return this.setDoc('user', data._id, data);
-  }
   publishUserRating(data: Rating) {
     return this.setDoc('rating', data.id, data);
   }

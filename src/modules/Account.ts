@@ -102,9 +102,9 @@ export function VerifyOtp(pin: string) {
   };
 }
 
-export function createOrUpdateUser(user: User) {
-  return async () => {
-    return Api.recordAccountDetails(user);
+export function updateUser(data: FormData) {
+  return async (dispatch: AppDispatch) => {
+    return Api.updateUser(data).then((user) => dispatch(setUser(user)));
   };
 }
 
