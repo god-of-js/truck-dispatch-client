@@ -1,28 +1,19 @@
 import React, { Suspense, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 
 import { toAnyAction } from 'utils/helpers';
 import Loader from 'components/layout/Loader';
-import { getAgentTrips, getTransporterTrips } from 'modules/Trips';
-import { RootState } from 'modules/index';
+import { getTrips } from 'modules/Trips';
 
 export default function DashboardLayout() {
-  const user = useSelector((state: RootState) => state.account.user);
   const dispatch = useDispatch();
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
 
   function loadTrips() {
-    if (!user) return;
-    if (user.userType === 'agent') {
-      dispatch(toAnyAction(getAgentTrips(user.id))).finally(() => {
-        setLoading(false);
-      });
-    } else if (user.userType === 'transporter') {
-      dispatch(toAnyAction(getTransporterTrips(user.id))).finally(() => {
-        setLoading(false);
-      });
-    }
+    dispatch(toAnyAction(getTrips())).finally(() => {
+      setLoading(false);
+    });
   }
   useEffect(() => {
     loadTrips();

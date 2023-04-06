@@ -2,15 +2,12 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { io } from 'socket.io-client';
 
 import { toAnyAction } from 'utils/helpers';
 import sizes from '../utils/sizes';
 
-import {
-  getDashboardUser,
-  getUserAccountNumber,
-  getUsers,
-} from 'modules/Account';
+import { getDashboardUser } from 'modules/Account';
 
 import DashboardSidebar from 'components/layout/DashboardSidebar';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
@@ -18,6 +15,8 @@ import Loader from 'components/layout/Loader';
 import UiAlert from 'ui/UiAlert';
 import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
+import { getUsersChat, setChat } from 'modules/Chat';
+import { WEB_SOCKET_URL } from 'utils/privateKeys';
 
 export default function DashboardLayout() {
   const dispatch = useDispatch();
@@ -27,8 +26,8 @@ export default function DashboardLayout() {
   const user = useSelector((state: RootState) => state.account.user);
 
   useEffect(() => {
-    const userId = localStorage.getItem('uid');
-    if (!userId) {
+    const jwt = localStorage.getItem('jwt');
+    if (!jwt) {
       navigate('/auth/login');
     } else {
       dispatch(toAnyAction(getDashboardUser()))
@@ -36,26 +35,29 @@ export default function DashboardLayout() {
           Toast.error({ msg: err.message });
         })
         .finally(() => setLoading(false));
-      dispatch(toAnyAction(getUserAccountNumber()));
-      // Would be removed when the backend is ready.
-      dispatch(toAnyAction(getUsers()));
+      // dispatch(toAnyAction(getUsersChat(userId)));
     }
   }, []);
 
   useEffect(() => {
-    if (user?.userType === 'transporter')
-      dispatch(toAnyAction(getUserAccountNumber()));
-  }, [user?.userType]);
+    const userId = user?._id;
+    if (userId) {
+      const newSocket = io(WEB_SOCKET_URL);
+      newSocket.on('connect', () => {
+        newSocket.emit('join', { userId });
+      });
 
-  const Component = loading ? (
-    <Loader />
-  ) : (
-    <>
-      <Suspense fallback={<Loader />}>
-        <Outlet />
-      </Suspense>
-    </>
-  );
+      newSocket.on('message', (message) => {
+        dispatch(setChat(message));
+      });
+
+      return () => {
+        newSocket.disconnect();
+      };
+    }
+  }, [user]);
+
+  const Component = loading ? <Loader /> : <Outlet />;
   return (
     <Layout>
       <DashboardSidebar />
@@ -121,6 +123,7 @@ const Body = styled.div`
     position: static;
     border-right: ${pxToRem(1)} solid var(--color-gray-200);
   }
+
   @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
     width: 95%;
   }

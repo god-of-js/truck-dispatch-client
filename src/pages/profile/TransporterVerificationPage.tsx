@@ -2,13 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  createOrUpdateUser,
-  getUsers,
-  getUserVerification,
-} from '../../modules/Account';
-
-import User from 'types/User';
+import { getUserVerification } from '../../modules/Account';
 
 import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
@@ -69,16 +63,6 @@ export default function TransporterVerificationPage() {
 
   function setVerificationStatus() {
     setIsVerified(true);
-    if (!user) return;
-    const verificationPendingUser: User = {
-      ...user,
-      status: 'pending_verification',
-    };
-    dispatch(toAnyAction(createOrUpdateUser(verificationPendingUser))).then(
-      () => {
-        dispatch(toAnyAction(getUsers()));
-      },
-    );
   }
 
   return (

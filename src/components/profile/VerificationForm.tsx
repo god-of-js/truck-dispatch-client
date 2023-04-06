@@ -2,12 +2,13 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { uploadItem } from '../../api/Cloudinary';
+import { startVerificationProcess, updateVerification } from 'modules/Account';
 import {
-  sendVerificationDetailsToAdmin,
-  setVerification,
-} from 'modules/Account';
-import { aValueHasBeenChanged, toAnyAction } from 'utils/helpers';
+  aValueHasBeenChanged,
+  deepRootedToFormData,
+  removeUneditedFields,
+  toAnyAction,
+} from 'utils/helpers';
 import TransporterValidationSchema from 'utils/validations/TransporterValidationSchema';
 
 import UiForm from 'ui/UiForm';
@@ -22,22 +23,19 @@ import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
 
 interface Props {
-  onVerified: () => void;
   parentLoading?: boolean;
+  onVerified: () => void;
 }
 
-export default function VerificationForm({
-  parentLoading,
-  onVerified = () => {},
-}: Props) {
+export default function VerificationForm({ parentLoading, onVerified }: Props) {
   const user = useSelector((state: RootState) => state.account.user);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState<Verification>({
+    _id: '',
     idType: '',
     idDoc: null,
     homeAddress: '',
     homeUtilityBill: null,
-    userId: '',
     garageAddress: '',
     officeAddress: '',
     guarantor: {
@@ -76,59 +74,45 @@ export default function VerificationForm({
     return aValueHasBeenChanged<Verification>(verification!, formData);
   }, [verification, formData]);
 
-  function initUpload(item: File | string) {
-    if (item instanceof File) {
-      return uploadItem(item);
-    }
+  async function startUserVerificationProcess() {
+    const data = deepRootedToFormData(formData);
 
-    return item;
+    dispatch(toAnyAction(startVerificationProcess(data)))
+      .then(() => {
+        onVerified();
+      })
+      .catch((err: Error) => {
+        Toast.error({ msg: err.message });
+      })
+      .finally(() => setLoading(false));
   }
-  async function verifyUser() {
-    try {
-      setLoading(true);
-      const idDocUrl = await initUpload(formData.idDoc as File);
-      const homeUtilityBill = await initUpload(
-        formData.homeUtilityBill as File,
-      );
-      const guarantorIdDoc = await initUpload(formData.guarantor.idDoc as File);
+  async function updateUserVerification() {
+    if (!verification)
+      throw new Error('verification is meant to be available at this point.');
+    const changedData = removeUneditedFields<Verification>(
+      verification,
+      formData,
+    );
+    const data = deepRootedToFormData(changedData);
 
-      if (!user?.id) return;
-      dispatch(
-        toAnyAction(
-          sendVerificationDetailsToAdmin({
-            ...formData,
-            idDoc: idDocUrl,
-            userId: user.id,
-            homeUtilityBill,
-            guarantor: {
-              ...formData.guarantor,
-              idDoc: guarantorIdDoc,
-            },
-          }),
-        ),
-      )
-        .then(() => {
-          dispatch(
-            setVerification({
-              ...formData,
-              idDoc: idDocUrl,
-              userId: user.id,
-              homeUtilityBill,
-              guarantor: {
-                ...formData.guarantor,
-                idDoc: guarantorIdDoc,
-              },
-            }),
-          );
-          onVerified();
-        })
-        .catch((err: Error) => {
-          Toast.error({ msg: err.message });
-        })
-        .finally(() => setLoading(false));
-    } catch (e) {
-      setLoading(false);
+    dispatch(toAnyAction(updateVerification(data)))
+      .then(() => {
+        onVerified();
+      })
+      .catch((err: Error) => {
+        Toast.error({ msg: err.message });
+      })
+      .finally(() => setLoading(false));
+  }
+
+  async function verifyUser() {
+    setLoading(true);
+    if (!verification) {
+      startUserVerificationProcess();
+      return;
     }
+
+    updateUserVerification();
   }
 
   function setData(event: {
@@ -153,8 +137,9 @@ export default function VerificationForm({
   }
 
   useEffect(() => {
-    if (!formData.userId && verification) setFormData(verification);
+    if (!formData._id && verification) setFormData(verification);
   }, [verification]);
+
   return (
     <UiForm
       formData={formData}

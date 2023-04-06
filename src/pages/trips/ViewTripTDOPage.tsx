@@ -3,13 +3,11 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { uploadItem } from '../../api/Cloudinary';
-
 import sizes from 'utils/sizes';
-import { toAnyAction } from 'utils/helpers';
+import { deepRootedToFormData, toAnyAction } from 'utils/helpers';
 import UploadTDO from 'utils/validations/UploadTDO';
 
-import { createOrUpdateTrip, selectTrip, setTrips } from 'modules/Trips';
+import { selectTrip, uploadTDO } from 'modules/Trips';
 
 import { RootState } from 'modules/index';
 
@@ -19,12 +17,10 @@ import UiForm from 'ui/UiForm';
 import MessageWithImage from 'ui/MessageWithImage';
 import FileSent from '../../assets/img/file-sent.svg';
 import WaitingForUpload from '../../assets/img/waiting-for-upload.svg';
-import { Toast } from 'utils/toast';
 
 export default function ViewTripTDO() {
   const { tripId } = useParams();
   const dispatch = useDispatch();
-  const trips = useSelector((state: RootState) => state.trips.trips);
   const trip = useSelector(selectTrip(tripId!));
   const user = useSelector((state: RootState) => state.account.user);
   const [formData, setformData] = useState<{ TDO: null | File }>({ TDO: null });
@@ -35,27 +31,14 @@ export default function ViewTripTDO() {
     else setformData({ TDO: param.value[0] });
   }
 
-  async function uploadTDO() {
+  async function sendTDOToTransporter() {
     try {
-      if (!formData.TDO || !trip) return;
       setLoading(true);
-      const TDO = await uploadItem(formData.TDO);
-      const tripWithTDO = {
-        ...trip,
-        TDO,
-      };
-      dispatch(toAnyAction(createOrUpdateTrip(tripWithTDO)))
-        .then(() => {
-          const updatedTrips = trips.map((tripObj) =>
-            tripObj.id === tripWithTDO.id ? tripWithTDO : tripObj,
-          );
-          dispatch(setTrips(updatedTrips));
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      const data = deepRootedToFormData(formData);
+      dispatch(toAnyAction(uploadTDO(data, tripId!))).finally(() => {
+        setLoading(false);
+      });
     } catch (err) {
-      Toast.error({ msg: (err as Error).message });
       setLoading(false);
     }
   }
@@ -85,7 +68,11 @@ export default function ViewTripTDO() {
               instructions.
             </p>
 
-            <UiForm schema={UploadTDO} formData={formData} onSubmit={uploadTDO}>
+            <UiForm
+              schema={UploadTDO}
+              formData={formData}
+              onSubmit={sendTDOToTransporter}
+            >
               {({ errors }) => (
                 <>
                   <FileUploadWidget

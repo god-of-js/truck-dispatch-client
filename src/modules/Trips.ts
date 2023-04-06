@@ -2,18 +2,17 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 import Trip from 'types/Trip';
 import { AppDispatch, AppState, RootState } from '.';
 import Api from 'Api';
-import { toAnyAction } from 'utils/helpers';
-import Bid from 'types/Bid';
+import { replaceEditedItem, toAnyAction } from 'utils/helpers';
+import NewTrip from 'types/NewTrip';
+import AssignTripFormData from 'types/AssignTripFormData';
 
 export interface TripState {
   trips: Trip[];
   jobs: Trip[];
-  bids: Bid[];
 }
 const initialState: TripState = {
   trips: [],
   jobs: [],
-  bids: [],
 };
 
 export const TripsSlice = createSlice({
@@ -26,88 +25,86 @@ export const TripsSlice = createSlice({
     setJobs: (state: TripState, action: { payload: Trip[] }) => {
       state.jobs = action.payload;
     },
-    setBids: (state: TripState, action: { payload: Bid[] }) => {
-      state.bids = action.payload;
-    },
   },
 });
 
-export const { setTrips, setJobs, setBids } = TripsSlice.actions;
+export const { setTrips, setJobs } = TripsSlice.actions;
 export default TripsSlice.reducer;
 
 // SELECTORS
 const trips = (state: RootState) => state.trips.trips;
 export const selectTrip = (tripId: string) =>
   createSelector(trips, (trips: Trip[]) =>
-    trips.find((trip) => trip.id === tripId),
+    trips.find((trip) => trip._id === tripId),
   );
 const jobs = (state: RootState) => state.trips.jobs;
 export const selectJob = (jobId: string) =>
-  createSelector(jobs, (jobs: Trip[]) => jobs.find(({ id }) => id === jobId));
-
-const bids = (state: RootState) => state.trips.bids;
-export const selectBid = (
-  valueToQueryWith: string,
-  queryParam: 'id' | 'transporterId' = 'id',
-) =>
-  createSelector(bids, (bidArr: Bid[]) => {
-    return bidArr.find((bid) => valueToQueryWith === bid[queryParam]);
-  });
+  createSelector(jobs, (jobs: Trip[]) => jobs.find(({ _id }) => _id === jobId));
 
 // ASYNC THUNKS
-export function createOrUpdateTrip(data: Trip) {
+export function createTrip(trip: NewTrip) {
   return (dispatch: AppDispatch, state: AppState) => {
-    return Api.createOrUpdateTrip(data).then(() => {
-      const currentTripIndex = state().trips.trips.findIndex(
-        (trip) => trip.id === data.id,
-      );
-      if (currentTripIndex === -1) {
-        dispatch(setTrips([...state().trips.trips, data]));
-        return;
-      }
-      const trips = [...state().trips.trips];
-      trips[currentTripIndex] = data;
-      dispatch(setTrips(trips));
+    return Api.createTrip(trip).then((data) => {
+      dispatch(setTrips([...state().trips.trips, data]));
+      return data;
     });
   };
 }
 
-export function getAgentTrips(agentId: string) {
-  return (dispatch: AppDispatch) => {
-    return Api.getAgentTrips(agentId).then((data) => dispatch(setTrips(data)));
+export function assignTrip(trip: AssignTripFormData) {
+  return (dispatch: AppDispatch, state: AppState) => {
+    return Api.assignTrip(trip).then((data) => {
+      const trips = replaceEditedItem(state().trips.trips, data);
+      dispatch(setTrips(trips));
+      return data;
+    });
   };
 }
-// Prevent default is used to notify the store that this is not the normal flow, hence we do not need to set the value to state.
-export function getTransporterTrips(
-  transporterId: string = localStorage.getItem('uid')!,
-  preventDefault?: boolean,
-) {
-  if (!transporterId) throw new Error('400: transporter ID is not present');
-  return (dispatch: AppDispatch) => {
-    return Api.getTransporterTrips(transporterId).then((data) => {
-      !preventDefault && dispatch(toAnyAction(setTrips(data)));
+
+export function updateTrip(trip: Partial<Trip>) {
+  return (dispatch: AppDispatch, state: AppState) => {
+    return Api.updateTrip(trip).then((data) => {
+      const trips = replaceEditedItem(state().trips.trips, data);
+      dispatch(setTrips(trips));
       return data;
+    });
+  };
+}
+
+export function updateTripStatus(tripId: string, status: Trip['status']) {
+  return (dispatch: AppDispatch, state: AppState) => {
+    return Api.updateTripStatus(tripId, status).then((data) => {
+      const trip = state().trips.trips.find(({ _id }) => _id === tripId);
+      const trips = replaceEditedItem(state().trips.trips, {
+        ...trip!,
+        status: data.status,
+      });
+      dispatch(setTrips(trips));
+      return data;
+    });
+  };
+}
+
+export function getTrips() {
+  return (dispatch: AppDispatch) => {
+    return Api.getTrips().then((data) => {
+      dispatch(setTrips(data));
     });
   };
 }
 
 export function getJobs() {
   return (dispatch: AppDispatch) => {
-    return Api.getJobs().then((data) => dispatch(toAnyAction(setJobs(data))));
+    return Api.getJobs().then((data) => dispatch(setJobs(data)));
   };
 }
 
-export function createOrUpdateBid(data: Bid) {
-  return () => {
-    if (!data.tripId) throw new Error('400: No trip id been sent');
-    return Api.createOrUpdateBid(data);
-  };
-}
-
-export function getBidsWithTripId(tripId: string) {
-  return (dispatch: AppDispatch) => {
-    return Api.getBidsWithTripId(tripId).then((data) => {
-      dispatch(setBids(data));
+export function uploadTDO(formData: FormData, tripId: string) {
+  return (dispatch: AppDispatch, state: AppState) => {
+    return Api.uploadTDO(formData, tripId).then((data) => {
+      const trips = replaceEditedItem(state().trips.trips, data);
+      dispatch(setTrips(trips));
+      return data;
     });
   };
 }

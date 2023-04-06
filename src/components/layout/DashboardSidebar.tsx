@@ -10,6 +10,7 @@ import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
 
 import UiIcon, { Icons } from '../ui/UiIcon';
 import { RootState } from 'modules/index';
+import { removeUserSessionId } from 'utils/userSession';
 
 interface Route {
   iconName: Icons;
@@ -21,12 +22,10 @@ export default function DashboardSidebar() {
   const chatHeads = useSelector(selectChatHeads);
   const navigate = useNavigate();
   const appLocation = useLocation();
-  const [isChatAvailable] = useState(false);
 
   const logOutUser = () => {
-    localStorage.removeItem('uid');
+    removeUserSessionId();
     navigate('/auth/login');
-    location.reload();
   };
 
   const transporterRoutes: Route[] = [
@@ -56,7 +55,7 @@ export default function DashboardSidebar() {
   ];
   const unreadChatHeads = useMemo(() => {
     return chatHeads.filter(
-      (chat) => !chat.readAt && chat.senderId !== user?.id,
+      (chat) => !chat.readAt && chat.senderId !== user?._id,
     ).length;
   }, [chatHeads]);
 
@@ -88,18 +87,16 @@ export default function DashboardSidebar() {
               </Tab>
             </Link>
           ))}
-          {isChatAvailable && (
-            <Link to="/chat">
-              <Tab isActive={isRouteActive('/chat')}>
-                <div className="chat-icon-container">
-                  <UiIcon icon="Chats" size="24" />
-                  {unreadChatHeads !== 0 && (
-                    <MessageCount>{unreadChatHeads}</MessageCount>
-                  )}
-                </div>
-              </Tab>
-            </Link>
-          )}
+          <Link to="/chat">
+            <Tab isActive={isRouteActive('/chat')}>
+              <div className="chat-icon-container">
+                <UiIcon icon="Chats" size="24" />
+                {unreadChatHeads !== 0 && (
+                  <MessageCount>{unreadChatHeads}</MessageCount>
+                )}
+              </div>
+            </Tab>
+          </Link>
         </TabList>
 
         <BottomActions>

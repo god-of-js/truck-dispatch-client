@@ -29,8 +29,8 @@ export default function AuthLayout() {
     : 'We provide you with the most competitive rates, verified drivers, and best deals. Become part of our success story d profit from a wide range of advantages';
 
   useEffect(() => {
-    const userId = localStorage.getItem('uid');
-    if (userId) {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
       navigate('/my-trips');
       return;
     }

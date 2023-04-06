@@ -1,25 +1,24 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { AppDispatch, AppState, RootState } from '.';
-import { removeKeyValuePairsFromObject, toAnyAction } from 'utils/helpers';
 import Api from 'Api';
 import User from '../types/User';
 import UserWithPassword from '../types/UserWithPassword';
 import Verification from '../types/Verification';
 import Rating from 'types/Rating';
-import BankAccount from 'types/BankAccount';
+import BankAccount from 'types/BankDetails';
+import { saveTokenVerificationInfo } from 'utils/helpers';
+import { saveUserSessionId } from 'utils/userSession';
 
 export interface AccountState {
   users: User[];
   verification: Verification | null;
   user: User | null;
-  bankAccountDetails: BankAccount | null;
 }
 
 const initialState: AccountState = {
   users: [] as User[],
   user: null,
   verification: null,
-  bankAccountDetails: null,
 };
 export const accountSlice = createSlice({
   name: 'account',
@@ -37,17 +36,10 @@ export const accountSlice = createSlice({
     ) => {
       state.verification = action.payload;
     },
-    setBankAccountDetails: (
-      state: AccountState,
-      action: { payload: BankAccount },
-    ) => {
-      state.bankAccountDetails = action.payload;
-    },
   },
 });
 
-export const { setUsers, setUser, setVerification, setBankAccountDetails } =
-  accountSlice.actions;
+export const { setUsers, setUser, setVerification } = accountSlice.actions;
 
 export default accountSlice.reducer;
 
@@ -55,7 +47,7 @@ const users = (state: RootState) => state.account.users;
 
 export const selectUser = (userId: string) =>
   createSelector(users, (usersArr) =>
-    usersArr.find((user) => user.id === userId),
+    usersArr.find((user) => user._id === userId),
   );
 
 export const selectTransporters = createSelector(users, (usersArr: User[]) =>
@@ -64,7 +56,7 @@ export const selectTransporters = createSelector(users, (usersArr: User[]) =>
 
 export const selectTransporter = (transporterId: string) =>
   createSelector(users, (usersArr: User[]) =>
-    usersArr.find(({ id }) => id === transporterId),
+    usersArr.find(({ _id }) => _id === transporterId),
   );
 
 export const selectAgents = createSelector(users, (usersArr: User[]) =>
@@ -72,38 +64,61 @@ export const selectAgents = createSelector(users, (usersArr: User[]) =>
 );
 
 export function RegisterUser(AuthUser: UserWithPassword) {
-  return async (dispatch: AppDispatch) => {
-    await Api.createUserWithEmailAndPassword(
-      AuthUser.email,
-      AuthUser.password!,
-    ).then((data) => {
-      const user = removeKeyValuePairsFromObject<User>(AuthUser, [
-        'password',
-        'cPassword',
-        AuthUser.userType !== 'agent' ? '' : 'status',
-      ]);
-      user.id = data.uid;
-
-      localStorage.setItem('uid', user.id);
-      dispatch(toAnyAction(createOrUpdateUser(user)));
+  return async () => {
+    await Api.createUser(AuthUser).then((data) => {
+      saveTokenVerificationInfo(data);
     });
   };
 }
 
+export function sendOTP(phone: string) {
+  return () => {
+    return Api.requestVerificationCode({ phone }).then((data) => {
+      saveTokenVerificationInfo(data);
+    });
+  };
+}
+export function VerifyOtp(pin: string) {
+  return async () => {
+    const otpPinId = localStorage.getItem('otp-pin-id');
+    const otpPhone = localStorage.getItem('otp-phone-number');
+
+    if (!otpPinId || !otpPhone)
+      throw new Error(
+        'Something went wrong. Kindly request a new OTP for verification',
+      );
+
+    const data = {
+      pin,
+      pin_id: otpPinId,
+      phone: otpPhone,
+    };
+    return Api.verifyPhone(data)
+      .then(() => {
+        localStorage.removeItem('otp-pin-id');
+        localStorage.removeItem('otp-phone-number');
+      })
+      .catch((err) => Promise.reject(err.data));
+  };
+}
+
 export function createOrUpdateUser(user: User) {
-  return async (dispatch: AppDispatch) => {
+  return async () => {
     return Api.recordAccountDetails(user);
   };
 }
 
 export function loginUser(AuthUser: { email: string; password: string }) {
   return () => {
-    return Api.signInWithEmailAndPassword(AuthUser.email, AuthUser.password!)
-      .then((data) => {
-        localStorage.setItem('uid', data.uid);
+    return Api.signInWithEmailAndPassword(AuthUser)
+      .then(({ jwt }) => {
+        saveUserSessionId(jwt);
       })
       .catch((err) => {
-        throw new Error(err.message);
+        if (err.message === 'Phone has not been verified') {
+          saveTokenVerificationInfo(err.data);
+        }
+        return Promise.reject(err);
       });
   };
 }
@@ -111,7 +126,8 @@ export function loginUser(AuthUser: { email: string; password: string }) {
 export function getUsers() {
   return (dispatch: AppDispatch) => {
     const uid = localStorage.getItem('uid');
-    if (!uid) throw new Error('400: User is not authenticated');
+    // Log user out in this situation
+    if (!uid) return;
     return Api.getUsers()
       .then((data) => {
         dispatch(setUsers(data));
@@ -124,9 +140,7 @@ export function getUsers() {
 
 export function getDashboardUser() {
   return (dispatch: AppDispatch) => {
-    const uid = localStorage.getItem('uid');
-    if (!uid) return;
-    return Api.getUser(uid)
+    return Api.getUser()
       .then((data) => {
         dispatch(setUser(data));
         return data;
@@ -137,13 +151,15 @@ export function getDashboardUser() {
   };
 }
 
-export const sendVerificationDetailsToAdmin = (
-  verificationData: Verification,
-) => {
+export const startVerificationProcess = (verificationData: FormData) => {
   return (dispatch: AppDispatch, state: AppState) => {
-    const userId = localStorage.getItem('uid');
-    if (!userId) throw new Error('user is not authenticated');
-    return Api.sendVerificationDetailsToAdmin(userId, verificationData);
+    return Api.startVerificationProcess(verificationData);
+  };
+};
+
+export const updateVerification = (verificationData: FormData) => {
+  return (dispatch: AppDispatch, state: AppState) => {
+    return Api.updateVerification(verificationData);
   };
 };
 
@@ -155,28 +171,23 @@ export const publishUserRating = (data: Rating) => {
 
 export const getUserVerification = () => {
   return (dispatch: AppDispatch) => {
-    const userId = localStorage.getItem('uid');
-    if (!userId) throw new Error('user is not authenticated');
-    return Api.getVerificationByUserId(userId).then((data) => {
+    return Api.getVerificationByUserId().then((data) => {
       dispatch(setVerification(data));
     });
   };
 };
 
-export const saveUserAccount = (accountDetails: BankAccount) => {
+export const createUserBankAccount = (accountDetails: BankAccount) => {
   return (dispatch: AppDispatch) => {
-    return Api.saveAccountNumber(accountDetails).then(() => {
-      dispatch(setBankAccountDetails(accountDetails));
+    return Api.saveAccountNumber(accountDetails).then((user) => {
+      dispatch(setUser(user));
     });
   };
 };
-
-export const getUserAccountNumber = (uid = localStorage.getItem('uid')) => {
+export const updateUserBankAccount = (accountDetails: BankAccount) => {
   return (dispatch: AppDispatch) => {
-    if (!uid) throw new Error('No user id was provided');
-    return Api.getAccountNumber(uid).then((data) => {
-      dispatch(setBankAccountDetails(data));
-      return data;
+    return Api.updateAccountNumber(accountDetails).then((user) => {
+      dispatch(setUser(user));
     });
   };
 };

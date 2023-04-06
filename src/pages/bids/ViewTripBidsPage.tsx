@@ -14,9 +14,7 @@ import Ratings from 'components/ratings/Ratings';
 export default function ViewTripBidsPage() {
   const navigate = useNavigate();
   const { tripId } = useParams();
-  const bids = useSelector((state: RootState) => state.trips.bids);
-  const users = useSelector((state: RootState) => state.account.users);
-
+  const bids = useSelector((state: RootState) => state.bid.bids);
   const headers = [
     {
       title: 'Transporter',
@@ -44,23 +42,17 @@ export default function ViewTripBidsPage() {
     navigate(`/my-trips/${tripId}/bids/${bidId}`);
   }
 
-  function getUser(userId: string) {
-    return users.find(({ id }) => userId === id) || null;
-  }
-
   const bidsData = useMemo(() => {
     return bids.map((bid: Bid) => ({
       ...bid,
       price: <>&#8358; {abbreviateNumber(priceWithTDPercent(bid.price))}</>,
       transporter: (
         <TransporterDetails>
-          <UiAvatar avatar={getUser(bid.transporterId)?.avatar} />
-          <span>{`${getUser(bid.transporterId)?.firstName} ${
-            getUser(bid.transporterId)?.lastName
-          }`}</span>
+          <UiAvatar avatar={bid.transporter.avatar} />
+          <span>{`${bid.transporter.firstName} ${bid.transporter.lastName}`}</span>
         </TransporterDetails>
       ),
-      rating: <Ratings rating={getUser(bid.transporterId)?.rating || 0} />,
+      rating: <Ratings rating={bid.transporter.rating || 0} />,
     }));
   }, [bids]);
 

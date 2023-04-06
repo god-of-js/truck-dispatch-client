@@ -10,11 +10,8 @@ import {
 } from 'firebase/firestore';
 import 'firebase/firestore';
 import User from '../types/User';
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from 'firebase/auth';
-import db, { auth } from './firebase';
+import db from './firebase';
+import axiosInstance from './AxiosInstance';
 import Trip from 'types/Trip';
 import Bid from 'types/Bid';
 import Payment from 'types/Payment';
@@ -22,71 +19,209 @@ import Rating from 'types/Rating';
 import PaymentRequest from 'types/PaymentRequest';
 import Chat from 'types/Chat';
 import Verification from 'types/Verification';
-import BankAccount from 'types/BankAccount';
+import BankAccount from 'types/BankDetails';
+import VerifyPhoneData from 'types/VerifyPhoneData';
+import NewTrip from 'types/NewTrip';
+import { Toast } from 'utils/toast';
+import AssignTripFormData from 'types/AssignTripFormData';
+import { Bank } from './paystackIntegrations';
+import AccountDetails from 'types/AccountDetails';
+import BankDetails from 'types/BankDetails';
+import TokenVerificationData from 'types/TokenVerificationData';
+import LoginResponse from 'types/LoginResponse';
 
 class ApiService {
-  createUserWithEmailAndPassword(email: string, password: string) {
-    return createUserWithEmailAndPassword(auth, email, password).then(
-      ({ user }) => user,
-    );
+  createUser(userData: User) {
+    return this.post<TokenVerificationData>('/auth/join', userData);
   }
 
-  signInWithEmailAndPassword(email: string, password: string) {
-    return signInWithEmailAndPassword(auth, email, password).then(
-      ({ user }) => user,
-    );
+  signInWithEmailAndPassword(data: { email: string; password: string }) {
+    return this.post<LoginResponse>('/auth/login', data);
   }
 
-  recordAccountDetails(data: User) {
-    return this.setDoc('user', data.id, data);
+  requestVerificationCode(data: { phone: string }) {
+    return this.post<TokenVerificationData>('/auth/request-sms', data);
   }
 
-  getUser(id: string) {
-    return this.getItem<User>('user', id);
+  verifyPhone(data: VerifyPhoneData) {
+    return this.post('/auth/verify-phone', data);
+  }
+
+  createTrip(data: NewTrip): Promise<Trip> {
+    return this.post('/trips', data);
+  }
+
+  updateTrip(data: Partial<Trip>): Promise<Trip> {
+    return this.patch(`/trips/${data._id}`, data);
+  }
+  updateTripStatus(tripId: string, status: string): Promise<Trip> {
+    return this.patch(`/trips/${tripId}/change-status/${status}`);
+  }
+
+  getTrips(): Promise<Trip[]> {
+    return this.get('/trips');
+  }
+
+  getUser() {
+    return this.get<User>('/user');
   }
 
   getUsers() {
     return this.getCollection<User>('user');
   }
 
-  sendVerificationDetailsToAdmin(userId: string, data: unknown) {
-    return this.setDoc('verification', userId, data);
+  startVerificationProcess(data: FormData) {
+    return this.post('/verification', data);
   }
 
-  getVerificationByUserId(userId: string): Promise<Verification> {
-    return this.getItem('verification', userId);
+  updateVerification(data: FormData) {
+    return this.patch('/verification', data);
   }
 
-  saveAsset(id: string, url: string) {
-    // In case of future migrations to different asset servers.
-    return this.setDoc('assets', id, { id, url });
+  getVerificationByUserId() {
+    return this.get<Verification>('/verification');
   }
 
-  saveAccountNumber(accountDetails: BankAccount) {
-    return this.setDoc('bank-account', accountDetails.id, accountDetails);
+  assignTrip(data: AssignTripFormData) {
+    return this.post<Trip>(`/trips/${data.tripId}/assign-trip`, data);
   }
 
-  getAccountNumber(id: string) {
-    return this.getItem<BankAccount>('bank-account', id);
+  saveAccountNumber(accountDetails: BankDetails) {
+    return this.post<User>('/user/bank-details', accountDetails);
   }
 
+  updateAccountNumber(accountDetails: BankDetails) {
+    return this.patch<User>('/user/bank-details', accountDetails);
+  }
+
+  getJobs() {
+    return this.get<Trip[]>('/trips/jobs');
+  }
+  uploadTDO(formData: FormData, tripId: string) {
+    return this.post<Trip>(`/trips/${tripId}/upload-tdo`, formData);
+  }
+
+  createBid(data: Bid) {
+    return this.post<Bid>('/bids', data);
+  }
+  updateBid(data: Bid): Promise<Bid> {
+    return this.patch<Bid>(`/bids/${data.tripId}`, data);
+  }
+
+  requestPaymentByTransporter(
+    data: FormData,
+    tripId: string,
+  ): Promise<PaymentRequest> {
+    return this.post(`/payment/request-payment/trip/${tripId}`, data);
+  }
+  updatePaymentRequest(
+    data: FormData,
+    tripId: string,
+    paymentRequestId: string,
+  ): Promise<PaymentRequest> {
+    return this.patch(
+      `/payment/request-payment/trip/${tripId}/update/${paymentRequestId}`,
+      data,
+    );
+  }
+
+  getPaymentRequestsOfDriver() {
+    return this.get<PaymentRequest[]>('/payment/payment-requests');
+  }
+
+  getPaymentRequestByTripId(tripId: string) {
+    return this.get<PaymentRequest>(`/payment/payment-request/trip/${tripId}`);
+  }
+  rejectPaymentRequest(
+    tripId: string,
+    paymentRequestId: string,
+    data: { reasonForReject: string },
+  ) {
+    return this.post<PaymentRequest>(
+      `/payment/payment-request/trip/${tripId}/reject/${paymentRequestId}`,
+      data,
+    );
+  }
+  approvePaymentRequest(tripId: string, paymentRequestId: string) {
+    return this.post<PaymentRequest>(
+      `/payment/payment-request/trip/${tripId}/approve/${paymentRequestId}`,
+    );
+  }
+
+  getBidsWithTripId(tripId: string) {
+    return this.get<Bid[]>(`/bids/${tripId}`);
+  }
+  getTransporterBidWithTripId(tripId: string) {
+    return this.get<Bid>(`/bids/transporter-bid/${tripId}`);
+  }
+
+  createChat(chat: Chat) {
+    return this.post('/chat', chat);
+  }
+
+  getChatsByUserId(userId: string) {
+    return this.get<Chat[]>(`/chat/user/${userId}`);
+  }
+
+  setChatHasBeenRead(chatId: string) {
+    return this.patch<Chat>(`/chat/read/${chatId}`);
+  }
+
+  getBanks(): Promise<Bank[]> {
+    return this.get('/externals/banks');
+  }
+
+  loadAccountDetails(
+    bankCode: string,
+    accountNumber: string,
+  ): Promise<AccountDetails> {
+    return this.get(
+      `/externals/banks/account?account_number=${accountNumber}&bank_code=${bankCode}`,
+    );
+  }
+
+  private get<T>(url: string): Promise<T> {
+    return axiosInstance()
+      .get(url)
+      .then(({ data }) => data.data) as Promise<T>;
+  }
+
+  private post<T>(url: string, data?: unknown): Promise<T> {
+    return axiosInstance()
+      .post(url, data)
+      .then(({ data }) => {
+        Toast.success({ msg: data.message });
+        return data.data;
+      })
+      .catch((e) => {
+        console.log(e);
+        Toast.error({ msg: e.message });
+        return Promise.reject(e);
+      });
+  }
+
+  private patch<T>(url: string, data?: unknown): Promise<T> {
+    return axiosInstance()
+      .patch(url, data)
+      .then(({ data }) => {
+        Toast.success({ msg: data.message });
+        return data.data;
+      })
+      .catch((e) => {
+        console.log(e);
+        Toast.error({ msg: e.message });
+        return Promise.reject(e);
+      });
+  }
+
+  // FIREBASE TO BE REMOVED
+
+  recordAccountDetails(data: User) {
+    return this.setDoc('user', data._id, data);
+  }
   publishUserRating(data: Rating) {
     return this.setDoc('rating', data.id, data);
   }
-
-  createOrUpdateTrip(data: Trip) {
-    return this.setDoc('trip', data.id, data);
-  }
-
-  getAgentTrips(agentId: string) {
-    return this.query<Trip>({
-      collectionName: 'trip',
-      key: 'agentId',
-      condition: '==',
-      value: agentId,
-    });
-  }
-
   getRatings(
     value: string,
     queryKey: 'transporterId' | 'tripId' = 'transporterId',
@@ -98,64 +233,6 @@ class ApiService {
       value,
     });
   }
-
-  getTransporterTrips(transporterId: string) {
-    return this.query<Trip>({
-      collectionName: 'trip',
-      key: 'transporterId',
-      condition: '==',
-      value: transporterId,
-    });
-  }
-
-  getJobs() {
-    // Jobs are trips that haven't been claimed by any transporter and
-    return this.query<Trip>({
-      collectionName: 'trip',
-      key: 'status',
-      condition: '==',
-      value: 'awaiting_bid',
-    });
-  }
-
-  createOrUpdateBid(data: Bid) {
-    return this.setDoc('bid', data.id, data);
-  }
-
-  createOrUpdatePayment(data: Payment) {
-    return this.setDoc('payment', data.id, data);
-  }
-
-  requestPaymentByTransporter(data: PaymentRequest) {
-    return this.setDoc('payment-request', data.id, data);
-  }
-
-  getPaymentRequestsOfDriver(id: string) {
-    return this.query<PaymentRequest>({
-      collectionName: 'payment-request',
-      key: 'transporterId',
-      condition: '==',
-      value: id,
-    });
-  }
-
-  getPaymentRequestByTripId(id: string) {
-    return this.getItem<PaymentRequest>('payment-request', id);
-  }
-
-  getBidsWithTripId(tripId: string) {
-    return this.query<Bid>({
-      collectionName: 'bid',
-      key: 'tripId',
-      condition: '==',
-      value: tripId,
-    });
-  }
-
-  createOrUpdateChat(chat: Chat) {
-    return this.setDoc('chat', 'chat.id', chat);
-  }
-
   private setDoc(
     collectionName: string,
     id: string,
@@ -191,21 +268,6 @@ class ApiService {
       documentList.push(doc.data() as T);
     });
     return documentList;
-  }
-
-  private async getItem<T>(collectionName: string, id: string): Promise<T> {
-    const docRef = doc(db, collectionName, id);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      return docSnap.data() as T;
-    } else {
-      throw new Error('404: Document not found');
-    }
-  }
-
-  private patch(url: string, data: unknown): unknown {
-    return { url, data };
   }
 
   private remove(url: string) {

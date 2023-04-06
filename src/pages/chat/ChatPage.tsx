@@ -5,15 +5,9 @@ import styled from 'styled-components';
 
 import { RootState } from 'modules/index';
 
-import {
-  selectChatByChatId,
-  createOrUpdateChat,
-  setChats,
-  setChat,
-} from 'modules/Chat';
+import { selectChatByChatId, createChat, readChat } from 'modules/Chat';
 
 import { toAnyAction } from 'utils/helpers';
-import uuidv4 from 'utils/uuid';
 
 import Chat from 'types/Chat';
 
@@ -21,21 +15,25 @@ import UiAvatar from 'ui/UiAvatar';
 import UiIcon from 'ui/UiIcon';
 import UiForm from 'ui/UiForm';
 import ChatSchema from 'utils/validations/ChatSchema';
+import uuidv4 from 'utils/uuid';
 
 export default function ChatPage() {
   const { agentId, transporterId } = useParams();
   const dispatch = useDispatch();
   const chatBottomRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const user = useSelector((state: RootState) => state.account.user);
   const chats = useSelector(selectChatByChatId(`${agentId}-${transporterId}`));
   const users = useSelector((state: RootState) => state.account.users);
-  const alternateUsersId = user?.id === transporterId ? agentId : transporterId;
-  const alternateUser = users.find(({ id }) => id === alternateUsersId);
+  const alternateUsersId =
+    user?._id === transporterId ? agentId : transporterId;
+  const alternateUser = users.find(({ _id }) => _id === alternateUsersId);
 
   const defaultFormData = {
     message: '',
   };
   const [formData, setFormData] = useState(defaultFormData);
+  const [currentLengthOfChats, setCurrentLengthOfChats] = useState(0);
 
   function updateMessage(e: { target: { value: string } }) {
     setFormData({ message: e.target.value });
@@ -43,18 +41,29 @@ export default function ChatPage() {
 
   function sendMessage() {
     const data: Chat = {
-      id: uuidv4(),
       chatId: `${agentId}-${transporterId}`,
       message: formData.message,
-      createdAt: Date.now(),
-      senderId: user?.id || '',
-      agentId: agentId!,
+      senderId: user?._id || '',
       transporterId: transporterId!,
+      agentId: agentId!,
+      receiverId: `${user?._id === agentId ? transporterId : agentId}`,
+      temporaryId: uuidv4(),
+      createdAt: Date.now(),
     };
 
     setFormData(defaultFormData);
-    dispatch(setChat(data));
-    dispatch(toAnyAction(createOrUpdateChat(data)));
+    dispatch(toAnyAction(createChat(data)));
+  }
+
+  function initReadChat() {
+    const lastSentChat = chats[chats.length - 1];
+    if (
+      lastSentChat &&
+      lastSentChat.senderId !== user?._id &&
+      !lastSentChat.readAt
+    ) {
+      dispatch(toAnyAction(readChat({ ...lastSentChat, readAt: Date.now() })));
+    }
   }
 
   useEffect(() => {
@@ -67,19 +76,15 @@ export default function ChatPage() {
   }, [chats]);
 
   useEffect(() => {
-    const lastSentChat = chats[chats.length - 1];
-    if (
-      lastSentChat &&
-      lastSentChat.senderId !== user?.id &&
-      !lastSentChat.readAt
-    ) {
-      dispatch(
-        toAnyAction(
-          createOrUpdateChat({ ...lastSentChat, readAt: Date.now() }),
-        ),
-      );
+    if (chats.length > currentLengthOfChats) {
+      setCurrentLengthOfChats(chats.length);
+      initReadChat();
     }
   }, [chats]);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   return (
     <ChatPageStyling>
@@ -93,7 +98,7 @@ export default function ChatPage() {
       <ChatContainer>
         <div id="chat-window">
           {chats.map((chat, index) => (
-            <ChatBubble isMine={chat.senderId === user?.id} key={index}>
+            <ChatBubble isMine={chat.senderId === user?._id} key={index}>
               <div className="chat-bubble-inner">{chat.message}</div>
             </ChatBubble>
           ))}
@@ -109,6 +114,7 @@ export default function ChatPage() {
               )}
               <div className="inner">
                 <input
+                  ref={inputRef}
                   placeholder="Enter Message"
                   value={formData.message}
                   onChange={updateMessage}

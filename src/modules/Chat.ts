@@ -17,12 +17,21 @@ export const chatSlice = createSlice({
       state.chats = action.payload;
     },
     setChat(state: ChatState, action: { payload: Chat }) {
-      state.chats.push({ ...action.payload, stillSending: true });
+      state.chats.push(action.payload);
+    },
+    removeChatById(
+      state: ChatState,
+      action: { payload: { chatToRemoveId: string } },
+    ) {
+      const chatIndex = state.chats.findIndex(
+        ({ temporaryId }) => temporaryId === action.payload.chatToRemoveId,
+      );
+      state.chats.splice(chatIndex, 0);
     },
   },
 });
 
-export const { setChats, setChat } = chatSlice.actions;
+export const { setChats, setChat, removeChatById } = chatSlice.actions;
 
 export default chatSlice.reducer;
 function getTime(createdAt: number) {
@@ -33,7 +42,10 @@ export const selectChatByChatId = (selectedChatId: string) =>
   createSelector(chats, (chatArr) => {
     return chatArr
       .filter(({ chatId }) => chatId === selectedChatId)
-      .sort((a, b) => getTime(a.createdAt) - getTime(b.createdAt));
+      .sort(
+        (a, b) =>
+          getTime(a.createdAt as number) - getTime(b.createdAt as number),
+      );
   });
 
 export const selectChatHeads = createSelector(chats, (chatArr) => {
@@ -48,16 +60,37 @@ export const selectChatHeads = createSelector(chats, (chatArr) => {
   const refinedChats = Object.values(chatObj)
     .map(
       (arr) =>
-        arr.sort((a, b) => getTime(a.createdAt) - getTime(b.createdAt))[
-          arr.length - 1
-        ],
+        arr.sort(
+          (a, b) =>
+            getTime(a.createdAt as number) - getTime(b.createdAt as number),
+        )[arr.length - 1],
     )
-    .sort((a, b) => getTime(b.createdAt) - getTime(a.createdAt));
+    .sort(
+      (a, b) => getTime(b.createdAt as number) - getTime(a.createdAt as number),
+    );
   return refinedChats;
 });
 
-export const createOrUpdateChat = (chat: Chat) => {
+export const createChat = (chat: Chat) => {
+  return (dispatch: AppDispatch) => {
+    dispatch(setChat(chat));
+    return Api.createChat(chat).catch(() => {
+      dispatch(removeChatById({ chatToRemoveId: chat.temporaryId! }));
+    });
+  };
+};
+
+export const getUsersChat = (userId: string) => {
+  return (dispatch: AppDispatch) => {
+    return Api.getChatsByUserId(userId).then((data) => {
+      dispatch(setChats(data));
+    });
+  };
+};
+
+export const readChat = (chat: Chat) => {
   return () => {
-    return Api.createOrUpdateChat(chat);
+    if (!chat._id) return;
+    return Api.setChatHasBeenRead(chat._id);
   };
 };
