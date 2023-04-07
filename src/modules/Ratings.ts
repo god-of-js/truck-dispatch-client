@@ -23,31 +23,13 @@ export const { setRatings } = ratingsSlice.actions;
 export default ratingsSlice.reducer;
 
 export const getTripRating = (tripId: string) => {
-  return () => {
-    return Api.getRatings(tripId, 'tripId');
+  return (dispatch: AppDispatch) => {
+    return Api.getRating(tripId);
   };
 };
 
-export const compileUserRating = (userId: string) => {
-  return async (dispatch: AppDispatch, state: AppState) => {
-    const user = state().account.users.find(({ _id }) => _id === userId);
-    if (!user) throw new Error('404: User not found.');
-
-    const userRatings = await Api.getRatings(userId);
-    const ratings = userRatings.map(({ rating }) => rating);
-
-    if (!ratings.length) return;
-
-    const sumOfRatings = ratings.reduce((a, b) => a + b, 0);
-    const newRating = (sumOfRatings / ratings.length).toFixed(1);
-
-    // return dispatch(
-    //   toAnyAction(
-    //     createOrUpdateUser({
-    //       ...user,
-    //       rating: parseInt(newRating),
-    //     }),
-    //   ),
-    // );
+export const publishUserRating = (data: Rating) => {
+  return () => {
+    return Api.publishUserRating(data);
   };
 };

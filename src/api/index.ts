@@ -1,25 +1,11 @@
-import {
-  collection,
-  getDocs,
-  doc,
-  getDoc,
-  setDoc,
-  query,
-  where,
-  WhereFilterOp,
-} from 'firebase/firestore';
-import 'firebase/firestore';
 import User from '../types/User';
-import db from './firebase';
 import axiosInstance from './AxiosInstance';
 import Trip from 'types/Trip';
 import Bid from 'types/Bid';
-import Payment from 'types/Payment';
 import Rating from 'types/Rating';
 import PaymentRequest from 'types/PaymentRequest';
 import Chat from 'types/Chat';
 import Verification from 'types/Verification';
-import BankAccount from 'types/BankDetails';
 import VerifyPhoneData from 'types/VerifyPhoneData';
 import NewTrip from 'types/NewTrip';
 import { Toast } from 'utils/toast';
@@ -68,10 +54,6 @@ class ApiService {
 
   getUser() {
     return this.get<User>('/user');
-  }
-
-  getUsers() {
-    return this.getCollection<User>('user');
   }
 
   startVerificationProcess(data: FormData) {
@@ -175,6 +157,10 @@ class ApiService {
     return this.get('/externals/banks');
   }
 
+  getRating(tripId: string) {
+    return this.get<Rating>(`/rating/${tripId}`);
+  }
+
   loadAccountDetails(
     bankCode: string,
     accountNumber: string,
@@ -219,58 +205,7 @@ class ApiService {
   }
 
   publishUserRating(data: Rating) {
-    return this.setDoc('rating', data.id, data);
-  }
-  getRatings(
-    value: string,
-    queryKey: 'transporterId' | 'tripId' = 'transporterId',
-  ) {
-    return this.query<Rating>({
-      collectionName: 'rating',
-      key: queryKey,
-      condition: '==',
-      value,
-    });
-  }
-  private setDoc(
-    collectionName: string,
-    id: string,
-    data: unknown,
-  ): Promise<unknown> {
-    return setDoc(doc(db, collectionName, id), data);
-  }
-
-  private async getCollection<T>(collectionName: string): Promise<T[]> {
-    const rawObjects = await getDocs(collection(db, collectionName));
-    return rawObjects.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    })) as unknown as T[];
-  }
-
-  private async query<T = unknown>({
-    collectionName,
-    key,
-    condition,
-    value,
-  }: {
-    collectionName: string;
-    key: string;
-    condition: WhereFilterOp;
-    value: string;
-  }): Promise<T[]> {
-    const dbRef = collection(db, collectionName);
-    const rawQuery = query(dbRef, where(key, condition, value));
-    const snapShots = await getDocs(rawQuery);
-    const documentList: T[] = [];
-    snapShots.forEach((doc) => {
-      documentList.push(doc.data() as T);
-    });
-    return documentList;
-  }
-
-  private remove(url: string) {
-    return { url };
+    return this.post(`/rating/${data.tripId}`, data);
   }
 }
 
