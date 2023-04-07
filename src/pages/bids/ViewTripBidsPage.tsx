@@ -28,10 +28,10 @@ export default function ViewTripBidsPage() {
       title: 'Transporter Ratings',
       query: 'rating',
     },
-    // {
-    //   title: 'No. of Completed Trips',
-    //   query: 'price',
-    // },
+    {
+      title: 'No. of Completed Trips',
+      query: 'completedTrips',
+    },
     {
       title: 'Truck Present Location',
       query: 'presentLocation',
@@ -43,6 +43,7 @@ export default function ViewTripBidsPage() {
   }
 
   const bidsData = useMemo(() => {
+    console.log(bids)
     return bids.map((bid: Bid) => ({
       ...bid,
       price: <>&#8358; {abbreviateNumber(priceWithTDPercent(bid.price))}</>,
@@ -53,6 +54,7 @@ export default function ViewTripBidsPage() {
         </TransporterDetails>
       ),
       rating: <Ratings rating={bid.transporter.rating || 0} />,
+      completedTrips: bid.transporter.completedTrips
     }));
   }, [bids]);
 
