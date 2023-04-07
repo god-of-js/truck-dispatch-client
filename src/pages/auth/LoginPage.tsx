@@ -41,7 +41,6 @@ export default function LoginPage() {
         if (msg === 'Phone has not been verified') {
           navigate('/auth/verify-phone');
         }
-        console.log(err);
         Toast.error({ msg });
       })
       .finally(() => {

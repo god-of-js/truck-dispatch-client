@@ -62,7 +62,6 @@ export default function ViewTripRequestPayment() {
       }
       setLoading(true);
       if (!tripId) return;
-      console.log(formData);
       const data = deepRootedToFormData(formData);
       const request = paymentRequest
         ? updatePaymentRequestByTransporter(data, tripId, paymentRequest._id)
