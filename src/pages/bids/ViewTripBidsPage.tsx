@@ -43,7 +43,6 @@ export default function ViewTripBidsPage() {
   }
 
   const bidsData = useMemo(() => {
-    console.log(bids)
     return bids.map((bid: Bid) => ({
       ...bid,
       price: <>&#8358; {abbreviateNumber(priceWithTDPercent(bid.price))}</>,
