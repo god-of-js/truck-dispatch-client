@@ -103,7 +103,6 @@ export default function AgentTripPageContent() {
       ),
     }));
   }, [trips]);
-  console.log(tripsData);
 
   function navigateToTrip(id: string) {
     navigate(`/my-trips/${id}`);

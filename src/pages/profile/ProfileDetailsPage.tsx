@@ -9,7 +9,11 @@ import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
 import UiIcon from 'ui/UiIcon';
 import UiInput from 'ui/UiInput';
-import { deepRootedToFormData, removeUneditedFields, toAnyAction } from 'utils/helpers';
+import {
+  deepRootedToFormData,
+  removeUneditedFields,
+  toAnyAction,
+} from 'utils/helpers';
 import sizes from 'utils/sizes';
 import EditProfileSchema from 'utils/validations/EditProfileSchema';
 
@@ -23,8 +27,8 @@ export default function ProfileDetailsPage() {
   async function editProfile() {
     try {
       setLoading(true);
-      const editedData = removeUneditedFields<User>(user!, formData)
-      const data = deepRootedToFormData(editedData)
+      const editedData = removeUneditedFields<User>(user!, formData);
+      const data = deepRootedToFormData(editedData);
       dispatch(toAnyAction(updateUser(data)))
         .then(() => {
           setIsEditable(false);

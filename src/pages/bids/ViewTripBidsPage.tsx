@@ -28,10 +28,10 @@ export default function ViewTripBidsPage() {
       title: 'Transporter Ratings',
       query: 'rating',
     },
-    // {
-    //   title: 'No. of Completed Trips',
-    //   query: 'price',
-    // },
+    {
+      title: 'No. of Completed Trips',
+      query: 'completedTrips',
+    },
     {
       title: 'Truck Present Location',
       query: 'presentLocation',
@@ -53,6 +53,7 @@ export default function ViewTripBidsPage() {
         </TransporterDetails>
       ),
       rating: <Ratings rating={bid.transporter.rating || 0} />,
+      completedTrips: bid.transporter.completedTrips
     }));
   }, [bids]);
 

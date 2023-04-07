@@ -123,21 +123,6 @@ export function loginUser(AuthUser: { email: string; password: string }) {
   };
 }
 
-export function getUsers() {
-  return (dispatch: AppDispatch) => {
-    const uid = localStorage.getItem('uid');
-    // Log user out in this situation
-    if (!uid) return;
-    return Api.getUsers()
-      .then((data) => {
-        dispatch(setUsers(data));
-      })
-      .catch((err) => {
-        throw new Error(err.message);
-      });
-  };
-}
-
 export function getDashboardUser() {
   return (dispatch: AppDispatch) => {
     return Api.getUser()
@@ -160,12 +145,6 @@ export const startVerificationProcess = (verificationData: FormData) => {
 export const updateVerification = (verificationData: FormData) => {
   return (dispatch: AppDispatch, state: AppState) => {
     return Api.updateVerification(verificationData);
-  };
-};
-
-export const publishUserRating = (data: Rating) => {
-  return () => {
-    return Api.publishUserRating(data);
   };
 };
 

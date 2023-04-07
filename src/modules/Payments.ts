@@ -80,7 +80,6 @@ export function getPaymentRequestsOfDriver() {
 export function getPaymentRequestByTripId(tripId: string) {
   return (dispatch: AppDispatch) => {
     return Api.getPaymentRequestByTripId(tripId).then((paymentRequest) => {
-      console.log(paymentRequest, 'payment request');
       dispatch(setPaymentRequest(paymentRequest));
     });
   };
