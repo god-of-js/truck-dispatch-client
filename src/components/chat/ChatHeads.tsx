@@ -20,8 +20,8 @@ export default function ChatHeads() {
     return foundUser;
   }
 
-  function navigateToChat(agentId: string, transporterId: string) {
-    navigate(`/chat/${agentId}/${transporterId}`);
+  function navigateToChat(chatId: string) {
+    navigate(`/chat/${chatId}`);
   }
 
   return (
@@ -30,7 +30,7 @@ export default function ChatHeads() {
         <ChatHead
           key={index}
           hasBeenRead={!!val.readAt || val.senderId === user?._id}
-          onClick={() => navigateToChat(val.agentId, val.transporterId)}
+          onClick={() => navigateToChat(val.chatId)}
         >
           <UiAvatar avatar={alternateUser(val)?.avatar} />
           <div className="content-container">

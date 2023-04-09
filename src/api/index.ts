@@ -15,6 +15,8 @@ import AccountDetails from 'types/AccountDetails';
 import BankDetails from 'types/BankDetails';
 import TokenVerificationData from 'types/TokenVerificationData';
 import LoginResponse from 'types/LoginResponse';
+import ChatLogData from 'types/ChatLogData';
+import ChatLog from 'types/ChatLog';
 
 class ApiService {
   createUser(userData: User) {
@@ -144,9 +146,16 @@ class ApiService {
   createChat(chat: Chat) {
     return this.post('/chat', chat);
   }
+  createOrFetchChatLog(chat: ChatLogData) {
+    return this.post<ChatLog>('/chat/log', chat);
+  }
 
-  getChatsByUserId(userId: string) {
-    return this.get<Chat[]>(`/chat/user/${userId}`);
+  getUserChats() {
+    return this.get<Chat[]>(`/chat`);
+  }
+
+  getChatLogs() {
+    return this.get<ChatLog[]>(`/chat/logs`);
   }
 
   setChatHasBeenRead(chatId: string) {

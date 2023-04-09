@@ -15,7 +15,7 @@ import Loader from 'components/layout/Loader';
 import UiAlert from 'ui/UiAlert';
 import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
-import { getUsersChat, setChat } from 'modules/Chat';
+import { getChatLogs, getUsersChat, setChat } from 'modules/Chat';
 import { WEB_SOCKET_URL } from 'utils/privateKeys';
 
 export default function DashboardLayout() {
@@ -35,7 +35,8 @@ export default function DashboardLayout() {
           Toast.error({ msg: err.message });
         })
         .finally(() => setLoading(false));
-      // dispatch(toAnyAction(getUsersChat(userId)));
+      dispatch(toAnyAction(getUsersChat()));
+      dispatch(toAnyAction(getChatLogs()));
     }
   }, []);
 
@@ -95,7 +96,7 @@ export default function DashboardLayout() {
           </div>
         )}
         <DashboardTopNav />
-        <div className="body-components-container">{Component}</div>
+        <Outlet />
       </Body>
     </Layout>
   );

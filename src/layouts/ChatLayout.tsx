@@ -1,11 +1,30 @@
-import React from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ChatHeads from 'components/chat/ChatHeads';
 import sizes from 'utils/sizes';
+import { useDispatch } from 'react-redux';
+import { toAnyAction } from 'utils/helpers';
+import { createOrFetchChatLog } from 'modules/Chat';
+import ChatLog from 'types/ChatLog';
 
 export default function ChatLayout() {
   const location = useLocation();
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const clientId = new URLSearchParams(location.search).get('clientId');
+  const transporterId = new URLSearchParams(location.search).get('transporterId');
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (clientId && transporterId) {
+      setIsLoading(false)
+      dispatch(toAnyAction(createOrFetchChatLog({ clientId, transporterId }))).then((log: ChatLog) => {
+        console.log(log)
+        navigate(`/chat/${log._id}`)
+      })
+    }
+  }, [clientId, transporterId])
 
   return (
     <ChatLayoutDesign>
