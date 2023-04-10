@@ -4,13 +4,14 @@ import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import sizes from 'utils/sizes';
 
-import { selectChatHeads } from 'modules/Chat';
+// import { selectChatHeads } from 'modules/Chat';
 
 import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
 
 import UiIcon, { Icons } from '../ui/UiIcon';
 import { RootState } from 'modules/index';
 import { removeUserSessionId } from 'utils/userSession';
+import { selectUnreadChats } from 'modules/Chat';
 
 interface Route {
   iconName: Icons;
@@ -19,7 +20,7 @@ interface Route {
 }
 export default function DashboardSidebar() {
   const user = useSelector((state: RootState) => state.account.user);
-  const chatHeads = useSelector(selectChatHeads);
+  const unreadChat = useSelector(selectUnreadChats);
   const navigate = useNavigate();
   const appLocation = useLocation();
 
@@ -53,11 +54,6 @@ export default function DashboardSidebar() {
       iconName: 'Truck',
     },
   ];
-  const unreadChatHeads = useMemo(() => {
-    return chatHeads.filter(
-      (chat) => !chat.readAt && chat.senderId !== user?._id,
-    ).length;
-  }, [chatHeads]);
 
   const routes = useMemo(() => {
     if (!user) return [];
@@ -91,8 +87,8 @@ export default function DashboardSidebar() {
             <Tab isActive={isRouteActive('/chat')}>
               <div className="chat-icon-container">
                 <UiIcon icon="Chats" size="24" />
-                {unreadChatHeads !== 0 && (
-                  <MessageCount>{unreadChatHeads}</MessageCount>
+                {unreadChat.length !== 0 && (
+                  <MessageCount>{unreadChat.length}</MessageCount>
                 )}
               </div>
             </Tab>

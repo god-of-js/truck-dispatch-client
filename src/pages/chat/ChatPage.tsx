@@ -5,7 +5,12 @@ import styled from 'styled-components';
 
 import { RootState } from 'modules/index';
 
-import { selectChatByChatId, createChat, readChat, selectChatLog } from 'modules/Chat';
+import {
+  selectChatByChatId,
+  createChat,
+  readChat,
+  selectChatLog,
+} from 'modules/Chat';
 
 import { toAnyAction } from 'utils/helpers';
 
@@ -24,7 +29,7 @@ export default function ChatPage() {
   const chatBottomRef = useRef(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const user = useSelector((state: RootState) => state.account.user);
-  const chatLog = useSelector(selectChatLog(chatId!))
+  const chatLog = useSelector(selectChatLog(chatId!));
   const chats = useSelector(selectChatByChatId(chatId!));
 
   const defaultFormData = {
@@ -34,13 +39,13 @@ export default function ChatPage() {
   const [currentLengthOfChats, setCurrentLengthOfChats] = useState(0);
 
   const alternateUser = useMemo(() => {
-    if (!chatLog || !user) return {} as User
+    if (!chatLog || !user) return {} as User;
     if (chatLog?.clientId === user?._id) {
-      return chatLog?.client;
+      return chatLog?.transporter;
     }
 
-    chatLog?.transporter
-  }, [chatLog, user])
+    return chatLog?.client;
+  }, [chatLog, user]);
 
   function updateMessage(e: { target: { value: string } }) {
     setFormData({ message: e.target.value });
@@ -54,6 +59,7 @@ export default function ChatPage() {
       message: formData.message,
       senderId: user?._id!,
       receiverId: alternateUser?._id!,
+      createdAt: Date.now()
     };
 
     setFormData(defaultFormData);
@@ -96,8 +102,10 @@ export default function ChatPage() {
       <Header>
         <div className="user-details">
           {/* TODO: Add Loaders to the avatar */}
-          <UiAvatar avatar={alternateUser?.avatar}/>
-          <div>{`${alternateUser?.firstName || ''} ${alternateUser?.lastName || ''}`}</div>
+          <UiAvatar avatar={alternateUser?.avatar} />
+          <div>{`${alternateUser?.firstName || ''} ${
+            alternateUser?.lastName || ''
+          }`}</div>
         </div>
       </Header>
 
@@ -111,28 +119,36 @@ export default function ChatPage() {
         </div>
         <div ref={chatBottomRef} />
       </ChatContainer>
-      <InputContainer>
-        <UiForm formData={formData} schema={ChatSchema} onSubmit={sendMessage}>
-          {({ errors }) => (
-            <div className="input-group">
-              {errors.message && (
-                <div className="error-message-container">{errors.message}</div>
-              )}
-              <div className="inner">
-                <input
-                  ref={inputRef}
-                  placeholder="Enter Message"
-                  value={formData.message}
-                  onChange={updateMessage}
-                />
-                <button type="submit" disabled={!formData.message}>
-                  <UiIcon icon="PaperPlaneTilt" />
-                </button>
+      {alternateUser && (
+        <InputContainer>
+          <UiForm
+            formData={formData}
+            schema={ChatSchema}
+            onSubmit={sendMessage}
+          >
+            {({ errors }) => (
+              <div className="input-group">
+                {errors.message && (
+                  <div className="error-message-container">
+                    {errors.message}
+                  </div>
+                )}
+                <div className="inner">
+                  <input
+                    ref={inputRef}
+                    placeholder="Enter Message"
+                    value={formData.message}
+                    onChange={updateMessage}
+                  />
+                  <button type="submit" disabled={!formData.message}>
+                    <UiIcon icon="PaperPlaneTilt" />
+                  </button>
+                </div>
               </div>
-            </div>
-          )}
-        </UiForm>
-      </InputContainer>
+            )}
+          </UiForm>
+        </InputContainer>
+      )}
     </ChatPageStyling>
   );
 }

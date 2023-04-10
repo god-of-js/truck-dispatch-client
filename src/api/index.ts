@@ -144,10 +144,13 @@ class ApiService {
   }
 
   createChat(chat: Chat) {
-    return this.post('/chat', chat);
+    return this.post('/chat', chat, true);
   }
   createOrFetchChatLog(chat: ChatLogData) {
-    return this.post<ChatLog>('/chat/log', chat);
+    return this.post<ChatLog>('/chat/log', chat, true);
+  }
+  publishUserRating(data: Rating) {
+    return this.post(`/rating/${data.tripId}`, data);
   }
 
   getUserChats() {
@@ -159,7 +162,7 @@ class ApiService {
   }
 
   setChatHasBeenRead(chatId: string) {
-    return this.patch<Chat>(`/chat/read/${chatId}`);
+    return this.patch<Chat>(`/chat/read/${chatId}`, {}, true);
   }
 
   getBanks(): Promise<Bank[]> {
@@ -185,11 +188,11 @@ class ApiService {
       .then(({ data }) => data.data) as Promise<T>;
   }
 
-  private post<T>(url: string, data?: unknown): Promise<T> {
+  private post<T>(url: string, data?: unknown, silent = false): Promise<T> {
     return axiosInstance()
       .post(url, data)
       .then(({ data }) => {
-        Toast.success({ msg: data.message });
+        if (!silent) Toast.success({ msg: data.message });
         return data.data;
       })
       .catch((e) => {
@@ -198,21 +201,17 @@ class ApiService {
       });
   }
 
-  private patch<T>(url: string, data?: unknown): Promise<T> {
+  private patch<T>(url: string, data?: unknown, silent = false): Promise<T> {
     return axiosInstance()
       .patch(url, data)
       .then(({ data }) => {
-        Toast.success({ msg: data.message });
+        if (!silent) Toast.success({ msg: data.message });
         return data.data;
       })
       .catch((e) => {
         Toast.error({ msg: e.message });
         return Promise.reject(e);
       });
-  }
-
-  publishUserRating(data: Rating) {
-    return this.post(`/rating/${data.tripId}`, data);
   }
 }
 

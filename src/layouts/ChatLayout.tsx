@@ -10,21 +10,23 @@ import ChatLog from 'types/ChatLog';
 
 export default function ChatLayout() {
   const location = useLocation();
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const clientId = new URLSearchParams(location.search).get('clientId');
-  const transporterId = new URLSearchParams(location.search).get('transporterId');
+  const transporterId = new URLSearchParams(location.search).get(
+    'transporterId',
+  );
   const [isLoading, setIsLoading] = useState(false);
-
   useEffect(() => {
-    if (clientId && transporterId) {
-      setIsLoading(false)
-      dispatch(toAnyAction(createOrFetchChatLog({ clientId, transporterId }))).then((log: ChatLog) => {
-        console.log(log)
-        navigate(`/chat/${log._id}`)
-      })
+    if (clientId && transporterId && !isLoading) {
+      setIsLoading(true);
+      dispatch(
+        toAnyAction(createOrFetchChatLog({ clientId, transporterId })),
+      ).then((log: ChatLog) => {
+        navigate(`/chat/${log._id}`);
+      });
     }
-  }, [clientId, transporterId])
+  }, [clientId, transporterId, isLoading]);
 
   return (
     <ChatLayoutDesign>
