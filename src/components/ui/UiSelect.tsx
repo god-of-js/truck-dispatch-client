@@ -8,7 +8,7 @@ export interface Option {
   value: string;
   label: string;
 }
-
+  
 interface Props {
   label: string;
   options: Option[];
@@ -40,14 +40,14 @@ export default function UiSelect({
   const selectedOption = useMemo(() => {
     if (!value) return null;
     return options.find((option) => option.value === value) || null;
-  }, [value, options]);
+  }, [value, options]); 
 
   return (
     <OutsideClickHandler onOutsideClick={() => setIsOpen(false)}>
       <UiField label={label} name={name} error={error}>
         <StyledSelect onClick={toggleOptions} hasError={!!error}>
           <div>
-            <span>{selectedOption && selectedOption.label}</span>
+            <span className='selected-option'>{selectedOption?.label ? selectedOption.label : 'Choose an option from the dropdown'}</span>
             <span>
               <UiIcon icon={isOpen ? 'CaretUp' : 'CaretDown'} />
             </span>
@@ -71,7 +71,7 @@ export default function UiSelect({
 const StyledSelect = styled.div`
   position: relative;
   div {
-    padding: ${pxToRem(16)} ${pxToRem(8)};
+    padding: ${pxToRem(16)} ;
     height: var(--base-height);
     display: flex;
     align-items: center;
@@ -85,6 +85,12 @@ const StyledSelect = styled.div`
     border-radius: ${pxToRem(8)};
     box-sizing: border-box;
     transition: all 0.2s ease-in-out;
+    .selected-option {
+      font-size: ${pxToRem(14)};
+      color: var(--color-gray-80);
+      font-weight: 400;
+      line-height: ${pxToRem(24)};
+    }
   }
 `;
 

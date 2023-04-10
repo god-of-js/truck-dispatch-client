@@ -88,7 +88,7 @@ export default function LoginPage() {
           </ForgotPassword> */}
             <LinkToRegisteration>
               Don't have an account?{' '}
-              <Link to="/auth/join/agent">register with us</Link>
+              <Link to="/auth/join">register with us</Link>
             </LinkToRegisteration>
           </>
         )}

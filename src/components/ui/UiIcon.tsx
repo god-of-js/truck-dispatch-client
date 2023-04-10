@@ -35,6 +35,7 @@ import Car from './icons/Car';
 import CallReceived from './icons/CallReceived';
 import MagicStar from './icons/MagicStar';
 import styled from 'styled-components';
+import  UserOctagon  from './icons/UserOctagon';
 import UserSquare from './icons/UserSquare';
 // These icons should be arranged alphabetically for easy sorting
 const icons = {
@@ -68,6 +69,7 @@ const icons = {
   Star: <Star />,
   Truck: <Truck />,
   User: <User />,
+  UserOctagon: <UserOctagon />,
   UsersThree: <UsersThree />,
   UserSquare: <UserSquare />,
   X: <X />,
@@ -86,4 +88,8 @@ export default function UiIcon({ icon, size = '16' }: Props) {
 const IconStyle = styled.span`
   font-size: ${({ size }: { size?: Props['size'] }) =>
     pxToRem((size && parseInt(size)) || 16)};
+  
+  width: ${({ size }: { size?: Props['size'] }) =>
+    pxToRem((size && parseInt(size)) || 16)};
+  
 `;

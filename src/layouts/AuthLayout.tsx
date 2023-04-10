@@ -16,9 +16,6 @@ export default function AuthLayout() {
       navigate('/my-trips');
       return;
     }
-    if (location.pathname.includes('join') && !userTypes.includes(userType!)) {
-      navigate('/auth/join/agent');
-    }
   }, []);
 
   return (

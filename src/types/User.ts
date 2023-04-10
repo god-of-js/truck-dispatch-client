@@ -5,7 +5,7 @@ export default interface User {
   email: string;
   phone: string;
   avatar?: string | File;
-  userType: 'agent' | 'transporter';
+  userType: 'agent' | 'transporter' | 'company' | 'transport_company';
   status?:
     | 'pending_verification'
     | 'verified'

@@ -9,6 +9,7 @@ interface Props {
   label: string;
   type?: 'text' | 'password' | 'number' | 'phone' | 'date';
   value: string | null | number;
+  placeholder?: string
   /** The name property should always be the same as the model value. example if the input belongs to
    * formData.confirm_password, the name prop should be confirm_password.
    */
@@ -23,6 +24,7 @@ export default function UiInput({
   type = 'text',
   name,
   value,
+  placeholder,
   disabled,
   error,
   onChange,
@@ -60,6 +62,7 @@ export default function UiInput({
           <Input
             type={inputType}
             value={value || ''}
+            placeholder={placeholder}
             name={name}
             hasError={!!error}
             disabled={disabled}
@@ -96,6 +99,7 @@ const Input = styled.input`
   gap: ${pxToRem(8)};
   width: 100%;
   font-size: ${pxToRem(12)};
+  font-family: 'thiccboi-medium';
   border: ${pxToRem(1)} solid;
   border-color: ${({ hasError }: { hasError: boolean }) =>
     hasError ? 'var(--color-danger)' : 'var(--color-gray)'};
@@ -107,6 +111,12 @@ const Input = styled.input`
   &:focus {
     border: ${pxToRem(2)} solid var(--color-primary);
     box-shadow: var(--box-shadow-primary);
+  }
+  ::placeholder{
+    font-size: ${pxToRem(14)};
+    color: var(--color-gray-80);
+    font-weight: 400;
+    line-height: ${pxToRem(24)};
   }
 `;
 
