@@ -4,8 +4,6 @@ import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import sizes from 'utils/sizes';
 
-// import { selectChatHeads } from 'modules/Chat';
-
 import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
 
 import UiIcon, { Icons } from '../ui/UiIcon';

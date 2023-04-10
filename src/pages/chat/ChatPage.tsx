@@ -59,7 +59,7 @@ export default function ChatPage() {
       message: formData.message,
       senderId: user?._id!,
       receiverId: alternateUser?._id!,
-      createdAt: Date.now()
+      createdAt: Date.now(),
     };
 
     setFormData(defaultFormData);
