@@ -1,47 +1,56 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { RootState } from 'modules/index';
-import { selectChatHeads } from 'modules/Chat';
 import UiAvatar from 'ui/UiAvatar';
-import Chat from 'types/Chat';
+import ChatLog from 'types/ChatLog';
 
 export default function ChatHeads() {
   const navigate = useNavigate();
-  const users = useSelector((state: RootState) => state.account.users);
   const user = useSelector((state: RootState) => state.account.user);
-  const chatHeads = useSelector(selectChatHeads);
+  const chatLogs = useSelector((state: RootState) => state.chat.chatLogs);
 
-  function alternateUser(chat: Chat) {
-    const alternateUserId =
-      user?._id === chat.receiverId ? chat.senderId : chat.receiverId;
-    const foundUser = users.find(({ _id }) => _id === alternateUserId);
-    return foundUser;
+  function getTime(createdAt: number) {
+    return new Date(createdAt).getTime();
+  }
+  const chatLogsWithContent = useMemo(() => {
+    return chatLogs
+      .filter((log) => !!log.lastMessage)
+      .sort(
+        (a, b) =>
+          getTime(b.lastMessage.createdAt!) - getTime(a.lastMessage.createdAt!),
+      );
+  }, [chatLogs]);
+
+  function alternateUser(log: ChatLog) {
+    return user?._id === log.transporterId ? log.client : log.transporter;
   }
 
-  function navigateToChat(agentId: string, transporterId: string) {
-    navigate(`/chat/${agentId}/${transporterId}`);
+  function navigateToChat(chatId: string) {
+    navigate(`/chat/${chatId}`);
   }
 
   return (
     <ChatHeadsList>
-      {chatHeads.map((val, index) => (
+      {chatLogsWithContent.map((log, index) => (
         <ChatHead
           key={index}
-          hasBeenRead={!!val.readAt || val.senderId === user?._id}
-          onClick={() => navigateToChat(val.agentId, val.transporterId)}
+          hasBeenRead={
+            !!log.lastMessage?.readAt || log.lastMessage?.senderId === user?._id
+          }
+          onClick={() => navigateToChat(log._id)}
         >
-          <UiAvatar avatar={alternateUser(val)?.avatar} />
+          <UiAvatar avatar={alternateUser(log)?.avatar} />
           <div className="content-container">
             <div className="name">
-              {alternateUser(val)
-                ? `${alternateUser(val)?.firstName} ${
-                    alternateUser(val)?.lastName
+              {alternateUser(log)
+                ? `${alternateUser(log).firstName} ${
+                    alternateUser(log).lastName
                   }`
                 : 'Truckdispatch User'}
             </div>
-            <div className="last-text">{val.message}</div>
+            <div className="last-text">{log.lastMessage?.message}</div>
           </div>
         </ChatHead>
       ))}

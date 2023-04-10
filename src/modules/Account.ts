@@ -1,22 +1,19 @@
-import { createSelector, createSlice } from '@reduxjs/toolkit';
-import { AppDispatch, AppState, RootState } from '.';
+import { createSlice } from '@reduxjs/toolkit';
+import { AppDispatch, AppState } from '.';
 import Api from 'Api';
 import User from '../types/User';
 import UserWithPassword from '../types/UserWithPassword';
 import Verification from '../types/Verification';
-import Rating from 'types/Rating';
 import BankAccount from 'types/BankDetails';
 import { saveTokenVerificationInfo } from 'utils/helpers';
 import { saveUserSessionId } from 'utils/userSession';
 
 export interface AccountState {
-  users: User[];
   verification: Verification | null;
   user: User | null;
 }
 
 const initialState: AccountState = {
-  users: [] as User[],
   user: null,
   verification: null,
 };
@@ -27,9 +24,6 @@ export const accountSlice = createSlice({
     setUser: (state: AccountState, action: { payload: User }) => {
       state.user = action.payload;
     },
-    setUsers: (state: AccountState, action: { payload: User[] }) => {
-      state.users = action.payload;
-    },
     setVerification: (
       state: AccountState,
       action: { payload: Verification },
@@ -39,29 +33,9 @@ export const accountSlice = createSlice({
   },
 });
 
-export const { setUsers, setUser, setVerification } = accountSlice.actions;
+export const { setUser, setVerification } = accountSlice.actions;
 
 export default accountSlice.reducer;
-
-const users = (state: RootState) => state.account.users;
-
-export const selectUser = (userId: string) =>
-  createSelector(users, (usersArr) =>
-    usersArr.find((user) => user._id === userId),
-  );
-
-export const selectTransporters = createSelector(users, (usersArr: User[]) =>
-  usersArr.filter(({ userType }) => userType === 'transporter'),
-);
-
-export const selectTransporter = (transporterId: string) =>
-  createSelector(users, (usersArr: User[]) =>
-    usersArr.find(({ _id }) => _id === transporterId),
-  );
-
-export const selectAgents = createSelector(users, (usersArr: User[]) =>
-  usersArr.filter(({ userType }) => userType === 'agent'),
-);
 
 export function RegisterUser(AuthUser: UserWithPassword) {
   return async () => {
@@ -123,21 +97,6 @@ export function loginUser(AuthUser: { email: string; password: string }) {
   };
 }
 
-export function getUsers() {
-  return (dispatch: AppDispatch) => {
-    const uid = localStorage.getItem('uid');
-    // Log user out in this situation
-    if (!uid) return;
-    return Api.getUsers()
-      .then((data) => {
-        dispatch(setUsers(data));
-      })
-      .catch((err) => {
-        throw new Error(err.message);
-      });
-  };
-}
-
 export function getDashboardUser() {
   return (dispatch: AppDispatch) => {
     return Api.getUser()
@@ -160,12 +119,6 @@ export const startVerificationProcess = (verificationData: FormData) => {
 export const updateVerification = (verificationData: FormData) => {
   return (dispatch: AppDispatch, state: AppState) => {
     return Api.updateVerification(verificationData);
-  };
-};
-
-export const publishUserRating = (data: Rating) => {
-  return () => {
-    return Api.publishUserRating(data);
   };
 };
 

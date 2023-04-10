@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { selectAgents } from 'modules/Account';
 import { RootState } from 'modules/index';
 import Trip from 'types/Trip';
 
@@ -17,7 +16,6 @@ import User from 'types/User';
 export default function AgentTripPageContent() {
   const navigate = useNavigate();
   const trips = useSelector((state: RootState) => state.trips.trips);
-  const agents = useSelector(selectAgents);
 
   const headers = [
     {

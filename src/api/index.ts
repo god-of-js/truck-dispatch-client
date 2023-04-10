@@ -1,25 +1,11 @@
-import {
-  collection,
-  getDocs,
-  doc,
-  getDoc,
-  setDoc,
-  query,
-  where,
-  WhereFilterOp,
-} from 'firebase/firestore';
-import 'firebase/firestore';
 import User from '../types/User';
-import db from './firebase';
 import axiosInstance from './AxiosInstance';
 import Trip from 'types/Trip';
 import Bid from 'types/Bid';
-import Payment from 'types/Payment';
 import Rating from 'types/Rating';
 import PaymentRequest from 'types/PaymentRequest';
 import Chat from 'types/Chat';
 import Verification from 'types/Verification';
-import BankAccount from 'types/BankDetails';
 import VerifyPhoneData from 'types/VerifyPhoneData';
 import NewTrip from 'types/NewTrip';
 import { Toast } from 'utils/toast';
@@ -29,6 +15,8 @@ import AccountDetails from 'types/AccountDetails';
 import BankDetails from 'types/BankDetails';
 import TokenVerificationData from 'types/TokenVerificationData';
 import LoginResponse from 'types/LoginResponse';
+import ChatLogData from 'types/ChatLogData';
+import ChatLog from 'types/ChatLog';
 
 class ApiService {
   createUser(userData: User) {
@@ -68,10 +56,6 @@ class ApiService {
 
   getUser() {
     return this.get<User>('/user');
-  }
-
-  getUsers() {
-    return this.getCollection<User>('user');
   }
 
   startVerificationProcess(data: FormData) {
@@ -160,19 +144,33 @@ class ApiService {
   }
 
   createChat(chat: Chat) {
-    return this.post('/chat', chat);
+    return this.post('/chat', chat, true);
+  }
+  createOrFetchChatLog(chat: ChatLogData) {
+    return this.post<ChatLog>('/chat/log', chat, true);
+  }
+  publishUserRating(data: Rating) {
+    return this.post(`/rating/${data.tripId}`, data);
   }
 
-  getChatsByUserId(userId: string) {
-    return this.get<Chat[]>(`/chat/user/${userId}`);
+  getUserChats() {
+    return this.get<Chat[]>(`/chat`);
+  }
+
+  getChatLogs() {
+    return this.get<ChatLog[]>(`/chat/logs`);
   }
 
   setChatHasBeenRead(chatId: string) {
-    return this.patch<Chat>(`/chat/read/${chatId}`);
+    return this.patch<Chat>(`/chat/read/${chatId}`, {}, true);
   }
 
   getBanks(): Promise<Bank[]> {
     return this.get('/externals/banks');
+  }
+
+  getRating(tripId: string) {
+    return this.get<Rating>(`/rating/${tripId}`);
   }
 
   loadAccountDetails(
@@ -190,87 +188,30 @@ class ApiService {
       .then(({ data }) => data.data) as Promise<T>;
   }
 
-  private post<T>(url: string, data?: unknown): Promise<T> {
+  private post<T>(url: string, data?: unknown, silent = false): Promise<T> {
     return axiosInstance()
       .post(url, data)
       .then(({ data }) => {
-        Toast.success({ msg: data.message });
+        if (!silent) Toast.success({ msg: data.message });
         return data.data;
       })
       .catch((e) => {
-        console.log(e);
         Toast.error({ msg: e.message });
         return Promise.reject(e);
       });
   }
 
-  private patch<T>(url: string, data?: unknown): Promise<T> {
+  private patch<T>(url: string, data?: unknown, silent = false): Promise<T> {
     return axiosInstance()
       .patch(url, data)
       .then(({ data }) => {
-        Toast.success({ msg: data.message });
+        if (!silent) Toast.success({ msg: data.message });
         return data.data;
       })
       .catch((e) => {
-        console.log(e);
         Toast.error({ msg: e.message });
         return Promise.reject(e);
       });
-  }
-
-  publishUserRating(data: Rating) {
-    return this.setDoc('rating', data.id, data);
-  }
-  getRatings(
-    value: string,
-    queryKey: 'transporterId' | 'tripId' = 'transporterId',
-  ) {
-    return this.query<Rating>({
-      collectionName: 'rating',
-      key: queryKey,
-      condition: '==',
-      value,
-    });
-  }
-  private setDoc(
-    collectionName: string,
-    id: string,
-    data: unknown,
-  ): Promise<unknown> {
-    return setDoc(doc(db, collectionName, id), data);
-  }
-
-  private async getCollection<T>(collectionName: string): Promise<T[]> {
-    const rawObjects = await getDocs(collection(db, collectionName));
-    return rawObjects.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    })) as unknown as T[];
-  }
-
-  private async query<T = unknown>({
-    collectionName,
-    key,
-    condition,
-    value,
-  }: {
-    collectionName: string;
-    key: string;
-    condition: WhereFilterOp;
-    value: string;
-  }): Promise<T[]> {
-    const dbRef = collection(db, collectionName);
-    const rawQuery = query(dbRef, where(key, condition, value));
-    const snapShots = await getDocs(rawQuery);
-    const documentList: T[] = [];
-    snapShots.forEach((doc) => {
-      documentList.push(doc.data() as T);
-    });
-    return documentList;
-  }
-
-  private remove(url: string) {
-    return { url };
   }
 }
 
