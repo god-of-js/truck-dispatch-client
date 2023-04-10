@@ -17,5 +17,5 @@ export default interface User {
   rating: number;
   createdAt?: number;
   bankDetails?: TransferRecipient;
-  completedTrips?: number
+  completedTrips?: number;
 }

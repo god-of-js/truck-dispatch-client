@@ -1,6 +1,5 @@
 import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
-import { selectAgents, selectTransporters } from 'modules/Account';
-import { updateTrip, selectTrip, updateTripStatus } from 'modules/Trips';
+import { selectTrip, updateTripStatus } from 'modules/Trips';
 import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';

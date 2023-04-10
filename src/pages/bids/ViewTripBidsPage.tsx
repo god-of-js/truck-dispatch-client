@@ -53,7 +53,7 @@ export default function ViewTripBidsPage() {
         </TransporterDetails>
       ),
       rating: <Ratings rating={bid.transporter.rating || 0} />,
-      completedTrips: bid.transporter.completedTrips
+      completedTrips: bid.transporter.completedTrips,
     }));
   }, [bids]);
 

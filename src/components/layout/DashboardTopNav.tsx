@@ -63,7 +63,7 @@ export default function DashboardTopNav() {
     '/my-trips/:id/bids/:id/checkout': 'Pay for Trip',
     '/chat': 'Chat',
     '/payments': 'Payments',
-    '/chat/:id/:id': 'Chat',
+    '/chat/:id': 'Chat',
     '/profile': 'Profile',
     '/profile/accounts': 'Account',
     '/profile/verification': 'Verification',
