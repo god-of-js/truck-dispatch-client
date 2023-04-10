@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
 import { StyledAuthScreen } from "./PersonalDetailsForm";
 import { Margin } from "./PersonalDetailsForm";
@@ -7,22 +7,42 @@ import { Margin } from "./PersonalDetailsForm";
 import UiIcon from "ui/UiIcon";
 import UiInput from "ui/UiInput";
 import UiButton from "ui/UiButton";
-import UiSelect from "ui/UiSelect";
-import { Option } from "ui/UiSelect";
 import UiForm from "ui/UiForm";
 
 export default function VerifyPhone () {
   const [formData, setFormData] = useState({
-    firstname:'',
-    lastname: '',
-    phone: '',
-    company_role: ''
-  })
-  const handleChange = () => {
+    OTP: ''
+  });
+  const [ canResendCode, setCanResendCode ] = useState(false);
+  const [ count, setCount] = useState(59);
+  
+
+  useEffect(() => {
+    const countdownTimer = setTimeout(() => {
+      setCount(prevState => prevState - 1);
+    }, 1000); 
+
+    if(count === 0) {
+      clearTimeout(countdownTimer)
+      setCanResendCode(true)
+    }
+
+    return () => {
+      clearTimeout(countdownTimer)
+    }
+  }, [count]);
+
+  const fornmattedCount = count < 10 ? `0${count}` : `${count}`;
+
+  function handleChange () {
 
   }
-  const onSubmit = () => {
+  function onSubmit () {
 
+  }
+  function resendCode () {
+    setCanResendCode(false);
+    setCount(59);
   }
 
   return (
@@ -31,7 +51,7 @@ export default function VerifyPhone () {
         <UiIcon icon="CallReceived" />
         <h1>Verify Phone Number</h1>
         <p>
-          Enter the OTP (One Time Pin) that was sent tothe phone number you provided
+          Enter the OTP (One Time Pin) that was sent to the phone number you provided
         </p>
       </div>
       <div className="form-container">
@@ -39,20 +59,20 @@ export default function VerifyPhone () {
           {({ errors }) => (
             <>
             <UiInput
-              label="Enter OTP"
+              label="Enter OTP" 
               type="text"
-              value={formData.firstname}
+              value={formData.OTP}
               name="firstname"
               onChange={handleChange}
             />
             <Margin />
             <StyledResendCode >
               <p>Didn’t get the code?</p>
-              <UiButton  size="s" variant="secondary" disabled>
-                Resend in 00:58
+              <UiButton  size="s" variant="secondary" disabled={!canResendCode} onClick={resendCode}>
+                { canResendCode ? `Resend` : `Resend in 00:${fornmattedCount}` }
               </UiButton>
             </StyledResendCode>
-              <UiButton  size="large" variant="primary" isFullWidth >
+              <UiButton   size="large" variant="primary" isFullWidth>
                 Continue
               </UiButton>
             </>
@@ -60,7 +80,7 @@ export default function VerifyPhone () {
         </UiForm>
       </div>
     </StyledAuthScreen>
-  )
+  )  
 }
 
 const StyledResendCode = styled.div`
@@ -68,6 +88,7 @@ const StyledResendCode = styled.div`
   justify-content: center;
   gap: ${pxToRem(9)};
   align-items: center;
+  /* margin-bottom: ${pxToRem(-24)}; */
   p{
     font-weight: 400;
       color: var(--color-gray-80);

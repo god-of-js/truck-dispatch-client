@@ -15,10 +15,14 @@ import UiSelect from 'ui/UiSelect';
 import UiForm from 'components/ui/UiForm';
 import { toAnyAction } from 'utils/helpers';
 import registrationSchema from 'utils/validations/registrationSchema';
+
+
 import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
 import UserTypeSelect from 'components/auth/SelectUserType';
 import { PersonDetailsForm } from 'components/auth/PersonalDetailsForm';
 import VerifyPhone from 'components/auth/VerifyPhone';
+import ChoosePasswordForm  from 'components/auth/ChoosePasswordForm';
+
 export default function RegistrationPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -68,7 +72,7 @@ export default function RegistrationPage() {
 
   return (
     <AuthLayoutStyling >
-      <VerifyPhone />
+      <ChoosePasswordForm />
       {/* <UiForm
         schema={registrationSchema}
         formData={formData}

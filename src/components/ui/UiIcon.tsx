@@ -12,8 +12,6 @@ import {
   Checks,
   DotsThree,
   DotsThreeVertical,
-  Eye,
-  EyeSlash,
   FolderNotchOpen,
   House,
   Kanban,
@@ -33,7 +31,10 @@ import {
 import Buildings from './icons/Building';
 import Car from './icons/Car';
 import CallReceived from './icons/CallReceived';
+import Eye  from './icons/Eye';
+import EyeSlash  from './icons/EyeSlash';
 import MagicStar from './icons/MagicStar';
+import PasswordCheck from './icons/PasswordCheck';
 import styled from 'styled-components';
 import  UserOctagon  from './icons/UserOctagon';
 import UserSquare from './icons/UserSquare';
@@ -62,6 +63,7 @@ const icons = {
   MapPin: <MapPin />,
   Money: <Money />,
   PaperPlaneTilt: <PaperPlaneTilt />,
+  PasswordCheck: <PasswordCheck />,
   PencilSimple: <PencilSimple />,
   ShieldCheck: <ShieldCheck />,
   SignOut: <SignOut />,

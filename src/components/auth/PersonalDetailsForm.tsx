@@ -8,7 +8,7 @@ import UiSelect from "ui/UiSelect";
 import { Option } from "ui/UiSelect";
 import UiForm from "ui/UiForm";
 
-export  function PersonDetailsForm () {
+export function PersonDetailsForm () {
   const { userType } = useParams();
   const isCompany = userType === 'company' || userType === 'transport_company'
   
@@ -91,7 +91,10 @@ export  function PersonDetailsForm () {
               />
             }
             
-              <UiButton isFullWidth size="large" variant="primary">
+              <UiButton isFullWidth 
+                size="large" 
+                variant="primary"
+                >
                 Sign In
               </UiButton>
             </>
@@ -129,7 +132,7 @@ export const StyledAuthScreen = styled.div`
   .form-container {
     width: 100%;
     button {
-      margin-top: ${pxToRem(50)}; 
+      margin-top: ${pxToRem(45)}; 
     }
   }
   @media(min-width: 580px) {
@@ -152,6 +155,10 @@ export const StyledAuthScreen = styled.div`
         font-size: ${pxToRem(32)};
         margin-top: ${pxToRem(19)};
         margin-bottom: ${pxToRem(16)};
+      }
+      p {
+        width: 80%;
+        margin: 0 auto;
       }
     }
   .form-container{

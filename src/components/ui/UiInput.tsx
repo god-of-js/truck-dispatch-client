@@ -72,7 +72,7 @@ export default function UiInput({
 
         {type === 'password' && (
           <IconButton onClick={handlePasswordTypeToText}>
-            <UiIcon icon={inputType === 'password' ? 'Eye' : 'EyeSlash'} />
+            <UiIcon icon={inputType === 'password' ? 'EyeSlash' : 'Eye'} />
           </IconButton>
         )}
       </InputContainer>
@@ -131,7 +131,7 @@ const IconButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  right: 0;
+  right: ${pxToRem(14)};
   top: 0;
   cursor: pointer;
 `;
