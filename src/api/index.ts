@@ -17,9 +17,10 @@ import TokenVerificationData from 'types/TokenVerificationData';
 import LoginResponse from 'types/LoginResponse';
 import ChatLogData from 'types/ChatLogData';
 import ChatLog from 'types/ChatLog';
+import UserWithPassword from 'types/UserWithPassword';
 
 class ApiService {
-  createUser(userData: User) {
+  createUser(userData: UserWithPassword) {
     return this.post<TokenVerificationData>('/auth/join', userData);
   }
 
@@ -31,8 +32,15 @@ class ApiService {
     return this.post<TokenVerificationData>('/auth/request-sms', data);
   }
 
+  requestEmailVerification() {
+    return this.post('/auth/request-email-verification');
+  }
+
   verifyPhone(data: VerifyPhoneData) {
     return this.post('/auth/verify-phone', data);
+  }
+  verifyEmail(data: { token: string }) {
+    return this.post('/auth/verify-email', data);
   }
 
   updateUser(data: FormData) {

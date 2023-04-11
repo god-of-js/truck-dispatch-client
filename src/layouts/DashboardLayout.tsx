@@ -7,7 +7,7 @@ import { io } from 'socket.io-client';
 import { toAnyAction } from 'utils/helpers';
 import sizes from '../utils/sizes';
 
-import { getDashboardUser } from 'modules/Account';
+import { getDashboardUser, requestEmailVerification } from 'modules/Account';
 
 import DashboardSidebar from 'components/layout/DashboardSidebar';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
@@ -16,11 +16,15 @@ import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
 import { getChatLogs, getUserChat, setChat, setChatLog } from 'modules/Chat';
 import { WEB_SOCKET_URL } from 'utils/privateKeys';
+import UiButton from 'ui/UiButton';
+import { removeUserSessionId } from 'utils/userSession';
 
 export default function DashboardLayout() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const [requestVerificationLoading, setRequestVerificationLoading] =
+    useState(false);
   const user = useSelector((state: RootState) => state.account.user);
 
   useEffect(() => {
@@ -37,8 +41,10 @@ export default function DashboardLayout() {
   }, []);
 
   useEffect(() => {
-    const userId = user?._id;
-    if (userId) {
+    if (user && !user.isPhoneVerified) {
+      // Handle user has not verified phone....
+    } else if (user) {
+      const userId = user?._id;
       const newSocket = io(WEB_SOCKET_URL);
       newSocket.on('connect', () => {
         newSocket.emit('join', { userId });
@@ -57,6 +63,16 @@ export default function DashboardLayout() {
       };
     }
   }, [user]);
+
+  function getEmailVerificationLink() {
+    setRequestVerificationLoading(true);
+    dispatch(toAnyAction(requestEmailVerification()))
+      .then(() => {
+        removeUserSessionId();
+        navigate('/auth/verification-email-sent');
+      })
+      .finally(() => setRequestVerificationLoading(false));
+  }
 
   return (
     <Layout>
@@ -93,6 +109,20 @@ export default function DashboardLayout() {
               </UiAlert>
             )}
           </div>
+        )}
+        {!user?.isEmailVerified && (
+          <UiAlert variant="warning">
+            Your email address has not been verified. To have full access to the
+            dashboard{' '}
+            <UiButton
+              size="s"
+              variant="warning-text"
+              onClick={getEmailVerificationLink}
+              loading={requestVerificationLoading}
+            >
+              Verify your account
+            </UiButton>
+          </UiAlert>
         )}
         <DashboardTopNav />
         <Outlet />

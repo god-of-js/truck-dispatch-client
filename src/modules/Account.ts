@@ -75,6 +75,13 @@ export function VerifyOtp(pin: string) {
       .catch((err) => Promise.reject(err.data));
   };
 }
+export function VerifyEmail(token: string) {
+  return async () => {
+    return Api.verifyEmail({
+      token,
+    });
+  };
+}
 
 export function updateUser(data: FormData) {
   return async (dispatch: AppDispatch) => {
@@ -142,5 +149,11 @@ export const updateUserBankAccount = (accountDetails: BankAccount) => {
     return Api.updateAccountNumber(accountDetails).then((user) => {
       dispatch(setUser(user));
     });
+  };
+};
+
+export const requestEmailVerification = () => {
+  return () => {
+    return Api.requestEmailVerification();
   };
 };

@@ -16,6 +16,7 @@ const ChatLayout = lazy(() => import('../layouts/ChatLayout'));
 const RegistrationPage = lazy(() => import('../pages/auth/RegistrationPage'));
 const LoginPage = lazy(() => import('../pages/auth/LoginPage'));
 const VerifyPhonePage = lazy(() => import('../pages/auth/VerifyPhonePage'));
+const VerifyEmailPage = lazy(() => import('../pages/auth/VerifyEmailPage'));
 const RequestVerificationCodePage = lazy(
   () => import('../pages/auth/RequestVerificationCodePage'),
 );
@@ -218,6 +219,14 @@ const router = createBrowserRouter([
       },
       {
         path: 'verify-phone',
+        element: <VerifyPhonePage />,
+      },
+      {
+        path: 'verify-email',
+        element: <VerifyEmailPage />,
+      },
+      {
+        path: 'verification-email-sent',
         element: <VerifyPhonePage />,
       },
       {
