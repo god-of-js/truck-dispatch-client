@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import { AppDispatch, AppState } from '.';
 import Api from 'Api';
 import User from '../types/User';
-import UserWithPassword from '../types/UserWithPassword';
 import Verification from '../types/Verification';
 import BankAccount from 'types/BankDetails';
 import { saveTokenVerificationInfo } from 'utils/helpers';
@@ -37,7 +36,7 @@ export const { setUser, setVerification } = accountSlice.actions;
 
 export default accountSlice.reducer;
 
-export function RegisterUser(AuthUser: UserWithPassword) {
+export function RegisterUser(AuthUser: User) {
   return async () => {
     await Api.createUser(AuthUser).then((data) => {
       saveTokenVerificationInfo(data);

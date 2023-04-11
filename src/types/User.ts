@@ -18,8 +18,9 @@ export default interface User {
     | 'rejected'
     | 'fraudulent';
   rating: number;
-  bankDetails: TransferRecipient;
+  bankDetails?: TransferRecipient;
   password: string;
-  isEmailVerified: boolean;
-  isPhoneVerified: boolean;
+  isEmailVerified?: boolean;
+  isPhoneVerified?: boolean;
+  createdAt?: number
 }
