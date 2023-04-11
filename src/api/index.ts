@@ -38,8 +38,9 @@ class ApiService {
   verifyPhone(data: VerifyPhoneData) {
     return this.post('/auth/verify-phone', data);
   }
+
   verifyEmail(data: { token: string }) {
-    return this.post('/auth/verify-email', data);
+    return this.post<User>('/auth/verify-email', data);
   }
 
   updateUser(data: FormData) {

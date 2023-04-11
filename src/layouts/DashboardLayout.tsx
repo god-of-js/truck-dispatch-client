@@ -7,7 +7,11 @@ import { io } from 'socket.io-client';
 import { toAnyAction } from 'utils/helpers';
 import sizes from '../utils/sizes';
 
-import { getDashboardUser, requestEmailVerification } from 'modules/Account';
+import {
+  getDashboardUser,
+  requestEmailVerification,
+  verifyEmail,
+} from 'modules/Account';
 
 import DashboardSidebar from 'components/layout/DashboardSidebar';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
@@ -17,15 +21,34 @@ import { Toast } from 'utils/toast';
 import { getChatLogs, getUserChat, setChat, setChatLog } from 'modules/Chat';
 import { WEB_SOCKET_URL } from 'utils/privateKeys';
 import UiButton from 'ui/UiButton';
-import { removeUserSessionId } from 'utils/userSession';
+import UiOverlay from 'ui/UiOverlay';
+import EmailHasBeenSentModal from 'components/profile/EmailHasBeenSentModal';
+import Loader from 'components/layout/Loader';
+import EmailHasBeenVerifiedModal from 'components/profile/EmailHasBeenVerifiedModal';
 
 export default function DashboardLayout() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const token = new URLSearchParams(location.search).get('token');
+  const action = new URLSearchParams(location.search).get('action');
+
   const [requestVerificationLoading, setRequestVerificationLoading] =
     useState(false);
+  const [verificationHasBeenSent, setVerificationHasBeenSent] = useState(false);
+  const [emailHasBeenVerified, setEmailHasBeenVerified] = useState(false);
   const user = useSelector((state: RootState) => state.account.user);
+  const [loading, setLoading] = useState(false);
+
+  function getEmailVerificationLink() {
+    setRequestVerificationLoading(true);
+    dispatch(toAnyAction(requestEmailVerification()))
+      .then(() => {
+        setVerificationHasBeenSent(true);
+      })
+      .finally(() => setRequestVerificationLoading(false));
+  }
 
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
@@ -41,9 +64,7 @@ export default function DashboardLayout() {
   }, []);
 
   useEffect(() => {
-    if (user && !user.isPhoneVerified) {
-      // Handle user has not verified phone....
-    } else if (user) {
+    if (user) {
       const userId = user?._id;
       const newSocket = io(WEB_SOCKET_URL);
       newSocket.on('connect', () => {
@@ -64,15 +85,16 @@ export default function DashboardLayout() {
     }
   }, [user]);
 
-  function getEmailVerificationLink() {
-    setRequestVerificationLoading(true);
-    dispatch(toAnyAction(requestEmailVerification()))
-      .then(() => {
-        removeUserSessionId();
-        navigate('/auth/verification-email-sent');
-      })
-      .finally(() => setRequestVerificationLoading(false));
-  }
+  useEffect(() => {
+    if (action === 'verify-email' && token) {
+      setLoading(true);
+      dispatch(toAnyAction(verifyEmail(token)))
+        .then(() => {
+          setEmailHasBeenVerified(true);
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [action, token]);
 
   return (
     <Layout>
@@ -125,7 +147,17 @@ export default function DashboardLayout() {
           </UiAlert>
         )}
         <DashboardTopNav />
-        <Outlet />
+        {loading ? <Loader /> : <Outlet />}
+        <UiOverlay isVisible={verificationHasBeenSent}>
+          <EmailHasBeenSentModal
+            onClose={() => setVerificationHasBeenSent(false)}
+          />
+        </UiOverlay>
+        <UiOverlay isVisible={emailHasBeenVerified}>
+          <EmailHasBeenVerifiedModal
+            onClose={() => setEmailHasBeenVerified(false)}
+          />
+        </UiOverlay>
       </Body>
     </Layout>
   );

@@ -74,10 +74,12 @@ export function VerifyOtp(pin: string) {
       .catch((err) => Promise.reject(err.data));
   };
 }
-export function VerifyEmail(token: string) {
+export function verifyEmail(token: string) {
   return async () => {
     return Api.verifyEmail({
       token,
+    }).then((data) => {
+      setUser(data)
     });
   };
 }

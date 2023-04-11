@@ -22,5 +22,5 @@ export default interface User {
   password: string;
   isEmailVerified?: boolean;
   isPhoneVerified?: boolean;
-  createdAt?: number
+  createdAt?: number;
 }
