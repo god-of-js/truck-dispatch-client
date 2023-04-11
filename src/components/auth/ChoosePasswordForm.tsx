@@ -3,16 +3,19 @@ import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
 import { StyledAuthScreen } from "./PersonalDetailsForm";
 import { Margin } from "./PersonalDetailsForm";
+import Verification from "types/Verification";
 
 import UiIcon from "ui/UiIcon";
 import UiInput from "ui/UiInput";
 import UiButton from "ui/UiButton";
 import UiForm from "ui/UiForm";
+import FileUploadWidget from "ui/FileUploadWidget";
 
 export default function ChoosePasswordForm () {
   const [formData, setFormData] = useState({
-    OTP: ''
+    OTP: '',
   });
+  const [doc, setDoc] = useState <Verification['idDoc']>(null)
   function handleChange () {
 
   }
@@ -49,6 +52,13 @@ export default function ChoosePasswordForm () {
               name="firstname"
               onChange={handleChange}
             />
+            <FileUploadWidget
+            label="Utility bill of Home address"
+            name="homeUtilityBill"
+            value={doc as File}
+            error={errors.homeUtilityBill}
+            onChange={handleChange}
+          />
             
               <UiButton   size="large" variant="primary" isFullWidth>
                 Continue

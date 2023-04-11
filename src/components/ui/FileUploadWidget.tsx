@@ -101,7 +101,7 @@ const FileUploadWidgetStyle = styled.div`
 `;
 
 const DefaultUploadTrigger = styled.div`
-  background: var(--color-gray-100);
+  background: var(--color-gray-50);
   border: ${pxToRem(1)} dashed var(--color-gray-200);
   font-size: ${pxToRem(14)};
   padding: ${pxToRem(16)};
