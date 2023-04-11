@@ -1,3 +1,4 @@
+import { userTypes } from 'utils/constants';
 import TransferRecipient from './TransferRecipient';
 
 export default interface User {
@@ -6,8 +7,10 @@ export default interface User {
   lastName: string;
   email: string;
   phone: string;
-  avatar?: string | File;
-  userType: 'agent' | 'transporter';
+  avatar?: string;
+  noOfRatingsReceived?: number;
+  completedTrips?: number;
+  userType: (typeof userTypes)[number];
   status?:
     | 'pending_verification'
     | 'verified'
@@ -15,7 +18,9 @@ export default interface User {
     | 'rejected'
     | 'fraudulent';
   rating: number;
-  createdAt?: number;
   bankDetails?: TransferRecipient;
-  completedTrips?: number;
+  password: string;
+  isEmailVerified?: boolean;
+  isPhoneVerified?: boolean;
+  createdAt?: number;
 }

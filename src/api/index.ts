@@ -31,8 +31,16 @@ class ApiService {
     return this.post<TokenVerificationData>('/auth/request-sms', data);
   }
 
+  requestEmailVerification() {
+    return this.post('/auth/request-email-verification');
+  }
+
   verifyPhone(data: VerifyPhoneData) {
     return this.post('/auth/verify-phone', data);
+  }
+
+  verifyEmail(data: { token: string }) {
+    return this.post<User>('/auth/verify-email', data);
   }
 
   updateUser(data: FormData) {
