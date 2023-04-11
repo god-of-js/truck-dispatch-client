@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -11,18 +11,16 @@ import { getDashboardUser } from 'modules/Account';
 
 import DashboardSidebar from 'components/layout/DashboardSidebar';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
-import Loader from 'components/layout/Loader';
 import UiAlert from 'ui/UiAlert';
 import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
-import { getUsersChat, setChat } from 'modules/Chat';
+import { getChatLogs, getUserChat, setChat, setChatLog } from 'modules/Chat';
 import { WEB_SOCKET_URL } from 'utils/privateKeys';
 
 export default function DashboardLayout() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const [loading, setLoading] = useState(true);
   const user = useSelector((state: RootState) => state.account.user);
 
   useEffect(() => {
@@ -30,12 +28,11 @@ export default function DashboardLayout() {
     if (!jwt) {
       navigate('/auth/login');
     } else {
-      dispatch(toAnyAction(getDashboardUser()))
-        .catch((err: Error) => {
-          Toast.error({ msg: err.message });
-        })
-        .finally(() => setLoading(false));
-      // dispatch(toAnyAction(getUsersChat(userId)));
+      dispatch(toAnyAction(getDashboardUser())).catch((err: Error) => {
+        Toast.error({ msg: err.message });
+      });
+      dispatch(toAnyAction(getUserChat()));
+      dispatch(toAnyAction(getChatLogs()));
     }
   }, []);
 
@@ -51,13 +48,16 @@ export default function DashboardLayout() {
         dispatch(setChat(message));
       });
 
+      newSocket.on('chat-log', (chatLog) => {
+        dispatch(setChatLog(chatLog));
+      });
+
       return () => {
         newSocket.disconnect();
       };
     }
   }, [user]);
 
-  const Component = loading ? <Loader /> : <Outlet />;
   return (
     <Layout>
       <DashboardSidebar />
@@ -95,7 +95,7 @@ export default function DashboardLayout() {
           </div>
         )}
         <DashboardTopNav />
-        <div className="body-components-container">{Component}</div>
+        <Outlet />
       </Body>
     </Layout>
   );

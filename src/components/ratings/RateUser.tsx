@@ -45,16 +45,17 @@ export default function RateTransporter({ onClose }: Props) {
     setLoading(true);
     let userRated: string;
     if (clientBasedUserTypes.includes(user?.userType!)) {
-      userRated = trip?.transporterId!
-    } else userRated =  trip?.tripOwner?._id!
+      userRated = trip?.transporterId!;
+    } else userRated = trip?.tripOwner?._id!;
 
     Promise.all([
-      dispatch(toAnyAction(publishUserRating({...data, userRated} as Rating)))
-    ])
-      .finally(() => {
-        onClose();
-        setLoading(false);
-      });
+      dispatch(
+        toAnyAction(publishUserRating({ ...data, userRated } as Rating)),
+      ),
+    ]).finally(() => {
+      onClose();
+      setLoading(false);
+    });
   }
 
   return (

@@ -1,4 +1,3 @@
-import { selectTransporters } from 'modules/Account';
 import { RootState } from 'modules/index';
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
@@ -16,7 +15,6 @@ import User from 'types/User';
 export default function AgentTripPageContent() {
   const navigate = useNavigate();
   const trips = useSelector((state: RootState) => state.trips.trips);
-  const transporters = useSelector(selectTransporters);
 
   const headers = [
     {
