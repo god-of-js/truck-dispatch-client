@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { usePaystackPayment } from 'react-paystack';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { selectTrip, assignTrip } from 'modules/Trips';
 import { selectBid } from 'modules/Bid';
@@ -18,12 +18,10 @@ import {
 
 import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
 import UiButton from 'ui/UiButton';
-import UiIcon from 'ui/UiIcon';
 import { RootState } from 'modules/index';
 import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
 import UiAvatar from 'ui/UiAvatar';
 import Payment from 'types/Payment';
-import AssignTripFormData from 'types/AssignTripFormData';
 import { Toast } from 'utils/toast';
 
 export default function BidCheckoutPage() {
@@ -53,7 +51,7 @@ export default function BidCheckoutPage() {
       return;
     }
     const paymentData = {
-      from: user?._id,
+      from: user._id,
       to: bid.transporterId,
       tripId,
       bidId: bid._id,
@@ -68,45 +66,6 @@ export default function BidCheckoutPage() {
         navigate(`/my-trips/${tripId}/status`);
       })
       .finally(() => setLoading(false));
-    // Promise.all([
-    //   dispatch(
-    //     toAnyAction(
-    //       createOrUpdatePayment({
-    //         ...payment,
-    //         tripReference: trip.reference,
-    //         amountInBid: bid.price,
-    //         totalAmountPaid: priceWithTDPercent(bid.price),
-    //       }),
-    //     ),
-    //   ),
-    //   dispatch(
-    //     toAnyAction(
-    //       createOrUpdateBid({
-    //         ...bid,
-    //         status: 'accepted',
-    //         paymentId: payment?.reference,
-    //       }),
-    //     ),
-    //   ),
-    //   dispatch(
-    //     toAnyAction(
-    //       assignTransporterToTrip({
-    //         tripId,
-    //         transporterId: bid.transporterId,
-    //         paymentId: payment?.reference,
-    //       }),
-    //     ),
-    //   ),
-    // ])
-    //   .then(() => {
-    //     dispatch(toAnyAction(getTrips())).then(() => {
-    //       navigate(`/my-trips/${tripId}/status`);
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     Toast.error({ msg: err.message });
-    //   })
-    //   .finally(() => setLoading(false));
   }
 
   return (

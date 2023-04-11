@@ -12,7 +12,7 @@ import Loader from 'components/layout/Loader';
 import UiTabs from 'components/ui/UiTabs';
 import UiBackButton from 'ui/UiBackButton';
 import UiOverlay from 'ui/UiOverlay';
-import RateTransporter from 'components/ratings/RateTransporter';
+import RateTransporter from 'components/ratings/RateUser';
 import { toAnyAction } from 'utils/helpers';
 import { getTripRating } from 'modules/Ratings';
 import Rating from 'types/Rating';
@@ -103,14 +103,14 @@ export default function ViewTrip() {
 
   useEffect(() => {
     if (user?.userType === 'agent' && trip?.status === 'completed') {
-      dispatch(toAnyAction(getTripRating(tripId!))).then((data: Rating[]) => {
-        if (data.length === 0) setIsRatingsModalVisible(true);
+      dispatch(toAnyAction(getTripRating(tripId!))).then((data: Rating) => {
+        if (!data) setIsRatingsModalVisible(true);
       });
     }
   }, [tripId, trip]);
 
   useEffect(() => {
-    dispatch(toAnyAction(getPaymentRequestByTripId(tripId)));
+    dispatch(toAnyAction(getPaymentRequestByTripId(tripId!)));
   }, [tripId]);
 
   return (

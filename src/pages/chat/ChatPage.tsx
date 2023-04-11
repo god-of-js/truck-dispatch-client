@@ -1,11 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { RootState } from 'modules/index';
 
-import { selectChatByChatId, createChat, readChat } from 'modules/Chat';
+import {
+  selectChatByChatId,
+  createChat,
+  readChat,
+  selectChatLog,
+} from 'modules/Chat';
 
 import { toAnyAction } from 'utils/helpers';
 
@@ -15,18 +20,17 @@ import UiAvatar from 'ui/UiAvatar';
 import UiIcon from 'ui/UiIcon';
 import UiForm from 'ui/UiForm';
 import ChatSchema from 'utils/validations/ChatSchema';
+import User from 'types/User';
 import uuidv4 from 'utils/uuid';
 
 export default function ChatPage() {
-  const { agentId, transporterId } = useParams();
+  const { chatId } = useParams();
   const dispatch = useDispatch();
   const chatBottomRef = useRef(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const user = useSelector((state: RootState) => state.account.user);
-  const chats = useSelector(selectChatByChatId(`${agentId}-${transporterId}`));
-  const users = useSelector((state: RootState) => state.account.users);
-  const alternateUsersId = user?.id === transporterId ? agentId : transporterId;
-  const alternateUser = users.find(({ id }) => id === alternateUsersId);
+  const chatLog = useSelector(selectChatLog(chatId!));
+  const chats = useSelector(selectChatByChatId(chatId!));
 
   const defaultFormData = {
     message: '',
@@ -34,19 +38,27 @@ export default function ChatPage() {
   const [formData, setFormData] = useState(defaultFormData);
   const [currentLengthOfChats, setCurrentLengthOfChats] = useState(0);
 
+  const alternateUser = useMemo(() => {
+    if (!chatLog || !user) return {} as User;
+    if (chatLog?.clientId === user?._id) {
+      return chatLog?.transporter;
+    }
+
+    return chatLog?.client;
+  }, [chatLog, user]);
+
   function updateMessage(e: { target: { value: string } }) {
     setFormData({ message: e.target.value });
   }
 
   function sendMessage() {
     const data: Chat = {
-      chatId: `${agentId}-${transporterId}`,
+      // Temporary ID
+      _id: uuidv4(),
+      chatId: chatId!,
       message: formData.message,
-      senderId: user?.id || '',
-      transporterId: transporterId!,
-      agentId: agentId!,
-      receiverId: `${user?.id === agentId ? transporterId : agentId}`,
-      temporaryId: uuidv4(),
+      senderId: user?._id!,
+      receiverId: alternateUser?._id!,
       createdAt: Date.now(),
     };
 
@@ -58,7 +70,7 @@ export default function ChatPage() {
     const lastSentChat = chats[chats.length - 1];
     if (
       lastSentChat &&
-      lastSentChat.senderId !== user?.id &&
+      lastSentChat.senderId !== user?._id &&
       !lastSentChat.readAt
     ) {
       dispatch(toAnyAction(readChat({ ...lastSentChat, readAt: Date.now() })));
@@ -89,43 +101,54 @@ export default function ChatPage() {
     <ChatPageStyling>
       <Header>
         <div className="user-details">
+          {/* TODO: Add Loaders to the avatar */}
           <UiAvatar avatar={alternateUser?.avatar} />
-          <div>{alternateUser?.firstName + ' ' + alternateUser?.lastName}</div>
+          <div>{`${alternateUser?.firstName || ''} ${
+            alternateUser?.lastName || ''
+          }`}</div>
         </div>
       </Header>
 
       <ChatContainer>
         <div id="chat-window">
           {chats.map((chat, index) => (
-            <ChatBubble isMine={chat.senderId === user?.id} key={index}>
+            <ChatBubble isMine={chat.senderId === user?._id} key={index}>
               <div className="chat-bubble-inner">{chat.message}</div>
             </ChatBubble>
           ))}
         </div>
         <div ref={chatBottomRef} />
       </ChatContainer>
-      <InputContainer>
-        <UiForm formData={formData} schema={ChatSchema} onSubmit={sendMessage}>
-          {({ errors }) => (
-            <div className="input-group">
-              {errors.message && (
-                <div className="error-message-container">{errors.message}</div>
-              )}
-              <div className="inner">
-                <input
-                  ref={inputRef}
-                  placeholder="Enter Message"
-                  value={formData.message}
-                  onChange={updateMessage}
-                />
-                <button type="submit" disabled={!formData.message}>
-                  <UiIcon icon="PaperPlaneTilt" />
-                </button>
+      {alternateUser && (
+        <InputContainer>
+          <UiForm
+            formData={formData}
+            schema={ChatSchema}
+            onSubmit={sendMessage}
+          >
+            {({ errors }) => (
+              <div className="input-group">
+                {errors.message && (
+                  <div className="error-message-container">
+                    {errors.message}
+                  </div>
+                )}
+                <div className="inner">
+                  <input
+                    ref={inputRef}
+                    placeholder="Enter Message"
+                    value={formData.message}
+                    onChange={updateMessage}
+                  />
+                  <button type="submit" disabled={!formData.message}>
+                    <UiIcon icon="PaperPlaneTilt" />
+                  </button>
+                </div>
               </div>
-            </div>
-          )}
-        </UiForm>
-      </InputContainer>
+            )}
+          </UiForm>
+        </InputContainer>
+      )}
     </ChatPageStyling>
   );
 }

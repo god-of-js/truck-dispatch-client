@@ -1,3 +1,5 @@
+import TransferRecipient from './TransferRecipient';
+
 export default interface User {
   _id: string;
   firstName: string;
@@ -14,4 +16,6 @@ export default interface User {
     | 'fraudulent';
   rating: number;
   createdAt?: number;
+  bankDetails?: TransferRecipient;
+  completedTrips?: number;
 }

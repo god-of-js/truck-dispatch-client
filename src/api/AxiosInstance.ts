@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { BACKEND_URL } from 'utils/privateKeys';
 import { Toast } from 'utils/toast';
-import { getUserSessionId } from 'utils/userSession';
+import { getUserSessionId, removeUserSessionId } from 'utils/userSession';
 
 const instance = axios.create({
   baseURL: BACKEND_URL,
@@ -16,19 +16,19 @@ instance.interceptors.response.use(
         msg: "we couldn't reach our servers. Kindly check your connection. However, the team is on the issue.",
       });
     }
-    // TODO: remove for deploy
-    console.log(err);
+    if (err.response.data.message === 'jwt expired') {
+      removeUserSessionId();
+      location.reload();
+    }
     return Promise.reject(err.response.data);
   },
 );
 
-function authorizedInstance(isMultipart?: boolean) {
+function authorizedInstance() {
   if (!instance.defaults.headers.Authorization) {
     const token = getUserSessionId();
     if (token) instance.defaults.headers.Authorization = `Bearer ${token}`;
   }
-  if (isMultipart)
-    instance.defaults.headers['Content-Type'] = 'multipart/form-data';
   return instance;
 }
 export default authorizedInstance;

@@ -1,6 +1,5 @@
 import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
-import { selectAgents, selectTransporters } from 'modules/Account';
-import { updateTrip, selectTrip } from 'modules/Trips';
+import { selectTrip, updateTripStatus } from 'modules/Trips';
 import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
@@ -9,6 +8,8 @@ import Trip from 'types/Trip';
 import User from 'types/User';
 import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
+import UiOverlay from 'ui/UiOverlay';
+import GoodsInspectionConfirmation from 'components/trips/GoodsInspectionConfirmation';
 import { RootState } from 'modules/index';
 import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
@@ -17,17 +18,12 @@ export default function ViewTripStatus() {
   const { tripId } = useParams();
   const dispatch = useDispatch();
   const trip = useSelector(selectTrip(tripId || ''));
-  const transporters = useSelector(selectTransporters);
-  const agents = useSelector(selectAgents);
   const user = useSelector((state: RootState) => state.account.user);
+  const [
+    isGoodsInspectionConfModalVisible,
+    setIsGoodsInspectionConfModalVisible,
+  ] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const transporter = useMemo(() => {
-    return transporters.find(({ _id }) => _id === trip?.transporterId) || null;
-  }, [transporters]);
-  const agent = useMemo(() => {
-    return agents.find(({ _id }) => _id === trip?.agentId) || null;
-  }, [transporters]);
 
   const tripStatusMessage = useMemo(() => {
     let heading: string = 'Accept a bid to commence trip',
@@ -59,14 +55,17 @@ export default function ViewTripStatus() {
   }, [trip]);
 
   const phoneNumberOfResponsibleUser = useMemo(() => {
-    return user?.userType === 'agent' ? transporter?.phone : agent?.phone;
-  }, [user, transporter, agent]);
+    return user?.userType === 'agent'
+      ? trip?.transporter?.phone
+      : trip?.tripOwner?.phone;
+  }, [user, trip?.transporter, trip?.tripOwner]);
 
   const responsibleUserAvatar = useMemo(() => {
-    if (user?.userType === 'agent') return transporter?.avatar;
+    if (user?.userType === 'agent') return trip?.transporter?.avatar;
 
-    return agent?.avatar;
-  }, [user, transporter, agent]);
+    return trip?.tripOwner?.avatar;
+  }, [user, trip?.transporter, trip?.tripOwner]);
+
   function showInfoCard() {
     if (user?.userType === 'transporter') return true;
 
@@ -79,19 +78,19 @@ export default function ViewTripStatus() {
     return `${user?.firstName} ${user?.lastName}`;
   }
 
-  function updateTrip(data: Partial<Trip>) {
+  function changeStatus(status: Trip['status']) {
     setLoading(true);
-    dispatch(toAnyAction(updateTrip({ ...trip, ...data }))).finally(() =>
+    dispatch(toAnyAction(updateTripStatus(trip?._id!, status))).finally(() =>
       setLoading(false),
     );
   }
 
   function startTrip() {
-    updateTrip({ status: 'in-progress' });
+    changeStatus('in-progress');
   }
 
   function completeTrip() {
-    updateTrip({ status: 'completed' });
+    changeStatus('completed');
   }
 
   return (
@@ -117,8 +116,8 @@ export default function ViewTripStatus() {
                 </div>
                 <div className="name">
                   {user?.userType === 'agent'
-                    ? getName(transporter)
-                    : getName(agent)}
+                    ? getName(trip?.transporter)
+                    : getName(trip?.tripOwner)}
                 </div>
                 {phoneNumberOfResponsibleUser && (
                   <a
@@ -153,7 +152,10 @@ export default function ViewTripStatus() {
                       the button below to notify the Agent the trip is about to
                       start.
                     </p>
-                    <UiButton loading={loading} onClick={startTrip}>
+                    <UiButton
+                      loading={loading}
+                      onClick={() => setIsGoodsInspectionConfModalVisible(true)}
+                    >
                       Start Trip
                     </UiButton>
                   </>
@@ -206,6 +208,13 @@ export default function ViewTripStatus() {
           </CardContainer>
         )}
       </PageStyling>
+      <UiOverlay isVisible={isGoodsInspectionConfModalVisible}>
+        <GoodsInspectionConfirmation
+          onClose={() => setIsGoodsInspectionConfModalVisible(false)}
+          startTrip={startTrip}
+          transporterName={user?.firstName}
+        />
+      </UiOverlay>
     </>
   );
 }

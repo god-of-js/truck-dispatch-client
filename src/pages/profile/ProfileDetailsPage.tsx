@@ -1,19 +1,21 @@
 import { RootState } from 'modules/index';
-import { createOrUpdateUser, setUser } from 'modules/Account';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { updateUser } from 'modules/Account';
 import User from 'types/User';
 import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
 import UiIcon from 'ui/UiIcon';
 import UiInput from 'ui/UiInput';
-import { toAnyAction } from 'utils/helpers';
+import {
+  deepRootedToFormData,
+  removeUneditedFields,
+  toAnyAction,
+} from 'utils/helpers';
 import sizes from 'utils/sizes';
-import { Toast } from 'utils/toast';
 import EditProfileSchema from 'utils/validations/EditProfileSchema';
-import { uploadItem } from '../../api/Cloudinary';
 
 export default function ProfileDetailsPage() {
   const user = useSelector((state: RootState) => state.account.user);
@@ -25,15 +27,10 @@ export default function ProfileDetailsPage() {
   async function editProfile() {
     try {
       setLoading(true);
-      const data = formData;
-      if (data.avatar instanceof File) {
-        data.avatar = await uploadItem(formData.avatar as File);
-      }
-
-      dispatch(toAnyAction(createOrUpdateUser(data)))
+      const editedData = removeUneditedFields<User>(user!, formData);
+      const data = deepRootedToFormData(editedData);
+      dispatch(toAnyAction(updateUser(data)))
         .then(() => {
-          dispatch(setUser(data));
-          Toast.success({ msg: 'Profile has been updated' });
           setIsEditable(false);
         })
         .finally(() => {
@@ -124,7 +121,7 @@ export default function ProfileDetailsPage() {
                   value={formData.phone}
                   name="phone"
                   error={errors.phone}
-                  disabled={!isEditable}
+                  disabled
                   onChange={onChange}
                 />
               </GridSpacer>

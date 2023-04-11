@@ -123,7 +123,7 @@ const TableContainerHeader = styled.header`
 const TableTitle = styled.h2`
   padding: 0 ${pxToRem(12)};
   font-weight: 700;
-  font-size: ${pxToRem(16)};
+  font-size: ${pxToRem(14)};
   line-height: ${pxToRem(28)};
   text-transform: uppercase;
   color: var(--color-gray-900);
