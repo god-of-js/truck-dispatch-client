@@ -16,8 +16,6 @@ instance.interceptors.response.use(
         msg: "we couldn't reach our servers. Kindly check your connection. However, the team is on the issue.",
       });
     }
-    // TODO: remove for deploy
-    console.log(err.response.data);
     if (err.response.data.message === 'jwt expired') {
       removeUserSessionId();
       location.reload();
