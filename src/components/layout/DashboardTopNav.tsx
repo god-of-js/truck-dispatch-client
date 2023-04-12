@@ -67,6 +67,7 @@ export default function DashboardTopNav() {
     '/profile': 'Profile',
     '/profile/accounts': 'Account',
     '/profile/verification': 'Verification',
+    '/profile/manage-password': 'Manage Password',
     '/my-trips/:id/view-payment-request': 'View Payment Request',
   };
 

@@ -29,7 +29,7 @@ export default function EmailHasBeenSentModal({ onClose }: Props) {
           Your email verification has been sent. Kindly check your mailbox for a
           verification link.
           <br />
-          Note: The verification link expires in 1 day
+          Note: The verification link expires in 10 minutes
         </p>
         <div className="btn-container">
           <UiButton variant="neutral" isFullWidth onClick={() => onClose()}>

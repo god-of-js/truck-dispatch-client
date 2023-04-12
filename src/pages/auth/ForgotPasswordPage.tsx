@@ -3,24 +3,20 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { loginUser } from '../../modules/Account';
+import { requestForgotPasswordLink } from '../../modules/Account';
 
-import { Toast } from '../../utils/toast';
 import UiInput from 'ui/UiInput';
 import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
 import { toAnyAction } from 'utils/helpers';
-import loginSchema from 'utils/validations/loginSchema';
+import ForgotPasswordSchema from 'utils/validations/ForgotPasswordSchema';
 
 export default function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState<{ email: string; password: string }>(
-    {
-      email: '',
-      password: '',
-    },
-  );
+  const [formData, setFormData] = useState({
+    email: '',
+  });
   const [loading, setLoading] = useState(false);
 
   function handleChange(event: { name: string; value: string | null }) {
@@ -32,16 +28,9 @@ export default function LoginPage() {
 
   function handleSubmit() {
     setLoading(true);
-    dispatch(toAnyAction(loginUser(formData)))
+    dispatch(toAnyAction(requestForgotPasswordLink(formData)))
       .then(() => {
-        navigate('/my-trips');
-      })
-      .catch((err: Error) => {
-        let msg = err.message;
-        if (msg === 'Phone has not been verified') {
-          navigate('/auth/verify-phone');
-        }
-        Toast.error({ msg });
+        navigate('/auth/login');
       })
       .finally(() => {
         setLoading(false);
@@ -49,15 +38,20 @@ export default function LoginPage() {
   }
 
   return (
+    <>
       <Page>
         <UiForm
-          schema={loginSchema}
+          schema={ForgotPasswordSchema}
           formData={formData}
           onSubmit={handleSubmit}
         >
           {({ errors }) => (
             <>
-              <Heading>Sign in</Heading>
+              <Heading>Lost your password?</Heading>
+              <p>
+                To receive a signin link, enter the email address linked to your
+                Truckdispatch account.
+              </p>
               <Margin>
                 <UiInput
                   label="Email*"
@@ -67,40 +61,26 @@ export default function LoginPage() {
                   onChange={handleChange}
                 />
               </Margin>
-              <Margin>
-                <UiInput
-                  type="password"
-                  label="Password*"
-                  name="password"
-                  value={formData.password!}
-                  error={errors.password}
-                  onChange={handleChange}
-                />
-                <ForgotPassword>
-                  Forgot password?{' '}
-                  <Link
-                    to="/auth/forgot-password"
-                    className="forgot-password-link"
-                  >
-                    Reset password
-                  </Link>
-                </ForgotPassword>
-              </Margin>
               <UiButton isFullWidth loading={loading}>
-                Sign In
+                Send recovery link
               </UiButton>
               <LinkToRegisteration>
-                Don't have an account?{' '}
-                <Link to="/auth/join/agent">register with us</Link>
+                Remembered your password? <Link to="/auth/login">Sign In</Link>
               </LinkToRegisteration>
             </>
           )}
         </UiForm>
       </Page>
+    </>
   );
 }
 const Page = styled.div`
   width: 100%;
+
+  p {
+    font-size: ${pxToRem(16)};
+    color: var(--color-gray-500);
+  }
 `;
 const Heading = styled.h3`
   color: var(--color-primary);
@@ -109,12 +89,6 @@ const Heading = styled.h3`
 `;
 const Margin = styled.div`
   margin-bottom: ${pxToRem(12)};
-`;
-
-const ForgotPassword = styled.div`
-  font-size: ${pxToRem(14)};
-  padding-top: ${pxToRem(16)};
-  color: var(--color-gray-400);
 `;
 
 const LinkToRegisteration = styled.p`

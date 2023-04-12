@@ -27,6 +27,10 @@ class ApiService {
     return this.post<LoginResponse>('/auth/login', data);
   }
 
+  requestResetPasswordLink(data: { email: string }) {
+    return this.post('/auth/request-reset-password', data);
+  }
+
   requestVerificationCode(data: { phone: string }) {
     return this.post<TokenVerificationData>('/auth/request-sms', data);
   }
@@ -84,6 +88,9 @@ class ApiService {
 
   saveAccountNumber(accountDetails: BankDetails) {
     return this.post<User>('/user/bank-details', accountDetails);
+  }
+  updatePassword(data: { password: string }) {
+    return this.post<User>('/user/update-password', data);
   }
 
   updateAccountNumber(accountDetails: BankDetails) {

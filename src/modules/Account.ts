@@ -75,18 +75,23 @@ export function VerifyOtp(pin: string) {
   };
 }
 export function verifyEmail(token: string) {
-  return async () => {
+  return () => {
     return Api.verifyEmail({
       token,
     }).then((data) => {
-      setUser(data)
+      setUser(data);
     });
   };
 }
 
 export function updateUser(data: FormData) {
-  return async (dispatch: AppDispatch) => {
+  return (dispatch: AppDispatch) => {
     return Api.updateUser(data).then((user) => dispatch(setUser(user)));
+  };
+}
+export function updatePassword(data: { password: string }) {
+  return () => {
+    return Api.updatePassword(data);
   };
 }
 
@@ -104,6 +109,11 @@ export function loginUser(AuthUser: { email: string; password: string }) {
       });
   };
 }
+export function requestForgotPasswordLink(AuthUser: { email: string }) {
+  return () => {
+    return Api.requestResetPasswordLink(AuthUser);
+  };
+}
 
 export function getDashboardUser() {
   return (dispatch: AppDispatch) => {
@@ -112,20 +122,17 @@ export function getDashboardUser() {
         dispatch(setUser(data));
         return data;
       })
-      .catch((err) => {
-        throw new Error(err.message);
-      });
   };
 }
 
 export const startVerificationProcess = (verificationData: FormData) => {
-  return (dispatch: AppDispatch, state: AppState) => {
+  return () => {
     return Api.startVerificationProcess(verificationData);
   };
 };
 
 export const updateVerification = (verificationData: FormData) => {
-  return (dispatch: AppDispatch, state: AppState) => {
+  return () => {
     return Api.updateVerification(verificationData);
   };
 };
