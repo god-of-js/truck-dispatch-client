@@ -25,6 +25,7 @@ import UiOverlay from 'ui/UiOverlay';
 import EmailHasBeenSentModal from 'components/profile/EmailHasBeenSentModal';
 import Loader from 'components/layout/Loader';
 import EmailHasBeenVerifiedModal from 'components/profile/EmailHasBeenVerifiedModal';
+import { getUserSessionId, saveUserSessionId } from 'utils/userSession';
 
 export default function DashboardLayout() {
   const dispatch = useDispatch();
@@ -39,7 +40,7 @@ export default function DashboardLayout() {
   const [verificationHasBeenSent, setVerificationHasBeenSent] = useState(false);
   const [emailHasBeenVerified, setEmailHasBeenVerified] = useState(false);
   const user = useSelector((state: RootState) => state.account.user);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   function getEmailVerificationLink() {
     setRequestVerificationLoading(true);
@@ -51,17 +52,37 @@ export default function DashboardLayout() {
   }
 
   useEffect(() => {
-    const jwt = localStorage.getItem('jwt');
-    if (!jwt) {
+    if (action === 'sign-in' && token) {
+      saveUserSessionId(token);
+    } else if (action === 'verify-email' && token) {
+      setLoading(true);
+      dispatch(toAnyAction(verifyEmail(token)))
+        .then(() => {
+          navigate(location.pathname)
+          setEmailHasBeenVerified(true);
+        })
+        .catch(() => {navigate('/auth/login');})
+        .finally(() => setLoading(false));
+    }
+  }, [action, token]);
+
+  useEffect(() => {
+    const sessionId = getUserSessionId();
+    if (!sessionId && action !== 'sign-in' && !token) {
       navigate('/auth/login');
     } else {
-      dispatch(toAnyAction(getDashboardUser())).catch((err: Error) => {
-        Toast.error({ msg: err.message });
-      });
+      dispatch(toAnyAction(getDashboardUser()))
+      .then(() => {
+        navigate(location.pathname)
+      })
+        .catch((err: Error) => {
+          Toast.error({ msg: err.message });
+        })
+        .then(() => setLoading(false));
       dispatch(toAnyAction(getUserChat()));
       dispatch(toAnyAction(getChatLogs()));
     }
-  }, []);
+  }, [action, token, loading]);
 
   useEffect(() => {
     if (user) {
@@ -84,17 +105,6 @@ export default function DashboardLayout() {
       };
     }
   }, [user]);
-
-  useEffect(() => {
-    if (action === 'verify-email' && token) {
-      setLoading(true);
-      dispatch(toAnyAction(verifyEmail(token)))
-        .then(() => {
-          setEmailHasBeenVerified(true);
-        })
-        .finally(() => setLoading(false));
-    }
-  }, [action, token]);
 
   return (
     <Layout>
