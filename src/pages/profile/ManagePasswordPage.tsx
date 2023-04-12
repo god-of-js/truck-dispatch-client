@@ -1,20 +1,25 @@
-import { RootState } from 'modules/index';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { updatePassword } from 'modules/Account';
+import { sendOTP, updatePassword } from 'modules/Account';
 import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
 import UiInput from 'ui/UiInput';
-import {
-  toAnyAction,
-} from 'utils/helpers';
+import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
 import ChangePasswordSchema from 'utils/validations/ChangePasswordSchema';
 import UiCard from 'ui/UiCard';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { removeUserSessionId } from 'utils/userSession';
+import { RootState } from 'modules/index';
 
 export default function ManagePasswordPage() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.account.user);
+  const isPhoneVerified = new URLSearchParams(location.search).get(
+    'isPhoneVerified',
+  );
   const dispatch = useDispatch();
   const defaultPasswordData = {
     password: '',
@@ -29,6 +34,12 @@ export default function ManagePasswordPage() {
       dispatch(toAnyAction(updatePassword({ password: formData.password })))
         .then(() => {
           setFormData(defaultPasswordData);
+          if (isPhoneVerified === 'false') {
+            return dispatch(toAnyAction(sendOTP(user?.phone!))).then(() => {
+              removeUserSessionId();
+              navigate('/auth/verify-phone');
+            });
+          }
         })
         .finally(() => {
           setLoading(false);

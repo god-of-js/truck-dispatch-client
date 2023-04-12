@@ -34,6 +34,9 @@ export default function DashboardLayout() {
 
   const token = new URLSearchParams(location.search).get('token');
   const action = new URLSearchParams(location.search).get('action');
+  const isPhoneVerified = new URLSearchParams(location.search).get(
+    'isPhoneVerified',
+  );
 
   const [requestVerificationLoading, setRequestVerificationLoading] =
     useState(false);
@@ -51,40 +54,54 @@ export default function DashboardLayout() {
       .finally(() => setRequestVerificationLoading(false));
   }
 
+  function verifyUserEmail(verificationToken: string) {
+    setLoading(true);
+    dispatch(toAnyAction(verifyEmail(verificationToken)))
+      .then(() => {
+        navigate(location.pathname);
+        setEmailHasBeenVerified(true);
+      })
+      .catch(() => {
+        navigate('/auth/login');
+      })
+      .finally(() => setLoading(false));
+  }
+
+  function loadDashboardData() {
+    dispatch(toAnyAction(getDashboardUser()))
+      .catch((err: Error) => {
+        Toast.error({ msg: err.message });
+      })
+      .then(() => setLoading(false));
+    dispatch(toAnyAction(getUserChat()));
+    dispatch(toAnyAction(getChatLogs()));
+  }
+
   useEffect(() => {
     if (action === 'sign-in' && token) {
+      // Sign in user by saving the session ID
       saveUserSessionId(token);
+      navigate(
+        `${location.pathname}${
+          isPhoneVerified === 'false' && '?isPhoneVerified=' + isPhoneVerified
+        }`,
+      );
     } else if (action === 'verify-email' && token) {
-      setLoading(true);
-      dispatch(toAnyAction(verifyEmail(token)))
-        .then(() => {
-          navigate(location.pathname)
-          setEmailHasBeenVerified(true);
-        })
-        .catch(() => {navigate('/auth/login');})
-        .finally(() => setLoading(false));
+      verifyUserEmail(token);
     }
-  }, [action, token]);
+  }, [action, token, isPhoneVerified]);
 
   useEffect(() => {
     const sessionId = getUserSessionId();
     if (!sessionId && action !== 'sign-in' && !token) {
       navigate('/auth/login');
     } else {
-      dispatch(toAnyAction(getDashboardUser()))
-      .then(() => {
-        navigate(location.pathname)
-      })
-        .catch((err: Error) => {
-          Toast.error({ msg: err.message });
-        })
-        .then(() => setLoading(false));
-      dispatch(toAnyAction(getUserChat()));
-      dispatch(toAnyAction(getChatLogs()));
+      loadDashboardData();
     }
   }, [action, token, loading]);
 
   useEffect(() => {
+    // Connect to socket.
     if (user) {
       const userId = user?._id;
       const newSocket = io(WEB_SOCKET_URL);

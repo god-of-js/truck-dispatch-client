@@ -78,12 +78,14 @@ export function verifyEmail(token: string) {
   return () => {
     return Api.verifyEmail({
       token,
-    }).then((data) => {
-      setUser(data);
-    }).catch((err) => {
-      console.log(err)
-      return Promise.reject(err)
-    });
+    })
+      .then((data) => {
+        setUser(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        return Promise.reject(err);
+      });
   };
 }
 
@@ -121,11 +123,10 @@ export function requestForgotPasswordLink(AuthUser: { email: string }) {
 
 export function getDashboardUser() {
   return (dispatch: AppDispatch) => {
-    return Api.getUser()
-      .then((data) => {
-        dispatch(setUser(data));
-        return data;
-      })
+    return Api.getUser().then((data) => {
+      dispatch(setUser(data));
+      return data;
+    });
   };
 }
 

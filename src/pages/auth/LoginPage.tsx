@@ -49,54 +49,50 @@ export default function LoginPage() {
   }
 
   return (
-      <Page>
-        <UiForm
-          schema={loginSchema}
-          formData={formData}
-          onSubmit={handleSubmit}
-        >
-          {({ errors }) => (
-            <>
-              <Heading>Sign in</Heading>
-              <Margin>
-                <UiInput
-                  label="Email*"
-                  value={formData.email}
-                  name="email"
-                  error={errors.email}
-                  onChange={handleChange}
-                />
-              </Margin>
-              <Margin>
-                <UiInput
-                  type="password"
-                  label="Password*"
-                  name="password"
-                  value={formData.password!}
-                  error={errors.password}
-                  onChange={handleChange}
-                />
-                <ForgotPassword>
-                  Forgot password?{' '}
-                  <Link
-                    to="/auth/forgot-password"
-                    className="forgot-password-link"
-                  >
-                    Reset password
-                  </Link>
-                </ForgotPassword>
-              </Margin>
-              <UiButton isFullWidth loading={loading}>
-                Sign In
-              </UiButton>
-              <LinkToRegisteration>
-                Don't have an account?{' '}
-                <Link to="/auth/join/agent">register with us</Link>
-              </LinkToRegisteration>
-            </>
-          )}
-        </UiForm>
-      </Page>
+    <Page>
+      <UiForm schema={loginSchema} formData={formData} onSubmit={handleSubmit}>
+        {({ errors }) => (
+          <>
+            <Heading>Sign in</Heading>
+            <Margin>
+              <UiInput
+                label="Email*"
+                value={formData.email}
+                name="email"
+                error={errors.email}
+                onChange={handleChange}
+              />
+            </Margin>
+            <Margin>
+              <UiInput
+                type="password"
+                label="Password*"
+                name="password"
+                value={formData.password!}
+                error={errors.password}
+                onChange={handleChange}
+              />
+              <ForgotPassword>
+                Forgot password?{' '}
+                <Link
+                  to="/auth/forgot-password"
+                  className="forgot-password-link"
+                >
+                  Reset password
+                </Link>
+              </ForgotPassword>
+            </Margin>
+            <UiButton isFullWidth loading={loading}>
+              Sign In
+            </UiButton>
+            <LinkToRegisteration>
+              Don't have an account?{' '}
+              <Link to="/auth/join/agent">register with us</Link>
+            </LinkToRegisteration>
+          </>
+        )}
+      </UiForm>
+    </Page>
   );
 }
 const Page = styled.div`
