@@ -12,9 +12,6 @@ import getStore from './modules';
 import Loader from 'components/layout/Loader';
 import loadServices from 'utils/loadServices';
 
-// Remove before deploy to demo
-import './api/firebase';
-
 // @ts-ignore
 window.pxToRem = (px: number, baseSize = 16) => `${px / baseSize}rem`;
 
@@ -22,12 +19,14 @@ window.onload = loadServices;
 
 const root = createRoot(document.getElementById('root')!);
 root.render(
+  <React.StrictMode>
     <Provider store={getStore()}>
       <Suspense fallback={<Loader />}>
         <RouterProvider router={router} />
       </Suspense>
       <Toaster position="bottom-right" reverseOrder={true} />
     </Provider>
+  </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function
