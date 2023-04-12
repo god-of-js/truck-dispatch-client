@@ -1,12 +1,15 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
+import UiButton from './UiButton';
 import UiField from './UiField';
+import UiInput from './UiInput';
 
 interface Props {
   label?: string;
   name: string;
   error?: string;
   value: string;
-  onChange: (event: { name: string; value: string }) => void;
+  onChange: (event: { name: string; value: string | null }) => void;
 }
 
 export default function UiLocationsInput({
@@ -18,6 +21,7 @@ export default function UiLocationsInput({
 }: Props) {
   const autoCompleteRef = useRef<HTMLInputElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [cantFindLocation, setCantFindLocation] = useState(false);
 
   const options = {
     componentRestrictions: { country: 'ng' },
@@ -46,6 +50,31 @@ export default function UiLocationsInput({
   return (
     <UiField label={label} name={name} error={error}>
       <input className="global-input" ref={inputRef} key={value} />
+      <UiInputContainer>
+        {cantFindLocation && (
+          <UiInput
+            value={value}
+            name={name}
+            onChange={onChange}
+            label={'Enter Location for ' + label}
+          />
+        )}
+      </UiInputContainer>
+      <div className="action-btn">
+        <UiButton
+          variant="primary-text"
+          size="no-size"
+          type="button"
+          onClick={() => setCantFindLocation(!cantFindLocation)}
+        >
+          {' '}
+          {cantFindLocation ? 'Cancel' : "Can't find location?"}
+        </UiButton>
+      </div>
     </UiField>
   );
 }
+
+const UiInputContainer = styled.div`
+  margin-top: ${pxToRem(8)};
+`;

@@ -26,7 +26,7 @@ interface Props {
   onClick?: () => void;
 }
 
-type Sizes = 'large' | 'md' | 's';
+type Sizes = 'large' | 'md' | 's' | 'no-size';
 
 export default function UiButton({
   children,
@@ -57,6 +57,7 @@ export default function UiButton({
 }
 
 function sizeVariant(size: Sizes) {
+  if (size === 'no-size') return '';
   if (size === 's') return `padding: 0 ${pxToRem(16)}; height: ${pxToRem(36)};`;
   if (size === 'md')
     return `
