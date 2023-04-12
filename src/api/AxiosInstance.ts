@@ -3,6 +3,7 @@ import { BACKEND_URL } from 'utils/privateKeys';
 import { Toast } from 'utils/toast';
 import { getUserSessionId, removeUserSessionId } from 'utils/userSession';
 
+let isRedirecting = false;
 const instance = axios.create({
   baseURL: BACKEND_URL,
   timeout: 40000,
@@ -17,8 +18,12 @@ instance.interceptors.response.use(
       });
     }
     if (err.response.data.message === 'jwt expired') {
-      removeUserSessionId();
-      location.reload();
+      if (!isRedirecting) {
+        isRedirecting = true;
+        removeUserSessionId();
+        window.location.href = '/auth/login';
+      }
+
     }
     return Promise.reject(err.response.data);
   },

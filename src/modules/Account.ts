@@ -80,6 +80,9 @@ export function verifyEmail(token: string) {
       token,
     }).then((data) => {
       setUser(data);
+    }).catch((err) => {
+      console.log(err)
+      return Promise.reject(err)
     });
   };
 }
@@ -109,6 +112,7 @@ export function loginUser(AuthUser: { email: string; password: string }) {
       });
   };
 }
+
 export function requestForgotPasswordLink(AuthUser: { email: string }) {
   return () => {
     return Api.requestResetPasswordLink(AuthUser);

@@ -58,8 +58,10 @@ export default function DashboardLayout() {
       setLoading(true);
       dispatch(toAnyAction(verifyEmail(token)))
         .then(() => {
+          navigate(location.pathname)
           setEmailHasBeenVerified(true);
         })
+        .catch(() => {navigate('/auth/login');})
         .finally(() => setLoading(false));
     }
   }, [action, token]);
@@ -70,6 +72,9 @@ export default function DashboardLayout() {
       navigate('/auth/login');
     } else {
       dispatch(toAnyAction(getDashboardUser()))
+      .then(() => {
+        navigate(location.pathname)
+      })
         .catch((err: Error) => {
           Toast.error({ msg: err.message });
         })
