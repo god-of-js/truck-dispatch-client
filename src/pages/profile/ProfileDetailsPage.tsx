@@ -16,6 +16,7 @@ import {
 } from 'utils/helpers';
 import sizes from 'utils/sizes';
 import EditProfileSchema from 'utils/validations/EditProfileSchema';
+import UiCard from 'ui/UiCard';
 
 export default function ProfileDetailsPage() {
   const user = useSelector((state: RootState) => state.account.user);
@@ -57,8 +58,8 @@ export default function ProfileDetailsPage() {
   }
 
   return (
-    <>
-      <CardContainer>
+    <CardContainer>
+      <UiCard>
         <header>
           <h2>{isEditable && 'Edit'} Profile Details</h2>
           {!isEditable && (
@@ -140,19 +141,15 @@ export default function ProfileDetailsPage() {
             </>
           )}
         </UiForm>
-      </CardContainer>
-    </>
+      </UiCard>
+    </CardContainer>
   );
 }
 
 const CardContainer = styled.div`
-  background: #ffffff;
   width: 90%;
   margin: auto;
-  border: 1px solid var(--color-gray-200);
-  border-radius: ${pxToRem(8)};
   color: var(--color-gray-600);
-  padding: ${pxToRem(24)};
 
   header {
     display: flex;

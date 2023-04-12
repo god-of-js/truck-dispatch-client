@@ -12,6 +12,7 @@ interface Props {
     | 'primary-outlined'
     | 'secondary-outlined'
     | 'primary-text'
+    | 'warning-text'
     | 'dark'
     | 'dark-outlined'
     | 'icon'
@@ -109,6 +110,11 @@ const ButtonContainer = styled.button<Props>`
     background: transparent;
     border-color: transparent;
     color: var(--color-primary);
+  }
+  &.warning-text {
+    background: transparent;
+    border-color: transparent;
+    color: var(--color-warning-600);
   }
 
   &.icon {

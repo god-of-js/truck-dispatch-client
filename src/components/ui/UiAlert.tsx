@@ -13,7 +13,7 @@ export default function UiAlert({ variant = 'neutral', children }: Props) {
     <>
       {isAlertVisible && (
         <Alert variant={variant}>
-          <div>{children}</div>
+          <div className="children">{children}</div>
           <button onClick={() => setIsAlertVisible(false)}>
             <UiIcon icon="X" />
           </button>
@@ -58,5 +58,10 @@ const Alert = styled.div`
     background-color: transparent;
     border: transparent;
     cursor: pointer;
+  }
+
+  .children {
+    display: flex;
+    align-items: center;
   }
 `;

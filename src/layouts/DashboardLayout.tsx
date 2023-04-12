@@ -7,7 +7,11 @@ import { io } from 'socket.io-client';
 import { toAnyAction } from 'utils/helpers';
 import sizes from '../utils/sizes';
 
-import { getDashboardUser } from 'modules/Account';
+import {
+  getDashboardUser,
+  requestEmailVerification,
+  verifyEmail,
+} from 'modules/Account';
 
 import DashboardSidebar from 'components/layout/DashboardSidebar';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
@@ -16,29 +20,90 @@ import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
 import { getChatLogs, getUserChat, setChat, setChatLog } from 'modules/Chat';
 import { WEB_SOCKET_URL } from 'utils/privateKeys';
+import UiButton from 'ui/UiButton';
+import UiOverlay from 'ui/UiOverlay';
+import EmailHasBeenSentModal from 'components/profile/EmailHasBeenSentModal';
+import Loader from 'components/layout/Loader';
+import EmailHasBeenVerifiedModal from 'components/profile/EmailHasBeenVerifiedModal';
+import { getUserSessionId, saveUserSessionId } from 'utils/userSession';
 
 export default function DashboardLayout() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const token = new URLSearchParams(location.search).get('token');
+  const action = new URLSearchParams(location.search).get('action');
+  const isPhoneVerified = new URLSearchParams(location.search).get(
+    'isPhoneVerified',
+  );
+
+  const [requestVerificationLoading, setRequestVerificationLoading] =
+    useState(false);
+  const [verificationHasBeenSent, setVerificationHasBeenSent] = useState(false);
+  const [emailHasBeenVerified, setEmailHasBeenVerified] = useState(false);
   const user = useSelector((state: RootState) => state.account.user);
+  const [loading, setLoading] = useState(true);
+
+  function getEmailVerificationLink() {
+    setRequestVerificationLoading(true);
+    dispatch(toAnyAction(requestEmailVerification()))
+      .then(() => {
+        setVerificationHasBeenSent(true);
+      })
+      .finally(() => setRequestVerificationLoading(false));
+  }
+
+  function verifyUserEmail(verificationToken: string) {
+    setLoading(true);
+    dispatch(toAnyAction(verifyEmail(verificationToken)))
+      .then(() => {
+        navigate(location.pathname);
+        setEmailHasBeenVerified(true);
+      })
+      .catch(() => {
+        navigate('/auth/login');
+      })
+      .finally(() => setLoading(false));
+  }
+
+  function loadDashboardData() {
+    dispatch(toAnyAction(getDashboardUser()))
+      .catch((err: Error) => {
+        Toast.error({ msg: err.message });
+      })
+      .then(() => setLoading(false));
+    dispatch(toAnyAction(getUserChat()));
+    dispatch(toAnyAction(getChatLogs()));
+  }
 
   useEffect(() => {
-    const jwt = localStorage.getItem('jwt');
-    if (!jwt) {
+    if (action === 'sign-in' && token) {
+      // Sign in user by saving the session ID
+      saveUserSessionId(token);
+      navigate(
+        `${location.pathname}${
+          isPhoneVerified === 'false' && '?isPhoneVerified=' + isPhoneVerified
+        }`,
+      );
+    } else if (action === 'verify-email' && token) {
+      verifyUserEmail(token);
+    }
+  }, [action, token, isPhoneVerified]);
+
+  useEffect(() => {
+    const sessionId = getUserSessionId();
+    if (!sessionId && action !== 'sign-in' && !token) {
       navigate('/auth/login');
     } else {
-      dispatch(toAnyAction(getDashboardUser())).catch((err: Error) => {
-        Toast.error({ msg: err.message });
-      });
-      dispatch(toAnyAction(getUserChat()));
-      dispatch(toAnyAction(getChatLogs()));
+      loadDashboardData();
     }
-  }, []);
+  }, [action, token, loading]);
 
   useEffect(() => {
-    const userId = user?._id;
-    if (userId) {
+    // Connect to socket.
+    if (user) {
+      const userId = user?._id;
       const newSocket = io(WEB_SOCKET_URL);
       newSocket.on('connect', () => {
         newSocket.emit('join', { userId });
@@ -94,8 +159,32 @@ export default function DashboardLayout() {
             )}
           </div>
         )}
+        {!user?.isEmailVerified && (
+          <UiAlert variant="warning">
+            Your email address has not been verified. To have full access to the
+            dashboard{' '}
+            <UiButton
+              size="s"
+              variant="warning-text"
+              onClick={getEmailVerificationLink}
+              loading={requestVerificationLoading}
+            >
+              Verify your account
+            </UiButton>
+          </UiAlert>
+        )}
         <DashboardTopNav />
-        <Outlet />
+        {loading ? <Loader /> : <Outlet />}
+        <UiOverlay isVisible={verificationHasBeenSent}>
+          <EmailHasBeenSentModal
+            onClose={() => setVerificationHasBeenSent(false)}
+          />
+        </UiOverlay>
+        <UiOverlay isVisible={emailHasBeenVerified}>
+          <EmailHasBeenVerifiedModal
+            onClose={() => setEmailHasBeenVerified(false)}
+          />
+        </UiOverlay>
       </Body>
     </Layout>
   );
