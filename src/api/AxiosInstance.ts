@@ -17,6 +17,7 @@ instance.interceptors.response.use(
         msg: "we couldn't reach our servers. Kindly check your connection. However, the team is on the issue.",
       });
     }
+
     if (
       err.response.data.message === 'jwt expired' ||
       err.response.data.message === 'invalid signature'
