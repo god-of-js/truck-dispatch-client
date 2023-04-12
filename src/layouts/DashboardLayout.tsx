@@ -83,7 +83,7 @@ export default function DashboardLayout() {
       saveUserSessionId(token);
       navigate(
         `${location.pathname}${
-          isPhoneVerified === 'false' && '?isPhoneVerified=' + isPhoneVerified
+          isPhoneVerified === 'false' ? '?isPhoneVerified=' + isPhoneVerified : ''
         }`,
       );
     } else if (action === 'verify-email' && token) {
