@@ -31,12 +31,14 @@ import {
 import Buildings from './icons/Building';
 import Car from './icons/Car';
 import CallReceived from './icons/CallReceived';
-import Eye  from './icons/Eye';
-import EyeSlash  from './icons/EyeSlash';
+import DocumentUpload from './icons/DocumentUpload';
+import Eye from './icons/Eye';
+import EyeSlash from './icons/EyeSlash';
+import InfoCircle from './icons/InfoCircle';
 import MagicStar from './icons/MagicStar';
 import PasswordCheck from './icons/PasswordCheck';
 import styled from 'styled-components';
-import  UserOctagon  from './icons/UserOctagon';
+import UserOctagon from './icons/UserOctagon';
 import UserSquare from './icons/UserSquare';
 // These icons should be arranged alphabetically for easy sorting
 const icons = {
@@ -52,12 +54,14 @@ const icons = {
   CreditCard: <CreditCard />,
   Check: <Check />,
   Checks: <Checks />,
+  DocumentUpload: <DocumentUpload />,
   DotsThree: <DotsThree />,
   DotsThreeVertical: <DotsThreeVertical />,
   Eye: <Eye />,
   EyeSlash: <EyeSlash />,
   FolderNotchOpen: <FolderNotchOpen />,
   House: <House />,
+  InfoCircle: <InfoCircle />,
   Kanban: <Kanban />,
   MagicStar: <MagicStar />,
   MapPin: <MapPin />,
@@ -90,8 +94,9 @@ export default function UiIcon({ icon, size = '16' }: Props) {
 const IconStyle = styled.span`
   font-size: ${({ size }: { size?: Props['size'] }) =>
     pxToRem((size && parseInt(size)) || 16)};
-  
-  width: ${({ size }: { size?: Props['size'] }) =>
-    pxToRem((size && parseInt(size)) || 16)};
-  
+
+  svg {
+    width: ${({ size }: { size?: Props['size'] }) =>
+      pxToRem((size && parseInt(size)) || 16)};
+  }
 `;

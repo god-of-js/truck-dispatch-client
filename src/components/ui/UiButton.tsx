@@ -172,7 +172,7 @@ const ButtonContainer = styled.button<Props>`
     color: var(--color-primary);
     ${({ disabled }) => getColor(disabled!, `var(--color-primary-10)`)};
     ${({ disabled }) => disabled && `color: var(--color-primary-30);`}
-    
+
     ${({ disabled }) =>
       !disabled &&
       `

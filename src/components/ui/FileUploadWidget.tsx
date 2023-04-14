@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useRef } from 'react';
 import styled from 'styled-components';
 import UiField from './UiField';
+import UiIcon from './UiIcon';
 
 interface Props {
   name: string;
@@ -70,8 +71,11 @@ export default function FileUploadWidget({
   function defaultComponent() {
     return (
       <DefaultUploadTrigger>
-        <span>Choose file{acceptMultiple ? 's' : ''}</span>
-        {!acceptMultiple ? <div>{value && getFileName(value)}</div> : ''}
+        {value && !acceptMultiple ? (
+          <div>{getFileName(value)}</div>
+        ) : (
+          <span>Choose file{acceptMultiple ? 's' : ''}</span>
+        )}
       </DefaultUploadTrigger>
     );
   }
@@ -89,6 +93,9 @@ export default function FileUploadWidget({
           accept={fileTypeSelector[fileType]}
         />
         {displayComponent}
+        <span className="upload-tag">
+          <UiIcon icon="DocumentUpload" size="24" />
+        </span>
       </FileUploadWidgetStyle>
     </UiField>
   );
@@ -98,15 +105,37 @@ const FileUploadWidgetStyle = styled.div`
   input {
     display: none;
   }
+  display: flex;
+  & > div {
+    width: 100%;
+  }
+  .upload-tag {
+    width: 8.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: ${pxToRem(12)} ${pxToRem(16)};
+    border-radius: 0px ${pxToRem(8)} ${pxToRem(8)} 0px;
+    border: ${pxToRem(1)} solid var(--color-gray);
+    border-left: none;
+    background-color: var(--color-primary-10);
+  }
 `;
 
 const DefaultUploadTrigger = styled.div`
-  background: var(--color-gray-50);
-  border: ${pxToRem(1)} dashed var(--color-gray-200);
+  border: ${pxToRem(1)} solid var(--color-gray);
+  border-right: none;
   font-size: ${pxToRem(14)};
+  font-family: 'thiccboi-medium';
   padding: ${pxToRem(16)};
-  text-align: center;
-  color: var(--color-gray-500);
-  border-radius: ${pxToRem(4)};
+  color: var(--color-gray-80);
+  border-radius: ${pxToRem(8)} 0px 0px ${pxToRem(8)};
+  display: flex;
+  align-items: center;
   cursor: pointer;
+  div {
+    color: var(--color-neutralBlack);
+    font-size: ${pxToRem(14)};
+    line-height: ${pxToRem(24)};
+  }
 `;

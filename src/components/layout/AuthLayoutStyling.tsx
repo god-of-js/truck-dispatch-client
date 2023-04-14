@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import SignUpImage from '../../assets/img/sign up image.png'
+import SignUpImage from '../../assets/img/sign up image.png';
 interface Props {
   children: React.ReactNode;
   infoContent?: React.ReactNode;
@@ -16,26 +16,23 @@ export default function AuthLayoutStyling({
     <LayoutStyling invert={invert}>
       <div className="info-content">
         <div className="info-content__inner container">
-          {
-            !invert || undefined  && <div className="logo">
-              <a href="https://gettruckdispatch.com">
-                TruckDispatch
-              </a>
-            </div> 
-          }
-          { img && <img src={SignUpImage} alt="" /> }
+          {!invert ||
+            (undefined && (
+              <div className="logo">
+                <a href="https://gettruckdispatch.com">TruckDispatch</a>
+              </div>
+            ))}
+          {img && <img src={SignUpImage} alt="" />}
           {infoContent}
         </div>
       </div>
       <div className="main-content">
         <div className="main-content__inner container">
-        {
-          invert && <div className="logo">
-            <a href="https://gettruckdispatch.com">
-              TruckDispatch
-            </a>
-          </div>
-        }
+          {invert && (
+            <div className="logo">
+              <a href="https://gettruckdispatch.com">TruckDispatch</a>
+            </div>
+          )}
           {children}
         </div>
       </div>
@@ -51,85 +48,87 @@ const LayoutStyling = styled.div`
     display: none;
   }
   .main-content {
-    padding:${pxToRem(16)};
+    padding: ${pxToRem(16)};
   }
-  
-  @media(min-width: 600px) {
+
+  @media (min-width: 600px) {
     .main-content {
-    padding:${pxToRem(24)};
+      padding: ${pxToRem(24)};
+    }
   }
-  }
-  @media(min-width: 900px) {
-    
+  @media (min-width: 900px) {
     display: flex;
     ${({ invert }: { invert?: boolean }) =>
-    invert && 'flex-direction: row-reverse;'}
+      invert && 'flex-direction: row-reverse;'}
     min-height: 100vh;
     .logo {
       display: block;
-      margin-bottom:${pxToRem(70)};
+      margin-bottom: ${pxToRem(70)};
 
       a {
         color: var(--color-neutralBlack);
-        font-size:${pxToRem(20)};
-        font-weight:700;
+        font-size: ${pxToRem(20)};
+        font-weight: 700;
       }
     }
     .info-content {
       display: block;
-      
+
       ${({ invert }: { invert?: boolean }) =>
-        invert ? 'width: 43%;' : 'width: 30%;'
-      }
+        invert ? 'width: 43%;' : 'width: 30%;'}
       background: var(--color-primary-10);
       &__inner {
-      height: 100%;
-      img{
-        max-width: 100%;
-        height: 100%;        
-        object-fit: cover;
+        height: 100%;
+        img {
+          max-width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
       }
     }
-    }
     .main-content {
-      ${({ invert }: { invert?: boolean }) =>  
-        !invert  && `
+      ${({ invert }: { invert?: boolean }) =>
+        !invert &&
+        `
         display: flex; 
         justify-content: center; 
         align-items: center;
-        `
-      }
+        `}
       padding:${pxToRem(34)} 0 ${pxToRem(80)} ${pxToRem(80)};
       width: 57%;
-        &__inner {
-          ${({ invert }: { invert?: boolean }) => invert  ? `width: 90%;` : `width: 60%;`}
+      &__inner {
+        ${({ invert }: { invert?: boolean }) =>
+          invert ? `width: 90%;` : `width: 60%;`}
       }
     }
   }
-  @media(min-width: 1330px) {
-    .container{
-      max-width:700px;
+  @media (min-width: 1330px) {
+    .container {
+      max-width: 700px;
     }
-  .logo{
-    display:block;
-    margin-bottom:${pxToRem(114)};
-  }
-  .main-content {
-    
-    padding:${pxToRem(34)} 0 ${pxToRem(80)} ${pxToRem(121)};
-    /* display: flex;
+    .logo {
+      display: block;
+      margin-bottom: ${pxToRem(114)};
+    }
+    .main-content {
+      padding: ${pxToRem(34)} 0 ${pxToRem(80)} ${pxToRem(121)};
+
+      ${({ invert }: { invert?: boolean }) =>
+        !invert &&
+        ` padding-top:${pxToRem(100)};
+          padding-bottom:${pxToRem(100)};
+        `}
+      /* display: flex;
     justify-content: center;
     align-items: center; */
     &__inner {
-      ${({ invert }: { invert?: boolean }) =>  
-        invert  ? `width: 80%;` : `width: 60%;`
+        ${({ invert }: { invert?: boolean }) =>
+          invert ? `width: 80%;` : `width: 60%;`}
       }
-      
     }
   }
-  }
-  @media(min-width: 1650px) {
-    justify-content: center ;
+  @media (min-width: 1650px) {
+    justify-content: center;
     gap: ${pxToRem(50)};
 
     .info-content {
@@ -137,18 +136,17 @@ const LayoutStyling = styled.div`
     }
     .main-content {
       width: 100%;
-      display: flex;  
-      ${({ invert }: { invert?: boolean }) =>  
-        !invert ? `justify-content: flex-start;` : `justify-content: center;`
-      }
+      display: flex;
+      ${({ invert }: { invert?: boolean }) =>
+        !invert ? `justify-content: flex-start;` : `justify-content: center;`}
       align-items: center;
       &__inner {
-        ${({ invert }: { invert?: boolean }) =>  
-        invert  && `
+        ${({ invert }: { invert?: boolean }) =>
+          invert &&
+          `
         margin-left: auto
-        ` 
+        `}
       }
-    }
     }
   }
 `;

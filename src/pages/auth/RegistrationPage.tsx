@@ -16,19 +16,19 @@ import UiForm from 'components/ui/UiForm';
 import { toAnyAction } from 'utils/helpers';
 import registrationSchema from 'utils/validations/registrationSchema';
 
-
 import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
 import UserTypeSelect from 'components/auth/SelectUserType';
 import { PersonDetailsForm } from 'components/auth/PersonalDetailsForm';
 import VerifyPhone from 'components/auth/VerifyPhone';
-import ChoosePasswordForm  from 'components/auth/ChoosePasswordForm';
+import ChoosePasswordForm from 'components/auth/ChoosePasswordForm';
+import CompanyDetailsForm from 'components/auth/CompanyDetailsForm';
 
 export default function RegistrationPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { userType } = useParams();
-  console.log( userType);
-  
+  console.log(userType);
+
   const [formData, setFormData] = useState<UserWithPassword>({
     _id: '',
     firstName: '',
@@ -71,8 +71,8 @@ export default function RegistrationPage() {
     : 'Deliver with us As An Agent';
 
   return (
-    <AuthLayoutStyling >
-      <ChoosePasswordForm />
+    <AuthLayoutStyling>
+      <CompanyDetailsForm />
       {/* <UiForm
         schema={registrationSchema}
         formData={formData}

@@ -9,7 +9,7 @@ interface Props {
   label: string;
   type?: 'text' | 'password' | 'number' | 'phone' | 'date';
   value: string | null | number;
-  placeholder?: string
+  placeholder?: string;
   /** The name property should always be the same as the model value. example if the input belongs to
    * formData.confirm_password, the name prop should be confirm_password.
    */
@@ -72,7 +72,10 @@ export default function UiInput({
 
         {type === 'password' && (
           <IconButton onClick={handlePasswordTypeToText}>
-            <UiIcon icon={inputType === 'password' ? 'EyeSlash' : 'Eye'} />
+            <UiIcon
+              icon={inputType === 'password' ? 'EyeSlash' : 'Eye'}
+              size="20"
+            />
           </IconButton>
         )}
       </InputContainer>
@@ -112,7 +115,7 @@ const Input = styled.input`
     border: ${pxToRem(2)} solid var(--color-primary);
     box-shadow: var(--box-shadow-primary);
   }
-  ::placeholder{
+  ::placeholder {
     font-size: ${pxToRem(14)};
     color: var(--color-gray-80);
     font-weight: 400;

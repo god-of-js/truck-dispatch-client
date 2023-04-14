@@ -1,46 +1,41 @@
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import styled from "styled-components";
-import { StyledAuthScreen } from "./PersonalDetailsForm";
-import { Margin } from "./PersonalDetailsForm";
+import styled from 'styled-components';
+import { StyledAuthScreen } from './PersonalDetailsForm';
+import { Margin } from './PersonalDetailsForm';
 
-import UiIcon from "ui/UiIcon";
-import UiInput from "ui/UiInput";
-import UiButton from "ui/UiButton";
-import UiForm from "ui/UiForm";
+import UiIcon from 'ui/UiIcon';
+import UiInput from 'ui/UiInput';
+import UiButton from 'ui/UiButton';
+import UiForm from 'ui/UiForm';
 
-export default function VerifyPhone () {
+export default function VerifyPhone() {
   const [formData, setFormData] = useState({
-    OTP: ''
+    OTP: '',
   });
-  const [ canResendCode, setCanResendCode ] = useState(false);
-  const [ count, setCount] = useState(59);
-  
+  const [canResendCode, setCanResendCode] = useState(false);
+  const [count, setCount] = useState(59);
 
   useEffect(() => {
     const countdownTimer = setTimeout(() => {
-      setCount(prevState => prevState - 1);
-    }, 1000); 
+      setCount((prevState) => prevState - 1);
+    }, 1000);
 
-    if(count === 0) {
-      clearTimeout(countdownTimer)
-      setCanResendCode(true)
+    if (count === 0) {
+      clearTimeout(countdownTimer);
+      setCanResendCode(true);
     }
 
     return () => {
-      clearTimeout(countdownTimer)
-    }
+      clearTimeout(countdownTimer);
+    };
   }, [count]);
 
   const fornmattedCount = count < 10 ? `0${count}` : `${count}`;
 
-  function handleChange () {
-
-  }
-  function onSubmit () {
-
-  }
-  function resendCode () {
+  function handleChange() {}
+  function onSubmit() {}
+  function resendCode() {
     setCanResendCode(false);
     setCount(59);
   }
@@ -48,31 +43,37 @@ export default function VerifyPhone () {
   return (
     <StyledAuthScreen>
       <div className="header-container">
-        <UiIcon icon="CallReceived" />
+        <UiIcon icon="CallReceived" size="45" />
         <h1>Verify Phone Number</h1>
         <p>
-          Enter the OTP (One Time Pin) that was sent to the phone number you provided
+          Enter the OTP (One Time Pin) that was sent to the phone number you
+          provided
         </p>
       </div>
       <div className="form-container">
-        <UiForm  formData={formData} onSubmit={onSubmit}>
+        <UiForm formData={formData} onSubmit={onSubmit}>
           {({ errors }) => (
             <>
-            <UiInput
-              label="Enter OTP" 
-              type="text"
-              value={formData.OTP}
-              name="firstname"
-              onChange={handleChange}
-            />
-            <Margin />
-            <StyledResendCode >
-              <p>Didn’t get the code?</p>
-              <UiButton  size="s" variant="secondary" disabled={!canResendCode} onClick={resendCode}>
-                { canResendCode ? `Resend` : `Resend in 00:${fornmattedCount}` }
-              </UiButton>
-            </StyledResendCode>
-              <UiButton   size="large" variant="primary" isFullWidth>
+              <UiInput
+                label="Enter OTP"
+                type="text"
+                value={formData.OTP}
+                name="firstname"
+                onChange={handleChange}
+              />
+              <Margin />
+              <StyledResendCode>
+                <p>Didn’t get the code?</p>
+                <UiButton
+                  size="s"
+                  variant="secondary"
+                  disabled={!canResendCode}
+                  onClick={resendCode}
+                >
+                  {canResendCode ? `Resend` : `Resend in 00:${fornmattedCount}`}
+                </UiButton>
+              </StyledResendCode>
+              <UiButton size="large" variant="primary" isFullWidth>
                 Continue
               </UiButton>
             </>
@@ -80,7 +81,7 @@ export default function VerifyPhone () {
         </UiForm>
       </div>
     </StyledAuthScreen>
-  )  
+  );
 }
 
 const StyledResendCode = styled.div`
@@ -89,14 +90,14 @@ const StyledResendCode = styled.div`
   gap: ${pxToRem(9)};
   align-items: center;
   /* margin-bottom: ${pxToRem(-24)}; */
-  p{
+  p {
     font-weight: 400;
-      color: var(--color-gray-80);
-      font-family:'thiccboi-regular';
-      font-size: ${pxToRem(16)};
-      line-height: ${pxToRem(24)};
+    color: var(--color-gray-80);
+    font-family: 'thiccboi-regular';
+    font-size: ${pxToRem(16)};
+    line-height: ${pxToRem(24)};
   }
   button {
     margin: 0 !important;
   }
-`
+`;

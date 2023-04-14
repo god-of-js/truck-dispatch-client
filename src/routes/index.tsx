@@ -14,7 +14,9 @@ const ChatLayout = lazy(() => import('../layouts/ChatLayout'));
 
 // Auth
 const RegistrationPage = lazy(() => import('../pages/auth/RegistrationPage'));
-const SelectUsertypePage = lazy (() => import('../pages/auth/SelectUsertypePage'));
+const SelectUsertypePage = lazy(
+  () => import('../pages/auth/SelectUsertypePage'),
+);
 const LoginPage = lazy(() => import('../pages/auth/LoginPage'));
 const RequestVerificationCodePage = lazy(
   () => import('../pages/auth/RequestVerificationCodePage'),
