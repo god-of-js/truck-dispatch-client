@@ -103,6 +103,10 @@ export default function DashboardLayout() {
   }, [action, token, loading]);
 
   useEffect(() => {
+    if (location.pathname === '/') navigate('/my-trips')
+  }, [location.pathname])
+
+  useEffect(() => {
     // Connect to socket.
     if (user) {
       const userId = user?._id;
