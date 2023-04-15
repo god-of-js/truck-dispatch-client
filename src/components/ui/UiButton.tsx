@@ -25,7 +25,7 @@ interface Props {
   onClick?: () => void;
 }
 
-type Sizes = 'large' | 'md' | 's' | 'icon';
+type Sizes = 'large' | 'md' | 's';
 
 export default function UiButton({
   children,
@@ -64,17 +64,6 @@ function sizeVariant(size: Sizes) {
     font-size: ${pxToRem(12)};
     line-height: ${pxToRem(12)};
     `;
-  if (size === 'icon')
-    return `
-    padding: ${pxToRem(8)} 
-    ${pxToRem(12)}; 
-    height:${pxToRem(32)};
-    font-size: ${pxToRem(12)};
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: ${pxToRem(9.34)};  
-    `;
 
   if (size === 'md')
     return `
@@ -102,8 +91,10 @@ const ButtonContainer = styled.button<Props>`
   ${({ size }) => sizeVariant(size!)}
   border: none;
   cursor: ${({ disabled }) => (disabled ? '' : 'pointer')};
+  display: flex;
   align-items: center;
   justify-content: center;
+  gap: ${pxToRem(9.34)};
   letter-spacing: ${pxToRem(0.32)};
   text-align: center;
   text-transform: uppercase;

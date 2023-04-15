@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import SignUpImage from '../../assets/img/sign up image.png';
+import UiLogo from 'ui/UiLogo';
 interface Props {
   children: React.ReactNode;
   infoContent?: React.ReactNode;
@@ -16,12 +17,11 @@ export default function AuthLayoutStyling({
     <LayoutStyling invert={invert}>
       <div className="info-content">
         <div className="info-content__inner container">
-          {!invert ||
-            (undefined && (
-              <div className="logo">
-                <a href="https://gettruckdispatch.com">TruckDispatch</a>
-              </div>
-            ))}
+          {!invert && (
+            <div className="logo">
+              <UiLogo />
+            </div>
+          )}
           {img && <img src={SignUpImage} alt="" />}
           {infoContent}
         </div>
@@ -30,7 +30,7 @@ export default function AuthLayoutStyling({
         <div className="main-content__inner container">
           {invert && (
             <div className="logo">
-              <a href="https://gettruckdispatch.com">TruckDispatch</a>
+              <UiLogo />
             </div>
           )}
           {children}
@@ -64,18 +64,17 @@ const LayoutStyling = styled.div`
     .logo {
       display: block;
       margin-bottom: ${pxToRem(70)};
-
-      a {
-        color: var(--color-neutralBlack);
-        font-size: ${pxToRem(20)};
-        font-weight: 700;
-      }
     }
     .info-content {
       display: block;
 
       ${({ invert }: { invert?: boolean }) =>
-        invert ? 'width: 43%;' : 'width: 30%;'}
+        invert ? 'width: 43%;' : 'width: 30%;'};
+      ${({ invert }: { invert?: boolean }) =>
+        !invert &&
+        `
+          padding:${pxToRem(34)} 0 ${pxToRem(80)} ${pxToRem(40)};
+        `}
       background: var(--color-primary-10);
       &__inner {
         height: 100%;

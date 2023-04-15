@@ -11,6 +11,7 @@ import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
 import { toAnyAction } from 'utils/helpers';
 import loginSchema from 'utils/validations/loginSchema';
+import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
 
 export default function LoginPage() {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ export default function LoginPage() {
       password: '',
     },
   );
+
   const [loading, setLoading] = useState(false);
 
   function handleChange(event: { name: string; value: string | null }) {
@@ -49,76 +51,119 @@ export default function LoginPage() {
   }
 
   return (
-    <>
-      <UiForm schema={loginSchema} formData={formData} onSubmit={handleSubmit}>
-        {({ errors }) => (
-          <>
-            <Heading>Sign in</Heading>
-            <Margin>
-              <UiInput
-                label="Email*"
-                value={formData.email}
-                name="email"
-                error={errors.email}
-                onChange={handleChange}
-              />
-            </Margin>
-            <Margin>
-              <UiInput
-                type="password"
-                label="Password*"
-                name="password"
-                value={formData.password!}
-                error={errors.password}
-                onChange={handleChange}
-              />
-            </Margin>
-            <PrivacyPolicyParagraph>
-              By clicking on the following button, you are willing to become
-              TruckDispatch's partner, and agree to our{' '}
-              <Link to="/">privacy policy</Link>
-            </PrivacyPolicyParagraph>
-            <UiButton isFullWidth loading={loading} size="md" variant="primary">
-              Sign In
-            </UiButton>
-            {/* <ForgotPassword>
+    <AuthLayoutStyling invert>
+      <StyledLogin>
+        <h1>Welcome back,</h1>
+        <p>Sign in to continue to your account</p>
+        <div className="form-container">
+          <UiForm
+            schema={loginSchema}
+            formData={formData}
+            onSubmit={handleSubmit}
+          >
+            {({ errors }) => (
+              <>
+                <UiInput
+                  label="Email Adress*"
+                  placeholder="Enter your email adress"
+                  value={formData.email}
+                  name="email"
+                  error={errors.email}
+                  onChange={handleChange}
+                />
+                <Margin />
+                <UiInput
+                  type="password"
+                  placeholder="Enter your password"
+                  label="Password*"
+                  name="password"
+                  value={formData.password!}
+                  error={errors.password}
+                  onChange={handleChange}
+                />
+                <div className="forgot-password">
+                  <p>
+                    Forgot Password?{' '}
+                    <Link to="/auth/forgot-password">Reset Password</Link>{' '}
+                  </p>
+                </div>
+                <UiButton
+                  isFullWidth
+                  loading={loading}
+                  size="large"
+                  variant="primary"
+                >
+                  Sign In
+                </UiButton>
+                <div className="sign-up">
+                  <p>
+                    New to TruckDispatch? <Link to="/auth/join">Sign Up</Link>{' '}
+                  </p>
+                </div>
+                {/* <ForgotPassword>
             Can't login? try{' '}
             <Link to="/auth/join/transporter">forgot password</Link>
           </ForgotPassword> */}
-            <LinkToRegisteration>
-              Don't have an account?{' '}
-              <Link to="/auth/join">register with us</Link>
-            </LinkToRegisteration>
-          </>
-        )}
-      </UiForm>
-    </>
+              </>
+            )}
+          </UiForm>
+        </div>
+      </StyledLogin>
+    </AuthLayoutStyling>
   );
 }
 
-const Heading = styled.h3`
-  color: var(--color-primary);
-  font-family: 'Audiowide';
-  font-size: ${pxToRem(24)};
+const StyledLogin = styled.div`
+  * {
+    margin: 0;
+  }
+
+  h1 {
+    font-size: ${pxToRem(32)};
+    color: var(--color-neutralBlack);
+    margin-bottom: ${pxToRem(16)};
+    line-height: ${pxToRem(54)};
+  }
+  & > p {
+    margin-bottom: ${pxToRem(32)};
+  }
+  p {
+    font-weight: 400;
+    color: var(--color-gray-80);
+    font-family: 'thiccboi-regular';
+    font-size: ${pxToRem(16)};
+    line-height: ${pxToRem(24)};
+  }
+  .forgot-password {
+    margin-top: ${pxToRem(100)};
+  }
+  button {
+    margin-top: ${pxToRem(48)};
+  }
+
+  .sign-up {
+    margin-top: ${pxToRem(36)};
+    text-align: center;
+  }
+  @media (min-width: 900px) {
+    .form-container {
+      max-width: ${pxToRem(450)};
+    }
+    h1 {
+      font-size: ${pxToRem(48)};
+    }
+    & > p {
+      margin-bottom: ${pxToRem(48)};
+    }
+    .forgot-password {
+      margin-top: ${pxToRem(24)};
+    }
+    .sign-up {
+      margin-top: ${pxToRem(60)};
+      text-align: initial;
+    }
+  }
 `;
 const Margin = styled.div`
-  margin-bottom: ${pxToRem(12)};
-`;
-
-const PrivacyPolicyParagraph = styled.p`
-  color: var(--color-gray-500);
-  font-size: ${pxToRem(14)};
-  margin-bottom: ${pxToRem(16)};
-`;
-
-const ForgotPassword = styled.p`
-  text-align: center;
-  font-size: ${pxToRem(14)};
-  color: var(--color-gray-400);
-`;
-
-const LinkToRegisteration = styled.p`
-  text-align: center;
-  font-size: ${pxToRem(14)};
-  color: var(--color-gray-400);
+  margin-bottom: ${pxToRem(24)};
 `;

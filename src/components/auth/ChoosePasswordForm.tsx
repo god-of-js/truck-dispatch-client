@@ -9,9 +9,15 @@ import UiForm from 'ui/UiForm';
 
 export default function ChoosePasswordForm() {
   const [formData, setFormData] = useState({
-    OTP: '',
+    password: '',
+    confirmPassword: '',
   });
-  function handleChange() {}
+  function handleChange(event: { name: string; value: string | null }) {
+    setFormData({
+      ...formData,
+      [event.name]: event.value,
+    });
+  }
   function onSubmit() {}
 
   return (
@@ -29,8 +35,8 @@ export default function ChoosePasswordForm() {
                 label="Password*"
                 placeholder="Enter your password"
                 type="password"
-                value={formData.OTP}
-                name="firstname"
+                value={formData.password}
+                name="password"
                 onChange={handleChange}
               />
               <Margin />
@@ -38,8 +44,8 @@ export default function ChoosePasswordForm() {
                 label="Confirm Password*"
                 placeholder="Confirm password"
                 type="password"
-                value={formData.OTP}
-                name="firstname"
+                value={formData.confirmPassword}
+                name="confirmPassword"
                 onChange={handleChange}
               />
               <UiButton size="large" variant="primary" isFullWidth>

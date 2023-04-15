@@ -19,6 +19,7 @@ export function PersonDetailsForm() {
   const [formData, setFormData] = useState({
     firstname: '',
     lastname: '',
+    email: '',
     phone: '',
     company_role: '',
   });
@@ -32,7 +33,12 @@ export function PersonDetailsForm() {
       value: 'Accountant',
     },
   ];
-  const handleChange = () => {};
+  function handleChange(event: { name: string; value: string | null }) {
+    setFormData({
+      ...formData,
+      [event.name]: event.value,
+    });
+  }
   const onSubmit = () => {};
 
   return (
@@ -64,10 +70,10 @@ export function PersonDetailsForm() {
               <Margin />
               <UiInput
                 onChange={handleChange}
-                value={formData.firstname}
-                name="emailaddress"
+                value={formData.email}
+                name="email"
                 label="Email Address*"
-                placeholder="Enter your first name"
+                placeholder="Enter your email adress"
               />
               <Margin />
               <UiInput
@@ -126,6 +132,8 @@ export const StyledAuthScreen = styled.div`
   }
   .form-container {
     width: 100%;
+    margin: 0 auto;
+    max-width: ${pxToRem(450)};
     button {
       margin-top: ${pxToRem(45)};
     }
@@ -133,7 +141,6 @@ export const StyledAuthScreen = styled.div`
   @media (min-width: 580px) {
     .form-container {
       width: 90%;
-      margin: 0 auto;
     }
   }
   @media (min-width: 700px) {

@@ -101,7 +101,7 @@ const Input = styled.input`
   height: var(--base-height);
   gap: ${pxToRem(8)};
   width: 100%;
-  font-size: ${pxToRem(12)};
+  font-size: ${pxToRem(14)};
   font-family: 'thiccboi-medium';
   border: ${pxToRem(1)} solid;
   border-color: ${({ hasError }: { hasError: boolean }) =>

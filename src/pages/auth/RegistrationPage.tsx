@@ -72,7 +72,7 @@ export default function RegistrationPage() {
 
   return (
     <AuthLayoutStyling>
-      <CompanyDetailsForm />
+      <ChoosePasswordForm />
       {/* <UiForm
         schema={registrationSchema}
         formData={formData}

@@ -8,8 +8,6 @@ import UiIcon from 'ui/UiIcon';
 
 export default function SelectUserType() {
   const [userTypeRoute, setUserTypeRoute] = useState('');
-  const [isActive, setIsActive] = useState('');
-  console.log(userTypeRoute);
 
   const navigate = useNavigate();
 
@@ -48,7 +46,6 @@ export default function SelectUserType() {
 
   function selectUserType(type: string) {
     setUserTypeRoute(type);
-    setIsActive(type);
   }
 
   const UserTypeGrid = () => {

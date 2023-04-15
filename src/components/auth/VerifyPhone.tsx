@@ -33,7 +33,12 @@ export default function VerifyPhone() {
 
   const fornmattedCount = count < 10 ? `0${count}` : `${count}`;
 
-  function handleChange() {}
+  function handleChange(event: { name: string; value: string | null }) {
+    setFormData({
+      ...formData,
+      [event.name]: event.value,
+    });
+  }
   function onSubmit() {}
   function resendCode() {
     setCanResendCode(false);
@@ -58,7 +63,7 @@ export default function VerifyPhone() {
                 label="Enter OTP"
                 type="text"
                 value={formData.OTP}
-                name="firstname"
+                name="OTP"
                 onChange={handleChange}
               />
               <Margin />

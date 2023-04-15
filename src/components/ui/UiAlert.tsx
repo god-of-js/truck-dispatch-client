@@ -55,7 +55,6 @@ function generateSchemeBasedOnVariant(variant: Variant): string {
   `;
 }
 
-
 const Alert = styled.div`
   font-size: ${pxToRem(14)};
   padding: ${pxToRem(16)};
