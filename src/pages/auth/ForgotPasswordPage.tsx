@@ -38,7 +38,6 @@ export default function LoginPage() {
   }
 
   return (
-    <>
       <Page>
         <UiForm
           schema={ForgotPasswordSchema}
@@ -71,9 +70,9 @@ export default function LoginPage() {
           )}
         </UiForm>
       </Page>
-    </>
   );
 }
+
 const Page = styled.div`
   width: 100%;
 
@@ -82,11 +81,13 @@ const Page = styled.div`
     color: var(--color-gray-500);
   }
 `;
+
 const Heading = styled.h3`
   color: var(--color-primary);
   font-family: 'Audiowide';
   font-size: ${pxToRem(24)};
 `;
+
 const Margin = styled.div`
   margin-bottom: ${pxToRem(12)};
 `;

@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense } from 'react';
+import React, { useEffect } from 'react';
 import {
   Outlet,
   useParams,
@@ -12,7 +12,6 @@ import sizes from '../utils/sizes';
 import TransporterImage from '../assets/img/truck-image.jpeg';
 import AgentImage from '../assets/img/agent-mono-effect.jpg';
 import TruckDispatchLogo from '../assets/img/truck-dispatch-full-logo.svg';
-import Loader from 'components/layout/Loader';
 import { userTypes } from 'utils/constants';
 
 export default function AuthLayout() {
