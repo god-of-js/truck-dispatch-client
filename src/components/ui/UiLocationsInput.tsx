@@ -63,7 +63,7 @@ export default function UiLocationsInput({
       <div className="action-btn">
         <UiButton
           variant="primary-text"
-          size="no-size"
+          size="text"
           type="button"
           onClick={() => setCantFindLocation(!cantFindLocation)}
         >
