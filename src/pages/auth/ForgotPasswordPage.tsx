@@ -45,7 +45,11 @@ export default function ForgotPasswordPage() {
         <h1>Forgot password?</h1>
         <p>No worries, we’ll send you reset instructions</p>
         <div className="form-container">
-          <UiForm formData={formData} schema={ForgotPasswordSchema} onSubmit={handleSubmit}>
+          <UiForm
+            formData={formData}
+            schema={ForgotPasswordSchema}
+            onSubmit={handleSubmit}
+          >
             {({ errors }) => (
               <>
                 <UiInput

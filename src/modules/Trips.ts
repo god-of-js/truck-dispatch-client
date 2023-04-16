@@ -23,20 +23,23 @@ export const TripsSlice = createSlice({
       state.trips = action.payload;
     },
     setTrip: (state: TripState, action: { payload: Trip }) => {
-      state.trips.push(action.payload)
+      state.trips.push(action.payload);
     },
     setJobs: (state: TripState, action: { payload: Trip[] }) => {
       state.jobs = action.payload;
     },
     updateTripInState: (state: TripState, action: { payload: Trip }) => {
-      const index = state.trips.findIndex(({ _id }) => _id === action.payload._id)
+      const index = state.trips.findIndex(
+        ({ _id }) => _id === action.payload._id,
+      );
 
-      state.trips[index] = action.payload
-    }
+      state.trips[index] = action.payload;
+    },
   },
 });
 
-export const { setTrips, setJobs, updateTripInState, setTrip } = TripsSlice.actions;
+export const { setTrips, setJobs, updateTripInState, setTrip } =
+  TripsSlice.actions;
 export default TripsSlice.reducer;
 
 // SELECTORS
@@ -105,6 +108,6 @@ export function uploadTDO(formData: FormData, tripId: string) {
     return Api.uploadTDO(formData, tripId).then((trip) => {
       dispatch(updateTripInState(trip));
       return trip;
-    })
+    });
   };
 }
