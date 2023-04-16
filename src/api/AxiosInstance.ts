@@ -3,6 +3,7 @@ import { BACKEND_URL } from 'utils/privateKeys';
 import { Toast } from 'utils/toast';
 import { getUserSessionId, removeUserSessionId } from 'utils/userSession';
 
+let isRedirecting = false;
 const instance = axios.create({
   baseURL: BACKEND_URL,
   timeout: 40000,
@@ -16,9 +17,16 @@ instance.interceptors.response.use(
         msg: "we couldn't reach our servers. Kindly check your connection. However, the team is on the issue.",
       });
     }
-    if (err.response.data.message === 'jwt expired') {
-      removeUserSessionId();
-      location.reload();
+
+    if (
+      err.response.data.message === 'jwt expired' ||
+      err.response.data.message === 'invalid signature'
+    ) {
+      if (!isRedirecting) {
+        isRedirecting = true;
+        removeUserSessionId();
+        window.location.href = '/auth/login';
+      }
     }
     return Promise.reject(err.response.data);
   },

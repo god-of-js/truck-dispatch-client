@@ -21,6 +21,9 @@ const LoginPage = lazy(() => import('../pages/auth/LoginPage'));
 const ForgotPasswordPage = lazy(
   () => import('../pages/auth/ForgotPasswordPage'),
 );
+const VerifyPhonePage = lazy(
+  () => import('../pages/auth/VerifyPhonePage'),
+);
 const ResetPasswordPage = lazy(() => import('../pages/auth/ResetPasswordPage'));
 const RequestVerificationCodePage = lazy(
   () => import('../pages/auth/RequestVerificationCodePage'),
@@ -29,6 +32,9 @@ const RequestVerificationCodePage = lazy(
 // Profile
 const ProfileDetailsPage = lazy(
   () => import('../pages/profile/ProfileDetailsPage'),
+);
+const ManagePasswordPage = lazy(
+  () => import('../pages/profile/ManagePasswordPage'),
 );
 const TransporterVerificationPage = lazy(
   () => import('../pages/profile/TransporterVerificationPage'),
@@ -87,6 +93,11 @@ const router = createBrowserRouter([
             path: '',
             id: 'Profile Details',
             element: <ProfileDetailsPage />,
+          },
+          {
+            path: '/profile/manage-password',
+            id: 'Manage Password',
+            element: <ManagePasswordPage />,
           },
           {
             path: '/profile/verification',
@@ -233,6 +244,10 @@ const router = createBrowserRouter([
       {
         path: 'reset-password',
         element: <ResetPasswordPage />,
+      },
+      {
+        path: 'verify-phone',
+        element: <VerifyPhonePage />,
       },
       {
         path: 'verify-phone/request-code',

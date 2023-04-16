@@ -10,8 +10,7 @@ import sizes from 'utils/sizes';
 
 import UiInput from 'components/ui/UiInput';
 import UiButton from 'components/ui/UiButton';
-import UserWithPassword from 'types/UserWithPassword';
-import UiSelect from 'ui/UiSelect';
+import User from 'types/User';
 import UiForm from 'components/ui/UiForm';
 import { toAnyAction } from 'utils/helpers';
 import registrationSchema from 'utils/validations/registrationSchema';
@@ -19,7 +18,7 @@ import registrationSchema from 'utils/validations/registrationSchema';
 import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
 import UserTypeSelect from 'components/auth/SelectUserType';
 import { PersonDetailsForm } from 'components/auth/PersonalDetailsForm';
-import VerifyPhone from 'components/auth/VerifyPhone';
+import VerifyPhone from './VerifyPhone';
 import ChoosePasswordForm from 'components/auth/ChoosePasswordForm';
 import CompanyDetailsForm from 'components/auth/CompanyDetailsForm';
 
@@ -27,9 +26,7 @@ export default function RegistrationPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { userType } = useParams();
-  console.log(userType);
-
-  const [formData, setFormData] = useState<UserWithPassword>({
+  const [formData, setFormData] = useState<User & { cPassword: string }>({
     _id: '',
     firstName: '',
     lastName: '',
@@ -37,7 +34,7 @@ export default function RegistrationPage() {
     phone: '',
     password: '',
     cPassword: '',
-    userType: userType! as UserWithPassword['userType'],
+    userType: userType! as User['userType'],
     status: userType === 'transporter' ? 'unverified' : undefined,
     rating: 0,
   });
@@ -52,7 +49,7 @@ export default function RegistrationPage() {
 
   function handleSubmit() {
     setLoading(true);
-    dispatch(toAnyAction(RegisterUser({ ...formData, createdAt: Date.now() })))
+    dispatch(toAnyAction(RegisterUser(formData)))
       .then(() => {
         navigate('/auth/verify-phone');
       })

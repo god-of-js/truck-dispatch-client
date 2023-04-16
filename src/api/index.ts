@@ -27,12 +27,24 @@ class ApiService {
     return this.post<LoginResponse>('/auth/login', data);
   }
 
+  requestResetPasswordLink(data: { email: string }) {
+    return this.post('/auth/request-reset-password', data);
+  }
+
   requestVerificationCode(data: { phone: string }) {
     return this.post<TokenVerificationData>('/auth/request-sms', data);
   }
 
+  requestEmailVerification() {
+    return this.post('/auth/request-email-verification');
+  }
+
   verifyPhone(data: VerifyPhoneData) {
     return this.post('/auth/verify-phone', data);
+  }
+
+  verifyEmail(data: { token: string }) {
+    return this.post<User>('/auth/verify-email', data);
   }
 
   updateUser(data: FormData) {
@@ -46,6 +58,7 @@ class ApiService {
   updateTrip(data: Partial<Trip>): Promise<Trip> {
     return this.patch(`/trips/${data._id}`, data);
   }
+
   updateTripStatus(tripId: string, status: string): Promise<Trip> {
     return this.patch(`/trips/${tripId}/change-status/${status}`);
   }
@@ -76,6 +89,9 @@ class ApiService {
 
   saveAccountNumber(accountDetails: BankDetails) {
     return this.post<User>('/user/bank-details', accountDetails);
+  }
+  updatePassword(data: { password: string }) {
+    return this.post<User>('/user/update-password', data);
   }
 
   updateAccountNumber(accountDetails: BankDetails) {

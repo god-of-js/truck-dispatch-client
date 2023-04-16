@@ -1,8 +1,8 @@
 import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { StyledAuthScreen } from './PersonalDetailsForm';
-import { Margin } from './PersonalDetailsForm';
+import { StyledAuthScreen } from '../../components/auth/PersonalDetailsForm';
+import { Margin } from '../../components/auth/PersonalDetailsForm';
 
 import UiIcon from 'ui/UiIcon';
 import UiInput from 'ui/UiInput';

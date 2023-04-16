@@ -75,4 +75,9 @@ const Alert = styled.div`
     cursor: pointer;
     margin-top: 0 !important;
   }
+
+  .children {
+    display: flex;
+    align-items: center;
+  }
 `;

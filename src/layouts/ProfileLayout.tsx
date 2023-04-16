@@ -25,8 +25,15 @@ export default function ProfileLayout() {
       label: 'Verification',
       path: '/profile/verification',
     },
+    {
+      label: 'Manage Password',
+      path: '/profile/manage-password',
+    },
   ].filter((route) => {
-    if (user?.userType === 'agent') return route.path === '/profile';
+    if (user?.userType === 'agent')
+      return (
+        route.path === '/profile' || route.path === '/profile/manage-password'
+      );
 
     if (user?.status === 'verified')
       return route.path !== '/profile/verification';

@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import { AppDispatch, AppState } from '.';
 import Api from 'Api';
 import User from '../types/User';
-import UserWithPassword from '../types/UserWithPassword';
 import Verification from '../types/Verification';
 import BankAccount from 'types/BankDetails';
 import { saveTokenVerificationInfo } from 'utils/helpers';
@@ -37,7 +36,7 @@ export const { setUser, setVerification } = accountSlice.actions;
 
 export default accountSlice.reducer;
 
-export function RegisterUser(AuthUser: UserWithPassword) {
+export function RegisterUser(AuthUser: User) {
   return async () => {
     await Api.createUser(AuthUser).then((data) => {
       saveTokenVerificationInfo(data);
@@ -75,10 +74,29 @@ export function VerifyOtp(pin: string) {
       .catch((err) => Promise.reject(err.data));
   };
 }
+export function verifyEmail(token: string) {
+  return () => {
+    return Api.verifyEmail({
+      token,
+    })
+      .then((data) => {
+        setUser(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        return Promise.reject(err);
+      });
+  };
+}
 
 export function updateUser(data: FormData) {
-  return async (dispatch: AppDispatch) => {
+  return (dispatch: AppDispatch) => {
     return Api.updateUser(data).then((user) => dispatch(setUser(user)));
+  };
+}
+export function updatePassword(data: { password: string }) {
+  return () => {
+    return Api.updatePassword(data);
   };
 }
 
@@ -97,27 +115,29 @@ export function loginUser(AuthUser: { email: string; password: string }) {
   };
 }
 
+export function requestForgotPasswordLink(AuthUser: { email: string }) {
+  return () => {
+    return Api.requestResetPasswordLink(AuthUser);
+  };
+}
+
 export function getDashboardUser() {
   return (dispatch: AppDispatch) => {
-    return Api.getUser()
-      .then((data) => {
-        dispatch(setUser(data));
-        return data;
-      })
-      .catch((err) => {
-        throw new Error(err.message);
-      });
+    return Api.getUser().then((data) => {
+      dispatch(setUser(data));
+      return data;
+    });
   };
 }
 
 export const startVerificationProcess = (verificationData: FormData) => {
-  return (dispatch: AppDispatch, state: AppState) => {
+  return () => {
     return Api.startVerificationProcess(verificationData);
   };
 };
 
 export const updateVerification = (verificationData: FormData) => {
-  return (dispatch: AppDispatch, state: AppState) => {
+  return () => {
     return Api.updateVerification(verificationData);
   };
 };
@@ -142,5 +162,11 @@ export const updateUserBankAccount = (accountDetails: BankAccount) => {
     return Api.updateAccountNumber(accountDetails).then((user) => {
       dispatch(setUser(user));
     });
+  };
+};
+
+export const requestEmailVerification = () => {
+  return () => {
+    return Api.requestEmailVerification();
   };
 };

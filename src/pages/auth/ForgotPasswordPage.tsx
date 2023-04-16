@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import UiForm from 'ui/UiForm';
 import UiInput from 'ui/UiInput';
 import UiButton from 'ui/UiButton';
@@ -7,11 +8,18 @@ import UiIcon from 'ui/UiIcon';
 import styled from 'styled-components';
 import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
 
+import { requestForgotPasswordLink } from '../../modules/Account';
+
+import { toAnyAction } from 'utils/helpers';
+import ForgotPasswordSchema from 'utils/validations/ForgotPasswordSchema';
+
 export default function ForgotPasswordPage() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
   });
+  const [loading, setLoading] = useState(false);
 
   function handleChange(event: { name: string; value: string | null }) {
     setFormData({
@@ -20,7 +28,16 @@ export default function ForgotPasswordPage() {
     });
   }
 
-  function handleSubmit() {}
+  function handleSubmit() {
+    setLoading(true);
+    dispatch(toAnyAction(requestForgotPasswordLink(formData)))
+      .then(() => {
+        navigate('/auth/login');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
 
   return (
     <AuthLayoutStyling invert>
@@ -28,7 +45,7 @@ export default function ForgotPasswordPage() {
         <h1>Forgot password?</h1>
         <p>No worries, we’ll send you reset instructions</p>
         <div className="form-container">
-          <UiForm formData={formData} onSubmit={handleSubmit}>
+          <UiForm formData={formData} schema={ForgotPasswordSchema} onSubmit={handleSubmit}>
             {({ errors }) => (
               <>
                 <UiInput
