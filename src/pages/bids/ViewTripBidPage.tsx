@@ -4,7 +4,6 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import Trip from 'types/Trip';
 import Ratings from 'components/ratings/Ratings';
 import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
@@ -14,12 +13,7 @@ import sizes from 'utils/sizes';
 export default function ViewTripBidPage() {
   const { bidId, tripId } = useParams();
   const bid = useSelector(selectBid(bidId as string));
-  const users = useSelector((state: RootState) => state.account.users);
   const user = useSelector((state: RootState) => state.account.user);
-
-  function getUser(userId: string) {
-    return users.find(({ _id }) => userId === _id) || null;
-  }
 
   useEffect(() => {
     if (!bidId) {
@@ -47,14 +41,13 @@ export default function ViewTripBidPage() {
               <Ratings rating={bid?.transporter.rating || 0} />
             </div>
           </Section>
-          {/* TODO: implement number of completed trips */}
-          {/* <Section>
-          <div className="title">Number of completed trips</div>
-          <div className="value">
-            {noOfTransporterTrips} completed trips
-            <></>
-          </div>
-        </Section> */}
+          <Section>
+            <div className="title">Completed trips</div>
+            <div className="value">
+              {bid?.transporter.completedTrips} completed trips
+              <></>
+            </div>
+          </Section>
           <Section>
             <div className="title">Price of trip</div>
             <div className="value">
@@ -70,7 +63,9 @@ export default function ViewTripBidPage() {
             <div className="value">{bid?.extraNotes || 'N/A'}</div>
           </Section>
           <SubmitButtonContainer className="submit-button-container">
-            <Link to={`/chat/${user?._id}/${bid?.transporterId}`}>
+            <Link
+              to={`/chat?clientId=${user?._id}&transporterId=${bid?.transporter._id}`}
+            >
               <UiButton variant="neutral">Negotiate Bid</UiButton>
             </Link>
             <Link to={`/my-trips/${tripId}/bids/${bidId}/checkout`}>

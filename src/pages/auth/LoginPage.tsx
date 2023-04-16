@@ -41,7 +41,6 @@ export default function LoginPage() {
         if (msg === 'Phone has not been verified') {
           navigate('/auth/verify-phone');
         }
-        console.log(err);
         Toast.error({ msg });
       })
       .finally(() => {
@@ -50,7 +49,7 @@ export default function LoginPage() {
   }
 
   return (
-    <>
+    <Page>
       <UiForm schema={loginSchema} formData={formData} onSubmit={handleSubmit}>
         {({ errors }) => (
           <>
@@ -73,24 +72,19 @@ export default function LoginPage() {
                 error={errors.password}
                 onChange={handleChange}
               />
+              <ForgotPassword>
+                Forgot password?{' '}
+                <Link
+                  to="/auth/forgot-password"
+                  className="forgot-password-link"
+                >
+                  Reset password
+                </Link>
+              </ForgotPassword>
             </Margin>
-            <PrivacyPolicyParagraph>
-              By clicking on the following button, you are willing to become
-              TruckDispatch's partner, and agree to our{' '}
-              <Link to="/">privacy policy</Link>
-            </PrivacyPolicyParagraph>
-            <UiButton
-              isFullWidth
-              loading={loading}
-              size="md"
-              variant="primary"
-            >
+            <UiButton isFullWidth loading={loading}>
               Sign In
             </UiButton>
-            {/* <ForgotPassword>
-            Can't login? try{' '}
-            <Link to="/auth/join/transporter">forgot password</Link>
-          </ForgotPassword> */}
             <LinkToRegisteration>
               Don't have an account?{' '}
               <Link to="/auth/join/agent">register with us</Link>
@@ -98,10 +92,12 @@ export default function LoginPage() {
           </>
         )}
       </UiForm>
-    </>
+    </Page>
   );
 }
-
+const Page = styled.div`
+  width: 100%;
+`;
 const Heading = styled.h3`
   color: var(--color-primary);
   font-family: 'Audiowide';
@@ -111,15 +107,9 @@ const Margin = styled.div`
   margin-bottom: ${pxToRem(12)};
 `;
 
-const PrivacyPolicyParagraph = styled.p`
-  color: var(--color-gray-500);
+const ForgotPassword = styled.div`
   font-size: ${pxToRem(14)};
-  margin-bottom: ${pxToRem(16)};
-`;
-
-const ForgotPassword = styled.p`
-  text-align: center;
-  font-size: ${pxToRem(14)};
+  padding-top: ${pxToRem(16)};
   color: var(--color-gray-400);
 `;
 

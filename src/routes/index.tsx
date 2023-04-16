@@ -15,6 +15,9 @@ const ChatLayout = lazy(() => import('../layouts/ChatLayout'));
 // Auth
 const RegistrationPage = lazy(() => import('../pages/auth/RegistrationPage'));
 const LoginPage = lazy(() => import('../pages/auth/LoginPage'));
+const ForgotPasswordPage = lazy(
+  () => import('../pages/auth/ForgotPasswordPage'),
+);
 const VerifyPhonePage = lazy(() => import('../pages/auth/VerifyPhonePage'));
 const RequestVerificationCodePage = lazy(
   () => import('../pages/auth/RequestVerificationCodePage'),
@@ -23,6 +26,9 @@ const RequestVerificationCodePage = lazy(
 // Profile
 const ProfileDetailsPage = lazy(
   () => import('../pages/profile/ProfileDetailsPage'),
+);
+const ManagePasswordPage = lazy(
+  () => import('../pages/profile/ManagePasswordPage'),
 );
 const TransporterVerificationPage = lazy(
   () => import('../pages/profile/TransporterVerificationPage'),
@@ -39,7 +45,7 @@ const ViewTripStatusPage = lazy(
   () => import('../pages/trips/ViewTripStatusPage'),
 );
 const ViewTripRequestPaymentPage = lazy(
-  () => import('../pages/trips/ViewTripRequestPaymentPage'),
+  () => import('../pages/trips/RequestPaymentPage'),
 );
 const ViewTripTDOPage = lazy(() => import('../pages/trips/ViewTripTDOPage'));
 const ViewRequestForPayment = lazy(
@@ -83,6 +89,11 @@ const router = createBrowserRouter([
             element: <ProfileDetailsPage />,
           },
           {
+            path: '/profile/manage-password',
+            id: 'Manage Password',
+            element: <ManagePasswordPage />,
+          },
+          {
             path: '/profile/verification',
             id: 'Verification Page',
             element: <TransporterVerificationPage />,
@@ -100,7 +111,7 @@ const router = createBrowserRouter([
         element: <ChatLayout />,
         children: [
           {
-            path: '/chat/:agentId/:transporterId',
+            path: '/chat/:chatId',
             id: 'Message',
             element: <ChatPage />,
           },
@@ -215,6 +226,10 @@ const router = createBrowserRouter([
       {
         path: 'login',
         element: <LoginPage />,
+      },
+      {
+        path: 'forgot-password',
+        element: <ForgotPasswordPage />,
       },
       {
         path: 'verify-phone',

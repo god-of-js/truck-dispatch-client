@@ -14,21 +14,17 @@ import sizes from 'utils/sizes';
 import ConfirmApprovePayment from 'components/payment/ConfirmApprovePayment';
 import PaymentRequest from 'types/PaymentRequest';
 import { toAnyAction } from 'utils/helpers';
+import { useParams } from 'react-router-dom';
 
 export default function ViewRequestForPayment() {
   const dispatch = useDispatch();
+  const { tripId } = useParams();
   const paymentRequest = useSelector(
     (state: RootState) => state.payment.paymentRequest,
   );
   const [isRejectVisible, setIsRejectVisible] = useState(false);
   const [isConfirmVisible, setIsConfirmVisible] = useState(false);
-  function setUpdatedPaymentRequest(request: PaymentRequest) {
-    return dispatch(toAnyAction(requestPaymentByTransporter(request))).then(
-      () => {
-        dispatch(setPaymentRequest(request));
-      },
-    );
-  }
+
   return (
     <>
       <CardContainer>
@@ -51,20 +47,22 @@ export default function ViewRequestForPayment() {
 
                   <Section>
                     <div className="title">Driver Name</div>
-                    <div className="value">{paymentRequest?.driverName}</div>
-                  </Section>
-                  <Section>
-                    <div className="title">Driver Phone Number</div>
                     <div className="value">
-                      <a href={'tel:' + paymentRequest?.driverPhoneNumber}>
-                        {paymentRequest?.driverPhoneNumber}
-                      </a>
+                      {paymentRequest?.vehicle.driver.name}
                     </div>
                   </Section>
+                  {/* <Section>
+                    <div className="title">Driver Phone Number</div>
+                    <div className="value">
+                      <a href={'tel:' + paymentRequest?.vehicle.driver.phone}>
+                        {paymentRequest?.vehicle.driver.phone}
+                      </a>
+                    </div>
+                  </Section> */}
                   <Section>
                     <div className="title">Truck Plate Number</div>
                     <div className="value">
-                      {paymentRequest?.truckPlateNumber}
+                      {paymentRequest?.vehicle.plateNumber}
                     </div>
                   </Section>
                   <Section>
@@ -72,7 +70,7 @@ export default function ViewRequestForPayment() {
                     <div className="value">
                       <video controls>
                         <source
-                          src={paymentRequest?.containerVideo as string}
+                          src={paymentRequest?.proofVideo as string}
                           type="video/mp4"
                         />
                         Your browser does not support the video tag.
@@ -106,15 +104,16 @@ export default function ViewRequestForPayment() {
         <UiOverlay isVisible={isRejectVisible}>
           <RejectPaymentWithReason
             paymentRequest={paymentRequest}
+            tripId={tripId!}
+            paymentRequestId={paymentRequest?._id!}
             onClose={() => setIsRejectVisible(false)}
-            setPaymentRequest={setUpdatedPaymentRequest}
           />
         </UiOverlay>
         <UiOverlay isVisible={isConfirmVisible}>
           <ConfirmApprovePayment
-            paymentRequest={paymentRequest}
+            tripId={tripId!}
+            paymentRequestId={paymentRequest?._id!}
             onClose={() => setIsConfirmVisible(false)}
-            setPaymentRequest={setUpdatedPaymentRequest}
           />
         </UiOverlay>
       </CardContainer>

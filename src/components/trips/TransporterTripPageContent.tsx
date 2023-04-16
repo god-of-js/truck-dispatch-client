@@ -2,11 +2,10 @@ import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { selectAgents } from 'modules/Account';
 import { RootState } from 'modules/index';
 import Trip from 'types/Trip';
-import UiAvatar from 'ui/UiAvatar';
 
+import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
 import UiIcon from 'ui/UiIcon';
 import UiTable from 'ui/UiTable';
@@ -17,7 +16,6 @@ import User from 'types/User';
 export default function AgentTripPageContent() {
   const navigate = useNavigate();
   const trips = useSelector((state: RootState) => state.trips.trips);
-  const agents = useSelector(selectAgents);
 
   const headers = [
     {
@@ -44,6 +42,10 @@ export default function AgentTripPageContent() {
       title: 'Delivery Date',
       query: 'deliveryDate',
     },
+    {
+      title: 'status',
+      query: 'status',
+    },
   ];
 
   function tripOwnerDetails(tripOwner?: User) {
@@ -60,16 +62,16 @@ export default function AgentTripPageContent() {
     );
   }
   function getPillVariant(status: Trip['status']) {
-    if (status === 'payment_complete') return 'warning';
     if (status === 'awaiting_bid') return 'gray';
+    if (status === 'payment_complete') return 'warning';
     if (status === 'in-progress') return 'info';
     if (status === 'completed') return 'success';
 
     return 'success';
   }
   function formatStatus(status: Trip['status']) {
-    if (status === 'payment_complete') return 'Pending';
     if (status === 'awaiting_bid') return 'Awaiting Bid';
+    if (status === 'payment_complete') return ' Pending';
     if (status === 'in-progress') return 'In Progress';
     if (status === 'completed') return 'Completed';
   }
@@ -85,7 +87,6 @@ export default function AgentTripPageContent() {
       ),
     }));
   }, [trips]);
-
   function navigateToTrip(id: string) {
     navigate(`/my-trips/${id}`);
   }

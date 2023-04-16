@@ -1,0 +1,51 @@
+import React from 'react';
+import styled from 'styled-components';
+import UiButton from 'ui/UiButton';
+
+import UiModal from 'ui/UiModal';
+
+interface Props {
+  onClose: () => void;
+}
+export default function EmailHasBeenVerifiedModal({ onClose }: Props) {
+  return (
+    <UiModal size="sm" onClose={onClose}>
+      <Styling>
+        <h2>Your email has been verified &#127881; &#127881;</h2>
+        <p>
+          Hurray &#127881;&#127881;!! your email has been verified. all features
+          have now been unlocked
+        </p>
+        <div className="btn-container">
+          <UiButton variant="neutral" isFullWidth onClick={() => onClose()}>
+            Close
+          </UiButton>
+        </div>
+      </Styling>
+    </UiModal>
+  );
+}
+
+const Styling = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  h2 {
+    margin: 0;
+    font-size: ${pxToRem(16)};
+  }
+  p {
+    width: 80%;
+    font-size: ${pxToRem(15)};
+  }
+
+  .btn-container {
+    display: flex;
+    width: 80%;
+    margin-top: ${pxToRem(12)};
+    gap: ${pxToRem(12)};
+  }
+`;

@@ -22,13 +22,21 @@ export const TripsSlice = createSlice({
     setTrips: (state: TripState, action: { payload: Trip[] }) => {
       state.trips = action.payload;
     },
+    setTrip: (state: TripState, action: { payload: Trip }) => {
+      state.trips.push(action.payload)
+    },
     setJobs: (state: TripState, action: { payload: Trip[] }) => {
       state.jobs = action.payload;
     },
+    updateTripInState: (state: TripState, action: { payload: Trip }) => {
+      const index = state.trips.findIndex(({ _id }) => _id === action.payload._id)
+
+      state.trips[index] = action.payload
+    }
   },
 });
 
-export const { setTrips, setJobs } = TripsSlice.actions;
+export const { setTrips, setJobs, updateTripInState, setTrip } = TripsSlice.actions;
 export default TripsSlice.reducer;
 
 // SELECTORS
@@ -45,39 +53,58 @@ export const selectJob = (jobId: string) =>
 export function createTrip(trip: NewTrip) {
   return (dispatch: AppDispatch, state: AppState) => {
     return Api.createTrip(trip).then((data) => {
-      dispatch(setTrips([...state().trips.trips, data]));
+      dispatch(setTrip(data));
       return data;
     });
   };
 }
 
 export function assignTrip(trip: AssignTripFormData) {
-  return (dispatch: AppDispatch, state: AppState) => {
-    return Api.assignTrip(trip).then((data) => {
-      const trips = replaceEditedItem(state().trips.trips, data);
-      dispatch(setTrips(trips));
-      return data;
+  return (dispatch: AppDispatch) => {
+    return Api.assignTrip(trip).then((trip) => {
+      dispatch(updateTripInState(trip));
+      return trip;
     });
   };
 }
+
 export function updateTrip(trip: Partial<Trip>) {
-  return (dispatch: AppDispatch, state: AppState) => {
-    return Api.updateTrip(trip).then((data) => {
-      const trips = replaceEditedItem(state().trips.trips, data);
-      dispatch(setTrips(trips));
-      return data;
+  return (dispatch: AppDispatch) => {
+    return Api.updateTrip(trip).then((trip) => {
+      dispatch(updateTripInState(trip));
+      return trip;
+    });
+  };
+}
+
+export function updateTripStatus(tripId: string, status: Trip['status']) {
+  return (dispatch: AppDispatch) => {
+    return Api.updateTripStatus(tripId, status).then((trip) => {
+      dispatch(updateTripInState(trip));
+      return trip;
     });
   };
 }
 
 export function getTrips() {
   return (dispatch: AppDispatch) => {
-    return Api.getTrips().then((data) => dispatch(setTrips(data)));
+    return Api.getTrips().then((data) => {
+      dispatch(setTrips(data));
+    });
   };
 }
 
 export function getJobs() {
   return (dispatch: AppDispatch) => {
-    return Api.getJobs().then((data) => dispatch(toAnyAction(setJobs(data))));
+    return Api.getJobs().then((data) => dispatch(setJobs(data)));
+  };
+}
+
+export function uploadTDO(formData: FormData, tripId: string) {
+  return (dispatch: AppDispatch) => {
+    return Api.uploadTDO(formData, tripId).then((trip) => {
+      dispatch(updateTripInState(trip));
+      return trip;
+    })
   };
 }

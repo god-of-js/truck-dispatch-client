@@ -1,4 +1,3 @@
-import { selectTransporters } from 'modules/Account';
 import { RootState } from 'modules/index';
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
@@ -16,7 +15,6 @@ import User from 'types/User';
 export default function AgentTripPageContent() {
   const navigate = useNavigate();
   const trips = useSelector((state: RootState) => state.trips.trips);
-  const transporters = useSelector(selectTransporters);
 
   const headers = [
     {
@@ -77,8 +75,8 @@ export default function AgentTripPageContent() {
   }
 
   function getPillVariant(status: Trip['status']) {
-    if (status === 'payment_complete') return 'warning';
     if (status === 'awaiting_bid') return 'gray';
+    if (status === 'payment_complete') return 'warning';
     if (status === 'in-progress') return 'info';
     if (status === 'completed') return 'success';
 

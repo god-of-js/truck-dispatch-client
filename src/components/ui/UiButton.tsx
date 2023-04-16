@@ -13,6 +13,7 @@ interface Props {
     | 'primary-outlined'
     | 'secondary-outlined'
     | 'primary-text'
+    | 'warning-text'
     | 'dark'
     | 'dark-outlined'
     | 'danger';
@@ -25,7 +26,7 @@ interface Props {
   onClick?: () => void;
 }
 
-type Sizes = 'large' | 'md' | 's' | 'icon';
+type Sizes = 'large' | 'md' | 's' | 'text';
 
 export default function UiButton({
   children,
@@ -56,6 +57,7 @@ export default function UiButton({
 }
 
 function sizeVariant(size: Sizes) {
+  if (size === 'text') return '';
   if (size === 's')
     return `
     padding: ${pxToRem(8)} 
@@ -129,6 +131,11 @@ const ButtonContainer = styled.button<Props>`
     background: transparent;
     border-color: transparent;
     color: var(--color-primary);
+  }
+  &.warning-text {
+    background: transparent;
+    border-color: transparent;
+    color: var(--color-warning-600);
   }
 
   &.neutral {

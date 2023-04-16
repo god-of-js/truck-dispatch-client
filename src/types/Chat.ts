@@ -4,10 +4,7 @@ export default interface Chat {
   message: string;
   senderId: string;
   receiverId: string;
-  transporterId: string;
-  agentId: string;
   temporaryId?: string;
   readAt?: number;
   createdAt?: number;
-  updatedAt?: number;
 }
