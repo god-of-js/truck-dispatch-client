@@ -80,7 +80,7 @@ export default function UiSelect({
 const StyledSelect = styled.div`
   position: relative;
   div {
-    padding: ${pxToRem(16)};
+    padding: 0 ${pxToRem(16)};
     height: var(--base-height);
     display: flex;
     align-items: center;

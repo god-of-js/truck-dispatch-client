@@ -12,6 +12,7 @@ import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
 import UiAlert from 'ui/UiAlert';
 import FileUploadWidget from 'ui/FileUploadWidget';
+import StyledAuthContent from './StyledAuthContent';
 
 export default function CompanyDetailsForm() {
   const { userType } = useParams();
@@ -72,12 +73,12 @@ export default function CompanyDetailsForm() {
     }
   }
   return (
-    <StyledAuthScreen>
-      <div className="header-container">
+    <StyledAuthContent>
+      <header>
         <UiIcon icon="Buildings" size="43" />
         <h1>Company Details</h1>
         <p>Please provide the correct company details.</p>
-      </div>
+      </header>
       <div className="form-container">
         <UiForm formData={formData} onSubmit={onSubmit}>
           {({ errors }) => (
@@ -149,7 +150,7 @@ export default function CompanyDetailsForm() {
           )}
         </UiForm>
       </div>
-    </StyledAuthScreen>
+    </StyledAuthContent>
   );
 }
 const AlertMargin = styled.div`

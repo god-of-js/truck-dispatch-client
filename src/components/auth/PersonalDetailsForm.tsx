@@ -8,7 +8,7 @@ import UiSelect from 'ui/UiSelect';
 import { Option } from 'ui/UiSelect';
 import UiForm from 'ui/UiForm';
 
-export function PersonDetailsForm() {
+export default function PersonDetailsForm() {
   const { userType } = useParams();
   const isCompany = userType === 'company' || userType === 'transport_company';
 

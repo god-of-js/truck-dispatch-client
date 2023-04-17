@@ -16,7 +16,7 @@ export default function AuthLayoutStyling({
   img,
 }: Props) {
   return (
-    <LayoutStyling invert={invert!}>
+    <LayoutStyling invert={invert!} hasImage={!!img}>
       <div className="info-content">
         <div className="info-content__inner">
           {!invert && (
@@ -35,14 +35,18 @@ export default function AuthLayoutStyling({
               <UiLogo />
             </div>
           )}
-          <div className="main-content__inner">{children}</div>
+          <div className="main-content__inner">
+            <div className="main-content__inner--not-inverted">{children}</div>
+          </div>
         </div>
       </div>
     </LayoutStyling>
   );
 }
-interface Inverted {
-  invert: boolean;
+
+interface StyleProps {
+  invert?: boolean;
+  hasImage?: boolean;
 }
 const LayoutStyling = styled.div`
   .logo {
@@ -52,8 +56,8 @@ const LayoutStyling = styled.div`
     display: none;
   }
   .main-content-container {
+    overflow-y: hidden;
     .main-content {
-      overflow-y: auto;
       margin: auto;
       width: 90%;
     }
@@ -62,7 +66,7 @@ const LayoutStyling = styled.div`
   @media screen and (min-width: ${sizes.tablet}) {
     display: flex;
     gap: ${pxToRem(40)};
-    ${({ invert }: Inverted) => invert && 'flex-direction: row-reverse;'}
+    ${({ invert }: StyleProps) => invert && 'flex-direction: row-reverse;'}
 
     .logo {
       display: block;
@@ -74,9 +78,11 @@ const LayoutStyling = styled.div`
       width: 100%;
       .main-content {
         display: flex;
-        width: 60%;
-        align-items: center;
-        padding-top: 5%;
+        width: ${({ invert }: StyleProps) => (invert ? '60%' : '100%')};
+        justify-content: ${({ invert }: StyleProps) =>
+          invert ? '' : 'flex-end'};
+        padding-top: ${({ invert }: StyleProps) =>
+          invert ? '5%' : pxToRem(160)};
         position: relative;
         height: 100%;
 
@@ -84,19 +90,37 @@ const LayoutStyling = styled.div`
           width: 60%;
           height: 100%;
           margin: initial;
-          display: flex;
+
+          ${({ invert }: StyleProps) =>
+            invert &&
+            `display: flex;
           align-items: flex-end;
+          justify-content: flex-end; 
+          `}
+          ${({ invert }: StyleProps) =>
+            !invert &&
+            `
+          &--not-inverted {
+              width: 40%;
+              margin: auto;
+            }
+          `}
         }
       }
     }
+
     .info-content {
       width: 40%;
       display: block;
       background-color: var(--color-primary-10);
       height: 100vh;
       position: fixed;
+      ${({ hasImage }: StyleProps) =>
+        !hasImage && `padding-top: ${pxToRem(160)};`}
       &__inner {
         height: 100%;
+        ${({ hasImage }: StyleProps) =>
+          !hasImage && 'width: 60%; margin: auto;'}
         img {
           width: 100%;
           height: 100%;
@@ -116,7 +140,7 @@ const LayoutStyling = styled.div`
   @media screen and (min-width: ${sizes.tabletLargeWidth}) {
     .main-content-container {
       .main-content {
-        padding-right: 15%;
+        ${({ invert }: StyleProps) => invert && `padding-right: 15%;`}
       }
     }
   }

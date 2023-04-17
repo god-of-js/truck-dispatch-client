@@ -54,7 +54,7 @@ export default function SelectUsertypePage() {
           <p>Welcome to TruckDispatch</p>
           <UiIcon icon="MagicStar" />
         </StyledTag>
-        <h1 className="heading">Deliver and receive your cargo with ease</h1>
+        <h1>Deliver and receive your cargo with ease</h1>
         <p className="info-text">
           To continue, choose a user type that best describes you, or what you
           do
@@ -138,8 +138,8 @@ const SelectUserTypeStyled = styled.section`
   @media (min-width: 1330px) {
     h1 {
       font-size: ${pxToRem(42)};
-      line-height: ${pxToRem(53.76)};
-      margin-bottom: ${pxToRem(48)};
+      line-height: ${pxToRem(52)};
+      margin-bottom: ${pxToRem(28)};
       width: 90%;
     }
 
