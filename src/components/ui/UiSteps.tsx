@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import UiIcon from './UiIcon';
 
 export interface Step {
   title: string;
@@ -31,7 +32,9 @@ export default function UiSteps({ steps, currentStepTitle }: Props) {
           isCompleted={isCompleted(step.title)}
         >
           <div className="indicator">
-            <div className="indicator__circle"></div>
+            <div className="indicator__circle">
+              {isCompleted(step.title) && <UiIcon icon="Check" />}
+            </div>
             <div className="indicator__line" />
           </div>
           <div className="content">
@@ -77,6 +80,7 @@ function getStyling(props: StyledProps) {
     textColor: 'var(--color-gray-60)',
   };
 }
+
 const ListItem = styled.li`
   display: flex;
   gap: ${pxToRem(20)};
@@ -86,9 +90,13 @@ const ListItem = styled.li`
     align-items: center;
 
     &__circle {
-      width: ${pxToRem(18)};
-      height: ${pxToRem(18)};
+      width: ${pxToRem(16)};
+      height: ${pxToRem(16)};
       border-radius: 50%;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background: ${(styledProps: StyledProps) =>
         getStyling(styledProps).background};
       border: ${(styledProps: StyledProps) =>
@@ -96,7 +104,7 @@ const ListItem = styled.li`
     }
 
     &__line {
-      height: ${pxToRem(86)};
+      height: ${pxToRem(90)};
       border: ${(styledProps: StyledProps) =>
         `${pxToRem(1)} ${getStyling(styledProps).lineStyle} ${
           getStyling(styledProps).borderColor
@@ -110,7 +118,7 @@ const ListItem = styled.li`
       font-family: 'thiccboi-semibold';
       font-style: normal;
       font-weight: 600;
-      font-size: 20px;
+      font-size: ${pxToRem(18)};
       line-height: ${pxToRem(16)};
       margin-bottom: ${pxToRem(4)};
       color: ${(styledProps: StyledProps) =>

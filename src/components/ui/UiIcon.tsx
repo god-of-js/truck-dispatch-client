@@ -8,7 +8,6 @@ import {
   CaretUp,
   Chats,
   CreditCard,
-  Check,
   Checks,
   DotsThree,
   DotsThreeVertical,
@@ -30,6 +29,7 @@ import {
 } from 'phosphor-react';
 import Buildings from './icons/Building';
 import Car from './icons/Car';
+import Check from './icons/Check';
 import CallReceived from './icons/CallReceived';
 import DocumentUpload from './icons/DocumentUpload';
 import Eye from './icons/Eye';
