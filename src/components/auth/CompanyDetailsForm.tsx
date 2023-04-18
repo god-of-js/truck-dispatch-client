@@ -1,9 +1,5 @@
 import { useParams } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { StyledAuthScreen } from './PersonalDetailsForm';
-import { Margin } from './PersonalDetailsForm';
-import Verification from 'types/Verification';
+import React, { useState } from 'react';
 
 import UiIcon from 'ui/UiIcon';
 import UiInput from 'ui/UiInput';
@@ -14,7 +10,10 @@ import UiAlert from 'ui/UiAlert';
 import FileUploadWidget from 'ui/FileUploadWidget';
 import StyledAuthContent from './StyledAuthContent';
 
-export default function CompanyDetailsForm() {
+interface Props {
+  goToNext: () => void;
+}
+export default function CompanyDetailsForm({ goToNext }: Props) {
   const { userType } = useParams();
   const [formData, setFormData] = useState({
     company_name: '',
@@ -36,7 +35,10 @@ export default function CompanyDetailsForm() {
     else setDoc({ TDO: param.value[0] });
   }
 
-  function onSubmit() {}
+  function onSubmit() {
+    goToNext();
+  }
+
   const selectOptions = [
     {
       label: 'Yes',
@@ -52,10 +54,9 @@ export default function CompanyDetailsForm() {
     if (userType === 'transport_company') {
       return 'transporter';
     }
-    if (userType === 'company') {
-      return 'agent';
-    }
+    return 'agent';
   }
+
   function alertMessage() {
     if (userType === 'transport_company') {
       return (
@@ -64,14 +65,13 @@ export default function CompanyDetailsForm() {
         </>
       );
     }
-    if (userType === 'company') {
-      return (
-        <>
-          an <b>agent</b>
-        </>
-      );
-    }
+    return (
+      <>
+        an <b>agent</b>
+      </>
+    );
   }
+
   return (
     <StyledAuthContent>
       <header>
@@ -82,7 +82,7 @@ export default function CompanyDetailsForm() {
       <div className="form-container">
         <UiForm formData={formData} onSubmit={onSubmit}>
           {({ errors }) => (
-            <>
+            <div className="form-container__inner">
               <UiInput
                 label="Company Name*"
                 placeholder="What is the company name?"
@@ -90,7 +90,6 @@ export default function CompanyDetailsForm() {
                 name="company_name"
                 onChange={handleChange}
               />
-              <Margin />
               <UiInput
                 label="Company Location*"
                 placeholder="Where is the company located?"
@@ -98,17 +97,16 @@ export default function CompanyDetailsForm() {
                 name="company_location"
                 onChange={handleChange}
               />
-              <Margin />
-              <UiSelect
-                label="Is your company registered?"
-                name="company_registered"
-                value={formData.company_registered}
-                options={selectOptions}
-                onChange={handleChange}
-              />
-              {formData.company_registered === 'No' && (
-                <>
-                  <AlertMargin />
+              <div className="select-with-optional-alert-container">
+                <UiSelect
+                  label="Is your company registered?"
+                  name="company_registered"
+                  value={formData.company_registered}
+                  options={selectOptions}
+                  onChange={handleChange}
+                />
+
+                {formData.company_registered === 'No' && (
                   <UiAlert
                     variant="gray"
                     icon={<UiIcon icon="InfoCircle" size="17" />}
@@ -118,11 +116,10 @@ export default function CompanyDetailsForm() {
                     register as {alertMessage()} now, and upgrade when you have
                     your documents
                   </UiAlert>
-                </>
-              )}
+                )}
+              </div>
               {formData.company_registered === 'Yes' && (
                 <>
-                  <Margin />
                   <UiInput
                     label="CAC Reference Number*"
                     placeholder="ex: RC 193xxxx"
@@ -130,7 +127,6 @@ export default function CompanyDetailsForm() {
                     name="CAC_number"
                     onChange={handleChange}
                   />
-                  <Margin />
                   <FileUploadWidget
                     name="TDO"
                     label="Upload CAC Certificate*"
@@ -146,13 +142,10 @@ export default function CompanyDetailsForm() {
                   ? `Continue as ${alternativeUserType()}`
                   : 'Continue'}
               </UiButton>
-            </>
+            </div>
           )}
         </UiForm>
       </div>
     </StyledAuthContent>
   );
 }
-const AlertMargin = styled.div`
-  margin-bottom: ${pxToRem(8)};
-`;

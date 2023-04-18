@@ -1,15 +1,12 @@
-import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { StyledAuthScreen } from '../../components/auth/PersonalDetailsForm';
-import { Margin } from '../../components/auth/PersonalDetailsForm';
-
 import UiIcon from 'ui/UiIcon';
 import UiInput from 'ui/UiInput';
 import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
+import StyledAuthContent from './StyledAuthContent';
 
-export default function VerifyPhone() {
+export default function VerifyPhoneForm() {
   const [formData, setFormData] = useState({
     OTP: '',
   });
@@ -46,7 +43,7 @@ export default function VerifyPhone() {
   }
 
   return (
-    <StyledAuthScreen>
+    <StyledAuthContent>
       <div className="header-container">
         <UiIcon icon="CallReceived" size="45" />
         <h1>Verify Phone Number</h1>
@@ -66,7 +63,6 @@ export default function VerifyPhone() {
                 name="OTP"
                 onChange={handleChange}
               />
-              <Margin />
               <StyledResendCode>
                 <p>Didn’t get the code?</p>
                 <UiButton
@@ -85,7 +81,7 @@ export default function VerifyPhone() {
           )}
         </UiForm>
       </div>
-    </StyledAuthScreen>
+    </StyledAuthContent>
   );
 }
 

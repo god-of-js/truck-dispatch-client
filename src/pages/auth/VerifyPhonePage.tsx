@@ -59,6 +59,7 @@ export default function VerifyPhonePage() {
       setSendOTPLoading(false);
     });
   }
+
   return (
     <VerifyPhone>
       <h3>Verify Account</h3>

@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { StyledAuthScreen } from './PersonalDetailsForm';
-import { Margin } from './PersonalDetailsForm';
 
 import UiIcon from 'ui/UiIcon';
 import UiInput from 'ui/UiInput';
 import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
+import StyledAuthContent from './StyledAuthContent';
 
 export default function ChoosePasswordForm() {
   const [formData, setFormData] = useState({
@@ -21,7 +20,7 @@ export default function ChoosePasswordForm() {
   function onSubmit() {}
 
   return (
-    <StyledAuthScreen>
+    <StyledAuthContent>
       <div className="header-container">
         <UiIcon icon="PasswordCheck" size="45" />
         <h1>Choose Password</h1>
@@ -39,7 +38,6 @@ export default function ChoosePasswordForm() {
                 name="password"
                 onChange={handleChange}
               />
-              <Margin />
               <UiInput
                 label="Confirm Password*"
                 placeholder="Confirm password"
@@ -55,6 +53,6 @@ export default function ChoosePasswordForm() {
           )}
         </UiForm>
       </div>
-    </StyledAuthScreen>
+    </StyledAuthContent>
   );
 }

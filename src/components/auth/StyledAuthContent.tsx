@@ -26,10 +26,19 @@ const StyledAuthContent = styled.div`
   }
   .form-container {
     width: 100%;
-    margin: 0 auto;
     max-width: ${pxToRem(450)};
     button {
-      margin-top: ${pxToRem(45)};
+      margin-top: ${pxToRem(24)};
+    }
+    .select-with-optional-alert-container {
+      display: flex;
+      flex-direction: column;
+      gap: ${pxToRem(8)};
+    }
+    &__inner {
+      display: flex;
+      flex-direction: column;
+      gap: ${pxToRem(24)};
     }
   }
   @media (min-width: 580px) {
