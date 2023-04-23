@@ -100,10 +100,6 @@ export default function LoginPage() {
                     New to TruckDispatch? <Link to="/auth/join">Sign Up</Link>{' '}
                   </p>
                 </div>
-                {/* <ForgotPassword>
-            Can't login? try{' '}
-            <Link to="/auth/join/transporter">forgot password</Link>
-          </ForgotPassword> */}
               </>
             )}
           </UiForm>
@@ -117,7 +113,6 @@ const StyledLogin = styled.div`
   * {
     margin: 0;
   }
-
   h1 {
     font-size: ${pxToRem(32)};
     color: var(--color-neutralBlack);

@@ -6,7 +6,11 @@ import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
 import StyledAuthContent from './StyledAuthContent';
 
-export default function VerifyPhoneForm() {
+interface Props {
+  goToNext: () => void;
+}
+
+export default function VerifyPhoneForm({ goToNext }: Props) {
   const [formData, setFormData] = useState({
     OTP: '',
   });
@@ -36,7 +40,9 @@ export default function VerifyPhoneForm() {
       [event.name]: event.value,
     });
   }
-  function onSubmit() {}
+  function onSubmit() {
+    goToNext()
+  }
   function resendCode() {
     setCanResendCode(false);
     setCount(59);
@@ -44,14 +50,14 @@ export default function VerifyPhoneForm() {
 
   return (
     <StyledAuthContent>
-      <div className="header-container">
+      <header>
         <UiIcon icon="CallReceived" size="45" />
         <h1>Verify Phone Number</h1>
         <p>
           Enter the OTP (One Time Pin) that was sent to the phone number you
           provided
         </p>
-      </div>
+      </header>
       <div className="form-container">
         <UiForm formData={formData} onSubmit={onSubmit}>
           {({ errors }) => (
@@ -90,7 +96,7 @@ const StyledResendCode = styled.div`
   justify-content: center;
   gap: ${pxToRem(9)};
   align-items: center;
-  /* margin-bottom: ${pxToRem(-24)}; */
+  margin-top: ${pxToRem(26)};
   p {
     font-weight: 400;
     color: var(--color-gray-80);
@@ -100,5 +106,6 @@ const StyledResendCode = styled.div`
   }
   button {
     margin: 0 !important;
+    border-radius: ${pxToRem(16)};
   }
 `;

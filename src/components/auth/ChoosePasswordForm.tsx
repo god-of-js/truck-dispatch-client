@@ -6,7 +6,11 @@ import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
 import StyledAuthContent from './StyledAuthContent';
 
-export default function ChoosePasswordForm() {
+interface Props {
+  goToNext: () => void;
+}
+
+export default function ChoosePasswordForm( { goToNext }: Props ) {
   const [formData, setFormData] = useState({
     password: '',
     confirmPassword: '',
@@ -17,19 +21,21 @@ export default function ChoosePasswordForm() {
       [event.name]: event.value,
     });
   }
-  function onSubmit() {}
+  function onSubmit() {
+    goToNext()
+  }
 
   return (
     <StyledAuthContent>
-      <div className="header-container">
+      <header>
         <UiIcon icon="PasswordCheck" size="45" />
         <h1>Choose Password</h1>
         <p>Choose a strong password with at least 8 characters or more</p>
-      </div>
+      </header>
       <div className="form-container">
         <UiForm formData={formData} onSubmit={onSubmit}>
           {({ errors }) => (
-            <>
+            <div className="form-container__inner">
               <UiInput
                 label="Password*"
                 placeholder="Enter your password"
@@ -49,7 +55,7 @@ export default function ChoosePasswordForm() {
               <UiButton size="large" variant="primary" isFullWidth>
                 Continue
               </UiButton>
-            </>
+            </div>
           )}
         </UiForm>
       </div>

@@ -1,9 +1,10 @@
 import styled from 'styled-components';
-
+import sizes from 'utils/sizes';
 const StyledAuthContent = styled.div`
   * {
     margin: 0;
   }
+  padding-bottom: ${pxToRem(30)};
   header {
     text-align: center;
     margin-bottom: ${pxToRem(40)};
@@ -26,6 +27,7 @@ const StyledAuthContent = styled.div`
   }
   .form-container {
     width: 100%;
+    margin: 0 auto;
     max-width: ${pxToRem(450)};
     button {
       margin-top: ${pxToRem(24)};
@@ -49,11 +51,13 @@ const StyledAuthContent = styled.div`
   @media (min-width: 700px) {
     .form-container {
       width: 80%;
-      margin: 0 auto;
+      
     }
   }
-  @media (min-width: 900px) {
-    .header-container {
+  @media (min-width: ${sizes.tablet}) {
+    width: 60%;
+    margin-left: auto;
+    header {
       margin-bottom: ${pxToRem(48)};
 
       h1 {
@@ -69,6 +73,17 @@ const StyledAuthContent = styled.div`
     .form-container {
       width: 100%;
       margin: 0 auto;
+    }
+  }
+  @media (min-width: ${sizes.tabletLargeWidth}) {
+    padding-bottom: ${pxToRem(50)};
+    header {
+      p {
+        width: 60%;
+      }
+    }
+    .form-container {
+      width: 50%;
     }
   }
 `;

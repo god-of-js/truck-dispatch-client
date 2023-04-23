@@ -126,6 +126,7 @@ const ListItem = styled.li`
     }
     .detail {
       font-style: normal;
+      font-family: 'thiccboi-regular';
       font-weight: 400;
       font-size: ${pxToRem(16)};
       line-height: ${pxToRem(24)};

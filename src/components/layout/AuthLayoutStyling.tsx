@@ -82,12 +82,12 @@ const LayoutStyling = styled.div`
         justify-content: ${({ invert }: StyleProps) =>
           invert ? '' : 'flex-end'};
         padding-top: ${({ invert }: StyleProps) =>
-          invert ? '5%' : pxToRem(160)};
+          invert ? '5%' : pxToRem(105)};
         position: relative;
         height: 100%;
 
         &__inner {
-          width: 60%;
+          /* width: 60%; */
           height: 100%;
           margin: initial;
 
@@ -100,8 +100,9 @@ const LayoutStyling = styled.div`
           ${({ invert }: StyleProps) =>
             !invert &&
             `
+            width: 100%;
           &--not-inverted {
-              width: 40%;
+              width: 100%;
               margin: auto;
             }
           `}

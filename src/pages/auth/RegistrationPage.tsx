@@ -75,9 +75,9 @@ export default function RegistrationPage() {
     <AuthLayoutStyling infoContent={infoContent}>
       {currentStepTitle === 'Company Details' && <CompanyDetailsForm goToNext={goToNext}/>}
       {(currentStepTitle === 'Account handler details' ||
-        currentStepTitle === 'Personal details') && <PersonalDetailsForm />}
-      {currentStepTitle === 'Verify phone number' && <VerifyPhoneForm />}
-      {currentStepTitle === 'Choose password' && <ChoosePasswordForm />}
+        currentStepTitle === 'Personal details') && <PersonalDetailsForm goToNext={goToNext}/>}
+      {currentStepTitle === 'Verify phone number' && <VerifyPhoneForm goToNext={goToNext}/>}
+      {currentStepTitle === 'Choose password' && <ChoosePasswordForm goToNext={goToNext}/>}
     </AuthLayoutStyling>
   );
 }

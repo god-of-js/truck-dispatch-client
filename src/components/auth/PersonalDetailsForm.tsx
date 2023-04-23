@@ -9,7 +9,11 @@ import { Option } from 'ui/UiSelect';
 import UiForm from 'ui/UiForm';
 import StyledAuthContent from './StyledAuthContent';
 
-export default function PersonDetailsForm() {
+interface Props {
+  goToNext: () => void;
+}
+
+export default function PersonDetailsForm({ goToNext } :Props) {
   const { userType } = useParams();
   const isCompany = userType?.includes('company');
 
@@ -40,7 +44,9 @@ export default function PersonDetailsForm() {
       [event.name]: event.value,
     });
   }
-  const onSubmit = () => {};
+  const onSubmit = () => {
+    goToNext()
+  };
 
   return (
     <StyledAuthContent>
@@ -93,7 +99,7 @@ export default function PersonDetailsForm() {
               )}
 
               <UiButton isFullWidth size="large" variant="primary">
-                Sign In
+                Continue
               </UiButton>
             </div>
           )}

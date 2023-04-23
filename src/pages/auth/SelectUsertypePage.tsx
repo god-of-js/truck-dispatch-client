@@ -4,6 +4,7 @@ import UiIcon from 'ui/UiIcon';
 import UiButton from 'ui/UiButton';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import sizes from 'utils/sizes';
 
 export default function SelectUsertypePage() {
   const [userTypeRoute, setUserTypeRoute] = useState('');
@@ -100,6 +101,7 @@ const SelectUserTypeStyled = styled.section`
   * {
     margin: 0;
   }
+  width: 100%;
   p {
     color: var(--color-gray-80);
     font-family: 'thiccboi-regular';
@@ -112,6 +114,7 @@ const SelectUserTypeStyled = styled.section`
     line-height: ${pxToRem(36)};
     color: var(--color-neutralBlack);
     margin-top: ${pxToRem(26)};
+    margin-bottom: ${pxToRem(32)};
   }
   .info-text {
     font-weight: 400;
@@ -130,12 +133,14 @@ const SelectUserTypeStyled = styled.section`
     }
   }
   @media (min-width: 950px) {
+    width: 70%;
     button {
       width: 45%;
     }
   }
 
   @media (min-width: 1330px) {
+    width: 65%;
     h1 {
       font-size: ${pxToRem(42)};
       line-height: ${pxToRem(52)};
@@ -158,7 +163,7 @@ const SelectUserTypeStyled = styled.section`
 const StyledTag = styled.span`
   display: none;
   width: fit-content;
-  @media (min-width: 900px) {
+  @media (min-width: ${sizes.tablet}) {
     display: flex;
     align-items: center;
     gap: ${pxToRem(8)};
