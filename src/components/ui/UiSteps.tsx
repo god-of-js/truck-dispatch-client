@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import UiIcon from './UiIcon';
+import sizes from 'utils/sizes';
 
 export interface Step {
   title: string;
@@ -24,7 +25,7 @@ export default function UiSteps({ steps, currentStepTitle }: Props) {
   }
 
   return (
-    <ul>
+    <List>
       {steps.map((step, index) => (
         <ListItem
           key={index}
@@ -43,7 +44,7 @@ export default function UiSteps({ steps, currentStepTitle }: Props) {
           </div>
         </ListItem>
       ))}
-    </ul>
+    </List>
   );
 }
 
@@ -81,17 +82,26 @@ function getStyling(props: StyledProps) {
   };
 }
 
-const ListItem = styled.li`
+const List = styled.ul`
   display: flex;
-  gap: ${pxToRem(20)};
-  .indicator {
-    display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+  @media(min-width: ${sizes.tablet}){
     flex-direction: column;
-    align-items: center;
+  }
+`
 
+const ListItem = styled.li`
+width: 100%;
+  .indicator{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
     &__circle {
-      width: ${pxToRem(16)};
-      height: ${pxToRem(16)};
+      min-width: ${pxToRem(16)};
+      min-height: ${pxToRem(16)};
       border-radius: 50%;
       color: white;
       display: flex;
@@ -102,18 +112,44 @@ const ListItem = styled.li`
       border: ${(styledProps: StyledProps) =>
         `2px solid ${getStyling(styledProps).borderColor}`};
     }
-
+    
     &__line {
-      height: ${pxToRem(90)};
+      width: ${pxToRem(90)};
+      width: 100%;
       border: ${(styledProps: StyledProps) =>
         `${pxToRem(1)} ${getStyling(styledProps).lineStyle} ${
           getStyling(styledProps).borderColor
         }`};
     }
+
+  }
+  .content {
+    display: none;
+  }
+  
+  &:last-child {
+    max-width: ${pxToRem(17.8)};
+    .indicator {
+      flex-direction: row-reverse;
+      &__line {
+        display: none;
+      }
+    }
+  }
+  @media(min-width: ${sizes.tablet}) {
+    display: flex;
+    gap: ${pxToRem(20)};
+  .indicator {
+    flex-direction: column;
+    &__line {
+      height: ${pxToRem(90)};
+      width: 0;
+    }
   }
 
   .content {
     max-width: ${pxToRem(280)};
+    display: block;
     .title {
       font-family: 'thiccboi-semibold';
       font-style: normal;
@@ -133,12 +169,16 @@ const ListItem = styled.li`
       color: ${(styledProps: StyledProps) => getStyling(styledProps).textColor};
     }
   }
-
   &:last-child {
+    min-width:100%;
     .indicator {
+      flex-direction: column;
       &__line {
         display: none;
       }
     }
+  }
+
+  
   }
 `;

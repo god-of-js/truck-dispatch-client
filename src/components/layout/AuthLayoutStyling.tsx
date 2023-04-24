@@ -15,6 +15,8 @@ export default function AuthLayoutStyling({
   invert,
   img,
 }: Props) {
+  const currentYear = new Date().getFullYear();
+  
   return (
     <LayoutStyling invert={invert!} hasImage={!!img}>
       <div className="info-content">
@@ -26,6 +28,9 @@ export default function AuthLayoutStyling({
           )}
           {img && <img src={SignUpImage} alt="truckdispatch authentication" />}
           {infoContent}
+          {!invert && (
+            <div className='copyright'>© TruckDispatch{currentYear}.</div>
+          )}
         </div>
       </div>
       <div className="main-content-container">
@@ -49,11 +54,25 @@ interface StyleProps {
   hasImage?: boolean;
 }
 const LayoutStyling = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${pxToRem(40)};
   .logo {
     display: none;
   }
   .info-content {
+    background-color: var(--color-primary-10);
     display: none;
+    ${({ invert }: StyleProps) =>
+      !invert && `
+      display:block;
+      padding: ${pxToRem(16)};
+      `}
+    &__inner {
+      .copyright {
+        display: none;
+      }
+    }
   }
   .main-content-container {
     overflow-y: hidden;
@@ -64,7 +83,6 @@ const LayoutStyling = styled.div`
   }
 
   @media screen and (min-width: ${sizes.tablet}) {
-    display: flex;
     gap: ${pxToRem(40)};
     ${({ invert }: StyleProps) => invert && 'flex-direction: row-reverse;'}
 
@@ -87,7 +105,6 @@ const LayoutStyling = styled.div`
         height: 100%;
 
         &__inner {
-          /* width: 60%; */
           height: 100%;
           margin: initial;
 
@@ -111,9 +128,9 @@ const LayoutStyling = styled.div`
     }
 
     .info-content {
+      padding: 0;
       width: 40%;
       display: block;
-      background-color: var(--color-primary-10);
       height: 100vh;
       position: fixed;
       ${({ hasImage }: StyleProps) =>
@@ -126,7 +143,11 @@ const LayoutStyling = styled.div`
           width: 100%;
           height: 100%;
         }
-      }
+        .copyright{
+          display: block;
+          color: var(--color-gray-80);
+        }
+    }
     }
   }
 

@@ -5,7 +5,7 @@ import UiSteps, { Step } from 'ui/UiSteps';
 import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
 import CompanyDetailsForm from 'components/auth/CompanyDetailsForm';
 import PersonalDetailsForm from 'components/auth/PersonalDetailsForm';
-import VerifyPhoneForm from 'components/auth/VerifyPhoneForm';
+import VerifyPhoneForm from '../../components/auth/VerifyPhoneForm';
 import ChoosePasswordForm from 'components/auth/ChoosePasswordForm';
 import { userTypes } from 'utils/constants';
 

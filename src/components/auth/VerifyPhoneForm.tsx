@@ -1,21 +1,79 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+
 import styled from 'styled-components';
 import UiIcon from 'ui/UiIcon';
 import UiInput from 'ui/UiInput';
 import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
 import StyledAuthContent from './StyledAuthContent';
+import { toAnyAction } from 'utils/helpers';
+import { sendOTP, VerifyOtp } from 'modules/Account';
+import { Toast } from 'utils/toast';
+import VerifyPhoneSchema from 'utils/validations/VerifyPhoneSchema';
+
+
+
 
 interface Props {
   goToNext: () => void;
 }
 
 export default function VerifyPhoneForm({ goToNext }: Props) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    OTP: '',
+    pin: '',
   });
   const [canResendCode, setCanResendCode] = useState(false);
   const [count, setCount] = useState(59);
+  const [loading, setLoading] = useState(false);
+  const [sendOTPLoading, setSendOTPLoading] = useState(false);
+
+  function setPin({ value }: { name: string; value: string | null }) {
+    setFormData({ pin: value! });
+  }
+
+  function verifyPhoneNumber() {
+    try {
+      setLoading(true);
+      dispatch(toAnyAction(VerifyOtp(formData.pin)))
+        .then(() => {
+          Toast.success({ msg: 'Phone number verification was successful' });
+          navigate('/auth/login');
+        })
+        .catch((err: Error) => {
+          console.log(err.message);
+          if (
+            err.message ===
+            'Something went wrong. Kindly request a new OTP for verification'
+          ) {
+            navigate('/auth/verify-phone/request-code');
+          }
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  function requestNewCode() {
+    setCanResendCode(false);
+    setCount(59);
+    const otpPhoneNumber = localStorage.getItem('otp-phone-number');
+    if (!otpPhoneNumber) {
+      navigate('/auth/verify-phone/request-code');
+      return;
+    }
+    setSendOTPLoading(true);
+    dispatch(toAnyAction(sendOTP(otpPhoneNumber))).finally(() => {
+      setSendOTPLoading(false);
+    });
+  }
 
   useEffect(() => {
     const countdownTimer = setTimeout(() => {
@@ -34,20 +92,6 @@ export default function VerifyPhoneForm({ goToNext }: Props) {
 
   const fornmattedCount = count < 10 ? `0${count}` : `${count}`;
 
-  function handleChange(event: { name: string; value: string | null }) {
-    setFormData({
-      ...formData,
-      [event.name]: event.value,
-    });
-  }
-  function onSubmit() {
-    goToNext()
-  }
-  function resendCode() {
-    setCanResendCode(false);
-    setCount(59);
-  }
-
   return (
     <StyledAuthContent>
       <header>
@@ -59,15 +103,15 @@ export default function VerifyPhoneForm({ goToNext }: Props) {
         </p>
       </header>
       <div className="form-container">
-        <UiForm formData={formData} onSubmit={onSubmit}>
+        <UiForm formData={formData} onSubmit={verifyPhoneNumber}>
           {({ errors }) => (
             <>
               <UiInput
                 label="Enter OTP"
                 type="text"
-                value={formData.OTP}
+                value={formData.pin}
                 name="OTP"
-                onChange={handleChange}
+                onChange={setPin}
               />
               <StyledResendCode>
                 <p>Didn’t get the code?</p>
@@ -75,7 +119,7 @@ export default function VerifyPhoneForm({ goToNext }: Props) {
                   size="s"
                   variant="secondary"
                   disabled={!canResendCode}
-                  onClick={resendCode}
+                  onClick={requestNewCode}
                 >
                   {canResendCode ? `Resend` : `Resend in 00:${fornmattedCount}`}
                 </UiButton>
