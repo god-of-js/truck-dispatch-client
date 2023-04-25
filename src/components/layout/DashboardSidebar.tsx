@@ -31,18 +31,34 @@ export default function DashboardSidebar() {
     {
       path: '/available-jobs',
       name: 'Available Jobs',
-      iconName: 'Suitcase',
+      iconName: 'Jobs',
     },
     {
       path: '/my-trips',
       name: 'My Trips',
-      iconName: 'Truck',
+      iconName: 'TruckTick',
     },
     {
       path: '/payments',
       name: 'Payments',
-      iconName: 'Money',
+      iconName: 'Moneys',
     },
+    {
+      path: '/....',
+      name: 'Vehcles',
+      iconName: 'TruckImg',
+    },
+    {
+      path: '/....',
+      name: 'Analytics',
+      iconName: 'ChartSquare',
+    },
+    {
+      path: '/....',
+      name: 'Settings',
+      iconName: 'Settings',
+    },
+ 
   ];
 
   const agentRoutes: Route[] = [
@@ -84,7 +100,7 @@ export default function DashboardSidebar() {
           <Link to="/chat">
             <Tab isActive={isRouteActive('/chat')}>
               <div className="chat-icon-container">
-                <UiIcon icon="Chats" size="24" />
+                <UiIcon icon="MessageChat" size="24" />
                 {unreadChat.length !== 0 && (
                   <MessageCount>{unreadChat.length}</MessageCount>
                 )}
@@ -94,8 +110,13 @@ export default function DashboardSidebar() {
         </TabList>
 
         <BottomActions>
+          <UserContainer onClick={() => logOutUser()}>
+            <UserContainerInner>
+            <UiIcon icon="User" size="20" />
+            </UserContainerInner>
+          </UserContainer>
           <LogOutContainer onClick={() => logOutUser()}>
-            <UiIcon icon="SignOut" size="24" />
+            <UiIcon icon="Logout" size="24" />
           </LogOutContainer>
         </BottomActions>
       </div>
@@ -144,7 +165,8 @@ const TDLogo = styled.img`
 `;
 
 const TabList = styled.ul`
-  padding: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
   margin: 0;
   display: flex;
   justify-content: space-around;
@@ -166,6 +188,28 @@ const LogOutContainer = styled.div`
     color: var(--color-danger);
   }
 `;
+const UserContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-gray-500);
+  width: 100%;
+  font-weight: 600;
+  padding-bottom: 5px;
+
+`;
+
+const UserContainerInner = styled.div`
+list-style-type: none;
+height: 40px;
+width: 40px;
+  background: var(--color-gray-50);
+  border-radius: 50%;
+  font-size: ${pxToRem(14)};
+  opacity: 0.8;
+  display: flex;
+  justify-content: center;
+  align-items: center;`
 
 const Tab = styled.li`
   list-style-type: none;
@@ -174,8 +218,9 @@ const Tab = styled.li`
   color: ${({ isActive }: { isActive: boolean }) =>
     isActive ? 'var(--color-primary)' : 'var(--color-gray-500)'};
   font-weight: 600;
-  opacity: 0.6;
+  opacity: 0.8;
   display: flex;
+  
   align-items: center;
   justify-content: center;
 
@@ -187,6 +232,7 @@ const Tab = styled.li`
   &:hover {
     border-color: var(--color-primary);
     color: var(--color-primary);
+    background-color: var(--color-primary-10);
   }
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {

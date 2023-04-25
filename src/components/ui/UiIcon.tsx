@@ -31,15 +31,24 @@ import Buildings from './icons/Building';
 import Car from './icons/Car';
 import Check from './icons/Check';
 import CallReceived from './icons/CallReceived';
+import ChartSquare from './icons/ChartSquare';
 import DocumentUpload from './icons/DocumentUpload';
 import Eye from './icons/Eye';
 import EyeSlash from './icons/EyeSlash';
 import InfoCircle from './icons/InfoCircle';
+import Jobs from './icons/Jobs';
+import Logout from './icons/Logout';
 import MagicStar from './icons/MagicStar';
+import MessageChat from './icons/MessageChat';
+import Moneys from './icons/Moneys';
 import PasswordCheck from './icons/PasswordCheck';
 import styled from 'styled-components';
+import Settings from './icons/Settings';
+import TruckImg from './icons/Truck';
+import TruckTick from './icons/TruckTick';
 import UserOctagon from './icons/UserOctagon';
 import UserSquare from './icons/UserSquare';
+
 // These icons should be arranged alphabetically for easy sorting
 const icons = {
   ArrowLeft: <ArrowLeft />,
@@ -51,6 +60,7 @@ const icons = {
   CaretDown: <CaretDown />,
   CaretUp: <CaretUp />,
   Chats: <Chats />,
+  ChartSquare: <ChartSquare />,
   CreditCard: <CreditCard />,
   Check: <Check />,
   Checks: <Checks />,
@@ -62,9 +72,13 @@ const icons = {
   FolderNotchOpen: <FolderNotchOpen />,
   House: <House />,
   InfoCircle: <InfoCircle />,
+  Jobs: <Jobs />,
   Kanban: <Kanban />,
+  Logout: <Logout />,
   MagicStar: <MagicStar />,
   MapPin: <MapPin />,
+  MessageChat: <MessageChat />,
+  Moneys: <Moneys />,
   Money: <Money />,
   PaperPlaneTilt: <PaperPlaneTilt />,
   PasswordCheck: <PasswordCheck />,
@@ -73,6 +87,9 @@ const icons = {
   SignOut: <SignOut />,
   Suitcase: <Suitcase />,
   Star: <Star />,
+  Settings: <Settings />,
+  TruckImg: <TruckImg />,
+  TruckTick: <TruckTick />,
   Truck: <Truck />,
   User: <User />,
   UserOctagon: <UserOctagon />,
