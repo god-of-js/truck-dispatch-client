@@ -15,8 +15,6 @@ export default function AuthLayoutStyling({
   invert,
   img,
 }: Props) {
-  const currentYear = new Date().getFullYear();
-  
   return (
     <LayoutStyling invert={invert!} hasImage={!!img}>
       <div className="info-content">
@@ -28,9 +26,6 @@ export default function AuthLayoutStyling({
           )}
           {img && <img src={SignUpImage} alt="truckdispatch authentication" />}
           {infoContent}
-          {!invert && (
-            <div className='copyright'>© TruckDispatch{currentYear}.</div>
-          )}
         </div>
       </div>
       <div className="main-content-container">
@@ -64,7 +59,8 @@ const LayoutStyling = styled.div`
     background-color: var(--color-primary-10);
     display: none;
     ${({ invert }: StyleProps) =>
-      !invert && `
+      !invert &&
+      `
       display:block;
       padding: ${pxToRem(16)};
       `}
@@ -143,11 +139,11 @@ const LayoutStyling = styled.div`
           width: 100%;
           height: 100%;
         }
-        .copyright{
+        .copyright {
           display: block;
           color: var(--color-gray-80);
         }
-    }
+      }
     }
   }
 

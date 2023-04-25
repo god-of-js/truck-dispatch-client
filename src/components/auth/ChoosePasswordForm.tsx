@@ -10,7 +10,7 @@ interface Props {
   goToNext: () => void;
 }
 
-export default function ChoosePasswordForm( { goToNext }: Props ) {
+export default function ChoosePasswordForm({ goToNext }: Props) {
   const [formData, setFormData] = useState({
     password: '',
     confirmPassword: '',
@@ -22,17 +22,17 @@ export default function ChoosePasswordForm( { goToNext }: Props ) {
     });
   }
   function onSubmit() {
-    goToNext()
+    goToNext();
   }
 
   return (
     <StyledAuthContent>
+      <div className="form-container">
       <header>
         <UiIcon icon="PasswordCheck" size="45" />
         <h1>Choose Password</h1>
         <p>Choose a strong password with at least 8 characters or more</p>
       </header>
-      <div className="form-container">
         <UiForm formData={formData} onSubmit={onSubmit}>
           {({ errors }) => (
             <div className="form-container__inner">

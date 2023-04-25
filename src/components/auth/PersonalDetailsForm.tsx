@@ -13,7 +13,7 @@ interface Props {
   goToNext: () => void;
 }
 
-export default function PersonDetailsForm({ goToNext } :Props) {
+export default function PersonDetailsForm({ goToNext }: Props) {
   const { userType } = useParams();
   const isCompany = userType?.includes('company');
 
@@ -45,17 +45,17 @@ export default function PersonDetailsForm({ goToNext } :Props) {
     });
   }
   const onSubmit = () => {
-    goToNext()
+    goToNext();
   };
 
   return (
     <StyledAuthContent>
-      <header>
-        <UiIcon icon="UserOctagon" size="45" />
-        <h1>{header}</h1>
-        <p>{text}</p>
-      </header>
       <div className="form-container">
+        <header>
+          <UiIcon icon="UserOctagon" size="45" />
+          <h1>{header}</h1>
+          <p>{text}</p>
+        </header>
         <UiForm formData={formData} onSubmit={onSubmit}>
           {({ errors }) => (
             <div className="form-container__inner">

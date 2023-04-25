@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import sizes from 'utils/sizes';
+
 const StyledAuthContent = styled.div`
   * {
     margin: 0;
@@ -28,7 +29,7 @@ const StyledAuthContent = styled.div`
   .form-container {
     width: 100%;
     margin: 0 auto;
-    max-width: ${pxToRem(450)};
+    max-width: ${pxToRem(400)};
     button {
       margin-top: ${pxToRem(24)};
     }
@@ -51,7 +52,6 @@ const StyledAuthContent = styled.div`
   @media (min-width: 700px) {
     .form-container {
       width: 80%;
-      
     }
   }
   @media (min-width: ${sizes.tablet}) {
@@ -65,10 +65,6 @@ const StyledAuthContent = styled.div`
         margin-top: ${pxToRem(19)};
         margin-bottom: ${pxToRem(16)};
       }
-      p {
-        width: 80%;
-        margin: 0 auto;
-      }
     }
     .form-container {
       width: 100%;
@@ -77,11 +73,6 @@ const StyledAuthContent = styled.div`
   }
   @media (min-width: ${sizes.tabletLargeWidth}) {
     padding-bottom: ${pxToRem(50)};
-    header {
-      p {
-        width: 60%;
-      }
-    }
     .form-container {
       width: 50%;
     }

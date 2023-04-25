@@ -86,19 +86,19 @@ const List = styled.ul`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  
-  @media(min-width: ${sizes.tablet}){
+
+  @media (min-width: ${sizes.tablet}) {
     flex-direction: column;
   }
-`
+`;
 
 const ListItem = styled.li`
-width: 100%;
-  .indicator{
+  width: 100%;
+  .indicator {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    
+
     &__circle {
       min-width: ${pxToRem(16)};
       min-height: ${pxToRem(16)};
@@ -112,7 +112,7 @@ width: 100%;
       border: ${(styledProps: StyledProps) =>
         `2px solid ${getStyling(styledProps).borderColor}`};
     }
-    
+
     &__line {
       width: ${pxToRem(90)};
       width: 100%;
@@ -121,12 +121,11 @@ width: 100%;
           getStyling(styledProps).borderColor
         }`};
     }
-
   }
   .content {
     display: none;
   }
-  
+
   &:last-child {
     max-width: ${pxToRem(17.8)};
     .indicator {
@@ -136,49 +135,48 @@ width: 100%;
       }
     }
   }
-  @media(min-width: ${sizes.tablet}) {
+  @media (min-width: ${sizes.tablet}) {
     display: flex;
     gap: ${pxToRem(20)};
-  .indicator {
-    flex-direction: column;
-    &__line {
-      height: ${pxToRem(90)};
-      width: 0;
-    }
-  }
-
-  .content {
-    max-width: ${pxToRem(280)};
-    display: block;
-    .title {
-      font-family: 'thiccboi-semibold';
-      font-style: normal;
-      font-weight: 600;
-      font-size: ${pxToRem(18)};
-      line-height: ${pxToRem(16)};
-      margin-bottom: ${pxToRem(4)};
-      color: ${(styledProps: StyledProps) =>
-        getStyling(styledProps).titleColor};
-    }
-    .detail {
-      font-style: normal;
-      font-family: 'thiccboi-regular';
-      font-weight: 400;
-      font-size: ${pxToRem(16)};
-      line-height: ${pxToRem(24)};
-      color: ${(styledProps: StyledProps) => getStyling(styledProps).textColor};
-    }
-  }
-  &:last-child {
-    min-width:100%;
     .indicator {
       flex-direction: column;
       &__line {
-        display: none;
+        height: ${pxToRem(90)};
+        width: 0;
       }
     }
-  }
 
-  
+    .content {
+      max-width: ${pxToRem(280)};
+      display: block;
+      .title {
+        font-family: 'thiccboi-semibold';
+        font-style: normal;
+        font-weight: 600;
+        font-size: ${pxToRem(18)};
+        line-height: ${pxToRem(16)};
+        margin-bottom: ${pxToRem(4)};
+        color: ${(styledProps: StyledProps) =>
+          getStyling(styledProps).titleColor};
+      }
+      .detail {
+        font-style: normal;
+        font-family: 'thiccboi-regular';
+        font-weight: 400;
+        font-size: ${pxToRem(16)};
+        line-height: ${pxToRem(24)};
+        color: ${(styledProps: StyledProps) =>
+          getStyling(styledProps).textColor};
+      }
+    }
+    &:last-child {
+      min-width: 100%;
+      .indicator {
+        flex-direction: column;
+        &__line {
+          display: none;
+        }
+      }
+    }
   }
 `;

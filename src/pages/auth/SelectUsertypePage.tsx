@@ -50,11 +50,11 @@ export default function SelectUsertypePage() {
 
   return (
     <AuthLayoutStyling invert img>
-      <SelectUserTypeStyled>
-        <StyledTag>
+      <SelectUserTypeStyling>
+        <WelcomeMessageTag>
           <p>Welcome to TruckDispatch</p>
           <UiIcon icon="MagicStar" />
-        </StyledTag>
+        </WelcomeMessageTag>
         <h1>Deliver and receive your cargo with ease</h1>
         <p className="info-text">
           To continue, choose a user type that best describes you, or what you
@@ -62,21 +62,27 @@ export default function SelectUsertypePage() {
         </p>
 
         <StyledUserTypeGrid>
-          {userTypeData.map((data) => (
+          {userTypeData.map((userType) => (
             <div
-              key={data.title}
-              className={`user-card ${
-                data.type === userTypeRoute && 'active'
-              } `}
-              onClick={() => {
-                selectUserType(data.type);
-              }}
+              className={`user-card-container ${
+                userType.type === userTypeRoute && 'active'
+              }`}
             >
-              <div className="icons-container">
-                {data.icons.map((icon) => icon)}
+              <div
+                key={userType.title}
+                className={`user-card ${
+                  userType.type === userTypeRoute && 'active'
+                } `}
+                onClick={() => {
+                  selectUserType(userType.type);
+                }}
+              >
+                <div className="icons-container">
+                  {userType.icons.map((icon) => icon)}
+                </div>
+                <h2>{userType.title}</h2>
+                <p>{userType.text}</p>
               </div>
-              <h2>{data.title}</h2>
-              <p>{data.text}</p>
             </div>
           ))}
         </StyledUserTypeGrid>
@@ -92,12 +98,12 @@ export default function SelectUsertypePage() {
         <p>
           Already have an account? <Link to="/auth/login">Sign In</Link>
         </p>
-      </SelectUserTypeStyled>
+      </SelectUserTypeStyling>
     </AuthLayoutStyling>
   );
 }
 
-const SelectUserTypeStyled = styled.section`
+const SelectUserTypeStyling = styled.section`
   * {
     margin: 0;
   }
@@ -160,21 +166,23 @@ const SelectUserTypeStyled = styled.section`
   }
 `;
 
-const StyledTag = styled.span`
+const WelcomeMessageTag = styled.span`
   display: none;
   width: fit-content;
   @media (min-width: ${sizes.tablet}) {
     display: flex;
     align-items: center;
-    gap: ${pxToRem(8)};
+    gap: ${pxToRem(16)};
     background-color: var(--color-primary-10);
     height: ${pxToRem(30)};
     padding: ${pxToRem(4)} ${pxToRem(12)};
     border-radius: ${pxToRem(18)};
-    font-size: ${pxToRem(14)};
-    font-weight: 400;
-    font-family: 'thiccboi-regular';
-    color: var(--color-gray-90);
+    p {
+      font-size: ${pxToRem(14)};
+      font-weight: 400;
+      font-family: 'thiccboi-regular';
+      color: var(--color-gray-90);
+    }
     span {
       fill: var(--color-primary);
     }
@@ -182,24 +190,35 @@ const StyledTag = styled.span`
 `;
 
 const cardActiveState = `
-border: ${pxToRem(2)} solid var(--color-primary);
-background-color: var(--color-primary-10);
-.icons-container {
-  span {
-    fill: var(--color-primary);
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-10);
+  .icons-container {
+    span {
+      fill: var(--color-primary);
+    }
   }
-}`;
+`;
 
 const StyledUserTypeGrid = styled.div`
   display: grid;
   gap: ${pxToRem(12)};
   margin-bottom: ${pxToRem(60)};
+  .user-card-container {
+    padding: ${pxToRem(1)};
+    border-radius: ${pxToRem(8)};
+
+    &:hover {
+      background: var(--color-primary);
+    }
+    &.active {
+      background: var(--color-primary);
+    }
+  }
   .user-card {
     border: 1px solid var(--color-gray);
     border-radius: ${pxToRem(8)};
     padding: ${pxToRem(12)};
     cursor: pointer;
-    transition: all 0.2s ease-in-out;
 
     .icons-container {
       display: flex;

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-
 import styled from 'styled-components';
 import UiIcon from 'ui/UiIcon';
 import UiInput from 'ui/UiInput';
@@ -13,9 +12,6 @@ import { toAnyAction } from 'utils/helpers';
 import { sendOTP, VerifyOtp } from 'modules/Account';
 import { Toast } from 'utils/toast';
 import VerifyPhoneSchema from 'utils/validations/VerifyPhoneSchema';
-
-
-
 
 interface Props {
   goToNext: () => void;
@@ -94,6 +90,7 @@ export default function VerifyPhoneForm({ goToNext }: Props) {
 
   return (
     <StyledAuthContent>
+      <div className="form-container">
       <header>
         <UiIcon icon="CallReceived" size="45" />
         <h1>Verify Phone Number</h1>
@@ -102,7 +99,6 @@ export default function VerifyPhoneForm({ goToNext }: Props) {
           provided
         </p>
       </header>
-      <div className="form-container">
         <UiForm formData={formData} onSubmit={verifyPhoneNumber}>
           {({ errors }) => (
             <>

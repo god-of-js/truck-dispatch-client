@@ -8,10 +8,12 @@ import PersonalDetailsForm from 'components/auth/PersonalDetailsForm';
 import VerifyPhoneForm from '../../components/auth/VerifyPhoneForm';
 import ChoosePasswordForm from 'components/auth/ChoosePasswordForm';
 import { userTypes } from 'utils/constants';
+import styled from 'styled-components';
 
 export default function RegistrationPage() {
   const { userType } = useParams();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const currentYear = new Date().getFullYear();
   const steps: Step[] = [
     {
       title: 'Company Details',
@@ -48,9 +50,7 @@ export default function RegistrationPage() {
     return true;
   });
 
-  const [currentStepTitle, setCurrentStepTitle] = useState(
-    steps[0].title,
-  );
+  const [currentStepTitle, setCurrentStepTitle] = useState(steps[0].title);
 
   function goToNext() {
     const indexOfCurrentStage = steps.findIndex(
@@ -60,24 +60,43 @@ export default function RegistrationPage() {
     setCurrentStepTitle(newTitle);
   }
   const infoContent = (
-    <>
+    <InfoContentContainer>
       <UiSteps steps={steps} currentStepTitle={currentStepTitle} />
-    </>
+      <div className="copyright">© TruckDispatch{currentYear}.</div>
+    </InfoContentContainer>
   );
 
   useEffect(() => {
     if (!userTypes.includes(userType!)) {
-      navigate('/auth/join')
+      navigate('/auth/join');
     }
-  }, [userType])
+  }, [userType]);
 
   return (
     <AuthLayoutStyling infoContent={infoContent}>
-      {currentStepTitle === 'Company Details' && <CompanyDetailsForm goToNext={goToNext}/>}
+      {currentStepTitle === 'Company Details' && (
+        <CompanyDetailsForm goToNext={goToNext} />
+      )}
       {(currentStepTitle === 'Account handler details' ||
-        currentStepTitle === 'Personal details') && <PersonalDetailsForm goToNext={goToNext}/>}
-      {currentStepTitle === 'Verify phone number' && <VerifyPhoneForm goToNext={goToNext}/>}
-      {currentStepTitle === 'Choose password' && <ChoosePasswordForm goToNext={goToNext}/>}
+        currentStepTitle === 'Personal details') && (
+        <PersonalDetailsForm goToNext={goToNext} />
+      )}
+      {currentStepTitle === 'Verify phone number' && (
+        <VerifyPhoneForm goToNext={goToNext} />
+      )}
+      {currentStepTitle === 'Choose password' && (
+        <ChoosePasswordForm goToNext={goToNext} />
+      )}
     </AuthLayoutStyling>
   );
 }
+
+const InfoContentContainer = styled.div`
+  height: 80%;
+  position: relative;
+
+  .copyright {
+    position: absolute;
+    bottom: 0;
+  }
+`;
