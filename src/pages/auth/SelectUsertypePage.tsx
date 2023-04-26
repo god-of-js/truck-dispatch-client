@@ -1,6 +1,6 @@
 import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
 import styled from 'styled-components';
-import UiIcon from 'ui/UiIcon';
+import UiIcon, { Icons } from 'ui/UiIcon';
 import UiButton from 'ui/UiButton';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -10,34 +10,33 @@ export default function SelectUsertypePage() {
   const [userTypeRoute, setUserTypeRoute] = useState('');
 
   const navigate = useNavigate();
-
-  const userTypeData = [
+  interface UserType {
+    icons: Icons[];
+    title: string;
+    text: string;
+    type: string;
+  }
+  const userTypeData: UserType[] = [
     {
-      icons: [<UiIcon icon="Car" size="17" />],
+      icons: ['Car', 'InfoCircle'],
       title: 'Transporter',
       text: 'Individual truck owner or driver',
       type: 'transporter',
     },
     {
-      icons: [<UiIcon icon="UserSquare" size="17" />],
+      icons: ['UserSquare'],
       title: 'Agent',
       text: 'Clients / individuals with jobs',
       type: 'agent',
     },
     {
-      icons: [
-        <UiIcon icon="Car" size="17" />,
-        <UiIcon icon="Buildings" size="17" />,
-      ],
+      icons: ['Car', 'Buildings'],
       title: 'Transport Company',
       text: 'Company with trucks',
       type: 'transport_company',
     },
     {
-      icons: [
-        <UiIcon icon="UserSquare" size="17" />,
-        <UiIcon icon="Buildings" size="17" />,
-      ],
+      icons: ['UserSquare', 'Buildings'],
       title: 'Company',
       text: 'Company with jobs',
       type: 'company',
@@ -78,7 +77,9 @@ export default function SelectUsertypePage() {
                 }}
               >
                 <div className="icons-container">
-                  {userType.icons.map((icon) => icon)}
+                  {userType.icons.map((icon) => (
+                    <UiIcon icon={icon} size="17" />
+                  ))}
                 </div>
                 <h2>{userType.title}</h2>
                 <p>{userType.text}</p>
@@ -193,7 +194,7 @@ const cardActiveState = `
   border-color: var(--color-primary);
   background-color: var(--color-primary-10);
   .icons-container {
-    span {
+    svg {
       fill: var(--color-primary);
     }
   }
@@ -224,7 +225,7 @@ const StyledUserTypeGrid = styled.div`
       display: flex;
       gap: ${pxToRem(5)};
       margin-bottom: ${pxToRem(12)};
-      span {
+      svg {
         fill: var(--color-neutralBlack);
       }
     }

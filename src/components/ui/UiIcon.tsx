@@ -1,4 +1,5 @@
-import React from 'react';
+import styled from 'styled-components';
+
 // These icons should be arranged alphabetically for easy sorting
 import {
   ArrowLeft,
@@ -27,25 +28,25 @@ import {
   UsersThree,
   X,
 } from 'phosphor-react';
-import Buildings from './icons/Building';
-import Car from './icons/Car';
-import Check from './icons/Check';
-import CallReceived from './icons/CallReceived';
-import DocumentUpload from './icons/DocumentUpload';
-import Eye from './icons/Eye';
-import EyeSlash from './icons/EyeSlash';
-import InfoCircle from './icons/InfoCircle';
-import MagicStar from './icons/MagicStar';
-import PasswordCheck from './icons/PasswordCheck';
-import styled from 'styled-components';
-import UserOctagon from './icons/UserOctagon';
-import UserSquare from './icons/UserSquare';
+import { ReactComponent as Company } from './icons/company.svg';
+import { ReactComponent as Car } from './icons/car.svg';
+import { ReactComponent as Check } from './icons/check.svg';
+import { ReactComponent as CallReceived } from './icons/call-received.svg';
+import { ReactComponent as DocumentUpload } from './icons/document-upload.svg';
+import { ReactComponent as Eye } from './icons/eye.svg';
+import { ReactComponent as EyeSlash } from './icons/eye-slash.svg';
+import { ReactComponent as InfoCircle } from './icons/info-circle.svg';
+import { ReactComponent as MagicStar } from './icons/magic-star.svg';
+import { ReactComponent as PasswordCheck } from './icons/password-check.svg';
+import { ReactComponent as UserOctagon } from './icons/user-octagon.svg';
+import { ReactComponent as UserSquare } from './icons/user-square.svg';
+
 // These icons should be arranged alphabetically for easy sorting
 const icons = {
   ArrowLeft: <ArrowLeft />,
   ArrowRight: <ArrowRight />,
   ArrowUpRight: <ArrowUpRight />,
-  Buildings: <Buildings />,
+  Buildings: <Company />,
   CallReceived: <CallReceived />,
   Car: <Car />,
   CaretDown: <CaretDown />,
@@ -88,7 +89,11 @@ interface Props {
   size?: string;
 }
 export default function UiIcon({ icon, size = '16' }: Props) {
-  return <IconStyle size={size}>{icons[icon]}</IconStyle>;
+  return (
+    <IconStyle size={size} className="icon">
+      {icons[icon]}
+    </IconStyle>
+  );
 }
 
 const IconStyle = styled.span`

@@ -1,5 +1,4 @@
-export default function Check() {
-  return (
+
     <svg
       width="12"
       height="9"
@@ -12,5 +11,4 @@ export default function Check() {
         fill="white"
       />
     </svg>
-  );
-}
+    

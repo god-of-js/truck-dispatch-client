@@ -28,11 +28,11 @@ export default function ChoosePasswordForm({ goToNext }: Props) {
   return (
     <StyledAuthContent>
       <div className="form-container">
-      <header>
-        <UiIcon icon="PasswordCheck" size="45" />
-        <h1>Choose Password</h1>
-        <p>Choose a strong password with at least 8 characters or more</p>
-      </header>
+        <header>
+          <UiIcon icon="PasswordCheck" size="45" />
+          <h1>Choose Password</h1>
+          <p>Choose a strong password with at least 8 characters or more</p>
+        </header>
         <UiForm formData={formData} onSubmit={onSubmit}>
           {({ errors }) => (
             <div className="form-container__inner">

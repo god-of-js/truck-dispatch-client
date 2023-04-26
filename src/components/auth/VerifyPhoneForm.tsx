@@ -91,14 +91,14 @@ export default function VerifyPhoneForm({ goToNext }: Props) {
   return (
     <StyledAuthContent>
       <div className="form-container">
-      <header>
-        <UiIcon icon="CallReceived" size="45" />
-        <h1>Verify Phone Number</h1>
-        <p>
-          Enter the OTP (One Time Pin) that was sent to the phone number you
-          provided
-        </p>
-      </header>
+        <header>
+          <UiIcon icon="CallReceived" size="45" />
+          <h1>Verify Phone Number</h1>
+          <p>
+            Enter the OTP (One Time Pin) that was sent to the phone number you
+            provided
+          </p>
+        </header>
         <UiForm formData={formData} onSubmit={verifyPhoneNumber}>
           {({ errors }) => (
             <>
