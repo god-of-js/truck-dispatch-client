@@ -94,10 +94,6 @@ class ApiService {
     return this.post<User>('/user/update-password', data);
   }
 
-  updateAccountNumber(accountDetails: BankDetails) {
-    return this.patch<User>('/user/bank-details', accountDetails);
-  }
-
   getJobs() {
     return this.get<Trip[]>('/trips/jobs');
   }
