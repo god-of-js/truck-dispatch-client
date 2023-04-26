@@ -46,7 +46,7 @@ export default function ViewTripTDO() {
   const showUploadTDO = useMemo<boolean>(() => {
     if (user?.userType === 'transporter') return false;
 
-    if (trip?.status === 'awaiting_bid') return false;
+    if (trip?.status === 'awaiting-bid') return false;
 
     if (trip?.TDO) return false;
 

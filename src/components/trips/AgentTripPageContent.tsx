@@ -75,16 +75,16 @@ export default function AgentTripPageContent() {
   }
 
   function getPillVariant(status: Trip['status']) {
-    if (status === 'awaiting_bid') return 'gray';
-    if (status === 'payment_complete') return 'warning';
+    if (status === 'awaiting-bid') return 'gray';
+    if (status === 'payment-complete') return 'warning';
     if (status === 'in-progress') return 'info';
     if (status === 'completed') return 'success';
 
     return 'success';
   }
   function formatStatus(status: Trip['status']) {
-    if (status === 'payment_complete') return 'Pending';
-    if (status === 'awaiting_bid') return 'Awaiting Bid';
+    if (status === 'payment-complete') return 'Pending';
+    if (status === 'awaiting-bid') return 'Awaiting Bid';
     if (status === 'in-progress') return 'In Progress';
     if (status === 'completed') return 'Completed';
   }

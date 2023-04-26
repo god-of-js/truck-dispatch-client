@@ -25,5 +25,5 @@ export default interface Trip {
   reference: string;
   transporter?: User;
   tripOwner?: User;
-  status: 'awaiting_bid' | 'payment_complete' | 'in-progress' | 'completed';
+  status: 'awaiting-bid' | 'payment-complete' | 'in-progress' | 'completed';
 }
