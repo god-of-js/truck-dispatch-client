@@ -64,10 +64,10 @@ export default function ViewTrip() {
   }, [user, trip, paymentRequest?.status]);
 
   function agentChecks(path: string) {
-    if (path.includes('bids') && trip?.status !== 'awaiting_bid') return false;
+    if (path.includes('bids') && trip?.status !== 'awaiting-bid') return false;
     if (
       path.includes('view-payment-request') &&
-      trip?.status !== 'awaiting_bid' &&
+      trip?.status !== 'awaiting-bid' &&
       paymentRequest?.status !== 'completed'
     ) {
       return true;
@@ -76,7 +76,7 @@ export default function ViewTrip() {
     if (path.includes('payment')) return false;
     if (
       path.includes('terminal-delivery-order') &&
-      trip?.status === 'awaiting_bid'
+      trip?.status === 'awaiting-bid'
     ) {
       return false;
     }

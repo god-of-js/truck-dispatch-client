@@ -21,3 +21,10 @@ export const serviceBasedUserTypes = ['transporter', 'transportCompany'];
 export const clientBasedUserTypes = ['agent', 'company'];
 
 export const userTypes = [...serviceBasedUserTypes, ...clientBasedUserTypes];
+
+export const tripStatuses = [
+  'awaiting-bid',
+  'payment-complete',
+  'in-progress',
+  'completed',
+];

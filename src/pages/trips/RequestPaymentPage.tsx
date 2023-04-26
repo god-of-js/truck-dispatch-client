@@ -26,6 +26,7 @@ import RequestPaymentSchema from 'utils/validations/RequestPaymentSchema';
 import UiOverlay from 'ui/UiOverlay';
 import NotifyUserToAddAccount from 'components/profile/NotifyUserToAddAccount';
 import { RootState } from 'modules/index';
+import UiCard from 'ui/UiCard';
 
 export default function ViewTripRequestPayment() {
   const { tripId } = useParams();
@@ -90,22 +91,22 @@ export default function ViewTripRequestPayment() {
     }
   }, [paymentRequest]);
   return (
-    <>
-      <PageStyling>
+    <PageStyling>
+      <div className="main-content">
         {paymentRequest && paymentRequest?.status !== 'rejected' ? (
-          <>
+          <UiCard>
             <MessageWithImage
               title="Payment request has been received"
-              subtitle="We have received your payment request. We would validate your trip status and get back to you. It normally takes a couple minutes for it to be verified. To view the status of the payment, navigate to the transcations page or click the button below"
+              subtitle="Your payment request has been sent to the trip owner. Kindly reach out to him to place urgency on the request."
             />
             <div className="btn-container">
               <Link to="/payments">
                 <UiButton>View Payments</UiButton>
               </Link>
             </div>
-          </>
+          </UiCard>
         ) : (
-          <>
+          <UiCard>
             <h2>Request Payment</h2>
             <p>
               To request payment, upload A video showing the container on the
@@ -136,29 +137,36 @@ export default function ViewTripRequestPayment() {
                 </>
               )}
             </UiForm>
-          </>
+          </UiCard>
         )}
+      </div>
+      {paymentRequest?.status === 'rejected' && (
+        <div className="notification-box">
+          <UiCard>
+            <h2>Your proof of loading was rejected because:</h2>
+            {paymentRequest?.reasonForReject}
+          </UiCard>
+        </div>
+      )}
 
-        <UiOverlay isVisible={isNotifyUserToAddAccountVisible}>
-          <NotifyUserToAddAccount
-            onClose={() => {
-              setIsNotifyUserToAddAccountVisible(false);
-            }}
-          />
-        </UiOverlay>
-      </PageStyling>
-    </>
+      <UiOverlay isVisible={isNotifyUserToAddAccountVisible}>
+        <NotifyUserToAddAccount
+          onClose={() => {
+            setIsNotifyUserToAddAccountVisible(false);
+          }}
+        />
+      </UiOverlay>
+    </PageStyling>
   );
 }
 
 const PageStyling = styled.div`
-  background: #ffffff;
-  width: 90%;
-  margin: auto;
-  margin-top: ${pxToRem(24)};
-  border: 1px solid var(--color-gray-200);
-  padding: ${pxToRem(20)};
-  border-radius: ${pxToRem(8)};
+  padding-top: ${pxToRem(24)};
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-start;
+  align-items: center;
+  gap: ${pxToRem(16)};
 
   h2 {
     font-size: ${pxToRem(16)};
@@ -171,11 +179,34 @@ const PageStyling = styled.div`
     display: flex;
     justify-content: center;
   }
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    width: 70%;
+  .main-content {
+    width: 90%;
+    @media only screen and (max-width: ${sizes.tabletSmallWidth}) {
+      margin: auto;
+    }
+    @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+      width: 70%;
+    }
+    @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
+      width: 50%;
+    }
   }
-  @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
-    width: 50%;
+
+  .notification-box {
+    width: 90%;
+    max-width: ${pxToRem(500)};
+    @media only screen and (max-width: ${sizes.tabletSmallWidth}) {
+      margin: auto;
+    }
+    @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+      width: 35%;
+    }
+  }
+
+  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
   }
 `;
 

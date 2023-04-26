@@ -38,38 +38,38 @@ export default function LoginPage() {
   }
 
   return (
-      <Page>
-        <UiForm
-          schema={ForgotPasswordSchema}
-          formData={formData}
-          onSubmit={handleSubmit}
-        >
-          {({ errors }) => (
-            <>
-              <Heading>Lost your password?</Heading>
-              <p>
-                To receive a signin link, enter the email address linked to your
-                Truckdispatch account.
-              </p>
-              <Margin>
-                <UiInput
-                  label="Email*"
-                  value={formData.email}
-                  name="email"
-                  error={errors.email}
-                  onChange={handleChange}
-                />
-              </Margin>
-              <UiButton isFullWidth loading={loading}>
-                Send recovery link
-              </UiButton>
-              <LinkToRegisteration>
-                Remembered your password? <Link to="/auth/login">Sign In</Link>
-              </LinkToRegisteration>
-            </>
-          )}
-        </UiForm>
-      </Page>
+    <Page>
+      <UiForm
+        schema={ForgotPasswordSchema}
+        formData={formData}
+        onSubmit={handleSubmit}
+      >
+        {({ errors }) => (
+          <>
+            <Heading>Lost your password?</Heading>
+            <p>
+              To receive a signin link, enter the email address linked to your
+              Truckdispatch account.
+            </p>
+            <Margin>
+              <UiInput
+                label="Email*"
+                value={formData.email}
+                name="email"
+                error={errors.email}
+                onChange={handleChange}
+              />
+            </Margin>
+            <UiButton isFullWidth loading={loading}>
+              Send recovery link
+            </UiButton>
+            <LinkToRegisteration>
+              Remembered your password? <Link to="/auth/login">Sign In</Link>
+            </LinkToRegisteration>
+          </>
+        )}
+      </UiForm>
+    </Page>
   );
 }
 
