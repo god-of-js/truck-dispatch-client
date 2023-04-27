@@ -19,7 +19,7 @@ import ChatLogData from 'types/ChatLogData';
 import ChatLog from 'types/ChatLog';
 
 class ApiService {
-  createUser(userData: User) {
+  createUser(userData: Partial<User>) {
     return this.post<TokenVerificationData>('/auth/join', userData);
   }
 
@@ -40,7 +40,7 @@ class ApiService {
   }
 
   verifyPhone(data: VerifyPhoneData) {
-    return this.post('/auth/verify-phone', data);
+    return this.post<{ token: string }>('/auth/verify-phone', data);
   }
 
   verifyEmail(data: { token: string }) {
@@ -90,6 +90,7 @@ class ApiService {
   saveAccountNumber(accountDetails: BankDetails) {
     return this.post<User>('/user/bank-details', accountDetails);
   }
+
   updatePassword(data: { password: string }) {
     return this.post<User>('/user/update-password', data);
   }

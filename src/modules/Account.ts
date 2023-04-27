@@ -36,7 +36,7 @@ export const { setUser, setVerification } = accountSlice.actions;
 
 export default accountSlice.reducer;
 
-export function RegisterUser(AuthUser: User) {
+export function registerUser(AuthUser: Partial<User>) {
   return async () => {
     await Api.createUser(AuthUser).then((data) => {
       saveTokenVerificationInfo(data);
@@ -51,7 +51,7 @@ export function sendOTP(phone: string) {
     });
   };
 }
-export function VerifyOtp(pin: string) {
+export function verifyOtp(pin: string) {
   return async () => {
     const otpPinId = localStorage.getItem('otp-pin-id');
     const otpPhone = localStorage.getItem('otp-phone-number');
@@ -67,9 +67,10 @@ export function VerifyOtp(pin: string) {
       phone: otpPhone,
     };
     return Api.verifyPhone(data)
-      .then(() => {
+      .then((data) => {
         localStorage.removeItem('otp-pin-id');
         localStorage.removeItem('otp-phone-number');
+        saveUserSessionId(data.token);
       })
       .catch((err) => Promise.reject(err.data));
   };

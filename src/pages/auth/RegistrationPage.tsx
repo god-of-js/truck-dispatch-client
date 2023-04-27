@@ -12,16 +12,14 @@ import styled from 'styled-components';
 
 export default function RegistrationPage() {
   const { userType } = useParams();
+  const formattedUserType = userType?.toLowerCase();
   const navigate = useNavigate();
   const currentYear = new Date().getFullYear();
   const steps: Step[] = [
     {
-      title: 'Company Details',
-      detail: 'Provide the company name, address and registration details',
-    },
-    {
       title: 'Account handler details',
-      detail: 'Please provide your full name, email and phone number',
+      detail:
+        'Please provide full name, email and phone number of the account handler',
     },
     {
       title: 'Personal details',
@@ -32,18 +30,31 @@ export default function RegistrationPage() {
       detail: 'Please provide your full name, email and phone number',
     },
     {
+      title: 'Company Details',
+      detail: 'Provide the company name, address and registration details',
+    },
+    {
       title: 'Choose password',
       detail: 'Please provide your full name, email and phone number',
     },
   ].filter(({ title }) => {
-    if (userType?.includes('company') && title === 'Personal details') {
+    if (
+      formattedUserType?.includes('company') &&
+      title === 'Personal details'
+    ) {
       return false;
     }
 
-    if (!userType?.includes('company') && title === 'Company Details') {
+    if (
+      !formattedUserType?.includes('company') &&
+      title === 'Company Details'
+    ) {
       return false;
     }
-    if (!userType?.includes('company') && title === 'Account handler details') {
+    if (
+      !formattedUserType?.includes('company') &&
+      title === 'Account handler details'
+    ) {
       return false;
     }
 
@@ -74,12 +85,12 @@ export default function RegistrationPage() {
 
   return (
     <AuthLayoutStyling infoContent={infoContent}>
-      {currentStepTitle === 'Company Details' && (
-        <CompanyDetailsForm goToNext={goToNext} />
-      )}
       {(currentStepTitle === 'Account handler details' ||
         currentStepTitle === 'Personal details') && (
         <PersonalDetailsForm goToNext={goToNext} />
+      )}
+      {currentStepTitle === 'Company Details' && (
+        <CompanyDetailsForm goToNext={goToNext} />
       )}
       {currentStepTitle === 'Verify phone number' && (
         <VerifyPhoneForm goToNext={goToNext} />

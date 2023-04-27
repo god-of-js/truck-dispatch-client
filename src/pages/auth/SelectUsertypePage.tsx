@@ -18,7 +18,7 @@ export default function SelectUsertypePage() {
   }
   const userTypeData: UserType[] = [
     {
-      icons: ['Car', 'InfoCircle'],
+      icons: ['Car'],
       title: 'Transporter',
       text: 'Individual truck owner or driver',
       type: 'transporter',
@@ -33,7 +33,7 @@ export default function SelectUsertypePage() {
       icons: ['Car', 'Buildings'],
       title: 'Transport Company',
       text: 'Company with trucks',
-      type: 'transport_company',
+      type: 'transportCompany',
     },
     {
       icons: ['UserSquare', 'Buildings'],
@@ -64,7 +64,7 @@ export default function SelectUsertypePage() {
           {userTypeData.map((userType) => (
             <div
               className={`user-card-container ${
-                userType.type === userTypeRoute && 'active'
+                userType.type === userTypeRoute ? 'active' : ''
               }`}
             >
               <div
@@ -78,7 +78,7 @@ export default function SelectUsertypePage() {
               >
                 <div className="icons-container">
                   {userType.icons.map((icon) => (
-                    <UiIcon icon={icon} size="17" />
+                    <UiIcon key={icon} icon={icon} size="17" />
                   ))}
                 </div>
                 <h2>{userType.title}</h2>
@@ -206,47 +206,46 @@ const StyledUserTypeGrid = styled.div`
   margin-bottom: ${pxToRem(60)};
   .user-card-container {
     padding: ${pxToRem(1)};
+    height: fit-content;
     border-radius: ${pxToRem(8)};
+    .user-card {
+      border: 1px solid var(--color-gray);
+      border-radius: ${pxToRem(8)};
+      padding: ${pxToRem(12)};
+      cursor: pointer;
 
-    &:hover {
-      background: var(--color-primary);
-    }
-    &.active {
-      background: var(--color-primary);
-    }
-  }
-  .user-card {
-    border: 1px solid var(--color-gray);
-    border-radius: ${pxToRem(8)};
-    padding: ${pxToRem(12)};
-    cursor: pointer;
+      .icons-container {
+        display: flex;
+        gap: ${pxToRem(5)};
+        margin-bottom: ${pxToRem(12)};
+        svg {
+          fill: var(--color-neutralBlack);
+        }
+      }
 
-    .icons-container {
-      display: flex;
-      gap: ${pxToRem(5)};
-      margin-bottom: ${pxToRem(12)};
-      svg {
-        fill: var(--color-neutralBlack);
+      h2 {
+        color: var(--color-neutralBlack);
+        font-size: ${pxToRem(16)};
+        font-family: 'thiccboi-regular';
+        font-weight: 600;
+        margin-bottom: ${pxToRem(8)};
+      }
+      p {
+        color: var(--color-gray-80);
+        font-size: ${pxToRem(14)};
       }
     }
-
-    h2 {
-      color: var(--color-neutralBlack);
-      font-size: ${pxToRem(16)};
-      font-family: 'thiccboi-regular';
-      font-weight: 600;
-      margin-bottom: ${pxToRem(8)};
-    }
-    p {
-      color: var(--color-gray-80);
-      font-size: ${pxToRem(14)};
-    }
-
     &:hover {
-      ${cardActiveState}
+      background: var(--color-primary);
+      .user-card {
+        ${cardActiveState}
+      }
     }
     &.active {
-      ${cardActiveState}
+      background: var(--color-primary);
+      .user-card {
+        ${cardActiveState}
+      }
     }
   }
 

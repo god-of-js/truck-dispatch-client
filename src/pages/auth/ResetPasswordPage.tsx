@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import UiForm from 'ui/UiForm';
 import UiInput from 'ui/UiInput';
 import UiButton from 'ui/UiButton';
-import UiIcon from 'ui/UiIcon';
 import styled from 'styled-components';
 import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
 

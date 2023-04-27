@@ -1,7 +1,15 @@
 import styled from 'styled-components';
 import sizes from 'utils/sizes';
+interface Props {
+  inverted?: boolean;
+  children: React.ReactNode;
+}
 
-const StyledAuthContent = styled.div`
+export default function StyledAuthContent({ children, inverted }: Props) {
+  return <Styling inverted={inverted}>{children}</Styling>;
+}
+
+const Styling = styled.div`
   * {
     margin: 0;
   }
@@ -44,19 +52,20 @@ const StyledAuthContent = styled.div`
       gap: ${pxToRem(24)};
     }
   }
-  @media (min-width: 580px) {
+  @media (min-width: ${sizes.mobile}) {
     .form-container {
       width: 90%;
     }
   }
-  @media (min-width: 700px) {
+  @media (min-width: ${sizes.mobileLargeWidth}) {
     .form-container {
       width: 80%;
     }
   }
   @media (min-width: ${sizes.tablet}) {
     width: 60%;
-    margin-left: auto;
+    margin-left: ${({ inverted }: { inverted?: boolean }) =>
+      inverted ? '' : 'auto'};
     header {
       margin-bottom: ${pxToRem(48)};
 
@@ -71,12 +80,10 @@ const StyledAuthContent = styled.div`
       margin: 0 auto;
     }
   }
-  @media (min-width: ${sizes.tabletLargeWidth}) {
+  /* @media (min-width: ${sizes.tabletLargeWidth}) {
     padding-bottom: ${pxToRem(50)};
     .form-container {
       width: 50%;
     }
-  }
+  } */
 `;
-
-export default StyledAuthContent;

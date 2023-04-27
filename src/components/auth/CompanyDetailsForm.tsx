@@ -51,14 +51,14 @@ export default function CompanyDetailsForm({ goToNext }: Props) {
   ];
 
   function alternativeUserType() {
-    if (userType === 'transport_company') {
+    if (userType === 'transportCompany') {
       return 'transporter';
     }
     return 'agent';
   }
 
   function alertMessage() {
-    if (userType === 'transport_company') {
+    if (userType === 'transportCompany') {
       return (
         <>
           a <b>transporter</b>
@@ -74,12 +74,12 @@ export default function CompanyDetailsForm({ goToNext }: Props) {
 
   return (
     <StyledAuthContent>
-      <header>
-        <UiIcon icon="Buildings" size="43" />
-        <h1>Company Details</h1>
-        <p>Please provide the correct company details.</p>
-      </header>
       <div className="form-container">
+        <header>
+          <UiIcon icon="Buildings" size="43" />
+          <h1>Company Details</h1>
+          <p>Please provide the correct company details.</p>
+        </header>
         <UiForm formData={formData} onSubmit={onSubmit}>
           {({ errors }) => (
             <div className="form-container__inner">

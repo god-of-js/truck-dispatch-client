@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useImperativeHandle } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
 import StyledAuthContent from './StyledAuthContent';
 import { toAnyAction } from 'utils/helpers';
-import { sendOTP, VerifyOtp } from 'modules/Account';
+import { sendOTP, verifyOtp } from 'modules/Account';
 import { Toast } from 'utils/toast';
 import VerifyPhoneSchema from 'utils/validations/VerifyPhoneSchema';
 
@@ -20,6 +20,7 @@ interface Props {
 export default function VerifyPhoneForm({ goToNext }: Props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const inputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
     pin: '',
   });
@@ -27,6 +28,7 @@ export default function VerifyPhoneForm({ goToNext }: Props) {
   const [count, setCount] = useState(59);
   const [loading, setLoading] = useState(false);
   const [sendOTPLoading, setSendOTPLoading] = useState(false);
+  const fornmattedCount = count < 10 ? `0${count}` : `${count}`;
 
   function setPin({ value }: { name: string; value: string | null }) {
     setFormData({ pin: value! });
@@ -35,13 +37,11 @@ export default function VerifyPhoneForm({ goToNext }: Props) {
   function verifyPhoneNumber() {
     try {
       setLoading(true);
-      dispatch(toAnyAction(VerifyOtp(formData.pin)))
+      dispatch(toAnyAction(verifyOtp(formData.pin)))
         .then(() => {
-          Toast.success({ msg: 'Phone number verification was successful' });
-          navigate('/auth/login');
+          goToNext();
         })
         .catch((err: Error) => {
-          console.log(err.message);
           if (
             err.message ===
             'Something went wrong. Kindly request a new OTP for verification'
@@ -86,7 +86,9 @@ export default function VerifyPhoneForm({ goToNext }: Props) {
     };
   }, [count]);
 
-  const fornmattedCount = count < 10 ? `0${count}` : `${count}`;
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   return (
     <StyledAuthContent>
@@ -99,13 +101,19 @@ export default function VerifyPhoneForm({ goToNext }: Props) {
             provided
           </p>
         </header>
-        <UiForm formData={formData} onSubmit={verifyPhoneNumber}>
+        <UiForm
+          formData={formData}
+          schema={VerifyPhoneSchema}
+          onSubmit={verifyPhoneNumber}
+        >
           {({ errors }) => (
             <>
               <UiInput
                 label="Enter OTP"
                 type="text"
+                inputRef={inputRef}
                 value={formData.pin}
+                error={errors.pin}
                 name="OTP"
                 onChange={setPin}
               />
@@ -114,13 +122,19 @@ export default function VerifyPhoneForm({ goToNext }: Props) {
                 <UiButton
                   size="s"
                   variant="secondary"
+                  loading={sendOTPLoading}
                   disabled={!canResendCode}
                   onClick={requestNewCode}
                 >
                   {canResendCode ? `Resend` : `Resend in 00:${fornmattedCount}`}
                 </UiButton>
               </StyledResendCode>
-              <UiButton size="large" variant="primary" isFullWidth>
+              <UiButton
+                loading={loading}
+                size="large"
+                variant="primary"
+                isFullWidth
+              >
                 Continue
               </UiButton>
             </>

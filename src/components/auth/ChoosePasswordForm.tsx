@@ -5,24 +5,41 @@ import UiInput from 'ui/UiInput';
 import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
 import StyledAuthContent from './StyledAuthContent';
+import { useDispatch } from 'react-redux';
+import { toAnyAction } from 'utils/helpers';
+import { updatePassword } from 'modules/Account';
+import ChangePasswordSchema from 'utils/validations/ChangePasswordSchema';
+import { useNavigate } from 'react-router-dom';
+import { removeUserSessionId } from 'utils/userSession';
 
 interface Props {
   goToNext: () => void;
 }
 
 export default function ChoosePasswordForm({ goToNext }: Props) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     password: '',
-    confirmPassword: '',
+    cPassword: '',
   });
+  const [loading, setLoading] = useState(false);
   function handleChange(event: { name: string; value: string | null }) {
     setFormData({
       ...formData,
       [event.name]: event.value,
     });
   }
-  function onSubmit() {
-    goToNext();
+  function setPassword() {
+    setLoading(true);
+    dispatch(toAnyAction(updatePassword({ password: formData.password })))
+      .then(() => {
+        removeUserSessionId();
+        navigate('/auth/login');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   return (
@@ -33,7 +50,11 @@ export default function ChoosePasswordForm({ goToNext }: Props) {
           <h1>Choose Password</h1>
           <p>Choose a strong password with at least 8 characters or more</p>
         </header>
-        <UiForm formData={formData} onSubmit={onSubmit}>
+        <UiForm
+          formData={formData}
+          schema={ChangePasswordSchema}
+          onSubmit={setPassword}
+        >
           {({ errors }) => (
             <div className="form-container__inner">
               <UiInput
@@ -41,6 +62,7 @@ export default function ChoosePasswordForm({ goToNext }: Props) {
                 placeholder="Enter your password"
                 type="password"
                 value={formData.password}
+                error={errors.password}
                 name="password"
                 onChange={handleChange}
               />
@@ -48,8 +70,9 @@ export default function ChoosePasswordForm({ goToNext }: Props) {
                 label="Confirm Password*"
                 placeholder="Confirm password"
                 type="password"
-                value={formData.confirmPassword}
-                name="confirmPassword"
+                value={formData.cPassword}
+                error={errors.cPassword}
+                name="cPassword"
                 onChange={handleChange}
               />
               <UiButton size="large" variant="primary" isFullWidth>

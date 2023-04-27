@@ -12,6 +12,7 @@ import UiForm from 'ui/UiForm';
 import { toAnyAction } from 'utils/helpers';
 import loginSchema from 'utils/validations/loginSchema';
 import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
+import StyledAuthContent from 'components/auth/StyledAuthContent';
 
 export default function LoginPage() {
   const dispatch = useDispatch();
@@ -51,11 +52,13 @@ export default function LoginPage() {
   }
 
   return (
-    <AuthLayoutStyling invert>
-      <StyledLogin>
-        <h1>Welcome back,</h1>
-        <p>Sign in to continue to your account</p>
+    <AuthLayoutStyling img invert>
+      <StyledAuthContent inverted>
         <div className="form-container">
+          <header>
+            <h1>Welcome back,</h1>
+            <p>Sign in to continue to your account</p>
+          </header>
           <UiForm
             schema={loginSchema}
             formData={formData}
@@ -71,7 +74,6 @@ export default function LoginPage() {
                   error={errors.email}
                   onChange={handleChange}
                 />
-                <Margin />
                 <UiInput
                   type="password"
                   placeholder="Enter your password"
@@ -104,7 +106,7 @@ export default function LoginPage() {
             )}
           </UiForm>
         </div>
-      </StyledLogin>
+      </StyledAuthContent>
     </AuthLayoutStyling>
   );
 }
