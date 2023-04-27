@@ -58,7 +58,6 @@ export default function DashboardSidebar() {
       name: 'Settings',
       iconName: 'Settings',
     },
- 
   ];
 
   const agentRoutes: Route[] = [
@@ -81,19 +80,35 @@ export default function DashboardSidebar() {
     return appLocation.pathname.includes(route);
   }
 
+  // toggle function
+  const [showNames, setShowNames] = useState(true);
+
+  const toggleShowNames = () => {
+    setShowNames(!showNames);
+  };
+
   return (
     <Sidebar>
       <div className="sidebar__inner">
         <Link to="/my-trips">
+
           <LogoContainer>
             <TDLogo src={TruckDispatchLogo} alt="truck-dispatch" />
           </LogoContainer>
+          <ToggleContainer onClick={toggleShowNames} className="toggle-button">
+            {showNames ? <UiIcon icon="ArrowCircleLeft" size="20" /> : 'X'}
+          </ToggleContainer>
+
         </Link>
+
+
         <TabList>
           {routes.map((route, index) => (
             <Link to={route.path} key={index}>
               <Tab isActive={isRouteActive(route.path)}>
                 <UiIcon icon={route.iconName} size="24" />
+
+                <UiIconName>{route.iconName}</UiIconName>
               </Tab>
             </Link>
           ))}
@@ -104,15 +119,17 @@ export default function DashboardSidebar() {
                 {unreadChat.length !== 0 && (
                   <MessageCount>{unreadChat.length}</MessageCount>
                 )}
+                <p className="chat-name">Chat</p>
               </div>
             </Tab>
           </Link>
         </TabList>
 
+
         <BottomActions>
           <UserContainer onClick={() => logOutUser()}>
             <UserContainerInner>
-            <UiIcon icon="User" size="20" />
+              <UiIcon icon="User" size="20" />
             </UserContainerInner>
           </UserContainer>
           <LogOutContainer onClick={() => logOutUser()}>
@@ -146,7 +163,7 @@ const Sidebar = styled.nav`
     border-right: ${pxToRem(1)} solid var(--color-gray-200);
   }
   @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
-    width: 5%;
+    width: 15%;
   }
 `;
 
@@ -158,10 +175,39 @@ const LogoContainer = styled.div`
   }
 `;
 
+const ToggleContainer = styled.div`
+  position: absolute;
+  background-color: white;
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  right: 0px;
+  top: 0px;
+
+  margin-top: ${pxToRem(20)};
+  margin-right: -${pxToRem(15)};
+
+  color: var(--color-primary-10);
+  font-weight: 600;
+
+  @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
+    display: none;
+  }
+`;
+
 const TDLogo = styled.img`
   width: ${pxToRem(100)};
   margin: auto;
   margin: 0 ${pxToRem(-12)};
+`;
+
+const UiIconName = styled.ul`
+  padding-left: 9.04px;
 `;
 
 const TabList = styled.ul`
@@ -176,6 +222,54 @@ const TabList = styled.ul`
   }
 `;
 
+const Tab = styled.li`
+  list-style-type: none;
+  padding: ${pxToRem(12)} ${pxToRem(20)};
+  font-size: ${pxToRem(14)};
+  color: ${({ isActive }: { isActive: boolean }) =>
+    isActive ? 'var(--color-primary)' : 'var(--color-gray-500)'};
+  font-weight: 600;
+  opacity: 0.8;
+  display: flex;
+
+  align-items: center;
+  justify-items: left;
+
+  .chat-icon-container {
+    position: relative;
+    width: fit-content;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+
+    .chat-name {
+      padding-left: 9.04px;
+    }
+  }
+
+  &:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background-color: var(--color-primary-10);
+  }
+
+  @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
+    border-bottom: none;
+    padding: ${pxToRem(2)} ${pxToRem(2)};
+    border-bottom: ${pxToRem(4)} solid
+      ${({ isActive }: { isActive: boolean }) =>
+        isActive ? 'var(--color-primary)' : 'transparent'};
+    margin: ${pxToRem(8)} 0;
+  }
+
+  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+    border-bottom: none;
+    border-left: ${pxToRem(4)} solid
+      ${({ isActive }: { isActive: boolean }) =>
+        isActive ? 'var(--color-primary)' : 'transparent'};
+    margin: ${pxToRem(8)} 0;
+  }
+`;
 const LogOutContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -196,52 +290,19 @@ const UserContainer = styled.div`
   width: 100%;
   font-weight: 600;
   padding-bottom: 5px;
-
 `;
 
 const UserContainerInner = styled.div`
-list-style-type: none;
-height: 40px;
-width: 40px;
+  list-style-type: none;
+  height: 40px;
+  width: 40px;
   background: var(--color-gray-50);
   border-radius: 50%;
   font-size: ${pxToRem(14)};
   opacity: 0.8;
   display: flex;
   justify-content: center;
-  align-items: center;`
-
-const Tab = styled.li`
-  list-style-type: none;
-  padding: ${pxToRem(12)} ${pxToRem(20)};
-  font-size: ${pxToRem(14)};
-  color: ${({ isActive }: { isActive: boolean }) =>
-    isActive ? 'var(--color-primary)' : 'var(--color-gray-500)'};
-  font-weight: 600;
-  opacity: 0.8;
-  display: flex;
-  
   align-items: center;
-  justify-content: center;
-
-  .chat-icon-container {
-    position: relative;
-    width: fit-content;
-  }
-
-  &:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
-    background-color: var(--color-primary-10);
-  }
-
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    border-bottom: none;
-    border-left: ${pxToRem(4)} solid
-      ${({ isActive }: { isActive: boolean }) =>
-        isActive ? 'var(--color-primary)' : 'transparent'};
-    margin: ${pxToRem(8)} 0;
-  }
 `;
 
 const BottomActions = styled.div`

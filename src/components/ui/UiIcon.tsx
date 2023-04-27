@@ -27,6 +27,7 @@ import {
   UsersThree,
   X,
 } from 'phosphor-react';
+import ArrowCircleLeft from './icons/ArrowCircleLeft';
 import Buildings from './icons/Building';
 import Car from './icons/Car';
 import Check from './icons/Check';
@@ -51,6 +52,7 @@ import UserSquare from './icons/UserSquare';
 
 // These icons should be arranged alphabetically for easy sorting
 const icons = {
+  ArrowCircleLeft: <ArrowCircleLeft/>,
   ArrowLeft: <ArrowLeft />,
   ArrowRight: <ArrowRight />,
   ArrowUpRight: <ArrowUpRight />,
