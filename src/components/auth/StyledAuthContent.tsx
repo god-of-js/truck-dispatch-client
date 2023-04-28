@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import sizes from 'utils/sizes';
 interface Props {
+  /** The inverted prop means the form is on the left instead of on the right which is the normal flow. */
   inverted?: boolean;
   children: React.ReactNode;
 }
@@ -13,9 +14,11 @@ const Styling = styled.div`
   * {
     margin: 0;
   }
+  height: 100%;
   padding-bottom: ${pxToRem(30)};
   header {
-    text-align: center;
+    ${({ inverted }: { inverted?: boolean }) =>
+      !inverted && `text-align: center;`};
     margin-bottom: ${pxToRem(40)};
     span {
       fill: var(--color-neutralBlack);
@@ -36,7 +39,11 @@ const Styling = styled.div`
   }
   .form-container {
     width: 100%;
-    margin: 0 auto;
+    height: 100%;
+    margin: auto;
+    position: relative;
+    ${({ inverted }: { inverted?: boolean }) =>
+      inverted ? '' : 'margin: 0 auto'};
     max-width: ${pxToRem(400)};
     button {
       margin-top: ${pxToRem(24)};
@@ -51,10 +58,52 @@ const Styling = styled.div`
       flex-direction: column;
       gap: ${pxToRem(24)};
     }
+    .bottom-actions {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      gap: ${pxToRem(12)};
+
+      width: 100%;
+      bottom: 0;
+      left: 0;
+
+      p {
+        height: ${pxToRem(46)};
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: ${pxToRem(4)};
+      }
+    }
+
+    .hidden-in-mobile {
+      display: none;
+    }
+
+    .visible-in-mobile {
+      display: block;
+    }
   }
-  @media (min-width: ${sizes.mobile}) {
+  @media screen and (min-width: ${sizes.mobile}) {
     .form-container {
       width: 90%;
+      .hidden-in-mobile {
+        display: block;
+      }
+      .visible-in-mobile {
+        display: none;
+      }
+      .bottom-actions {
+        p {
+          justify-content: flex-start;
+        }
+      }
+    }
+  }
+  @media screen and (min-width: ${sizes.tablet}) {
+    .form-container {
+      margin: inherit;
     }
   }
   @media (min-width: ${sizes.mobileLargeWidth}) {
@@ -63,7 +112,8 @@ const Styling = styled.div`
     }
   }
   @media (min-width: ${sizes.tablet}) {
-    width: 60%;
+    width: ${({ inverted }: { inverted?: boolean }) =>
+      inverted ? '100%' : '60%'};
     margin-left: ${({ inverted }: { inverted?: boolean }) =>
       inverted ? '' : 'auto'};
     header {
@@ -77,13 +127,15 @@ const Styling = styled.div`
     }
     .form-container {
       width: 100%;
-      margin: 0 auto;
+      ${({ inverted }: { inverted?: boolean }) =>
+        inverted ? '' : 'margin: 0 auto'};
     }
   }
-  /* @media (min-width: ${sizes.tabletLargeWidth}) {
+  @media (min-width: ${sizes.tabletLargeWidth}) {
     padding-bottom: ${pxToRem(50)};
     .form-container {
-      width: 50%;
+      width: ${({ inverted }: { inverted?: boolean }) =>
+        inverted ? '100%' : '50%'};
     }
-  } */
+  }
 `;

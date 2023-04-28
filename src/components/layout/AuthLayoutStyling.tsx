@@ -6,17 +6,27 @@ import sizes from 'utils/sizes';
 interface Props {
   children: React.ReactNode;
   infoContent?: React.ReactNode;
+  /** The invert prop takes the info content to the right and the main content which houses the forms to the left e.g LoginPage */
   invert?: boolean;
+  /** The img prop says we want to set an image as background on the infoContent */
   img?: boolean;
+  /** The isInvertedForm informs us that this is inverted but with a form instead of cards. This is used to add fixed widths as the current design does not
+   * Make use of fixed widths e.g LoginPage */
+  isInvertedForm?: boolean;
 }
 export default function AuthLayoutStyling({
   children,
   infoContent,
   invert,
   img,
+  isInvertedForm,
 }: Props) {
   return (
-    <LayoutStyling invert={invert!} hasImage={!!img}>
+    <LayoutStyling
+      invert={invert!}
+      isInvertedForm={isInvertedForm}
+      hasImage={!!img}
+    >
       <div className="info-content">
         <div className="info-content__inner">
           {!invert && (
@@ -47,11 +57,14 @@ export default function AuthLayoutStyling({
 interface StyleProps {
   invert?: boolean;
   hasImage?: boolean;
+  isInvertedForm?: boolean;
 }
 const LayoutStyling = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${pxToRem(40)};
+  height: 100%;
+
   .logo {
     display: none;
   }
@@ -64,17 +77,34 @@ const LayoutStyling = styled.div`
       display:block;
       padding: ${pxToRem(16)};
       `}
-    &__inner {
-      .copyright {
-        display: none;
-      }
-    }
   }
   .main-content-container {
-    overflow-y: hidden;
+    height: 100%;
     .main-content {
       margin: auto;
       width: 90%;
+      height: 100%;
+      &__inner {
+        height: 95%;
+
+        &--not-inverted {
+          height: 100%;
+        }
+
+        /* For inverted forms where the form is on the left instead of right */
+        ${({ isInvertedForm, invert }: StyleProps) =>
+          invert &&
+          `
+            @media screen and (min-width: ${sizes.tabletLargeWidth}) {
+              ${isInvertedForm && 'width: 100%;'}
+              &--not-inverted {
+                width: 100%;
+                height: 75%;
+                padding-bottom: 10%;
+              }
+            }
+          `}
+      }
     }
   }
 
@@ -88,6 +118,7 @@ const LayoutStyling = styled.div`
       position: absolute;
       top: 0;
     }
+
     .main-content-container {
       width: 100%;
       .main-content {
@@ -97,19 +128,25 @@ const LayoutStyling = styled.div`
           invert ? '' : 'flex-end'};
         padding-top: ${({ invert }: StyleProps) =>
           invert ? '5%' : pxToRem(105)};
-        position: relative;
         height: 100%;
 
         &__inner {
           height: 100%;
           margin: initial;
+          &--not-inverted {
+            position: relative;
+            height: 75%;
+          }
 
           ${({ invert }: StyleProps) =>
             invert &&
-            `display: flex;
-          align-items: flex-end;
-          justify-content: flex-end; 
+            `
+              display: flex;
+              align-items: center;
+              justify-content: flex-end; 
           `}
+
+          /* For forms on the right. */
           ${({ invert }: StyleProps) =>
             !invert &&
             `
@@ -138,10 +175,6 @@ const LayoutStyling = styled.div`
         img {
           width: 100%;
           height: 100%;
-        }
-        .copyright {
-          display: block;
-          color: var(--color-gray-80);
         }
       }
     }

@@ -9,6 +9,7 @@ import VerifyPhoneForm from '../../components/auth/VerifyPhoneForm';
 import ChoosePasswordForm from 'components/auth/ChoosePasswordForm';
 import { userTypes } from 'utils/constants';
 import styled from 'styled-components';
+import sizes from 'utils/sizes';
 
 export default function RegistrationPage() {
   const { userType } = useParams();
@@ -109,5 +110,10 @@ const InfoContentContainer = styled.div`
   .copyright {
     position: absolute;
     bottom: 0;
+    display: none;
+
+    @media screen and (min-width: ${sizes.tablet}) {
+      display: block;
+    }
   }
 `;

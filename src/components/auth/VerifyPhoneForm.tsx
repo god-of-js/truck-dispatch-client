@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useImperativeHandle } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -46,7 +46,9 @@ export default function VerifyPhoneForm({ goToNext }: Props) {
             err.message ===
             'Something went wrong. Kindly request a new OTP for verification'
           ) {
-            navigate('/auth/verify-phone/request-code');
+            Toast.error({
+              msg: 'Something went wrong, kindly log in to continue the process.',
+            });
           }
         })
         .finally(() => {

@@ -54,11 +54,13 @@ export default function SelectUsertypePage() {
           <p>Welcome to TruckDispatch</p>
           <UiIcon icon="MagicStar" />
         </WelcomeMessageTag>
-        <h1>Deliver and receive your cargo with ease</h1>
-        <p className="info-text">
-          To continue, choose a user type that best describes you, or what you
-          do
-        </p>
+        <header>
+          <h1>Deliver and receive your cargo with ease</h1>
+          <p className="info-text">
+            To continue, choose a user type that best describes you, or what you
+            do
+          </p>
+        </header>
 
         <StyledUserTypeGrid>
           {userTypeData.map((userType) => (
@@ -66,6 +68,7 @@ export default function SelectUsertypePage() {
               className={`user-card-container ${
                 userType.type === userTypeRoute ? 'active' : ''
               }`}
+              key={userType.title}
             >
               <div
                 key={userType.title}
@@ -96,7 +99,7 @@ export default function SelectUsertypePage() {
         >
           Get Started
         </UiButton>
-        <p>
+        <p className="bottom-container">
           Already have an account? <Link to="/auth/login">Sign In</Link>
         </p>
       </SelectUserTypeStyling>
@@ -104,10 +107,12 @@ export default function SelectUsertypePage() {
   );
 }
 
-const SelectUserTypeStyling = styled.section`
+const SelectUserTypeStyling = styled.div`
   * {
     margin: 0;
   }
+  height: 100%;
+  position: relative;
   width: 100%;
   p {
     color: var(--color-gray-80);
@@ -130,8 +135,13 @@ const SelectUserTypeStyling = styled.section`
   button {
     margin-bottom: ${pxToRem(80)};
   }
+  .bottom-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
 
-  @media (min-width: 530px) {
+  @media (min-width: ${sizes.mobile}) {
     h1 {
       width: 80%;
     }
@@ -139,14 +149,14 @@ const SelectUserTypeStyling = styled.section`
       width: 85%;
     }
   }
-  @media (min-width: 950px) {
+  @media (min-width: ${sizes.tablet}) {
     width: 70%;
     button {
       width: 45%;
     }
   }
 
-  @media (min-width: 1330px) {
+  @media (min-width: ${sizes.laptopWidth}) {
     width: 65%;
     h1 {
       font-size: ${pxToRem(42)};

@@ -13,6 +13,7 @@ import { toAnyAction } from 'utils/helpers';
 import loginSchema from 'utils/validations/loginSchema';
 import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
 import StyledAuthContent from 'components/auth/StyledAuthContent';
+import sizes from 'utils/sizes';
 
 export default function LoginPage() {
   const dispatch = useDispatch();
@@ -52,12 +53,12 @@ export default function LoginPage() {
   }
 
   return (
-    <AuthLayoutStyling img invert>
+    <AuthLayoutStyling img invert isInvertedForm>
       <StyledAuthContent inverted>
         <div className="form-container">
           <header>
             <h1>Welcome back,</h1>
-            <p>Sign in to continue to your account</p>
+            <p className="info-text">Sign in to continue to your account</p>
           </header>
           <UiForm
             schema={loginSchema}
@@ -65,7 +66,7 @@ export default function LoginPage() {
             onSubmit={handleSubmit}
           >
             {({ errors }) => (
-              <>
+              <div className="form-container__inner">
                 <UiInput
                   label="Email Adress*"
                   placeholder="Enter your email adress"
@@ -83,26 +84,38 @@ export default function LoginPage() {
                   error={errors.password}
                   onChange={handleChange}
                 />
-                <div className="forgot-password">
+                <p>
+                  Forgot Password?{' '}
+                  <Link to="/auth/forgot-password">Reset Password</Link>{' '}
+                </p>
+                <div className="hidden-in-mobile">
+                  <UiButton
+                    isFullWidth
+                    loading={loading}
+                    size="large"
+                    variant="primary"
+                  >
+                    Sign In
+                  </UiButton>
+                </div>
+
+                <div className="bottom-actions">
+                  <div className="visible-in-mobile">
+                    <UiButton
+                      isFullWidth
+                      loading={loading}
+                      size="large"
+                      variant="primary"
+                    >
+                      Sign In
+                    </UiButton>
+                  </div>
                   <p>
-                    Forgot Password?{' '}
-                    <Link to="/auth/forgot-password">Reset Password</Link>{' '}
+                    <span>New to TruckDispatch?</span>{' '}
+                    <Link to="/auth/join">Sign Up</Link>
                   </p>
                 </div>
-                <UiButton
-                  isFullWidth
-                  loading={loading}
-                  size="large"
-                  variant="primary"
-                >
-                  Sign In
-                </UiButton>
-                <div className="sign-up">
-                  <p>
-                    New to TruckDispatch? <Link to="/auth/join">Sign Up</Link>{' '}
-                  </p>
-                </div>
-              </>
+              </div>
             )}
           </UiForm>
         </div>
@@ -110,57 +123,3 @@ export default function LoginPage() {
     </AuthLayoutStyling>
   );
 }
-
-const StyledLogin = styled.div`
-  * {
-    margin: 0;
-  }
-  h1 {
-    font-size: ${pxToRem(32)};
-    color: var(--color-neutralBlack);
-    margin-bottom: ${pxToRem(16)};
-    line-height: ${pxToRem(54)};
-  }
-  & > p {
-    margin-bottom: ${pxToRem(32)};
-  }
-  p {
-    font-weight: 400;
-    color: var(--color-gray-80);
-    font-family: 'thiccboi-regular';
-    font-size: ${pxToRem(16)};
-    line-height: ${pxToRem(24)};
-  }
-  .forgot-password {
-    margin-top: ${pxToRem(100)};
-  }
-  button {
-    margin-top: ${pxToRem(48)};
-  }
-
-  .sign-up {
-    margin-top: ${pxToRem(36)};
-    text-align: center;
-  }
-  @media (min-width: 900px) {
-    .form-container {
-      max-width: ${pxToRem(450)};
-    }
-    h1 {
-      font-size: ${pxToRem(48)};
-    }
-    & > p {
-      margin-bottom: ${pxToRem(48)};
-    }
-    .forgot-password {
-      margin-top: ${pxToRem(24)};
-    }
-    .sign-up {
-      margin-top: ${pxToRem(60)};
-      text-align: initial;
-    }
-  }
-`;
-const Margin = styled.div`
-  margin-bottom: ${pxToRem(24)};
-`;
