@@ -28,7 +28,7 @@ export default function ForgotPasswordPage() {
     });
   }
 
-  function handleSubmit() {
+  function requestRecoveryLink() {
     setLoading(true);
     dispatch(toAnyAction(requestForgotPasswordLink(formData)))
       .then(() => {
@@ -40,39 +40,36 @@ export default function ForgotPasswordPage() {
   }
 
   const actionButtons = (
-    <div className="button-flex">
+    <div className="duo-button-container no-btn-margin-top">
       <Link to="/auth/login">
         <UiButton size="large" variant="secondary" isFullWidth>
           <UiIcon icon="ArrowLeft" />
           Back to sign in
         </UiButton>
       </Link>
-      <UiButton
-        size="large"
-        isFullWidth
-        loading={loading}
-        onClick={() => {}}
-      >
-        RESET
+      <UiButton size="large" isFullWidth loading={loading}>
+        Send recovery link
       </UiButton>
     </div>
   );
 
   return (
-    <AuthLayoutStyling invert img>
+    <AuthLayoutStyling img invert isInvertedForm>
       <StyledAuthContent inverted>
         <div className="form-container">
           <header>
             <h1>Forgot password?</h1>
-            <p>No worries, we’ll send you reset instructions</p>
+            <p className="info-text">
+              No worries, we’ll send you reset instructions
+            </p>
           </header>
           <UiForm
-            formData={formData}
             schema={ForgotPasswordSchema}
-            onSubmit={handleSubmit}
+            formData={formData}
+            onSubmit={requestRecoveryLink}
           >
             {({ errors }) => (
-              <>
+              <div className="form-container__inner">
                 <UiInput
                   label="Email Adress*"
                   placeholder="Enter your email adress"
@@ -81,14 +78,16 @@ export default function ForgotPasswordPage() {
                   error={errors.email}
                   onChange={handleChange}
                 />
-                <div>{actionButtons}</div>
+                <div className="hidden-in-mobile">{actionButtons}</div>
+
                 <div className="bottom-actions">
-                  <div>{actionButtons}</div>
-                  <p>
-                    New to TruckDispatch? <Link to="/auth/join">Sign Up</Link>{' '}
+                  <div className="visible-in-mobile">{actionButtons}</div>
+                  <p id="hidden-in-mobile">
+                    <span>New to TruckDispatch?</span>{' '}
+                    <Link to="/auth/join">Sign Up</Link>
                   </p>
                 </div>
-              </>
+              </div>
             )}
           </UiForm>
         </div>

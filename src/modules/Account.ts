@@ -4,7 +4,10 @@ import Api from 'Api';
 import User from '../types/User';
 import BankAccount from 'types/BankDetails';
 import { saveTokenVerificationInfo } from 'utils/helpers';
-import { saveAuthSessionId, saveUserSessionId } from 'utils/localStorageMethods';
+import {
+  saveAuthSessionId,
+  saveUserSessionId,
+} from 'utils/localStorageMethods';
 
 export interface AccountState {
   user: User | null;

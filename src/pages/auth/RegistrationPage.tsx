@@ -10,7 +10,11 @@ import ChoosePasswordForm from 'components/auth/ChoosePasswordForm';
 import { userTypes } from 'utils/constants';
 import styled from 'styled-components';
 import sizes from 'utils/sizes';
-import { getAuthSessionId, getPresentAuthStage, savePresentAuthStage } from 'utils/localStorageMethods';
+import {
+  getAuthSessionId,
+  getPresentAuthStage,
+  savePresentAuthStage,
+} from 'utils/localStorageMethods';
 
 export default function RegistrationPage() {
   const { userType } = useParams();

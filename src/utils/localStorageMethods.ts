@@ -20,11 +20,12 @@ export function getAuthSessionId() {
 }
 
 export function savePresentAuthStage(presentAuthStage: string) {
-  localStorage.setItem('present-auth-stage', presentAuthStage)
+  localStorage.setItem('present-auth-stage', presentAuthStage);
 }
 
 export function getPresentAuthStage() {
   return localStorage.getItem('present-auth-stage');
 }
 export function removePresentAuthStage() {
-  localStorage.removeItem('present-auth-stage');}
+  localStorage.removeItem('present-auth-stage');
+}

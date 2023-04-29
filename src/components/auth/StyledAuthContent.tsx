@@ -64,9 +64,10 @@ const Styling = styled.div`
       gap: ${pxToRem(24)};
     }
 
-    .button-flex {
+    .duo-button-container {
       display: flex;
       flex-direction: column;
+      margin-top: ${pxToRem(24)};
       gap: ${pxToRem(12)};
     }
     .bottom-actions {
@@ -88,7 +89,8 @@ const Styling = styled.div`
       }
     }
 
-    .hidden-in-mobile {
+    .hidden-in-mobile,
+    #hidden-in-mobile {
       display: none;
     }
 
@@ -99,11 +101,15 @@ const Styling = styled.div`
   @media screen and (min-width: ${sizes.mobile}) {
     .form-container {
       width: 90%;
-      .hidden-in-mobile {
+      .hidden-in-mobile,
+      #hidden-in-mobile {
         display: block;
       }
       .visible-in-mobile {
         display: none;
+      }
+      .duo-button-container {
+        flex-direction: row;
       }
       .bottom-actions {
         p {
