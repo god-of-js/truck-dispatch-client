@@ -15,6 +15,7 @@ import {
   getPresentAuthStage,
   savePresentAuthStage,
 } from 'utils/localStorageMethods';
+import StyledAuthContent from 'components/auth/StyledAuthContent';
 
 export default function RegistrationPage() {
   const { userType } = useParams();
@@ -67,7 +68,8 @@ export default function RegistrationPage() {
     return true;
   });
 
-  const [currentStepTitle, setCurrentStepTitle] = useState(steps[0].title);
+  const [currentStepTitle, setCurrentStepTitle] = useState('Verify phone number');
+  // const [currentStepTitle, setCurrentStepTitle] = useState(steps[0].title);
 
   function goToNext() {
     // TODO: implement skipped
@@ -108,19 +110,21 @@ export default function RegistrationPage() {
 
   return (
     <AuthLayoutStyling infoContent={infoContent}>
-      {(currentStepTitle === 'Account handler details' ||
-        currentStepTitle === 'Personal details') && (
-        <PersonalDetailsForm goToNext={goToNext} />
-      )}
-      {currentStepTitle === 'Company Details' && (
-        <CompanyDetailsForm goToNext={goToNext} />
-      )}
-      {currentStepTitle === 'Verify phone number' && (
-        <VerifyPhoneForm goToNext={goToNext} />
-      )}
-      {currentStepTitle === 'Choose password' && (
-        <ChoosePasswordForm goToNext={goToNext} />
-      )}
+      <StyledAuthContent>
+        {(currentStepTitle === 'Account handler details' ||
+          currentStepTitle === 'Personal details') && (
+          <PersonalDetailsForm goToNext={goToNext} />
+        )}
+        {currentStepTitle === 'Company Details' && (
+          <CompanyDetailsForm goToNext={goToNext} />
+        )}
+        {currentStepTitle === 'Verify phone number' && (
+          <VerifyPhoneForm goToNext={goToNext} />
+        )}
+        {currentStepTitle === 'Choose password' && (
+          <ChoosePasswordForm goToNext={goToNext} />
+        )}
+      </StyledAuthContent>
     </AuthLayoutStyling>
   );
 }

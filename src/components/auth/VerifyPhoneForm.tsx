@@ -7,7 +7,6 @@ import UiIcon from 'ui/UiIcon';
 import UiInput from 'ui/UiInput';
 import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
-import StyledAuthContent from './StyledAuthContent';
 import { toAnyAction } from 'utils/helpers';
 import { sendOTP, verifyOtp } from 'modules/Account';
 import { Toast } from 'utils/toast';
@@ -64,7 +63,8 @@ export default function VerifyPhoneForm({ goToNext }: Props) {
     setCount(59);
     const otpPhoneNumber = localStorage.getItem('otp-phone-number');
     if (!otpPhoneNumber) {
-      navigate('/auth/verify-phone/request-code');
+      navigate('/auth/login');
+      Toast.error({ msg: 'Kindly login to get a verification code.'})
       return;
     }
     setSendOTPLoading(true);
@@ -93,57 +93,55 @@ export default function VerifyPhoneForm({ goToNext }: Props) {
   }, []);
 
   return (
-    <StyledAuthContent>
-      <div className="form-container">
-        <header>
-          <UiIcon icon="CallReceived" size="45" />
-          <h1>Verify Phone Number</h1>
-          <p>
-            Enter the OTP (One Time Pin) that was sent to the phone number you
-            provided
-          </p>
-        </header>
-        <UiForm
-          formData={formData}
-          schema={VerifyPhoneSchema}
-          onSubmit={verifyPhoneNumber}
-        >
-          {({ errors }) => (
-            <>
-              <UiInput
-                label="Enter OTP"
-                type="text"
-                inputRef={inputRef}
-                value={formData.pin}
-                error={errors.pin}
-                name="OTP"
-                onChange={setPin}
-              />
-              <StyledResendCode>
-                <p>Didn’t get the code?</p>
-                <UiButton
-                  size="s"
-                  variant="secondary"
-                  loading={sendOTPLoading}
-                  disabled={!canResendCode}
-                  onClick={requestNewCode}
-                >
-                  {canResendCode ? `Resend` : `Resend in 00:${fornmattedCount}`}
-                </UiButton>
-              </StyledResendCode>
+    <div className="form-container">
+      <header>
+        <UiIcon icon="CallReceived" size="45" />
+        <h1>Verify Phone Number</h1>
+        <p>
+          Enter the OTP (One Time Pin) that was sent to the phone number you
+          provided
+        </p>
+      </header>
+      <UiForm
+        formData={formData}
+        schema={VerifyPhoneSchema}
+        onSubmit={verifyPhoneNumber}
+      >
+        {({ errors }) => (
+          <>
+            <UiInput
+              label="Enter OTP"
+              type="text"
+              inputRef={inputRef}
+              value={formData.pin}
+              error={errors.pin}
+              name="OTP"
+              onChange={setPin}
+            />
+            <StyledResendCode className="no-btn-margin-top">
+              <p>Didn’t get the code?</p>
               <UiButton
-                loading={loading}
-                size="large"
-                variant="primary"
-                isFullWidth
+                size="s"
+                variant="secondary"
+                loading={sendOTPLoading}
+                disabled={!canResendCode}
+                onClick={requestNewCode}
               >
-                Continue
+                {canResendCode ? `Resend` : `Resend in 00:${fornmattedCount}`}
               </UiButton>
-            </>
-          )}
-        </UiForm>
-      </div>
-    </StyledAuthContent>
+            </StyledResendCode>
+            <UiButton
+              loading={loading}
+              size="large"
+              variant="primary"
+              isFullWidth
+            >
+              Continue
+            </UiButton>
+          </>
+        )}
+      </UiForm>
+    </div>
   );
 }
 
@@ -152,7 +150,7 @@ const StyledResendCode = styled.div`
   justify-content: center;
   gap: ${pxToRem(9)};
   align-items: center;
-  margin-top: ${pxToRem(26)};
+  padding-top: ${pxToRem(26)};
   p {
     font-weight: 400;
     color: var(--color-gray-80);
@@ -161,7 +159,6 @@ const StyledResendCode = styled.div`
     line-height: ${pxToRem(24)};
   }
   button {
-    margin: 0 !important;
     border-radius: ${pxToRem(16)};
   }
 `;

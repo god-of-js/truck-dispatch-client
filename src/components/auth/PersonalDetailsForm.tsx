@@ -5,7 +5,6 @@ import UiInput from 'ui/UiInput';
 import UiButton from 'ui/UiButton';
 import UiSelect from 'ui/UiSelect';
 import UiForm from 'ui/UiForm';
-import StyledAuthContent from './StyledAuthContent';
 import { useDispatch } from 'react-redux';
 import { toAnyAction } from 'utils/helpers';
 import { registerUser } from 'modules/Account';
@@ -80,74 +79,72 @@ export default function PersonDetailsForm({ goToNext }: Props) {
   };
 
   return (
-    <StyledAuthContent>
-      <div className="form-container">
-        <header>
-          <UiIcon icon="UserOctagon" size="45" />
-          <h1>{header}</h1>
-          <p>{text}</p>
-        </header>
-        <UiForm
-          formData={formData}
-          schema={PersonalDetailsFormSchema}
-          onSubmit={onSubmit}
-        >
-          {({ errors }) => (
-            <div className="form-container__inner">
-              <UiInput
+    <div className="form-container">
+      <header>
+        <UiIcon icon="UserOctagon" size="45" />
+        <h1>{header}</h1>
+        <p>{text}</p>
+      </header>
+      <UiForm
+        formData={formData}
+        schema={PersonalDetailsFormSchema}
+        onSubmit={onSubmit}
+      >
+        {({ errors }) => (
+          <div className="form-container__inner">
+            <UiInput
+              onChange={handleChange}
+              value={formData.firstName}
+              error={errors.firstName}
+              name="firstName"
+              label="First Name*"
+              placeholder="Enter your first name"
+            />
+            <UiInput
+              onChange={handleChange}
+              value={formData.lastName}
+              error={errors.lastName}
+              name="lastName"
+              label="Last Name*"
+              placeholder="Enter your last name"
+            />
+            <UiInput
+              onChange={handleChange}
+              value={formData.email}
+              error={errors.email}
+              name="email"
+              label="Email Address*"
+              placeholder="Enter your email adress"
+            />
+            <UiInput
+              label="Phone Number*"
+              type="phone"
+              value={formData.phone}
+              name="phone"
+              error={errors.phone}
+              onChange={handleChange}
+            />
+            {isCompany && (
+              <UiSelect
+                label="Role in the Company"
+                name="roleInCompany"
+                value={formData.roleInCompany}
+                options={selectOptions}
                 onChange={handleChange}
-                value={formData.firstName}
-                error={errors.firstName}
-                name="firstName"
-                label="First Name*"
-                placeholder="Enter your first name"
               />
-              <UiInput
-                onChange={handleChange}
-                value={formData.lastName}
-                error={errors.lastName}
-                name="lastName"
-                label="Last Name*"
-                placeholder="Enter your last name"
-              />
-              <UiInput
-                onChange={handleChange}
-                value={formData.email}
-                error={errors.email}
-                name="email"
-                label="Email Address*"
-                placeholder="Enter your email adress"
-              />
-              <UiInput
-                label="Phone Number*"
-                type="phone"
-                value={formData.phone}
-                name="phone"
-                error={errors.phone}
-                onChange={handleChange}
-              />
-              {isCompany && (
-                <UiSelect
-                  label="Role in the Company"
-                  name="roleInCompany"
-                  value={formData.roleInCompany}
-                  options={selectOptions}
-                  onChange={handleChange}
-                />
-              )}
+            )}
 
-              <UiButton
-                loading={loading}
-                isFullWidth
-                size="large"
-                variant="primary"
-              >
-                Continue
-              </UiButton>
-            </div>
-          )}
-        </UiForm>
-      </div>
-    </StyledAuthContent>
+            <UiButton
+              loading={loading}
+              isFullWidth
+              size="large"
+              variant="primary"
+            >
+              Continue
+            </UiButton>
+          </div>
+        )}
+      </UiForm>
+    </div>
   );
 }

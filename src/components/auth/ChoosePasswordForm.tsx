@@ -4,7 +4,6 @@ import UiIcon from 'ui/UiIcon';
 import UiInput from 'ui/UiInput';
 import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
-import StyledAuthContent from './StyledAuthContent';
 import { useDispatch } from 'react-redux';
 import { toAnyAction } from 'utils/helpers';
 import { updatePassword } from 'modules/Account';
@@ -47,50 +46,48 @@ export default function ChoosePasswordForm({ goToNext }: Props) {
   }
 
   return (
-    <StyledAuthContent>
-      <div className="form-container">
-        <header>
-          <UiIcon icon="PasswordCheck" size="45" />
-          <h1>Choose Password</h1>
-          <p>Choose a strong password with at least 8 characters or more</p>
-        </header>
-        <UiForm
-          formData={formData}
-          schema={ChangePasswordSchema}
-          onSubmit={setPassword}
-        >
-          {({ errors }) => (
-            <div className="form-container__inner">
-              <UiInput
-                label="Password*"
-                placeholder="Enter your password"
-                type="password"
-                value={formData.password}
-                error={errors.password}
-                name="password"
-                onChange={handleChange}
-              />
-              <UiInput
-                label="Confirm Password*"
-                placeholder="Confirm password"
-                type="password"
-                value={formData.cPassword}
-                error={errors.cPassword}
-                name="cPassword"
-                onChange={handleChange}
-              />
-              <UiButton
-                size="large"
-                variant="primary"
-                loading={loading}
-                isFullWidth
-              >
-                Continue
-              </UiButton>
-            </div>
-          )}
-        </UiForm>
-      </div>
-    </StyledAuthContent>
+    <div className="form-container">
+      <header>
+        <UiIcon icon="PasswordCheck" size="45" />
+        <h1>Choose Password</h1>
+        <p>Choose a strong password with at least 8 characters or more</p>
+      </header>
+      <UiForm
+        formData={formData}
+        schema={ChangePasswordSchema}
+        onSubmit={setPassword}
+      >
+        {({ errors }) => (
+          <div className="form-container__inner">
+            <UiInput
+              label="Password*"
+              placeholder="Enter your password"
+              type="password"
+              value={formData.password}
+              error={errors.password}
+              name="password"
+              onChange={handleChange}
+            />
+            <UiInput
+              label="Confirm Password*"
+              placeholder="Confirm password"
+              type="password"
+              value={formData.cPassword}
+              error={errors.cPassword}
+              name="cPassword"
+              onChange={handleChange}
+            />
+            <UiButton
+              size="large"
+              variant="primary"
+              loading={loading}
+              isFullWidth
+            >
+              Continue
+            </UiButton>
+          </div>
+        )}
+      </UiForm>
+    </div>
   );
 }
