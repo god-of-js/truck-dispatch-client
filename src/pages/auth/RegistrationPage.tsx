@@ -68,11 +68,9 @@ export default function RegistrationPage() {
     return true;
   });
 
-  const [currentStepTitle, setCurrentStepTitle] = useState('Verify phone number');
-  // const [currentStepTitle, setCurrentStepTitle] = useState(steps[0].title);
+  const [currentStepTitle, setCurrentStepTitle] = useState(steps[0].title);
 
   function goToNext() {
-    // TODO: implement skipped
     const indexOfCurrentStage = steps.findIndex(
       ({ title }) => title === currentStepTitle,
     );

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { loginUser } from '../../modules/Account';
@@ -13,7 +12,7 @@ import { toAnyAction } from 'utils/helpers';
 import loginSchema from 'utils/validations/loginSchema';
 import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
 import StyledAuthContent from 'components/auth/StyledAuthContent';
-import sizes from 'utils/sizes';
+
 
 export default function LoginPage() {
   const dispatch = useDispatch();
