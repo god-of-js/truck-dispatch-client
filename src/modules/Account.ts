@@ -1,20 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { AppDispatch, AppState } from '.';
+import { AppDispatch } from '.';
 import Api from 'Api';
 import User from '../types/User';
-import Verification from '../types/Verification';
 import BankAccount from 'types/BankDetails';
 import { saveTokenVerificationInfo } from 'utils/helpers';
-import { saveUserSessionId } from 'utils/userSession';
+import { saveAuthSessionId, saveUserSessionId } from 'utils/userSession';
 
 export interface AccountState {
-  verification: Verification | null;
   user: User | null;
 }
 
 const initialState: AccountState = {
   user: null,
-  verification: null,
 };
 export const accountSlice = createSlice({
   name: 'account',
@@ -23,23 +20,18 @@ export const accountSlice = createSlice({
     setUser: (state: AccountState, action: { payload: User }) => {
       state.user = action.payload;
     },
-    setVerification: (
-      state: AccountState,
-      action: { payload: Verification },
-    ) => {
-      state.verification = action.payload;
-    },
   },
 });
 
-export const { setUser, setVerification } = accountSlice.actions;
+export const { setUser } = accountSlice.actions;
 
 export default accountSlice.reducer;
 
 export function registerUser(AuthUser: Partial<User>) {
   return async () => {
     await Api.createUser(AuthUser).then((data) => {
-      saveTokenVerificationInfo(data);
+      saveTokenVerificationInfo(data.smsData);
+      saveAuthSessionId(data.token);
     });
   };
 }
@@ -67,10 +59,9 @@ export function verifyOtp(pin: string) {
       phone: otpPhone,
     };
     return Api.verifyPhone(data)
-      .then((data) => {
+      .then(() => {
         localStorage.removeItem('otp-pin-id');
         localStorage.removeItem('otp-phone-number');
-        saveUserSessionId(data.token);
       })
       .catch((err) => Promise.reject(err.data));
   };
@@ -130,26 +121,6 @@ export function getDashboardUser() {
     });
   };
 }
-
-export const startVerificationProcess = (verificationData: FormData) => {
-  return () => {
-    return Api.startVerificationProcess(verificationData);
-  };
-};
-
-export const updateVerification = (verificationData: FormData) => {
-  return () => {
-    return Api.updateVerification(verificationData);
-  };
-};
-
-export const getUserVerification = () => {
-  return (dispatch: AppDispatch) => {
-    return Api.getVerificationByUserId().then((data) => {
-      dispatch(setVerification(data));
-    });
-  };
-};
 
 export const createUserBankAccount = (accountDetails: BankAccount) => {
   return (dispatch: AppDispatch) => {

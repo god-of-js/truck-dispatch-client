@@ -6,6 +6,7 @@ import sizes from 'utils/sizes';
 export interface Step {
   title: string;
   detail: string;
+  isSkipped?: boolean;
 }
 interface Props {
   steps: Step[];
@@ -31,10 +32,13 @@ export default function UiSteps({ steps, currentStepTitle }: Props) {
           key={index}
           isActive={isActive(step.title)}
           isCompleted={isCompleted(step.title)}
+          isSkipped={step.isSkipped}
         >
           <div className="indicator">
             <div className="indicator__circle">
-              {isCompleted(step.title) && <UiIcon icon="Check" />}
+              {isCompleted(step.title) && !step.isSkipped && (
+                <UiIcon icon="Check" />
+              )}
             </div>
             <div className="indicator__line" />
           </div>
@@ -51,6 +55,7 @@ export default function UiSteps({ steps, currentStepTitle }: Props) {
 interface StyledProps {
   isActive: boolean;
   isCompleted: boolean;
+  isSkipped?: boolean;
 }
 function getStyling(props: StyledProps) {
   if (props.isActive) {
@@ -63,7 +68,7 @@ function getStyling(props: StyledProps) {
     };
   }
 
-  if (props.isCompleted) {
+  if (props.isCompleted && !props.isSkipped) {
     return {
       borderColor: 'var(--color-primary-40);',
       background: 'var(--color-primary-40)',

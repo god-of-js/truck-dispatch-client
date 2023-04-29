@@ -60,7 +60,7 @@ export default function UiLocationsInput({
           />
         )}
       </UiInputContainer>
-      <div className="action-btn">
+      <ButtonContainer>
         <UiButton
           variant="primary-text"
           size="text"
@@ -70,11 +70,17 @@ export default function UiLocationsInput({
           {' '}
           {cantFindLocation ? 'Cancel' : "Can't find location?"}
         </UiButton>
-      </div>
+      </ButtonContainer>
     </UiField>
   );
 }
 
 const UiInputContainer = styled.div`
   margin-top: ${pxToRem(8)};
+`;
+
+const ButtonContainer = styled.div`
+  button {
+    margin-top: 0;
+  }
 `;

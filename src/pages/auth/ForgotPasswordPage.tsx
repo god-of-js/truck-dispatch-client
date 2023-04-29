@@ -5,13 +5,13 @@ import UiForm from 'ui/UiForm';
 import UiInput from 'ui/UiInput';
 import UiButton from 'ui/UiButton';
 import UiIcon from 'ui/UiIcon';
-import styled from 'styled-components';
 import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
 
 import { requestForgotPasswordLink } from '../../modules/Account';
 
 import { toAnyAction } from 'utils/helpers';
 import ForgotPasswordSchema from 'utils/validations/ForgotPasswordSchema';
+import StyledAuthContent from 'components/auth/StyledAuthContent';
 
 export default function ForgotPasswordPage() {
   const dispatch = useDispatch();
@@ -39,12 +39,32 @@ export default function ForgotPasswordPage() {
       });
   }
 
+  const actionButtons = (
+    <div className="button-flex">
+      <Link to="/auth/login">
+        <UiButton size="large" variant="secondary" isFullWidth>
+          <UiIcon icon="ArrowLeft" />
+          Back to sign in
+        </UiButton>
+      </Link>
+      <UiButton
+        size="large"
+        isFullWidth
+        onClick={() => navigate('/auth/reset-password')}
+      >
+        RESET
+      </UiButton>
+    </div>
+  );
+
   return (
-    <AuthLayoutStyling invert>
-      <StyledForgotPassword>
-        <h1>Forgot password?</h1>
-        <p>No worries, we’ll send you reset instructions</p>
+    <AuthLayoutStyling invert img>
+      <StyledAuthContent inverted>
         <div className="form-container">
+          <header>
+            <h1>Forgot password?</h1>
+            <p>No worries, we’ll send you reset instructions</p>
+          </header>
           <UiForm
             formData={formData}
             schema={ForgotPasswordSchema}
@@ -60,89 +80,18 @@ export default function ForgotPasswordPage() {
                   error={errors.email}
                   onChange={handleChange}
                 />
+                <div>{actionButtons}</div>
+                <div className="bottom-actions">
+                  <div>{actionButtons}</div>
+                  <p>
+                    New to TruckDispatch? <Link to="/auth/join">Sign Up</Link>{' '}
+                  </p>
+                </div>
               </>
             )}
           </UiForm>
-          <div className="button-flex">
-            <UiButton size="large" variant="secondary" isFullWidth>
-              <UiIcon icon="ArrowLeft" />
-              Back to sign in
-            </UiButton>
-            <UiButton
-              size="large"
-              isFullWidth
-              onClick={() => navigate('/auth/reset-password')}
-            >
-              RESET
-            </UiButton>
-          </div>
         </div>
-        <div className="sign-up">
-          <p>
-            New to TruckDispatch? <Link to="/auth/join">Sign Up</Link>{' '}
-          </p>
-        </div>
-      </StyledForgotPassword>
+      </StyledAuthContent>
     </AuthLayoutStyling>
   );
 }
-
-const StyledForgotPassword = styled.div`
-  * {
-    margin: 0;
-  }
-
-  h1 {
-    font-size: ${pxToRem(32)};
-    color: var(--color-neutralBlack);
-    margin-top: ${pxToRem(40)};
-    margin-bottom: ${pxToRem(8)};
-    line-height: ${pxToRem(54)};
-  }
-  & > p {
-    margin-bottom: ${pxToRem(32)};
-  }
-  p {
-    font-weight: 400;
-    color: var(--color-gray-80);
-    font-family: 'thiccboi-regular';
-    font-size: ${pxToRem(16)};
-    line-height: ${pxToRem(24)};
-  }
-  .button-flex {
-    display: flex;
-    flex-direction: column;
-    gap: ${pxToRem(12)};
-    margin-top: ${pxToRem(250)};
-  }
-  .sign-up {
-    display: none;
-    margin-top: ${pxToRem(100)};
-    p {
-      font-size: ${pxToRem(16)};
-    }
-  }
-  @media (min-width: 900px) {
-    .form-container {
-      max-width: ${pxToRem(450)};
-    }
-    h1 {
-      font-size: ${pxToRem(48)};
-      margin-top: 0;
-      margin-bottom: ${pxToRem(16)};
-    }
-    & > p {
-      margin-bottom: ${pxToRem(48)};
-    }
-    .button-flex {
-      flex-direction: row;
-      gap: ${pxToRem(9.8)};
-      margin-top: ${pxToRem(48)};
-    }
-    .sign-up {
-      display: block;
-      margin-top: ${pxToRem(60)};
-      text-align: initial;
-    }
-  }
-`;

@@ -48,6 +48,11 @@ const Styling = styled.div`
     button {
       margin-top: ${pxToRem(24)};
     }
+    .no-btn-margin-top {
+      button {
+        margin-top: 0;
+      }
+    }
     .select-with-optional-alert-container {
       display: flex;
       flex-direction: column;
@@ -57,6 +62,12 @@ const Styling = styled.div`
       display: flex;
       flex-direction: column;
       gap: ${pxToRem(24)};
+    }
+
+    .button-flex {
+      display: flex;
+      flex-direction: column;
+      gap: ${pxToRem(12)};
     }
     .bottom-actions {
       position: absolute;

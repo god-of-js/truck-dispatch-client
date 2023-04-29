@@ -76,6 +76,9 @@ export default function FileUploadWidget({
         ) : (
           <span>Choose file{acceptMultiple ? 's' : ''}</span>
         )}
+        <span className="upload-tag">
+          <UiIcon icon="DocumentUpload" size="24" />
+        </span>
       </DefaultUploadTrigger>
     );
   }
@@ -93,9 +96,6 @@ export default function FileUploadWidget({
           accept={fileTypeSelector[fileType]}
         />
         {displayComponent}
-        <span className="upload-tag">
-          <UiIcon icon="DocumentUpload" size="24" />
-        </span>
       </FileUploadWidgetStyle>
     </UiField>
   );
@@ -109,33 +109,39 @@ const FileUploadWidgetStyle = styled.div`
   & > div {
     width: 100%;
   }
-  .upload-tag {
-    width: 8.5%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: ${pxToRem(12)} ${pxToRem(16)};
-    border-radius: 0px ${pxToRem(8)} ${pxToRem(8)} 0px;
-    border: ${pxToRem(1)} solid var(--color-gray);
-    border-left: none;
-    background-color: var(--color-primary-10);
-  }
 `;
 
 const DefaultUploadTrigger = styled.div`
   border: ${pxToRem(1)} solid var(--color-gray);
-  border-right: none;
+  position: relative;
   font-size: ${pxToRem(14)};
   font-family: 'thiccboi-medium';
-  padding: ${pxToRem(16)};
+  height: var(--base-height);
+  padding: 0 ${pxToRem(16)};
   color: var(--color-gray-80);
-  border-radius: ${pxToRem(8)} 0px 0px ${pxToRem(8)};
+  border-radius: ${pxToRem(8)};
   display: flex;
   align-items: center;
   cursor: pointer;
-  div {
-    color: var(--color-neutralBlack);
-    font-size: ${pxToRem(14)};
-    line-height: ${pxToRem(24)};
+  color: var(--color-neutralBlack);
+  font-size: ${pxToRem(14)};
+  line-height: ${pxToRem(24)};
+  .upload-tag {
+    width: 8.5%;
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    right: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0px ${pxToRem(8)} ${pxToRem(8)} 0px;
+    padding: ${pxToRem(16)};
+    border-left: none;
+    background-color: var(--color-primary-10);
+
+    svg {
+      fill: var(--color-primary);
+    }
   }
 `;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import UiSteps, { Step } from 'ui/UiSteps';
@@ -62,20 +62,26 @@ export default function RegistrationPage() {
     return true;
   });
 
-  const [currentStepTitle, setCurrentStepTitle] = useState(steps[0].title);
+  const [currentStepTitle, setCurrentStepTitle] = useState('Company Details');
+  // const [currentStepTitle, setCurrentStepTitle] = useState(steps[0].title);
 
-  function goToNext() {
+  function goToNext(isSkipped?: boolean) {
+    // TODO: implement skipped
     const indexOfCurrentStage = steps.findIndex(
       ({ title }) => title === currentStepTitle,
     );
     const newTitle = steps[indexOfCurrentStage + 1].title;
     setCurrentStepTitle(newTitle);
   }
-  const infoContent = (
-    <InfoContentContainer>
-      <UiSteps steps={steps} currentStepTitle={currentStepTitle} />
-      <div className="copyright">© TruckDispatch{currentYear}.</div>
-    </InfoContentContainer>
+
+  const infoContent = useMemo(
+    () => (
+      <InfoContentContainer>
+        <UiSteps steps={steps} currentStepTitle={currentStepTitle} />
+        <div className="copyright">© TruckDispatch{currentYear}.</div>
+      </InfoContentContainer>
+    ),
+    [steps],
   );
 
   useEffect(() => {

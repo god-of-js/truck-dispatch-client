@@ -20,7 +20,10 @@ import ChatLog from 'types/ChatLog';
 
 class ApiService {
   createUser(userData: Partial<User>) {
-    return this.post<TokenVerificationData>('/auth/join', userData);
+    return this.post<{ smsData: TokenVerificationData; token: string }>(
+      '/auth/join',
+      userData,
+    );
   }
 
   signInWithEmailAndPassword(data: { email: string; password: string }) {
@@ -73,6 +76,10 @@ class ApiService {
 
   startVerificationProcess(data: FormData) {
     return this.post('/verification', data);
+  }
+
+  startCompanyUpgradeVerificationProcess(data: FormData) {
+    return this.post('/verification/company', data);
   }
 
   updateVerification(data: FormData) {

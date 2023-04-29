@@ -19,7 +19,7 @@ interface Props {
     | 'danger';
   size?: Sizes;
   type?: 'submit' | 'button';
-  textCasing?: 'uppercase' | 'lowercase' | 'capitalize';
+  textCasing?: 'uppercase' | 'lowercase' | 'capitalize' | 'normal';
   isSquare?: boolean;
   /** This prop decides if we want the button to fit the content or be full width */
   isFullWidth?: boolean;
@@ -99,11 +99,11 @@ const ButtonContainer = styled.button<Props>`
   gap: ${pxToRem(9.34)};
   letter-spacing: ${pxToRem(0.32)};
   text-align: center;
-  text-transform: uppercase;
   border-radius: ${({ isSquare }) => (isSquare ? '' : pxToRem(8))};
   font-weight: 500;
   font-family: 'thiccboi-semibold';
-  text-transform: ${({ textCasing }) => textCasing};
+  ${({ textCasing }) =>
+    textCasing !== 'normal' && `text-transform: ${textCasing}`};
   width: ${({ isFullWidth }) => (isFullWidth ? '100%' : 'fit-content')};
   white-space: nowrap;
   transition: all 0.2s ease-in-out;
