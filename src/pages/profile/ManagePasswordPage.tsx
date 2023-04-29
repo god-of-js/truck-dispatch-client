@@ -77,6 +77,7 @@ export default function ManagePasswordPage() {
                 label="New Password"
                 value={formData.password}
                 name="password"
+                type="password"
                 error={errors.password}
                 onChange={onChange}
               />
@@ -84,6 +85,7 @@ export default function ManagePasswordPage() {
                 label="Confirm new password"
                 value={formData.cPassword}
                 name="cPassword"
+                type="password"
                 error={errors.cPassword}
                 onChange={onChange}
               />
