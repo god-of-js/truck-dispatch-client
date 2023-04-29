@@ -10,7 +10,7 @@ import sizes from 'utils/sizes';
 import ChangePasswordSchema from 'utils/validations/ChangePasswordSchema';
 import UiCard from 'ui/UiCard';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { removeUserSessionId } from 'utils/userSession';
+import { removeUserSessionId } from 'utils/localStorageMethods';
 import { RootState } from 'modules/index';
 
 export default function ManagePasswordPage() {

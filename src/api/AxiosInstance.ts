@@ -5,7 +5,7 @@ import {
   getAuthSessionId,
   getUserSessionId,
   removeUserSessionId,
-} from 'utils/userSession';
+} from 'utils/localStorageMethods';
 
 let isRedirecting = false;
 const instance = axios.create({

@@ -50,7 +50,8 @@ export default function ForgotPasswordPage() {
       <UiButton
         size="large"
         isFullWidth
-        onClick={() => navigate('/auth/reset-password')}
+        loading={loading}
+        onClick={() => {}}
       >
         RESET
       </UiButton>

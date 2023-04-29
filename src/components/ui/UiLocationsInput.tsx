@@ -49,7 +49,7 @@ export default function UiLocationsInput({
 
   return (
     <UiField label={label} name={name} error={error}>
-      <input className="global-input" ref={inputRef} key={value} />
+      <input className="global-input full-radius" ref={inputRef} key={value} />
       <UiInputContainer>
         {cantFindLocation && (
           <UiInput

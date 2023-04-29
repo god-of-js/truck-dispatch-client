@@ -10,7 +10,7 @@ import { toAnyAction } from 'utils/helpers';
 import { updatePassword } from 'modules/Account';
 import ChangePasswordSchema from 'utils/validations/ChangePasswordSchema';
 import { useNavigate } from 'react-router-dom';
-import { removeUserSessionId } from 'utils/userSession';
+import { removeAuthSessionId, removePresentAuthStage } from 'utils/localStorageMethods';
 
 interface Props {
   goToNext: () => void;
@@ -34,7 +34,8 @@ export default function ChoosePasswordForm({ goToNext }: Props) {
     setLoading(true);
     dispatch(toAnyAction(updatePassword({ password: formData.password })))
       .then(() => {
-        removeUserSessionId();
+        removeAuthSessionId();
+        removePresentAuthStage();
         navigate('/auth/login');
       })
       .finally(() => {
@@ -75,7 +76,7 @@ export default function ChoosePasswordForm({ goToNext }: Props) {
                 name="cPassword"
                 onChange={handleChange}
               />
-              <UiButton size="large" variant="primary" isFullWidth>
+              <UiButton size="large" variant="primary" loading={loading} isFullWidth>
                 Continue
               </UiButton>
             </div>

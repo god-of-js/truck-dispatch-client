@@ -14,6 +14,7 @@ import { deepRootedToFormData, toAnyAction } from 'utils/helpers';
 import { useDispatch } from 'react-redux';
 import { sendCompanyUpgradeVerification } from 'modules/Verification';
 import UiLocationsInput from 'ui/UiLocationsInput';
+
 interface Props {
   goToNext: (isSkipped?: boolean) => void;
 }

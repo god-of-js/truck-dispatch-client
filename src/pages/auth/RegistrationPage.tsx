@@ -10,6 +10,7 @@ import ChoosePasswordForm from 'components/auth/ChoosePasswordForm';
 import { userTypes } from 'utils/constants';
 import styled from 'styled-components';
 import sizes from 'utils/sizes';
+import { getAuthSessionId, getPresentAuthStage, savePresentAuthStage } from 'utils/localStorageMethods';
 
 export default function RegistrationPage() {
   const { userType } = useParams();
@@ -62,16 +63,16 @@ export default function RegistrationPage() {
     return true;
   });
 
-  const [currentStepTitle, setCurrentStepTitle] = useState('Company Details');
-  // const [currentStepTitle, setCurrentStepTitle] = useState(steps[0].title);
+  const [currentStepTitle, setCurrentStepTitle] = useState(steps[0].title);
 
-  function goToNext(isSkipped?: boolean) {
+  function goToNext() {
     // TODO: implement skipped
     const indexOfCurrentStage = steps.findIndex(
       ({ title }) => title === currentStepTitle,
     );
     const newTitle = steps[indexOfCurrentStage + 1].title;
     setCurrentStepTitle(newTitle);
+    savePresentAuthStage(newTitle);
   }
 
   const infoContent = useMemo(
@@ -89,6 +90,17 @@ export default function RegistrationPage() {
       navigate('/auth/join');
     }
   }, [userType]);
+
+  useEffect(() => {
+    const presentAuthStage = getPresentAuthStage();
+    const token = getAuthSessionId();
+    if (presentAuthStage && token && currentStepTitle === steps[0].title) {
+      const authStageExists = steps.find(
+        (step) => step.title === presentAuthStage,
+      );
+      if (authStageExists) setCurrentStepTitle(presentAuthStage);
+    }
+  }, []);
 
   return (
     <AuthLayoutStyling infoContent={infoContent}>
