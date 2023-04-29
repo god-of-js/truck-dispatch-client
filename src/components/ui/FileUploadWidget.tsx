@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useRef } from 'react';
 import styled from 'styled-components';
 import UiField from './UiField';
+import UiIcon from './UiIcon';
 
 interface Props {
   name: string;
@@ -70,8 +71,14 @@ export default function FileUploadWidget({
   function defaultComponent() {
     return (
       <DefaultUploadTrigger>
-        <span>Choose file{acceptMultiple ? 's' : ''}</span>
-        {!acceptMultiple ? <div>{value && getFileName(value)}</div> : ''}
+        {value && !acceptMultiple ? (
+          <div>{getFileName(value)}</div>
+        ) : (
+          <span>Choose file{acceptMultiple ? 's' : ''}</span>
+        )}
+        <span className="upload-tag">
+          <UiIcon icon="DocumentUpload" size="24" />
+        </span>
       </DefaultUploadTrigger>
     );
   }
@@ -98,15 +105,43 @@ const FileUploadWidgetStyle = styled.div`
   input {
     display: none;
   }
+  display: flex;
+  & > div {
+    width: 100%;
+  }
 `;
 
 const DefaultUploadTrigger = styled.div`
-  background: var(--color-gray-100);
-  border: ${pxToRem(1)} dashed var(--color-gray-200);
+  border: ${pxToRem(1)} solid var(--color-gray);
+  position: relative;
   font-size: ${pxToRem(14)};
-  padding: ${pxToRem(16)};
-  text-align: center;
-  color: var(--color-gray-500);
-  border-radius: ${pxToRem(4)};
+  font-family: 'thiccboi-medium';
+  height: var(--base-height);
+  padding: 0 ${pxToRem(16)};
+  color: var(--color-gray-80);
+  border-radius: ${pxToRem(8)};
+  display: flex;
+  align-items: center;
   cursor: pointer;
+  color: var(--color-neutralBlack);
+  font-size: ${pxToRem(14)};
+  line-height: ${pxToRem(24)};
+  .upload-tag {
+    width: 8.5%;
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    right: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0px ${pxToRem(8)} ${pxToRem(8)} 0px;
+    padding: ${pxToRem(16)};
+    border-left: none;
+    background-color: var(--color-primary-10);
+
+    svg {
+      fill: var(--color-primary);
+    }
+  }
 `;

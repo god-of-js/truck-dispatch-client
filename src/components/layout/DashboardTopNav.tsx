@@ -8,7 +8,7 @@ import UiDropDownMenu, { DropDownData } from 'ui/UiDropdownMenu';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from 'modules/index';
-import { removeUserSessionId } from 'utils/userSession';
+import { removeUserSessionId } from 'utils/localStorageMethods';
 
 interface Params {
   [key: string]: string;

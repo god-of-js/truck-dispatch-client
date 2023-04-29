@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getUserVerification } from '../../modules/Account';
+import { getUserVerification } from '../../modules/Verification';
 
 import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
@@ -17,7 +17,7 @@ export default function TransporterVerificationPage() {
   const [loading, setLoading] = useState(false);
   const user = useSelector((state: RootState) => state.account.user);
   const userVerification = useSelector(
-    (state: RootState) => state.account.verification,
+    (state: RootState) => state.verification.verification,
   );
   const userHasBeenVerified = <MessageWithImage />;
 

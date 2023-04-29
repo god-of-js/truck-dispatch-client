@@ -25,7 +25,7 @@ import UiOverlay from 'ui/UiOverlay';
 import EmailHasBeenSentModal from 'components/profile/EmailHasBeenSentModal';
 import Loader from 'components/layout/Loader';
 import EmailHasBeenVerifiedModal from 'components/profile/EmailHasBeenVerifiedModal';
-import { getUserSessionId, saveUserSessionId } from 'utils/userSession';
+import { getUserSessionId, saveUserSessionId } from 'utils/localStorageMethods';
 
 export default function DashboardLayout() {
   const dispatch = useDispatch();
@@ -103,8 +103,8 @@ export default function DashboardLayout() {
   }, [action, token, loading]);
 
   useEffect(() => {
-    if (location.pathname === '/') navigate('/my-trips')
-  }, [location.pathname])
+    if (location.pathname === '/') navigate('/my-trips');
+  }, [location.pathname]);
 
   useEffect(() => {
     // Connect to socket.

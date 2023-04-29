@@ -1,20 +1,23 @@
-import React, { useState } from 'react';
+import React, { Ref, useState } from 'react';
 import styled from 'styled-components';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input/input';
 import UiIcon from './UiIcon';
 import UiField from './UiField';
 
+export type InputType = 'text' | 'password' | 'number' | 'phone' | 'date';
 interface Props {
   label: string;
-  type?: 'text' | 'password' | 'number' | 'phone' | 'date';
+  type?: InputType;
   value: string | null | number;
+  placeholder?: string;
   /** The name property should always be the same as the model value. example if the input belongs to
    * formData.confirm_password, the name prop should be confirm_password.
    */
   name: string;
   error?: string;
   disabled?: boolean;
+  inputRef?: React.RefObject<HTMLInputElement>;
   onChange: (event: { name: string; value: string | null }) => void;
 }
 
@@ -23,8 +26,10 @@ export default function UiInput({
   type = 'text',
   name,
   value,
+  placeholder,
   disabled,
   error,
+  inputRef,
   onChange,
 }: Props) {
   const [inputType, setInputType] = useState(type);
@@ -60,7 +65,9 @@ export default function UiInput({
           <Input
             type={inputType}
             value={value || ''}
+            placeholder={placeholder}
             name={name}
+            ref={inputRef}
             hasError={!!error}
             disabled={disabled}
             onChange={sendValue}
@@ -69,7 +76,10 @@ export default function UiInput({
 
         {type === 'password' && (
           <IconButton onClick={handlePasswordTypeToText}>
-            <UiIcon icon={inputType === 'password' ? 'Eye' : 'EyeSlash'} />
+            <UiIcon
+              icon={inputType === 'password' ? 'EyeSlash' : 'Eye'}
+              size="20"
+            />
           </IconButton>
         )}
       </InputContainer>
@@ -95,7 +105,8 @@ const Input = styled.input`
   height: var(--base-height);
   gap: ${pxToRem(8)};
   width: 100%;
-  font-size: ${pxToRem(12)};
+  font-size: ${pxToRem(14)};
+  font-family: 'thiccboi-medium';
   border: ${pxToRem(1)} solid;
   border-color: ${({ hasError }: { hasError: boolean }) =>
     hasError ? 'var(--color-danger)' : 'var(--color-gray)'};
@@ -107,6 +118,12 @@ const Input = styled.input`
   &:focus {
     border: ${pxToRem(2)} solid var(--color-primary);
     box-shadow: var(--box-shadow-primary);
+  }
+  ::placeholder {
+    font-size: ${pxToRem(14)};
+    color: var(--color-gray-80);
+    font-weight: 400;
+    line-height: ${pxToRem(24)};
   }
 `;
 
@@ -121,7 +138,7 @@ const IconButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  right: 0;
+  right: ${pxToRem(14)};
   top: 0;
   cursor: pointer;
 `;

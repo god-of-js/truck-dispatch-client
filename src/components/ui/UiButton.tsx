@@ -19,7 +19,7 @@ interface Props {
     | 'danger';
   size?: Sizes;
   type?: 'submit' | 'button';
-  textCasing?: 'uppercase' | 'lowercase' | 'capitalize';
+  textCasing?: 'uppercase' | 'lowercase' | 'capitalize' | 'normal';
   isSquare?: boolean;
   /** This prop decides if we want the button to fit the content or be full width */
   isFullWidth?: boolean;
@@ -64,6 +64,7 @@ function sizeVariant(size: Sizes) {
     ${pxToRem(12)}; 
     height:${pxToRem(32)};
     font-size: ${pxToRem(12)};
+    line-height: ${pxToRem(12)};
     `;
 
   if (size === 'md')
@@ -71,13 +72,15 @@ function sizeVariant(size: Sizes) {
     padding: ${pxToRem(12)};
     height:${pxToRem(40)};
     font-size: ${pxToRem(12)};
+    line-height: ${pxToRem(12)};
   `;
 
   if (size === 'large')
     return `
-    padding:  ${pxToRem(16)} 0; 
-    height:${pxToRem(56)};
-    font-size: ${pxToRem(14)} ;
+    padding:  ${pxToRem(16)}; 
+    height: ${pxToRem(46)};
+    font-size: ${pxToRem(14)};
+    line-height: ${pxToRem(14)};
   `;
 }
 
@@ -90,17 +93,17 @@ const ButtonContainer = styled.button<Props>`
   ${({ size }) => sizeVariant(size!)}
   border: none;
   cursor: ${({ disabled }) => (disabled ? '' : 'pointer')};
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  letter-spacing: 0.4px;
-  line-height: 1.45;
+  gap: ${pxToRem(9.34)};
+  letter-spacing: ${pxToRem(0.32)};
   text-align: center;
-  text-transform: uppercase;
   border-radius: ${({ isSquare }) => (isSquare ? '' : pxToRem(8))};
   font-weight: 500;
   font-family: 'thiccboi-semibold';
-  text-transform: ${({ textCasing }) => textCasing};
+  ${({ textCasing }) =>
+    textCasing !== 'normal' && `text-transform: ${textCasing}`};
   width: ${({ isFullWidth }) => (isFullWidth ? '100%' : 'fit-content')};
   white-space: nowrap;
   transition: all 0.2s ease-in-out;
@@ -165,6 +168,9 @@ const ButtonContainer = styled.button<Props>`
   &.secondary {
     background-color: var(--color-primary-10);
     color: var(--color-primary);
+    ${({ disabled }) => getColor(disabled!, `var(--color-primary-10)`)};
+    ${({ disabled }) => disabled && `color: var(--color-primary-30);`}
+
     ${({ disabled }) =>
       !disabled &&
       `

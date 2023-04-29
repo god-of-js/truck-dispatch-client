@@ -1,177 +1,143 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+
+import UiSteps, { Step } from 'ui/UiSteps';
+import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
+import CompanyDetailsForm from 'components/auth/CompanyDetailsForm';
+import PersonalDetailsForm from 'components/auth/PersonalDetailsForm';
+import VerifyPhoneForm from '../../components/auth/VerifyPhoneForm';
+import ChoosePasswordForm from 'components/auth/ChoosePasswordForm';
+import { userTypes } from 'utils/constants';
 import styled from 'styled-components';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-
-import { RegisterUser } from 'modules/Account';
-
-import { Toast } from 'utils/toast';
 import sizes from 'utils/sizes';
-
-import UiInput from 'components/ui/UiInput';
-import UiButton from 'components/ui/UiButton';
-import User from 'types/User';
-import UiForm from 'components/ui/UiForm';
-import { toAnyAction } from 'utils/helpers';
-import registrationSchema from 'utils/validations/registrationSchema';
+import {
+  getAuthSessionId,
+  getPresentAuthStage,
+  savePresentAuthStage,
+} from 'utils/localStorageMethods';
+import StyledAuthContent from 'components/auth/StyledAuthContent';
 
 export default function RegistrationPage() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { userType } = useParams();
-  const [formData, setFormData] = useState<User & { cPassword: string }>({
-    _id: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    password: '',
-    cPassword: '',
-    userType: userType! as User['userType'],
-    status: userType === 'transporter' ? 'unverified' : undefined,
-    rating: 0,
+  const formattedUserType = userType?.toLowerCase();
+  const navigate = useNavigate();
+  const currentYear = new Date().getFullYear();
+  const steps: Step[] = [
+    {
+      title: 'Account handler details',
+      detail:
+        'Please provide full name, email and phone number of the account handler',
+    },
+    {
+      title: 'Personal details',
+      detail: 'Please provide your full name, email and phone number',
+    },
+    {
+      title: 'Verify phone number',
+      detail: 'Please provide your full name, email and phone number',
+    },
+    {
+      title: 'Company Details',
+      detail: 'Provide the company name, address and registration details',
+    },
+    {
+      title: 'Choose password',
+      detail: 'Please provide your full name, email and phone number',
+    },
+  ].filter(({ title }) => {
+    if (
+      formattedUserType?.includes('company') &&
+      title === 'Personal details'
+    ) {
+      return false;
+    }
+
+    if (
+      !formattedUserType?.includes('company') &&
+      title === 'Company Details'
+    ) {
+      return false;
+    }
+    if (
+      !formattedUserType?.includes('company') &&
+      title === 'Account handler details'
+    ) {
+      return false;
+    }
+
+    return true;
   });
-  const [loading, setLoading] = useState(false);
 
-  function handleChange(event: { name: string; value: string | null }) {
-    setFormData({
-      ...formData,
-      [event.name]: event.value,
-    });
+  const [currentStepTitle, setCurrentStepTitle] = useState(steps[0].title);
+
+  function goToNext() {
+    const indexOfCurrentStage = steps.findIndex(
+      ({ title }) => title === currentStepTitle,
+    );
+    const newTitle = steps[indexOfCurrentStage + 1].title;
+    setCurrentStepTitle(newTitle);
+    savePresentAuthStage(newTitle);
   }
 
-  function handleSubmit() {
-    setLoading(true);
-    dispatch(toAnyAction(RegisterUser(formData)))
-      .then(() => {
-        navigate('/auth/verify-phone');
-      })
-      .catch(({ message }: { message: string }) => {
-        Toast.error({ msg: message });
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }
+  const infoContent = useMemo(
+    () => (
+      <InfoContentContainer>
+        <UiSteps steps={steps} currentStepTitle={currentStepTitle} />
+        <div className="copyright">© TruckDispatch{currentYear}.</div>
+      </InfoContentContainer>
+    ),
+    [steps],
+  );
 
-  const isTransporter = userType === 'transporter';
-  const isAgent = userType === 'agent';
-  const heading = isTransporter
-    ? 'Join Our Team Of Transporters'
-    : 'Deliver with us As An Agent';
+  useEffect(() => {
+    if (!userTypes.includes(userType!)) {
+      navigate('/auth/join');
+    }
+  }, [userType]);
+
+  useEffect(() => {
+    const presentAuthStage = getPresentAuthStage();
+    const token = getAuthSessionId();
+    if (presentAuthStage && token && currentStepTitle === steps[0].title) {
+      const authStageExists = steps.find(
+        (step) => step.title === presentAuthStage,
+      );
+      if (authStageExists) setCurrentStepTitle(presentAuthStage);
+    }
+  }, []);
 
   return (
-    <>
-      <UiForm
-        schema={registrationSchema}
-        formData={formData}
-        onSubmit={handleSubmit}
-      >
-        {({ errors }) => (
-          <>
-            <JoinUsHeading>{heading}</JoinUsHeading>
-            <GridSpacer>
-              <UiInput
-                label="First Name*"
-                value={formData.firstName}
-                name="firstName"
-                error={errors.firstName}
-                onChange={handleChange}
-              />
-              <UiInput
-                label="Last Name*"
-                value={formData.lastName}
-                name="lastName"
-                error={errors.lastName}
-                onChange={handleChange}
-              />
-              <UiInput
-                label="Email*"
-                value={formData.email}
-                name="email"
-                error={errors.email}
-                onChange={handleChange}
-              />
-              <UiInput
-                label="Phone Number*"
-                type="phone"
-                value={formData.phone}
-                name="phone"
-                error={errors.phone}
-                onChange={handleChange}
-              />
-
-              <UiInput
-                type="password"
-                label="Password*"
-                name="password"
-                value={formData.password!}
-                error={errors.password}
-                onChange={handleChange}
-              />
-              <UiInput
-                type="password"
-                label="Confirm Password*"
-                value={formData.cPassword!}
-                name="cPassword"
-                error={errors.cPassword}
-                onChange={handleChange}
-              />
-            </GridSpacer>
-            <PrivacyPolicyParagraph>
-              By clicking on the following button, you are willing to become
-              TruckDispatch's partner, and agree to our{' '}
-              <a
-                href="https://gettruckdispatch.com/privacy-policy"
-                target="_blank"
-              >
-                Privacy Policy
-              </a>{' '}
-              and our{' '}
-              <a
-                href="https://gettruckdispatch.com/terms-and-conditions"
-                target="_blank"
-              >
-                Terms of Service
-              </a>
-            </PrivacyPolicyParagraph>
-            <UiButton isFullWidth loading={loading} size="large">
-              Join as a{isAgent && 'n'} {userType}
-            </UiButton>
-            <AlreadyAMember>
-              Already a member? <Link to="/auth/login">Sign In</Link>
-            </AlreadyAMember>
-          </>
+    <AuthLayoutStyling infoContent={infoContent}>
+      <StyledAuthContent>
+        {(currentStepTitle === 'Account handler details' ||
+          currentStepTitle === 'Personal details') && (
+          <PersonalDetailsForm goToNext={goToNext} />
         )}
-      </UiForm>
-    </>
+        {currentStepTitle === 'Company Details' && (
+          <CompanyDetailsForm goToNext={goToNext} />
+        )}
+        {currentStepTitle === 'Verify phone number' && (
+          <VerifyPhoneForm goToNext={goToNext} />
+        )}
+        {currentStepTitle === 'Choose password' && (
+          <ChoosePasswordForm goToNext={goToNext} />
+        )}
+      </StyledAuthContent>
+    </AuthLayoutStyling>
   );
 }
 
-const JoinUsHeading = styled.h3`
-  color: var(--color-primary);
-  font-family: 'Audiowide';
-  font-size: 24px;
-`;
-const GridSpacer = styled.div`
-  display: grid;
-  grid-template-columns: auto;
-  gap: 12px;
-  margin-bottom: 12px;
+const InfoContentContainer = styled.div`
+  height: 80%;
+  position: relative;
 
-  @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
-    grid-template-columns: auto auto;
+  .copyright {
+    position: absolute;
+    bottom: 0;
+    display: none;
+
+    @media screen and (min-width: ${sizes.tablet}) {
+      display: block;
+    }
   }
-`;
-
-const PrivacyPolicyParagraph = styled.p`
-  color: var(--color-gray-500);
-  font-size: 14px;
-  margin-bottom: 16px;
-`;
-
-const AlreadyAMember = styled.p`
-  text-align: center;
-  font-size: 14px;
-  color: var(--color-gray-400);
 `;
