@@ -14,13 +14,12 @@ const ChatLayout = lazy(() => import('../layouts/ChatLayout'));
 
 // Auth
 const RegistrationPage = lazy(() => import('../pages/auth/RegistrationPage'));
+const SelectUsertypePage = lazy(
+  () => import('../pages/auth/SelectUsertypePage'),
+);
 const LoginPage = lazy(() => import('../pages/auth/LoginPage'));
 const ForgotPasswordPage = lazy(
   () => import('../pages/auth/ForgotPasswordPage'),
-);
-const VerifyPhonePage = lazy(() => import('../pages/auth/VerifyPhonePage'));
-const RequestVerificationCodePage = lazy(
-  () => import('../pages/auth/RequestVerificationCodePage'),
 );
 
 // Profile
@@ -220,6 +219,10 @@ const router = createBrowserRouter([
     element: <AuthLayout />,
     children: [
       {
+        path: 'join',
+        element: <SelectUsertypePage />,
+      },
+      {
         path: 'join/:userType',
         element: <RegistrationPage />,
       },
@@ -230,14 +233,6 @@ const router = createBrowserRouter([
       {
         path: 'forgot-password',
         element: <ForgotPasswordPage />,
-      },
-      {
-        path: 'verify-phone',
-        element: <VerifyPhonePage />,
-      },
-      {
-        path: 'verify-phone/request-code',
-        element: <RequestVerificationCodePage />,
       },
     ],
   },

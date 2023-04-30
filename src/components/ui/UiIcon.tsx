@@ -1,4 +1,5 @@
-import React from 'react';
+import styled from 'styled-components';
+
 // These icons should be arranged alphabetically for easy sorting
 import {
   ArrowLeft,
@@ -8,12 +9,9 @@ import {
   CaretUp,
   Chats,
   CreditCard,
-  Check,
   Checks,
   DotsThree,
   DotsThreeVertical,
-  Eye,
-  EyeSlash,
   FolderNotchOpen,
   House,
   Kanban,
@@ -30,29 +28,47 @@ import {
   UsersThree,
   X,
 } from 'phosphor-react';
-import styled from 'styled-components';
+import { ReactComponent as Company } from './icons/company.svg';
+import { ReactComponent as Car } from './icons/car.svg';
+import { ReactComponent as Check } from './icons/check.svg';
+import { ReactComponent as CallReceived } from './icons/call-received.svg';
+import { ReactComponent as DocumentUpload } from './icons/document-upload.svg';
+import { ReactComponent as Eye } from './icons/eye.svg';
+import { ReactComponent as EyeSlash } from './icons/eye-slash.svg';
+import { ReactComponent as InfoCircle } from './icons/info-circle.svg';
+import { ReactComponent as MagicStar } from './icons/magic-star.svg';
+import { ReactComponent as PasswordCheck } from './icons/password-check.svg';
+import { ReactComponent as UserOctagon } from './icons/user-octagon.svg';
+import { ReactComponent as UserSquare } from './icons/user-square.svg';
 
 // These icons should be arranged alphabetically for easy sorting
 const icons = {
   ArrowLeft: <ArrowLeft />,
   ArrowRight: <ArrowRight />,
   ArrowUpRight: <ArrowUpRight />,
+  Buildings: <Company />,
+  CallReceived: <CallReceived />,
+  Car: <Car />,
   CaretDown: <CaretDown />,
   CaretUp: <CaretUp />,
   Chats: <Chats />,
   CreditCard: <CreditCard />,
   Check: <Check />,
   Checks: <Checks />,
+  DocumentUpload: <DocumentUpload />,
   DotsThree: <DotsThree />,
   DotsThreeVertical: <DotsThreeVertical />,
   Eye: <Eye />,
   EyeSlash: <EyeSlash />,
   FolderNotchOpen: <FolderNotchOpen />,
   House: <House />,
+  InfoCircle: <InfoCircle />,
   Kanban: <Kanban />,
+  MagicStar: <MagicStar />,
   MapPin: <MapPin />,
   Money: <Money />,
   PaperPlaneTilt: <PaperPlaneTilt />,
+  PasswordCheck: <PasswordCheck />,
   PencilSimple: <PencilSimple />,
   ShieldCheck: <ShieldCheck />,
   SignOut: <SignOut />,
@@ -60,7 +76,9 @@ const icons = {
   Star: <Star />,
   Truck: <Truck />,
   User: <User />,
+  UserOctagon: <UserOctagon />,
   UsersThree: <UsersThree />,
+  UserSquare: <UserSquare />,
   X: <X />,
 };
 
@@ -71,10 +89,19 @@ interface Props {
   size?: string;
 }
 export default function UiIcon({ icon, size = '16' }: Props) {
-  return <IconStyle size={size}>{icons[icon]}</IconStyle>;
+  return (
+    <IconStyle size={size} className="icon">
+      {icons[icon]}
+    </IconStyle>
+  );
 }
 
 const IconStyle = styled.span`
   font-size: ${({ size }: { size?: Props['size'] }) =>
     pxToRem((size && parseInt(size)) || 16)};
+
+  svg {
+    width: ${({ size }: { size?: Props['size'] }) =>
+      pxToRem((size && parseInt(size)) || 16)};
+  }
 `;

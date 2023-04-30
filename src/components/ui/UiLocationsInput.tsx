@@ -49,7 +49,7 @@ export default function UiLocationsInput({
 
   return (
     <UiField label={label} name={name} error={error}>
-      <input className="global-input" ref={inputRef} key={value} />
+      <input className="global-input full-radius" ref={inputRef} key={value} />
       <UiInputContainer>
         {cantFindLocation && (
           <UiInput
@@ -60,21 +60,27 @@ export default function UiLocationsInput({
           />
         )}
       </UiInputContainer>
-      <div className="action-btn">
+      <ButtonContainer>
         <UiButton
           variant="primary-text"
-          size="no-size"
+          size="text"
           type="button"
           onClick={() => setCantFindLocation(!cantFindLocation)}
         >
           {' '}
           {cantFindLocation ? 'Cancel' : "Can't find location?"}
         </UiButton>
-      </div>
+      </ButtonContainer>
     </UiField>
   );
 }
 
 const UiInputContainer = styled.div`
   margin-top: ${pxToRem(8)};
+`;
+
+const ButtonContainer = styled.div`
+  button {
+    margin-top: 0;
+  }
 `;

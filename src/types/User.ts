@@ -8,7 +8,6 @@ export default interface User {
   email: string;
   phone: string;
   avatar?: string;
-  noOfRatingsReceived?: number;
   completedTrips?: number;
   userType: (typeof userTypes)[number];
   status?:
