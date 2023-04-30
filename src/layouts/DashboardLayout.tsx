@@ -200,7 +200,7 @@ const Layout = styled.div`
   display: flex;
   height: 100vh;
   width: 100%;
-  background-color: var(--color-gray-100);
+  background-color: var(--color-gray-20);
   overflow: hidden;
 `;
 
