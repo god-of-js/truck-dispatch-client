@@ -81,59 +81,70 @@ export default function DashboardSidebar() {
   }
 
   // toggle function
-  const [showNames, setShowNames] = useState(true);
+  const [showNames, setShowNames] = useState(false);
 
   const toggleShowNames = () => {
     setShowNames(!showNames);
   };
 
   return (
-    <Sidebar>
+    <Sidebar className={` ${showNames ? 'width' : ''} `}>
       <div className="sidebar__inner">
         <Link to="/my-trips">
-
           <LogoContainer>
             <TDLogo src={TruckDispatchLogo} alt="truck-dispatch" />
           </LogoContainer>
           <ToggleContainer onClick={toggleShowNames} className="toggle-button">
-            {showNames ? <UiIcon icon="ArrowCircleLeft" size="20" /> : 'X'}
+            {showNames ? (
+              <UiIcon icon="ArrowCircleLeft" size="20" />
+            ) : (
+              <UiIcon icon="ArrowCircleLeft" size="20" />
+            )}
           </ToggleContainer>
-
         </Link>
-
 
         <TabList>
           {routes.map((route, index) => (
             <Link to={route.path} key={index}>
-              <Tab isActive={isRouteActive(route.path)}>
+              <Tab
+                isActive={isRouteActive(route.path)}
+                className={` ${showNames ? 'show-name' : ''} `}
+              >
                 <UiIcon icon={route.iconName} size="24" />
-
-                <UiIconName>{route.iconName}</UiIconName>
+                {showNames && (
+                  <UiIconName className="name">{route.name}</UiIconName>
+                )}
               </Tab>
             </Link>
           ))}
           <Link to="/chat">
-            <Tab isActive={isRouteActive('/chat')}>
+            <Tab
+              className={` ${showNames ? 'show-name' : ''} `}
+              isActive={isRouteActive('/chat')}
+            >
               <div className="chat-icon-container">
                 <UiIcon icon="MessageChat" size="24" />
                 {unreadChat.length !== 0 && (
                   <MessageCount>{unreadChat.length}</MessageCount>
                 )}
-                <p className="chat-name">Chat</p>
+                {showNames && <p className="name chat-name">Chat</p>}
               </div>
             </Tab>
           </Link>
         </TabList>
-
 
         <BottomActions>
           <UserContainer onClick={() => logOutUser()}>
             <UserContainerInner>
               <UiIcon icon="User" size="20" />
             </UserContainerInner>
+            <div className="user-details">
+              {showNames && <p className=" user-name">Onyewuchi Emeka <br />TRANSPORTER </p>}
+            </div>
           </UserContainer>
           <LogOutContainer onClick={() => logOutUser()}>
             <UiIcon icon="Logout" size="24" />
+            {showNames && <p className="logout">Logout</p>}
           </LogOutContainer>
         </BottomActions>
       </div>
@@ -162,8 +173,15 @@ const Sidebar = styled.nav`
     position: static;
     border-right: ${pxToRem(1)} solid var(--color-gray-200);
   }
+
   @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
-    width: 15%;
+    width: 7%;
+  }
+
+  &.width {
+    @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
+      width: 20%;
+    }
   }
 `;
 
@@ -227,7 +245,7 @@ const Tab = styled.li`
   padding: ${pxToRem(12)} ${pxToRem(20)};
   font-size: ${pxToRem(14)};
   color: ${({ isActive }: { isActive: boolean }) =>
-    isActive ? 'var(--color-primary)' : 'var(--color-gray-500)'};
+    isActive ? 'var(--color-primary)' : 'var(--color-primary-100)'};
   font-weight: 600;
   opacity: 0.8;
   display: flex;
@@ -236,7 +254,7 @@ const Tab = styled.li`
   justify-items: left;
 
   .chat-icon-container {
-    position: relative;
+    position: fixed;
     width: fit-content;
     justify-content: center;
     align-items: center;
@@ -245,6 +263,10 @@ const Tab = styled.li`
     .chat-name {
       padding-left: 9.04px;
     }
+  }
+
+  .show-name .name {
+    display: none;
   }
 
   &:hover {
@@ -270,28 +292,73 @@ const Tab = styled.li`
     margin: ${pxToRem(8)} 0;
   }
 `;
+
 const LogOutContainer = styled.div`
+  width: 100%;
   display: flex;
-  justify-content: center;
+  font-weight: 600;
+  opacity: 0.8;
   cursor: pointer;
   color: var(--color-gray-500);
-  width: 100%;
-  font-weight: 600;
+  padding: ${pxToRem(6)} ${pxToRem(20)};
+  font-size: ${pxToRem(14)};
+
+  align-items: center;
+  justify-items: left;
 
   &:hover {
     color: var(--color-danger);
   }
+
+  .logout {
+    padding-left: 9.04px;
+  }
+
+  @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
+    border-bottom: none;
+    padding: ${pxToRem(2)} ${pxToRem(2)};
+
+    margin: ${pxToRem(8)} 0;
+  }
+
+  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+    border-bottom: none;
+
+    margin: ${pxToRem(8)} 0;
+  }
 `;
 const UserContainer = styled.div`
+  width: 100%;
   display: flex;
-  justify-content: center;
+  font-weight: 600;
+  opacity: 0.8;
   cursor: pointer;
   color: var(--color-gray-500);
-  width: 100%;
-  font-weight: 600;
-  padding-bottom: 5px;
-`;
+  padding: ${pxToRem(6)} ${pxToRem(20)};
+  font-size: ${pxToRem(14)};
 
+  align-items: center;
+  justify-items: left;
+
+  &:hover {
+    color: var(--color-danger);
+  }
+  .user-name {
+    padding-left: 9.04px;
+  
+  }
+
+  .user-details{
+    text-transform: capitalize;
+    display: flex;
+    padding-top: 0;
+    padding-bottom: 0;
+    width: 100%;
+    flex-direction: column;
+    padding; -10px;
+
+  }
+`;
 const UserContainerInner = styled.div`
   list-style-type: none;
   height: 40px;
@@ -304,19 +371,23 @@ const UserContainerInner = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
 const BottomActions = styled.div`
-  position: relative;
+  border-top: 1px solid var(--color-gray-900);
   display: none;
   position: absolute;
   bottom: 0;
+  right: 0;
   width: 100%;
-  padding: ${pxToRem(48)} 0;
+  margin: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     display: block;
   }
 `;
-
 const MessageCount = styled.div`
   position: absolute;
   top: 0;
