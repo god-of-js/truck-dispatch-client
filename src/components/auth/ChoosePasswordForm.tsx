@@ -10,7 +10,7 @@ interface Props {
   goToNext: () => void;
 }
 
-export default function ChoosePasswordForm( { goToNext }: Props ) {
+export default function ChoosePasswordForm({ goToNext }: Props) {
   const [formData, setFormData] = useState({
     password: '',
     confirmPassword: '',
@@ -22,7 +22,7 @@ export default function ChoosePasswordForm( { goToNext }: Props ) {
     });
   }
   function onSubmit() {
-    goToNext()
+    goToNext();
   }
 
   return (

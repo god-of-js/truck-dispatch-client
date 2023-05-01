@@ -13,7 +13,7 @@ interface Props {
   goToNext: () => void;
 }
 
-export default function PersonDetailsForm({ goToNext } :Props) {
+export default function PersonDetailsForm({ goToNext }: Props) {
   const { userType } = useParams();
   const isCompany = userType?.includes('company');
 
@@ -45,7 +45,7 @@ export default function PersonDetailsForm({ goToNext } :Props) {
     });
   }
   const onSubmit = () => {
-    goToNext()
+    goToNext();
   };
 
   return (

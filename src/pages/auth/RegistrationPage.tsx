@@ -11,7 +11,7 @@ import { userTypes } from 'utils/constants';
 
 export default function RegistrationPage() {
   const { userType } = useParams();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const steps: Step[] = [
     {
       title: 'Company Details',
@@ -48,9 +48,7 @@ export default function RegistrationPage() {
     return true;
   });
 
-  const [currentStepTitle, setCurrentStepTitle] = useState(
-    steps[0].title,
-  );
+  const [currentStepTitle, setCurrentStepTitle] = useState(steps[0].title);
 
   function goToNext() {
     const indexOfCurrentStage = steps.findIndex(
@@ -67,17 +65,25 @@ export default function RegistrationPage() {
 
   useEffect(() => {
     if (!userTypes.includes(userType!)) {
-      navigate('/auth/join')
+      navigate('/auth/join');
     }
-  }, [userType])
+  }, [userType]);
 
   return (
     <AuthLayoutStyling infoContent={infoContent}>
-      {currentStepTitle === 'Company Details' && <CompanyDetailsForm goToNext={goToNext}/>}
+      {currentStepTitle === 'Company Details' && (
+        <CompanyDetailsForm goToNext={goToNext} />
+      )}
       {(currentStepTitle === 'Account handler details' ||
-        currentStepTitle === 'Personal details') && <PersonalDetailsForm goToNext={goToNext}/>}
-      {currentStepTitle === 'Verify phone number' && <VerifyPhoneForm goToNext={goToNext}/>}
-      {currentStepTitle === 'Choose password' && <ChoosePasswordForm goToNext={goToNext}/>}
+        currentStepTitle === 'Personal details') && (
+        <PersonalDetailsForm goToNext={goToNext} />
+      )}
+      {currentStepTitle === 'Verify phone number' && (
+        <VerifyPhoneForm goToNext={goToNext} />
+      )}
+      {currentStepTitle === 'Choose password' && (
+        <ChoosePasswordForm goToNext={goToNext} />
+      )}
     </AuthLayoutStyling>
   );
 }

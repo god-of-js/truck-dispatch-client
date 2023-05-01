@@ -51,7 +51,6 @@ const StyledAuthContent = styled.div`
   @media (min-width: 700px) {
     .form-container {
       width: 80%;
-      
     }
   }
   @media (min-width: ${sizes.tablet}) {

@@ -52,7 +52,7 @@ import UserSquare from './icons/UserSquare';
 
 // These icons should be arranged alphabetically for easy sorting
 const icons = {
-  ArrowCircleLeft: <ArrowCircleLeft/>,
+  ArrowCircleLeft: <ArrowCircleLeft />,
   ArrowLeft: <ArrowLeft />,
   ArrowRight: <ArrowRight />,
   ArrowUpRight: <ArrowUpRight />,

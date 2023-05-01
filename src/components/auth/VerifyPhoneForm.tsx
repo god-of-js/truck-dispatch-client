@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-
 import styled from 'styled-components';
 import UiIcon from 'ui/UiIcon';
 import UiInput from 'ui/UiInput';
@@ -13,9 +12,6 @@ import { toAnyAction } from 'utils/helpers';
 import { sendOTP, VerifyOtp } from 'modules/Account';
 import { Toast } from 'utils/toast';
 import VerifyPhoneSchema from 'utils/validations/VerifyPhoneSchema';
-
-
-
 
 interface Props {
   goToNext: () => void;
