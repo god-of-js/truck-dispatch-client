@@ -30,7 +30,7 @@ export default function DashboardSidebar() {
   const transporterRoutes: Route[] = [
     {
       path: '/available-jobs',
-      name: 'Available Jobs',
+      name: 'Jobs',
       iconName: 'Jobs',
     },
     {
@@ -45,7 +45,7 @@ export default function DashboardSidebar() {
     },
     {
       path: '/',
-      name: 'Vehcles',
+      name: 'Vehicles',
       iconName: 'TruckImg',
     },
     {
@@ -91,7 +91,10 @@ export default function DashboardSidebar() {
       <div className="sidebar__inner">
         <header>
           <Link to="/my-trips">
-            <img src={TruckDispatchLogo} alt="truck-dispatch" />
+            <div className="logo-container">
+              <div className="logo-place-holder" />
+              <span>Truckdispatch</span>
+            </div>
           </Link>
           <button className="toggle-btn" onClick={toggleShowNames}>
             <UiIcon
@@ -165,9 +168,25 @@ const Sidebar = styled.nav`
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: ${pxToRem(20)} 0;
+      .logo-container {
+        display: flex;
+        align-items: center;
+        gap: ${pxToRem(8)};
 
-      img {
-        width: ${pxToRem(100)};
+        .logo-place-holder {
+          width: ${pxToRem(40)};
+          height: ${pxToRem(40)};
+          background: var(--color-primary);
+          border-radius: ${pxToRem(8)};
+        }
+        span {
+          color: var(--color-neutralBlack);
+          font-size: ${pxToRem(16)};
+          font-weight: 700;
+          display: ${({ isExpanded }: { isExpanded: boolean }) =>
+            isExpanded ? 'block' : 'none'};
+        }
       }
 
       .toggle-btn {
@@ -217,35 +236,38 @@ interface TabProps {
   isActive: boolean;
   isExpanded: boolean;
 }
+const activeTabStyle = `
+border-color: var(--color-primary);
+color: var(--color-primary);
+background-color: var(--color-primary-10);
+
+svg {
+  fill: var(--color-primary);
+}`;
 const Tab = styled.li`
   padding: ${pxToRem(12)};
   font-size: ${pxToRem(16)};
   color: ${({ isActive }: TabProps) =>
-    isActive ? 'var(--color-primary)' : 'var(--color-primary-100)'};
+    isActive ? 'var(--color-primary)' : 'var(--color-gray-80)'};
   font-weight: 600;
-  opacity: 0.8;
   display: flex;
   align-items: center;
-  justify-items: left;
+  justify-content: ${({ isExpanded }: TabProps) =>
+    isExpanded ? 'flex-start' : 'center'};
   border-radius: 0 ${pxToRem(8)} ${pxToRem(8)} 0;
   gap: ${pxToRem(8)};
 
   svg {
-    fill: var(--color-gray-80);
+    fill: ${({ isActive }: TabProps) =>
+      isActive ? 'var(--color-primary)' : 'var(--color-gray-80)'};
   }
 
   .route-name {
     display: ${({ isExpanded }: TabProps) => (isExpanded ? 'block' : 'none')};
   }
-
+  ${({ isActive }: TabProps) => isActive && activeTabStyle}
   &:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
-    background-color: var(--color-primary-10);
-
-    svg {
-      fill: var(--color-primary);
-    }
+    ${activeTabStyle}
   }
 
   @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
@@ -343,7 +365,7 @@ const UserContainerInner = styled.div`
   align-items: center;
 `;
 const BottomActions = styled.div`
-  border-top: 1px solid var(--color-gray-900);
+  border-top: ${pxToRem(1)} solid var(--color-gray);
   display: none;
   position: absolute;
   bottom: 0;
