@@ -231,7 +231,7 @@ const Tab = styled.li`
   gap: ${pxToRem(8)};
 
   svg {
-    fill: var(--color-gray-80)
+    fill: var(--color-gray-80);
   }
 
   .route-name {
