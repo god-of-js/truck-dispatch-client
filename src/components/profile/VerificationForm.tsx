@@ -2,7 +2,10 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { startVerificationProcess, updateVerification } from 'modules/Account';
+import {
+  startVerificationProcess,
+  updateVerification,
+} from 'modules/Verification';
 import {
   aValueHasBeenChanged,
   deepRootedToFormData,
@@ -48,7 +51,7 @@ export default function VerificationForm({ parentLoading, onVerified }: Props) {
     },
   });
   const verification = useSelector(
-    (state: RootState) => state.account.verification,
+    (state: RootState) => state.verification.verification,
   );
   const [loading, setLoading] = useState(false);
   const idTypeOptions = [

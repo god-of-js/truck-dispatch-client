@@ -8,7 +8,7 @@ import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
 
 import UiIcon, { Icons } from '../ui/UiIcon';
 import { RootState } from 'modules/index';
-import { removeUserSessionId } from 'utils/userSession';
+import { removeUserSessionId } from 'utils/localStorageMethods';
 import { selectUnreadChats } from 'modules/Chat';
 
 interface Route {

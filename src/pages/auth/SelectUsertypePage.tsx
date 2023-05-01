@@ -1,6 +1,6 @@
 import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
 import styled from 'styled-components';
-import UiIcon from 'ui/UiIcon';
+import UiIcon, { Icons } from 'ui/UiIcon';
 import UiButton from 'ui/UiButton';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -10,34 +10,33 @@ export default function SelectUsertypePage() {
   const [userTypeRoute, setUserTypeRoute] = useState('');
 
   const navigate = useNavigate();
-
-  const userTypeData = [
+  interface UserType {
+    icons: Icons[];
+    title: string;
+    text: string;
+    type: string;
+  }
+  const userTypeData: UserType[] = [
     {
-      icons: [<UiIcon icon="Car" size="17" />],
+      icons: ['Car'],
       title: 'Transporter',
       text: 'Individual truck owner or driver',
       type: 'transporter',
     },
     {
-      icons: [<UiIcon icon="UserSquare" size="17" />],
+      icons: ['UserSquare'],
       title: 'Agent',
       text: 'Clients / individuals with jobs',
       type: 'agent',
     },
     {
-      icons: [
-        <UiIcon icon="Car" size="17" />,
-        <UiIcon icon="Buildings" size="17" />,
-      ],
+      icons: ['Car', 'Buildings'],
       title: 'Transport Company',
       text: 'Company with trucks',
-      type: 'transport_company',
+      type: 'transportCompany',
     },
     {
-      icons: [
-        <UiIcon icon="UserSquare" size="17" />,
-        <UiIcon icon="Buildings" size="17" />,
-      ],
+      icons: ['UserSquare', 'Buildings'],
       title: 'Company',
       text: 'Company with jobs',
       type: 'company',
@@ -50,33 +49,44 @@ export default function SelectUsertypePage() {
 
   return (
     <AuthLayoutStyling invert img>
-      <SelectUserTypeStyled>
-        <StyledTag>
+      <SelectUserTypeStyling>
+        <WelcomeMessageTag>
           <p>Welcome to TruckDispatch</p>
           <UiIcon icon="MagicStar" />
-        </StyledTag>
-        <h1>Deliver and receive your cargo with ease</h1>
-        <p className="info-text">
-          To continue, choose a user type that best describes you, or what you
-          do
-        </p>
+        </WelcomeMessageTag>
+        <header>
+          <h1>Deliver and receive your cargo with ease</h1>
+          <p className="info-text">
+            To continue, choose a user type that best describes you, or what you
+            do
+          </p>
+        </header>
 
         <StyledUserTypeGrid>
-          {userTypeData.map((data) => (
+          {userTypeData.map((userType) => (
             <div
-              key={data.title}
-              className={`user-card ${
-                data.type === userTypeRoute && 'active'
-              } `}
-              onClick={() => {
-                selectUserType(data.type);
-              }}
+              className={`user-card-container ${
+                userType.type === userTypeRoute ? 'active' : ''
+              }`}
+              key={userType.title}
             >
-              <div className="icons-container">
-                {data.icons.map((icon) => icon)}
+              <div
+                key={userType.title}
+                className={`user-card ${
+                  userType.type === userTypeRoute && 'active'
+                } `}
+                onClick={() => {
+                  selectUserType(userType.type);
+                }}
+              >
+                <div className="icons-container">
+                  {userType.icons.map((icon) => (
+                    <UiIcon key={icon} icon={icon} size="17" />
+                  ))}
+                </div>
+                <h2>{userType.title}</h2>
+                <p>{userType.text}</p>
               </div>
-              <h2>{data.title}</h2>
-              <p>{data.text}</p>
             </div>
           ))}
         </StyledUserTypeGrid>
@@ -89,18 +99,20 @@ export default function SelectUsertypePage() {
         >
           Get Started
         </UiButton>
-        <p>
+        <p className="bottom-container">
           Already have an account? <Link to="/auth/login">Sign In</Link>
         </p>
-      </SelectUserTypeStyled>
+      </SelectUserTypeStyling>
     </AuthLayoutStyling>
   );
 }
 
-const SelectUserTypeStyled = styled.section`
+const SelectUserTypeStyling = styled.div`
   * {
     margin: 0;
   }
+  height: 100%;
+  position: relative;
   width: 100%;
   p {
     color: var(--color-gray-80);
@@ -123,8 +135,13 @@ const SelectUserTypeStyled = styled.section`
   button {
     margin-bottom: ${pxToRem(80)};
   }
+  .bottom-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
 
-  @media (min-width: 530px) {
+  @media (min-width: ${sizes.mobile}) {
     h1 {
       width: 80%;
     }
@@ -132,14 +149,14 @@ const SelectUserTypeStyled = styled.section`
       width: 85%;
     }
   }
-  @media (min-width: 950px) {
+  @media (min-width: ${sizes.tablet}) {
     width: 70%;
     button {
       width: 45%;
     }
   }
 
-  @media (min-width: 1330px) {
+  @media (min-width: ${sizes.laptopWidth}) {
     width: 65%;
     h1 {
       font-size: ${pxToRem(42)};
@@ -160,21 +177,23 @@ const SelectUserTypeStyled = styled.section`
   }
 `;
 
-const StyledTag = styled.span`
+const WelcomeMessageTag = styled.span`
   display: none;
   width: fit-content;
   @media (min-width: ${sizes.tablet}) {
     display: flex;
     align-items: center;
-    gap: ${pxToRem(8)};
+    gap: ${pxToRem(16)};
     background-color: var(--color-primary-10);
     height: ${pxToRem(30)};
     padding: ${pxToRem(4)} ${pxToRem(12)};
     border-radius: ${pxToRem(18)};
-    font-size: ${pxToRem(14)};
-    font-weight: 400;
-    font-family: 'thiccboi-regular';
-    color: var(--color-gray-90);
+    p {
+      font-size: ${pxToRem(14)};
+      font-weight: 400;
+      font-family: 'thiccboi-regular';
+      color: var(--color-gray-90);
+    }
     span {
       fill: var(--color-primary);
     }
@@ -182,51 +201,61 @@ const StyledTag = styled.span`
 `;
 
 const cardActiveState = `
-border: ${pxToRem(2)} solid var(--color-primary);
-background-color: var(--color-primary-10);
-.icons-container {
-  span {
-    fill: var(--color-primary);
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-10);
+  .icons-container {
+    svg {
+      fill: var(--color-primary);
+    }
   }
-}`;
+`;
 
 const StyledUserTypeGrid = styled.div`
   display: grid;
   gap: ${pxToRem(12)};
   margin-bottom: ${pxToRem(60)};
-  .user-card {
-    border: 1px solid var(--color-gray);
+  .user-card-container {
+    padding: ${pxToRem(1)};
+    height: fit-content;
     border-radius: ${pxToRem(8)};
-    padding: ${pxToRem(12)};
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
+    .user-card {
+      border: 1px solid var(--color-gray);
+      border-radius: ${pxToRem(8)};
+      padding: ${pxToRem(12)};
+      cursor: pointer;
 
-    .icons-container {
-      display: flex;
-      gap: ${pxToRem(5)};
-      margin-bottom: ${pxToRem(12)};
-      span {
-        fill: var(--color-neutralBlack);
+      .icons-container {
+        display: flex;
+        gap: ${pxToRem(5)};
+        margin-bottom: ${pxToRem(12)};
+        svg {
+          fill: var(--color-neutralBlack);
+        }
+      }
+
+      h2 {
+        color: var(--color-neutralBlack);
+        font-size: ${pxToRem(16)};
+        font-family: 'thiccboi-regular';
+        font-weight: 600;
+        margin-bottom: ${pxToRem(8)};
+      }
+      p {
+        color: var(--color-gray-80);
+        font-size: ${pxToRem(14)};
       }
     }
-
-    h2 {
-      color: var(--color-neutralBlack);
-      font-size: ${pxToRem(16)};
-      font-family: 'thiccboi-regular';
-      font-weight: 600;
-      margin-bottom: ${pxToRem(8)};
-    }
-    p {
-      color: var(--color-gray-80);
-      font-size: ${pxToRem(14)};
-    }
-
     &:hover {
-      ${cardActiveState}
+      background: var(--color-primary);
+      .user-card {
+        ${cardActiveState}
+      }
     }
     &.active {
-      ${cardActiveState}
+      background: var(--color-primary);
+      .user-card {
+        ${cardActiveState}
+      }
     }
   }
 

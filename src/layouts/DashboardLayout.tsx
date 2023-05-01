@@ -25,7 +25,7 @@ import UiOverlay from 'ui/UiOverlay';
 import EmailHasBeenSentModal from 'components/profile/EmailHasBeenSentModal';
 import Loader from 'components/layout/Loader';
 import EmailHasBeenVerifiedModal from 'components/profile/EmailHasBeenVerifiedModal';
-import { getUserSessionId, saveUserSessionId } from 'utils/userSession';
+import { getUserSessionId, saveUserSessionId } from 'utils/localStorageMethods';
 
 export default function DashboardLayout() {
   const dispatch = useDispatch();

@@ -1,12 +1,24 @@
 import styled from 'styled-components';
 import sizes from 'utils/sizes';
-const StyledAuthContent = styled.div`
+interface Props {
+  /** The inverted prop means the form is on the left instead of on the right which is the normal flow. */
+  inverted?: boolean;
+  children: React.ReactNode;
+}
+
+export default function StyledAuthContent({ children, inverted }: Props) {
+  return <Styling inverted={inverted}>{children}</Styling>;
+}
+
+const Styling = styled.div`
   * {
     margin: 0;
   }
+  height: 100%;
   padding-bottom: ${pxToRem(30)};
   header {
-    text-align: center;
+    ${({ inverted }: { inverted?: boolean }) =>
+      !inverted && `text-align: center;`};
     margin-bottom: ${pxToRem(40)};
     span {
       fill: var(--color-neutralBlack);
@@ -27,10 +39,19 @@ const StyledAuthContent = styled.div`
   }
   .form-container {
     width: 100%;
-    margin: 0 auto;
-    max-width: ${pxToRem(450)};
+    height: 100%;
+    margin: auto;
+    position: relative;
+    ${({ inverted }: { inverted?: boolean }) =>
+      inverted ? '' : 'margin: 0 auto'};
+    max-width: ${pxToRem(400)};
     button {
       margin-top: ${pxToRem(24)};
+    }
+    .no-btn-margin-top {
+      button {
+        margin-top: 0;
+      }
     }
     .select-with-optional-alert-container {
       display: flex;
@@ -42,20 +63,76 @@ const StyledAuthContent = styled.div`
       flex-direction: column;
       gap: ${pxToRem(24)};
     }
-  }
-  @media (min-width: 580px) {
-    .form-container {
-      width: 90%;
+
+    .duo-button-container {
+      display: flex;
+      flex-direction: column;
+      margin-top: ${pxToRem(24)};
+      gap: ${pxToRem(12)};
+    }
+    .bottom-actions {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      gap: ${pxToRem(12)};
+
+      width: 100%;
+      bottom: 0;
+      left: 0;
+
+      p {
+        height: ${pxToRem(46)};
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: ${pxToRem(4)};
+      }
+    }
+
+    .hidden-in-mobile,
+    #hidden-in-mobile {
+      display: none;
+    }
+
+    .visible-in-mobile {
+      display: block;
     }
   }
-  @media (min-width: 700px) {
+  @media screen and (min-width: ${sizes.mobile}) {
+    .form-container {
+      width: 90%;
+      .hidden-in-mobile,
+      #hidden-in-mobile {
+        display: block;
+      }
+      .visible-in-mobile {
+        display: none;
+      }
+      .duo-button-container {
+        flex-direction: row;
+      }
+      .bottom-actions {
+        p {
+          justify-content: flex-start;
+        }
+      }
+    }
+  }
+  @media screen and (min-width: ${sizes.tablet}) {
+    .form-container {
+      margin: inherit;
+    }
+  }
+  @media (min-width: ${sizes.mobileLargeWidth}) {
     .form-container {
       width: 80%;
     }
   }
   @media (min-width: ${sizes.tablet}) {
-    width: 60%;
-    margin-left: auto;
+    width: ${({ inverted }: { inverted?: boolean }) =>
+      inverted ? '100%' : '60%'};
+    margin-left: ${({ inverted }: { inverted?: boolean }) =>
+      inverted ? '' : 'auto'};
     header {
       margin-bottom: ${pxToRem(48)};
 
@@ -64,27 +141,18 @@ const StyledAuthContent = styled.div`
         margin-top: ${pxToRem(19)};
         margin-bottom: ${pxToRem(16)};
       }
-      p {
-        width: 80%;
-        margin: 0 auto;
-      }
     }
     .form-container {
       width: 100%;
-      margin: 0 auto;
+      ${({ inverted }: { inverted?: boolean }) =>
+        inverted ? '' : 'margin: 0 auto'};
     }
   }
   @media (min-width: ${sizes.tabletLargeWidth}) {
     padding-bottom: ${pxToRem(50)};
-    header {
-      p {
-        width: 60%;
-      }
-    }
     .form-container {
-      width: 50%;
+      width: ${({ inverted }: { inverted?: boolean }) =>
+        inverted ? '100%' : '50%'};
     }
   }
 `;
-
-export default StyledAuthContent;

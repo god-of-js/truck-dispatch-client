@@ -21,10 +21,6 @@ const LoginPage = lazy(() => import('../pages/auth/LoginPage'));
 const ForgotPasswordPage = lazy(
   () => import('../pages/auth/ForgotPasswordPage'),
 );
-const ResetPasswordPage = lazy(() => import('../pages/auth/ResetPasswordPage'));
-const RequestVerificationCodePage = lazy(
-  () => import('../pages/auth/RequestVerificationCodePage'),
-);
 
 // Profile
 const ProfileDetailsPage = lazy(
@@ -237,14 +233,6 @@ const router = createBrowserRouter([
       {
         path: 'forgot-password',
         element: <ForgotPasswordPage />,
-      },
-      {
-        path: 'reset-password',
-        element: <ResetPasswordPage />,
-      },
-      {
-        path: 'verify-phone/request-code',
-        element: <RequestVerificationCodePage />,
       },
     ],
   },

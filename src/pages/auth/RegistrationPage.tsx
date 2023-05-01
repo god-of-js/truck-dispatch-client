@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import UiSteps, { Step } from 'ui/UiSteps';
@@ -8,18 +8,25 @@ import PersonalDetailsForm from 'components/auth/PersonalDetailsForm';
 import VerifyPhoneForm from '../../components/auth/VerifyPhoneForm';
 import ChoosePasswordForm from 'components/auth/ChoosePasswordForm';
 import { userTypes } from 'utils/constants';
+import styled from 'styled-components';
+import sizes from 'utils/sizes';
+import {
+  getAuthSessionId,
+  getPresentAuthStage,
+  savePresentAuthStage,
+} from 'utils/localStorageMethods';
+import StyledAuthContent from 'components/auth/StyledAuthContent';
 
 export default function RegistrationPage() {
   const { userType } = useParams();
+  const formattedUserType = userType?.toLowerCase();
   const navigate = useNavigate();
+  const currentYear = new Date().getFullYear();
   const steps: Step[] = [
     {
-      title: 'Company Details',
-      detail: 'Provide the company name, address and registration details',
-    },
-    {
       title: 'Account handler details',
-      detail: 'Please provide your full name, email and phone number',
+      detail:
+        'Please provide full name, email and phone number of the account handler',
     },
     {
       title: 'Personal details',
@@ -30,18 +37,31 @@ export default function RegistrationPage() {
       detail: 'Please provide your full name, email and phone number',
     },
     {
+      title: 'Company Details',
+      detail: 'Provide the company name, address and registration details',
+    },
+    {
       title: 'Choose password',
       detail: 'Please provide your full name, email and phone number',
     },
   ].filter(({ title }) => {
-    if (userType?.includes('company') && title === 'Personal details') {
+    if (
+      formattedUserType?.includes('company') &&
+      title === 'Personal details'
+    ) {
       return false;
     }
 
-    if (!userType?.includes('company') && title === 'Company Details') {
+    if (
+      !formattedUserType?.includes('company') &&
+      title === 'Company Details'
+    ) {
       return false;
     }
-    if (!userType?.includes('company') && title === 'Account handler details') {
+    if (
+      !formattedUserType?.includes('company') &&
+      title === 'Account handler details'
+    ) {
       return false;
     }
 
@@ -56,11 +76,17 @@ export default function RegistrationPage() {
     );
     const newTitle = steps[indexOfCurrentStage + 1].title;
     setCurrentStepTitle(newTitle);
+    savePresentAuthStage(newTitle);
   }
-  const infoContent = (
-    <>
-      <UiSteps steps={steps} currentStepTitle={currentStepTitle} />
-    </>
+
+  const infoContent = useMemo(
+    () => (
+      <InfoContentContainer>
+        <UiSteps steps={steps} currentStepTitle={currentStepTitle} />
+        <div className="copyright">© TruckDispatch{currentYear}.</div>
+      </InfoContentContainer>
+    ),
+    [steps],
   );
 
   useEffect(() => {
@@ -69,21 +95,49 @@ export default function RegistrationPage() {
     }
   }, [userType]);
 
+  useEffect(() => {
+    const presentAuthStage = getPresentAuthStage();
+    const token = getAuthSessionId();
+    if (presentAuthStage && token && currentStepTitle === steps[0].title) {
+      const authStageExists = steps.find(
+        (step) => step.title === presentAuthStage,
+      );
+      if (authStageExists) setCurrentStepTitle(presentAuthStage);
+    }
+  }, []);
+
   return (
     <AuthLayoutStyling infoContent={infoContent}>
-      {currentStepTitle === 'Company Details' && (
-        <CompanyDetailsForm goToNext={goToNext} />
-      )}
-      {(currentStepTitle === 'Account handler details' ||
-        currentStepTitle === 'Personal details') && (
-        <PersonalDetailsForm goToNext={goToNext} />
-      )}
-      {currentStepTitle === 'Verify phone number' && (
-        <VerifyPhoneForm goToNext={goToNext} />
-      )}
-      {currentStepTitle === 'Choose password' && (
-        <ChoosePasswordForm goToNext={goToNext} />
-      )}
+      <StyledAuthContent>
+        {(currentStepTitle === 'Account handler details' ||
+          currentStepTitle === 'Personal details') && (
+          <PersonalDetailsForm goToNext={goToNext} />
+        )}
+        {currentStepTitle === 'Company Details' && (
+          <CompanyDetailsForm goToNext={goToNext} />
+        )}
+        {currentStepTitle === 'Verify phone number' && (
+          <VerifyPhoneForm goToNext={goToNext} />
+        )}
+        {currentStepTitle === 'Choose password' && (
+          <ChoosePasswordForm goToNext={goToNext} />
+        )}
+      </StyledAuthContent>
     </AuthLayoutStyling>
   );
 }
+
+const InfoContentContainer = styled.div`
+  height: 80%;
+  position: relative;
+
+  .copyright {
+    position: absolute;
+    bottom: 0;
+    display: none;
+
+    @media screen and (min-width: ${sizes.tablet}) {
+      display: block;
+    }
+  }
+`;

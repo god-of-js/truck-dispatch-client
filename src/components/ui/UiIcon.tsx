@@ -1,4 +1,5 @@
-import React from 'react';
+import styled from 'styled-components';
+
 // These icons should be arranged alphabetically for easy sorting
 import {
   ArrowLeft,
@@ -27,28 +28,27 @@ import {
   UsersThree,
   X,
 } from 'phosphor-react';
-import ArrowCircleLeft from './icons/ArrowCircleLeft';
-import Buildings from './icons/Building';
-import Car from './icons/Car';
-import Check from './icons/Check';
-import CallReceived from './icons/CallReceived';
-import ChartSquare from './icons/ChartSquare';
-import DocumentUpload from './icons/DocumentUpload';
-import Eye from './icons/Eye';
-import EyeSlash from './icons/EyeSlash';
-import InfoCircle from './icons/InfoCircle';
-import Jobs from './icons/Jobs';
-import Logout from './icons/Logout';
-import MagicStar from './icons/MagicStar';
-import MessageChat from './icons/MessageChat';
-import Moneys from './icons/Moneys';
-import PasswordCheck from './icons/PasswordCheck';
-import styled from 'styled-components';
-import Settings from './icons/Settings';
-import TruckImg from './icons/Truck';
-import TruckTick from './icons/TruckTick';
-import UserOctagon from './icons/UserOctagon';
-import UserSquare from './icons/UserSquare';
+import { ReactComponent as ArrowCircleLeft } from './icons/arrow-circle-left.svg';
+import { ReactComponent as ChartSquare } from './icons/chart-square.svg';
+import {ReactComponent as Jobs} from './icons/jobs.svg';
+import {ReactComponent as Logout } from './icons/log-out.svg';
+import {ReactComponent as MessageChat } from './icons/chat.svg';
+import {ReactComponent as Moneys } from './icons/moneys.svg';
+import {ReactComponent as Settings } from './icons/settings.svg';
+import {ReactComponent as TruckImg } from './icons/truck.svg';
+import {ReactComponent as TruckTick } from './icons/ticked-truck.svg';
+import { ReactComponent as Company } from './icons/company.svg';
+import { ReactComponent as Car } from './icons/car.svg';
+import { ReactComponent as Check } from './icons/check.svg';
+import { ReactComponent as CallReceived } from './icons/call-received.svg';
+import { ReactComponent as DocumentUpload } from './icons/document-upload.svg';
+import { ReactComponent as Eye } from './icons/eye.svg';
+import { ReactComponent as EyeSlash } from './icons/eye-slash.svg';
+import { ReactComponent as InfoCircle } from './icons/info-circle.svg';
+import { ReactComponent as MagicStar } from './icons/magic-star.svg';
+import { ReactComponent as PasswordCheck } from './icons/password-check.svg';
+import { ReactComponent as UserOctagon } from './icons/user-octagon.svg';
+import { ReactComponent as UserSquare } from './icons/user-square.svg';
 
 // These icons should be arranged alphabetically for easy sorting
 const icons = {
@@ -56,7 +56,7 @@ const icons = {
   ArrowLeft: <ArrowLeft />,
   ArrowRight: <ArrowRight />,
   ArrowUpRight: <ArrowUpRight />,
-  Buildings: <Buildings />,
+  Buildings: <Company />,
   CallReceived: <CallReceived />,
   Car: <Car />,
   CaretDown: <CaretDown />,
@@ -107,7 +107,11 @@ interface Props {
   size?: string;
 }
 export default function UiIcon({ icon, size = '16' }: Props) {
-  return <IconStyle size={size}>{icons[icon]}</IconStyle>;
+  return (
+    <IconStyle size={size} className="icon">
+      {icons[icon]}
+    </IconStyle>
+  );
 }
 
 const IconStyle = styled.span`

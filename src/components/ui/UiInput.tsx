@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { Ref, useState } from 'react';
 import styled from 'styled-components';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input/input';
 import UiIcon from './UiIcon';
 import UiField from './UiField';
 
+export type InputType = 'text' | 'password' | 'number' | 'phone' | 'date';
 interface Props {
   label: string;
-  type?: 'text' | 'password' | 'number' | 'phone' | 'date';
+  type?: InputType;
   value: string | null | number;
   placeholder?: string;
   /** The name property should always be the same as the model value. example if the input belongs to
@@ -16,6 +17,7 @@ interface Props {
   name: string;
   error?: string;
   disabled?: boolean;
+  inputRef?: React.RefObject<HTMLInputElement>;
   onChange: (event: { name: string; value: string | null }) => void;
 }
 
@@ -27,6 +29,7 @@ export default function UiInput({
   placeholder,
   disabled,
   error,
+  inputRef,
   onChange,
 }: Props) {
   const [inputType, setInputType] = useState(type);
@@ -64,6 +67,7 @@ export default function UiInput({
             value={value || ''}
             placeholder={placeholder}
             name={name}
+            ref={inputRef}
             hasError={!!error}
             disabled={disabled}
             onChange={sendValue}

@@ -8,57 +8,75 @@ import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
 import UiAlert from 'ui/UiAlert';
 import FileUploadWidget from 'ui/FileUploadWidget';
-import StyledAuthContent from './StyledAuthContent';
+import CompanyVerificationSchema from 'utils/validations/CompanyVerificationSchema';
+import { deepRootedToFormData, toAnyAction } from 'utils/helpers';
+import { useDispatch } from 'react-redux';
+import { sendCompanyUpgradeVerification } from 'modules/Verification';
+import UiLocationsInput from 'ui/UiLocationsInput';
 
 interface Props {
-  goToNext: () => void;
+  goToNext: (isSkipped?: boolean) => void;
 }
 export default function CompanyDetailsForm({ goToNext }: Props) {
   const { userType } = useParams();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
-    company_name: '',
-    company_location: '',
-    company_registered: '',
-    CAC_number: '',
+    companyName: '',
+    companyLocation: '',
+    isCompanyRegistered: '',
+    cacReference: '',
+    cacDocument: null as unknown as File,
   });
-  const [doc, setDoc] = useState<{ TDO: null | File }>({ TDO: null });
+  const [loading, setLoading] = useState(false);
 
   function handleChange(event: { name: string; value: string | null }) {
-    setFormData({
-      ...formData,
+    setFormData((data) => ({
+      ...data,
       [event.name]: event.value,
-    });
+    }));
   }
 
   function selectFile(param: { name: string; value: File | File[] }) {
-    if (!Array.isArray(param.value)) setDoc({ TDO: param.value });
-    else setDoc({ TDO: param.value[0] });
+    if (!Array.isArray(param.value)) {
+      setFormData((values) => ({
+        ...values,
+        cacDocument: param.value as File,
+      }));
+    }
   }
 
-  function onSubmit() {
-    goToNext();
+  function submitCompanyVerification() {
+    const data = deepRootedToFormData(formData);
+    setLoading(true);
+    dispatch(toAnyAction(sendCompanyUpgradeVerification(data)))
+      .then(() => {
+        goToNext();
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   const selectOptions = [
     {
       label: 'Yes',
-      value: 'Yes',
+      value: 'yes',
     },
     {
       label: 'No',
-      value: 'No',
+      value: 'no',
     },
   ];
 
   function alternativeUserType() {
-    if (userType === 'transport_company') {
-      return 'transporter';
+    if (userType === 'transportCompany') {
+      return 'a transporter';
     }
-    return 'agent';
+    return 'an agent';
   }
 
-  function alertMessage() {
-    if (userType === 'transport_company') {
+  function notRegisteredUsertype() {
+    if (userType === 'transportCompany') {
       return (
         <>
           a <b>transporter</b>
@@ -73,79 +91,102 @@ export default function CompanyDetailsForm({ goToNext }: Props) {
   }
 
   return (
-    <StyledAuthContent>
+    <div className="form-container">
       <header>
         <UiIcon icon="Buildings" size="43" />
         <h1>Company Details</h1>
         <p>Please provide the correct company details.</p>
       </header>
-      <div className="form-container">
-        <UiForm formData={formData} onSubmit={onSubmit}>
-          {({ errors }) => (
-            <div className="form-container__inner">
-              <UiInput
-                label="Company Name*"
-                placeholder="What is the company name?"
-                value={formData.company_name}
-                name="company_name"
-                onChange={handleChange}
-              />
-              <UiInput
+      <UiForm
+        formData={formData}
+        schema={CompanyVerificationSchema}
+        onSubmit={submitCompanyVerification}
+      >
+        {({ errors }) => (
+          <div className="form-container__inner">
+            <UiInput
+              label="Company Name*"
+              placeholder="What is the company name?"
+              value={formData.companyName}
+              name="companyName"
+              error={errors.companyName}
+              onChange={handleChange}
+            />
+            <div className="no-btn-margin-top">
+              <UiLocationsInput
                 label="Company Location*"
-                placeholder="Where is the company located?"
-                value={formData.company_location}
-                name="company_location"
+                value={formData.companyLocation}
+                error={errors.companyLocation}
+                name="companyLocation"
                 onChange={handleChange}
               />
-              <div className="select-with-optional-alert-container">
-                <UiSelect
-                  label="Is your company registered?"
-                  name="company_registered"
-                  value={formData.company_registered}
-                  options={selectOptions}
+            </div>
+            <div className="select-with-optional-alert-container">
+              <UiSelect
+                label="Is your company registered?"
+                name="isCompanyRegistered"
+                value={formData.isCompanyRegistered}
+                options={selectOptions}
+                error={errors.isCompanyRegistered}
+                onChange={handleChange}
+              />
+
+              {formData.isCompanyRegistered === 'no' && (
+                <UiAlert
+                  variant="gray"
+                  icon={<UiIcon icon="InfoCircle" size="17" />}
+                >
+                  You have to be a registered company to register as a company
+                  on TruckDispatch. But you can always register as{' '}
+                  {notRegisteredUsertype()} now, and upgrade when you have your
+                  documents
+                </UiAlert>
+              )}
+            </div>
+            {formData.isCompanyRegistered === 'yes' && (
+              <>
+                <UiInput
+                  label="CAC Reference Number*"
+                  placeholder="ex: RC 193xxxx"
+                  value={formData.cacReference}
+                  name="cacReference"
+                  error={errors.cacReference}
                   onChange={handleChange}
                 />
-
-                {formData.company_registered === 'No' && (
-                  <UiAlert
-                    variant="gray"
-                    icon={<UiIcon icon="InfoCircle" size="17" />}
-                  >
-                    You have to be a registered company to register as a
-                    transport company on TruckDispatch. But you can always
-                    register as {alertMessage()} now, and upgrade when you have
-                    your documents
-                  </UiAlert>
-                )}
-              </div>
-              {formData.company_registered === 'Yes' && (
-                <>
-                  <UiInput
-                    label="CAC Reference Number*"
-                    placeholder="ex: RC 193xxxx"
-                    value={formData.CAC_number}
-                    name="CAC_number"
-                    onChange={handleChange}
-                  />
-                  <FileUploadWidget
-                    name="TDO"
-                    label="Upload CAC Certificate*"
-                    fileType="document"
-                    value={doc.TDO}
-                    onChange={selectFile}
-                    error={errors.TDO}
-                  />
-                </>
-              )}
-              <UiButton size="large" variant="primary" isFullWidth>
-                {formData.company_registered === 'No'
-                  ? `Continue as ${alternativeUserType()}`
-                  : 'Continue'}
+                <FileUploadWidget
+                  name="cacDocument"
+                  label="Upload CAC Certificate*"
+                  fileType="document"
+                  value={formData.cacDocument}
+                  error={errors.cacDocument}
+                  onChange={selectFile}
+                />
+              </>
+            )}
+            <div>
+              <UiButton
+                size="large"
+                variant="primary"
+                isFullWidth
+                loading={loading}
+                disabled={formData.isCompanyRegistered === 'no'}
+              >
+                Continue
+              </UiButton>
+              <UiButton
+                variant="tertiary"
+                size="large"
+                textCasing="normal"
+                isFullWidth
+                type="button"
+                onClick={goToNext}
+              >
+                {`Continue as ${alternativeUserType()} instead`}
               </UiButton>
             </div>
-          )}
-        </UiForm>
-      </div>
-    </StyledAuthContent>
+          </div>
+        )}
+      </UiForm>
+    </div>
   );
 }
