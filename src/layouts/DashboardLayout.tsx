@@ -133,7 +133,7 @@ export default function DashboardLayout() {
     <Layout>
       <DashboardSidebar />
       <Body>
-        {!user?.avatar && (
+        {/* {!user?.avatar && (
           <UiAlert variant="warning">
             Kindly upload a profile image to foster trust between you and other
             individuals you may work with. To upload a profile picture,{' '}
@@ -178,7 +178,7 @@ export default function DashboardLayout() {
               Verify your account
             </UiButton>
           </UiAlert>
-        )}
+        )} */}
         <DashboardTopNav />
         {loading ? <Loader /> : <Outlet />}
         <UiOverlay isVisible={verificationHasBeenSent}>
