@@ -179,7 +179,6 @@ export default function DashboardLayout() {
             </UiButton>
           </UiAlert>
         )} */}
-        <DashboardTopNav />
         {loading ? <Loader /> : <Outlet />}
         <UiOverlay isVisible={verificationHasBeenSent}>
           <EmailHasBeenSentModal
@@ -208,7 +207,7 @@ const Body = styled.div`
   position: relative;
   overflow-x: auto;
   width: 100%;
-  padding-bottom: ${pxToRem(48)};
+  padding: 0 ${pxToRem(24)};
   .alert-container {
     padding: ${pxToRem(16)};
   }

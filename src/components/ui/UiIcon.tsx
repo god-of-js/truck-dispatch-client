@@ -32,8 +32,9 @@ import { ReactComponent as ArrowCircleLeft } from './icons/arrow-circle-left.svg
 import { ReactComponent as ChartSquare } from './icons/chart-square.svg';
 import { ReactComponent as Jobs } from './icons/jobs.svg';
 import { ReactComponent as Logout } from './icons/log-out.svg';
-import { ReactComponent as MessageChat } from './icons/chat.svg';
+import { ReactComponent as Chat } from './icons/chat.svg';
 import { ReactComponent as Moneys } from './icons/moneys.svg';
+import { ReactComponent as Notification } from './icons/notification.svg';
 import { ReactComponent as Settings } from './icons/settings.svg';
 import { ReactComponent as TruckImg } from './icons/truck.svg';
 import { ReactComponent as TruckTick } from './icons/ticked-truck.svg';
@@ -62,6 +63,7 @@ const icons = {
   CaretDown: <CaretDown />,
   CaretUp: <CaretUp />,
   Chats: <Chats />,
+  Chat: <Chat />,
   ChartSquare: <ChartSquare />,
   CreditCard: <CreditCard />,
   Check: <Check />,
@@ -79,9 +81,9 @@ const icons = {
   Logout: <Logout />,
   MagicStar: <MagicStar />,
   MapPin: <MapPin />,
-  MessageChat: <MessageChat />,
   Moneys: <Moneys />,
   Money: <Money />,
+  Notification: <Notification />,
   PaperPlaneTilt: <PaperPlaneTilt />,
   PasswordCheck: <PasswordCheck />,
   PencilSimple: <PencilSimple />,

@@ -115,7 +115,7 @@ export default function DashboardSidebar() {
           ))}
           <Link to="/chat">
             <Tab isActive={isRouteActive('/chat')} isExpanded={isExpanded}>
-              <UiIcon icon="MessageChat" size="24" />
+              <UiIcon icon="Chat" size="24" />
               {/* TODO: figure out how to manage message count with new design */}
               {/* {unreadChat.length !== 0 && (
                   <MessageCount>{unreadChat.length}</MessageCount>

@@ -65,7 +65,7 @@ const BidOnJobPage = lazy(() => import('../pages/jobs/BidOnJobPage'));
 const ChatPage = lazy(() => import('../pages/chat/ChatPage'));
 
 // VEHICLES
-const VehiclesPage = lazy(() => import('../pages/vehicles/VehiclesPage'))
+const VehiclesPage = lazy(() => import('../pages/vehicles/VehiclesPage'));
 
 //Transactions
 
