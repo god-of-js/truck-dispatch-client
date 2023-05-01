@@ -40,9 +40,18 @@ import { ReactComponent as MagicStar } from './icons/magic-star.svg';
 import { ReactComponent as PasswordCheck } from './icons/password-check.svg';
 import { ReactComponent as UserOctagon } from './icons/user-octagon.svg';
 import { ReactComponent as UserSquare } from './icons/user-square.svg';
-
+import ArrowCircleLeft from './icons/ArrowCircleLeft';
+import ChartSquare from './icons/ChartSquare';
+import Jobs from './icons/Jobs';
+import Logout from './icons/Logout';
+import MessageChat from './icons/MessageChat';
+import Moneys from './icons/Moneys';
+import Settings from './icons/Settings';
+import TruckImg from './icons/Truck';
+import TruckTick from './icons/TruckTick';
 // These icons should be arranged alphabetically for easy sorting
 const icons = {
+  ArrowCircleLeft: <ArrowCircleLeft/>,
   ArrowLeft: <ArrowLeft />,
   ArrowRight: <ArrowRight />,
   ArrowUpRight: <ArrowUpRight />,
@@ -52,6 +61,7 @@ const icons = {
   CaretDown: <CaretDown />,
   CaretUp: <CaretUp />,
   Chats: <Chats />,
+  ChartSquare: <ChartSquare />,
   CreditCard: <CreditCard />,
   Check: <Check />,
   Checks: <Checks />,
@@ -63,9 +73,13 @@ const icons = {
   FolderNotchOpen: <FolderNotchOpen />,
   House: <House />,
   InfoCircle: <InfoCircle />,
+  Jobs: <Jobs />,
   Kanban: <Kanban />,
+  Logout: <Logout />,
   MagicStar: <MagicStar />,
   MapPin: <MapPin />,
+  MessageChat: <MessageChat />,
+  Moneys: <Moneys />,
   Money: <Money />,
   PaperPlaneTilt: <PaperPlaneTilt />,
   PasswordCheck: <PasswordCheck />,
@@ -74,6 +88,9 @@ const icons = {
   SignOut: <SignOut />,
   Suitcase: <Suitcase />,
   Star: <Star />,
+  Settings: <Settings />,
+  TruckImg: <TruckImg />,
+  TruckTick: <TruckTick />,
   Truck: <Truck />,
   User: <User />,
   UserOctagon: <UserOctagon />,
