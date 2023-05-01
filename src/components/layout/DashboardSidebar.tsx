@@ -30,7 +30,7 @@ export default function DashboardSidebar() {
   const transporterRoutes: Route[] = [
     {
       path: '/available-jobs',
-      name: 'Available Jobs',
+      name: 'Jobs',
       iconName: 'Jobs',
     },
     {
@@ -45,16 +45,16 @@ export default function DashboardSidebar() {
     },
     {
       path: '/vehicles',
-      name: 'Vehcles',
+      name: 'Vehicles',
       iconName: 'TruckImg',
     },
     {
-      path: '/....',
+      path: '/',
       name: 'Analytics',
       iconName: 'ChartSquare',
     },
     {
-      path: '/....',
+      path: '/',
       name: 'Settings',
       iconName: 'Settings',
     },
@@ -80,55 +80,47 @@ export default function DashboardSidebar() {
     return appLocation.pathname.includes(route);
   }
 
-  // toggle function
-  const [showNames, setShowNames] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleShowNames = () => {
-    setShowNames(!showNames);
+    setIsExpanded(!isExpanded);
   };
 
   return (
-    <Sidebar className={` ${showNames ? 'width' : ''} `}>
+    <Sidebar isExpanded={isExpanded}>
       <div className="sidebar__inner">
-        <Link to="/my-trips">
-          <LogoContainer>
-            <TDLogo src={TruckDispatchLogo} alt="truck-dispatch" />
-          </LogoContainer>
-          <ToggleContainer onClick={toggleShowNames} className="toggle-button">
-            {showNames ? (
-              <UiIcon icon="ArrowCircleLeft" size="20" />
-            ) : (
-              <UiIcon icon="ArrowCircleLeft" size="20" />
-            )}
-          </ToggleContainer>
-        </Link>
+        <header>
+          <Link to="/my-trips">
+            <div className="logo-container">
+              <div className="logo-place-holder" />
+              <span>Truckdispatch</span>
+            </div>
+          </Link>
+          <button className="toggle-btn" onClick={toggleShowNames}>
+            <UiIcon
+              icon={isExpanded ? 'ArrowCircleLeft' : 'ArrowCircleLeft'}
+              size="20"
+            />
+          </button>
+        </header>
 
         <TabList>
           {routes.map((route, index) => (
             <Link to={route.path} key={index}>
-              <Tab
-                isActive={isRouteActive(route.path)}
-                className={` ${showNames ? 'show-name' : ''} `}
-              >
+              <Tab isActive={isRouteActive(route.path)} isExpanded={isExpanded}>
                 <UiIcon icon={route.iconName} size="24" />
-                {showNames && (
-                  <UiIconName className="name">{route.name}</UiIconName>
-                )}
+                {isExpanded && <div className="route-name">{route.name}</div>}
               </Tab>
             </Link>
           ))}
           <Link to="/chat">
-            <Tab
-              className={` ${showNames ? 'show-name' : ''} `}
-              isActive={isRouteActive('/chat')}
-            >
-              <div className="chat-icon-container">
-                <UiIcon icon="MessageChat" size="24" />
-                {unreadChat.length !== 0 && (
+            <Tab isActive={isRouteActive('/chat')} isExpanded={isExpanded}>
+              <UiIcon icon="MessageChat" size="24" />
+              {/* TODO: figure out how to manage message count with new design */}
+              {/* {unreadChat.length !== 0 && (
                   <MessageCount>{unreadChat.length}</MessageCount>
-                )}
-                {showNames && <p className="name chat-name">Chat</p>}
-              </div>
+                )} */}
+              <span className="route-name">Chat</span>
             </Tab>
           </Link>
         </TabList>
@@ -139,12 +131,17 @@ export default function DashboardSidebar() {
               <UiIcon icon="User" size="20" />
             </UserContainerInner>
             <div className="user-details">
-              {showNames && <p className=" user-name">Onyewuchi Emeka <br />TRANSPORTER </p>}
+              {isExpanded && (
+                <p className=" user-name">
+                  Onyewuchi Emeka <br />
+                  TRANSPORTER{' '}
+                </p>
+              )}
             </div>
           </UserContainer>
           <LogOutContainer onClick={() => logOutUser()}>
             <UiIcon icon="Logout" size="24" />
-            {showNames && <p className="logout">Logout</p>}
+            {isExpanded && <p className="logout">Logout</p>}
           </LogOutContainer>
         </BottomActions>
       </div>
@@ -165,123 +162,121 @@ const Sidebar = styled.nav`
     position: relative;
     height: 100%;
     width: 100%;
+
+    header {
+      border-bottom: ${pxToRem(1)} solid var(--color-gray);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: ${pxToRem(20)} 0;
+      .logo-container {
+        display: flex;
+        align-items: center;
+        gap: ${pxToRem(8)};
+
+        .logo-place-holder {
+          width: ${pxToRem(40)};
+          height: ${pxToRem(40)};
+          background: var(--color-primary);
+          border-radius: ${pxToRem(8)};
+        }
+        span {
+          color: var(--color-neutralBlack);
+          font-size: ${pxToRem(16)};
+          font-weight: 700;
+          display: ${({ isExpanded }: { isExpanded: boolean }) =>
+            isExpanded ? 'block' : 'none'};
+        }
+      }
+
+      .toggle-btn {
+        position: absolute;
+        background-color: white;
+        height: ${pxToRem(32)};
+        width: ${pxToRem(32)};
+        border-radius: 50%;
+        outline: 0;
+        border: transparent;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        right: 0;
+        margin-right: -${pxToRem(12)};
+
+        @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
+          display: none;
+        }
+      }
+    }
   }
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    width: 7%;
+    width: ${({ isExpanded }: { isExpanded: boolean }) =>
+      isExpanded ? '16%' : '7%'};
     border-top: none;
     position: static;
     border-right: ${pxToRem(1)} solid var(--color-gray-200);
   }
-
-  @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
-    width: 7%;
-  }
-
-  &.width {
-    @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
-      width: 20%;
-    }
-  }
-`;
-
-const LogoContainer = styled.div`
-  display: none;
-  justify-content: center;
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    display: flex;
-  }
-`;
-
-const ToggleContainer = styled.div`
-  position: absolute;
-  background-color: white;
-  height: 32px;
-  width: 32px;
-  border-radius: 50%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  right: 0px;
-  top: 0px;
-
-  margin-top: ${pxToRem(20)};
-  margin-right: -${pxToRem(15)};
-
-  color: var(--color-primary-10);
-  font-weight: 600;
-
-  @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
-    display: none;
-  }
-`;
-
-const TDLogo = styled.img`
-  width: ${pxToRem(100)};
-  margin: auto;
-  margin: 0 ${pxToRem(-12)};
-`;
-
-const UiIconName = styled.ul`
-  padding-left: 9.04px;
 `;
 
 const TabList = styled.ul`
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: ${pxToRem(32)} ${pxToRem(24)};
   margin: 0;
   display: flex;
   justify-content: space-around;
+  list-style-type: none;
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     display: block;
   }
 `;
 
+interface TabProps {
+  isActive: boolean;
+  isExpanded: boolean;
+}
+const activeTabStyle = `
+border-color: var(--color-primary);
+color: var(--color-primary);
+background-color: var(--color-primary-10);
+
+svg {
+  fill: var(--color-primary);
+}`;
 const Tab = styled.li`
-  list-style-type: none;
-  padding: ${pxToRem(12)} ${pxToRem(20)};
-  font-size: ${pxToRem(14)};
-  color: ${({ isActive }: { isActive: boolean }) =>
-    isActive ? 'var(--color-primary)' : 'var(--color-primary-100)'};
+  padding: ${pxToRem(12)};
+  font-size: ${pxToRem(16)};
+  color: ${({ isActive }: TabProps) =>
+    isActive ? 'var(--color-primary)' : 'var(--color-gray-80)'};
   font-weight: 600;
-  opacity: 0.8;
   display: flex;
-
   align-items: center;
-  justify-items: left;
+  justify-content: ${({ isExpanded }: TabProps) =>
+    isExpanded ? 'flex-start' : 'center'};
+  border-radius: 0 ${pxToRem(8)} ${pxToRem(8)} 0;
+  gap: ${pxToRem(8)};
 
-  .chat-icon-container {
-    position: fixed;
-    width: fit-content;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-
-    .chat-name {
-      padding-left: 9.04px;
-    }
+  svg {
+    fill: ${({ isActive }: TabProps) =>
+      isActive ? 'var(--color-primary)' : 'var(--color-gray-80)'};
   }
 
-  .show-name .name {
-    display: none;
+  .route-name {
+    display: ${({ isExpanded }: TabProps) => (isExpanded ? 'block' : 'none')};
   }
-
+  ${({ isActive }: TabProps) => isActive && activeTabStyle}
   &:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
-    background-color: var(--color-primary-10);
+    ${activeTabStyle}
   }
 
   @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
+    /* Mobile view */
     border-bottom: none;
-    padding: ${pxToRem(2)} ${pxToRem(2)};
+    padding: ${pxToRem(2)};
     border-bottom: ${pxToRem(4)} solid
-      ${({ isActive }: { isActive: boolean }) =>
+      ${({ isActive }: TabProps) =>
         isActive ? 'var(--color-primary)' : 'transparent'};
-    margin: ${pxToRem(8)} 0;
   }
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
@@ -289,7 +284,7 @@ const Tab = styled.li`
     border-left: ${pxToRem(4)} solid
       ${({ isActive }: { isActive: boolean }) =>
         isActive ? 'var(--color-primary)' : 'transparent'};
-    margin: ${pxToRem(8)} 0;
+    margin-bottom: ${pxToRem(12)};
   }
 `;
 
@@ -345,18 +340,16 @@ const UserContainer = styled.div`
   }
   .user-name {
     padding-left: 9.04px;
-  
   }
 
-  .user-details{
+  .user-details {
     text-transform: capitalize;
     display: flex;
     padding-top: 0;
     padding-bottom: 0;
     width: 100%;
     flex-direction: column;
-    padding; -10px;
-
+    padding: -10px;
   }
 `;
 const UserContainerInner = styled.div`
@@ -372,7 +365,7 @@ const UserContainerInner = styled.div`
   align-items: center;
 `;
 const BottomActions = styled.div`
-  border-top: 1px solid var(--color-gray-900);
+  border-top: ${pxToRem(1)} solid var(--color-gray);
   display: none;
   position: absolute;
   bottom: 0;

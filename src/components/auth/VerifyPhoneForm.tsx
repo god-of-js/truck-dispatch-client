@@ -64,7 +64,7 @@ export default function VerifyPhoneForm({ goToNext }: Props) {
     const otpPhoneNumber = localStorage.getItem('otp-phone-number');
     if (!otpPhoneNumber) {
       navigate('/auth/login');
-      Toast.error({ msg: 'Kindly login to get a verification code.'})
+      Toast.error({ msg: 'Kindly login to get a verification code.' });
       return;
     }
     setSendOTPLoading(true);

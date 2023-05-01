@@ -28,6 +28,15 @@ import {
   UsersThree,
   X,
 } from 'phosphor-react';
+import { ReactComponent as ArrowCircleLeft } from './icons/arrow-circle-left.svg';
+import { ReactComponent as ChartSquare } from './icons/chart-square.svg';
+import { ReactComponent as Jobs } from './icons/jobs.svg';
+import { ReactComponent as Logout } from './icons/log-out.svg';
+import { ReactComponent as MessageChat } from './icons/chat.svg';
+import { ReactComponent as Moneys } from './icons/moneys.svg';
+import { ReactComponent as Settings } from './icons/settings.svg';
+import { ReactComponent as TruckImg } from './icons/truck.svg';
+import { ReactComponent as TruckTick } from './icons/ticked-truck.svg';
 import { ReactComponent as Company } from './icons/company.svg';
 import { ReactComponent as Car } from './icons/car.svg';
 import { ReactComponent as Check } from './icons/check.svg';
@@ -40,18 +49,10 @@ import { ReactComponent as MagicStar } from './icons/magic-star.svg';
 import { ReactComponent as PasswordCheck } from './icons/password-check.svg';
 import { ReactComponent as UserOctagon } from './icons/user-octagon.svg';
 import { ReactComponent as UserSquare } from './icons/user-square.svg';
-import ArrowCircleLeft from './icons/ArrowCircleLeft';
-import ChartSquare from './icons/ChartSquare';
-import Jobs from './icons/Jobs';
-import Logout from './icons/Logout';
-import MessageChat from './icons/MessageChat';
-import Moneys from './icons/Moneys';
-import Settings from './icons/Settings';
-import TruckImg from './icons/Truck';
-import TruckTick from './icons/TruckTick';
+
 // These icons should be arranged alphabetically for easy sorting
 const icons = {
-  ArrowCircleLeft: <ArrowCircleLeft/>,
+  ArrowCircleLeft: <ArrowCircleLeft />,
   ArrowLeft: <ArrowLeft />,
   ArrowRight: <ArrowRight />,
   ArrowUpRight: <ArrowUpRight />,
