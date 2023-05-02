@@ -2,8 +2,6 @@ import styled from 'styled-components';
 
 // These icons should be arranged alphabetically for easy sorting
 import {
-  ArrowLeft,
-  ArrowRight,
   ArrowUpRight,
   CaretDown,
   CaretUp,
@@ -29,7 +27,10 @@ import {
   X,
 } from 'phosphor-react';
 import { ReactComponent as ArrowCircleLeft } from './icons/arrow-circle-left.svg';
+import { ReactComponent as ArrowLeft } from './icons/arrow-left.svg';
 import { ReactComponent as ChartSquare } from './icons/chart-square.svg';
+import { ReactComponent as Close } from './icons/close.svg';
+
 import { ReactComponent as Jobs } from './icons/jobs.svg';
 import { ReactComponent as Logout } from './icons/log-out.svg';
 import { ReactComponent as Chat } from './icons/chat.svg';
@@ -55,7 +56,6 @@ import { ReactComponent as UserSquare } from './icons/user-square.svg';
 const icons = {
   ArrowCircleLeft: <ArrowCircleLeft />,
   ArrowLeft: <ArrowLeft />,
-  ArrowRight: <ArrowRight />,
   ArrowUpRight: <ArrowUpRight />,
   Buildings: <Company />,
   CallReceived: <CallReceived />,
@@ -65,6 +65,7 @@ const icons = {
   Chats: <Chats />,
   Chat: <Chat />,
   ChartSquare: <ChartSquare />,
+  Close: <Close />,
   CreditCard: <CreditCard />,
   Check: <Check />,
   Checks: <Checks />,
@@ -123,5 +124,8 @@ const IconStyle = styled.span`
   svg {
     width: ${({ size }: { size?: Props['size'] }) =>
       pxToRem((size && parseInt(size)) || 16)};
+    height: ${({ size }: { size?: Props['size'] }) =>
+      pxToRem((size && parseInt(size)) || 16)};
+    fill: var(--color-gray-80);
   }
 `;

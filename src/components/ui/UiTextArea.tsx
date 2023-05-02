@@ -23,7 +23,7 @@ export default function UiTextArea({
     onChange({ name: e.target.name, value: e.target.value });
   }
   return (
-    <UiField label={label} name={name} error={error}>
+    <UiField label={label} error={error}>
       <TextArea
         value={value || ''}
         name={name}

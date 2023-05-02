@@ -84,7 +84,7 @@ export default function FileUploadWidget({
   }
 
   return (
-    <UiField name={name} label={label} error={error}>
+    <UiField label={label} error={error}>
       <FileUploadWidgetStyle onClick={pickImages}>
         <input
           id={name}

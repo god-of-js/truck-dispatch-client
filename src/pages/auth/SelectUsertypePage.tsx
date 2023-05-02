@@ -180,6 +180,10 @@ const SelectUserTypeStyling = styled.div`
 const WelcomeMessageTag = styled.span`
   display: none;
   width: fit-content;
+
+  svg {
+    fill: var(--color-primary);
+  }
   @media (min-width: ${sizes.tablet}) {
     display: flex;
     align-items: center;

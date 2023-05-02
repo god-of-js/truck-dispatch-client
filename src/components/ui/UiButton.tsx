@@ -10,6 +10,7 @@ interface Props {
     | 'secondary'
     | 'tertiary'
     | 'neutral'
+    | 'icon-neutral'
     | 'primary-outlined'
     | 'secondary-outlined'
     | 'primary-text'
@@ -139,6 +140,17 @@ const ButtonContainer = styled.button<Props>`
     background: transparent;
     border-color: transparent;
     color: var(--color-warning-600);
+  }
+
+  &.icon-neutral {
+    width: ${pxToRem(40)};
+    height: ${pxToRem(36)};
+    background: var(--color-gray-20);
+    border-radius: ${pxToRem(8)};
+
+    &:hover {
+      background: var(--color-gray-30);
+    }
   }
 
   &.neutral {

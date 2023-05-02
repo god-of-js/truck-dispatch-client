@@ -8,20 +8,22 @@ import AddVehicle from 'components/vehicles/AddVehicle';
 
 export default function VehiclesPage() {
   const vehicles = [];
-  const [addVehicleIsVisible, setAddVehicleIsVisible] = useState(false)
+  const [isAddVehicleVisible, setIsAddVehicleVisible] = useState(false);
 
   function closeAddVehicle() {
-    setAddVehicleIsVisible(true);
+    setIsAddVehicleVisible(false);
   }
 
   function openAddVehicle() {
-    setAddVehicleIsVisible(true)
+    setIsAddVehicleVisible(true);
   }
 
   function edgeChildren() {
     return (
       <GappedContainerWith12PX>
-        {!!vehicles.length && <UiButton onClick={openAddVehicle}>add new vehicle</UiButton>}
+        {!!vehicles.length && (
+          <UiButton onClick={openAddVehicle}>add new vehicle</UiButton>
+        )}
       </GappedContainerWith12PX>
     );
   }
@@ -34,15 +36,15 @@ export default function VehiclesPage() {
         <EmptyVehicleContainer>
           <img src={DuoTrucks} alt="Truckdispatch trucks" />
           <p>
-            You’ve not added any vehicles yet.Load up your trucks in our big
-            garage, so you’d be able to bid on jobs
+            {`${isAddVehicleVisible}`}You’ve not added any vehicles yet.Load up
+            your trucks in our big garage, so you’d be able to bid on jobs
           </p>
           <UiButton onClick={openAddVehicle}>add new vehicle</UiButton>
         </EmptyVehicleContainer>
       )}
 
-      <UiOverlay isVisible={addVehicleIsVisible}>
-        <AddVehicle onClose={closeAddVehicle}/>
+      <UiOverlay isVisible={isAddVehicleVisible}>
+        <AddVehicle onClose={closeAddVehicle} />
       </UiOverlay>
     </>
   );
@@ -61,10 +63,13 @@ const EmptyVehicleContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   color: var(--color-gray-80);
-  font-size: ${pxToRem(24)};
+  font-size: ${pxToRem(20)};
   max-width: ${pxToRem(492)};
   margin: auto;
   p {
     text-align: center;
+  }
+  button {
+    padding: 0 ${pxToRem(28)};
   }
 `;
