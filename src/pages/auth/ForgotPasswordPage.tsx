@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import UiForm from 'ui/UiForm';
+import UiInput from 'ui/UiInput';
+import UiButton from 'ui/UiButton';
+import UiIcon from 'ui/UiIcon';
+import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
 
 import { requestForgotPasswordLink } from '../../modules/Account';
 
-import UiInput from 'ui/UiInput';
-import UiButton from 'ui/UiButton';
-import UiForm from 'ui/UiForm';
 import { toAnyAction } from 'utils/helpers';
 import ForgotPasswordSchema from 'utils/validations/ForgotPasswordSchema';
+import StyledAuthContent from 'components/auth/StyledAuthContent';
 
-export default function LoginPage() {
+export default function ForgotPasswordPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -26,7 +28,7 @@ export default function LoginPage() {
     });
   }
 
-  function handleSubmit() {
+  function requestRecoveryLink() {
     setLoading(true);
     dispatch(toAnyAction(requestForgotPasswordLink(formData)))
       .then(() => {
@@ -37,7 +39,22 @@ export default function LoginPage() {
       });
   }
 
+  const actionButtons = (
+    <div className="duo-button-container no-btn-margin-top">
+      <Link to="/auth/login">
+        <UiButton size="large" variant="secondary" isFullWidth>
+          <UiIcon icon="ArrowLeft" />
+          Back to sign in
+        </UiButton>
+      </Link>
+      <UiButton size="large" isFullWidth loading={loading}>
+        Send recovery link
+      </UiButton>
+    </div>
+  );
+
   return (
+<<<<<<< HEAD
     <Page>
       <UiForm
         schema={ForgotPasswordSchema}
@@ -70,30 +87,46 @@ export default function LoginPage() {
         )}
       </UiForm>
     </Page>
+=======
+    <AuthLayoutStyling img invert isInvertedForm>
+      <StyledAuthContent inverted>
+        <div className="form-container">
+          <header>
+            <h1>Forgot password?</h1>
+            <p className="info-text">
+              No worries, we’ll send you reset instructions
+            </p>
+          </header>
+          <UiForm
+            schema={ForgotPasswordSchema}
+            formData={formData}
+            onSubmit={requestRecoveryLink}
+          >
+            {({ errors }) => (
+              <div className="form-container__inner">
+                <UiInput
+                  label="Email Adress*"
+                  placeholder="Enter your email adress"
+                  value={formData.email}
+                  name="email"
+                  error={errors.email}
+                  onChange={handleChange}
+                />
+                <div className="hidden-in-mobile">{actionButtons}</div>
+
+                <div className="bottom-actions">
+                  <div className="visible-in-mobile">{actionButtons}</div>
+                  <p id="hidden-in-mobile">
+                    <span>New to TruckDispatch?</span>{' '}
+                    <Link to="/auth/join">Sign Up</Link>
+                  </p>
+                </div>
+              </div>
+            )}
+          </UiForm>
+        </div>
+      </StyledAuthContent>
+    </AuthLayoutStyling>
+>>>>>>> 6bffce03b64efe0b63b9d439825c504718197bf3
   );
 }
-
-const Page = styled.div`
-  width: 100%;
-
-  p {
-    font-size: ${pxToRem(16)};
-    color: var(--color-gray-500);
-  }
-`;
-
-const Heading = styled.h3`
-  color: var(--color-primary);
-  font-family: 'Audiowide';
-  font-size: ${pxToRem(24)};
-`;
-
-const Margin = styled.div`
-  margin-bottom: ${pxToRem(12)};
-`;
-
-const LinkToRegisteration = styled.p`
-  text-align: center;
-  font-size: ${pxToRem(14)};
-  color: var(--color-gray-400);
-`;

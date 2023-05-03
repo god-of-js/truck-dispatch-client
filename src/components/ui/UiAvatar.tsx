@@ -75,8 +75,8 @@ function getSizeVariant(size: Size) {
   height: ${pxToRem(52)};
   `;
   return `
-  width: ${pxToRem(36)};
-  height: ${pxToRem(36)};
+  width: ${pxToRem(32)};
+  height: ${pxToRem(32)};
   `;
 }
 
@@ -99,12 +99,17 @@ const Avatar = styled.div`
   .user-icon {
     width: 100%;
     height: 100%;
-    color: var(--color-gray-400);
-    border: ${pxToRem(1)} solid var(--color-gray-200);
+    border: ${pxToRem(1)} solid var(--color-gray-50);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    svg {
+      width: ${pxToRem(18)};
+      height: ${pxToRem(18)};
+      fill: var(--color-gray-70);
+    }
   }
 
   img {

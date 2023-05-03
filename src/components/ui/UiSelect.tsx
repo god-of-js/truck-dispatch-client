@@ -47,12 +47,21 @@ export default function UiSelect({
       <UiField label={label} name={name} error={error}>
         <StyledSelect onClick={toggleOptions} hasError={!!error}>
           <div>
-            <span>{selectedOption && selectedOption.label}</span>
+            <span className="selected-option">
+              {selectedOption?.label
+                ? selectedOption.label
+                : 'Choose an option from the dropdown'}
+            </span>
             <span>
               <UiIcon icon={isOpen ? 'CaretUp' : 'CaretDown'} />
             </span>
           </div>
-          <StyledOptions isOpen={isOpen}>
+          <StyledOptions
+            isOpen={isOpen}
+            style={{
+              marginTop: '8px',
+            }}
+          >
             {options.map((option) => (
               <StyledOption
                 key={option.value}
@@ -71,7 +80,7 @@ export default function UiSelect({
 const StyledSelect = styled.div`
   position: relative;
   div {
-    padding: ${pxToRem(16)} ${pxToRem(8)};
+    padding: 0 ${pxToRem(16)};
     height: var(--base-height);
     display: flex;
     align-items: center;
@@ -79,34 +88,51 @@ const StyledSelect = styled.div`
     font-size: ${pxToRem(12)};
     border: ${pxToRem(1)} solid;
     border-color: ${({ hasError }: { hasError: boolean }) =>
-      hasError ? 'var(--color-danger)' : 'var(--color-gray-200)'};
+      hasError ? 'var(--color-danger)' : 'var(--color-gray)'};
     background: #ffffff;
     outline: none;
-    border-radius: ${pxToRem(4)};
+    border-radius: ${pxToRem(8)};
     box-sizing: border-box;
+    transition: all 0.2s ease-in-out;
+    .selected-option {
+      font-size: ${pxToRem(14)};
+      color: var(--color-gray-80);
+      font-weight: 400;
+      line-height: ${pxToRem(24)};
+    }
   }
 `;
 
 const StyledOptions = styled.ul`
   list-style: none;
-  margin: 0;
-  padding: 0;
+  /* margin-top: ${pxToRem(8)}; */
+  padding: ${pxToRem(16)} ${pxToRem(8)};
   position: absolute;
   width: 100%;
   background: #fff;
-  border: 1px solid var(--color-gray-200);
-  border-radius: ${pxToRem(4)};
+  border: 1px solid var(--color-gray-30);
+  border-radius: ${pxToRem(8)};
+  box-shadow: 0px ${pxToRem(8)} ${pxToRem(16)} rgba(0, 0, 0, 0.08);
   z-index: 1;
   overflow: auto;
-  max-height: ${pxToRem(200)};
-  display: ${({ isOpen }: { isOpen: boolean }) => (isOpen ? 'block' : 'none')};
+  max-width: 100%;
+  /* max-height: ${pxToRem(100)}; */
+  /* display: ${({ isOpen }: { isOpen: boolean }) =>
+    isOpen ? 'block' : 'none'}; */
+  visibility: ${({ isOpen }: { isOpen: boolean }) =>
+    isOpen ? 'visible' : 'hidden'};
+  opacity: ${({ isOpen }: { isOpen: boolean }) => (isOpen ? '1' : '0')};
+  transition: all 0.2s ease-in-out;
 `;
 
 const StyledOption = styled.li`
-  padding: ${pxToRem(10)};
+  padding: ${pxToRem(8)} ${pxToRem(12)};
+  font-size: ${pxToRem(14)};
+  border-radius: ${pxToRem(4)};
+  color: black;
   cursor: pointer;
   text-transform: capitalize;
   &:hover {
-    background: var(--color-gray-50);
+    background: var(--color-primary-10);
   }
 `;

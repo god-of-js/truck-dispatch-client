@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { loginUser } from '../../modules/Account';
@@ -11,8 +10,13 @@ import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
 import { toAnyAction } from 'utils/helpers';
 import loginSchema from 'utils/validations/loginSchema';
+<<<<<<< HEAD
 import UiOverlay from 'ui/UiOverlay';
 import NotifyUsersFromFirebase from 'components/auth/NotifyUsersFromFirebase';
+=======
+import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
+import StyledAuthContent from 'components/auth/StyledAuthContent';
+>>>>>>> 6bffce03b64efe0b63b9d439825c504718197bf3
 
 export default function LoginPage() {
   const dispatch = useDispatch();
@@ -23,6 +27,7 @@ export default function LoginPage() {
       password: '',
     },
   );
+
   const [loading, setLoading] = useState(false);
   const [isNotifyUsertoResetVisible, setIsNotifyUserToResetVisible] = useState(false)
 
@@ -53,6 +58,7 @@ export default function LoginPage() {
   }
 
   return (
+<<<<<<< HEAD
     <Page>
       <UiForm schema={loginSchema} formData={formData} onSubmit={handleSubmit}>
         {({ errors }) => (
@@ -102,28 +108,75 @@ export default function LoginPage() {
           />
         </UiOverlay>
     </Page>
+=======
+    <AuthLayoutStyling img invert isInvertedForm>
+      <StyledAuthContent inverted>
+        <div className="form-container">
+          <header>
+            <h1>Welcome back,</h1>
+            <p className="info-text">Sign in to continue to your account</p>
+          </header>
+          <UiForm
+            schema={loginSchema}
+            formData={formData}
+            onSubmit={handleSubmit}
+          >
+            {({ errors }) => (
+              <div className="form-container__inner">
+                <UiInput
+                  label="Email Adress*"
+                  placeholder="Enter your email adress"
+                  value={formData.email}
+                  name="email"
+                  error={errors.email}
+                  onChange={handleChange}
+                />
+                <UiInput
+                  type="password"
+                  placeholder="Enter your password"
+                  label="Password*"
+                  name="password"
+                  value={formData.password!}
+                  error={errors.password}
+                  onChange={handleChange}
+                />
+                <p>
+                  Forgot Password?{' '}
+                  <Link to="/auth/forgot-password">Reset Password</Link>{' '}
+                </p>
+                <div className="hidden-in-mobile">
+                  <UiButton
+                    isFullWidth
+                    loading={loading}
+                    size="large"
+                    variant="primary"
+                  >
+                    Sign In
+                  </UiButton>
+                </div>
+
+                <div className="bottom-actions">
+                  <div className="visible-in-mobile">
+                    <UiButton
+                      isFullWidth
+                      loading={loading}
+                      size="large"
+                      variant="primary"
+                    >
+                      Sign In
+                    </UiButton>
+                  </div>
+                  <p>
+                    <span>New to TruckDispatch?</span>{' '}
+                    <Link to="/auth/join">Sign Up</Link>
+                  </p>
+                </div>
+              </div>
+            )}
+          </UiForm>
+        </div>
+      </StyledAuthContent>
+    </AuthLayoutStyling>
+>>>>>>> 6bffce03b64efe0b63b9d439825c504718197bf3
   );
 }
-const Page = styled.div`
-  width: 100%;
-`;
-const Heading = styled.h3`
-  color: var(--color-primary);
-  font-family: 'Audiowide';
-  font-size: ${pxToRem(24)};
-`;
-const Margin = styled.div`
-  margin-bottom: ${pxToRem(12)};
-`;
-
-const ForgotPassword = styled.div`
-  font-size: ${pxToRem(14)};
-  padding-top: ${pxToRem(16)};
-  color: var(--color-gray-400);
-`;
-
-const LinkToRegisteration = styled.p`
-  text-align: center;
-  font-size: ${pxToRem(14)};
-  color: var(--color-gray-400);
-`;

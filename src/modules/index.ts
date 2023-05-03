@@ -6,6 +6,7 @@ import Trips, { TripState } from './Trips';
 import Ratings, { RatingsState } from './Ratings';
 import Payment, { PaymentsState } from './Payments';
 import Chat, { ChatState } from './Chat';
+import Verification, { VerificationState } from './Verification';
 import Bid, { BidState } from './Bid';
 
 const store = configureStore({
@@ -16,6 +17,7 @@ const store = configureStore({
     ratings: Ratings,
     chat: Chat,
     bid: Bid,
+    verification: Verification,
   },
   middleware: [thunk],
 });
@@ -29,6 +31,7 @@ export interface RootState {
   ratings: RatingsState;
   chat: ChatState;
   bid: BidState;
+  verification: VerificationState;
 }
 
 export default function getStore() {

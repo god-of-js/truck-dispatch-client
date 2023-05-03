@@ -8,6 +8,7 @@ interface Props {
   variant?:
     | 'primary'
     | 'secondary'
+    | 'tertiary'
     | 'neutral'
     | 'primary-outlined'
     | 'secondary-outlined'
@@ -15,18 +16,17 @@ interface Props {
     | 'warning-text'
     | 'dark'
     | 'dark-outlined'
-    | 'icon'
     | 'danger';
   size?: Sizes;
   type?: 'submit' | 'button';
-  textCasing?: 'uppercase' | 'lowercase' | 'capitalize';
+  textCasing?: 'uppercase' | 'lowercase' | 'capitalize' | 'normal';
   isSquare?: boolean;
   /** This prop decides if we want the button to fit the content or be full width */
   isFullWidth?: boolean;
   onClick?: () => void;
 }
 
-type Sizes = 'large' | 'md' | 's' | 'no-size';
+type Sizes = 'large' | 'md' | 's' | 'text';
 
 export default function UiButton({
   children,
@@ -57,46 +57,69 @@ export default function UiButton({
 }
 
 function sizeVariant(size: Sizes) {
-  if (size === 'no-size') return '';
-  if (size === 's') return `padding: 0 ${pxToRem(16)}; height: ${pxToRem(36)};`;
+  if (size === 'text') return '';
+  if (size === 's')
+    return `
+    padding: ${pxToRem(8)} 
+    ${pxToRem(12)}; 
+    height:${pxToRem(32)};
+    font-size: ${pxToRem(12)};
+    line-height: ${pxToRem(12)};
+    `;
+
   if (size === 'md')
     return `
-  padding: 0 ${pxToRem(16)};
-  height: ${pxToRem(44)};
+    padding: ${pxToRem(12)};
+    height:${pxToRem(40)};
+    font-size: ${pxToRem(12)};
+    line-height: ${pxToRem(12)};
   `;
+
   if (size === 'large')
     return `
-  padding: 0 ${pxToRem(16)};
-  height: ${pxToRem(52)};
+    padding:  ${pxToRem(16)}; 
+    height: ${pxToRem(46)};
+    font-size: ${pxToRem(14)};
+    line-height: ${pxToRem(14)};
   `;
+}
+
+function getColor(condition: boolean, color: string) {
+  if (condition) return `background: ${color};`;
+  return '';
 }
 
 const ButtonContainer = styled.button<Props>`
   ${({ size }) => sizeVariant(size!)}
   border: none;
   cursor: ${({ disabled }) => (disabled ? '' : 'pointer')};
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
-  letter-spacing: 0.4px;
-  line-height: 1.45;
+  gap: ${pxToRem(9.34)};
+  letter-spacing: ${pxToRem(0.32)};
   text-align: center;
-  text-transform: uppercase;
-  border-radius: ${({ isSquare }) => (isSquare ? '' : pxToRem(4))};
-  font-weight: 900;
-  text-transform: ${({ textCasing }) => textCasing};
+  border-radius: ${({ isSquare }) => (isSquare ? '' : pxToRem(8))};
+  font-weight: 500;
+  font-family: 'thiccboi-semibold';
+  ${({ textCasing }) =>
+    textCasing !== 'normal' && `text-transform: ${textCasing}`};
   width: ${({ isFullWidth }) => (isFullWidth ? '100%' : 'fit-content')};
   white-space: nowrap;
-  opacity: ${({ disabled }) => (disabled ? '0.6' : '1')};
+  transition: all 0.2s ease-in-out;
 
   &.primary {
     background-color: var(--color-primary);
+    ${({ disabled }) => getColor(disabled!, 'var(--color-primary-20)')};
     color: white;
 
+    ${({ disabled }) =>
+      !disabled &&
+      `
     &:hover {
-      background-color: var(--color-primary-600);
-    }
+      background-color: var(--color-primary-50);
+      box-shadow: var(--box-shadow-primary);
+    }`}
   }
   &.danger {
     background-color: var(--color-danger-600);
@@ -116,18 +139,6 @@ const ButtonContainer = styled.button<Props>`
     background: transparent;
     border-color: transparent;
     color: var(--color-warning-600);
-  }
-
-  &.icon {
-    background: transparent;
-    border-radius: 50%;
-    width: ${pxToRem(32)};
-    height: ${pxToRem(32)};
-    padding: ${pxToRem(12)};
-
-    &:hover {
-      background-color: var(--color-gray-100);
-    }
   }
 
   &.neutral {
@@ -155,11 +166,30 @@ const ButtonContainer = styled.button<Props>`
   }
 
   &.secondary {
-    background-color: var(--color-gray-100);
-    color: var(--color-gray-700);
+    background-color: var(--color-primary-10);
+    color: var(--color-primary);
+    ${({ disabled }) => getColor(disabled!, `var(--color-primary-10)`)};
+    ${({ disabled }) => disabled && `color: var(--color-primary-30);`}
+
+    ${({ disabled }) =>
+      !disabled &&
+      `
     &:hover {
-      background: var(--color-gray-200);
-    }
+      background: var(--color-primary-20);
+      box-shadow: var(--box-shadow-primary);
+    }`}
+  }
+
+  &.tertiary {
+    background-color: #ffff;
+    color: var(--color-primary);
+
+    ${({ disabled }) =>
+      !disabled &&
+      `
+    &:hover {
+      color: var(--color-primary-50);
+    }`}
   }
 
   &.dark {
