@@ -70,12 +70,12 @@ export default function SelectTruckType({ vehicle, goToNext }: Props) {
   function selectVehicleType(vehicleType: string) {
     setVehicleData((data) => ({
       ...data,
-      vehicleType
-    }))
+      vehicleType,
+    }));
   }
 
   function goToNextStep() {
-    goToNext(vehicleData)
+    goToNext(vehicleData);
   }
 
   return (

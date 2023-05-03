@@ -12,6 +12,12 @@ interface Props {
 export default function AddVehicle({ onClose }: Props) {
   const [vehicle, setVehicleData] = useState<CreateVehicleData>({
     vehicleType: '',
+    frontViewImg: null,
+    backViewImg: null,
+    backInnerViewImg: null,
+    firstSideViewImg: null,
+    secondSideViewImg: null,
+    driverCockpitImg: null,
   });
   const steps = [
     {
