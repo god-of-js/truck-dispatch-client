@@ -13,7 +13,6 @@ import loginSchema from 'utils/validations/loginSchema';
 import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
 import StyledAuthContent from 'components/auth/StyledAuthContent';
 
-
 export default function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
