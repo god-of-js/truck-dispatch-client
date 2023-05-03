@@ -1,10 +1,4 @@
-import React, {
-  ChangeEvent,
-  JSXElementConstructor,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import UiButton from './UiButton';
 import UiField from './UiField';
@@ -33,7 +27,6 @@ export default function FileUploadWidget({
   error,
   onChange,
 }: Props) {
-  const displayComponent = children || defaultComponent();
   const fileTypeSelector = {
     image: 'image/*',
     document: 'application/pdf',
@@ -41,6 +34,7 @@ export default function FileUploadWidget({
   };
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const [fileUrl, setFileUrl] = useState('');
 
   function pickImages() {
     inputRef.current?.click();
@@ -77,27 +71,46 @@ export default function FileUploadWidget({
     return item?.split('/').pop() || '';
   }
 
-  function defaultComponent() {
-    if (styleType === 'with-drag-and-drop') {
-      return (
-        <WithDragAndDropStyle hasContent={!!value}>
-            <div className="content">
-              <div className="drag-and-drop-text">
-                Drag and drop file inside here
-              </div>
-              <div className="or-container">
-                <div className="dash" />
-                <span>OR</span>
-                <div className="dash" />
-              </div>
-              <UiButton variant="secondary" size="s" textCasing="capitalize">
-                Browse Files
-              </UiButton>
-            </div>
-        </WithDragAndDropStyle>
-      );
-    }
+  function readFile(file: File) {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    let fileUrl: string | null = null;
+    return new Promise((resolve) => {
+      reader.onload = () => {
+        fileUrl = reader.result as string;
+        resolve(reader.result);
+      };
+    }).then(() => {
+      return (fileUrl as string) || null;
+    });
+  }
 
+  function withDragAndDrop() {
+    return (
+      <WithDragAndDropStyle hasContent={!!value}>
+        {fileUrl ? <>
+          <img src={fileUrl} alt="" />
+        </> :<div className="content">
+          <div className="drag-and-drop-text">
+            Drag and drop file inside here
+          </div>
+          <div className="or-container">
+            <div className="dash" />
+            <span>OR</span>
+            <div className="dash" />
+          </div>
+          <UiButton variant="secondary" size="s" textCasing="capitalize">
+            Browse Files
+          </UiButton>
+        </div>}
+      </WithDragAndDropStyle>
+    );
+  }
+
+  const defaultComponent =  useMemo(() => {
+    if (styleType === 'with-drag-and-drop') {
+      return withDragAndDrop();
+    }
     return (
       <FieldUploadStyle>
         {value && !acceptMultiple ? (
@@ -110,7 +123,16 @@ export default function FileUploadWidget({
         </span>
       </FieldUploadStyle>
     );
-  }
+  }, [fileUrl])
+
+  useEffect(() => {
+    if (value instanceof File) {
+      (async () => {
+        const file = await readFile(value);
+        if (file) setFileUrl(file);
+      })();
+    }
+  }, [value]);
 
   return (
     <UiField label={label} error={error}>
@@ -124,7 +146,7 @@ export default function FileUploadWidget({
           multiple={acceptMultiple}
           accept={fileTypeSelector[fileType]}
         />
-        {displayComponent}
+        {children || defaultComponent}
       </FileUploadWidgetStyle>
     </UiField>
   );
