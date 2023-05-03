@@ -1,5 +1,12 @@
-import React, { ChangeEvent, useRef } from 'react';
+import React, {
+  ChangeEvent,
+  JSXElementConstructor,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import styled from 'styled-components';
+import UiButton from './UiButton';
 import UiField from './UiField';
 import UiIcon from './UiIcon';
 
@@ -12,12 +19,14 @@ interface Props {
   onChange: (event: { name: string; value: File | File[] }) => void;
   children?: React.ReactNode;
   error?: string;
+  styleType?: 'field' | 'with-drag-and-drop';
 }
 
 export default function FileUploadWidget({
   acceptMultiple,
   fileType = 'image',
   children,
+  styleType = 'field',
   label,
   value,
   name,
@@ -69,17 +78,37 @@ export default function FileUploadWidget({
   }
 
   function defaultComponent() {
+    if (styleType === 'with-drag-and-drop') {
+      return (
+        <WithDragAndDropStyle hasContent={!!value}>
+            <div className="content">
+              <div className="drag-and-drop-text">
+                Drag and drop file inside here
+              </div>
+              <div className="or-container">
+                <div className="dash" />
+                <span>OR</span>
+                <div className="dash" />
+              </div>
+              <UiButton variant="secondary" size="s" textCasing="capitalize">
+                Browse Files
+              </UiButton>
+            </div>
+        </WithDragAndDropStyle>
+      );
+    }
+
     return (
-      <DefaultUploadTrigger>
+      <FieldUploadStyle>
         {value && !acceptMultiple ? (
           <div>{getFileName(value)}</div>
         ) : (
-          <span>Choose file{acceptMultiple ? 's' : ''}</span>
+          <span>Choose file</span>
         )}
         <span className="upload-tag">
           <UiIcon icon="DocumentUpload" size="24" />
         </span>
-      </DefaultUploadTrigger>
+      </FieldUploadStyle>
     );
   }
 
@@ -111,7 +140,7 @@ const FileUploadWidgetStyle = styled.div`
   }
 `;
 
-const DefaultUploadTrigger = styled.div`
+const FieldUploadStyle = styled.div`
   border: ${pxToRem(1)} solid var(--color-gray);
   position: relative;
   font-size: ${pxToRem(14)};
@@ -142,6 +171,63 @@ const DefaultUploadTrigger = styled.div`
 
     svg {
       fill: var(--color-primary);
+    }
+  }
+`;
+
+const WithDragAndDropStyle = styled.div`
+  background: var(--color-gray-20);
+  box-sizing: border-box;
+  border-radius: ${pxToRem(8)};
+  padding: ${pxToRem(24)};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  ${({ hasContent }: { hasContent: boolean }) =>
+    !hasContent &&
+    `
+  border: ${pxToRem(1)} dashed var(--color-gray-80);
+  &:hover {
+    background: var(--color-primary-10);
+    border: ${pxToRem(1)} solid var(--color-primary);
+  }
+  `}
+
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: ${pxToRem(104)};
+    gap: ${pxToRem(8)};
+  }
+
+  .drag-and-drop-text {
+    color: var(--color-neutralBlack);
+    font-size: ${pxToRem(14)};
+    font-weight: 400;
+    font-family: 'thiccboi-regular';
+    text-align: center;
+  }
+  .or-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: ${pxToRem(4)};
+
+    .dash {
+      width: ${pxToRem(16)};
+      display: block;
+      border-top: ${pxToRem(1)} solid var(--color-gray-80);
+      padding-top: ${pxToRem(0.5)};
+    }
+
+    span {
+      font-size: ${pxToRem(12)};
+      color: var(--color-gray-80);
+      font-weight: 400;
+      font-family: 'thiccboi-regular';
     }
   }
 `;
