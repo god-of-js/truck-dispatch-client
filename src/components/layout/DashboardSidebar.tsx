@@ -4,12 +4,11 @@ import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import sizes from 'utils/sizes';
 
-import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
-
 import UiIcon, { Icons } from '../ui/UiIcon';
 import { RootState } from 'modules/index';
 import { removeUserSessionId } from 'utils/localStorageMethods';
 import { selectUnreadChats } from 'modules/Chat';
+import UiAvatar from 'ui/UiAvatar';
 
 interface Route {
   iconName: Icons;
@@ -21,11 +20,7 @@ export default function DashboardSidebar() {
   const unreadChat = useSelector(selectUnreadChats);
   const navigate = useNavigate();
   const appLocation = useLocation();
-
-  const logOutUser = () => {
-    removeUserSessionId();
-    navigate('/auth/login');
-  };
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const transporterRoutes: Route[] = [
     {
@@ -68,11 +63,19 @@ export default function DashboardSidebar() {
     },
   ];
 
+  const userType = useMemo(() => {
+    if (user?.userType === 'transporter') return 'transporter';
+    if (user?.userType === 'agent') return 'agent';
+    if (user?.userType === 'transportCompany') return 'Transport Company'
+
+    return 'company'
+  }, [user]);
   const routes = useMemo(() => {
     if (!user) return [];
 
     return user?.userType === 'transporter' ? transporterRoutes : agentRoutes;
   }, [user]);
+
 
   function isRouteActive(route: string) {
     if (route === '/') return route === appLocation.pathname;
@@ -80,7 +83,12 @@ export default function DashboardSidebar() {
     return appLocation.pathname.includes(route);
   }
 
-  const [isExpanded, setIsExpanded] = useState(false);
+  const logOutUser = () => {
+    removeUserSessionId();
+    navigate('/auth/login');
+  };
+
+
 
   const toggleShowNames = () => {
     setIsExpanded(!isExpanded);
@@ -98,7 +106,7 @@ export default function DashboardSidebar() {
           </Link>
           <button className="toggle-btn" onClick={toggleShowNames}>
             <UiIcon
-              icon={isExpanded ? 'ArrowCircleLeft' : 'ArrowCircleLeft'}
+              icon={isExpanded ? 'ArrowCircleLeft' : 'ArrowCircleRight'}
               size="20"
             />
           </button>
@@ -126,22 +134,26 @@ export default function DashboardSidebar() {
         </TabList>
 
         <BottomActions>
-          <UserContainer onClick={() => logOutUser()}>
-            <UserContainerInner>
-              <UiIcon icon="User" size="20" />
-            </UserContainerInner>
-            <div className="user-details">
-              {isExpanded && (
-                <p className=" user-name">
-                  Onyewuchi Emeka <br />
-                  TRANSPORTER{' '}
-                </p>
-              )}
+          <Link to="/profile">
+            <UserContainer isExpanded={isExpanded}>
+              <UiAvatar avatar={user?.avatar} />
+              <div className="user-details">
+                {isExpanded && (
+                  <div>
+                    <div className="user-name">
+                      {user?.firstName} {user?.lastName}
+                    </div>
+                    <div className="user-type">{userType}</div>
+                  </div>
+                )}
+              </div>
+            </UserContainer>
+          </Link>
+          <LogOutContainer isExpanded={isExpanded} onClick={() => logOutUser()}>
+            <div className="to-be-removed">
+              <UiIcon icon="Logout" size="24" />
+              {isExpanded && <p className="logout">Logout</p>}
             </div>
-          </UserContainer>
-          <LogOutContainer onClick={() => logOutUser()}>
-            <UiIcon icon="Logout" size="24" />
-            {isExpanded && <p className="logout">Logout</p>}
           </LogOutContainer>
         </BottomActions>
       </div>
@@ -288,97 +300,64 @@ const Tab = styled.li`
   }
 `;
 
-const LogOutContainer = styled.div`
-  width: 100%;
-  display: flex;
-  font-weight: 600;
-  opacity: 0.8;
-  cursor: pointer;
-  color: var(--color-gray-500);
-  padding: ${pxToRem(6)} ${pxToRem(20)};
-  font-size: ${pxToRem(14)};
-
-  align-items: center;
-  justify-items: left;
-
-  &:hover {
-    color: var(--color-danger);
-  }
-
-  .logout {
-    padding-left: 9.04px;
-  }
-
-  @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
-    border-bottom: none;
-    padding: ${pxToRem(2)} ${pxToRem(2)};
-
-    margin: ${pxToRem(8)} 0;
-  }
-
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    border-bottom: none;
-
-    margin: ${pxToRem(8)} 0;
-  }
-`;
-const UserContainer = styled.div`
-  width: 100%;
-  display: flex;
-  font-weight: 600;
-  opacity: 0.8;
-  cursor: pointer;
-  color: var(--color-gray-500);
-  padding: ${pxToRem(6)} ${pxToRem(20)};
-  font-size: ${pxToRem(14)};
-
-  align-items: center;
-  justify-items: left;
-
-  &:hover {
-    color: var(--color-danger);
-  }
-  .user-name {
-    padding-left: 9.04px;
-  }
-
-  .user-details {
-    text-transform: capitalize;
-    display: flex;
-    padding-top: 0;
-    padding-bottom: 0;
-    width: 100%;
-    flex-direction: column;
-    padding: -10px;
-  }
-`;
-const UserContainerInner = styled.div`
-  list-style-type: none;
-  height: 40px;
-  width: 40px;
-  background: var(--color-gray-50);
-  border-radius: 50%;
-  font-size: ${pxToRem(14)};
-  opacity: 0.8;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 const BottomActions = styled.div`
   border-top: ${pxToRem(1)} solid var(--color-gray);
-  display: none;
   position: absolute;
   bottom: 0;
   right: 0;
   width: 100%;
   margin: 0;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: ${pxToRem(20)} 0;
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     display: block;
+  }
+`;
+
+const UserContainer = styled.div`
+  display: flex;
+  font-weight: 600;
+  gap: ${pxToRem(8)};
+  opacity: 0.8;
+  cursor: pointer;
+  padding: 0 ${pxToRem(24)};
+  color: var(--color-gray-80);
+  display: flex;
+  justify-content: ${({ isExpanded }: { isExpanded: boolean }) =>
+    isExpanded ? 'flex-start' : 'center'};
+
+  .user-name {
+    font-size: ${pxToRem(16)};
+    font-weight: 600;
+    font-family: 'thiccboi-medium';
+  }
+  .user-type {
+    font-size: ${pxToRem(10)};
+    font-weight: 400;
+    margin-top: ${pxToRem(8)};
+    text-transform: uppercase;
+  }
+`;
+
+const LogOutContainer = styled.div`
+  font-weight: 600;
+  opacity: 0.8;
+  cursor: pointer;
+  color: var(--color-danger);
+  padding: ${pxToRem(12)} ${pxToRem(24)};
+  font-size: ${pxToRem(14)};
+
+  .to-be-removed {
+    width: 100%;
+    display: flex;
+    gap: ${pxToRem(8)};
+    justify-content: ${({ isExpanded }: { isExpanded: boolean }) =>
+      isExpanded ? 'flex-start' : 'center'};
+    align-items: center;
+  }
+
+  &:hover {
+    color: var(--color-danger);
   }
 `;
 const MessageCount = styled.div`

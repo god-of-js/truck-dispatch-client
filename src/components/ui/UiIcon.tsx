@@ -22,39 +22,42 @@ import {
   Suitcase,
   Star,
   Truck,
-  User,
   UsersThree,
   X,
 } from 'phosphor-react';
 import { ReactComponent as ArrowCircleLeft } from './icons/arrow-circle-left.svg';
 import { ReactComponent as ArrowLeft } from './icons/arrow-left.svg';
-import { ReactComponent as ChartSquare } from './icons/chart-square.svg';
 import { ReactComponent as Close } from './icons/close.svg';
 
-import { ReactComponent as Jobs } from './icons/jobs.svg';
-import { ReactComponent as Logout } from './icons/log-out.svg';
 import { ReactComponent as Chat } from './icons/chat.svg';
-import { ReactComponent as Moneys } from './icons/moneys.svg';
-import { ReactComponent as Notification } from './icons/notification.svg';
-import { ReactComponent as Settings } from './icons/settings.svg';
-import { ReactComponent as TruckImg } from './icons/truck.svg';
-import { ReactComponent as TruckTick } from './icons/ticked-truck.svg';
-import { ReactComponent as Company } from './icons/company.svg';
-import { ReactComponent as Car } from './icons/car.svg';
-import { ReactComponent as Check } from './icons/check.svg';
+import { ReactComponent as ArrowCircleRight } from './icons/arrow-circle-right.svg';
 import { ReactComponent as CallReceived } from './icons/call-received.svg';
+import { ReactComponent as Car } from './icons/car.svg';
+import { ReactComponent as ChartSquare } from './icons/chart-square.svg';
+import { ReactComponent as Check } from './icons/check.svg';
+import { ReactComponent as Company } from './icons/company.svg';
 import { ReactComponent as DocumentUpload } from './icons/document-upload.svg';
 import { ReactComponent as Eye } from './icons/eye.svg';
 import { ReactComponent as EyeSlash } from './icons/eye-slash.svg';
+import { ReactComponent as Jobs } from './icons/jobs.svg';
 import { ReactComponent as InfoCircle } from './icons/info-circle.svg';
+import { ReactComponent as Logout } from './icons/log-out.svg';
 import { ReactComponent as MagicStar } from './icons/magic-star.svg';
+import { ReactComponent as MessageChat } from './icons/chat.svg';
+import { ReactComponent as Moneys } from './icons/moneys.svg';
+import { ReactComponent as Notification } from './icons/notification.svg';
 import { ReactComponent as PasswordCheck } from './icons/password-check.svg';
+import { ReactComponent as Settings } from './icons/settings.svg';
+import { ReactComponent as TruckImg } from './icons/truck.svg';
+import { ReactComponent as TruckTick } from './icons/ticked-truck.svg';
+import { ReactComponent as User } from './icons/user.svg';
 import { ReactComponent as UserOctagon } from './icons/user-octagon.svg';
 import { ReactComponent as UserSquare } from './icons/user-square.svg';
 
 // These icons should be arranged alphabetically for easy sorting
 const icons = {
   ArrowCircleLeft: <ArrowCircleLeft />,
+  ArrowCircleRight: <ArrowCircleRight />,
   ArrowLeft: <ArrowLeft />,
   ArrowUpRight: <ArrowUpRight />,
   Buildings: <Company />,
@@ -84,6 +87,7 @@ const icons = {
   MapPin: <MapPin />,
   Moneys: <Moneys />,
   Money: <Money />,
+  MessageChat: <MessageChat />,
   Notification: <Notification />,
   PaperPlaneTilt: <PaperPlaneTilt />,
   PasswordCheck: <PasswordCheck />,
