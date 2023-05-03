@@ -111,14 +111,15 @@ export default function UiTable({
 }
 
 const TableContainer = styled.div`
-  border: 1px solid var(--color-gray-200);
-  background: #ffffff;
+  border: none;
 `;
 
 const TableContainerHeader = styled.header`
   border-bottom: 1px solid var(--color-gray-200);
   display: flex;
   justify-content: space-between;
+  background: #ffffff;
+  border-radius: ${pxToRem(8)}
 `;
 const TableTitle = styled.h2`
   padding: 0 ${pxToRem(12)};
@@ -133,7 +134,7 @@ const Table = styled.table`
   position: relative;
   table-layout: fixed;
   width: 100%;
-  border-collapse: collapse;
+  border-spacing: ${pxToRem(0)} ${pxToRem(8)};
 `;
 
 const TableHeader = styled.thead`
@@ -141,7 +142,6 @@ const TableHeader = styled.thead`
 
   @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
     display: table-header-group;
-    background-color: var(--color-gray-50);
     width: 100%;
     border-bottom: ${pxToRem(1)} solid var(--color-gray-200);
   }
@@ -184,7 +184,16 @@ const TableRow = styled.tr`
 const TableHeadItem = styled.th`
   padding: ${pxToRem(12)} ${pxToRem(24)};
   color: var(--color-gray-500);
+  background: #F2F0FB;
   font-size: ${pxToRem(12)};
+  :last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+  :first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
 `;
 
 const TableDataItem = styled.td`
@@ -193,6 +202,15 @@ const TableDataItem = styled.td`
   font-weight: 700;
   font-size: ${pxToRem(14)};
   line-height: ${pxToRem(20)};
+  background: #ffffff;
+  :last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+  :first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
 `;
 
 const NoDataBox = styled.div`
