@@ -11,34 +11,35 @@ interface Props {
 }
 export default function UploadVehicleImages({ vehicle, goToNext }: Props) {
   const [vehicleData, setVehicleData] = useState(vehicle);
-  const fields: { title: string; key: keyof CreateVehicleData }[] = [
+  const fields: { title: string; key: keyof CreateVehicleData['images'] }[] = [
     {
       title: 'Front View',
-      key: 'frontViewImg',
+      key: 'frontView',
     },
     {
       title: 'Side View One',
-      key: 'firstSideViewImg',
+      key: 'leftSideView',
     },
     {
       title: 'Side View Two',
-      key: 'secondSideViewImg',
+      key: 'rightSideView',
     },
     {
       title: 'Back View',
-      key: 'backViewImg',
+      key: 'backView',
     },
     {
       title: "Driver's Cockpit",
-      key: 'driverCockpitImg',
+      key: 'driversCockPit',
     },
     {
       title: 'Back Inner View',
-      key: 'backInnerViewImg',
+      key: 'backInnerView',
     },
   ];
+
   const continueBtnIsDisabled = useMemo(() => {
-    return true;
+    return fields.some(({ key }) => !vehicleData.images[key]);
   }, [vehicleData]);
 
   function goToNextStep() {
@@ -48,7 +49,10 @@ export default function UploadVehicleImages({ vehicle, goToNext }: Props) {
   function setData({ name, value }: { name: string; value: File | File[] }) {
     setVehicleData((state) => ({
       ...state,
-      [name]: value,
+      images: {
+        ...state.images,
+        [name]: value,
+      },
     }));
   }
 
@@ -62,7 +66,7 @@ export default function UploadVehicleImages({ vehicle, goToNext }: Props) {
           <div className="img-upload" key={field.key}>
             <FileUploadWidget
               name={field.key}
-              value={vehicleData[field.key]}
+              value={vehicleData.images[field.key]}
               onChange={setData}
               styleType="with-drag-and-drop"
             />
@@ -101,7 +105,7 @@ const ComponentStyling = styled.div`
   .img-grid {
     display: grid;
     grid-template-columns: auto;
-    grid-auto-rows: 1fr;
+    grid-auto-rows: ${pxToRem(220)};
     gap: ${pxToRem(12)};
     margin: ${pxToRem(24)} 0;
 
@@ -114,9 +118,14 @@ const ComponentStyling = styled.div`
         margin-top: ${pxToRem(12)};
       }
     }
+    .file-upload-widget {
+      height: ${pxToRem(180)};
+      width: 100%;
+      max-height: ${pxToRem(376)};
+    }
 
     @media screen and (min-width: ${sizes.tabletMidWidth}) {
-      grid-template-columns: auto auto auto;
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 `;

@@ -1,9 +1,18 @@
-export default interface CreateVehicleData {
+export default interface Vehicle {
+  plateNumber: string;
   vehicleType: string;
-  frontViewImg: null | File;
-  firstSideViewImg: null | File;
-  secondSideViewImg: null | File;
-  backViewImg: null | File;
-  driverCockpitImg: null | File;
-  backInnerViewImg: null | File;
+  images: {
+    frontView: File | null | string;
+    backView: File | null | string;
+    leftSideView: File | null | string;
+    rightSideView: File | null | string;
+    driversCockPit: File | null | string;
+    backInnerView: File | null | string;
+  };
+  driver: {
+    name: string;
+    phone: string;
+    driverLicense: string;
+    avatar: File | null | string;
+  };
 }

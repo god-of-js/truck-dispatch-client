@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import CreateVehicleData from 'types/CreateVehicleData';
 import UiModal from 'ui/UiModal';
 import UiSteps from 'ui/UiSteps';
+import DriverDetailsForm from './DriverDetailsForm';
 import SelectTruckType from './SelectTruckType';
 import UploadVehicleImages from './UploadVehicleImages';
 
@@ -11,13 +12,22 @@ interface Props {
 }
 export default function AddVehicle({ onClose }: Props) {
   const [vehicle, setVehicleData] = useState<CreateVehicleData>({
+    plateNumber: '',
     vehicleType: '',
-    frontViewImg: null,
-    backViewImg: null,
-    backInnerViewImg: null,
-    firstSideViewImg: null,
-    secondSideViewImg: null,
-    driverCockpitImg: null,
+    images: {
+      frontView: null,
+      backView: null,
+      leftSideView: null,
+      rightSideView: null,
+      driversCockPit: null,
+      backInnerView: null,
+    },
+    driver: {
+      name: '',
+      phone: '',
+      driverLicense: '',
+      avatar: null,
+    },
   });
   const steps = [
     {
@@ -61,6 +71,9 @@ export default function AddVehicle({ onClose }: Props) {
           )}
           {currentStepTitle === 'Upload Images' && (
             <UploadVehicleImages vehicle={vehicle} goToNext={nextStep} />
+          )}
+          {currentStepTitle === 'Driver details' && (
+            <DriverDetailsForm vehicle={vehicle} goToNext={nextStep} />
           )}
         </Suspense>
       </Body>

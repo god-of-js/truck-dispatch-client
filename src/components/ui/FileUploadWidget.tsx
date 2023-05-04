@@ -1,4 +1,10 @@
-import React, { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  ChangeEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import styled from 'styled-components';
 import UiButton from './UiButton';
 import UiField from './UiField';
@@ -88,26 +94,33 @@ export default function FileUploadWidget({
   function withDragAndDrop() {
     return (
       <WithDragAndDropStyle hasContent={!!value}>
-        {fileUrl ? <>
-          <img src={fileUrl} alt="" />
-        </> :<div className="content">
-          <div className="drag-and-drop-text">
-            Drag and drop file inside here
+        {fileUrl ? (
+          <>
+            <img src={fileUrl} />
+            <div className="reselect-file">
+              <UiIcon icon="Refresh" size="32" />
+            </div>
+          </>
+        ) : (
+          <div className="content">
+            <div className="drag-and-drop-text">
+              Drag and drop file inside here
+            </div>
+            <div className="or-container">
+              <div className="dash" />
+              <span>OR</span>
+              <div className="dash" />
+            </div>
+            <UiButton variant="secondary" size="s" textCasing="capitalize">
+              Browse Files
+            </UiButton>
           </div>
-          <div className="or-container">
-            <div className="dash" />
-            <span>OR</span>
-            <div className="dash" />
-          </div>
-          <UiButton variant="secondary" size="s" textCasing="capitalize">
-            Browse Files
-          </UiButton>
-        </div>}
+        )}
       </WithDragAndDropStyle>
     );
   }
 
-  const defaultComponent =  useMemo(() => {
+  const defaultComponent = useMemo(() => {
     if (styleType === 'with-drag-and-drop') {
       return withDragAndDrop();
     }
@@ -123,10 +136,10 @@ export default function FileUploadWidget({
         </span>
       </FieldUploadStyle>
     );
-  }, [fileUrl])
+  }, [fileUrl]);
 
   useEffect(() => {
-    if (value instanceof File) {
+    if (value instanceof File && fileType === 'image') {
       (async () => {
         const file = await readFile(value);
         if (file) setFileUrl(file);
@@ -136,7 +149,10 @@ export default function FileUploadWidget({
 
   return (
     <UiField label={label} error={error}>
-      <FileUploadWidgetStyle onClick={pickImages}>
+      <FileUploadWidgetStyle
+        onClick={pickImages}
+        className="file-upload-widget"
+      >
         <input
           id={name}
           type="file"
@@ -197,24 +213,61 @@ const FieldUploadStyle = styled.div`
   }
 `;
 
+interface WithDragAndDropProps {
+  hasContent: boolean;
+}
 const WithDragAndDropStyle = styled.div`
-  background: var(--color-gray-20);
+  position: relative;
+  background-color: var(--color-gray-20);
   box-sizing: border-box;
   border-radius: ${pxToRem(8)};
-  padding: ${pxToRem(24)};
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
-  ${({ hasContent }: { hasContent: boolean }) =>
+  width: 100%;
+  ${({ hasContent }: WithDragAndDropProps) =>
     !hasContent &&
     `
+  padding: ${pxToRem(24)};
   border: ${pxToRem(1)} dashed var(--color-gray-80);
   &:hover {
     background: var(--color-primary-10);
     border: ${pxToRem(1)} solid var(--color-primary);
   }
   `}
+
+  .reselect-file {
+    display: none;
+  }
+  &:hover {
+    .reselect-file {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(
+        0deg,
+        rgba(21, 19, 27, 0.5),
+        rgba(21, 19, 27, 0.5)
+      );
+      border-radius: ${pxToRem(8)};
+
+      svg {
+        fill: #fff;
+      }
+    }
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: ${pxToRem(8)};
+  }
 
   .content {
     display: flex;
