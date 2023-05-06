@@ -114,7 +114,7 @@ export default function PersonDetailsForm({ goToNext }: Props) {
               error={errors.email}
               name="email"
               label="Email Address*"
-              placeholder="Enter your email adress"
+              placeholder="Enter your email address"
             />
             <UiInput
               label="Phone Number*"

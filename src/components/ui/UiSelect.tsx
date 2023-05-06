@@ -68,6 +68,8 @@ export default function UiSelect({
                 onClick={() => handleOptionClick(option)}
               >
                 {option.label}
+                <UiIcon icon={isOpen ? 'RadioButton' : 'CaretDown'} />
+
               </StyledOption>
             ))}
           </StyledOptions>
@@ -126,13 +128,19 @@ const StyledOptions = styled.ul`
 `;
 
 const StyledOption = styled.li`
-  padding: ${pxToRem(8)} ${pxToRem(12)};
-  font-size: ${pxToRem(14)};
-  border-radius: ${pxToRem(4)};
-  color: black;
-  cursor: pointer;
-  text-transform: capitalize;
-  &:hover {
-    background: var(--color-primary-10);
-  }
+height: ${pxToRem(40)};
+font-size: ${pxToRem(14)};
+border-radius: ${pxToRem(4)};
+justify-items: center;
+align-items: center;
+padding: ${pxToRem(8)} ${pxToRem(12)} ${pxToRem(8)} ${pxToRem(12)};
+display: flex;
+color: black;
+cursor: pointer;
+justify-content: space-between;
+
+text-transform: capitalize;
+&:hover {
+  background: var(--color-primary-10);
+}
 `;
