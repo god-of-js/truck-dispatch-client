@@ -7,10 +7,11 @@ import UiForm from 'ui/UiForm';
 import UiInput from 'ui/UiInput';
 
 interface Props {
-  goToNext: (vehicleData: CreateVehicleData) => void;
+  finish: (vehicleData: CreateVehicleData) => void;
+  loading: boolean;
   vehicle: CreateVehicleData;
 }
-export default function DriverDetailsForm({ vehicle }: Props) {
+export default function DriverDetailsForm({ vehicle, loading, finish }: Props) {
   const [formData, setFormData] = useState(vehicle);
 
   function onChange({
@@ -20,10 +21,6 @@ export default function DriverDetailsForm({ vehicle }: Props) {
     name: string;
     value: string | null | File | File[];
   }) {
-    console.log({
-      name,
-      value,
-    });
     if (name.includes('driver')) {
       const subName = name.split('.')[1];
       setFormData((state) => ({
@@ -44,7 +41,7 @@ export default function DriverDetailsForm({ vehicle }: Props) {
   }
 
   function createVehicle() {
-    console.log(formData)
+    finish(formData);
   }
 
   return (
@@ -97,7 +94,7 @@ export default function DriverDetailsForm({ vehicle }: Props) {
               </div>
             </div>
             <div className="btn-container">
-              <UiButton>Finish</UiButton>
+              <UiButton loading={loading}>Finish</UiButton>
             </div>
           </div>
         )}

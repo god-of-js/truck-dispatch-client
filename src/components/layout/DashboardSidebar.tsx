@@ -41,7 +41,7 @@ export default function DashboardSidebar() {
     {
       path: '/vehicles',
       name: 'Vehicles',
-      iconName: 'TruckImg',
+      iconName: 'Truck',
     },
     {
       path: '/',

@@ -1,13 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+
 import UiButton from 'ui/UiButton';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
 import DuoTrucks from '../../assets/img/duo-trucks.svg';
 import UiOverlay from 'ui/UiOverlay';
 import AddVehicle from 'components/vehicles/AddVehicle';
+import { toAnyAction } from 'utils/helpers';
+import { getVehicles } from 'modules/Vehicle';
+import { RootState } from 'modules/index';
+import Vehicle from 'components/vehicles/Vehicle';
+import sizes from 'utils/sizes';
 
 export default function VehiclesPage() {
-  const vehicles = [];
+  const dispatch = useDispatch();
+  const vehicles = useSelector((state: RootState) => state.vehicle.vehicles);
   const [isAddVehicleVisible, setIsAddVehicleVisible] = useState(false);
 
   function closeAddVehicle() {
@@ -28,16 +36,25 @@ export default function VehiclesPage() {
     );
   }
 
+  useEffect(() => {
+    dispatch(toAnyAction(getVehicles()));
+  }, []);
+
   return (
     <>
       <DashboardTopNav routeName="Vehicles" edgeChild={edgeChildren()} />
+      <Vehicles>
+        {vehicles.map((vehicle) => (
+          <Vehicle vehicle={vehicle} />
+        ))}
+      </Vehicles>
 
       {!vehicles.length && (
         <EmptyVehicleContainer>
           <img src={DuoTrucks} alt="Truckdispatch trucks" />
           <p>
-            {`${isAddVehicleVisible}`}You’ve not added any vehicles yet.Load up
-            your trucks in our big garage, so you’d be able to bid on jobs
+            You’ve not added any vehicles yet.Load up your trucks in our big
+            garage, so you’d be able to bid on jobs
           </p>
           <UiButton onClick={openAddVehicle}>add new vehicle</UiButton>
         </EmptyVehicleContainer>
@@ -71,5 +88,19 @@ const EmptyVehicleContainer = styled.div`
   }
   button {
     padding: 0 ${pxToRem(28)};
+  }
+`;
+
+const Vehicles = styled.div`
+  display: grid;
+  gap: ${pxToRem(22)};
+  grid-template-columns: auto;
+  padding-top: ${pxToRem(32)};
+
+  @media screen and (min-width: ${sizes.tabletSmallWidth}) {
+    grid-template-columns: auto auto;
+  }
+  @media screen and (min-width: ${sizes.laptopSmallWidth}) {
+    grid-template-columns: auto auto auto;
   }
 `;

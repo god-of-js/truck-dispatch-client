@@ -1,4 +1,4 @@
-export default interface Vehicle {
+export default interface CreateVehicleData {
   plateNumber: string;
   vehicleType: string;
   images: {
@@ -12,7 +12,7 @@ export default interface Vehicle {
   driver: {
     name: string;
     phone: string;
-    driverLicense: string;
+    driverLicense: File | null | string;
     avatar: File | null | string;
   };
 }

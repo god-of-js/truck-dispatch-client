@@ -5,6 +5,7 @@ import Bid from 'types/Bid';
 import Rating from 'types/Rating';
 import PaymentRequest from 'types/PaymentRequest';
 import Chat from 'types/Chat';
+import CreateVehicleData from 'types/CreateVehicleData';
 import Verification from 'types/Verification';
 import VerifyPhoneData from 'types/VerifyPhoneData';
 import NewTrip from 'types/NewTrip';
@@ -17,6 +18,7 @@ import TokenVerificationData from 'types/TokenVerificationData';
 import LoginResponse from 'types/LoginResponse';
 import ChatLogData from 'types/ChatLogData';
 import ChatLog from 'types/ChatLog';
+import Vehicle from 'types/Vehicle';
 
 class ApiService {
   createUser(userData: Partial<User>) {
@@ -105,6 +107,7 @@ class ApiService {
   getJobs() {
     return this.get<Trip[]>('/trips/jobs');
   }
+
   uploadTDO(formData: FormData, tripId: string) {
     return this.post<Trip>(`/trips/${tripId}/upload-tdo`, formData);
   }
@@ -112,6 +115,7 @@ class ApiService {
   createBid(data: Bid) {
     return this.post<Bid>('/bids', data);
   }
+
   updateBid(data: Bid): Promise<Bid> {
     return this.patch<Bid>(`/bids/${data.tripId}`, data);
   }
@@ -122,6 +126,7 @@ class ApiService {
   ): Promise<PaymentRequest> {
     return this.post(`/payment/request-payment/trip/${tripId}`, data);
   }
+
   updatePaymentRequest(
     data: FormData,
     tripId: string,
@@ -140,6 +145,7 @@ class ApiService {
   getPaymentRequestByTripId(tripId: string) {
     return this.get<PaymentRequest>(`/payment/payment-request/trip/${tripId}`);
   }
+
   rejectPaymentRequest(
     tripId: string,
     paymentRequestId: string,
@@ -150,6 +156,7 @@ class ApiService {
       data,
     );
   }
+
   approvePaymentRequest(tripId: string, paymentRequestId: string) {
     return this.post<PaymentRequest>(
       `/payment/payment-request/trip/${tripId}/approve/${paymentRequestId}`,
@@ -159,6 +166,7 @@ class ApiService {
   getBidsWithTripId(tripId: string) {
     return this.get<Bid[]>(`/bids/${tripId}`);
   }
+
   getTransporterBidWithTripId(tripId: string) {
     return this.get<Bid>(`/bids/transporter-bid/${tripId}`);
   }
@@ -166,9 +174,11 @@ class ApiService {
   createChat(chat: Chat) {
     return this.post('/chat', chat, true);
   }
+
   createOrFetchChatLog(chat: ChatLogData) {
     return this.post<ChatLog>('/chat/log', chat, true);
   }
+
   publishUserRating(data: Rating) {
     return this.post(`/rating/${data.tripId}`, data);
   }
@@ -193,11 +203,18 @@ class ApiService {
     return this.get<Rating>(`/rating/${tripId}`);
   }
 
+  createVehicle(vehicleData: FormData) {
+    return this.post<Vehicle>(`/vehicle`, vehicleData);
+  }
+  getVehicles() {
+    return this.get<Vehicle[]>(`/vehicle`);
+  }
+
   loadAccountDetails(
     bankCode: string,
     accountNumber: string,
   ): Promise<AccountDetails> {
-    return this.get(
+    return this.post(
       `/externals/banks/account?account_number=${accountNumber}&bank_code=${bankCode}`,
     );
   }

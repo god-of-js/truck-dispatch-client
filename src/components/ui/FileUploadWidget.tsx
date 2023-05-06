@@ -111,7 +111,12 @@ export default function FileUploadWidget({
               <span>OR</span>
               <div className="dash" />
             </div>
-            <UiButton variant="secondary" size="s" textCasing="capitalize">
+            <UiButton
+              variant="secondary"
+              size="s"
+              type="button"
+              textCasing="capitalize"
+            >
               Browse Files
             </UiButton>
           </div>

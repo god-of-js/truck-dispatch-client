@@ -1,8 +1,11 @@
+import { createVehicle } from 'modules/Vehicle';
 import { Suspense, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import CreateVehicleData from 'types/CreateVehicleData';
 import UiModal from 'ui/UiModal';
 import UiSteps from 'ui/UiSteps';
+import { deepRootedToFormData, toAnyAction } from 'utils/helpers';
 import DriverDetailsForm from './DriverDetailsForm';
 import SelectTruckType from './SelectTruckType';
 import UploadVehicleImages from './UploadVehicleImages';
@@ -11,6 +14,7 @@ interface Props {
   onClose: () => void;
 }
 export default function AddVehicle({ onClose }: Props) {
+  const dispatch = useDispatch();
   const [vehicle, setVehicleData] = useState<CreateVehicleData>({
     plateNumber: '',
     vehicleType: '',
@@ -29,6 +33,7 @@ export default function AddVehicle({ onClose }: Props) {
       avatar: null,
     },
   });
+  const [loading, setLoading] = useState(false);
   const steps = [
     {
       title: 'Select truck type',
@@ -53,12 +58,25 @@ export default function AddVehicle({ onClose }: Props) {
     const nextTitle = steps[indexOfCurrentStep + 1].title;
     setCurrentStepTitle(nextTitle);
   }
+
   function goPrev() {
     const indexOfCurrentStep = steps.findIndex(
       (step) => step.title === currentStepTitle,
     );
     const prevTitle = steps[indexOfCurrentStep - 1].title;
     setCurrentStepTitle(prevTitle);
+  }
+
+  function addVehicle(vehicleData: CreateVehicleData) {
+    setLoading(true);
+    const data = deepRootedToFormData(vehicleData);
+    dispatch(toAnyAction(createVehicle(data)))
+      .then(() => {
+        onClose();
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   return (
@@ -73,7 +91,11 @@ export default function AddVehicle({ onClose }: Props) {
             <UploadVehicleImages vehicle={vehicle} goToNext={nextStep} />
           )}
           {currentStepTitle === 'Driver details' && (
-            <DriverDetailsForm vehicle={vehicle} goToNext={nextStep} />
+            <DriverDetailsForm
+              vehicle={vehicle}
+              loading={loading}
+              finish={addVehicle}
+            />
           )}
         </Suspense>
       </Body>

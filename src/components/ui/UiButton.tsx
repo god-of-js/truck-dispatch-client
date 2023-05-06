@@ -8,6 +8,7 @@ interface Props {
   variant?:
     | 'primary'
     | 'secondary'
+    | 'danger-secondary'
     | 'tertiary'
     | 'neutral'
     | 'icon-neutral'
@@ -202,6 +203,19 @@ const ButtonContainer = styled.button<Props>`
     &:hover {
       color: var(--color-primary-50);
     }`}
+  }
+
+  &.danger-secondary {
+    background: var(--color-danger-10);
+    color: var(--color-danger);
+
+    svg {
+      fill: var(--color-danger);
+    }
+    &:hover {
+      background: var(--color-danger-20);
+      box-shadow: var(--box-shadow-primary);
+    }
   }
 
   &.dark {

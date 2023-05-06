@@ -21,7 +21,6 @@ import {
   SignOut,
   Suitcase,
   Star,
-  Truck,
   UsersThree,
   X,
 } from 'phosphor-react';
@@ -49,7 +48,8 @@ import { ReactComponent as Notification } from './icons/notification.svg';
 import { ReactComponent as PasswordCheck } from './icons/password-check.svg';
 import { ReactComponent as Refresh } from './icons/refresh.svg';
 import { ReactComponent as Settings } from './icons/settings.svg';
-import { ReactComponent as TruckImg } from './icons/truck.svg';
+import { ReactComponent as Truck } from './icons/truck.svg';
+import { ReactComponent as TruckRemove } from './icons/truck-remove.svg';
 import { ReactComponent as TruckTick } from './icons/ticked-truck.svg';
 import { ReactComponent as User } from './icons/user.svg';
 import { ReactComponent as UserOctagon } from './icons/user-octagon.svg';
@@ -99,9 +99,9 @@ const icons = {
   Suitcase: <Suitcase />,
   Star: <Star />,
   Settings: <Settings />,
-  TruckImg: <TruckImg />,
   TruckTick: <TruckTick />,
   Truck: <Truck />,
+  TruckRemove: <TruckRemove />,
   User: <User />,
   UserOctagon: <UserOctagon />,
   UsersThree: <UsersThree />,
