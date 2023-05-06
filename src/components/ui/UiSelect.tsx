@@ -68,7 +68,7 @@ export default function UiSelect({
                 onClick={() => handleOptionClick(option)}
               >
                 {option.label}
-                <UiIcon icon={isOpen ? 'RadioButton' : 'CaretDown'} />
+                <UiIcon icon={isOpen ? 'RadioButton' : 'RadioButton'} />
 
               </StyledOption>
             ))}
@@ -141,6 +141,24 @@ justify-content: space-between;
 
 text-transform: capitalize;
 &:hover {
+  svg {
+    fill: var(--color-primary);
+  }
   background: var(--color-primary-10);
 }
 `;
+
+interface TabProps {
+  isActive: boolean;
+  isExpanded: boolean;
+}
+const activeTabStyle = `
+border-color: var(--color-primary);
+color: var(--color-primary);
+background-color: var(--color-primary-10);
+
+svg {
+  fill: var(--color-primary);
+}`;
+
+
