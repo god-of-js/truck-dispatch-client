@@ -132,13 +132,6 @@ export const createUserBankAccount = (accountDetails: BankAccount) => {
     });
   };
 };
-export const updateUserBankAccount = (accountDetails: BankAccount) => {
-  return (dispatch: AppDispatch) => {
-    return Api.updateAccountNumber(accountDetails).then((user) => {
-      dispatch(setUser(user));
-    });
-  };
-};
 
 export const requestEmailVerification = () => {
   return () => {

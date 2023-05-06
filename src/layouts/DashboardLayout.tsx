@@ -133,7 +133,7 @@ export default function DashboardLayout() {
     <Layout>
       <DashboardSidebar />
       <Body>
-        {!user?.avatar && (
+        {/* {!user?.avatar && (
           <UiAlert variant="warning">
             Kindly upload a profile image to foster trust between you and other
             individuals you may work with. To upload a profile picture,{' '}
@@ -178,8 +178,7 @@ export default function DashboardLayout() {
               Verify your account
             </UiButton>
           </UiAlert>
-        )}
-        <DashboardTopNav />
+        )} */}
         {loading ? <Loader /> : <Outlet />}
         <UiOverlay isVisible={verificationHasBeenSent}>
           <EmailHasBeenSentModal
@@ -200,7 +199,7 @@ const Layout = styled.div`
   display: flex;
   height: 100vh;
   width: 100%;
-  background-color: var(--color-gray-100);
+  background-color: var(--color-gray-20);
   overflow: hidden;
 `;
 
@@ -208,7 +207,7 @@ const Body = styled.div`
   position: relative;
   overflow-x: auto;
   width: 100%;
-  padding-bottom: ${pxToRem(48)};
+  padding: 0 ${pxToRem(24)};
   .alert-container {
     padding: ${pxToRem(16)};
   }

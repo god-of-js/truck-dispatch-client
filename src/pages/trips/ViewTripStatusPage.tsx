@@ -8,21 +8,17 @@ import Trip from 'types/Trip';
 import User from 'types/User';
 import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
-import UiOverlay from 'ui/UiOverlay';
-import GoodsInspectionConfirmation from 'components/trips/GoodsInspectionConfirmation';
 import { RootState } from 'modules/index';
 import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
+import UiIcon from 'ui/UiIcon';
+import { clientBasedUserTypes } from 'utils/constants';
 
 export default function ViewTripStatus() {
   const { tripId } = useParams();
   const dispatch = useDispatch();
   const trip = useSelector(selectTrip(tripId || ''));
   const user = useSelector((state: RootState) => state.account.user);
-  const [
-    isGoodsInspectionConfModalVisible,
-    setIsGoodsInspectionConfModalVisible,
-  ] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const tripStatusMessage = useMemo(() => {
@@ -30,7 +26,7 @@ export default function ViewTripStatus() {
       textContent: string =
         'Kindly accept a bid from a trusted transporter on the platform. We assure you that our transporters undergo a rigorous verification process and we also curate feedback from transporters previous trips to inform you of the transporters efficiency.';
 
-    if (trip?.status === 'payment_complete') {
+    if (trip?.status === 'payment-complete') {
       heading = "Sit back; we've got this";
       textContent =
         'Your transporter has been notified and would be on his way to your cargo shortly. You can find your transporters contact details below. \n PS: Payment to transporter would be tendered after dispatch is marked as completed; This is an extra security measure to curb fraudulent activities.';
@@ -69,7 +65,7 @@ export default function ViewTripStatus() {
   function showInfoCard() {
     if (user?.userType === 'transporter') return true;
 
-    if (trip?.status !== 'awaiting_bid' && !trip?.TDO) return true;
+    if (trip?.status !== 'awaiting-bid' && !trip?.TDO) return true;
   }
 
   function getName(user?: User | null) {
@@ -94,128 +90,119 @@ export default function ViewTripStatus() {
   }
 
   return (
-    <>
-      <PageStyling>
-        <CardContainer>
-          <TripPickupAndDropOff
-            pickup={trip?.pickUpAddress || ''}
-            dropOff={trip?.deliveryAddress || ''}
-            status={trip?.status}
-          />
-          <div>{tripStatusMessage}</div>
-          {trip?.status !== 'awaiting_bid' && (
-            <div className="responsible-user-details">
-              <div className="avatar-cont">
-                <UiAvatar avatar={responsibleUserAvatar} />
+    <PageStyling>
+      <CardContainer>
+        <TripPickupAndDropOff
+          pickup={trip?.pickUpAddress || ''}
+          dropOff={trip?.deliveryAddress || ''}
+          status={trip?.status}
+        />
+        <div>{tripStatusMessage}</div>
+        {trip?.status !== 'awaiting-bid' && (
+          <div className="responsible-user-details">
+            <div className="avatar-cont">
+              <UiAvatar avatar={responsibleUserAvatar} />
+            </div>
+            <div>
+              <div className="title">
+                {user?.userType === 'agent'
+                  ? 'Assigned Transporter'
+                  : 'Responsible Agent'}
               </div>
-              <div>
-                <div className="title">
-                  {user?.userType === 'agent'
-                    ? 'Assigned Transporter'
-                    : 'Responsible Agent'}
-                </div>
-                <div className="name">
-                  {user?.userType === 'agent'
-                    ? getName(trip?.transporter)
-                    : getName(trip?.tripOwner)}
-                </div>
-                {phoneNumberOfResponsibleUser && (
-                  <a
-                    href={`tel:${phoneNumberOfResponsibleUser}`}
-                    className="phone"
-                  >
-                    {phoneNumberOfResponsibleUser}
-                  </a>
-                )}
-                {/* <div className="message-btn-container">
-                <Link to={`/chat/${agent?.id}/${transporter?.id}`}>
+              <div className="name">
+                {user?.userType === 'agent'
+                  ? getName(trip?.transporter)
+                  : getName(trip?.tripOwner)}
+              </div>
+              {phoneNumberOfResponsibleUser && (
+                <a
+                  href={`tel:${phoneNumberOfResponsibleUser}`}
+                  className="phone"
+                >
+                  {phoneNumberOfResponsibleUser}
+                </a>
+              )}
+              <div className="message-btn-container">
+                <Link
+                  to={`/chat?clientId=${trip?.tripOwner?._id}&transporterId=${trip?.transporter?._id}`}
+                >
                   <UiButton size="s" variant="secondary">
                     <UiIcon icon="Chats" /> Message{' '}
-                    {user?.userType === 'agent' ? 'Transporter' : 'Agent'}
+                    {clientBasedUserTypes.includes(user?.userType!)
+                      ? 'Transporter'
+                      : 'User'}
                   </UiButton>
                 </Link>
-              </div> */}
               </div>
             </div>
+          </div>
+        )}
+      </CardContainer>
+      {showInfoCard() && (
+        <CardContainer isSmall>
+          {user?.userType === 'transporter' && (
+            <>
+              {trip?.status === 'payment-complete' && (
+                <>
+                  <h3>Start Trip</h3>
+                  <p>
+                    Payment has been made and all documents have been sent hence
+                    the trip is ready to go. To begin this trip, clicck the
+                    button below to notify the Agent the trip is about to start.
+                  </p>
+                  <UiButton loading={loading} onClick={startTrip}>
+                    Start Trip
+                  </UiButton>
+                </>
+              )}
+              {trip?.status === 'in-progress' && (
+                <>
+                  <h3>Complete Trip</h3>
+                  <p>
+                    Have you gotten to the location? If so, kindly click the
+                    button below to inform the agent that you have completed the
+                    trip.
+                    <br />
+                    Completing trips counts towards your ratings and validity.
+                  </p>
+                  <UiButton loading={loading} onClick={completeTrip}>
+                    Complete Trip
+                  </UiButton>
+                </>
+              )}
+              {trip?.status === 'completed' && (
+                <>
+                  <h3>Congratulations the Trip has been completed 🔥👍 </h3>
+                  <p>
+                    Thanks a lot for helping us with this dispatch; <br />
+                    The team at TruckDispatch is lucky to have real ones like
+                    you.
+                  </p>
+                </>
+              )}
+            </>
+          )}
+          {user?.userType === 'agent' && (
+            <>
+              {trip?.status !== 'awaiting-bid' && !trip?.TDO && (
+                <>
+                  <h3>Upload TDO</h3>
+                  <p>
+                    Payment has been made and a transporter has been accepted by
+                    you. However, we need your Transfer Document Order to
+                    authorize the transporter to pick up your cargo.
+                  </p>
+                  <p>Kindly upload your TDO to proceed with your trip</p>
+                  <Link to={`/my-trips/${tripId}/terminal-delivery-order`}>
+                    <UiButton>Upload TDO</UiButton>
+                  </Link>
+                </>
+              )}
+            </>
           )}
         </CardContainer>
-        {showInfoCard() && (
-          <CardContainer isSmall>
-            {user?.userType === 'transporter' && (
-              <>
-                {trip?.status === 'payment_complete' && (
-                  <>
-                    <h3>Start Trip</h3>
-                    <p>
-                      Payment has been made and all documents have been sent
-                      hence the trip is ready to go. To begin this trip, clicck
-                      the button below to notify the Agent the trip is about to
-                      start.
-                    </p>
-                    <UiButton
-                      loading={loading}
-                      onClick={() => setIsGoodsInspectionConfModalVisible(true)}
-                    >
-                      Start Trip
-                    </UiButton>
-                  </>
-                )}
-                {trip?.status === 'in-progress' && (
-                  <>
-                    <h3>Complete Trip</h3>
-                    <p>
-                      Have you gotten to the location? If so, kindly click the
-                      button below to inform the agent that you have completed
-                      the trip.
-                      <br />
-                      Completing trips counts towards your ratings and validity.
-                    </p>
-                    <UiButton loading={loading} onClick={completeTrip}>
-                      Complete Trip
-                    </UiButton>
-                  </>
-                )}
-                {trip?.status === 'completed' && (
-                  <>
-                    <h3>Congratulations the Trip has been completed 🔥👍 </h3>
-                    <p>
-                      Thanks a lot for helping us with this dispatch; <br />
-                      The team at TruckDispatch is lucky to have real ones like
-                      you.
-                    </p>
-                  </>
-                )}
-              </>
-            )}
-            {user?.userType === 'agent' && (
-              <>
-                {trip?.status !== 'awaiting_bid' && !trip?.TDO && (
-                  <>
-                    <h3>Upload TDO</h3>
-                    <p>
-                      Payment has been made and a transporter has been accepted
-                      by you. However, we need your Transfer Document Order to
-                      authorize the transporter to pick up your cargo.
-                    </p>
-                    <p>Kindly upload your TDO to proceed with your trip</p>
-                    <Link to={`/my-trips/${tripId}/terminal-delivery-order`}>
-                      <UiButton>Upload TDO</UiButton>
-                    </Link>
-                  </>
-                )}
-              </>
-            )}
-          </CardContainer>
-        )}
-      </PageStyling>
-      <UiOverlay isVisible={isGoodsInspectionConfModalVisible}>
-        <GoodsInspectionConfirmation
-          onClose={() => setIsGoodsInspectionConfModalVisible(false)}
-          startTrip={startTrip}
-          transporterName={user?.firstName}
-        />
-      </UiOverlay>
-    </>
+      )}
+    </PageStyling>
   );
 }
 

@@ -2,8 +2,6 @@ import styled from 'styled-components';
 
 // These icons should be arranged alphabetically for easy sorting
 import {
-  ArrowLeft,
-  ArrowRight,
   ArrowUpRight,
   CaretDown,
   CaretUp,
@@ -23,11 +21,14 @@ import {
   SignOut,
   Suitcase,
   Star,
-  Truck,
   UsersThree,
   X,
 } from 'phosphor-react';
 import { ReactComponent as ArrowCircleLeft } from './icons/arrow-circle-left.svg';
+import { ReactComponent as ArrowLeft } from './icons/arrow-left.svg';
+import { ReactComponent as Close } from './icons/close.svg';
+
+import { ReactComponent as Chat } from './icons/chat.svg';
 import { ReactComponent as ArrowCircleRight } from './icons/arrow-circle-right.svg';
 import { ReactComponent as CallReceived } from './icons/call-received.svg';
 import { ReactComponent as Car } from './icons/car.svg';
@@ -43,9 +44,12 @@ import { ReactComponent as Logout } from './icons/log-out.svg';
 import { ReactComponent as MagicStar } from './icons/magic-star.svg';
 import { ReactComponent as MessageChat } from './icons/chat.svg';
 import { ReactComponent as Moneys } from './icons/moneys.svg';
+import { ReactComponent as Notification } from './icons/notification.svg';
 import { ReactComponent as PasswordCheck } from './icons/password-check.svg';
+import { ReactComponent as Refresh } from './icons/refresh.svg';
 import { ReactComponent as Settings } from './icons/settings.svg';
-import { ReactComponent as TruckImg } from './icons/truck.svg';
+import { ReactComponent as Truck } from './icons/truck.svg';
+import { ReactComponent as TruckRemove } from './icons/truck-remove.svg';
 import { ReactComponent as TruckTick } from './icons/ticked-truck.svg';
 import { ReactComponent as User } from './icons/user.svg';
 import { ReactComponent as UserOctagon } from './icons/user-octagon.svg';
@@ -56,7 +60,6 @@ const icons = {
   ArrowCircleLeft: <ArrowCircleLeft />,
   ArrowCircleRight: <ArrowCircleRight />,
   ArrowLeft: <ArrowLeft />,
-  ArrowRight: <ArrowRight />,
   ArrowUpRight: <ArrowUpRight />,
   Buildings: <Company />,
   CallReceived: <CallReceived />,
@@ -64,10 +67,12 @@ const icons = {
   CaretDown: <CaretDown />,
   CaretUp: <CaretUp />,
   Chats: <Chats />,
+  Chat: <Chat />,
   ChartSquare: <ChartSquare />,
+  Close: <Close />,
+  CreditCard: <CreditCard />,
   Check: <Check />,
   Checks: <Checks />,
-  CreditCard: <CreditCard />,
   DocumentUpload: <DocumentUpload />,
   DotsThree: <DotsThree />,
   DotsThreeVertical: <DotsThreeVertical />,
@@ -81,20 +86,22 @@ const icons = {
   Logout: <Logout />,
   MagicStar: <MagicStar />,
   MapPin: <MapPin />,
-  MessageChat: <MessageChat />,
-  Money: <Money />,
   Moneys: <Moneys />,
+  Money: <Money />,
+  MessageChat: <MessageChat />,
+  Notification: <Notification />,
   PaperPlaneTilt: <PaperPlaneTilt />,
   PasswordCheck: <PasswordCheck />,
+  Refresh: <Refresh />,
   PencilSimple: <PencilSimple />,
   ShieldCheck: <ShieldCheck />,
   SignOut: <SignOut />,
   Suitcase: <Suitcase />,
   Star: <Star />,
   Settings: <Settings />,
-  TruckImg: <TruckImg />,
   TruckTick: <TruckTick />,
   Truck: <Truck />,
+  TruckRemove: <TruckRemove />,
   User: <User />,
   UserOctagon: <UserOctagon />,
   UsersThree: <UsersThree />,
@@ -123,5 +130,8 @@ const IconStyle = styled.span`
   svg {
     width: ${({ size }: { size?: Props['size'] }) =>
       pxToRem((size && parseInt(size)) || 16)};
+    height: ${({ size }: { size?: Props['size'] }) =>
+      pxToRem((size && parseInt(size)) || 16)};
+    fill: var(--color-gray-80);
   }
 `;

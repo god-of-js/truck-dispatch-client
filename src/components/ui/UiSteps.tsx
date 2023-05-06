@@ -5,14 +5,15 @@ import sizes from 'utils/sizes';
 
 export interface Step {
   title: string;
-  detail: string;
+  detail?: string;
   isSkipped?: boolean;
 }
 interface Props {
   steps: Step[];
   currentStepTitle: string;
+  noDetail?: boolean;
 }
-export default function UiSteps({ steps, currentStepTitle }: Props) {
+export default function UiSteps({ steps, currentStepTitle, noDetail }: Props) {
   function isActive(title: string) {
     return title === currentStepTitle;
   }
@@ -26,13 +27,14 @@ export default function UiSteps({ steps, currentStepTitle }: Props) {
   }
 
   return (
-    <List>
+    <List noDetail={noDetail}>
       {steps.map((step, index) => (
         <ListItem
           key={index}
           isActive={isActive(step.title)}
           isCompleted={isCompleted(step.title)}
           isSkipped={step.isSkipped}
+          hasNoDetail={noDetail}
         >
           <div className="indicator">
             <div className="indicator__circle">
@@ -52,12 +54,13 @@ export default function UiSteps({ steps, currentStepTitle }: Props) {
   );
 }
 
-interface StyledProps {
+interface ListItemProps {
   isActive: boolean;
   isCompleted: boolean;
   isSkipped?: boolean;
+  hasNoDetail?: boolean;
 }
-function getStyling(props: StyledProps) {
+function getStyling(props: ListItemProps) {
   if (props.isActive) {
     return {
       borderColor: 'var(--color-primary)',
@@ -80,7 +83,7 @@ function getStyling(props: StyledProps) {
 
   return {
     borderColor: 'var(--color-gray-60)',
-    background: '',
+    background: 'var(--color-primary-10)',
     lineStyle: 'dashed',
     titleColor: 'var(--color-gray-60)',
     textColor: 'var(--color-gray-60)',
@@ -90,15 +93,27 @@ function getStyling(props: StyledProps) {
 const List = styled.ul`
   display: flex;
   align-items: center;
+  ${({ noDetail }: { noDetail?: boolean }) =>
+    !noDetail
+      ? `
   justify-content: space-between;
 
   @media (min-width: ${sizes.tablet}) {
     flex-direction: column;
   }
+  `
+      : `
+    background: var(--color-primary-10);
+    padding: ${pxToRem(10)};
+    justify-content: center;
+  `}
 `;
 
 const ListItem = styled.li`
   width: 100%;
+  ${({ hasNoDetail }: ListItemProps) =>
+    hasNoDetail && `max-width: ${pxToRem(150)};`}
+
   .indicator {
     display: flex;
     align-items: center;
@@ -112,18 +127,23 @@ const ListItem = styled.li`
       display: flex;
       align-items: center;
       justify-content: center;
-      background: ${(styledProps: StyledProps) =>
-        getStyling(styledProps).background};
-      border: ${(styledProps: StyledProps) =>
-        `2px solid ${getStyling(styledProps).borderColor}`};
+      background: ${(listItemProps: ListItemProps) =>
+        getStyling(listItemProps).background};
+      border: ${(listItemProps: ListItemProps) =>
+        `2px solid ${getStyling(listItemProps).borderColor}`};
+
+      svg {
+        width: ${pxToRem(12)};
+        height: ${pxToRem(12)};
+      }
     }
 
     &__line {
       width: ${pxToRem(90)};
       width: 100%;
-      border: ${(styledProps: StyledProps) =>
-        `${pxToRem(1)} ${getStyling(styledProps).lineStyle} ${
-          getStyling(styledProps).borderColor
+      border: ${(listItemProps: ListItemProps) =>
+        `${pxToRem(1)} ${getStyling(listItemProps).lineStyle} ${
+          getStyling(listItemProps).borderColor
         }`};
     }
   }
@@ -132,7 +152,7 @@ const ListItem = styled.li`
   }
 
   &:last-child {
-    max-width: ${pxToRem(17.8)};
+    max-width: ${pxToRem(8)};
     .indicator {
       flex-direction: row-reverse;
       &__line {
@@ -140,6 +160,9 @@ const ListItem = styled.li`
       }
     }
   }
+  ${({ hasNoDetail }: ListItemProps) =>
+    !hasNoDetail &&
+    `
   @media (min-width: ${sizes.tablet}) {
     display: flex;
     gap: ${pxToRem(20)};
@@ -161,8 +184,8 @@ const ListItem = styled.li`
         font-size: ${pxToRem(18)};
         line-height: ${pxToRem(16)};
         margin-bottom: ${pxToRem(4)};
-        color: ${(styledProps: StyledProps) =>
-          getStyling(styledProps).titleColor};
+        color: ${(listItemProps: ListItemProps) =>
+          getStyling(listItemProps).titleColor};
       }
       .detail {
         font-style: normal;
@@ -170,8 +193,8 @@ const ListItem = styled.li`
         font-weight: 400;
         font-size: ${pxToRem(16)};
         line-height: ${pxToRem(24)};
-        color: ${(styledProps: StyledProps) =>
-          getStyling(styledProps).textColor};
+        color: ${(listItemProps: ListItemProps) =>
+          getStyling(listItemProps).textColor};
       }
     }
     &:last-child {
@@ -183,5 +206,5 @@ const ListItem = styled.li`
         }
       }
     }
-  }
+  }`}
 `;

@@ -10,7 +10,7 @@ import {
 let isRedirecting = false;
 const instance = axios.create({
   baseURL: BACKEND_URL,
-  timeout: 40000,
+  timeout: 240000,
 });
 
 instance.interceptors.response.use(

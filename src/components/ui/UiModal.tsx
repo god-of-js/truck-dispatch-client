@@ -3,23 +3,38 @@ import styled from 'styled-components';
 import OutsideClickHandler from 'react-outside-click-handler';
 import sizes from 'utils/sizes';
 import UiIcon from './UiIcon';
+import UiButton from './UiButton';
 
 type Size = 'lg' | 'sm';
 interface Props {
   children: React.ReactNode;
+  position?: 'center' | 'right';
   size?: Size;
+  title?: string;
   onClose: () => void;
+  goPrev?: () => void;
 }
-export default function UiModal({ children, size = 'lg', onClose }: Props) {
+export default function UiModal({
+  children,
+  title,
+  position = 'center',
+  size = 'lg',
+  onClose,
+  goPrev,
+}: Props) {
   return (
     <ModalCard size={size}>
       <OutsideClickHandler onOutsideClick={onClose}>
         <div className="modal-inner">
-          <div className="close-button-container">
-            <button onClick={onClose}>
-              <UiIcon icon="X" />
-            </button>
-          </div>
+          <header>
+            <UiButton variant="icon-neutral" onClick={goPrev}>
+              <UiIcon icon="ArrowLeft" size="16" />
+            </UiButton>
+            <h2>{title}</h2>
+            <UiButton variant="icon-neutral" onClick={onClose}>
+              <UiIcon icon="Close" size="20" />
+            </UiButton>
+          </header>
           {children}
         </div>
       </OutsideClickHandler>
@@ -39,34 +54,29 @@ const ModalCard = styled.div`
   max-height: 80%;
 
   .modal-inner {
-    padding: ${pxToRem(16)};
+    padding-bottom: ${pxToRem(28)};
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: ${pxToRem(18)} ${pxToRem(24)};
+
+      h2 {
+        color: var(--color-neutralBlack);
+        font-size: ${pxToRem(20)};
+        font-family: 'thiccboi-extrabold';
+        font-weight: 700;
+        margin: 0;
+      }
+    }
   }
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     width: ${({ size }: { size: Size }) =>
-      size === 'lg' ? '40%' : pxToRem(480)};
+      size === 'lg' ? '50%' : pxToRem(480)};
     position: static;
     margin: auto;
-    border-radius: ${pxToRem(8)};
-  }
-  .close-button-container {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: ${pxToRem(8)};
-      width: ${pxToRem(24)};
-      height: ${pxToRem(24)};
-      background: transparent;
-      border: transparent;
-      border-radius: 50%;
-
-      :hover {
-        background: var(--color-gray-100);
-      }
-    }
+    border-radius: ${pxToRem(16)};
   }
 `;

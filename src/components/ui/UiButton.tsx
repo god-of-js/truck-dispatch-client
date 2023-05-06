@@ -8,8 +8,10 @@ interface Props {
   variant?:
     | 'primary'
     | 'secondary'
+    | 'danger-secondary'
     | 'tertiary'
     | 'neutral'
+    | 'icon-neutral'
     | 'primary-outlined'
     | 'secondary-outlined'
     | 'primary-text'
@@ -141,6 +143,17 @@ const ButtonContainer = styled.button<Props>`
     color: var(--color-warning-600);
   }
 
+  &.icon-neutral {
+    width: ${pxToRem(40)};
+    height: ${pxToRem(36)};
+    background: var(--color-gray-20);
+    border-radius: ${pxToRem(8)};
+
+    &:hover {
+      background: var(--color-gray-30);
+    }
+  }
+
   &.neutral {
     background-color: var(--color-gray-100);
     border: 1px solid var(--color-gray-200);
@@ -190,6 +203,19 @@ const ButtonContainer = styled.button<Props>`
     &:hover {
       color: var(--color-primary-50);
     }`}
+  }
+
+  &.danger-secondary {
+    background: var(--color-danger-10);
+    color: var(--color-danger);
+
+    svg {
+      fill: var(--color-danger);
+    }
+    &:hover {
+      background: var(--color-danger-20);
+      box-shadow: var(--box-shadow-primary);
+    }
   }
 
   &.dark {

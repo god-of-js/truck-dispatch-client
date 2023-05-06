@@ -3,11 +3,10 @@ import styled from 'styled-components';
 
 interface Props {
   error?: string;
-  name: string;
   label?: string;
   children: React.ReactNode;
 }
-export default function UiField({ error, label, name, children }: Props) {
+export default function UiField({ error, label, children }: Props) {
   return (
     <div>
       <Label>{label}</Label>
