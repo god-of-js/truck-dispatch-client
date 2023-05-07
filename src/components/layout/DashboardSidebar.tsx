@@ -39,9 +39,9 @@ export default function DashboardSidebar() {
       iconName: 'Moneys',
     },
     {
-      path: '/',
+      path: '/vehicles',
       name: 'Vehicles',
-      iconName: 'TruckImg',
+      iconName: 'Truck',
     },
     {
       path: '/',
@@ -66,16 +66,15 @@ export default function DashboardSidebar() {
   const userType = useMemo(() => {
     if (user?.userType === 'transporter') return 'transporter';
     if (user?.userType === 'agent') return 'agent';
-    if (user?.userType === 'transportCompany') return 'Transport Company'
+    if (user?.userType === 'transportCompany') return 'Transport Company';
 
-    return 'company'
+    return 'company';
   }, [user]);
   const routes = useMemo(() => {
     if (!user) return [];
 
     return user?.userType === 'transporter' ? transporterRoutes : agentRoutes;
   }, [user]);
-
 
   function isRouteActive(route: string) {
     if (route === '/') return route === appLocation.pathname;
@@ -87,8 +86,6 @@ export default function DashboardSidebar() {
     removeUserSessionId();
     navigate('/auth/login');
   };
-
-
 
   const toggleShowNames = () => {
     setIsExpanded(!isExpanded);
@@ -123,7 +120,7 @@ export default function DashboardSidebar() {
           ))}
           <Link to="/chat">
             <Tab isActive={isRouteActive('/chat')} isExpanded={isExpanded}>
-              <UiIcon icon="MessageChat" size="24" />
+              <UiIcon icon="Chat" size="24" />
               {/* TODO: figure out how to manage message count with new design */}
               {/* {unreadChat.length !== 0 && (
                   <MessageCount>{unreadChat.length}</MessageCount>

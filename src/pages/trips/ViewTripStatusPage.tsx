@@ -123,10 +123,14 @@ export default function ViewTripStatus() {
                 </a>
               )}
               <div className="message-btn-container">
-                <Link to={`/chat?clientId=${trip?.tripOwner?._id}&transporterId=${trip?.transporter?._id}`}>
+                <Link
+                  to={`/chat?clientId=${trip?.tripOwner?._id}&transporterId=${trip?.transporter?._id}`}
+                >
                   <UiButton size="s" variant="secondary">
                     <UiIcon icon="Chats" /> Message{' '}
-                    {clientBasedUserTypes.includes(user?.userType!) ? 'Transporter' : 'User'}
+                    {clientBasedUserTypes.includes(user?.userType!)
+                      ? 'Transporter'
+                      : 'User'}
                   </UiButton>
                 </Link>
               </div>

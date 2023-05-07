@@ -2,21 +2,23 @@ import { configureStore } from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
 
 import Account, { AccountState } from './Account';
-import Trips, { TripState } from './Trips';
-import Ratings, { RatingsState } from './Ratings';
-import Payment, { PaymentsState } from './Payments';
-import Chat, { ChatState } from './Chat';
-import Verification, { VerificationState } from './Verification';
 import Bid, { BidState } from './Bid';
+import Chat, { ChatState } from './Chat';
+import Payment, { PaymentsState } from './Payments';
+import Ratings, { RatingsState } from './Ratings';
+import Trips, { TripState } from './Trips';
+import Vehicle, { VehicleState } from './Vehicle';
+import Verification, { VerificationState } from './Verification';
 
 const store = configureStore({
   reducer: {
     account: Account,
-    trips: Trips,
+    bid: Bid,
+    chat: Chat,
     payment: Payment,
     ratings: Ratings,
-    chat: Chat,
-    bid: Bid,
+    trips: Trips,
+    vehicle: Vehicle,
     verification: Verification,
   },
   middleware: [thunk],
@@ -26,11 +28,12 @@ export type AppDispatch = typeof store.dispatch;
 export type AppState = typeof store.getState;
 export interface RootState {
   account: AccountState;
-  trips: TripState;
+  bid: BidState;
+  chat: ChatState;
   payment: PaymentsState;
   ratings: RatingsState;
-  chat: ChatState;
-  bid: BidState;
+  trips: TripState;
+  vehicle: VehicleState;
   verification: VerificationState;
 }
 

@@ -10,7 +10,7 @@ import Loader from 'components/layout/Loader';
 import CreateAccountNumberSchema from 'utils/validations/CreateAccountNumberSchema';
 import { useDispatch, useSelector } from 'react-redux';
 import { toAnyAction } from 'utils/helpers';
-import { addUserBankAccount } from 'modules/Account';
+import { createUserBankAccount } from 'modules/Account';
 import BankAccount from 'types/BankDetails';
 import { RootState } from 'modules/index';
 
@@ -58,7 +58,7 @@ export default function AddAccount({ bankAccountDetails, onClose }: Props) {
       bank_code: formData.bankCode,
       bank_name: bank?.label!,
     };
-    dispatch(toAnyAction(addUserBankAccount(data)))
+    dispatch(toAnyAction(createUserBankAccount(data)))
       .then(() => {
         onClose();
       })

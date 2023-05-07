@@ -48,7 +48,7 @@ export default function UiInput({
   }
 
   return (
-    <UiField label={label} name={name} error={error}>
+    <UiField label={label} error={error}>
       <InputContainer>
         {inputType === 'phone' ? (
           <PhoneInputContainer>

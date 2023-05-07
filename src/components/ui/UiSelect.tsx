@@ -44,7 +44,7 @@ export default function UiSelect({
 
   return (
     <OutsideClickHandler onOutsideClick={() => setIsOpen(false)}>
-      <UiField label={label} name={name} error={error}>
+      <UiField label={label} error={error}>
         <StyledSelect onClick={toggleOptions} hasError={!!error}>
           <div>
             <span className="selected-option">

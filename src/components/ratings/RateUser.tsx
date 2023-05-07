@@ -71,7 +71,7 @@ export default function RateTransporter({ onClose }: Props) {
           {trip?.transporter?.firstName} {trip?.transporter?.lastName}
         </div>
       </User>
-      <UiField label="Rate Transporter" name="rating">
+      <UiField label="Rate Transporter">
         <Ratings
           rating={data.starRating}
           isActive
