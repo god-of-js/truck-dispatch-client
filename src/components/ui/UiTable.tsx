@@ -111,12 +111,11 @@ const TableContainer = styled.div`
   border: none;
 `;
 
-
 const Table = styled.table`
   position: relative;
   table-layout: fixed;
   width: 100%;
-  border-spacing: ${pxToRem(0)} ${pxToRem(8)}; 
+  border-spacing: ${pxToRem(0)} ${pxToRem(8)};
 `;
 
 const TableHeader = styled.thead`
@@ -160,9 +159,8 @@ const TableRow = styled.tr`
   @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
     display: table-row;
 
-
-
-    td,th {
+    td,
+    th {
       &:last-child {
         border-top-right-radius: ${pxToRem(8)};
         border-bottom-right-radius: ${pxToRem(8)};
@@ -185,7 +183,7 @@ const TableRow = styled.tr`
 const TableHeadItem = styled.th`
   padding: ${pxToRem(12)} ${pxToRem(24)};
   color: var(--color-gray-500);
-  background: #F2F0FB;
+  background: #f2f0fb;
   font-size: ${pxToRem(12)};
 `;
 

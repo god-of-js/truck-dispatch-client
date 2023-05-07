@@ -24,7 +24,8 @@ export default function LoginPage() {
   );
 
   const [loading, setLoading] = useState(false);
-  const [isNotifyUsertoResetVisible, setIsNotifyUserToResetVisible] = useState(false)
+  const [isNotifyUsertoResetVisible, setIsNotifyUserToResetVisible] =
+    useState(false);
 
   function handleChange(event: { name: string; value: string | null }) {
     setFormData({
@@ -43,8 +44,8 @@ export default function LoginPage() {
         let msg = err.message;
         if (msg === 'Phone has not been verified') {
           navigate('/auth/verify-phone');
-        } else if(msg === 'Login directions have been sent to your email'){
-        setIsNotifyUserToResetVisible(true)
+        } else if (msg === 'Login directions have been sent to your email') {
+          setIsNotifyUserToResetVisible(true);
         }
       })
       .finally(() => {

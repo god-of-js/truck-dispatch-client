@@ -54,43 +54,6 @@ export default function ForgotPasswordPage() {
   );
 
   return (
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <Page>
-      <UiForm
-        schema={ForgotPasswordSchema}
-        formData={formData}
-        onSubmit={handleSubmit}
-      >
-        {({ errors }) => (
-          <>
-            <Heading>Lost your password?</Heading>
-            <p>
-              To receive a signin link, enter the email address linked to your
-              Truckdispatch account.
-            </p>
-            <Margin>
-              <UiInput
-                label="Email*"
-                value={formData.email}
-                name="email"
-                error={errors.email}
-                onChange={handleChange}
-              />
-            </Margin>
-            <UiButton isFullWidth loading={loading}>
-              Send recovery link
-            </UiButton>
-            <LinkToRegisteration>
-              Remembered your password? <Link to="/auth/login">Sign In</Link>
-            </LinkToRegisteration>
-          </>
-        )}
-      </UiForm>
-    </Page>
-=======
-=======
->>>>>>> 225bee80cc6b7b276b9b82a24de97850d7301c42
     <AuthLayoutStyling img invert isInvertedForm>
       <StyledAuthContent inverted>
         <div className="form-container">
@@ -130,9 +93,5 @@ export default function ForgotPasswordPage() {
         </div>
       </StyledAuthContent>
     </AuthLayoutStyling>
-<<<<<<< HEAD
->>>>>>> 6bffce03b64efe0b63b9d439825c504718197bf3
-=======
->>>>>>> 225bee80cc6b7b276b9b82a24de97850d7301c42
   );
 }
