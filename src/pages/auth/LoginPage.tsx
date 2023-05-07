@@ -10,13 +10,8 @@ import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
 import { toAnyAction } from 'utils/helpers';
 import loginSchema from 'utils/validations/loginSchema';
-<<<<<<< HEAD
-import UiOverlay from 'ui/UiOverlay';
-import NotifyUsersFromFirebase from 'components/auth/NotifyUsersFromFirebase';
-=======
 import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
 import StyledAuthContent from 'components/auth/StyledAuthContent';
->>>>>>> 6bffce03b64efe0b63b9d439825c504718197bf3
 
 export default function LoginPage() {
   const dispatch = useDispatch();
@@ -58,57 +53,6 @@ export default function LoginPage() {
   }
 
   return (
-<<<<<<< HEAD
-    <Page>
-      <UiForm schema={loginSchema} formData={formData} onSubmit={handleSubmit}>
-        {({ errors }) => (
-          <>
-            <Heading>Sign in</Heading>
-            <Margin>
-              <UiInput
-                label="Email*"
-                value={formData.email}
-                name="email"
-                error={errors.email}
-                onChange={handleChange}
-              />
-            </Margin>
-            <Margin>
-              <UiInput
-                type="password"
-                label="Password*"
-                name="password"
-                value={formData.password!}
-                error={errors.password}
-                onChange={handleChange}
-              />
-              <ForgotPassword>
-                Forgot password?{' '}
-                <Link
-                  to="/auth/forgot-password"
-                  className="forgot-password-link"
-                >
-                  Reset password
-                </Link>
-              </ForgotPassword>
-            </Margin>
-            <UiButton isFullWidth loading={loading}>
-              Sign In
-            </UiButton>
-            <LinkToRegisteration>
-              Don't have an account?{' '}
-              <Link to="/auth/join/agent">register with us</Link>
-            </LinkToRegisteration>
-          </>
-        )}
-      </UiForm>
-      <UiOverlay isVisible={isNotifyUsertoResetVisible}>
-          <NotifyUsersFromFirebase
-            onClose={() => setIsNotifyUserToResetVisible(false)}
-          />
-        </UiOverlay>
-    </Page>
-=======
     <AuthLayoutStyling img invert isInvertedForm>
       <StyledAuthContent inverted>
         <div className="form-container">
@@ -177,6 +121,5 @@ export default function LoginPage() {
         </div>
       </StyledAuthContent>
     </AuthLayoutStyling>
->>>>>>> 6bffce03b64efe0b63b9d439825c504718197bf3
   );
 }

@@ -163,11 +163,11 @@ const TableRow = styled.tr`
 
 
     td,th {
-      :last-child {
+      &:last-child {
         border-top-right-radius: ${pxToRem(8)};
         border-bottom-right-radius: ${pxToRem(8)};
       }
-      :first-child {
+      &:first-child {
         border-top-left-radius: ${pxToRem(8)};
         border-bottom-left-radius: ${pxToRem(8)};
       }
