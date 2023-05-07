@@ -125,31 +125,7 @@ export function getDashboardUser() {
   };
 }
 
-<<<<<<< HEAD
-export const startVerificationProcess = (verificationData: FormData) => {
-  return () => {
-    return Api.startVerificationProcess(verificationData);
-  };
-};
-
-export const updateVerification = (verificationData: FormData) => {
-  return () => {
-    return Api.updateVerification(verificationData);
-  };
-};
-
-export const getUserVerification = () => {
-  return (dispatch: AppDispatch) => {
-    return Api.getVerificationByUserId().then((data) => {
-      dispatch(setVerification(data));
-    });
-  };
-};
-
-export const addUserBankAccount = (accountDetails: BankAccount) => {
-=======
 export const createUserBankAccount = (accountDetails: BankAccount) => {
->>>>>>> 6bffce03b64efe0b63b9d439825c504718197bf3
   return (dispatch: AppDispatch) => {
     return Api.saveAccountNumber(accountDetails).then((user) => {
       dispatch(setUser(user));

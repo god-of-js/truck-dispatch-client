@@ -68,9 +68,6 @@ export default function UiTable({
 
   return (
     <TableContainer>
-      <TableContainerHeader>
-        <TableTitle>{tableTitle}</TableTitle>
-      </TableContainerHeader>
       <Table>
         <TableHeader>
           <TableRow>
@@ -114,27 +111,12 @@ const TableContainer = styled.div`
   border: none;
 `;
 
-const TableContainerHeader = styled.header`
-  border-bottom: 1px solid var(--color-gray-200);
-  display: flex;
-  justify-content: space-between;
-  background: #ffffff;
-  border-radius: ${pxToRem(8)}
-`;
-const TableTitle = styled.h2`
-  padding: 0 ${pxToRem(12)};
-  font-weight: 700;
-  font-size: ${pxToRem(14)};
-  line-height: ${pxToRem(28)};
-  text-transform: uppercase;
-  color: var(--color-gray-900);
-`;
 
 const Table = styled.table`
   position: relative;
   table-layout: fixed;
   width: 100%;
-  border-spacing: ${pxToRem(0)} ${pxToRem(8)};
+  border-spacing: ${pxToRem(0)} ${pxToRem(8)}; 
 `;
 
 const TableHeader = styled.thead`
@@ -154,24 +136,43 @@ const TableRow = styled.tr`
   display: flex;
   flex-direction: column;
   position: relative;
+  margin-bottom: ${pxToRem(20)};
 
   .mobile-title {
     font-size: ${pxToRem(12)};
   }
 
   .menu-container {
-    height: 100%;
+    height: 98.5%;
     width: fit-content;
     position: absolute;
+    background: #ffffff;
     display: flex;
     align-items: flex-start;
     right: 0;
     @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
       align-items: center;
+      justify-content: flex-end;
+      width: 13%;
     }
   }
+
   @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
     display: table-row;
+
+
+
+    td,th {
+      :last-child {
+        border-top-right-radius: ${pxToRem(8)};
+        border-bottom-right-radius: ${pxToRem(8)};
+      }
+      :first-child {
+        border-top-left-radius: ${pxToRem(8)};
+        border-bottom-left-radius: ${pxToRem(8)};
+      }
+    }
+
     .mobile-title {
       display: none;
     }
@@ -186,14 +187,6 @@ const TableHeadItem = styled.th`
   color: var(--color-gray-500);
   background: #F2F0FB;
   font-size: ${pxToRem(12)};
-  :last-child {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-  }
-  :first-child {
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-  }
 `;
 
 const TableDataItem = styled.td`
@@ -203,14 +196,6 @@ const TableDataItem = styled.td`
   font-size: ${pxToRem(14)};
   line-height: ${pxToRem(20)};
   background: #ffffff;
-  :last-child {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-  }
-  :first-child {
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-  }
 `;
 
 const NoDataBox = styled.div`
