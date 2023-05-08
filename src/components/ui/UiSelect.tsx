@@ -111,9 +111,12 @@ const StyledSelect = styled.div`
 const StyledOptions = styled.ul`
   list-style: none;
   /* margin-top: ${pxToRem(8)}; */
-  padding: ${pxToRem(16)} ${pxToRem(8)};
+  padding: ${pxToRem(16)};
+  gap:  ${pxToRem(12)};
   position: absolute;
-  width: 100%;
+  bottom:  ${pxToRem(55)};
+  width: ${pxToRem(356)};
+  
   background: #fff;
   border: 1px solid var(--color-gray-30);
   border-radius: ${pxToRem(8)};
@@ -131,20 +134,23 @@ const StyledOptions = styled.ul`
 `;
 
 const StyledOption = styled.li`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   height: ${pxToRem(40)};
+  padding: ${pxToRem(8)} ${pxToRem(12)} ;
   font-size: ${pxToRem(14)};
   border-radius: ${pxToRem(4)};
-  align-items: center;
-  padding: ${pxToRem(8)} ${pxToRem(12)} ${pxToRem(8)} ${pxToRem(12)};
-  justify-content: space-between;
-  display: flex;
   color: black;
+  gap: ${pxToRem(229)}; 
+  width: 324px;
+
+
   cursor: pointer;
   text-transform: capitalize;
   &:hover {
-    svg {
-      fill: var(--color-primary);
-    }
+   
     background: var(--color-primary-10);
   }
 
