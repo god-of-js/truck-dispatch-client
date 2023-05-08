@@ -19,6 +19,7 @@ export default function DashboardTopNav() {
   function logOutUser() {
     removeUserSessionId();
     navigate('/auth/login');
+    window.location.reload();
   }
 
   const dropDownData: DropDownData[] = [
