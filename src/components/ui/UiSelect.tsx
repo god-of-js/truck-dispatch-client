@@ -68,7 +68,7 @@ export default function UiSelect({
                 onClick={() => handleOptionClick(option)}
               >
                 {option.label}
-                <UiIcon icon={isOpen ? 'RadioButton' : 'RadioButton'} />
+                <div   className={`activity-circle`} />
 
               </StyledOption>
             ))}
@@ -146,19 +146,16 @@ text-transform: capitalize;
   }
   background: var(--color-primary-10);
 }
-`;
 
-interface TabProps {
-  isActive: boolean;
-  isExpanded: boolean;
+.activity-circle {
+width: 16px;
+height: 16px;
+
+/* Primary/Purple */
+
+border: 6px solid #4326C4;
+border-radius: 16px;
 }
-const activeTabStyle = `
-border-color: var(--color-primary);
-color: var(--color-primary);
-background-color: var(--color-primary-10);
-
-svg {
-  fill: var(--color-primary);
-}`;
+`;
 
 
