@@ -46,7 +46,7 @@ export default function UiSelect({
     <OutsideClickHandler onOutsideClick={() => setIsOpen(false)}>
       <UiField label={label} error={error}>
         <StyledSelect onClick={toggleOptions} hasError={!!error}>
-          <div>
+          <div className="select">
             <span className="selected-option">
               {selectedOption?.label
                 ? selectedOption.label
@@ -67,9 +67,12 @@ export default function UiSelect({
                 key={option.value}
                 onClick={() => handleOptionClick(option)}
               >
-                {option.label}
-                <div   className={`activity-circle`} />
-
+                <span>{option.label}</span>
+                <span
+                  className={`activity-indicator ${
+                    selectedOption?.value === option.value ? 'active' : ''
+                  }`}
+                />
               </StyledOption>
             ))}
           </StyledOptions>
@@ -81,7 +84,7 @@ export default function UiSelect({
 
 const StyledSelect = styled.div`
   position: relative;
-  div {
+  .select {
     padding: 0 ${pxToRem(16)};
     height: var(--base-height);
     display: flex;
@@ -128,34 +131,31 @@ const StyledOptions = styled.ul`
 `;
 
 const StyledOption = styled.li`
-height: ${pxToRem(40)};
-font-size: ${pxToRem(14)};
-border-radius: ${pxToRem(4)};
-justify-items: center;
-align-items: center;
-padding: ${pxToRem(8)} ${pxToRem(12)} ${pxToRem(8)} ${pxToRem(12)};
-display: flex;
-color: black;
-cursor: pointer;
-justify-content: space-between;
-
-text-transform: capitalize;
-&:hover {
-  svg {
-    fill: var(--color-primary);
+  height: ${pxToRem(40)};
+  font-size: ${pxToRem(14)};
+  border-radius: ${pxToRem(4)};
+  align-items: center;
+  padding: ${pxToRem(8)} ${pxToRem(12)} ${pxToRem(8)} ${pxToRem(12)};
+  justify-content: space-between;
+  display: flex;
+  color: black;
+  cursor: pointer;
+  text-transform: capitalize;
+  &:hover {
+    svg {
+      fill: var(--color-primary);
+    }
+    background: var(--color-primary-10);
   }
-  background: var(--color-primary-10);
-}
 
-.activity-circle {
-width: 16px;
-height: 16px;
+  .activity-indicator {
+    width: ${pxToRem(16)};
+    height: ${pxToRem(16)};
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 ${pxToRem(1)} var(--color-gray);
 
-/* Primary/Purple */
-
-border: 6px solid #4326C4;
-border-radius: 16px;
-}
+    &.active {
+      box-shadow: inset 0 0 0 ${pxToRem(6)} var(--color-primary);
+    }
+  }
 `;
-
-

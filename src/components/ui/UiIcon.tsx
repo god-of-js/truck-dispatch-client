@@ -46,7 +46,6 @@ import { ReactComponent as MessageChat } from './icons/chat.svg';
 import { ReactComponent as Moneys } from './icons/moneys.svg';
 import { ReactComponent as Notification } from './icons/notification.svg';
 import { ReactComponent as PasswordCheck } from './icons/password-check.svg';
-import { ReactComponent as RadioButton } from './icons/radio-button.svg';
 import { ReactComponent as Refresh } from './icons/refresh.svg';
 import { ReactComponent as Settings } from './icons/settings.svg';
 import { ReactComponent as Truck } from './icons/truck.svg';
@@ -93,7 +92,6 @@ const icons = {
   Notification: <Notification />,
   PaperPlaneTilt: <PaperPlaneTilt />,
   PasswordCheck: <PasswordCheck />,
-  RadioButton: <RadioButton/>,
   Refresh: <Refresh />,
   PencilSimple: <PencilSimple />,
   ShieldCheck: <ShieldCheck />,
