@@ -1,7 +1,9 @@
+import { useMemo } from 'react';
 import styled from 'styled-components';
 import Vehicle from 'types/Vehicle';
 import UiButton from 'ui/UiButton';
-import UiIcon from 'ui/UiIcon';
+import UiIcon, { Icons } from 'ui/UiIcon';
+import { vehicleType } from 'utils/constants';
 
 interface Props {
   vehicle: Vehicle;
@@ -9,8 +11,26 @@ interface Props {
 export default function VehicleComponent({ vehicle }: Props) {
   const images = Object.values(vehicle.images).slice(0, 4);
 
+  const iconName = useMemo(() => {
+    const typeOfVehicle = vehicleType.find(
+      ({ title }) => title === vehicle.vehicleType,
+    );
+    return typeOfVehicle?.image as Icons;
+  }, [vehicle.vehicleType]);
+
   return (
     <VehicleStyling>
+      <div className="driver-avatar-container">
+        <img src={vehicle.driver.avatar} width="100" height="100" alt="" />
+        <div className="vehicle-type">
+          <UiIcon icon={iconName} />
+          <div>{vehicle.vehicleType}</div>
+        </div>
+      </div>
+      <div className="plate-number">
+        <div className="label">Plate Number</div>
+        <div className="plate-number__value">{vehicle.plateNumber}</div>
+      </div>
       <div className="fields">
         <div className="field">
           <div className="label">DRIVER NAME</div>
@@ -24,11 +44,12 @@ export default function VehicleComponent({ vehicle }: Props) {
       <div className="images">
         <div className="label">Truck Images</div>
         <div className="content">
-          {/* {images.map((image) => (
-            <>
+          {images.map((image) => (
+            <div className="image">
               <img src={image} alt="a truckdispatch vendor vehicle" />
-            </>
-          ))} */}
+              <div className="img-remainder">+2</div>
+            </div>
+          ))}
         </div>
       </div>
       <div className="btn-container">
@@ -49,6 +70,57 @@ const VehicleStyling = styled.div`
   border-radius: ${pxToRem(16)};
   display: grid;
   gap: ${pxToRem(24)};
+  max-width: ${pxToRem(372)};
+
+  .driver-avatar-container {
+    display: flex;
+    gap: ${pxToRem(12)};
+
+    img {
+      border-radius: ${pxToRem(8)};
+      width: ${pxToRem(100)};
+      height: ${pxToRem(100)};
+    }
+
+    .vehicle-type {
+      background: var(--color-gray-20);
+      border-radius: ${pxToRem(8)};
+      width: 80%;
+      max-width: ${pxToRem(208)};
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 12px;
+      line-height: 24px;
+      text-transform: capitalize;
+
+      svg {
+        height: ${pxToRem(40)};
+        width: ${pxToRem(80)};
+      }
+    }
+  }
+
+  .plate-number {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: ${pxToRem(16)} ${pxToRem(24)};
+    background: var(--color-gray-20);
+    border-radius: ${pxToRem(8)};
+
+    &__value {
+      letter-spacing: -0.02em;
+      color: var(--color-neutralBlack);
+      font-style: normal;
+      font-weight: 600;
+      font-size: ${pxToRem(20)};
+    }
+  }
 
   .label {
     font-style: normal;
@@ -76,7 +148,46 @@ const VehicleStyling = styled.div`
   .images {
     .content {
       display: grid;
-      grid-template-columns: auto auto auto;
+      grid-template-columns: auto auto;
+      gap: ${pxToRem(12)};
+
+      .image {
+        position: relative;
+        max-width: ${pxToRem(160)};
+        width: 100%;
+        height: ${pxToRem(84)};
+        .img-remainder {
+          display: none;
+        }
+
+        &:last-child {
+          .img-remainder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background: linear-gradient(
+              0deg,
+              rgba(21, 19, 27, 0.75),
+              rgba(21, 19, 27, 0.75)
+            );
+            border-radius: ${pxToRem(8)};
+            color: white;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 20px;
+          }
+        }
+      }
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: ${pxToRem(8)};
+      }
     }
   }
 
