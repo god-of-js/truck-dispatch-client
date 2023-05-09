@@ -1,4 +1,4 @@
-import { Icons } from "ui/UiIcon";
+import { Icons } from 'ui/UiIcon';
 
 export const shippingLines = [
   'Maersk line',
