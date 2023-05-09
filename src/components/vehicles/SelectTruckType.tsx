@@ -1,17 +1,10 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import trailer from '../../assets/img/trailer.svg';
-import semiTrailer from '../../assets/img/semi-trailer.svg';
-import flatbed from '../../assets/img/flatbed.svg';
-import chiller from '../../assets/img/chiller.svg';
-import tanker from '../../assets/img/tanker.svg';
-import pickUpVan from '../../assets/img/pick-up-van.svg';
-import truckOf20Ft from '../../assets/img/20-ft-truck.svg';
-import van from '../../assets/img/van.svg';
-import miniVan from '../../assets/img/mini-van.svg';
 import sizes from 'utils/sizes';
 import UiButton from 'ui/UiButton';
 import CreateVehicleData from 'types/CreateVehicleData';
+import UiIcon from 'ui/UiIcon';
+import { vehicleTypes } from 'utils/constants';
 
 interface Props {
   vehicle: CreateVehicleData;
@@ -19,53 +12,6 @@ interface Props {
 }
 export default function SelectTruckType({ vehicle, goToNext }: Props) {
   const [vehicleData, setVehicleData] = useState(vehicle);
-  const vehicleType = [
-    {
-      title: 'Trailer',
-      value: 'trailer',
-      image: trailer,
-    },
-    {
-      title: 'Semi Trailer',
-      value: 'semi-trailer',
-      image: semiTrailer,
-    },
-    {
-      title: 'Flatbed',
-      value: 'flatbed',
-      image: flatbed,
-    },
-    {
-      title: 'Chiller',
-      value: 'chiller',
-      image: chiller,
-    },
-    {
-      title: 'Tanker',
-      value: 'tanker',
-      image: tanker,
-    },
-    {
-      title: 'Pickup Van',
-      value: 'pickup-van',
-      image: pickUpVan,
-    },
-    {
-      title: '20 ft Truck',
-      value: '20-ft-truck',
-      image: truckOf20Ft,
-    },
-    {
-      title: 'Van',
-      value: 'van',
-      image: van,
-    },
-    {
-      title: 'Mini Van',
-      value: 'mini-van',
-      image: miniVan,
-    },
-  ];
 
   function selectVehicleType(vehicleType: string) {
     setVehicleData((data) => ({
@@ -82,14 +28,14 @@ export default function SelectTruckType({ vehicle, goToNext }: Props) {
     <ComponentStyling>
       <label>Select Truck Type</label>
       <div className="vehicle-grid">
-        {vehicleType.map((vehicle) => (
+        {vehicleTypes.map((vehicle) => (
           <Vehicle
             isActive={vehicleData.vehicleType === vehicle.title}
             key={vehicle.title}
             onClick={() => selectVehicleType(vehicle.title)}
           >
             <div className="vehicle-inner">
-              <img src={vehicle.image} alt="Truckdispatch vehicle" />
+              <UiIcon icon={vehicle.icon} />
               <div>{vehicle.title}</div>
             </div>
           </Vehicle>
@@ -159,6 +105,11 @@ const Vehicle = styled.button`
     font-size: ${pxToRem(14)};
     font-weight: 700;
     font-family: 'thiccboi-extrabold';
+  }
+
+  svg {
+    height: ${pxToRem(64)};
+    width: ${pxToRem(128)};
   }
 
   &:hover {
