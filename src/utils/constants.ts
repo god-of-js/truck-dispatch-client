@@ -1,4 +1,4 @@
-import { Icons } from 'ui/UiIcon';
+import { Icons } from "ui/UiIcon";
 
 export const shippingLines = [
   'Maersk line',
@@ -34,52 +34,52 @@ export const tripStatuses = [
 interface VehicleType {
   title: string;
   value: string;
-  image: Icons;
+  icon: Icons;
 }
-export const vehicleType: VehicleType[] = [
+export const vehicleTypes: VehicleType[] = [
   {
     title: 'Trailer',
     value: 'trailer',
-    image: 'Trailer',
+    icon: 'Trailer',
   },
   {
     title: 'Semi Trailer',
     value: 'semi-trailer',
-    image: 'SemiTrailer',
+    icon: 'SemiTrailer',
   },
   {
     title: 'Flatbed',
     value: 'flatbed',
-    image: 'FlatBed',
+    icon: 'FlatBed',
   },
   {
     title: 'Chiller',
     value: 'chiller',
-    image: 'Chiller',
+    icon: 'Chiller',
   },
   {
     title: 'Tanker',
     value: 'tanker',
-    image: 'Tanker',
+    icon: 'Tanker',
   },
   {
     title: 'Pickup Van',
     value: 'pickup-van',
-    image: 'PickUpVan',
+    icon: 'PickUpVan',
   },
   {
     title: '20 ft Truck',
     value: '20-ft-truck',
-    image: 'TwentyFTTruck',
+    icon: 'TwentyFTTruck',
   },
   {
     title: 'Van',
     value: 'van',
-    image: 'Van',
+    icon: 'Van',
   },
   {
     title: 'Mini Van',
     value: 'mini-van',
-    image: 'MiniVan',
+    icon: 'MiniVan',
   },
 ];

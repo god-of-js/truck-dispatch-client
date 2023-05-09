@@ -56,6 +56,7 @@ import { ReactComponent as SemiTrailer } from './icons/semi-trailer.svg';
 import { ReactComponent as Settings } from './icons/settings.svg';
 import { ReactComponent as Tanker } from './icons/tanker.svg';
 import { ReactComponent as Truck } from './icons/truck.svg';
+import { ReactComponent as TwentyFTTruck } from './icons/20-ft-truck.svg';
 import { ReactComponent as TruckRemove } from './icons/truck-remove.svg';
 import { ReactComponent as TruckTick } from './icons/ticked-truck.svg';
 import { ReactComponent as Trailer } from './icons/trailer.svg';
@@ -63,7 +64,6 @@ import { ReactComponent as User } from './icons/user.svg';
 import { ReactComponent as UserOctagon } from './icons/user-octagon.svg';
 import { ReactComponent as UserSquare } from './icons/user-square.svg';
 import { ReactComponent as Van } from './icons/van.svg';
-import { ReactComponent as TwentyFTTruck } from './icons/20-ft-truck.svg';
 
 // These icons should be arranged alphabetically for easy sorting
 const icons = {

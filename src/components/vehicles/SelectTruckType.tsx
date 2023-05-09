@@ -4,7 +4,7 @@ import sizes from 'utils/sizes';
 import UiButton from 'ui/UiButton';
 import CreateVehicleData from 'types/CreateVehicleData';
 import UiIcon from 'ui/UiIcon';
-import { vehicleType } from 'utils/constants';
+import { vehicleTypes } from 'utils/constants';
 
 interface Props {
   vehicle: CreateVehicleData;
@@ -28,14 +28,14 @@ export default function SelectTruckType({ vehicle, goToNext }: Props) {
     <ComponentStyling>
       <label>Select Truck Type</label>
       <div className="vehicle-grid">
-        {vehicleType.map((vehicle) => (
+        {vehicleTypes.map((vehicle) => (
           <Vehicle
             isActive={vehicleData.vehicleType === vehicle.title}
             key={vehicle.title}
             onClick={() => selectVehicleType(vehicle.title)}
           >
             <div className="vehicle-inner">
-              <UiIcon icon={vehicle.image} />
+              <UiIcon icon={vehicle.icon} />
               <div>{vehicle.title}</div>
             </div>
           </Vehicle>

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Vehicle from 'types/Vehicle';
 import UiButton from 'ui/UiButton';
 import UiIcon, { Icons } from 'ui/UiIcon';
-import { vehicleType } from 'utils/constants';
+import { vehicleTypes } from 'utils/constants';
 
 interface Props {
   vehicle: Vehicle;
@@ -12,10 +12,10 @@ export default function VehicleComponent({ vehicle }: Props) {
   const images = Object.values(vehicle.images).slice(0, 4);
 
   const iconName = useMemo(() => {
-    const typeOfVehicle = vehicleType.find(
+    const typeOfVehicle = vehicleTypes.find(
       ({ title }) => title === vehicle.vehicleType,
     );
-    return typeOfVehicle?.image as Icons;
+    return typeOfVehicle?.icon as Icons;
   }, [vehicle.vehicleType]);
 
   return (
