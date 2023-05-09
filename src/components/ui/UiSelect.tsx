@@ -56,26 +56,26 @@ export default function UiSelect({
               <UiIcon icon={isOpen ? 'CaretUp' : 'CaretDown'} />
             </span>
           </div>
-          <StyledOptions
-            isOpen={isOpen}
-            style={{
-              marginTop: '8px',
-            }}
-          >
-            {options.map((option) => (
-              <StyledOption
-                key={option.value}
-                onClick={() => handleOptionClick(option)}
-              >
-                <span>{option.label}</span>
-                <span
-                  className={`activity-indicator ${
-                    selectedOption?.value === option.value ? 'active' : ''
-                  }`}
-                />
-              </StyledOption>
-            ))}
-          </StyledOptions>
+          {isOpen && (
+            <StyledOptions>
+              {options.map((option) => (
+                <StyledOption
+                  key={option.value}
+                  className={
+                    selectedOption?.value === option.value ? 'is-active' : ''
+                  }
+                  onClick={() => handleOptionClick(option)}
+                >
+                  <span>{option.label}</span>
+                  <span
+                    className={`activity-indicator ${
+                      selectedOption?.value === option.value ? 'active' : ''
+                    }`}
+                  />
+                </StyledOption>
+              ))}
+            </StyledOptions>
+          )}
         </StyledSelect>
       </UiField>
     </OutsideClickHandler>
@@ -109,27 +109,18 @@ const StyledSelect = styled.div`
 `;
 
 const StyledOptions = styled.ul`
-  list-style: none;
-  /* margin-top: ${pxToRem(8)}; */
-  padding: ${pxToRem(16)};
-  gap:  ${pxToRem(12)};
   position: absolute;
-  bottom:  ${pxToRem(55)};
-  width: ${pxToRem(356)};
-  
+  list-style: none;
+  margin-top: ${pxToRem(8)};
+  padding: ${pxToRem(16)} 0;
+  display: grid;
+  gap: ${pxToRem(12)};
   background: #fff;
   border: 1px solid var(--color-gray-30);
   border-radius: ${pxToRem(8)};
   box-shadow: 0px ${pxToRem(8)} ${pxToRem(16)} rgba(0, 0, 0, 0.08);
   z-index: 1;
-  overflow: auto;
-  max-width: 100%;
-  /* max-height: ${pxToRem(100)}; */
-  /* display: ${({ isOpen }: { isOpen: boolean }) =>
-    isOpen ? 'block' : 'none'}; */
-  visibility: ${({ isOpen }: { isOpen: boolean }) =>
-    isOpen ? 'visible' : 'hidden'};
-  opacity: ${({ isOpen }: { isOpen: boolean }) => (isOpen ? '1' : '0')};
+  width: 100%;
   transition: all 0.2s ease-in-out;
 `;
 
@@ -139,19 +130,22 @@ const StyledOption = styled.li`
   justify-content: space-between;
   align-items: center;
   height: ${pxToRem(40)};
-  padding: ${pxToRem(8)} ${pxToRem(12)} ;
+  padding: 0 ${pxToRem(12)};
+  margin: 0 ${pxToRem(16)};
   font-size: ${pxToRem(14)};
   border-radius: ${pxToRem(4)};
-  color: black;
-  gap: ${pxToRem(229)}; 
-  width: 324px;
-
-
+  color: var(--color-gray-80);
+  gap: ${pxToRem(229)};
   cursor: pointer;
   text-transform: capitalize;
-  &:hover {
-   
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 24px;
+
+  &:hover,
+  &.is-active {
     background: var(--color-primary-10);
+    color: var(--color-neutralBlack);
   }
 
   .activity-indicator {
