@@ -85,8 +85,7 @@ const VehicleStyling = styled.div`
     .vehicle-type {
       background: var(--color-gray-20);
       border-radius: ${pxToRem(8)};
-      width: 80%;
-      max-width: ${pxToRem(208)};
+      width: calc(100% - 100px);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -153,7 +152,7 @@ const VehicleStyling = styled.div`
 
       .image {
         position: relative;
-        max-width: ${pxToRem(160)};
+        /* max-width: ${pxToRem(180)}; */
         width: 100%;
         height: ${pxToRem(84)};
         .img-remainder {

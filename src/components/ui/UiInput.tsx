@@ -6,6 +6,7 @@ import UiIcon from './UiIcon';
 import UiField from './UiField';
 
 export type InputType = 'text' | 'password' | 'number' | 'phone' | 'date';
+type Size = 'lg' | 'md' | 's'
 interface Props {
   label: string;
   type?: InputType;
@@ -17,6 +18,7 @@ interface Props {
   name: string;
   error?: string;
   disabled?: boolean;
+  size?: Size;
   inputRef?: React.RefObject<HTMLInputElement>;
   onChange: (event: { name: string; value: string | null }) => void;
 }
@@ -26,6 +28,7 @@ export default function UiInput({
   type = 'text',
   name,
   value,
+  size = 'lg',
   placeholder,
   disabled,
   error,
@@ -68,6 +71,7 @@ export default function UiInput({
             placeholder={placeholder}
             name={name}
             ref={inputRef}
+            size={size}
             hasError={!!error}
             disabled={disabled}
             onChange={sendValue}
@@ -100,15 +104,31 @@ const PhoneInputContainer = styled.div`
   }
 `;
 
-const Input = styled.input`
+function getSize(size: Size) {
+  console.log(size);
+  if (size === 'md') {
+    return `
+      height: ${pxToRem(40)};
+      padding: ${pxToRem(12)};
+    `
+  }
+  return `
+  height: ${pxToRem(48)};
   padding: ${pxToRem(16)};
-  height: var(--base-height);
+  `
+}
+interface InputProps {
+  hasError?: boolean
+  size: Size;
+}
+const Input = styled.input`
+  ${({ size }: InputProps) => getSize(size)}
   gap: ${pxToRem(8)};
   width: 100%;
   font-size: ${pxToRem(14)};
   font-family: 'thiccboi-medium';
   border: ${pxToRem(1)} solid;
-  border-color: ${({ hasError }: { hasError: boolean }) =>
+  border-color: ${({ hasError }: InputProps) =>
     hasError ? 'var(--color-danger)' : 'var(--color-gray)'};
   background: #ffffff;
   outline: none;

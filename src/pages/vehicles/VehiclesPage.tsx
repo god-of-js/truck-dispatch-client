@@ -12,6 +12,7 @@ import { RootState } from 'modules/index';
 import Vehicle from 'components/vehicles/Vehicle';
 import sizes from 'utils/sizes';
 import UiIcon from 'ui/UiIcon';
+import UiInput from 'ui/UiInput';
 
 export default function VehiclesPage() {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ export default function VehiclesPage() {
   function edgeChildren() {
     return (
       <GappedContainerWith12PX>
+        <UiInput size="md" placeholder='Search' />
         {!!vehicles.length && (
           <UiButton onClick={openAddVehicle}>add new vehicle</UiButton>
         )}
