@@ -52,6 +52,7 @@ export default function ViewTransporterJobDetailsPage() {
       });
     }
   }, [bid]);
+
   return (
     <>
       <ViewTransporterJobPageStyle>

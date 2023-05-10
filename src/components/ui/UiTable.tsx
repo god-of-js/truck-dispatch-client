@@ -34,7 +34,6 @@ interface Props {
 }
 
 export default function UiTable({
-  tableTitle,
   data,
   headers,
   options,
@@ -68,9 +67,6 @@ export default function UiTable({
 
   return (
     <TableContainer>
-      <TableContainerHeader>
-        <TableTitle>{tableTitle}</TableTitle>
-      </TableContainerHeader>
       <Table>
         <TableHeader>
           <TableRow>
@@ -111,29 +107,14 @@ export default function UiTable({
 }
 
 const TableContainer = styled.div`
-  border: 1px solid var(--color-gray-200);
-  background: #ffffff;
-`;
-
-const TableContainerHeader = styled.header`
-  border-bottom: 1px solid var(--color-gray-200);
-  display: flex;
-  justify-content: space-between;
-`;
-const TableTitle = styled.h2`
-  padding: 0 ${pxToRem(12)};
-  font-weight: 700;
-  font-size: ${pxToRem(14)};
-  line-height: ${pxToRem(28)};
-  text-transform: uppercase;
-  color: var(--color-gray-900);
+  border: none;
 `;
 
 const Table = styled.table`
   position: relative;
   table-layout: fixed;
   width: 100%;
-  border-collapse: collapse;
+  border-spacing: ${pxToRem(0)} ${pxToRem(8)};
 `;
 
 const TableHeader = styled.thead`
@@ -141,7 +122,6 @@ const TableHeader = styled.thead`
 
   @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
     display: table-header-group;
-    background-color: var(--color-gray-50);
     width: 100%;
     border-bottom: ${pxToRem(1)} solid var(--color-gray-200);
   }
@@ -154,24 +134,42 @@ const TableRow = styled.tr`
   display: flex;
   flex-direction: column;
   position: relative;
+  margin-bottom: ${pxToRem(20)};
 
   .mobile-title {
     font-size: ${pxToRem(12)};
   }
 
   .menu-container {
-    height: 100%;
+    height: 98.5%;
     width: fit-content;
     position: absolute;
+    background: #ffffff;
     display: flex;
     align-items: flex-start;
     right: 0;
     @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
       align-items: center;
+      justify-content: flex-end;
+      width: 13%;
     }
   }
+
   @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
     display: table-row;
+
+    td,
+    th {
+      &:last-child {
+        border-top-right-radius: ${pxToRem(8)};
+        border-bottom-right-radius: ${pxToRem(8)};
+      }
+      &:first-child {
+        border-top-left-radius: ${pxToRem(8)};
+        border-bottom-left-radius: ${pxToRem(8)};
+      }
+    }
+
     .mobile-title {
       display: none;
     }
@@ -184,6 +182,7 @@ const TableRow = styled.tr`
 const TableHeadItem = styled.th`
   padding: ${pxToRem(12)} ${pxToRem(24)};
   color: var(--color-gray-500);
+  background: #f2f0fb;
   font-size: ${pxToRem(12)};
 `;
 
@@ -193,6 +192,7 @@ const TableDataItem = styled.td`
   font-weight: 700;
   font-size: ${pxToRem(14)};
   line-height: ${pxToRem(20)};
+  background: #ffffff;
 `;
 
 const NoDataBox = styled.div`

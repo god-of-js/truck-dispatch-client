@@ -5,6 +5,7 @@ import FileUploadWidget from 'ui/FileUploadWidget';
 import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
 import UiInput from 'ui/UiInput';
+import DriverDetailsSchema from 'utils/validations/DriverDetailsSchema';
 
 interface Props {
   finish: (vehicleData: CreateVehicleData) => void;
@@ -53,7 +54,7 @@ export default function DriverDetailsForm({
   return (
     <ComponentStyling>
       <label>{edit ? 'Edit' : 'Add'} Truck and Driver details</label>
-      <UiForm formData={formData} onSubmit={createVehicle}>
+      <UiForm formData={formData} schema={DriverDetailsSchema} onSubmit={createVehicle}>
         {({ errors }) => (
           <div>
             <div className="grid-container">
@@ -61,7 +62,7 @@ export default function DriverDetailsForm({
                 <FileUploadWidget
                   label="Driver's Photo"
                   value={formData.driver.avatar}
-                  error={errors.driverPhoto}
+                  error={errors['driver.avatar']}
                   name="driver.avatar"
                   styleType="with-drag-and-drop"
                   onChange={onChange}
@@ -71,7 +72,7 @@ export default function DriverDetailsForm({
                 <UiInput
                   label="Truck Driver's Name"
                   value={formData.driver.name}
-                  error={errors.driver}
+                  error={errors['driver.name']}
                   name="driver.name"
                   onChange={onChange}
                 />
@@ -79,21 +80,21 @@ export default function DriverDetailsForm({
                   label="Truck Driver's Phone Number"
                   type="phone"
                   value={formData.driver.phone}
-                  error={errors.driverPhoneNumber}
+                  error={errors['driver.phone']}
                   name="driver.phone"
                   onChange={onChange}
                 />
                 <UiInput
                   label="Truck Plate Number"
                   value={formData.plateNumber}
-                  error={errors.truckPlateNumber}
+                  error={errors.plateNumber}
                   name="plateNumber"
                   onChange={onChange}
                 />
                 <FileUploadWidget
                   label="Truck Driver's Driver License"
                   value={formData.driver.driverLicense}
-                  error={errors.driversLicense}
+                  error={errors['driver.driverLicense']}
                   name="driver.driverLicense"
                   onChange={onChange}
                 />
