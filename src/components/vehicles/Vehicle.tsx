@@ -50,7 +50,7 @@ export default function VehicleComponent({ vehicle, openEditVehicle }: Props) {
         <div className="label">Truck Images</div>
         <div className="content">
           {images.map((image) => (
-            <div className="image">
+            <div key={image} className="image">
               <img src={image} alt="a truckdispatch vendor vehicle" />
               <div className="img-remainder">+2</div>
             </div>

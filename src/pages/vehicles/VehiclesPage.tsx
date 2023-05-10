@@ -57,7 +57,7 @@ export default function VehiclesPage() {
       <DashboardTopNav routeName="Vehicles" edgeChild={edgeChildren()} />
       <Vehicles>
         {vehicles.map((vehicle) => (
-          <VehicleItem vehicle={vehicle} openEditVehicle={openEditVehicle} />
+          <VehicleItem vehicle={vehicle} key={vehicle._id} openEditVehicle={openEditVehicle} />
         ))}
       </Vehicles>
 
