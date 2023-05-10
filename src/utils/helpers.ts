@@ -144,7 +144,7 @@ export function generateReference() {
   return key;
 }
 
-export function convertDate(dateToConvert: number) {
+export function convertToFullDate(dateToConvert: number) {
   const date = new Date(dateToConvert);
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const months = [
@@ -170,6 +170,33 @@ export function convertDate(dateToConvert: number) {
   const suffix = getNumberSuffix(dayOfMonth);
 
   return `${dayOfWeek}, ${month} ${dayOfMonth}${suffix} ${year}`;
+}
+
+export function convertToDdMmmYYYYDateFormat(dateToConvert: string) {
+  const inputDate = dateToConvert;
+
+  const date = new Date(inputDate);
+
+  const monthNames = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+
+  const day = date.getDate();
+  const month = monthNames[date.getMonth()];
+  const year = date.getFullYear();
+
+  return `${day}-${month}-${year}`;
 }
 
 export function saveTokenVerificationInfo(data: TokenVerificationData) {

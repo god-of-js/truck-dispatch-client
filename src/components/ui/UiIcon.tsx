@@ -13,7 +13,6 @@ import {
   FolderNotchOpen,
   House,
   Kanban,
-  MapPin,
   Money,
   PaperPlaneTilt,
   PencilSimple,
@@ -27,6 +26,8 @@ import {
 
 import { ReactComponent as ArrowCircleLeft } from './icons/arrow-circle-left.svg';
 import { ReactComponent as ArrowLeft } from './icons/arrow-left.svg';
+import { ReactComponent as ArrowRight } from './icons/arrow-right.svg';
+
 import { ReactComponent as Close } from './icons/close.svg';
 import { ReactComponent as Chat } from './icons/chat.svg';
 import { ReactComponent as ArrowCircleRight } from './icons/arrow-circle-right.svg';
@@ -43,6 +44,8 @@ import { ReactComponent as EyeSlash } from './icons/eye-slash.svg';
 import { ReactComponent as FlatBed } from './icons/flatbed.svg';
 import { ReactComponent as Jobs } from './icons/jobs.svg';
 import { ReactComponent as InfoCircle } from './icons/info-circle.svg';
+import { ReactComponent as Location } from './icons/location.svg';
+import { ReactComponent as LocationTick } from './icons/location-tick.svg';
 import { ReactComponent as Logout } from './icons/log-out.svg';
 import { ReactComponent as MagicStar } from './icons/magic-star.svg';
 import { ReactComponent as MiniVan } from './icons/mini-van.svg';
@@ -70,6 +73,7 @@ const icons = {
   ArrowCircleLeft: <ArrowCircleLeft />,
   ArrowCircleRight: <ArrowCircleRight />,
   ArrowLeft: <ArrowLeft />,
+  ArrowRight: <ArrowRight />,
   ArrowUpRight: <ArrowUpRight />,
   Buildings: <Company />,
   CallReceived: <CallReceived />,
@@ -96,10 +100,11 @@ const icons = {
   InfoCircle: <InfoCircle />,
   Jobs: <Jobs />,
   Kanban: <Kanban />,
+  Location: <Location />,
+  LocationTick: <LocationTick />,
   Logout: <Logout />,
   MagicStar: <MagicStar />,
   MiniVan: <MiniVan />,
-  MapPin: <MapPin />,
   Moneys: <Moneys />,
   Money: <Money />,
   MessageChat: <MessageChat />,

@@ -34,7 +34,6 @@ interface Props {
 }
 
 export default function UiTable({
-  tableTitle,
   data,
   headers,
   options,

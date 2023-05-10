@@ -11,6 +11,7 @@ interface Props {
   size?: Size;
   isEdit?: boolean;
   name?: string;
+  isHalfCurved?: boolean;
   onChange?: (event: { name: string; value: File | File[] }) => void;
 }
 
@@ -19,6 +20,7 @@ export default function UiAvatar({
   size = 'sm',
   isEdit,
   name,
+  isHalfCurved,
   onChange = () => {},
 }: Props) {
   const [avatarDataUrl, setAvatarDataUrl] = useState<string | undefined>();
@@ -44,7 +46,7 @@ export default function UiAvatar({
 
   return (
     <AvatarContainer>
-      <Avatar size={size}>
+      <Avatar size={size} isHalfCurved={isHalfCurved}>
         {avatar ? (
           <img src={formattedAvatar} alt="" />
         ) : (
@@ -75,8 +77,8 @@ function getSizeVariant(size: Size) {
   height: ${pxToRem(52)};
   `;
   return `
-  width: ${pxToRem(32)};
-  height: ${pxToRem(32)};
+  width: ${pxToRem(40)};
+  height: ${pxToRem(40)};
   `;
 }
 
@@ -91,8 +93,12 @@ const AvatarContainer = styled.div`
   }
 `;
 
+interface AvatarProps {
+  size: Size;
+  isHalfCurved?: boolean;
+}
 const Avatar = styled.div`
-  ${({ size }: { size: Size }) => getSizeVariant(size)}
+  ${({ size }: AvatarProps) => getSizeVariant(size)}
   display: flex;
   align-items: flex-start;
 
@@ -116,6 +122,7 @@ const Avatar = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 50%;
+    border-radius: ${({ isHalfCurved }: AvatarProps) =>
+      isHalfCurved ? pxToRem(8) : '50%'};
   }
 `;
