@@ -71,6 +71,8 @@ const VehicleStyling = styled.div`
   display: grid;
   gap: ${pxToRem(24)};
   max-width: ${pxToRem(372)};
+  min-width: ${pxToRem(360)};
+
 
   .driver-avatar-container {
     display: flex;
@@ -85,8 +87,7 @@ const VehicleStyling = styled.div`
     .vehicle-type {
       background: var(--color-gray-20);
       border-radius: ${pxToRem(8)};
-      width: 80%;
-      max-width: ${pxToRem(208)};
+      width: calc(100% - 100px);
       display: flex;
       flex-direction: column;
       justify-content: center;

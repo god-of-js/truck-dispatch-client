@@ -69,6 +69,7 @@ export default function JobItem({ job, bidForJob, viewJobDetail }: Props) {
 
 const JobItemStyling = styled.div`
   max-width: ${pxToRem(332)};
+  min-width: ${pxToRem(320)};
   border-radius: ${pxToRem(16)};
   overflow: hidden;
   background: #ffffff;

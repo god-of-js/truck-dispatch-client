@@ -1,4 +1,5 @@
 import JobItem from 'components/jobs/JobItem';
+import DashboardTopNav from 'components/layout/DashboardTopNav';
 import Loader from 'components/layout/Loader';
 import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
 import InformUserOfVerification from 'components/verification/InformUserOfVerification';
@@ -49,6 +50,7 @@ export default function TransporterJobs({ isActionButtonDisabled }: Props) {
 
   return (
     <>
+      <DashboardTopNav routeName="Jobs" />
       <MyJobsPageStyle className="flex-container">
         {!loading ? (
           <>
@@ -78,24 +80,6 @@ export default function TransporterJobs({ isActionButtonDisabled }: Props) {
 const MyJobsPageStyle = styled.div`
   margin: ${pxToRem(32)} 0;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: ${pxToRem(20)};
-
-  @media only screen and (min-width: ${sizes.laptopWidth}) {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
-  .underline {
-    border-bottom: ${pxToRem(1)} solid #848288;
-    padding-bottom: ${pxToRem(24)};
-  }
-
-  .capitalize {
-    text-transform: uppercase;
-    font-weight: 400;
-    font-size: ${pxToRem(10)};
-    line-height: 1.5;
-    letter-spacing: 0.05em;
-  }
 `;
