@@ -97,8 +97,12 @@ const EmptyVehicleContainer = styled.div`
 `;
 
 const Vehicles = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   gap: ${pxToRem(22)};
   padding-top: ${pxToRem(32)};
+
+  @media screen and (min-width: ${sizes.mobileSmall}) {
+    display: flex;
+    flex-wrap: wrap;
+  }
 `;
