@@ -46,7 +46,7 @@ export default function UiSelect({
     <OutsideClickHandler onOutsideClick={() => setIsOpen(false)}>
       <UiField label={label} error={error}>
         <StyledSelect onClick={toggleOptions} hasError={!!error}>
-          <div>
+          <div className="select">
             <span className="selected-option">
               {selectedOption?.label
                 ? selectedOption.label
@@ -56,21 +56,26 @@ export default function UiSelect({
               <UiIcon icon={isOpen ? 'CaretUp' : 'CaretDown'} />
             </span>
           </div>
-          <StyledOptions
-            isOpen={isOpen}
-            style={{
-              marginTop: '8px',
-            }}
-          >
-            {options.map((option) => (
-              <StyledOption
-                key={option.value}
-                onClick={() => handleOptionClick(option)}
-              >
-                {option.label}
-              </StyledOption>
-            ))}
-          </StyledOptions>
+          {isOpen && (
+            <StyledOptions>
+              {options.map((option) => (
+                <StyledOption
+                  key={option.value}
+                  className={
+                    selectedOption?.value === option.value ? 'is-active' : ''
+                  }
+                  onClick={() => handleOptionClick(option)}
+                >
+                  <span>{option.label}</span>
+                  <span
+                    className={`activity-indicator ${
+                      selectedOption?.value === option.value ? 'active' : ''
+                    }`}
+                  />
+                </StyledOption>
+              ))}
+            </StyledOptions>
+          )}
         </StyledSelect>
       </UiField>
     </OutsideClickHandler>
@@ -79,7 +84,7 @@ export default function UiSelect({
 
 const StyledSelect = styled.div`
   position: relative;
-  div {
+  .select {
     padding: 0 ${pxToRem(16)};
     height: var(--base-height);
     display: flex;
@@ -104,35 +109,53 @@ const StyledSelect = styled.div`
 `;
 
 const StyledOptions = styled.ul`
-  list-style: none;
-  /* margin-top: ${pxToRem(8)}; */
-  padding: ${pxToRem(16)} ${pxToRem(8)};
   position: absolute;
-  width: 100%;
+  list-style: none;
+  margin-top: ${pxToRem(8)};
+  padding: ${pxToRem(16)} 0;
+  display: grid;
+  gap: ${pxToRem(12)};
   background: #fff;
   border: 1px solid var(--color-gray-30);
   border-radius: ${pxToRem(8)};
   box-shadow: 0px ${pxToRem(8)} ${pxToRem(16)} rgba(0, 0, 0, 0.08);
   z-index: 1;
-  overflow: auto;
-  max-width: 100%;
-  /* max-height: ${pxToRem(100)}; */
-  /* display: ${({ isOpen }: { isOpen: boolean }) =>
-    isOpen ? 'block' : 'none'}; */
-  visibility: ${({ isOpen }: { isOpen: boolean }) =>
-    isOpen ? 'visible' : 'hidden'};
-  opacity: ${({ isOpen }: { isOpen: boolean }) => (isOpen ? '1' : '0')};
+  width: 100%;
   transition: all 0.2s ease-in-out;
 `;
 
 const StyledOption = styled.li`
-  padding: ${pxToRem(8)} ${pxToRem(12)};
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: ${pxToRem(40)};
+  padding: 0 ${pxToRem(12)};
+  margin: 0 ${pxToRem(16)};
   font-size: ${pxToRem(14)};
   border-radius: ${pxToRem(4)};
-  color: black;
+  color: var(--color-gray-80);
+  gap: ${pxToRem(229)};
   cursor: pointer;
   text-transform: capitalize;
-  &:hover {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 24px;
+
+  &:hover,
+  &.is-active {
     background: var(--color-primary-10);
+    color: var(--color-neutralBlack);
+  }
+
+  .activity-indicator {
+    width: ${pxToRem(16)};
+    height: ${pxToRem(16)};
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 ${pxToRem(1)} var(--color-gray);
+
+    &.active {
+      box-shadow: inset 0 0 0 ${pxToRem(6)} var(--color-primary);
+    }
   }
 `;

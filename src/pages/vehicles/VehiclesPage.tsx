@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 import UiButton from 'ui/UiButton';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
-import DuoTrucks from '../../assets/img/duo-trucks.svg';
 import UiOverlay from 'ui/UiOverlay';
 import AddVehicle from 'components/vehicles/AddVehicle';
 import { toAnyAction } from 'utils/helpers';
@@ -12,6 +11,7 @@ import { getVehicles } from 'modules/Vehicle';
 import { RootState } from 'modules/index';
 import Vehicle from 'components/vehicles/Vehicle';
 import sizes from 'utils/sizes';
+import UiIcon from 'ui/UiIcon';
 
 export default function VehiclesPage() {
   const dispatch = useDispatch();
@@ -51,7 +51,7 @@ export default function VehiclesPage() {
 
       {!vehicles.length && (
         <EmptyVehicleContainer>
-          <img src={DuoTrucks} alt="Truckdispatch trucks" />
+          <UiIcon icon="DuoTrucks" />
           <p>
             You’ve not added any vehicles yet.Load up your trucks in our big
             garage, so you’d be able to bid on jobs
@@ -89,6 +89,11 @@ const EmptyVehicleContainer = styled.div`
   button {
     padding: 0 ${pxToRem(28)};
   }
+
+  svg {
+    width: 301px;
+    height: 80px;
+  }
 `;
 
 const Vehicles = styled.div`
@@ -101,6 +106,6 @@ const Vehicles = styled.div`
     grid-template-columns: auto auto;
   }
   @media screen and (min-width: ${sizes.laptopSmallWidth}) {
-    grid-template-columns: auto auto auto;
+    grid-template-columns: auto auto auto auto;
   }
 `;
