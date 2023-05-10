@@ -172,6 +172,34 @@ export function convertDate(dateToConvert: number) {
   return `${dayOfWeek}, ${month} ${dayOfMonth}${suffix} ${year}`;
 }
 
+export function dateConverter(dateToConvert: string) {
+  const inputDate = dateToConvert
+
+  const date = new Date(inputDate);
+
+  const monthNames =
+   ["Jan",
+   "Feb",
+   "Mar",
+   "Apr",
+   "May",
+   "Jun",          
+   "Jul", 
+   "Aug", 
+   "Sep", 
+   "Oct", 
+   "Nov", 
+   "Dec"];
+
+  
+  const day = date.getDate();
+  const month = monthNames[date.getMonth()];
+  const year = date.getFullYear();
+
+
+  return `${day}-${month}-${year}`;
+}
+
 export function saveTokenVerificationInfo(data: TokenVerificationData) {
   localStorage.setItem('otp-pin-id', data.pinId);
   localStorage.setItem('otp-phone-number', data.to);

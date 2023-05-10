@@ -28,7 +28,7 @@ export default function TripPickupAndDropOff({
           <div className="value">{pickup}</div>
         </div>
         <div>
-          <div className="title">Delivery Address</div>
+          <div className="title">Delivery Address:</div>
           <div className="value">{dropOff}</div>
         </div>
       </div>
@@ -41,8 +41,11 @@ const TripPickupAndDropOffStyle = styled.div`
   gap: ${pxToRem(24)};
 
   .title {
-    font-size: ${pxToRem(14)};
-    color: var(--color-gray-500);
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: ${pxToRem(10)};
+    line-height: 1.5;
+    letter-spacing: 0.05em;
   }
 
   .value {

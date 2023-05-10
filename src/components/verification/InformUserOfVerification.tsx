@@ -32,4 +32,6 @@ const Header = styled.h1`
   font-size: ${pxToRem(20)};
 `;
 
-const TextContent = styled.p``;
+const TextContent = styled.p`
+padding: 12px;
+`;
