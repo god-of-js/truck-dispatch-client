@@ -49,3 +49,9 @@ export const getVehicles = () => {
     });
   };
 };
+
+export const updateVehicle = (vehicleData: FormData, vehicleId: string) => {
+  return () => {
+    return Api.updateVehicle(vehicleData, vehicleId);
+  };
+};

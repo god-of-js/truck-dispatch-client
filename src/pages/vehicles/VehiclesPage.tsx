@@ -10,20 +10,32 @@ import AddVehicle from 'components/vehicles/AddVehicle';
 import { toAnyAction } from 'utils/helpers';
 import { getVehicles } from 'modules/Vehicle';
 import { RootState } from 'modules/index';
-import Vehicle from 'components/vehicles/Vehicle';
+import VehicleItem from 'components/vehicles/Vehicle';
 import sizes from 'utils/sizes';
+import EditVehicle from 'components/vehicles/EditVehicle';
+import Vehicle from 'types/Vehicle';
 
 export default function VehiclesPage() {
   const dispatch = useDispatch();
   const vehicles = useSelector((state: RootState) => state.vehicle.vehicles);
   const [isAddVehicleVisible, setIsAddVehicleVisible] = useState(false);
-
+  const [isEditVehicleVisible, setIsEditVehicleVisible] = useState(false);
+  const [selectedVehicle, setSelectedVehicle] = useState<Vehicle>();
   function closeAddVehicle() {
     setIsAddVehicleVisible(false);
   }
 
   function openAddVehicle() {
     setIsAddVehicleVisible(true);
+  }
+
+  function closeEditVehicle() {
+    setIsEditVehicleVisible(false);
+  }
+
+  function openEditVehicle(vehicle: Vehicle) {
+    setSelectedVehicle(vehicle);
+    setIsEditVehicleVisible(true);
   }
 
   function edgeChildren() {
@@ -45,7 +57,7 @@ export default function VehiclesPage() {
       <DashboardTopNav routeName="Vehicles" edgeChild={edgeChildren()} />
       <Vehicles>
         {vehicles.map((vehicle) => (
-          <Vehicle vehicle={vehicle} />
+          <VehicleItem vehicle={vehicle} openEditVehicle={openEditVehicle} />
         ))}
       </Vehicles>
 
@@ -62,6 +74,12 @@ export default function VehiclesPage() {
 
       <UiOverlay isVisible={isAddVehicleVisible}>
         <AddVehicle onClose={closeAddVehicle} />
+      </UiOverlay>
+
+      <UiOverlay isVisible={isEditVehicleVisible}>
+        {selectedVehicle && (
+          <EditVehicle onClose={closeEditVehicle} vehicle={selectedVehicle} />
+        )}
       </UiOverlay>
     </>
   );

@@ -9,9 +9,15 @@ import UiInput from 'ui/UiInput';
 interface Props {
   finish: (vehicleData: CreateVehicleData) => void;
   loading: boolean;
+  edit?: boolean;
   vehicle: CreateVehicleData;
 }
-export default function DriverDetailsForm({ vehicle, loading, finish }: Props) {
+export default function DriverDetailsForm({
+  vehicle,
+  loading,
+  edit,
+  finish,
+}: Props) {
   const [formData, setFormData] = useState(vehicle);
 
   function onChange({
@@ -46,7 +52,7 @@ export default function DriverDetailsForm({ vehicle, loading, finish }: Props) {
 
   return (
     <ComponentStyling>
-      <label>Add Truck and Driver details</label>
+      <label>{edit ? 'Edit' : 'Add'} Truck and Driver details</label>
       <UiForm formData={formData} onSubmit={createVehicle}>
         {({ errors }) => (
           <div>
@@ -94,7 +100,9 @@ export default function DriverDetailsForm({ vehicle, loading, finish }: Props) {
               </div>
             </div>
             <div className="btn-container">
-              <UiButton loading={loading}>Finish</UiButton>
+              <UiButton loading={loading}>
+                {edit ? 'Update' : 'Finish'}
+              </UiButton>
             </div>
           </div>
         )}

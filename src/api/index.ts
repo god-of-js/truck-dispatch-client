@@ -206,6 +206,11 @@ class ApiService {
   createVehicle(vehicleData: FormData) {
     return this.post<Vehicle>(`/vehicle`, vehicleData);
   }
+
+  updateVehicle(vehicleData: FormData, vehicleId: string) {
+    return this.patch<Vehicle>(`/vehicle/${vehicleId}`, vehicleData);
+  }
+
   getVehicles() {
     return this.get<Vehicle[]>(`/vehicle`);
   }

@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import styled from 'styled-components';
 import Vehicle from 'types/Vehicle';
 import UiButton from 'ui/UiButton';
@@ -5,10 +7,14 @@ import UiIcon from 'ui/UiIcon';
 
 interface Props {
   vehicle: Vehicle;
+  openEditVehicle: (vehicle: Vehicle) => void;
 }
-export default function VehicleComponent({ vehicle }: Props) {
+export default function VehicleComponent({ vehicle, openEditVehicle }: Props) {
   const images = Object.values(vehicle.images).slice(0, 4);
 
+  function editVehicle() {
+    openEditVehicle(vehicle);
+  }
   return (
     <VehicleStyling>
       <div className="fields">
@@ -32,7 +38,7 @@ export default function VehicleComponent({ vehicle }: Props) {
         </div>
       </div>
       <div className="btn-container">
-        <UiButton variant="secondary" size="large">
+        <UiButton variant="secondary" size="large" onClick={editVehicle}>
           Edit truck details
         </UiButton>
         <UiButton variant="danger-secondary" size="large">
@@ -77,7 +83,6 @@ const VehicleStyling = styled.div`
     .content {
       display: grid;
       grid-template-columns: auto auto auto;
-
     }
   }
 
