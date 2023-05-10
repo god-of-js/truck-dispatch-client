@@ -1,17 +1,38 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import UiFilterTag from 'ui/UiFilterTag';
 import UiIcon from 'ui/UiIcon';
 
+interface Filter {
+  title: string;
+  route: string;
+  value?: string | number;
+}
 interface Props {
   routeName: string;
   startChild?: React.ReactNode;
   edgeChild?: React.ReactNode;
+  pageFilters?: Filter[];
 }
-export default function DashboardTopNav({ routeName, edgeChild }: Props) {
+export default function DashboardTopNav({
+  routeName,
+  startChild,
+  pageFilters,
+  edgeChild,
+}: Props) {
   return (
     <TopNav>
-      <div>
+      <div className="route-name-container">
         <span className="route-name">{routeName}</span>
+
+        <div className="filters">
+          {pageFilters?.map((filter) => (
+            <Link to={filter.route}>
+              <UiFilterTag title={filter.title} />
+            </Link>
+          ))}
+        </div>
       </div>
       <div className="edge-container">
         {edgeChild}
@@ -29,6 +50,18 @@ const TopNav = styled.nav`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  .route-name-container {
+    display: flex;
+    align-items: center;
+    gap: ${pxToRem(24)};
+
+    .filters {
+      display: flex;
+      align-items: center;
+      gap: ${pxToRem(12)};
+    }
+  }
 
   .route-name {
     color: var(--color-neutralBlack);

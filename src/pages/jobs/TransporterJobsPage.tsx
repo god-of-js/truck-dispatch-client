@@ -1,7 +1,6 @@
 import JobItem from 'components/jobs/JobItem';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
 import Loader from 'components/layout/Loader';
-import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
 import InformUserOfVerification from 'components/verification/InformUserOfVerification';
 import { RootState } from 'modules/index';
 import { getJobs } from 'modules/Trips';
@@ -11,7 +10,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import UiOverlay from 'ui/UiOverlay';
 import { toAnyAction } from 'utils/helpers';
-import sizes from 'utils/sizes';
 
 interface Props {
   isActionButtonDisabled?: boolean;
@@ -29,6 +27,21 @@ export default function TransporterJobs({ isActionButtonDisabled }: Props) {
     isInformUserOfVerificationModalVisible,
     setIsInformUserOfVerificationModalVisible,
   ] = useState(false);
+
+  const pageFilters = [
+    {
+      title: 'All',
+      route: '/available-jobs',
+    },
+    {
+      title: 'By Companies',
+      route: '/available-jobs?sender-type=company',
+    },
+    {
+      title: 'By Shippers',
+      route: '/available-jobs?sender-type=shipper',
+    },
+  ];
 
   function viewJob(jobId: string) {
     navigate(`${jobId}`);
@@ -50,7 +63,7 @@ export default function TransporterJobs({ isActionButtonDisabled }: Props) {
 
   return (
     <>
-      <DashboardTopNav routeName="Jobs" />
+      <DashboardTopNav routeName="Jobs" pageFilters={pageFilters} />
       <MyJobsPageStyle className="flex-container">
         {!loading ? (
           <>
@@ -65,7 +78,7 @@ export default function TransporterJobs({ isActionButtonDisabled }: Props) {
             })}
           </>
         ) : (
-          <Loader />
+          <Loader size="lg" />
         )}
       </MyJobsPageStyle>
       <UiOverlay isVisible={isInformUserOfVerificationModalVisible}>
