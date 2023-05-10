@@ -25,6 +25,7 @@ export default function DashboardSidebar() {
   const logOutUser = () => {
     removeUserSessionId();
     navigate('/auth/login');
+    window.location.reload();
   };
 
   const transporterRoutes: Route[] = [
@@ -184,9 +185,12 @@ const Tab = styled.li`
     width: fit-content;
   }
 
+  
+
   &:hover {
     border-color: var(--color-primary);
     color: var(--color-primary);
+    svg{}
   }
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
