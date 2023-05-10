@@ -99,13 +99,10 @@ const EmptyVehicleContainer = styled.div`
 const Vehicles = styled.div`
   display: grid;
   gap: ${pxToRem(22)};
-  grid-template-columns: auto;
   padding-top: ${pxToRem(32)};
 
-  @media screen and (min-width: ${sizes.tabletSmallWidth}) {
-    grid-template-columns: auto auto;
-  }
-  @media screen and (min-width: ${sizes.laptopSmallWidth}) {
-    grid-template-columns: auto auto auto auto;
+  @media screen and (min-width: ${sizes.mobileSmall}) {
+    display: flex;
+    flex-wrap: wrap;
   }
 `;

@@ -66,9 +66,7 @@ export default function UiSelect({
                   }
                   onClick={() => handleOptionClick(option)}
                 >
-                  <div className="label">
-                    {option.label}
-                  </div>
+                  <div className="label">{option.label}</div>
                   <span
                     className={`activity-indicator ${
                       selectedOption?.value === option.value ? 'active' : ''
@@ -149,12 +147,11 @@ const StyledOption = styled.li`
   overflow: hidden;
   text-overflow: ellipsis;
 
-
   .label {
     width: 90%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &:hover,

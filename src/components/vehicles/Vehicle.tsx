@@ -4,6 +4,7 @@ import Vehicle from 'types/Vehicle';
 import UiButton from 'ui/UiButton';
 import UiIcon, { Icons } from 'ui/UiIcon';
 import { vehicleTypes } from 'utils/constants';
+import sizes from 'utils/sizes';
 
 interface Props {
   vehicle: Vehicle;
@@ -72,6 +73,10 @@ const VehicleStyling = styled.div`
   gap: ${pxToRem(24)};
   max-width: ${pxToRem(372)};
 
+  @media screen and (min-width: ${sizes.mobileSmall}) {
+    min-width: ${pxToRem(360)};
+  }
+
   .driver-avatar-container {
     display: flex;
     gap: ${pxToRem(12)};
@@ -85,8 +90,7 @@ const VehicleStyling = styled.div`
     .vehicle-type {
       background: var(--color-gray-20);
       border-radius: ${pxToRem(8)};
-      width: 80%;
-      max-width: ${pxToRem(208)};
+      width: calc(100% - 100px);
       display: flex;
       flex-direction: column;
       justify-content: center;
