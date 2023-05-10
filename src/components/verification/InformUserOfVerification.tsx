@@ -33,5 +33,5 @@ const Header = styled.h1`
 `;
 
 const TextContent = styled.p`
-padding: 12px;
+  padding: 12px;
 `;

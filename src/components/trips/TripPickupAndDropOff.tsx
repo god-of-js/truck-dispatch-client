@@ -14,21 +14,24 @@ export default function TripPickupAndDropOff({
   status,
 }: Props) {
   return (
-    <TripPickupAndDropOffStyle status={status}>
+    <TripPickupAndDropOffStyle>
       <div className="indicator">
-        <UiIcon icon="MapPin" />
-        <div className="thread" />
-        <div className="thread" />
+        <div className="from-icon-container">
+          <UiIcon icon="Location" />
+        </div>
         <div className="thread" />
         <div className="to-indicator" />
+        <div className="to-icon-container">
+          <UiIcon icon="LocationTick" />
+        </div>
       </div>
       <div className="location-content">
-        <div>
-          <div className="title">Pickup Address:</div>
+        <div className="location-item">
+          <div className="title">Pickup Address</div>
           <div className="value">{pickup}</div>
         </div>
-        <div>
-          <div className="title">Delivery Address:</div>
+        <div className="location-item">
+          <div className="title">Delivery Address</div>
           <div className="value">{dropOff}</div>
         </div>
       </div>
@@ -38,7 +41,7 @@ export default function TripPickupAndDropOff({
 
 const TripPickupAndDropOffStyle = styled.div`
   display: flex;
-  gap: ${pxToRem(24)};
+  gap: ${pxToRem(12)};
 
   .title {
     text-transform: uppercase;
@@ -46,17 +49,35 @@ const TripPickupAndDropOffStyle = styled.div`
     font-size: ${pxToRem(10)};
     line-height: 1.5;
     letter-spacing: 0.05em;
+    color: var(--color-gray-70);
   }
 
   .value {
-    font-size: ${pxToRem(14)};
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 140%;
+    letter-spacing: -0.02em;
+
+    height: ${pxToRem(45)};
+    color: var(--color-neutralBlack);
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    max-height: 2.8em; /* Adjust the value to control the number of lines displayed */
+    line-height: 1.4em;
   }
 
   .indicator {
     display: flex;
+    height: ${pxToRem(90)};
     flex-direction: column;
     align-items: center;
     gap: ${pxToRem(4)};
+    background: var(--color-primary-10);
+    border-radius: ${pxToRem(20)};
+    padding: ${pxToRem(4)};
 
     .to-indicator {
       width: ${pxToRem(4)};
@@ -64,27 +85,28 @@ const TripPickupAndDropOffStyle = styled.div`
       border: ${pxToRem(3)} solid var(--color-gray-400);
       border-radius: 50%;
     }
+
+    .from-icon-container {
+      svg {
+        fill: var(--color-primary);
+      }
+    }
+    .to-icon-container {
+      svg {
+        fill: var(--color-success);
+      }
+    }
   }
 
   .thread {
-    width: ${pxToRem(1)};
+    border-left: 1px dashed var(--color-gray-80);
+    height: 100%;
     background: var(--color-gray-400);
-    &:first-of-type {
-      height: 25%;
-      background-color: ${({ status }: { status?: Trip['status'] }) =>
-        status === 'in-progress' ? 'var(--color-primary)' : ''};
-    }
-    &:nth-of-type(2) {
-      height: 15%;
-    }
-    &:nth-of-type(3) {
-      height: 5%;
-    }
   }
 
   .location-content {
     display: flex;
     flex-direction: column;
-    gap: ${pxToRem(28)};
+    gap: ${pxToRem(24)};
   }
 `;

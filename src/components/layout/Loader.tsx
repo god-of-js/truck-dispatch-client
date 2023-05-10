@@ -11,7 +11,7 @@ export default function Loader() {
         </div>
       </LoaderStyle>
     </>
-  )
+  );
 }
 
 const GlobalStyle = createGlobalStyle`
@@ -35,7 +35,7 @@ const LoaderStyle = styled.div`
     height: 50px;
     animation: spin 1s linear infinite;
   }
-  
+
   @keyframes spin {
     to {
       transform: rotate(360deg);
