@@ -101,6 +101,7 @@ const VehicleStyling = styled.div`
       font-size: 12px;
       line-height: 24px;
       text-transform: capitalize;
+      height: ${pxToRem(100)};
 
       svg {
         height: ${pxToRem(40)};
