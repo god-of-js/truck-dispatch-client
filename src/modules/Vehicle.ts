@@ -51,7 +51,9 @@ export const getVehicles = () => {
 };
 
 export const updateVehicle = (vehicleData: FormData, vehicleId: string) => {
-  return () => {
-    return Api.updateVehicle(vehicleData, vehicleId);
+  return (dispatch: AppDispatch) => {
+    return Api.updateVehicle(vehicleData, vehicleId).then((data) => {
+      dispatch(setVehicle(data))
+    });
   };
 };
