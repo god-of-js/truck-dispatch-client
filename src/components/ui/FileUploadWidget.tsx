@@ -149,6 +149,8 @@ export default function FileUploadWidget({
         const file = await readFile(value);
         if (file) setFileUrl(file);
       })();
+    } else if (typeof value === 'string') {
+      setFileUrl(value);
     }
   }, [value]);
 
