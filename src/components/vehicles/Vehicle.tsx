@@ -39,7 +39,7 @@ export default function VehicleComponent({ vehicle, openEditVehicle }: Props) {
       <div className="fields">
         <div className="field">
           <div className="label">DRIVER NAME</div>
-          <div className="text-value">{vehicle.driver.name}</div>
+          <div className="text-value driver-name">{vehicle.driver.name}</div>
         </div>
         <div className="field">
           <div className="label">PHONE NUMBER</div>
@@ -148,6 +148,9 @@ const VehicleStyling = styled.div`
       font-size: 16px;
       color: var(--color-neutralBlack);
       font-family: 'thiccboi-regular';
+    }
+    .driver-name {
+      text-transform: capitalize;
     }
   }
 
