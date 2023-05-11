@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useMemo } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import UiFilterTag from 'ui/UiFilterTag';
 import UiIcon from 'ui/UiIcon';
@@ -21,15 +21,22 @@ export default function DashboardTopNav({
   pageFilters,
   edgeChild,
 }: Props) {
+  const location = useLocation();
+  const presentRoute = useMemo(() => {
+    return location.pathname + location.search;
+  }, [location.pathname, location.search]);
+
   return (
     <TopNav>
       <div className="route-name-container">
         <span className="route-name">{routeName}</span>
-
         <div className="filters">
           {pageFilters?.map((filter) => (
-            <Link to={filter.route}>
-              <UiFilterTag title={filter.title} />
+            <Link to={filter.route} key={filter.title}>
+              <UiFilterTag
+                title={filter.title}
+                isActive={filter.route === presentRoute}
+              />
             </Link>
           ))}
         </div>

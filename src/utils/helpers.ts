@@ -219,3 +219,39 @@ function getNumberSuffix(dayOfMonth: number) {
       return 'th';
   }
 }
+/**
+ * This function can be used for filters e.g the nav filter on the TopNav.
+ * @param
+ * field: string; The field param takes the field been used for the filter.
+ * @param
+ * value: The value param sends the value of the filter, e.g. if the filter currently selected is by Company, then the value would be company or similar.
+ * @param
+ * data: this would be the array that would be filtered to give what we want.
+ */
+export function filterByFieldInObject<T = any>(
+  field: string,
+  value: string,
+  data: any[],
+): T[] {
+  return data.filter((item) => {
+    const fieldParts = field.split('.');
+
+    if (fieldParts.length === 1) {
+      // Base case: Field is not nested
+      return item[field] === value;
+    }
+
+    // Recursive case: Field is nested
+    const [currentField, ...remainingFields] = fieldParts;
+    const nestedItem = item[currentField];
+
+    if (nestedItem) {
+      return (
+        filterByFieldInObject<T>(remainingFields.join('.'), value, [nestedItem])
+          .length > 0
+      );
+    }
+
+    return false;
+  }) as T[];
+}
