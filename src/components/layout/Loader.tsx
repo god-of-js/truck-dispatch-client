@@ -1,7 +1,10 @@
 import React from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 
-export default function Loader() {
+interface Props {
+  size?: 'lg' | 's';
+}
+export default function Loader({ size }: Props) {
   return (
     <>
       <GlobalStyle />

@@ -1,23 +1,23 @@
+import React, { useEffect, useMemo, useState } from 'react';
+
 import JobItem from 'components/jobs/JobItem';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
 import Loader from 'components/layout/Loader';
-import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
 import InformUserOfVerification from 'components/verification/InformUserOfVerification';
 import { RootState } from 'modules/index';
 import { getJobs } from 'modules/Trips';
-import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import UiOverlay from 'ui/UiOverlay';
-import { toAnyAction } from 'utils/helpers';
-import sizes from 'utils/sizes';
+import { filterByFieldInObject, toAnyAction } from 'utils/helpers';
+import Trip from 'types/Trip';
 
-interface Props {
-  isActionButtonDisabled?: boolean;
-}
+export default function TransporterJobs() {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const senderType = searchParams.get('sender-type');
 
-export default function TransporterJobs({ isActionButtonDisabled }: Props) {
   const { tripId } = useParams();
   const jobs = useSelector((state: RootState) => state.trips.jobs);
   const user = useSelector((state: RootState) => state.account.user);
@@ -30,9 +30,33 @@ export default function TransporterJobs({ isActionButtonDisabled }: Props) {
     setIsInformUserOfVerificationModalVisible,
   ] = useState(false);
 
+  const pageFilters = [
+    {
+      title: 'All',
+      route: '/available-jobs',
+    },
+    {
+      title: 'By Companies',
+      route: '/available-jobs?sender-type=company',
+    },
+    {
+      title: 'By Shippers',
+      route: '/available-jobs?sender-type=shipper',
+    },
+  ];
+
+  const filteredJobs = useMemo(() => {
+    console.log(jobs)
+    if (!senderType) return jobs;
+    // TODO: implement pagination.
+    return filterByFieldInObject<Trip>('tripOwner.userType', senderType, jobs);
+  }, [jobs, senderType])
+
   function viewJob(jobId: string) {
     navigate(`${jobId}`);
   }
+
+
 
   useEffect(() => {
     dispatch(toAnyAction(getJobs())).finally(() => {
@@ -50,14 +74,15 @@ export default function TransporterJobs({ isActionButtonDisabled }: Props) {
 
   return (
     <>
-      <DashboardTopNav routeName="Jobs" />
+      <DashboardTopNav routeName="Jobs" pageFilters={pageFilters} />
       <MyJobsPageStyle className="flex-container">
         {!loading ? (
           <>
-            {jobs.map((job) => {
+            {filteredJobs.map((job) => {
               return (
                 <JobItem
                   job={job}
+                  key={job._id}
                   bidForJob={bidForJob}
                   viewJobDetail={viewJob}
                 />
@@ -65,7 +90,7 @@ export default function TransporterJobs({ isActionButtonDisabled }: Props) {
             })}
           </>
         ) : (
-          <Loader />
+          <Loader size="lg" />
         )}
       </MyJobsPageStyle>
       <UiOverlay isVisible={isInformUserOfVerificationModalVisible}>
