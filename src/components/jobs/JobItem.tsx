@@ -5,6 +5,7 @@ import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
 import UiIcon from 'ui/UiIcon';
 import { convertToDdMmmYYYYDateFormat } from 'utils/helpers';
+import sizes from 'utils/sizes';
 
 interface Props {
   job: Trip;
@@ -69,12 +70,16 @@ export default function JobItem({ job, bidForJob, viewJobDetail }: Props) {
 
 const JobItemStyling = styled.div`
   max-width: ${pxToRem(332)};
-  min-width: ${pxToRem(320)};
   border-radius: ${pxToRem(16)};
   overflow: hidden;
   background: #ffffff;
+  width: 100%;
   font-weight: 600;
   font-size: ${pxToRem(16)};
+
+  @media screen and (min-width: ${sizes.mobileSmall}) {
+  min-width: ${pxToRem(320)};
+}
 
   header {
     background: var(--color-primary-10);
