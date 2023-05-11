@@ -63,7 +63,7 @@ export default function RateTransporter({ onClose }: Props) {
       <RatingsHeader>Rate Trip</RatingsHeader>
       <Paragraph>
         Rate your trip to earn bonuses on your next trip and improve the user
-        experience for yourself and other agents
+        experience for yourself and other users
       </Paragraph>
       <User>
         <UiAvatar avatar={trip?.transporter?.avatar} />

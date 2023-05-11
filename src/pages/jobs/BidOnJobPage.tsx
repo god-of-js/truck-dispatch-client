@@ -171,7 +171,7 @@ export default function BidOnJob() {
                     />
                     <div className="button-container">
                       <UiButton loading={loading} disabled={disableButton}>
-                        {bid ? 'Update Bid' : 'Send Bid to Agent'}
+                        {bid ? 'Update Bid' : 'Send Bid to Trip Owner'}
                       </UiButton>
                     </div>
                   </>

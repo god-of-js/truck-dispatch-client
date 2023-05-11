@@ -12,7 +12,7 @@ import UiPill from 'ui/UiPill';
 import { DropDownData } from 'ui/UiDropdownMenu';
 import User from 'types/User';
 
-export default function AgentTripPageContent() {
+export default function ShipperTripPageContent() {
   const navigate = useNavigate();
   const trips = useSelector((state: RootState) => state.trips.trips);
 
