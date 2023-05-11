@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import UiOverlay from 'ui/UiOverlay';
 import { filterByFieldInObject, toAnyAction } from 'utils/helpers';
 import Trip from 'types/Trip';
+import UiSearchInput from 'ui/UiSearchInput';
 
 export default function TransporterJobs() {
   const location = useLocation();
@@ -46,14 +47,21 @@ export default function TransporterJobs() {
   ];
 
   const filteredJobs = useMemo(() => {
-    console.log(jobs)
     if (!senderType) return jobs;
     // TODO: implement pagination.
     return filterByFieldInObject<Trip>('tripOwner.userType', senderType, jobs);
-  }, [jobs, senderType])
+  }, [jobs, senderType]);
 
   function viewJob(jobId: string) {
     navigate(`${jobId}`);
+  }
+
+  function bidForJob() {
+    if (user?.status !== 'verified') {
+      setIsInformUserOfVerificationModalVisible(true);
+      return;
+    }
+    navigate(`/available-jobs/${tripId}/bid`);
   }
 
 
@@ -64,17 +72,9 @@ export default function TransporterJobs() {
     });
   }, []);
 
-  function bidForJob() {
-    if (user?.status !== 'verified') {
-      setIsInformUserOfVerificationModalVisible(true);
-      return;
-    }
-    navigate(`/available-jobs/${tripId}/bid`);
-  }
-
   return (
     <>
-      <DashboardTopNav routeName="Jobs" pageFilters={pageFilters} />
+      <DashboardTopNav routeName="Jobs" pageFilters={pageFilters} edgeChild={<UiSearchInput />} />
       <MyJobsPageStyle className="flex-container">
         {!loading ? (
           <>
