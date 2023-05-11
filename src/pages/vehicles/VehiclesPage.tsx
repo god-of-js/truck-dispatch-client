@@ -20,7 +20,7 @@ export default function VehiclesPage() {
   const vehicles = useSelector((state: RootState) => state.vehicle.vehicles);
   const [isAddVehicleVisible, setIsAddVehicleVisible] = useState(false);
   const [isEditVehicleVisible, setIsEditVehicleVisible] = useState(false);
-  const [selectedVehicle, setSelectedVehicle] = useState<Vehicle>();
+  const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
   function closeAddVehicle() {
     setIsAddVehicleVisible(false);
   }
@@ -30,6 +30,7 @@ export default function VehiclesPage() {
   }
 
   function closeEditVehicle() {
+    setSelectedVehicle(null);
     setIsEditVehicleVisible(false);
   }
 
