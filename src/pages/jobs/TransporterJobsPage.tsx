@@ -48,7 +48,7 @@ export default function TransporterJobs() {
   const filteredJobs = useMemo(() => {
     console.log(jobs)
     if (!senderType) return jobs;
-
+    // TODO: implement pagination.
     return filterByFieldInObject<Trip>('tripOwner.userType', senderType, jobs);
   }, [jobs, senderType])
 
