@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+
 import styled from 'styled-components';
 import Vehicle from 'types/Vehicle';
 import UiButton from 'ui/UiButton';
@@ -8,10 +9,14 @@ import sizes from 'utils/sizes';
 
 interface Props {
   vehicle: Vehicle;
+  openEditVehicle: (vehicle: Vehicle) => void;
 }
-export default function VehicleComponent({ vehicle }: Props) {
+export default function VehicleComponent({ vehicle, openEditVehicle }: Props) {
   const images = Object.values(vehicle.images).slice(0, 4);
 
+  function editVehicle() {
+    openEditVehicle(vehicle);
+  }
   const iconName = useMemo(() => {
     const typeOfVehicle = vehicleTypes.find(
       ({ title }) => title === vehicle.vehicleType,
@@ -35,7 +40,7 @@ export default function VehicleComponent({ vehicle }: Props) {
       <div className="fields">
         <div className="field">
           <div className="label">DRIVER NAME</div>
-          <div className="text-value">{vehicle.driver.name}</div>
+          <div className="text-value driver-name">{vehicle.driver.name}</div>
         </div>
         <div className="field">
           <div className="label">PHONE NUMBER</div>
@@ -46,7 +51,7 @@ export default function VehicleComponent({ vehicle }: Props) {
         <div className="label">Truck Images</div>
         <div className="content">
           {images.map((image) => (
-            <div className="image">
+            <div key={image} className="image">
               <img src={image} alt="a truckdispatch vendor vehicle" />
               <div className="img-remainder">+2</div>
             </div>
@@ -54,7 +59,7 @@ export default function VehicleComponent({ vehicle }: Props) {
         </div>
       </div>
       <div className="btn-container">
-        <UiButton variant="secondary" size="large">
+        <UiButton variant="secondary" size="large" onClick={editVehicle}>
           Edit truck details
         </UiButton>
         <UiButton variant="danger-secondary" size="large">
@@ -100,6 +105,7 @@ const VehicleStyling = styled.div`
       font-size: 12px;
       line-height: 24px;
       text-transform: capitalize;
+      height: ${pxToRem(100)};
 
       svg {
         height: ${pxToRem(40)};
@@ -146,6 +152,9 @@ const VehicleStyling = styled.div`
       font-size: 16px;
       color: var(--color-neutralBlack);
       font-family: 'thiccboi-regular';
+    }
+    .driver-name {
+      text-transform: capitalize;
     }
   }
 
