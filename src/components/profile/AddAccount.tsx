@@ -120,7 +120,7 @@ export default function AddAccount({ bankAccountDetails, onClose }: Props) {
             <header>
               <h2>Add Account</h2>
               <p>
-                Your account details are required to enable agents make payment
+                Your account details are required to enable clients make payment
                 to you without hassle or back and forth.
               </p>
             </header>

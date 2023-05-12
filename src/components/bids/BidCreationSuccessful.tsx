@@ -10,8 +10,8 @@ export default function BidCreationSuccessful({ onClose }: Props) {
     <UiModal onClose={onClose}>
       <Header>Bid has been sent successfully</Header>
       <TextContent>
-        Your bid has been sent to the Agent successfully. If you are a good
-        match for this dispatch, the agent would either accept your bid or
+        Your bid has been sent to the trip owner successfully. If you are a good
+        match for this dispatch, the trip owner would either accept your bid or
         negotiate with you over chat.
       </TextContent>
       <TextContent>

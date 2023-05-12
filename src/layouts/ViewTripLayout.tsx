@@ -18,6 +18,7 @@ import { getTripRating } from 'modules/Ratings';
 import Rating from 'types/Rating';
 import { getPaymentRequestByTripId } from 'modules/Payments';
 import { RootState } from 'modules/index';
+import { clientBasedUserTypes, serviceBasedUserTypes } from 'utils/constants';
 
 export default function ViewTrip() {
   const { tripId } = useParams();
@@ -57,13 +58,14 @@ export default function ViewTrip() {
 
   const tabs = useMemo(() => {
     return unfilteredTabs.filter((tab) => {
-      if (user?.userType === 'agent') return agentChecks(tab.path);
-      else if (user?.userType === 'transporter')
+      if (clientBasedUserTypes.includes(user?.userType!))
+        return clientChecks(tab.path);
+      if (serviceBasedUserTypes.includes(user?.userType!))
         return transporterChecks(tab.path);
     });
   }, [user, trip, paymentRequest?.status]);
 
-  function agentChecks(path: string) {
+  function clientChecks(path: string) {
     if (path.includes('bids') && trip?.status !== 'awaiting-bid') return false;
     if (
       path.includes('view-payment-request') &&
@@ -102,7 +104,10 @@ export default function ViewTrip() {
   }
 
   useEffect(() => {
-    if (user?.userType === 'agent' && trip?.status === 'completed') {
+    if (
+      clientBasedUserTypes.includes(user?.userType!) &&
+      trip?.status === 'completed'
+    ) {
       dispatch(toAnyAction(getTripRating(tripId!))).then((data: Rating) => {
         if (!data) setIsRatingsModalVisible(true);
       });

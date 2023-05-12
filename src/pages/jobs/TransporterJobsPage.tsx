@@ -46,17 +46,15 @@ export default function TransporterJobs() {
   ];
 
   const filteredJobs = useMemo(() => {
-    console.log(jobs)
+    console.log(jobs);
     if (!senderType) return jobs;
     // TODO: implement pagination.
     return filterByFieldInObject<Trip>('tripOwner.userType', senderType, jobs);
-  }, [jobs, senderType])
+  }, [jobs, senderType]);
 
   function viewJob(jobId: string) {
     navigate(`${jobId}`);
   }
-
-
 
   useEffect(() => {
     dispatch(toAnyAction(getJobs())).finally(() => {

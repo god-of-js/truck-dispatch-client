@@ -12,7 +12,7 @@ import { RootState } from 'modules/index';
 import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
 import UiIcon from 'ui/UiIcon';
-import { clientBasedUserTypes } from 'utils/constants';
+import { clientBasedUserTypes, serviceBasedUserTypes } from 'utils/constants';
 
 export default function ViewTripStatus() {
   const { tripId } = useParams();
@@ -39,7 +39,7 @@ export default function ViewTripStatus() {
     if (trip?.status === 'completed') {
       heading = 'Thank you for trusting us with your dispatch';
       textContent =
-        'Your cargo has been delivered; Thank you for dispatching with us. We are commited to providing you with more secure and improved ways to dispatch your goods. To earn discounts on your next trip, kindly drop a review of the transporter to enable other agents dispatch safely.';
+        'Your cargo has been delivered; Thank you for dispatching with us. We are commited to providing you with more secure and improved ways to dispatch your goods. To earn discounts on your next trip, kindly drop a review of the transporter to enable other users dispatch safely.';
     }
 
     return (
@@ -51,19 +51,20 @@ export default function ViewTripStatus() {
   }, [trip]);
 
   const phoneNumberOfResponsibleUser = useMemo(() => {
-    return user?.userType === 'agent'
+    return clientBasedUserTypes.includes(user?.userType!)
       ? trip?.transporter?.phone
       : trip?.tripOwner?.phone;
   }, [user, trip?.transporter, trip?.tripOwner]);
 
   const responsibleUserAvatar = useMemo(() => {
-    if (user?.userType === 'agent') return trip?.transporter?.avatar;
+    if (clientBasedUserTypes.includes(user?.userType!))
+      return trip?.transporter?.avatar;
 
     return trip?.tripOwner?.avatar;
   }, [user, trip?.transporter, trip?.tripOwner]);
 
   function showInfoCard() {
-    if (user?.userType === 'transporter') return true;
+    if (serviceBasedUserTypes.includes(user?.userType!)) return true;
 
     if (trip?.status !== 'awaiting-bid' && !trip?.TDO) return true;
   }
@@ -105,12 +106,12 @@ export default function ViewTripStatus() {
             </div>
             <div>
               <div className="title">
-                {user?.userType === 'agent'
+                {clientBasedUserTypes.includes(user?.userType!)
                   ? 'Assigned Transporter'
-                  : 'Responsible Agent'}
+                  : 'Responsible Shipper'}
               </div>
               <div className="name">
-                {user?.userType === 'agent'
+                {clientBasedUserTypes.includes(user?.userType!)
                   ? getName(trip?.transporter)
                   : getName(trip?.tripOwner)}
               </div>
@@ -148,7 +149,8 @@ export default function ViewTripStatus() {
                   <p>
                     Payment has been made and all documents have been sent hence
                     the trip is ready to go. To begin this trip, clicck the
-                    button below to notify the Agent the trip is about to start.
+                    button below to notify the shipper the trip is about to
+                    start.
                   </p>
                   <UiButton loading={loading} onClick={startTrip}>
                     Start Trip
@@ -160,8 +162,8 @@ export default function ViewTripStatus() {
                   <h3>Complete Trip</h3>
                   <p>
                     Have you gotten to the location? If so, kindly click the
-                    button below to inform the agent that you have completed the
-                    trip.
+                    button below to inform the shipper that you have completed
+                    the trip.
                     <br />
                     Completing trips counts towards your ratings and validity.
                   </p>
@@ -182,7 +184,7 @@ export default function ViewTripStatus() {
               )}
             </>
           )}
-          {user?.userType === 'agent' && (
+          {clientBasedUserTypes.includes(user?.userType!) && (
             <>
               {trip?.status !== 'awaiting-bid' && !trip?.TDO && (
                 <>
