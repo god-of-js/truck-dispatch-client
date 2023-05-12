@@ -162,10 +162,11 @@ const Header = styled.header`
   padding: ${pxToRem(12)};
   border-bottom: 1px solid var(--color-gray-200);
   background-color: white;
-  position: absolute;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
+  z-index: 1;
 
   .user-details {
     display: flex;
@@ -175,10 +176,10 @@ const Header = styled.header`
 `;
 
 const ChatContainer = styled.div`
-  padding: ${pxToRem(80)} ${pxToRem(32)} ${pxToRem(80)} ${pxToRem(32)};
+  padding: ${pxToRem(32)} ${pxToRem(32)} ${pxToRem(80)} ${pxToRem(32)};
   background: var(--color-gray-100);
-  height: 80%;
-  overflow: scroll;
+  height: calc(100% - ${pxToRem(255)});
+  overflow-y: auto;
 `;
 
 const ChatBubble = styled.div`
@@ -198,11 +199,13 @@ const ChatBubble = styled.div`
 `;
 
 const InputContainer = styled.div`
-  position: absolute;
+  position: sticky;
   bottom: 0;
   right: 0;
   left: 0;
   padding-bottom: ${pxToRem(16)};
+  z-index: 1;
+
   .input-group {
     width: 90%;
     margin: auto;
