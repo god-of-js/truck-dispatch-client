@@ -58,8 +58,10 @@ export default function ViewTrip() {
 
   const tabs = useMemo(() => {
     return unfilteredTabs.filter((tab) => {
-      if (clientBasedUserTypes.includes(user?.userType!)) return clientChecks(tab.path);
-      if (serviceBasedUserTypes.includes(user?.userType!)) return transporterChecks(tab.path);
+      if (clientBasedUserTypes.includes(user?.userType!))
+        return clientChecks(tab.path);
+      if (serviceBasedUserTypes.includes(user?.userType!))
+        return transporterChecks(tab.path);
     });
   }, [user, trip, paymentRequest?.status]);
 
@@ -102,7 +104,10 @@ export default function ViewTrip() {
   }
 
   useEffect(() => {
-    if (clientBasedUserTypes.includes(user?.userType!) && trip?.status === 'completed') {
+    if (
+      clientBasedUserTypes.includes(user?.userType!) &&
+      trip?.status === 'completed'
+    ) {
       dispatch(toAnyAction(getTripRating(tripId!))).then((data: Rating) => {
         if (!data) setIsRatingsModalVisible(true);
       });

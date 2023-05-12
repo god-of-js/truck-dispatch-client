@@ -2,8 +2,9 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from 'modules/index';
-import AgentTripPageContent from 'components/trips/AgentTripPageContent';
+import ShipperTripPageContent from 'components/trips/ShipperTripPageContent';
 import TransporterTripPageContent from 'components/trips/TransporterTripPageContent';
+import { clientBasedUserTypes } from 'utils/constants';
 
 export default function MyTripsPage() {
   const user = useSelector((state: RootState) => state.account.user);
@@ -11,8 +12,8 @@ export default function MyTripsPage() {
   return (
     <>
       <MyTripsPageStyle>
-        {user?.userType === 'agent' ? (
-          <AgentTripPageContent />
+        {clientBasedUserTypes.includes(user?.userType!) ? (
+          <ShipperTripPageContent />
         ) : (
           <TransporterTripPageContent />
         )}

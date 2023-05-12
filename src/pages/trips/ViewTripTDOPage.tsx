@@ -17,6 +17,7 @@ import UiForm from 'ui/UiForm';
 import MessageWithImage from 'ui/MessageWithImage';
 import FileSent from '../../assets/img/file-sent.svg';
 import WaitingForUpload from '../../assets/img/waiting-for-upload.svg';
+import { clientBasedUserTypes, serviceBasedUserTypes } from 'utils/constants';
 
 export default function ViewTripTDO() {
   const { tripId } = useParams();
@@ -62,7 +63,7 @@ export default function ViewTripTDO() {
             <p>
               A Terminal Delivery Order (TDO) is a document that authorizes the
               release of cargo from a shipping terminal or port to the consignee
-              or their authorized agent for final delivery. The TDO contains
+              or their authorized shipper for final delivery. The TDO contains
               information about the shipment, including the name of the
               consignee, the destination address, and any special handling
               instructions.
@@ -92,7 +93,7 @@ export default function ViewTripTDO() {
             </UiForm>
           </>
         )}
-        {!showUploadTDO && user?.userType === 'agent' && (
+        {!showUploadTDO && clientBasedUserTypes.includes(user?.userType!) && (
           <>
             <MessageWithImage
               img={FileSent}
@@ -106,12 +107,12 @@ export default function ViewTripTDO() {
             </div>
           </>
         )}
-        {!!trip?.TDO && user?.userType === 'transporter' && (
+        {!!trip?.TDO && serviceBasedUserTypes.includes(user?.userType!) && (
           <>
             <MessageWithImage
               img={FileSent}
               title="Terminal Delivery Order has been Received"
-              subtitle="The agent has uploaded the TDO for this trip. This document authorizes the release of cargo from a shipping terminal or port and contains information about the shipment, including the name of the consignee, the destination address, and any special handling instructions. Kindly click the button below to view TDO "
+              subtitle="The shipper has uploaded the TDO for this trip. This document authorizes the release of cargo from a shipping terminal or port and contains information about the shipment, including the name of the consignee, the destination address, and any special handling instructions. Kindly click the button below to view TDO "
             />
             <div className="button-container view-tdo-btn-container">
               <a href={trip?.TDO} target="_blank">
@@ -124,7 +125,7 @@ export default function ViewTripTDO() {
           <MessageWithImage
             img={WaitingForUpload}
             title="Terminal Delivery Order has not been uploaded"
-            subtitle="The TDO of this trip is yet to be uploaded. Kindly reach out to the responsible agent via phone or text for the document."
+            subtitle="The TDO of this trip is yet to be uploaded. Kindly reach out to the responsible shipper via phone or text for the document."
           />
         )}
       </CardContainer>
