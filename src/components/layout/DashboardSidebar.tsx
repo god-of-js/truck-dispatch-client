@@ -154,6 +154,17 @@ export default function DashboardSidebar() {
           </LogOutContainer>
         </BottomActions>
       </div>
+      <MobileNav>
+        <div className="mobile-bottom-nav">
+          <span className="mobile-options">Jobs</span>
+          <span className="mobile-options">My Trips</span>
+          <span className="mobile-options">Vehicles</span>
+          <span className="mobile-options">
+            <UiIcon icon="CloseNav" size="24" />
+          </span>
+        </div>
+     
+      </MobileNav>
     </Sidebar>
   );
 }
@@ -182,6 +193,11 @@ const Sidebar = styled.nav`
         display: flex;
         align-items: center;
         gap: ${pxToRem(8)};
+
+        @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
+          display: none;
+          border: none;
+        }
 
         .logo-place-holder {
           width: ${pxToRem(40)};
@@ -226,6 +242,61 @@ const Sidebar = styled.nav`
     border-top: none;
     position: static;
     border-right: ${pxToRem(1)} solid var(--color-gray-200);
+  }
+`;
+
+const MobileNav = styled.div`
+  display: none;
+  width: 100%;
+  padding: ${pxToRem(20)} ${pxToRem(16)} ${pxToRem(20)} ${pxToRem(16)};
+  gap: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  height: 97px;
+  left: 0px;
+  bottom: 0px;
+  border-radius: 16px 16px 0px 0px;
+  border-top: 1px solid #f1f0f4;
+
+  .mobile-bottom-nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: space-around;
+    padding: 0px;
+    gap: ${pxToRem(20)};
+
+    width: 80%%;
+    height: ${pxToRem(44)};
+
+    .mobile-options {
+      background: red;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      padding: ${pxToRem(12)};
+      background: var(--color-gray-20);
+      border: 1px solid var(--color-gray-20);
+      border-radius: 8px;
+      text-edge: cap;
+      letter-spacing: -0.02em;
+      color: var(--color-gray-70);
+
+      &:hover {
+        color: var(--color-primary);
+        border: 1px solid var(--color-primary);
+        background: var(--color-primary-20);
+      }
+    }
+  }
+
+  @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
+    display: flex;
+    align-items: center;
+    width: 100%;
   }
 `;
 
@@ -281,6 +352,7 @@ const Tab = styled.li`
 
   @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
     /* Mobile view */
+    display: none;
     border-bottom: none;
     padding: ${pxToRem(2)};
     border-bottom: ${pxToRem(4)} solid
@@ -334,6 +406,9 @@ const UserContainer = styled.div`
     margin-top: ${pxToRem(8)};
     text-transform: uppercase;
   }
+  @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
+    display: none;
+  }
 `;
 
 const LogOutContainer = styled.div`
@@ -355,6 +430,9 @@ const LogOutContainer = styled.div`
 
   &:hover {
     color: var(--color-danger);
+  }
+  @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
+    display: none;
   }
 `;
 const MessageCount = styled.div`

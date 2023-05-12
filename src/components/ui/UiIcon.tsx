@@ -34,6 +34,7 @@ import { ReactComponent as CallReceived } from './icons/call-received.svg';
 import { ReactComponent as Car } from './icons/car.svg';
 import { ReactComponent as ChartSquare } from './icons/chart-square.svg';
 import { ReactComponent as Check } from './icons/check.svg';
+import { ReactComponent as CloseNav } from './icons/close-nav.svg';
 import { ReactComponent as Company } from './icons/company.svg';
 import { ReactComponent as DocumentUpload } from './icons/document-upload.svg';
 import { ReactComponent as Eye } from './icons/eye.svg';
@@ -70,6 +71,7 @@ const icons = {
   Chat: <Chat />,
   ChartSquare: <ChartSquare />,
   Close: <Close />,
+  CloseNav: <CloseNav/>,
   CreditCard: <CreditCard />,
   Check: <Check />,
   Checks: <Checks />,
