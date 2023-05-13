@@ -7,7 +7,7 @@ import UiField from './UiField';
 
 export type InputType = 'text' | 'password' | 'number' | 'phone' | 'date';
 interface Props {
-  label: string;
+  label?: string;
   type?: InputType;
   value: string | null | number;
   placeholder?: string;
@@ -16,10 +16,15 @@ interface Props {
    */
   name: string;
   error?: string;
+  size?: Sizes;
+  search?: Search;
   disabled?: boolean;
   inputRef?: React.RefObject<HTMLInputElement>;
   onChange: (event: { name: string; value: string | null }) => void;
 }
+
+type Sizes = 'large' | 'md' | 's' | 'text';
+type Search = boolean;
 
 export default function UiInput({
   label,
@@ -27,6 +32,8 @@ export default function UiInput({
   name,
   value,
   placeholder,
+  size = 'md',
+  search,
   disabled,
   error,
   inputRef,
@@ -49,7 +56,7 @@ export default function UiInput({
 
   return (
     <UiField label={label} error={error}>
-      <InputContainer>
+      <InputContainer search={search!}>
         {inputType === 'phone' ? (
           <PhoneInputContainer>
             <div className="phone-tag">+234</div>
@@ -62,16 +69,19 @@ export default function UiInput({
             />
           </PhoneInputContainer>
         ) : (
-          <Input
-            type={inputType}
-            value={value || ''}
-            placeholder={placeholder}
-            name={name}
-            ref={inputRef}
-            hasError={!!error}
-            disabled={disabled}
-            onChange={sendValue}
-          />
+          <div className="input-wrapper">
+            <Input
+              type={inputType}
+              value={value || ''}
+              placeholder={placeholder}
+              name={name}
+              ref={inputRef}
+              hasError={!!error}
+              disabled={disabled}
+              onChange={sendValue}
+            />
+            {search && <UiIcon icon="SearchNormal" size="20" />}
+          </div>
         )}
 
         {type === 'password' && (
@@ -85,6 +95,26 @@ export default function UiInput({
       </InputContainer>
     </UiField>
   );
+}
+function searchVariant(search: Search) {
+  if (search) {
+    return `
+    .input-wrapper{
+      position: relative;
+      input {
+        padding-left: ${pxToRem(44)};
+        max-width:${pxToRem(222)};
+      }
+      svg {
+        position: absolute;
+        height: 100%;
+        left: ${pxToRem(14)};
+        top: 0;
+        cursor: pointer;
+      }
+    }
+    `;
+  }
 }
 
 const PhoneInputContainer = styled.div`
@@ -110,7 +140,7 @@ const Input = styled.input`
   border: ${pxToRem(1)} solid;
   border-color: ${({ hasError }: { hasError: boolean }) =>
     hasError ? 'var(--color-danger)' : 'var(--color-gray)'};
-  background: #ffffff;
+  background: transparent;
   outline: none;
   border-radius: ${pxToRem(8)};
   box-sizing: border-box;
@@ -129,6 +159,7 @@ const Input = styled.input`
 
 const InputContainer = styled.div`
   position: relative;
+  ${({ search }: { search: Search }) => searchVariant(search)}
 `;
 
 const IconButton = styled.div`

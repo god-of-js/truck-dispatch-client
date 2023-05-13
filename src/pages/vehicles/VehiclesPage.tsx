@@ -14,6 +14,7 @@ import sizes from 'utils/sizes';
 import EditVehicle from 'components/vehicles/EditVehicle';
 import Vehicle from 'types/Vehicle';
 import UiIcon from 'ui/UiIcon';
+import UiInput from 'ui/UiInput';
 
 export default function VehiclesPage() {
   const dispatch = useDispatch();
@@ -21,6 +22,9 @@ export default function VehiclesPage() {
   const [isAddVehicleVisible, setIsAddVehicleVisible] = useState(false);
   const [isEditVehicleVisible, setIsEditVehicleVisible] = useState(false);
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
+  const [searchData, setSearchData] = useState({
+    search_value: '',
+  });
   function closeAddVehicle() {
     setIsAddVehicleVisible(false);
   }
@@ -39,9 +43,16 @@ export default function VehiclesPage() {
     setIsEditVehicleVisible(true);
   }
 
+  function handleChange({ value }: { name: string; value: string | null }) {
+    setSearchData({ search_value: value! });
+  }
+
+
+
   function edgeChildren() {
     return (
       <GappedContainerWith12PX>
+        <UiInput onChange={handleChange} value={searchData.search_value} name='search_value'  placeholder='Search...' search />
         {!!vehicles.length && (
           <UiButton onClick={openAddVehicle}>add new vehicle</UiButton>
         )}
@@ -58,7 +69,11 @@ export default function VehiclesPage() {
       <DashboardTopNav routeName="Vehicles" edgeChild={edgeChildren()} />
       <Vehicles>
         {vehicles.map((vehicle) => (
-          <VehicleItem vehicle={vehicle} key={vehicle._id} openEditVehicle={openEditVehicle} />
+          <VehicleItem
+            vehicle={vehicle}
+            key={vehicle._id}
+            openEditVehicle={openEditVehicle}
+          />
         ))}
       </Vehicles>
 

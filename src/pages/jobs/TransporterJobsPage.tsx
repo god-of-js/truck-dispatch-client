@@ -12,8 +12,7 @@ import styled from 'styled-components';
 import UiOverlay from 'ui/UiOverlay';
 import { filterByFieldInObject, toAnyAction } from 'utils/helpers';
 import Trip from 'types/Trip';
-import UiSearchInput from 'ui/UiSearchInput';
-
+import UiInput from 'ui/UiInput';
 export default function TransporterJobs() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -26,6 +25,9 @@ export default function TransporterJobs() {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
+  const [searchData, setSearchData] = useState({
+    search_value: '',
+  });
   const [
     isInformUserOfVerificationModalVisible,
     setIsInformUserOfVerificationModalVisible,
@@ -64,7 +66,9 @@ export default function TransporterJobs() {
     navigate(`/available-jobs/${tripId}/bid`);
   }
 
-
+  function handleChange({ value }: { name: string; value: string | null }) {
+    setSearchData({ search_value: value! });
+  }
 
   useEffect(() => {
     dispatch(toAnyAction(getJobs())).finally(() => {
@@ -74,7 +78,19 @@ export default function TransporterJobs() {
 
   return (
     <>
-      <DashboardTopNav routeName="Jobs" pageFilters={pageFilters} edgeChild={<UiSearchInput />} />
+      <DashboardTopNav
+        routeName="Jobs"
+        pageFilters={pageFilters}
+        edgeChild={
+          <UiInput
+            onChange={handleChange}
+            value={searchData.search_value}
+            name="search_value"
+            placeholder="Search..."
+            search
+          />
+        }
+      />
       <MyJobsPageStyle className="flex-container">
         {!loading ? (
           <>

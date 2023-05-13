@@ -54,7 +54,11 @@ export default function DriverDetailsForm({
   return (
     <ComponentStyling>
       <label>{edit ? 'Edit' : 'Add'} Truck and Driver details</label>
-      <UiForm formData={formData} schema={DriverDetailsSchema} onSubmit={createVehicle}>
+      <UiForm
+        formData={formData}
+        schema={DriverDetailsSchema}
+        onSubmit={createVehicle}
+      >
         {({ errors }) => (
           <div>
             <div className="grid-container">

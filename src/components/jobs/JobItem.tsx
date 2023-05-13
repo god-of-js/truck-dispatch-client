@@ -78,8 +78,8 @@ const JobItemStyling = styled.div`
   font-size: ${pxToRem(16)};
 
   @media screen and (min-width: ${sizes.mobileSmall}) {
-  min-width: ${pxToRem(320)};
-}
+    min-width: ${pxToRem(320)};
+  }
 
   header {
     background: var(--color-primary-10);
