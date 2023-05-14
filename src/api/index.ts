@@ -72,8 +72,28 @@ class ApiService {
     return this.patch(`/trips/${tripId}/change-status/${status}`);
   }
 
-  getTrips(): Promise<Trip[]> {
-    return this.get('/trips');
+  async getTrips({
+    page,
+    limit,
+    status,
+  }: {
+    page: number;
+    limit: number;
+    status?: string | null;
+  }) {
+    const data = await this.get(
+      `/trips?&page=${page}&limit=${limit}${status && `&status=${status}`}`,
+    );
+
+    return {
+      data: data.data as Trip[],
+      currentPage: data.currentPage,
+      totalPages: data.totalPages,
+      totalItems: data.totalItems,
+      inProgress: data.inProgress,
+      completed: data.completed,
+      pending: data.pending,
+    };
   }
 
   getUser() {
@@ -117,11 +137,9 @@ class ApiService {
     limit?: number;
     senderType?: string;
   }) {
-    const data = await this.get<any>(
+    const data = await this.get(
       `/trips/jobs?page=${page}&limit=${limit}&senderType=${senderType}`,
     );
-    console.log(data);
-
     return {
       data: data.data as Trip[],
       currentPage: data.currentPage,
@@ -248,7 +266,7 @@ class ApiService {
     );
   }
 
-  private get<T>(url: string): Promise<T> {
+  private get<T = any>(url: string): Promise<T> {
     return axiosInstance()
       .get(url)
       .then(({ data }) => data.data) as Promise<T>;

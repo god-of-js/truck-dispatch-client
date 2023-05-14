@@ -12,8 +12,12 @@ import UiTable from 'ui/UiTable';
 import UiPill from 'ui/UiPill';
 import sizes from 'utils/sizes';
 import User from 'types/User';
+import { filterByFieldInObject } from 'utils/helpers';
 
-export default function ShipperTripPageContent() {
+interface Props {
+  status: string | null;
+}
+export default function ShipperTripPageContent({ status }: Props) {
   const navigate = useNavigate();
   const trips = useSelector((state: RootState) => state.trips.trips);
 
@@ -77,7 +81,11 @@ export default function ShipperTripPageContent() {
   }
 
   const tripsData = useMemo(() => {
-    return trips.map((trip: Trip) => ({
+    const data = status
+      ? filterByFieldInObject<Trip>('status', status, trips)
+      : trips;
+
+    return data.map((trip: Trip) => ({
       ...trip,
       tripOwner: tripOwnerDetails(trip?.tripOwner),
       status: (

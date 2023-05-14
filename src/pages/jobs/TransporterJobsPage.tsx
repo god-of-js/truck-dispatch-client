@@ -108,6 +108,7 @@ export default function TransporterJobs() {
   return (
     <>
       <DashboardTopNav routeName="Jobs" pageFilters={pageFilters} />
+      {totalPages}
       <MyJobsPageStyle className="flex-container">
         {filteredJobs.map((job) => {
           return (

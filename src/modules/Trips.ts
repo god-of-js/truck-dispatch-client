@@ -22,6 +22,9 @@ export const TripsSlice = createSlice({
     setTrips: (state: TripState, action: { payload: Trip[] }) => {
       state.trips = action.payload;
     },
+    appendTrips: (state: TripState, action: { payload: Trip[] }) => {
+      state.trips.push(...action.payload);
+    },
     setTrip: (state: TripState, action: { payload: Trip }) => {
       state.trips.push(action.payload);
     },
@@ -44,8 +47,14 @@ export const TripsSlice = createSlice({
   },
 });
 
-export const { setTrips, setJobs, appendJobs, updateTripInState, setTrip } =
-  TripsSlice.actions;
+export const {
+  setTrips,
+  appendTrips,
+  setJobs,
+  appendJobs,
+  updateTripInState,
+  setTrip,
+} = TripsSlice.actions;
 export default TripsSlice.reducer;
 
 // SELECTORS
@@ -95,10 +104,17 @@ export function updateTripStatus(tripId: string, status: Trip['status']) {
   };
 }
 
-export function getTrips() {
+export function getTrips(params: {
+  page: number;
+  limit: number;
+  status?: string | null;
+}) {
   return (dispatch: AppDispatch) => {
-    return Api.getTrips().then((data) => {
-      dispatch(setTrips(data));
+    return Api.getTrips(params).then((data) => {
+      if (data.currentPage === 1) dispatch(setTrips(data.data));
+      else dispatch(appendTrips(data.data));
+
+      return data;
     });
   };
 }
