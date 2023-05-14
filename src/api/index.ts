@@ -120,9 +120,11 @@ class ApiService {
     const data = await this.get<any>(
       `/trips/jobs?page=${page}&limit=${limit}&senderType=${senderType}`,
     );
+    console.log(data);
 
     return {
       data: data.data as Trip[],
+      currentPage: data.currentPage,
       totalPages: data.totalPages,
       totalItems: data.totalItems,
       byCompany: data.byCompany,

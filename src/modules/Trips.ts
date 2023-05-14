@@ -28,6 +28,9 @@ export const TripsSlice = createSlice({
     setJobs: (state: TripState, action: { payload: Trip[] }) => {
       state.jobs = action.payload;
     },
+    appendJobs: (state: TripState, action: { payload: Trip[] }) => {
+      state.jobs.push(...action.payload);
+    },
     setPaginatedJobs: (state: TripState, action: { payload: Trip[] }) => {
       state.jobs.push(...action.payload);
     },
@@ -41,7 +44,7 @@ export const TripsSlice = createSlice({
   },
 });
 
-export const { setTrips, setJobs, updateTripInState, setTrip } =
+export const { setTrips, setJobs, appendJobs, updateTripInState, setTrip } =
   TripsSlice.actions;
 export default TripsSlice.reducer;
 
@@ -107,12 +110,16 @@ export function getJobs(params: {
 }) {
   return async (dispatch: AppDispatch) => {
     const request = await Api.getJobs(params).then((data) => {
-      dispatch(setJobs(data.data));
+      if (data.currentPage === 1) {
+        dispatch(setJobs(data.data));
+      } else {
+        dispatch(appendJobs(data.data));
+      }
 
       return data;
     });
 
-    return request
+    return request;
   };
 }
 

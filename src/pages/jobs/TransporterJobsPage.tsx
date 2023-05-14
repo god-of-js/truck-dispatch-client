@@ -27,7 +27,6 @@ export default function TransporterJobs() {
   const [allJobsByCompany, setAllJobsByCompany] = useState(0);
   const [allJobsByShipper, setAllJobsByShipper] = useState(0);
 
-
   const { tripId } = useParams();
   const jobs = useSelector((state: RootState) => state.trips.jobs);
   const user = useSelector((state: RootState) => state.account.user);
@@ -40,27 +39,30 @@ export default function TransporterJobs() {
     setIsInformUserOfVerificationModalVisible,
   ] = useState(false);
 
-  const pageFilters = useMemo(() => [
-    {
-      title: 'All',
-      route: '/available-jobs',
-      value: allJobs
-    },
-    {
-      title: 'By Companies',
-      route: '/available-jobs?sender-type=company',
-      value: allJobsByCompany
-    },
-    {
-      title: 'By Shippers',
-      route: '/available-jobs?sender-type=shipper',
-      value: allJobsByShipper
-    },
-  ], [allJobs])
+  const pageFilters = useMemo(
+    () => [
+      {
+        title: 'All',
+        route: '/available-jobs',
+        value: allJobs,
+      },
+      {
+        title: 'By Companies',
+        route: '/available-jobs?sender-type=company',
+        value: allJobsByCompany,
+      },
+      {
+        title: 'By Shippers',
+        route: '/available-jobs?sender-type=shipper',
+        value: allJobsByShipper,
+      },
+    ],
+    [allJobs, allJobsByCompany, allJobsByShipper],
+  );
 
   const filteredJobs = useMemo(() => {
     if (!senderType) return jobs;
-    return filterByFieldInObject<Trip>('tripOwner.userType', senderType, jobs);
+    return filterByFieldInObject<Trip>('tripOwnerUserType', senderType, jobs);
   }, [jobs, senderType]);
 
   function viewJob(jobId: string) {
@@ -71,7 +73,7 @@ export default function TransporterJobs() {
     setLoading(true);
     const data: { page: number; limit?: number; senderType?: string } = {
       page,
-      limit: 2,
+      limit: 20,
     };
     if (clientBasedUserTypes.includes(senderType!))
       data.senderType = senderType!;
@@ -80,8 +82,8 @@ export default function TransporterJobs() {
       .then((response: JobsResponse) => {
         setTotalPages(response.totalPages);
         setAllJobs(response.totalItems);
-        setAllJobsByCompany(response.byCompany)
-        setAllJobsByShipper(response.byShipper)
+        setAllJobsByCompany(response.byCompany);
+        setAllJobsByShipper(response.byShipper);
       })
       .finally(() => {
         setLoading(false);
@@ -90,6 +92,9 @@ export default function TransporterJobs() {
 
   useEffect(() => {
     loadJobs();
+  }, [senderType, page]);
+  useEffect(() => {
+    setPage(1);
   }, [senderType]);
 
   function bidForJob() {
@@ -118,7 +123,12 @@ export default function TransporterJobs() {
           {loading ? (
             <Loader size="lg" />
           ) : (
-            <UiButton size="large" variant="secondary" onClick={loadJobs}>
+            <UiButton
+              size="large"
+              variant="secondary"
+              disabled={page === totalPages}
+              onClick={() => setPage(page + 1)}
+            >
               Load more <UiIcon icon="Refresh" />
             </UiButton>
           )}

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 interface Props {
   title: string;
   isActive?: boolean;
-  value?: number | string
+  value?: number | string;
 }
 export default function UiFilterTag({ title, isActive, value }: Props) {
   return (
