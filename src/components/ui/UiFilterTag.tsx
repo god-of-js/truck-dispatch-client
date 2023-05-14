@@ -3,12 +3,13 @@ import styled from 'styled-components';
 interface Props {
   title: string;
   isActive?: boolean;
+  value?: number | string
 }
-export default function UiFilterTag({ title, isActive }: Props) {
+export default function UiFilterTag({ title, isActive, value }: Props) {
   return (
     <Tag isActive={isActive}>
       <span>{title}</span>
-      <span className="count">10</span>
+      <span className="count">{value}</span>
     </Tag>
   );
 }

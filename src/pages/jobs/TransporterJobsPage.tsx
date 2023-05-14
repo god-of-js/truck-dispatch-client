@@ -12,11 +12,21 @@ import styled from 'styled-components';
 import UiOverlay from 'ui/UiOverlay';
 import { filterByFieldInObject, toAnyAction } from 'utils/helpers';
 import Trip from 'types/Trip';
+import UiButton from 'ui/UiButton';
+import UiIcon from 'ui/UiIcon';
+import { clientBasedUserTypes } from 'utils/constants';
+import JobsResponse from 'types/JobsResponse';
 
 export default function TransporterJobs() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const senderType = searchParams.get('sender-type');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [allJobs, setAllJobs] = useState(0);
+  const [allJobsByCompany, setAllJobsByCompany] = useState(0);
+  const [allJobsByShipper, setAllJobsByShipper] = useState(0);
+
 
   const { tripId } = useParams();
   const jobs = useSelector((state: RootState) => state.trips.jobs);
@@ -30,25 +40,26 @@ export default function TransporterJobs() {
     setIsInformUserOfVerificationModalVisible,
   ] = useState(false);
 
-  const pageFilters = [
+  const pageFilters = useMemo(() => [
     {
       title: 'All',
       route: '/available-jobs',
+      value: allJobs
     },
     {
       title: 'By Companies',
       route: '/available-jobs?sender-type=company',
+      value: allJobsByCompany
     },
     {
       title: 'By Shippers',
       route: '/available-jobs?sender-type=shipper',
+      value: allJobsByShipper
     },
-  ];
+  ], [allJobs])
 
   const filteredJobs = useMemo(() => {
-    console.log(jobs);
     if (!senderType) return jobs;
-    // TODO: implement pagination.
     return filterByFieldInObject<Trip>('tripOwner.userType', senderType, jobs);
   }, [jobs, senderType]);
 
@@ -56,11 +67,30 @@ export default function TransporterJobs() {
     navigate(`${jobId}`);
   }
 
+  function loadJobs() {
+    setLoading(true);
+    const data: { page: number; limit?: number; senderType?: string } = {
+      page,
+      limit: 2,
+    };
+    if (clientBasedUserTypes.includes(senderType!))
+      data.senderType = senderType!;
+
+    dispatch(toAnyAction(getJobs(data)))
+      .then((response: JobsResponse) => {
+        setTotalPages(response.totalPages);
+        setAllJobs(response.totalItems);
+        setAllJobsByCompany(response.byCompany)
+        setAllJobsByShipper(response.byShipper)
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+
   useEffect(() => {
-    dispatch(toAnyAction(getJobs())).finally(() => {
-      setLoading(false);
-    });
-  }, []);
+    loadJobs();
+  }, [senderType]);
 
   function bidForJob() {
     if (user?.status !== 'verified') {
@@ -74,22 +104,25 @@ export default function TransporterJobs() {
     <>
       <DashboardTopNav routeName="Jobs" pageFilters={pageFilters} />
       <MyJobsPageStyle className="flex-container">
-        {!loading ? (
-          <>
-            {filteredJobs.map((job) => {
-              return (
-                <JobItem
-                  job={job}
-                  key={job._id}
-                  bidForJob={bidForJob}
-                  viewJobDetail={viewJob}
-                />
-              );
-            })}
-          </>
-        ) : (
-          <Loader size="lg" />
-        )}
+        {filteredJobs.map((job) => {
+          return (
+            <JobItem
+              job={job}
+              key={job._id}
+              bidForJob={bidForJob}
+              viewJobDetail={viewJob}
+            />
+          );
+        })}
+        <div className="loader-container">
+          {loading ? (
+            <Loader size="lg" />
+          ) : (
+            <UiButton size="large" variant="secondary" onClick={loadJobs}>
+              Load more <UiIcon icon="Refresh" />
+            </UiButton>
+          )}
+        </div>
       </MyJobsPageStyle>
       <UiOverlay isVisible={isInformUserOfVerificationModalVisible}>
         <InformUserOfVerification
@@ -105,4 +138,14 @@ const MyJobsPageStyle = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: ${pxToRem(20)};
+
+  .loader-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    button {
+      width: ${pxToRem(182)};
+    }
+  }
 `;

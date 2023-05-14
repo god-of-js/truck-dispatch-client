@@ -16,7 +16,7 @@ const initialState: TripState = {
 };
 
 export const TripsSlice = createSlice({
-  name: 'account',
+  name: 'trips',
   initialState,
   reducers: {
     setTrips: (state: TripState, action: { payload: Trip[] }) => {
@@ -27,6 +27,9 @@ export const TripsSlice = createSlice({
     },
     setJobs: (state: TripState, action: { payload: Trip[] }) => {
       state.jobs = action.payload;
+    },
+    setPaginatedJobs: (state: TripState, action: { payload: Trip[] }) => {
+      state.jobs.push(...action.payload);
     },
     updateTripInState: (state: TripState, action: { payload: Trip }) => {
       const index = state.trips.findIndex(
@@ -97,9 +100,19 @@ export function getTrips() {
   };
 }
 
-export function getJobs() {
-  return (dispatch: AppDispatch) => {
-    return Api.getJobs().then((data) => dispatch(setJobs(data)));
+export function getJobs(params: {
+  page?: number;
+  limit?: number;
+  senderType?: string;
+}) {
+  return async (dispatch: AppDispatch) => {
+    const request = await Api.getJobs(params).then((data) => {
+      dispatch(setJobs(data.data));
+
+      return data;
+    });
+
+    return request
   };
 }
 

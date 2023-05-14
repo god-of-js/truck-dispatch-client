@@ -20,6 +20,10 @@ import ChatLogData from 'types/ChatLogData';
 import ChatLog from 'types/ChatLog';
 import Vehicle from 'types/Vehicle';
 
+function convertToPaginatedType<T>(data: unknown) {
+  return data as { totalPages: number; data: T };
+}
+
 class ApiService {
   createUser(userData: Partial<User>) {
     return this.post<{ smsData: TokenVerificationData; token: string }>(
@@ -104,8 +108,26 @@ class ApiService {
     return this.post<User>('/user/update-password', data);
   }
 
-  getJobs() {
-    return this.get<Trip[]>('/trips/jobs');
+  async getJobs({
+    page,
+    limit,
+    senderType,
+  }: {
+    page?: number;
+    limit?: number;
+    senderType?: string;
+  }) {
+    const data = await this.get<any>(
+      `/trips/jobs?page=${page}&limit=${limit}&senderType=${senderType}`,
+    );
+
+    return {
+      data: data.data as Trip[],
+      totalPages: data.totalPages,
+      totalItems: data.totalItems,
+      byCompany: data.byCompany,
+      byShipper: data.byShipper,
+    };
   }
 
   uploadTDO(formData: FormData, tripId: string) {
