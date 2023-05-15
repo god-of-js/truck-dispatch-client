@@ -56,7 +56,7 @@ export default function MyTripsPage() {
 
   function loadTrips() {
     setLoading(true);
-    dispatch(toAnyAction(getTrips({ page, limit: 2, status })))
+    dispatch(toAnyAction(getTrips({ page, limit: 20, status })))
       .then((response: TripsPaginatedResponse) => {
         setTotalPages(response.totalPages);
         setTotalTrips(response.totalItems);
