@@ -56,8 +56,9 @@ export default function MyTripsPage() {
 
   function loadTrips() {
     setLoading(true);
-    dispatch(toAnyAction(getTrips({ page, limit: 2, status })))
+    dispatch(toAnyAction(getTrips({ page, limit: 20, status })))
       .then((response: TripsPaginatedResponse) => {
+        console.log(response);
         setTotalPages(response.totalPages);
         setTotalTrips(response.totalItems);
         setTotalPendingTrips(response.pending);
@@ -71,11 +72,12 @@ export default function MyTripsPage() {
 
   useEffect(() => {
     setPage(1);
-    loadTrips();
   }, [status]);
+
   useEffect(() => {
+    console.log(page);
     loadTrips();
-  }, [page]);
+  }, [page, status]);
 
   return (
     <>
@@ -86,7 +88,6 @@ export default function MyTripsPage() {
         ) : (
           <TransporterTripPageContent status={status} />
         )}
-
         <div className="loader-container">
           {loading ? (
             <Loader size="lg" />

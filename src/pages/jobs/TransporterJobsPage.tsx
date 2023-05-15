@@ -90,13 +90,6 @@ export default function TransporterJobs() {
       });
   }
 
-  useEffect(() => {
-    loadJobs();
-  }, [senderType, page]);
-  useEffect(() => {
-    setPage(1);
-  }, [senderType]);
-
   function bidForJob() {
     if (user?.status !== 'verified') {
       setIsInformUserOfVerificationModalVisible(true);
@@ -105,10 +98,18 @@ export default function TransporterJobs() {
     navigate(`/available-jobs/${tripId}/bid`);
   }
 
+  useEffect(() => {
+    loadJobs();
+  }, [senderType, page]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [senderType]);
+
+
   return (
     <>
       <DashboardTopNav routeName="Jobs" pageFilters={pageFilters} />
-      {totalPages}
       <MyJobsPageStyle className="flex-container">
         {filteredJobs.map((job) => {
           return (
