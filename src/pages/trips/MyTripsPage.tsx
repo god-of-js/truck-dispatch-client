@@ -75,7 +75,6 @@ export default function MyTripsPage() {
   }, [status]);
 
   useEffect(() => {
-    console.log(page);
     loadTrips();
   }, [page, status]);
 
