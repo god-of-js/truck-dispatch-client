@@ -56,9 +56,8 @@ export default function MyTripsPage() {
 
   function loadTrips() {
     setLoading(true);
-    dispatch(toAnyAction(getTrips({ page, limit: 20, status })))
+    dispatch(toAnyAction(getTrips({ page, limit: 2, status })))
       .then((response: TripsPaginatedResponse) => {
-        console.log(response);
         setTotalPages(response.totalPages);
         setTotalTrips(response.totalItems);
         setTotalPendingTrips(response.pending);
@@ -94,7 +93,7 @@ export default function MyTripsPage() {
             <UiButton
               size="large"
               variant="secondary"
-              disabled={page === totalPages}
+              disabled={page === totalPages || !totalPages}
               onClick={() => setPage(page + 1)}
             >
               Load more <UiIcon icon="Refresh" />

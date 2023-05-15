@@ -128,7 +128,7 @@ export default function TransporterJobs() {
             <UiButton
               size="large"
               variant="secondary"
-              disabled={page === totalPages}
+              disabled={page === totalPages || !totalPages}
               onClick={() => setPage(page + 1)}
             >
               Load more <UiIcon icon="Refresh" />
