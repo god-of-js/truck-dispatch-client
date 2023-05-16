@@ -5,7 +5,6 @@ import Bid from 'types/Bid';
 import Rating from 'types/Rating';
 import PaymentRequest from 'types/PaymentRequest';
 import Chat from 'types/Chat';
-import CreateVehicleData from 'types/CreateVehicleData';
 import Verification from 'types/Verification';
 import VerifyPhoneData from 'types/VerifyPhoneData';
 import NewTrip from 'types/NewTrip';
@@ -19,10 +18,6 @@ import LoginResponse from 'types/LoginResponse';
 import ChatLogData from 'types/ChatLogData';
 import ChatLog from 'types/ChatLog';
 import Vehicle from 'types/Vehicle';
-
-function convertToPaginatedType<T>(data: unknown) {
-  return data as { totalPages: number; data: T };
-}
 
 class ApiService {
   createUser(userData: Partial<User>) {
@@ -66,6 +61,13 @@ class ApiService {
 
   updateTrip(data: Partial<Trip>): Promise<Trip> {
     return this.patch(`/trips/${data._id}`, data);
+  }
+
+  getTrip(tripId: string): Promise<Trip> {
+    return this.get(`/trips/${tripId}`);
+  }
+  getJob(jobId: string): Promise<Trip> {
+    return this.get(`/trips/jobs/${jobId}`);
   }
 
   updateTripStatus(tripId: string, status: string): Promise<Trip> {

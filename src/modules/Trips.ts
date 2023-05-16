@@ -26,7 +26,20 @@ export const TripsSlice = createSlice({
       state.trips.push(...action.payload);
     },
     setTrip: (state: TripState, action: { payload: Trip }) => {
-      state.trips.push(action.payload);
+      const index = state.trips.findIndex(
+        ({ _id }) => _id === action.payload._id,
+      );
+
+      if (index === -1) state.trips.push(action.payload);
+      else state.trips[index] = action.payload;
+    },
+    setJob: (state: TripState, action: { payload: Trip }) => {
+      const index = state.jobs.findIndex(
+        ({ _id }) => _id === action.payload._id,
+      );
+
+      if (index === -1) state.jobs.push(action.payload);
+      else state.jobs[index] = action.payload;
     },
     setJobs: (state: TripState, action: { payload: Trip[] }) => {
       state.jobs = action.payload;
@@ -37,24 +50,11 @@ export const TripsSlice = createSlice({
     setPaginatedJobs: (state: TripState, action: { payload: Trip[] }) => {
       state.jobs.push(...action.payload);
     },
-    updateTripInState: (state: TripState, action: { payload: Trip }) => {
-      const index = state.trips.findIndex(
-        ({ _id }) => _id === action.payload._id,
-      );
-
-      state.trips[index] = action.payload;
-    },
   },
 });
 
-export const {
-  setTrips,
-  appendTrips,
-  setJobs,
-  appendJobs,
-  updateTripInState,
-  setTrip,
-} = TripsSlice.actions;
+export const { setTrips, appendTrips, setJobs, appendJobs, setTrip, setJob } =
+  TripsSlice.actions;
 export default TripsSlice.reducer;
 
 // SELECTORS
@@ -80,7 +80,7 @@ export function createTrip(trip: NewTrip) {
 export function assignTrip(trip: AssignTripFormData) {
   return (dispatch: AppDispatch) => {
     return Api.assignTrip(trip).then((trip) => {
-      dispatch(updateTripInState(trip));
+      dispatch(setTrip(trip));
       return trip;
     });
   };
@@ -89,7 +89,7 @@ export function assignTrip(trip: AssignTripFormData) {
 export function updateTrip(trip: Partial<Trip>) {
   return (dispatch: AppDispatch) => {
     return Api.updateTrip(trip).then((trip) => {
-      dispatch(updateTripInState(trip));
+      dispatch(setTrip(trip));
       return trip;
     });
   };
@@ -98,7 +98,7 @@ export function updateTrip(trip: Partial<Trip>) {
 export function updateTripStatus(tripId: string, status: Trip['status']) {
   return (dispatch: AppDispatch) => {
     return Api.updateTripStatus(tripId, status).then((trip) => {
-      dispatch(updateTripInState(trip));
+      dispatch(setTrip(trip));
       return trip;
     });
   };
@@ -139,10 +139,26 @@ export function getJobs(params: {
   };
 }
 
+export function getTrip(tripId: string) {
+  return async (dispatch: AppDispatch) => {
+    return Api.getTrip(tripId).then((trip) => {
+      dispatch(setTrip(trip));
+    });
+  };
+}
+
+export function getJob(jobId: string) {
+  return async (dispatch: AppDispatch) => {
+    return Api.getJob(jobId).then((job) => {
+      dispatch(setJob(job));
+    });
+  };
+}
+
 export function uploadTDO(formData: FormData, tripId: string) {
   return (dispatch: AppDispatch) => {
     return Api.uploadTDO(formData, tripId).then((trip) => {
-      dispatch(updateTripInState(trip));
+      dispatch(setTrip(trip));
       return trip;
     });
   };
