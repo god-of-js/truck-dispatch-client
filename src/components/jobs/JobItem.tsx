@@ -1,5 +1,5 @@
-import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
 import styled from 'styled-components';
+import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
 import Trip from 'types/Trip';
 import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
