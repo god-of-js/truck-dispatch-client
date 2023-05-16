@@ -97,7 +97,7 @@ export default function BidCheckoutPage() {
           </Section>
           <Section>
             <div>Agency Fee</div>
-            <div>&#8358;{abbreviateNumber(tdPercentage(bid?.price || 0))}</div>
+            <div>&#8358;{abbreviateNumber(tdPercentage(bid?.price || 0) + tdPercentage(tdPercentage(bid?.price || 0), 7.5))}</div>
           </Section>
           <Section>
             <UiButton
