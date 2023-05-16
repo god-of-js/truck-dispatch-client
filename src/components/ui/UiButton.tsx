@@ -182,7 +182,8 @@ const ButtonContainer = styled.button<Props>`
     background-color: var(--color-primary-10);
     color: var(--color-primary);
     svg {
-      fill: var(--color-primary);
+      fill: ${({ disabled }) =>
+        disabled ? 'var(--color-primary-30)' : 'var(--color-primary)'};
     }
     ${({ disabled }) => getColor(disabled!, `var(--color-primary-10)`)};
     ${({ disabled }) => disabled && `color: var(--color-primary-30);`}

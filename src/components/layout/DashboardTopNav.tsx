@@ -36,6 +36,7 @@ export default function DashboardTopNav({
               <UiFilterTag
                 title={filter.title}
                 isActive={filter.route === presentRoute}
+                value={filter.value}
               />
             </Link>
           ))}

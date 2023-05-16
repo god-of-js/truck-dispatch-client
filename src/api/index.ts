@@ -20,6 +20,10 @@ import ChatLogData from 'types/ChatLogData';
 import ChatLog from 'types/ChatLog';
 import Vehicle from 'types/Vehicle';
 
+function convertToPaginatedType<T>(data: unknown) {
+  return data as { totalPages: number; data: T };
+}
+
 class ApiService {
   createUser(userData: Partial<User>) {
     return this.post<{ smsData: TokenVerificationData; token: string }>(
@@ -68,8 +72,28 @@ class ApiService {
     return this.patch(`/trips/${tripId}/change-status/${status}`);
   }
 
-  getTrips(): Promise<Trip[]> {
-    return this.get('/trips');
+  async getTrips({
+    page,
+    limit,
+    status,
+  }: {
+    page: number;
+    limit: number;
+    status?: string | null;
+  }) {
+    const data = await this.get(
+      `/trips?&page=${page}&limit=${limit}${status && `&status=${status}`}`,
+    );
+
+    return {
+      data: data.data as Trip[],
+      currentPage: data.currentPage,
+      totalPages: data.totalPages,
+      totalItems: data.totalItems,
+      inProgress: data.inProgress,
+      completed: data.completed,
+      pending: data.pending,
+    };
   }
 
   getUser() {
@@ -104,8 +128,26 @@ class ApiService {
     return this.post<User>('/user/update-password', data);
   }
 
-  getJobs() {
-    return this.get<Trip[]>('/trips/jobs');
+  async getJobs({
+    page,
+    limit,
+    senderType,
+  }: {
+    page?: number;
+    limit?: number;
+    senderType?: string;
+  }) {
+    const data = await this.get(
+      `/trips/jobs?page=${page}&limit=${limit}&senderType=${senderType}`,
+    );
+    return {
+      data: data.data as Trip[],
+      currentPage: data.currentPage,
+      totalPages: data.totalPages,
+      totalItems: data.totalItems,
+      byCompany: data.byCompany,
+      byShipper: data.byShipper,
+    };
   }
 
   uploadTDO(formData: FormData, tripId: string) {
@@ -224,7 +266,7 @@ class ApiService {
     );
   }
 
-  private get<T>(url: string): Promise<T> {
+  private get<T = any>(url: string): Promise<T> {
     return axiosInstance()
       .get(url)
       .then(({ data }) => data.data) as Promise<T>;

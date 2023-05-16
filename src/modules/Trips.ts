@@ -16,17 +16,26 @@ const initialState: TripState = {
 };
 
 export const TripsSlice = createSlice({
-  name: 'account',
+  name: 'trips',
   initialState,
   reducers: {
     setTrips: (state: TripState, action: { payload: Trip[] }) => {
       state.trips = action.payload;
+    },
+    appendTrips: (state: TripState, action: { payload: Trip[] }) => {
+      state.trips.push(...action.payload);
     },
     setTrip: (state: TripState, action: { payload: Trip }) => {
       state.trips.push(action.payload);
     },
     setJobs: (state: TripState, action: { payload: Trip[] }) => {
       state.jobs = action.payload;
+    },
+    appendJobs: (state: TripState, action: { payload: Trip[] }) => {
+      state.jobs.push(...action.payload);
+    },
+    setPaginatedJobs: (state: TripState, action: { payload: Trip[] }) => {
+      state.jobs.push(...action.payload);
     },
     updateTripInState: (state: TripState, action: { payload: Trip }) => {
       const index = state.trips.findIndex(
@@ -38,8 +47,14 @@ export const TripsSlice = createSlice({
   },
 });
 
-export const { setTrips, setJobs, updateTripInState, setTrip } =
-  TripsSlice.actions;
+export const {
+  setTrips,
+  appendTrips,
+  setJobs,
+  appendJobs,
+  updateTripInState,
+  setTrip,
+} = TripsSlice.actions;
 export default TripsSlice.reducer;
 
 // SELECTORS
@@ -89,17 +104,38 @@ export function updateTripStatus(tripId: string, status: Trip['status']) {
   };
 }
 
-export function getTrips() {
+export function getTrips(params: {
+  page: number;
+  limit: number;
+  status?: string | null;
+}) {
   return (dispatch: AppDispatch) => {
-    return Api.getTrips().then((data) => {
-      dispatch(setTrips(data));
+    return Api.getTrips(params).then((data) => {
+      if (data.currentPage === 1) dispatch(setTrips(data.data));
+      else dispatch(appendTrips(data.data));
+
+      return data;
     });
   };
 }
 
-export function getJobs() {
-  return (dispatch: AppDispatch) => {
-    return Api.getJobs().then((data) => dispatch(setJobs(data)));
+export function getJobs(params: {
+  page?: number;
+  limit?: number;
+  senderType?: string;
+}) {
+  return async (dispatch: AppDispatch) => {
+    const request = await Api.getJobs(params).then((data) => {
+      if (data.currentPage === 1) {
+        dispatch(setJobs(data.data));
+      } else {
+        dispatch(appendJobs(data.data));
+      }
+
+      return data;
+    });
+
+    return request;
   };
 }
 
