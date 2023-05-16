@@ -56,9 +56,11 @@ export function abbreviateNumber(
   return num.toString();
 }
 
-export function priceWithTDPercent(amount: number | string, percent = 7) {
+export function priceWithTDPercent(amount: number | string) {
   const value = parseInt(`${amount}`);
-  return value + tdPercentage(amount);
+  const priceWithPercentage = tdPercentage(amount);
+  const totalPriceWithTax = tdPercentage(priceWithPercentage, 7.5);
+  return value + priceWithPercentage + totalPriceWithTax;
 }
 
 export function tdPercentage(amount: number | string, percent = 7) {
@@ -134,15 +136,6 @@ export function replaceEditedItem<T extends { _id: any }>(
   return data;
 }
 
-export function generateReference() {
-  const alphanumeric =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let key = '';
-  for (let i = 0; i < 6; i++) {
-    key += alphanumeric.charAt(Math.floor(Math.random() * alphanumeric.length));
-  }
-  return key;
-}
 
 export function convertDate(dateToConvert: number) {
   const date = new Date(dateToConvert);
