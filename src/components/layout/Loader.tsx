@@ -3,17 +3,49 @@ import styled, { createGlobalStyle } from 'styled-components';
 
 interface Props {
   size?: 'lg' | 's';
+  variant?:
+    | 'primary'
+    | 'secondary'
+    | 'danger-secondary'
+    | 'tertiary'
+    | 'neutral'
+    | 'icon-neutral'
+    | 'primary-outlined'
+    | 'secondary-outlined'
+    | 'primary-text'
+    | 'warning-text'
+    | 'dark'
+    | 'dark-outlined'
+    | 'danger';
 }
-export default function Loader({ size }: Props) {
+
+type Sizes = 'lg' | 's';
+
+function sizeVar(size: Sizes) {
+  if (size === 's') {
+    return `
+   width: ${pxToRem(20)};
+   height: ${pxToRem(20)};
+   border: ${pxToRem(3)} solid rgba(0, 0, 0, 0.1);
+   `;
+  }
+  if (size === 'lg') {
+    return `
+   width: ${pxToRem(50)};
+   height: ${pxToRem(50)};
+   border: ${pxToRem(5)} solid rgba(0, 0, 0, 0.1);
+   `;
+  }
+}
+
+export default function Loader({ variant, size = 'lg' }: Props) {
   return (
-    <>
+    <LoaderStyle size={size}>
       <GlobalStyle />
-      <LoaderStyle>
-        <div className="LoadingSpinner">
-          <div className="Spinner"></div>
-        </div>
-      </LoaderStyle>
-    </>
+      <div className="loadingSpinner">
+        <div className={`spinner ${variant}`}></div>
+      </div>
+    </LoaderStyle>
   );
 }
 
@@ -24,18 +56,18 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const LoaderStyle = styled.div`
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const LoaderStyle = styled.div<Props>`
+  .loadingSpinner {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-  .Spinner {
-    border: 6px solid rgba(0, 0, 0, 0.1);
-    border-left-color: #000000;
+  .spinner {
+    ${({ size }) => sizeVar(size!)}
+    border-left-color: var(--color-primary);
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
     animation: spin 1s linear infinite;
   }
 
