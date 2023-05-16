@@ -6,7 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
 
-import { getJobs, selectJob } from 'modules/Trips';
+import { getJob, getJobs, selectJob } from 'modules/Trips';
 import { getBidsWithTripId, getTransporterBidWithTripId } from 'modules/Bid';
 import { RootState } from 'modules/index';
 import UiBackButton from 'ui/UiBackButton';
@@ -42,16 +42,24 @@ export default function ViewTransporterJobDetailsPage() {
     navigate(-1);
   }
 
+  function loadJob() {
+    return dispatch(toAnyAction(getJob(tripId!))).finally(() =>
+      setLoading(false),
+    );
+  }
+
   useEffect(() => {
     if (tripId) {
-      Promise.all([
-        dispatch(toAnyAction(getJobs())),
-        dispatch(toAnyAction(getTransporterBidWithTripId(tripId))),
-      ]).finally(() => {
-        setLoading(false);
-      });
+      dispatch(toAnyAction(getTransporterBidWithTripId(tripId)));
     }
   }, [bid]);
+
+  useEffect(() => {
+    if (!job) {
+      loadJob();
+    }
+    console.log(job)
+  }, [tripId, job]);
 
   return (
     <>

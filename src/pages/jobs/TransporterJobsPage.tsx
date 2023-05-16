@@ -106,7 +106,6 @@ export default function TransporterJobs() {
     setPage(1);
   }, [senderType]);
 
-
   return (
     <>
       <DashboardTopNav routeName="Jobs" pageFilters={pageFilters} />

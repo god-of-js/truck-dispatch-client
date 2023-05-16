@@ -4,7 +4,7 @@ import { Outlet, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { selectTrip } from 'modules/Trips';
+import { getTrip, selectTrip } from 'modules/Trips';
 
 import sizes from 'utils/sizes';
 
@@ -29,6 +29,7 @@ export default function ViewTrip() {
   );
   const trip = useSelector(selectTrip(tripId!));
   const [isRatingsModalVisible, setIsRatingsModalVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const unfilteredTabs = [
     {
       label: 'Trip Details',
@@ -103,7 +104,16 @@ export default function ViewTrip() {
     setIsRatingsModalVisible(false);
   }
 
+  function loadTrip() {
+    setLoading(true);
+    dispatch(toAnyAction(getTrip(tripId!))).finally(() => {
+      setLoading(false);
+    });
+  }
+
   useEffect(() => {
+    if (!trip) loadTrip();
+
     if (
       clientBasedUserTypes.includes(user?.userType!) &&
       trip?.status === 'completed'
@@ -120,15 +130,18 @@ export default function ViewTrip() {
 
   return (
     <>
-      {/* TODO: handle is400 */}
       <TabContainer>
         <UiTabs tabs={tabs} />
       </TabContainer>
       <OutletContainer>
         <UiBackButton />
-        <Suspense fallback={<Loader />}>
-          <Outlet />
-        </Suspense>
+        {loading ? (
+          <Loader />
+        ) : (
+          <Suspense fallback={<Loader />}>
+            <Outlet />
+          </Suspense>
+        )}
       </OutletContainer>
       <UiOverlay isVisible={isRatingsModalVisible}>
         <RateTransporter onClose={closeRateTransporter} />
