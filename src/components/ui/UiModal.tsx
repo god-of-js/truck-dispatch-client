@@ -25,6 +25,7 @@ export default function UiModal({
   goPrev,
 }: Props) {
   return (
+    <Modal>
     <OutsideClickHandler onOutsideClick={onClose}>
       <ModalCard position={position} size={size}>
         <div className="modal-inner">
@@ -43,6 +44,7 @@ export default function UiModal({
         </div>
       </ModalCard>
     </OutsideClickHandler>
+    </Modal>
   );
 }
 
@@ -82,6 +84,11 @@ interface CardProps {
   size?: Size;
   position?: Position;
 }
+
+const Modal = styled.div`
+  width: 100%;
+  height: fit-content;
+`
 
 const ModalCard = styled.div`
   background: white;
