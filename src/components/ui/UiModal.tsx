@@ -76,7 +76,7 @@ function positionStyling({ position, size }: CardProps) {
     position: static;
     margin: auto;
     border-radius: ${pxToRem(16)};
-    ${size === 'lg' ? '50%' : pxToRem(480)}
+    ${size === 'lg' ? '50%' : pxToRem(540)}
   `;
 }
 
@@ -122,7 +122,7 @@ const ModalCard = styled.div`
   }
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    width: ${({ size }: CardProps) => (size === 'lg' ? '50%' : pxToRem(480))};
+    width: ${({ size }: CardProps) => (size === 'lg' ? '50%' : pxToRem(540))};
     ${(cardProps: CardProps) => positionStyling(cardProps)}
   }
 `;
