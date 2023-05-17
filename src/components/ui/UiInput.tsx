@@ -17,7 +17,6 @@ interface Props {
   name: string;
   error?: string;
   size?: Sizes;
-  search?: Search;
   icon?: React.ReactNode;
   disabled?: boolean;
   inputRef?: React.RefObject<HTMLInputElement>;
@@ -35,7 +34,6 @@ export default function UiInput({
   placeholder,
   size = 'md',
   icon,
-  search,
   disabled,
   error,
   inputRef,
