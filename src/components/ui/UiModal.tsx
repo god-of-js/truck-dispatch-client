@@ -104,8 +104,6 @@ const ModalCard = styled.div`
 
   .modal-inner {
     padding-bottom: ${pxToRem(28)};
-    /* TODO: check why it stretches with height of 100% */
-    /* height: 100%; */
 
     header {
       display: flex;

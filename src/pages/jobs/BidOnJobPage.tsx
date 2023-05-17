@@ -58,12 +58,12 @@ export default function BidOnJob() {
   }, [bid, formData]);
 
   function createJobBid() {
-    return dispatch(
-      toAnyAction(createBid({ ...formData, tripId: tripId! })),
-    ).then((data: Bid) => {
-      setIsBidCreationSuccessfulModalVisible(true);
-      return data;
-    });
+    // return dispatch(
+    //   toAnyAction(createBid({ ...formData, tripId: tripId! })),
+    // ).then((data: Bid) => {
+    //   setIsBidCreationSuccessfulModalVisible(true);
+    //   return data;
+    // });
   }
   function updateJobBid() {
     const dataToUpdate = removeUneditedFields<Bid>(bid!, formData);

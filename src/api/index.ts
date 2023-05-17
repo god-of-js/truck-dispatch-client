@@ -18,6 +18,7 @@ import LoginResponse from 'types/LoginResponse';
 import ChatLogData from 'types/ChatLogData';
 import ChatLog from 'types/ChatLog';
 import Vehicle from 'types/Vehicle';
+import CreateBid from 'types/CreateBid';
 
 class ApiService {
   createUser(userData: Partial<User>) {
@@ -160,7 +161,7 @@ class ApiService {
     return this.post<Trip>(`/trips/${tripId}/upload-tdo`, formData);
   }
 
-  createBid(data: Bid) {
+  createBid(data: CreateBid) {
     return this.post<Bid>('/bids', data);
   }
 

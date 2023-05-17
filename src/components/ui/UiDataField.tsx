@@ -1,18 +1,23 @@
 import styled from 'styled-components';
 
 type Variant = 'text-area' | 'field';
+type Sizes = 's' | 'l';
 interface Props {
   title: string;
   value?: string;
   variant?: Variant;
+  size?: Sizes;
+  isBordered?: boolean;
 }
 export default function UiDataField({
   title,
   value,
+  isBordered,
   variant = 'field',
+  size = 'l',
 }: Props) {
   return (
-    <FieldStyling variant={variant}>
+    <FieldStyling variant={variant} isBordered={isBordered} size={size}>
       <div className="field-title">{title}</div>
       <div className="field-value">{value ? value : 'N/A'}</div>
     </FieldStyling>
@@ -21,11 +26,16 @@ export default function UiDataField({
 
 interface StylingProps {
   variant: Variant;
+  size: Sizes;
+  isBordered?: boolean;
 }
 const FieldStyling = styled.div`
-  padding: ${pxToRem(24)} ${pxToRem(16)};
+  padding: ${({ size }: StylingProps) => pxToRem(size === 's' ? 12 : 16)}
+    ${pxToRem(16)};
   background: var(--color-gray-20);
   border-radius: ${pxToRem(8)};
+  ${({ isBordered }) =>
+    isBordered && `border: ${pxToRem(1)} solid var(--color-gray-30);`}
 
   .field-title {
     font-style: normal;
@@ -44,7 +54,7 @@ const FieldStyling = styled.div`
     font-style: normal;
     font-weight: ${({ variant }: StylingProps) =>
       variant === 'text-area' ? 400 : 600};
-    font-size: ${pxToRem(16)};
+    font-size: ${({ size }: StylingProps) => pxToRem(size === 's' ? 14 : 16)};
     line-height: 140%;
     letter-spacing: -0.02em;
     color: var(--color-neutralBlack);

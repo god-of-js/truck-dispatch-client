@@ -52,6 +52,7 @@ const TextArea = styled.textarea`
   box-sizing: border-box;
   font-family: 'thiccboi-medium', sans-serif;
   &:focus {
-    border-color: var(--color-primary);
+    border: ${pxToRem(2)} solid var(--color-primary);
+    box-shadow: var(--box-shadow-primary);
   }
 `;

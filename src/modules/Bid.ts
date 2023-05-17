@@ -1,6 +1,7 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import Api from 'Api';
 import Bid from 'types/Bid';
+import CreateBid from 'types/CreateBid';
 import { AppDispatch, AppState, RootState } from '.';
 
 export interface BidState {
@@ -55,7 +56,7 @@ export function getTransporterBidWithTripId(tripId: string) {
   };
 }
 
-export function createBid(data: Bid) {
+export function createBid(data: CreateBid) {
   return (dispatch: AppDispatch) => {
     if (!data.tripId) throw new Error('400: No trip id been sent');
     return Api.createBid(data).then((bid) => {
