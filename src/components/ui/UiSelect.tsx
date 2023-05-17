@@ -133,7 +133,7 @@ const StyledOption = styled.li`
   align-items: center;
   height: ${pxToRem(40)};
   padding: 0 ${pxToRem(12)};
-  margin: 0 ${pxToRem(16)};
+  margin: 0 ${pxToRem(16)} !important;
   font-size: ${pxToRem(14)};
   border-radius: ${pxToRem(4)};
   color: var(--color-gray-80);

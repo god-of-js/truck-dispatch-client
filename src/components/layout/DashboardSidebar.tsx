@@ -55,7 +55,7 @@ export default function DashboardSidebar() {
     },
   ];
 
-  const agentRoutes: Route[] = [
+  const shipperRoutes: Route[] = [
     {
       path: '/my-trips',
       name: 'My Trips',
@@ -65,7 +65,7 @@ export default function DashboardSidebar() {
 
   const userType = useMemo(() => {
     if (user?.userType === 'transporter') return 'transporter';
-    if (user?.userType === 'agent') return 'agent';
+    if (user?.userType === 'shipper') return 'shipper';
     if (user?.userType === 'transportCompany') return 'Transport Company';
 
     return 'company';
@@ -73,7 +73,7 @@ export default function DashboardSidebar() {
   const routes = useMemo(() => {
     if (!user) return [];
 
-    return user?.userType === 'transporter' ? transporterRoutes : agentRoutes;
+    return user?.userType === 'transporter' ? transporterRoutes : shipperRoutes;
   }, [user]);
 
   function isRouteActive(route: string) {

@@ -68,6 +68,7 @@ export default function RegistrationPage() {
     return true;
   });
 
+  // const [currentStepTitle, setCurrentStepTitle] = useState('Company Details');
   const [currentStepTitle, setCurrentStepTitle] = useState(steps[0].title);
 
   function goToNext() {
@@ -113,11 +114,11 @@ export default function RegistrationPage() {
           currentStepTitle === 'Personal details') && (
           <PersonalDetailsForm goToNext={goToNext} />
         )}
-        {currentStepTitle === 'Company Details' && (
-          <CompanyDetailsForm goToNext={goToNext} />
-        )}
         {currentStepTitle === 'Verify phone number' && (
           <VerifyPhoneForm goToNext={goToNext} />
+        )}
+        {currentStepTitle === 'Company Details' && (
+          <CompanyDetailsForm goToNext={goToNext} />
         )}
         {currentStepTitle === 'Choose password' && (
           <ChoosePasswordForm goToNext={goToNext} />

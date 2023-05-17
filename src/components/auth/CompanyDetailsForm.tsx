@@ -68,28 +68,6 @@ export default function CompanyDetailsForm({ goToNext }: Props) {
     },
   ];
 
-  function alternativeUserType() {
-    if (userType === 'transportCompany') {
-      return 'a transporter';
-    }
-    return 'an agent';
-  }
-
-  function notRegisteredUsertype() {
-    if (userType === 'transportCompany') {
-      return (
-        <>
-          a <b>transporter</b>
-        </>
-      );
-    }
-    return (
-      <>
-        an <b>agent</b>
-      </>
-    );
-  }
-
   return (
     <div className="form-container">
       <header>
@@ -137,9 +115,9 @@ export default function CompanyDetailsForm({ goToNext }: Props) {
                   icon={<UiIcon icon="InfoCircle" size="17" />}
                 >
                   You have to be a registered company to register as a company
-                  on TruckDispatch. But you can always register as{' '}
-                  {notRegisteredUsertype()} now, and upgrade when you have your
-                  documents
+                  on TruckDispatch. But you can always register as a{' '}
+                  <b>{userType === 'company' ? 'shipper' : 'transporter'}</b>{' '}
+                  now, and upgrade when you have your documents
                 </UiAlert>
               )}
             </div>
@@ -181,7 +159,9 @@ export default function CompanyDetailsForm({ goToNext }: Props) {
                 type="button"
                 onClick={goToNext}
               >
-                {`Continue as ${alternativeUserType()} instead`}
+                {`Continue as ${
+                  userType === 'company' ? 'shipper' : 'transporter'
+                } instead`}
               </UiButton>
             </div>
           </div>

@@ -31,7 +31,7 @@ export default function PersonDetailsForm({ goToNext }: Props) {
     // We are converting this because we want the default to be a singular user type until the individual has uploaded company registration documents.
     if (userType === 'transportCompany') return 'transporter';
 
-    return 'agent';
+    return 'shipper';
   }
 
   const [formData, setFormData] = useState({

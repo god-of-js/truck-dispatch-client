@@ -11,8 +11,12 @@ import UiTable from 'ui/UiTable';
 import UiPill from 'ui/UiPill';
 import { DropDownData } from 'ui/UiDropdownMenu';
 import User from 'types/User';
+import { filterByFieldInObject } from 'utils/helpers';
 
-export default function AgentTripPageContent() {
+interface Props {
+  status?: string | null;
+}
+export default function ShipperTripPageContent({ status }: Props) {
   const navigate = useNavigate();
   const trips = useSelector((state: RootState) => state.trips.trips);
 
@@ -90,7 +94,11 @@ export default function AgentTripPageContent() {
   }
 
   const tripsData = useMemo(() => {
-    return trips.map((trip: Trip) => ({
+    const data = status
+      ? filterByFieldInObject<Trip>('status', status, trips)
+      : trips;
+
+    return data.map((trip: Trip) => ({
       ...trip,
       id: trip._id,
       responsibleTransporter: responsibleTransporterDetails(trip.transporter),
