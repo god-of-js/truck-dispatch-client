@@ -28,4 +28,5 @@ export function getPresentAuthStage() {
 }
 export function removePresentAuthStage() {
   localStorage.removeItem('present-auth-stage');
+  localStorage.removeItem('auth-token');
 }

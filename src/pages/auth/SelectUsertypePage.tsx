@@ -25,9 +25,9 @@ export default function SelectUsertypePage() {
     },
     {
       icons: ['UserSquare'],
-      title: 'Agent',
+      title: 'Shipper',
       text: 'Clients / individuals with jobs',
-      type: 'agent',
+      type: 'shipper',
     },
     {
       icons: ['Car', 'Buildings'],

@@ -101,7 +101,7 @@ export default function UiTable({
         </tbody>
       </Table>
 
-      {!data.length && emptyTablePlaceholder()}
+      {/* {!data.length && emptyTablePlaceholder()} */}
     </TableContainer>
   );
 }

@@ -13,10 +13,20 @@ import UiOverlay from 'ui/UiOverlay';
 import { filterByFieldInObject, toAnyAction } from 'utils/helpers';
 import Trip from 'types/Trip';
 import UiInput from 'ui/UiInput';
+import UiButton from 'ui/UiButton';
+import UiIcon from 'ui/UiIcon';
+import { clientBasedUserTypes } from 'utils/constants';
+import JobsResponse from 'types/JobsResponse';
+
 export default function TransporterJobs() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const senderType = searchParams.get('sender-type');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [allJobs, setAllJobs] = useState(0);
+  const [allJobsByCompany, setAllJobsByCompany] = useState(0);
+  const [allJobsByShipper, setAllJobsByShipper] = useState(0);
 
   const { tripId } = useParams();
   const jobs = useSelector((state: RootState) => state.trips.jobs);
@@ -33,29 +43,55 @@ export default function TransporterJobs() {
     setIsInformUserOfVerificationModalVisible,
   ] = useState(false);
 
-  const pageFilters = [
-    {
-      title: 'All',
-      route: '/available-jobs',
-    },
-    {
-      title: 'By Companies',
-      route: '/available-jobs?sender-type=company',
-    },
-    {
-      title: 'By Shippers',
-      route: '/available-jobs?sender-type=shipper',
-    },
-  ];
+  const pageFilters = useMemo(
+    () => [
+      {
+        title: 'All',
+        route: '/available-jobs',
+        value: allJobs,
+      },
+      {
+        title: 'By Companies',
+        route: '/available-jobs?sender-type=company',
+        value: allJobsByCompany,
+      },
+      {
+        title: 'By Shippers',
+        route: '/available-jobs?sender-type=shipper',
+        value: allJobsByShipper,
+      },
+    ],
+    [allJobs, allJobsByCompany, allJobsByShipper],
+  );
 
   const filteredJobs = useMemo(() => {
     if (!senderType) return jobs;
-    // TODO: implement pagination.
-    return filterByFieldInObject<Trip>('tripOwner.userType', senderType, jobs);
+    return filterByFieldInObject<Trip>('tripOwnerUserType', senderType, jobs);
   }, [jobs, senderType]);
 
   function viewJob(jobId: string) {
     navigate(`${jobId}`);
+  }
+
+  function loadJobs() {
+    setLoading(true);
+    const data: { page: number; limit?: number; senderType?: string } = {
+      page,
+      limit: 20,
+    };
+    if (clientBasedUserTypes.includes(senderType!))
+      data.senderType = senderType!;
+
+    dispatch(toAnyAction(getJobs(data)))
+      .then((response: JobsResponse) => {
+        setTotalPages(response.totalPages);
+        setAllJobs(response.totalItems);
+        setAllJobsByCompany(response.byCompany);
+        setAllJobsByShipper(response.byShipper);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   function bidForJob() {
@@ -71,10 +107,12 @@ export default function TransporterJobs() {
   }
 
   useEffect(() => {
-    dispatch(toAnyAction(getJobs())).finally(() => {
-      setLoading(false);
-    });
-  }, []);
+    loadJobs();
+  }, [senderType, page]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [senderType]);
 
   return (
     <>
@@ -92,22 +130,30 @@ export default function TransporterJobs() {
         }
       />
       <MyJobsPageStyle className="flex-container">
-        {!loading ? (
-          <>
-            {filteredJobs.map((job) => {
-              return (
-                <JobItem
-                  job={job}
-                  key={job._id}
-                  bidForJob={bidForJob}
-                  viewJobDetail={viewJob}
-                />
-              );
-            })}
-          </>
-        ) : (
-          <Loader size="lg" />
-        )}
+        {filteredJobs.map((job) => {
+          return (
+            <JobItem
+              job={job}
+              key={job._id}
+              bidForJob={bidForJob}
+              viewJobDetail={viewJob}
+            />
+          );
+        })}
+        <div className="loader-container">
+          {loading ? (
+            <Loader size="lg" />
+          ) : (
+            <UiButton
+              size="large"
+              variant="secondary"
+              disabled={page === totalPages || !totalPages}
+              onClick={() => setPage(page + 1)}
+            >
+              Load more <UiIcon icon="Refresh" />
+            </UiButton>
+          )}
+        </div>
       </MyJobsPageStyle>
       <UiOverlay isVisible={isInformUserOfVerificationModalVisible}>
         <InformUserOfVerification
@@ -123,4 +169,14 @@ const MyJobsPageStyle = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: ${pxToRem(20)};
+
+  .loader-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    button {
+      width: ${pxToRem(182)};
+    }
+  }
 `;

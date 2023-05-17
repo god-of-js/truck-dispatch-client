@@ -12,15 +12,19 @@ import UiTable from 'ui/UiTable';
 import UiPill from 'ui/UiPill';
 import sizes from 'utils/sizes';
 import User from 'types/User';
+import { filterByFieldInObject } from 'utils/helpers';
 
-export default function AgentTripPageContent() {
+interface Props {
+  status: string | null;
+}
+export default function ShipperTripPageContent({ status }: Props) {
   const navigate = useNavigate();
   const trips = useSelector((state: RootState) => state.trips.trips);
 
   const headers = [
     {
-      title: 'Agent',
-      query: 'agent',
+      title: 'Trip Owner',
+      query: 'tripOwner',
     },
     {
       title: 'Type Of Goods',
@@ -49,16 +53,16 @@ export default function AgentTripPageContent() {
   ];
 
   function tripOwnerDetails(tripOwner?: User) {
-    if (!tripOwner) return 'This agent does not exist';
+    if (!tripOwner) return 'This user does not exist';
 
     return (
-      <AgentDetails>
+      <ShipperDetails>
         <UiAvatar avatar={tripOwner.avatar} />
         <div>
           <div>{`${tripOwner.firstName} ${tripOwner.lastName}`}</div>
-          <div className="transporter-phone">{tripOwner.phone}</div>
+          <div className="trip-owner-phone">{tripOwner.phone}</div>
         </div>
-      </AgentDetails>
+      </ShipperDetails>
     );
   }
   function getPillVariant(status: Trip['status']) {
@@ -77,9 +81,13 @@ export default function AgentTripPageContent() {
   }
 
   const tripsData = useMemo(() => {
-    return trips.map((trip: Trip) => ({
+    const data = status
+      ? filterByFieldInObject<Trip>('status', status, trips)
+      : trips;
+
+    return data.map((trip: Trip) => ({
       ...trip,
-      agent: tripOwnerDetails(trip?.tripOwner),
+      tripOwner: tripOwnerDetails(trip?.tripOwner),
       status: (
         <UiPill variant={getPillVariant(trip.status)}>
           {formatStatus(trip.status)}
@@ -117,11 +125,11 @@ export default function AgentTripPageContent() {
   );
 }
 
-const AgentDetails = styled.div`
+const ShipperDetails = styled.div`
   display: flex;
   gap: ${pxToRem(8)};
   align-items: center;
-  .transporter-phone {
+  .trip-owner-phone {
     font-weight: 400;
     font-size: ${pxToRem(14)};
   }
