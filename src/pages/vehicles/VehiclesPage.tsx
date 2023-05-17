@@ -22,9 +22,7 @@ export default function VehiclesPage() {
   const [isAddVehicleVisible, setIsAddVehicleVisible] = useState(false);
   const [isEditVehicleVisible, setIsEditVehicleVisible] = useState(false);
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
-  const [searchData, setSearchData] = useState({
-    search_value: '',
-  });
+  const [searchQuery, setSearchQuery] = useState('');
   function closeAddVehicle() {
     setIsAddVehicleVisible(false);
   }
@@ -43,16 +41,18 @@ export default function VehiclesPage() {
     setIsEditVehicleVisible(true);
   }
 
-  function handleChange({ value }: { name: string; value: string | null }) { 
-    setSearchData({ search_value: value! });
+
+  function handleChange( { value }: {
+    name: string;
+    value: string | null;
+  }) {
+    setSearchQuery(value!!);
   }
-
-
 
   function edgeChildren() {
     return (
       <GappedContainerWith12PX>
-        <UiInput onChange={handleChange} value={searchData.search_value} name='search_value'  placeholder='Search...' search />
+        <UiInput onChange={handleChange} value={searchQuery} name='searchQuery'  placeholder='Search...' icon={<UiIcon  icon='Search'/>} />
         {!!vehicles.length && (
           <UiButton onClick={openAddVehicle}>add new vehicle</UiButton>
         )}

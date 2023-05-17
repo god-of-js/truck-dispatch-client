@@ -13,6 +13,7 @@ import UiOverlay from 'ui/UiOverlay';
 import { filterByFieldInObject, toAnyAction } from 'utils/helpers';
 import Trip from 'types/Trip';
 import UiInput from 'ui/UiInput';
+import UiIcon from 'ui/UiIcon';
 export default function TransporterJobs() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -25,9 +26,7 @@ export default function TransporterJobs() {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
-  const [searchData, setSearchData] = useState({
-    search_value: '',
-  });
+  const [searchQuery, setSearchQuery] = useState('');
   const [
     isInformUserOfVerificationModalVisible,
     setIsInformUserOfVerificationModalVisible,
@@ -66,8 +65,11 @@ export default function TransporterJobs() {
     navigate(`/available-jobs/${tripId}/bid`);
   }
 
-  function handleChange({ value }: { name: string; value: string | null }) {
-    setSearchData({ search_value: value! });
+  function handleChange( { value }: {
+    name: string;
+    value: string | null;
+  }) {
+    setSearchQuery(value!!);
   }
 
   useEffect(() => {
@@ -84,10 +86,10 @@ export default function TransporterJobs() {
         edgeChild={
           <UiInput
             onChange={handleChange}
-            value={searchData.search_value}
-            name="search_value"
+            value={searchQuery}
+            name="searchQuery"
             placeholder="Search..."
-            search
+            icon={<UiIcon icon='Search' size='20'/>}
           />
         }
       />

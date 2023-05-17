@@ -1,4 +1,4 @@
-import React, { Ref, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import styled from 'styled-components';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input/input';
@@ -18,6 +18,7 @@ interface Props {
   error?: string;
   size?: Sizes;
   search?: Search;
+  icon?: React.ReactNode;
   disabled?: boolean;
   inputRef?: React.RefObject<HTMLInputElement>;
   onChange: (event: { name: string; value: string | null }) => void;
@@ -33,6 +34,7 @@ export default function UiInput({
   value,
   placeholder,
   size = 'md',
+  icon,
   search,
   disabled,
   error,
@@ -56,7 +58,7 @@ export default function UiInput({
 
   return (
     <UiField label={label} error={error}>
-      <InputContainer search={search!}>
+      <InputContainer hasIcon={!!icon}>
         {inputType === 'phone' ? (
           <PhoneInputContainer>
             <div className="phone-tag">+234</div>
@@ -80,7 +82,7 @@ export default function UiInput({
               disabled={disabled}
               onChange={sendValue}
             />
-            {search && <UiIcon icon="SearchNormal" size="20" />}
+            { !!icon && icon } 
           </div>
         )}
 
@@ -96,8 +98,12 @@ export default function UiInput({
     </UiField>
   );
 }
-function searchVariant(search: Search) {
-  if (search) {
+
+interface InputContainerProps  {
+  hasIcon: boolean;
+}
+function iconVariant(icon: boolean) {
+  if (icon) {
     return `
     .input-wrapper{
       position: relative;
@@ -157,9 +163,9 @@ const Input = styled.input`
   }
 `;
 
-const InputContainer = styled.div`
+const InputContainer = styled.div<InputContainerProps>`
   position: relative;
-  ${({ search }: { search: Search }) => searchVariant(search)}
+  ${({ hasIcon }) => iconVariant(!!hasIcon)};
 `;
 
 const IconButton = styled.div`
