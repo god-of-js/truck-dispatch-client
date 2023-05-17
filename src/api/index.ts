@@ -66,6 +66,7 @@ class ApiService {
   getTrip(tripId: string): Promise<Trip> {
     return this.get(`/trips/${tripId}`);
   }
+
   getJob(jobId: string): Promise<Trip> {
     return this.get(`/trips/jobs/${jobId}`);
   }
@@ -140,8 +141,11 @@ class ApiService {
     senderType?: string;
   }) {
     const data = await this.get(
-      `/trips/jobs?page=${page}&limit=${limit}&senderType=${senderType}`,
+      `/trips/jobs?page=${page}&limit=${limit}${
+        senderType ? `&senderType=${senderType}` : ''
+      }`,
     );
+
     return {
       data: data.data as Trip[],
       currentPage: data.currentPage,

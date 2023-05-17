@@ -26,24 +26,24 @@ export default function UiModal({
 }: Props) {
   return (
     <Modal>
-    <OutsideClickHandler onOutsideClick={onClose}>
-      <ModalCard position={position} size={size}>
-        <div className="modal-inner">
-          <header>
-            {goPrev && (
-              <UiButton variant="icon-neutral" onClick={goPrev}>
-                <UiIcon icon="ArrowLeft" size="16" />
+      <OutsideClickHandler onOutsideClick={onClose}>
+        <ModalCard position={position} size={size}>
+          <div className="modal-inner">
+            <header>
+              {goPrev && (
+                <UiButton variant="icon-neutral" onClick={goPrev}>
+                  <UiIcon icon="CaretLeft" size="16" />
+                </UiButton>
+              )}
+              <h2>{title}</h2>
+              <UiButton variant="icon-neutral" onClick={onClose}>
+                <UiIcon icon="Close" size="20" />
               </UiButton>
-            )}
-            <h2>{title}</h2>
-            <UiButton variant="icon-neutral" onClick={onClose}>
-              <UiIcon icon="Close" size="20" />
-            </UiButton>
-          </header>
-          {children}
-        </div>
-      </ModalCard>
-    </OutsideClickHandler>
+            </header>
+            {children}
+          </div>
+        </ModalCard>
+      </OutsideClickHandler>
     </Modal>
   );
 }
@@ -88,7 +88,7 @@ interface CardProps {
 const Modal = styled.div`
   width: 100%;
   height: fit-content;
-`
+`;
 
 const ModalCard = styled.div`
   background: white;
@@ -104,6 +104,8 @@ const ModalCard = styled.div`
 
   .modal-inner {
     padding-bottom: ${pxToRem(28)};
+    /* TODO: check why it stretches with height of 100% */
+    /* height: 100%; */
 
     header {
       display: flex;

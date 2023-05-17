@@ -116,12 +116,12 @@ export default function NewTripPage() {
 
   useEffect(() => {
     if (tripId) {
-      setLoading(true)
+      setLoading(true);
       dispatch(toAnyAction(getTrip(tripId))).then(() => {
         setLoading(false);
-      })
+      });
     }
-  }, [tripId])
+  }, [tripId]);
 
   return (
     <PageStyling>

@@ -8,7 +8,7 @@ interface Props {
 }
 export default function UiField({ error, label, children }: Props) {
   return (
-    <div>
+    <div className="ui-field">
       <Label>{label}</Label>
       {children}
       <Message>{error}</Message>

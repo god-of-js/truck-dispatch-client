@@ -17,6 +17,7 @@ import UiIcon from 'ui/UiIcon';
 import { clientBasedUserTypes } from 'utils/constants';
 import JobsResponse from 'types/JobsResponse';
 import ViewJobDetail from 'components/jobs/ViewJobDetail';
+import BidForJob from 'components/jobs/BidForJob';
 
 export default function TransporterJobs() {
   const location = useLocation();
@@ -39,6 +40,7 @@ export default function TransporterJobs() {
     setIsInformUserOfVerificationModalVisible,
   ] = useState(false);
   const [isViewJobDetailsVisible, setIsViewJobDetailsVisible] = useState(false);
+  const [isBidForJobVisible, setIsBidForJobVisible] = useState(false);
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
 
   const job = useSelector(selectJob(selectedJobId!));
@@ -100,7 +102,22 @@ export default function TransporterJobs() {
       setIsInformUserOfVerificationModalVisible(true);
       return;
     }
-    navigate(`/available-jobs/${jobId}/bid`);
+    setSelectedJobId(jobId);
+    setIsBidForJobVisible(true);
+  }
+
+  function backToJobDetails() {
+    setIsViewJobDetailsVisible(true);
+    setIsBidForJobVisible(false);
+  }
+
+  function closeViewDetails() {
+    setIsViewJobDetailsVisible(false);
+    setSelectedJobId(null);
+  }
+  function closeBidOnJob() {
+    setIsBidForJobVisible(false);
+    setSelectedJobId(null);
   }
 
   useEffect(() => {
@@ -145,14 +162,24 @@ export default function TransporterJobs() {
           onClose={() => setIsInformUserOfVerificationModalVisible(false)}
         />
       </UiOverlay>
-      <UiOverlay isVisible={isViewJobDetailsVisible}>
-        {job && (
+      {job && (
+        <UiOverlay isVisible={isViewJobDetailsVisible}>
           <ViewJobDetail
             job={job}
-            onClose={() => setIsViewJobDetailsVisible(false)}
+            bidOnJob={bidForJob}
+            onClose={closeViewDetails}
           />
-        )}
-      </UiOverlay>
+        </UiOverlay>
+      )}
+      {job && (
+        <UiOverlay isVisible={isBidForJobVisible}>
+          <BidForJob
+            jobId={job._id}
+            onClose={closeBidOnJob}
+            backToJobDetails={backToJobDetails}
+          />
+        </UiOverlay>
+      )}
     </>
   );
 }

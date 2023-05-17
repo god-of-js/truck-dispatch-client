@@ -9,6 +9,7 @@ interface Props {
    * formData.confirm_password, the name prop should be confirm_password.
    */
   name: string;
+  placeholder?: string;
   error?: string;
   onChange: (event: { name: string; value: string }) => void;
 }
@@ -17,6 +18,7 @@ export default function UiTextArea({
   name,
   value,
   error,
+  placeholder,
   onChange,
 }: Props) {
   function sendValue(e: { target: { name: string; value: string } }) {
@@ -28,6 +30,7 @@ export default function UiTextArea({
         value={value || ''}
         name={name}
         hasError={!!error}
+        placeholder={placeholder}
         onChange={sendValue}
       />
     </UiField>
@@ -37,13 +40,12 @@ export default function UiTextArea({
 const TextArea = styled.textarea`
   width: 100%;
   padding: ${pxToRem(16)} ${pxToRem(8)};
-  height: ${pxToRem(144)};
   gap: ${pxToRem(8)};
   width: 100%;
   font-size: ${pxToRem(12)};
   border: ${pxToRem(1)} solid;
   border-color: ${({ hasError }: { hasError: boolean }) =>
-    hasError ? 'var(--color-danger)' : 'var(--color-gray-200)'};
+    hasError ? 'var(--color-danger)' : 'var(--color-gray)'};
   background: #ffffff;
   outline: none;
   border-radius: ${pxToRem(4)};

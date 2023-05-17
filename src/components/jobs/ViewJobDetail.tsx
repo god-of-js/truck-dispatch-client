@@ -4,15 +4,18 @@ import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
 import UiDataField from 'ui/UiDataField';
 import UiModal from 'ui/UiModal';
-import UiIcon from 'ui/UiIcon';
-import sizes from 'utils/sizes';
 import TripPickUpAndDeliverWithDates from 'components/trips/TripPickUpAndDeliverWithDates';
 
 interface Props {
-  onClose: () => void;
   job: Trip;
+  bidOnJob: (jobId: string) => void;
+  onClose: () => void;
 }
-export default function ViewJobDetail({ job, onClose }: Props) {
+export default function ViewJobDetail({ job, onClose, bidOnJob }: Props) {
+  function startBid() {
+    bidOnJob(job._id);
+    onClose();
+  }
   return (
     <UiModal title="Job Details" position="right" onClose={onClose}>
       <ComponentStyling>
@@ -44,9 +47,15 @@ export default function ViewJobDetail({ job, onClose }: Props) {
           deliveryAddress={job.deliveryAddress}
           deliveryDate={job.deliveryDate}
         />
-        <UiDataField title='Handling instructions' value={job.instructions} variant="text-area"/>
+        <UiDataField
+          title="Handling instructions"
+          value={job.instructions}
+          variant="text-area"
+        />
         <div className="bid-button-container">
-          <UiButton size='large'>Bid Now</UiButton>
+          <UiButton size="large" onClick={startBid}>
+            Bid Now
+          </UiButton>
         </div>
       </ComponentStyling>
     </UiModal>
@@ -55,6 +64,8 @@ export default function ViewJobDetail({ job, onClose }: Props) {
 
 const ComponentStyling = styled.div`
   padding: ${pxToRem(32)} ${pxToRem(24)};
+  /* TODO: check why it stretches with height of 100% */
+  /* height: 100%; */
   display: grid;
   gap: ${pxToRem(40)};
   position: relative;
