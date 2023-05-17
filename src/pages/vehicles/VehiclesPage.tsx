@@ -43,7 +43,7 @@ export default function VehiclesPage() {
     setIsEditVehicleVisible(true);
   }
 
-  function handleChange({ value }: { name: string; value: string | null }) {
+  function handleChange({ value }: { name: string; value: string | null }) { 
     setSearchData({ search_value: value! });
   }
 
