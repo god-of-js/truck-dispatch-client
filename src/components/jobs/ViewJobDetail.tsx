@@ -5,6 +5,8 @@ import UiButton from 'ui/UiButton';
 import UiDataField from 'ui/UiDataField';
 import UiModal from 'ui/UiModal';
 import TripPickUpAndDeliverWithDates from 'components/trips/TripPickUpAndDeliverWithDates';
+import { useSelector } from 'react-redux';
+import { selectBid } from 'modules/Bid';
 
 interface Props {
   job: Trip;
@@ -12,9 +14,9 @@ interface Props {
   onClose: () => void;
 }
 export default function ViewJobDetail({ job, onClose, bidOnJob }: Props) {
+  const bid = useSelector(selectBid(job._id, 'tripId'));
   function startBid() {
     bidOnJob(job._id);
-    onClose();
   }
   return (
     <UiModal title="Job Details" position="right" onClose={onClose}>
@@ -38,7 +40,6 @@ export default function ViewJobDetail({ job, onClose, bidOnJob }: Props) {
             title="Weight"
             value={!!job.weight ? job.weight + ' Tonnes' : ''}
           />
-          {/* TODO: replace with trip truck type and ask designer what it means. */}
           <UiDataField title="Truck Type" value={job.jobType} />
         </div>
         <TripPickUpAndDeliverWithDates
@@ -54,7 +55,7 @@ export default function ViewJobDetail({ job, onClose, bidOnJob }: Props) {
         />
         <div className="bid-button-container">
           <UiButton size="large" onClick={startBid}>
-            Bid Now
+            {bid ? 'Update Bid' : 'Bid Now'}
           </UiButton>
         </div>
       </ComponentStyling>
@@ -64,12 +65,10 @@ export default function ViewJobDetail({ job, onClose, bidOnJob }: Props) {
 
 const ComponentStyling = styled.div`
   padding: ${pxToRem(32)} ${pxToRem(24)};
-  /* TODO: check why it stretches with height of 100% */
-  /* height: 100%; */
   display: grid;
   gap: ${pxToRem(40)};
-  position: relative;
   padding-bottom: ${pxToRem(80)};
+  margin-bottom: ${pxToRem(40)};
 
   .user-profile {
     display: flex;
@@ -113,6 +112,7 @@ const ComponentStyling = styled.div`
     position: absolute;
     bottom: 0;
     width: 100%;
+    margin: ${pxToRem(40)} 0;
 
     button {
       margin: auto;

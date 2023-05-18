@@ -162,7 +162,7 @@ class ApiService {
   }
 
   createBid(data: CreateBid) {
-    return this.post<Bid>('/bids', data);
+    return this.post<Bid>(`/bids/${data.tripId}`, data);
   }
 
   updateBid(data: Bid): Promise<Bid> {
@@ -216,8 +216,8 @@ class ApiService {
     return this.get<Bid[]>(`/bids/${tripId}`);
   }
 
-  getTransporterBidWithTripId(tripId: string) {
-    return this.get<Bid>(`/bids/transporter-bid/${tripId}`);
+  getTransporterBids() {
+    return this.get<Bid[]>(`/bids`);
   }
 
   createChat(chat: Chat) {

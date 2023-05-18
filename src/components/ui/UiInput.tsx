@@ -138,7 +138,8 @@ interface InputProps {
 // TODO: replace any with InputProps.
 const Input = styled.input<any>`
   padding: ${pxToRem(16)};
-  height: ${({ size }) => `var(--base-height${['large', 'text'].includes(size) ? '' : `-${size}`})`};
+  height: ${({ size }) =>
+    `var(--base-height${['large', 'text'].includes(size) ? '' : `-${size}`})`};
   gap: ${pxToRem(8)};
   width: 100%;
   font-size: ${pxToRem(14)};

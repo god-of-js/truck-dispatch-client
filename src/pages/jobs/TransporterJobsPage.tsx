@@ -19,6 +19,7 @@ import { clientBasedUserTypes } from 'utils/constants';
 import JobsResponse from 'types/JobsResponse';
 import ViewJobDetail from 'components/jobs/ViewJobDetail';
 import BidForJob from 'components/jobs/BidForJob';
+import { getTransporterBids } from 'modules/Bid';
 
 export default function TransporterJobs() {
   const location = useLocation();
@@ -104,6 +105,7 @@ export default function TransporterJobs() {
       setIsInformUserOfVerificationModalVisible(true);
       return;
     }
+    if (isViewJobDetailsVisible) setIsViewJobDetailsVisible(false);
     setSelectedJobId(jobId);
     setIsBidForJobVisible(true);
   }
@@ -115,11 +117,10 @@ export default function TransporterJobs() {
 
   function closeViewDetails() {
     setIsViewJobDetailsVisible(false);
-    setSelectedJobId(null);
   }
+
   function closeBidOnJob() {
     setIsBidForJobVisible(false);
-    setSelectedJobId(null);
   }
 
   function handleChange({ value }: { name: string; value: string | null }) {
@@ -133,6 +134,10 @@ export default function TransporterJobs() {
   useEffect(() => {
     setPage(1);
   }, [senderType]);
+
+  useEffect(() => {
+    dispatch(toAnyAction(getTransporterBids()));
+  }, []);
 
   return (
     <>

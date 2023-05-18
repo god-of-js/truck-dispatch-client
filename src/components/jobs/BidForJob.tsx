@@ -1,4 +1,4 @@
-import { createBid } from 'modules/Bid';
+import { createBid, selectBid, updateBid } from 'modules/Bid';
 import { RootState } from 'modules/index';
 import { getVehicles } from 'modules/Vehicle';
 import { useEffect, useMemo, useState } from 'react';
@@ -15,9 +15,13 @@ import UiLocationsInput from 'ui/UiLocationsInput';
 import UiModal from 'ui/UiModal';
 import UiSelect from 'ui/UiSelect';
 import UiTextArea from 'ui/UiTextArea';
-import { toAnyAction } from 'utils/helpers';
+import { removeUneditedFields, toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
 import { Toast } from 'utils/toast';
+import BidForJobSchema from 'utils/validations/BidForJobSchema';
+import Vehicle from 'types/Vehicle';
+import UiOverlay from 'ui/UiOverlay';
+import InformUserOfVerification from 'components/verification/InformUserOfVerification';
 
 interface Props {
   jobId: string;
@@ -28,15 +32,21 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.account.user);
   const vehicles = useSelector((state: RootState) => state.vehicle.vehicles);
+  const bid = useSelector(selectBid(jobId, 'tripId'));
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<CreateBid>({
     price: NaN,
     presentLocation: '',
     extraNotes: '',
     tripId: jobId,
     vehicleId: '',
+    vehicle: {} as Vehicle,
   });
   const [loading, setLoading] = useState(false);
+  const [
+    isInformUserOfVerificationModalVisible,
+    setIsInformUserOfVerificationModalVisible,
+  ] = useState(false);
 
   const vehicleData = useMemo(
     () =>
@@ -66,22 +76,53 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
       return;
     }
     setLoading(true);
-    dispatch(
+   return  dispatch(
       toAnyAction(
         createBid({
           ...formData,
           tripId: jobId,
-          vehicle
+          vehicle,
         }),
       ),
     ).finally(() => {
-      setLoading(true);
+      setLoading(false);
     });
   }
 
-  useEffect(() => {
+  function updateJobBid() {
+    const dataToUpdate = removeUneditedFields<Bid>(bid!, {...formData, vehicle});
+    setLoading(true);
+    return dispatch(
+      toAnyAction(updateBid({ ...dataToUpdate, tripId: jobId! })),
+    ).finally(() => {
+      setLoading(false);
+    });
+  }
+
+  function onSubmit() {
+    if (user?.status !== 'verified') {
+      setIsInformUserOfVerificationModalVisible(true)
+      return;
+    }
+    bid ? updateJobBid() : bidOnJob()
+
+  }
+   useEffect(() => {
     dispatch(toAnyAction(getVehicles()));
   }, []);
+
+  useEffect(() => {
+    if (bid) {
+      setFormData({
+        price: bid.price,
+        presentLocation: bid.presentLocation!,
+        vehicle: bid.vehicle,
+        vehicleId: bid.vehicle._id,
+        tripId: jobId,
+        extraNotes: bid.extraNotes!,
+      });
+    }
+  }, [bid]);
 
   return (
     <UiModal position="right" title="Submit Bid" onClose={onClose}>
@@ -90,8 +131,12 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
           <UiIcon icon="ArrowLeft" /> Back to job details
         </UiButton>
 
-        <UiForm formData={formData} onSubmit={bidOnJob}>
-          {() => (
+        <UiForm
+          formData={formData}
+          schema={BidForJobSchema}
+          onSubmit={onSubmit}
+        >
+          {({ errors }) => (
             <>
               <div className="form-group">
                 <div className="base-details">
@@ -100,6 +145,7 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
                     name="price"
                     type="number"
                     label="How much would you charge for the trip?"
+                    error={errors.price}
                     onChange={fillForm}
                   />
                   <div className="vehicle-details">
@@ -107,6 +153,7 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
                       value={formData.vehicleId}
                       name="vehicleId"
                       label="Select Vehicle/Truck"
+                      error={errors.vehicleId}
                       onChange={fillForm}
                       options={vehicleData}
                     />
@@ -132,6 +179,7 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
                     name="presentLocation"
                     label="Current Location Of Truck"
                     placeholder="Where is the truck located/parked currently?"
+                    error={errors.presentLocation}
                     onChange={fillForm}
                   />
                 </div>
@@ -146,12 +194,19 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
                 </div>
               </div>
               <div className="action-btn">
-                <UiButton size="large">Submit Bid</UiButton>
+                <UiButton size="large" loading={loading}>
+                  {bid ? 'Update' : 'Submit'} Bid
+                </UiButton>
               </div>
             </>
           )}
         </UiForm>
       </ComponentStyling>
+      <UiOverlay isVisible={isInformUserOfVerificationModalVisible}>
+        <InformUserOfVerification
+          onClose={() => setIsInformUserOfVerificationModalVisible(false)}
+        />
+      </UiOverlay>
     </UiModal>
   );
 }

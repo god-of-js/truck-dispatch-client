@@ -58,7 +58,7 @@ function positionStyling({ position, size }: CardProps) {
       left: initial;
       border-radius: 0;
       max-height: 100%;
-      width: 40%;
+      width: 45%;
 
       header {
         border-bottom: ${pxToRem(1)} solid var(--color-gray-20);

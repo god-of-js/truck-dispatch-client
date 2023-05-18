@@ -6,4 +6,5 @@ export default interface CreateBid {
   vehicle: Vehicle;
   vehicleId: string;
   tripId: string;
+  extraNotes: string;
 }
