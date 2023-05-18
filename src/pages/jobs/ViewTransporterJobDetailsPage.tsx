@@ -58,7 +58,7 @@ export default function ViewTransporterJobDetailsPage() {
     if (!job) {
       loadJob();
     }
-    console.log(job)
+    console.log(job);
   }, [tripId, job]);
 
   return (

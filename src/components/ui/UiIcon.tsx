@@ -55,6 +55,7 @@ import { ReactComponent as Notification } from './icons/notification.svg';
 import { ReactComponent as PasswordCheck } from './icons/password-check.svg';
 import { ReactComponent as PickUpVan } from './icons/pick-up-van.svg';
 import { ReactComponent as Refresh } from './icons/refresh.svg';
+import { ReactComponent as Search } from './icons/search.svg';
 import { ReactComponent as SemiTrailer } from './icons/semi-trailer.svg';
 import { ReactComponent as Settings } from './icons/settings.svg';
 import { ReactComponent as Tanker } from './icons/tanker.svg';
@@ -113,6 +114,7 @@ const icons = {
   PasswordCheck: <PasswordCheck />,
   PickUpVan: <PickUpVan />,
   Refresh: <Refresh />,
+  Search: <Search />,
   SemiTrailer: <SemiTrailer />,
   PencilSimple: <PencilSimple />,
   ShieldCheck: <ShieldCheck />,

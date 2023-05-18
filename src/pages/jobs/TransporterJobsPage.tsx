@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import UiOverlay from 'ui/UiOverlay';
 import { filterByFieldInObject, toAnyAction } from 'utils/helpers';
 import Trip from 'types/Trip';
+import UiInput from 'ui/UiInput';
 import UiButton from 'ui/UiButton';
 import UiIcon from 'ui/UiIcon';
 import { clientBasedUserTypes } from 'utils/constants';
@@ -34,6 +35,7 @@ export default function TransporterJobs() {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
   const [
     isInformUserOfVerificationModalVisible,
     setIsInformUserOfVerificationModalVisible,
@@ -98,6 +100,10 @@ export default function TransporterJobs() {
     navigate(`/available-jobs/${tripId}/bid`);
   }
 
+  function handleChange({ value }: { name: string; value: string | null }) {
+    setSearchQuery(value!!);
+  }
+
   useEffect(() => {
     loadJobs();
   }, [senderType, page]);
@@ -108,7 +114,20 @@ export default function TransporterJobs() {
 
   return (
     <>
-      <DashboardTopNav routeName="Jobs" pageFilters={pageFilters} />
+      <DashboardTopNav
+        routeName="Jobs"
+        pageFilters={pageFilters}
+        edgeChild={
+          <UiInput
+            onChange={handleChange}
+            value={searchQuery}
+            name="searchQuery"
+            placeholder="Search..."
+            icon="Search"
+            size="md"
+          />
+        }
+      />
       <MyJobsPageStyle className="flex-container">
         {filteredJobs.map((job) => {
           return (
