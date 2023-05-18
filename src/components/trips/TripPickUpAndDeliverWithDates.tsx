@@ -34,9 +34,11 @@ export default function TripPickUpAndDeliverWithDates({
           </div>
         </div>
       </div>
-      <UiButton variant="icon-neutral" disabled>
-        <UiIcon icon="ArrowRight" />
-      </UiButton>
+      <div className="arrow-icon-container">
+        <UiButton variant="icon-neutral" disabled>
+          <UiIcon icon="ArrowRight" />
+        </UiButton>
+      </div>
       <div className="schedule">
         <div>
           <div className="delivery-icon-container icon-container">
@@ -123,9 +125,17 @@ const ComponentStyling = styled.div`
     }
   }
 
-  @media screen and (min-width: ${sizes.tablet}) {
+  .arrow-icon-container {
+    display: none;
+  }
+
+  @media screen and (min-width: ${sizes.laptopSmallWidth}) {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+
+    .arrow-icon-container {
+      display: block;
+    }
   }
 `;
