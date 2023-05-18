@@ -84,7 +84,7 @@ function ViewPaymentsPage() {
 
   useEffect(() => {
     dispatch(toAnyAction(getPaymentRequestsOfDriver()));
-    dispatch(toAnyAction(getTrips()));
+    // dispatch(toAnyAction(getTrips()));
   }, []);
 
   return (
