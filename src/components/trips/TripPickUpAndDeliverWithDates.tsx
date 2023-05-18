@@ -129,7 +129,7 @@ const ComponentStyling = styled.div`
     display: none;
   }
 
-  @media screen and (min-width: ${sizes.laptopSmallWidth}) {
+  @media screen and (min-width: ${sizes.mobileLargeWidth}) {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;

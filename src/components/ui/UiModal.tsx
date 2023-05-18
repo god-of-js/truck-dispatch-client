@@ -122,7 +122,7 @@ const ModalCard = styled.div`
     }
   }
 
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+  @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
     width: ${({ size }: CardProps) => (size === 'lg' ? '50%' : pxToRem(540))};
     ${(cardProps: CardProps) => positionStyling(cardProps)}
   }
