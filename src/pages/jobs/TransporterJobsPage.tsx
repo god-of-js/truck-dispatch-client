@@ -5,9 +5,9 @@ import DashboardTopNav from 'components/layout/DashboardTopNav';
 import Loader from 'components/layout/Loader';
 import InformUserOfVerification from 'components/verification/InformUserOfVerification';
 import { RootState } from 'modules/index';
-import { getJobs } from 'modules/Trips';
+import { getJobs, selectJob } from 'modules/Trips';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import UiOverlay from 'ui/UiOverlay';
 import { filterByFieldInObject, toAnyAction } from 'utils/helpers';
@@ -17,6 +17,9 @@ import UiButton from 'ui/UiButton';
 import UiIcon from 'ui/UiIcon';
 import { clientBasedUserTypes } from 'utils/constants';
 import JobsResponse from 'types/JobsResponse';
+import ViewJobDetail from 'components/jobs/ViewJobDetail';
+import BidForJob from 'components/jobs/BidForJob';
+import { getTransporterBids } from 'modules/Bid';
 
 export default function TransporterJobs() {
   const location = useLocation();
@@ -28,7 +31,6 @@ export default function TransporterJobs() {
   const [allJobsByCompany, setAllJobsByCompany] = useState(0);
   const [allJobsByShipper, setAllJobsByShipper] = useState(0);
 
-  const { tripId } = useParams();
   const jobs = useSelector((state: RootState) => state.trips.jobs);
   const user = useSelector((state: RootState) => state.account.user);
   const dispatch = useDispatch();
@@ -40,6 +42,11 @@ export default function TransporterJobs() {
     isInformUserOfVerificationModalVisible,
     setIsInformUserOfVerificationModalVisible,
   ] = useState(false);
+  const [isViewJobDetailsVisible, setIsViewJobDetailsVisible] = useState(false);
+  const [isBidForJobVisible, setIsBidForJobVisible] = useState(false);
+  const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
+
+  const job = useSelector(selectJob(selectedJobId!));
 
   const pageFilters = useMemo(
     () => [
@@ -68,7 +75,8 @@ export default function TransporterJobs() {
   }, [jobs, senderType]);
 
   function viewJob(jobId: string) {
-    navigate(`${jobId}`);
+    setSelectedJobId(jobId);
+    setIsViewJobDetailsVisible(true);
   }
 
   function loadJobs() {
@@ -92,12 +100,27 @@ export default function TransporterJobs() {
       });
   }
 
-  function bidForJob() {
+  function bidForJob(jobId: string) {
     if (user?.status !== 'verified') {
       setIsInformUserOfVerificationModalVisible(true);
       return;
     }
-    navigate(`/available-jobs/${tripId}/bid`);
+    if (isViewJobDetailsVisible) setIsViewJobDetailsVisible(false);
+    setSelectedJobId(jobId);
+    setIsBidForJobVisible(true);
+  }
+
+  function backToJobDetails() {
+    setIsViewJobDetailsVisible(true);
+    setIsBidForJobVisible(false);
+  }
+
+  function closeViewDetails() {
+    setIsViewJobDetailsVisible(false);
+  }
+
+  function closeBidOnJob() {
+    setIsBidForJobVisible(false);
   }
 
   function handleChange({ value }: { name: string; value: string | null }) {
@@ -111,6 +134,10 @@ export default function TransporterJobs() {
   useEffect(() => {
     setPage(1);
   }, [senderType]);
+
+  useEffect(() => {
+    dispatch(toAnyAction(getTransporterBids()));
+  }, []);
 
   return (
     <>
@@ -159,6 +186,24 @@ export default function TransporterJobs() {
           onClose={() => setIsInformUserOfVerificationModalVisible(false)}
         />
       </UiOverlay>
+      {job && (
+        <UiOverlay isVisible={isViewJobDetailsVisible}>
+          <ViewJobDetail
+            job={job}
+            bidOnJob={bidForJob}
+            onClose={closeViewDetails}
+          />
+        </UiOverlay>
+      )}
+      {job && (
+        <UiOverlay isVisible={isBidForJobVisible}>
+          <BidForJob
+            jobId={job._id}
+            onClose={closeBidOnJob}
+            backToJobDetails={backToJobDetails}
+          />
+        </UiOverlay>
+      )}
     </>
   );
 }

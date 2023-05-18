@@ -122,6 +122,8 @@ const StyledOptions = styled.ul`
   z-index: 1;
   width: 100%;
   max-width: 100%;
+  max-height: ${pxToRem(250)};
+  overflow-y: auto;
   transition: all 0.2s ease-in-out;
 `;
 

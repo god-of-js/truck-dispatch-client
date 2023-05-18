@@ -9,6 +9,7 @@ interface Props {
   name: string;
   error?: string;
   value: string;
+  placeholder?: string;
   onChange: (event: { name: string; value: string | null }) => void;
 }
 
@@ -17,6 +18,7 @@ export default function UiLocationsInput({
   name,
   value,
   error,
+  placeholder,
   onChange,
 }: Props) {
   const autoCompleteRef = useRef<HTMLInputElement | null>(null);
@@ -34,11 +36,19 @@ export default function UiLocationsInput({
     if (inputRef.current && value) {
       inputRef.current.value = value;
     }
-    //   @ts-ignore
+
+    // @ts-ignore
     autoCompleteRef.current = new window.google.maps.places.Autocomplete(
       inputRef.current!,
       options,
     );
+    // @ts-ignore
+    autoCompleteRef.current.setFields(['formatted_address']);
+    if (placeholder) {
+      const inputElement = inputRef.current as HTMLInputElement;
+      inputElement.placeholder = placeholder || '';
+    }
+
     // @ts-ignore
     autoCompleteRef.current.addListener('place_changed', async function () {
       // @ts-ignore
@@ -49,7 +59,13 @@ export default function UiLocationsInput({
 
   return (
     <UiField label={label} error={error}>
-      <input className="global-input full-radius" ref={inputRef} key={value} />
+      {/* I need to make the placeholder take effect */}
+      <input
+        className="global-input full-radius"
+        ref={inputRef}
+        key={value}
+        placeholder={placeholder}
+      />
       <UiInputContainer>
         {cantFindLocation && (
           <UiInput

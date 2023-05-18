@@ -25,8 +25,9 @@ import {
 } from 'phosphor-react';
 
 import { ReactComponent as ArrowCircleLeft } from './icons/arrow-circle-left.svg';
-import { ReactComponent as ArrowLeft } from './icons/arrow-left.svg';
+import { ReactComponent as CaretLeft } from './icons/arrow-left.svg';
 import { ReactComponent as ArrowRight } from './icons/arrow-right.svg';
+import { ReactComponent as ArrowLeft } from './icons/arrow-left.svg';
 
 import { ReactComponent as Close } from './icons/close.svg';
 import { ReactComponent as Chat } from './icons/chat.svg';
@@ -74,6 +75,7 @@ const icons = {
   ArrowCircleLeft: <ArrowCircleLeft />,
   ArrowCircleRight: <ArrowCircleRight />,
   ArrowLeft: <ArrowLeft />,
+  CaretLeft: <CaretLeft />,
   ArrowRight: <ArrowRight />,
   ArrowUpRight: <ArrowUpRight />,
   Buildings: <Company />,

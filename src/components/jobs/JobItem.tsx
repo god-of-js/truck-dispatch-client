@@ -1,11 +1,13 @@
-import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
 import styled from 'styled-components';
+import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
 import Trip from 'types/Trip';
 import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
 import UiIcon from 'ui/UiIcon';
 import { convertToDdMmmYYYYDateFormat } from 'utils/helpers';
 import sizes from 'utils/sizes';
+import { useSelector } from 'react-redux';
+import { selectBid } from 'modules/Bid';
 
 interface Props {
   job: Trip;
@@ -13,6 +15,8 @@ interface Props {
   viewJobDetail: (jobId: string) => void;
 }
 export default function JobItem({ job, bidForJob, viewJobDetail }: Props) {
+  const bid = useSelector(selectBid(job._id, 'tripId'));
+
   return (
     <JobItemStyling>
       <header>
@@ -58,7 +62,9 @@ export default function JobItem({ job, bidForJob, viewJobDetail }: Props) {
         </div>
 
         <SubmitButtonContainer className="submit-button-jobitemstyling">
-          <UiButton onClick={() => bidForJob(job._id)}>bid now</UiButton>
+          <UiButton onClick={() => bidForJob(job._id)}>
+            {bid ? 'Update Bid' : 'bid now'}
+          </UiButton>
           <UiButton variant="secondary" onClick={() => viewJobDetail(job._id)}>
             View full Details
           </UiButton>

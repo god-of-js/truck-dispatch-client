@@ -18,6 +18,7 @@ import LoginResponse from 'types/LoginResponse';
 import ChatLogData from 'types/ChatLogData';
 import ChatLog from 'types/ChatLog';
 import Vehicle from 'types/Vehicle';
+import CreateBid from 'types/CreateBid';
 
 class ApiService {
   createUser(userData: Partial<User>) {
@@ -66,6 +67,7 @@ class ApiService {
   getTrip(tripId: string): Promise<Trip> {
     return this.get(`/trips/${tripId}`);
   }
+
   getJob(jobId: string): Promise<Trip> {
     return this.get(`/trips/jobs/${jobId}`);
   }
@@ -140,8 +142,11 @@ class ApiService {
     senderType?: string;
   }) {
     const data = await this.get(
-      `/trips/jobs?page=${page}&limit=${limit}&senderType=${senderType}`,
+      `/trips/jobs?page=${page}&limit=${limit}${
+        senderType ? `&senderType=${senderType}` : ''
+      }`,
     );
+
     return {
       data: data.data as Trip[],
       currentPage: data.currentPage,
@@ -156,8 +161,8 @@ class ApiService {
     return this.post<Trip>(`/trips/${tripId}/upload-tdo`, formData);
   }
 
-  createBid(data: Bid) {
-    return this.post<Bid>('/bids', data);
+  createBid(data: CreateBid) {
+    return this.post<Bid>(`/bids/${data.tripId}`, data);
   }
 
   updateBid(data: Bid): Promise<Bid> {
@@ -211,8 +216,8 @@ class ApiService {
     return this.get<Bid[]>(`/bids/${tripId}`);
   }
 
-  getTransporterBidWithTripId(tripId: string) {
-    return this.get<Bid>(`/bids/transporter-bid/${tripId}`);
+  getTransporterBids() {
+    return this.get<Bid[]>(`/bids`);
   }
 
   createChat(chat: Chat) {

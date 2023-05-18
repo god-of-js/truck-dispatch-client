@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { io } from 'socket.io-client';
 
@@ -14,7 +14,6 @@ import {
 } from 'modules/Account';
 
 import DashboardSidebar from 'components/layout/DashboardSidebar';
-import DashboardTopNav from 'components/layout/DashboardTopNav';
 import UiAlert from 'ui/UiAlert';
 import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';

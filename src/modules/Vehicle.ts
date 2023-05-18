@@ -4,7 +4,7 @@ import Vehicle from 'types/Vehicle';
 import { AppDispatch, AppState, RootState } from '.';
 
 export interface VehicleState {
-  vehicles: any[];
+  vehicles: Vehicle[];
 }
 const initialState: VehicleState = {
   vehicles: [],
