@@ -100,10 +100,7 @@ export default function TransporterJobs() {
     navigate(`/available-jobs/${tripId}/bid`);
   }
 
-  function handleChange( { value }: {
-    name: string;
-    value: string | null;
-  }) {
+  function handleChange({ value }: { name: string; value: string | null }) {
     setSearchQuery(value!!);
   }
 
@@ -126,7 +123,8 @@ export default function TransporterJobs() {
             value={searchQuery}
             name="searchQuery"
             placeholder="Search..."
-            icon={<UiIcon icon='Search' size='20'/>}
+            icon="Search"
+            size="md"
           />
         }
       />

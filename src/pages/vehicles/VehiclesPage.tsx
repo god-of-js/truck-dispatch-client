@@ -41,18 +41,20 @@ export default function VehiclesPage() {
     setIsEditVehicleVisible(true);
   }
 
-
-  function handleChange( { value }: {
-    name: string;
-    value: string | null;
-  }) {
+  function handleChange({ value }: { name: string; value: string | null }) {
     setSearchQuery(value!!);
   }
 
   function edgeChildren() {
     return (
       <GappedContainerWith12PX>
-        <UiInput onChange={handleChange} value={searchQuery} name='searchQuery'  placeholder='Search...' icon={<UiIcon  icon='Search'/>} />
+        <UiInput
+          onChange={handleChange}
+          value={searchQuery}
+          name="searchQuery"
+          placeholder="Search..."
+          icon={<UiIcon icon="Search" />}
+        />
         {!!vehicles.length && (
           <UiButton onClick={openAddVehicle}>add new vehicle</UiButton>
         )}
