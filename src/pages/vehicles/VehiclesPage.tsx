@@ -14,6 +14,7 @@ import sizes from 'utils/sizes';
 import EditVehicle from 'components/vehicles/EditVehicle';
 import Vehicle from 'types/Vehicle';
 import UiIcon from 'ui/UiIcon';
+import UiInput from 'ui/UiInput';
 
 export default function VehiclesPage() {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ export default function VehiclesPage() {
   const [isAddVehicleVisible, setIsAddVehicleVisible] = useState(false);
   const [isEditVehicleVisible, setIsEditVehicleVisible] = useState(false);
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
   function closeAddVehicle() {
     setIsAddVehicleVisible(false);
   }
@@ -39,9 +41,20 @@ export default function VehiclesPage() {
     setIsEditVehicleVisible(true);
   }
 
+  function handleChange({ value }: { name: string; value: string | null }) {
+    setSearchQuery(value!!);
+  }
+
   function edgeChildren() {
     return (
       <GappedContainerWith12PX>
+        <UiInput
+          onChange={handleChange}
+          value={searchQuery}
+          name="searchQuery"
+          placeholder="Search..."
+          icon={<UiIcon icon="Search" />}
+        />
         {!!vehicles.length && (
           <UiButton onClick={openAddVehicle}>add new vehicle</UiButton>
         )}

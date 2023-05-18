@@ -1,4 +1,4 @@
-import { createSelector, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import Api from 'Api';
 import Vehicle from 'types/Vehicle';
 import { AppDispatch, AppState, RootState } from '.';
