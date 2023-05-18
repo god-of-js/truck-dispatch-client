@@ -21,6 +21,7 @@ export default function DashboardSidebar() {
   const navigate = useNavigate();
   const appLocation = useLocation();
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isMobileExpanded, setIsMobileExpanded] = useState(false);
 
   const transporterRoutes: Route[] = [
     {
@@ -91,6 +92,10 @@ export default function DashboardSidebar() {
     setIsExpanded(!isExpanded);
   };
 
+  const toggleShowMobileNav = () => {
+    setIsMobileExpanded(!isMobileExpanded);
+  };
+
   return (
     <Sidebar isExpanded={isExpanded}>
       <div className="sidebar__inner">
@@ -159,12 +164,84 @@ export default function DashboardSidebar() {
           <span className="mobile-options">Jobs</span>
           <span className="mobile-options">My Trips</span>
           <span className="mobile-options">Vehicles</span>
-          <span className="mobile-options">
+          <button className="mobile-options" onClick={toggleShowMobileNav}>
             <UiIcon icon="CloseNav" size="24" />
-          </span>
+          </button>
         </div>
-     
       </MobileNav>
+
+      {isMobileExpanded && (
+        <MobileSideNavbar>
+          <div className="inner-div">
+            <span className="sideMenuTitle">SIDE MENU</span>
+
+            <div className="inner-div-options">
+              <MobileTabList className="sideMenuOptions">
+                {routes.map((route, index) => (
+                  <Link to={route.path} key={index}>
+                    <MobileTab
+                      isActive={isRouteActive(route.path)}
+                      isExpanded={isExpanded}
+                    >
+                      <UiIcon icon={route.iconName} size="24" />
+                      <div className="route-name">{route.name}</div>
+                    </MobileTab>
+                  </Link>
+                ))}
+                <Link to="/chat">
+                  <MobileTab
+                    isActive={isRouteActive('/chat')}
+                    isExpanded={isExpanded}
+                  >
+                    <UiIcon icon="Chat" size="24" />
+                    {/* TODO: figure out how to manage message count with new design */}
+                    {/* {unreadChat.length !== 0 && (
+                  <MessageCount>{unreadChat.length}</MessageCount>
+                )} */}
+                    <span className="route-name">Chat</span>
+                  </MobileTab>
+                </Link>
+              </MobileTabList>
+
+              <MobileBottomActions>
+                <div className="mobileUserActions">
+                  <Link to="/profile">
+                    <MobileUserContainer>
+                      <UiAvatar avatar={user?.avatar} />
+                      <div className="user-details">
+                        <div>
+                          <div className="user-name">
+                            {/* {user?.firstName} {user?.lastName} */}
+                            Emeka Manuel
+                          </div>
+                          <div className="user-type">Transporter</div>
+                        </div>
+                      </div>
+                    </MobileUserContainer>
+                  </Link>
+                  <ViewProfile>
+                    <span className="viewProfileButton">View Profile</span>
+                  </ViewProfile>
+                </div>
+              </MobileBottomActions>
+              <MobileBottomExitActions>
+                <div className="mobileUserExitActions">
+                  <Link to="/logout">
+                    <MobileLogoutContainer>
+                      <span className="logout-text">Logout</span>
+                    </MobileLogoutContainer>
+                  </Link>
+                  <ExitMobileNav>
+                    <span className="closeNavButton">
+                      Close <UiIcon icon="CloseNav" size="10" />
+                    </span>
+                  </ExitMobileNav>
+                </div>
+              </MobileBottomExitActions>
+            </div>
+          </div>
+        </MobileSideNavbar>
+      )}
     </Sidebar>
   );
 }
@@ -242,61 +319,6 @@ const Sidebar = styled.nav`
     border-top: none;
     position: static;
     border-right: ${pxToRem(1)} solid var(--color-gray-200);
-  }
-`;
-
-const MobileNav = styled.div`
-  display: none;
-  width: 100%;
-  padding: ${pxToRem(20)} ${pxToRem(16)} ${pxToRem(20)} ${pxToRem(16)};
-  gap: 10px;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  height: 97px;
-  left: 0px;
-  bottom: 0px;
-  border-radius: 16px 16px 0px 0px;
-  border-top: 1px solid #f1f0f4;
-
-  .mobile-bottom-nav{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: space-around;
-    padding: 0px;
-    gap: ${pxToRem(20)};
-
-    width: 80%%;
-    height: ${pxToRem(44)};
-
-    .mobile-options {
-      background: red;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      padding: ${pxToRem(12)};
-      background: var(--color-gray-20);
-      border: 1px solid var(--color-gray-20);
-      border-radius: 8px;
-      text-edge: cap;
-      letter-spacing: -0.02em;
-      color: var(--color-gray-70);
-
-      &:hover {
-        color: var(--color-primary);
-        border: 1px solid var(--color-primary);
-        background: var(--color-primary-20);
-      }
-    }
-  }
-
-  @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
-    display: flex;
-    align-items: center;
-    width: 100%;
   }
 `;
 
@@ -451,4 +473,296 @@ const MessageCount = styled.div`
   margin-top: -${pxToRem(6)};
   margin-right: -${pxToRem(6)};
   border-radius: 50%;
+`;
+
+const MobileSideNavbar = styled.div`
+  display: none;
+  position: absolute;
+  height: ${pxToRem(700)};
+  box-sizing: border-box;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+
+  background: white;
+
+  .inner-div {
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+
+    .sideMenuTitle {
+      position: absolute;
+      padding-top: ${pxToRem(24)};
+      padding-left: ${pxToRem(16)};
+      font-style: normal;
+      font-weight: 700;
+      font-size: ${pxToRem(14)};
+      line-height: 140%;
+    }
+
+    .inner-div-options {
+      width: 100%;
+      box-sizing: border-box;
+      padding-top:${pxToRem(24)};
+    }
+
+  }
+
+  @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
+    display: flex;
+  }
+`;
+
+const MobileTabList = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: ${pxToRem(32)} ${pxToRem(32)};
+
+  list-style-type: none;
+
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-around;
+`;
+interface TabProps {
+  isActive: boolean;
+  isExpanded: boolean;
+}
+const activeTabStyleMobile = `
+border-color: var(--color-primary);
+color: var(--color-primary);
+background-color: var(--color-primary-10);
+`;
+const MobileTab = styled.li`
+  padding: ${pxToRem(12)};
+  font-style: normal;
+  font-weight: 400;
+  font-size: ${pxToRem(24)};
+  color: ${({ isActive }: TabProps) =>
+    isActive ? 'var(--color-primary)' : 'var(--color-gray-80)'};
+  display: flex;
+  flex-basis: 0 0 100%;
+  align-items: center;
+  justify-content: ${({ isExpanded }: TabProps) =>
+    isExpanded ? 'flex-start' : 'center'};
+  border-radius: 0 ${pxToRem(8)} ${pxToRem(8)} 0;
+  gap: ${pxToRem(8)};
+
+  svg {
+    fill: ${({ isActive }: TabProps) =>
+      isActive ? 'var(--color-primary)' : 'var(--color-gray-80)'};
+  }
+
+  .route-name {
+    display: ${({ isExpanded }: TabProps) => isExpanded && 'block'};
+  }
+  ${({ isActive }: TabProps) => isActive && activeTabStyleMobile}
+  &:hover {
+    ${activeTabStyleMobile}
+  }
+
+  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+    border-bottom: none;
+    border-left: ${pxToRem(4)} solid
+      ${({ isActive }: { isActive: boolean }) =>
+        isActive ? 'var(--color-primary)' : 'transparent'};
+    margin-bottom: ${pxToRem(12)};
+  }
+`;
+
+const MobileNav = styled.div`
+  display: none;
+  width: 100%;
+  padding: ${pxToRem(20)} ${pxToRem(16)} ${pxToRem(20)} ${pxToRem(16)};
+  gap: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  height: 97px;
+  left: 0px;
+  bottom: 0px;
+  border-radius: 16px 16px 0px 0px;
+  border-top: 1px solid #f1f0f4;
+
+  .mobile-bottom-nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: space-around;
+    padding: 0px;
+    gap: ${pxToRem(20)};
+
+    width: 80%%;
+    height: ${pxToRem(44)};
+
+    .mobile-options {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      padding: ${pxToRem(12)};
+      background: var(--color-gray-20);
+      border: 1px solid var(--color-gray-20);
+      border-radius: 8px;
+      text-edge: cap;
+      letter-spacing: -0.02em;
+      color: var(--color-gray-70);
+
+      &:hover {
+        color: var(--color-primary);
+        border: 1px solid var(--color-primary);
+        background: var(--color-primary-20);
+      }
+    }
+  }
+
+  @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+`;
+
+const MobileBottomActions = styled.div`
+  box-sizing: border-box;
+  display: column;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 24px;
+  gap: 12px;
+  isolation: isolate;
+
+  position: absolute;
+  width: 375px;
+  height: 88px;
+  left: 0px;
+  top: 509px;
+
+  .mobileUserActions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px;
+    gap: 12px;
+
+    width: 327px;
+    height: 40px;
+  }
+`;
+
+const MobileUserContainer = styled.div`
+  display: flex;
+  font-weight: 600;
+  gap: ${pxToRem(8)};
+  opacity: 0.8;
+  cursor: pointer;
+  color: var(--color-gray-80);
+  display: flex;
+  justify-content: flex-start;
+
+  .user-name {
+    font-size: ${pxToRem(16)};
+    font-weight: 600;
+    font-family: 'thiccboi-medium';
+  }
+  .user-type {
+    font-size: ${pxToRem(10)};
+    font-weight: 400;
+    margin-top: ${pxToRem(8)};
+    text-transform: uppercase;
+  }
+`;
+const ViewProfile = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: ${pxToRem(12)};
+  gap: 8px;
+
+  background: var(--color-primary-10);
+
+  border: 1px solid var(--color-primary-10);
+  border-radius: 8px;
+
+  .viewProfileButton {
+    font-style: normal;
+    font-weight: 600;
+    font-size: ${pxToRem(12)};
+    line-height: ${pxToRem(12)};
+
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+`;
+
+const MobileBottomExitActions = styled.div`
+  box-sizing: border-box;
+  display: column;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 24px;
+  gap: 12px;
+  isolation: isolate;
+
+  position: absolute;
+  width: 100%;
+  left: 0px;
+
+  .mobileUserExitActions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px;
+    gap: 12px;
+
+    width: 100%;
+    height: 40px;
+  }
+`;
+const MobileLogoutContainer = styled.div`
+  display: flex;
+
+  .logout-text {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 140%;
+    leading-trim: both;
+    text-edge: cap;
+    letter-spacing: -0.02em;
+    color: var(--color-danger);
+  }
+`;
+
+const ExitMobileNav = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: ${pxToRem(12)};
+
+  background: var(--color-gray-20);
+
+  border: 1px solid var(--color-primary-10);
+  border-radius: 8px;
+
+  .closeNavButton {
+    font-style: normal;
+    font-weight: 600;
+    font-size: ${pxToRem(12)};
+    line-height: ${pxToRem(12)};
+
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-gray-70);
+  }
 `;
