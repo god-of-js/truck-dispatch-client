@@ -103,6 +103,7 @@ export default function TransporterJobs() {
   function bidForJob(jobId: string) {
     if (user?.status !== 'verified') {
       setIsInformUserOfVerificationModalVisible(true);
+      setIsViewJobDetailsVisible(false);
       return;
     }
     if (isViewJobDetailsVisible) setIsViewJobDetailsVisible(false);

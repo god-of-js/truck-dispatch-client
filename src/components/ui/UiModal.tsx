@@ -58,8 +58,7 @@ function positionStyling({ position, size }: CardProps) {
       left: initial;
       border-radius: 0;
       max-height: 100%;
-      width: 45%;
-
+      width: 80%;
       header {
         border-bottom: ${pxToRem(1)} solid var(--color-gray-20);
         padding: ${pxToRem(26)} ${pxToRem(24)};
@@ -67,7 +66,13 @@ function positionStyling({ position, size }: CardProps) {
         h2 {
           font-size: ${pxToRem(24)};
         }
-
+      }
+     
+      @media only screen and (min-width: ${sizes.tabletLargeWidth}) {
+        width: 60%;
+      }
+      @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
+        width: 45%;
       }
     `;
   }
