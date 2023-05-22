@@ -175,70 +175,73 @@ export default function DashboardSidebar() {
           <div className="inner-div">
             <span className="sideMenuTitle">SIDE MENU</span>
 
-            <div className="inner-div-options">
-              <MobileTabList className="sideMenuOptions">
-                {routes.map((route, index) => (
-                  <Link to={route.path} key={index}>
+            <MobileTabList className="sideMenuOptions">
+              {routes.map((route, index) => (
+                <Link to={route.path} key={index}>
+                  <MobileTabOptions>
                     <MobileTab
                       isActive={isRouteActive(route.path)}
                       isExpanded={isExpanded}
                     >
-                      <UiIcon icon={route.iconName} size="24" />
+                      <UiIcon icon={route.iconName} size="20" />
                       <div className="route-name">{route.name}</div>
                     </MobileTab>
-                  </Link>
-                ))}
-                <Link to="/chat">
-                  <MobileTab
-                    isActive={isRouteActive('/chat')}
-                    isExpanded={isExpanded}
-                  >
-                    <UiIcon icon="Chat" size="24" />
-                    {/* TODO: figure out how to manage message count with new design */}
-                    {/* {unreadChat.length !== 0 && (
+
+                    <ActiveTabMobile>
+                      <UiIcon icon="Tick" size="20" />
+                    </ActiveTabMobile>
+                  </MobileTabOptions>
+                </Link>
+              ))}
+              {/* <Link to="/chat">
+              <MobileTabOptions>
+                <MobileTab isActive={isRouteActive('/chat')} isExpanded={isExpanded}>
+                  <UiIcon icon="Chat" size="20" />
+                  {/* TODO: figure out how to manage message count with new design */}
+              {/* {unreadChat.length !== 0 && (
                   <MessageCount>{unreadChat.length}</MessageCount>
                 )} */}
-                    <span className="route-name">Chat</span>
-                  </MobileTab>
-                </Link>
-              </MobileTabList>
+              {/* <span className="route-name">Chat</span> */}
+              {/* </MobileTab> */}
+              {/* </MobileTabOptions> */}
+              {/* </Link> */}
+            </MobileTabList>
 
-              <MobileBottomActions>
-                <div className="mobileUserActions">
-                  <Link to="/profile">
-                    <MobileUserContainer>
-                      <UiAvatar avatar={user?.avatar} />
-                      <div className="user-details">
-                        <div>
-                          <div className="user-name">
-                            {/* {user?.firstName} {user?.lastName} */}
-                            Emeka Manuel
-                          </div>
-                          <div className="user-type">Transporter</div>
+            <MobileBottomActions>
+              <div className="mobileUserActions">
+                <Link to="/profile">
+                  <MobileUserContainer>
+                    <UiAvatar avatar={user?.avatar} />
+                    <div className="user-details">
+                      <div>
+                        <div className="user-name">
+                          {/* {user?.firstName} {user?.lastName} */}
+                          Emeka Manuel
                         </div>
+                        <div className="user-type">Transporter</div>
                       </div>
-                    </MobileUserContainer>
-                  </Link>
-                  <ViewProfile>
-                    <span className="viewProfileButton">View Profile</span>
-                  </ViewProfile>
-                </div>
-              </MobileBottomActions>
-              <MobileBottomExitActions>
-                <div className="mobileUserExitActions">
-                  <Link to="/logout">
-                    <MobileLogoutContainer>
-                      <span className="logout-text">Logout</span>
-                    </MobileLogoutContainer>
-                  </Link>
-                  <ExitMobileNav>
-                    <span className="closeNavButton">
-                      Close <UiIcon icon="CloseNav" size="10" />
-                    </span>
-                  </ExitMobileNav>
-                </div>
-              </MobileBottomExitActions>
-            </div>
+                    </div>
+                  </MobileUserContainer>
+                </Link>
+                <ViewProfile>
+                  <span className="viewProfileButton">View Profile</span>
+                </ViewProfile>
+              </div>
+            </MobileBottomActions>
+            <MobileBottomExitActions>
+              <div className="mobileUserExitActions">
+                <Link to="/logout">
+                  <MobileLogoutContainer>
+                    <span className="logout-text">Logout</span>
+                  </MobileLogoutContainer>
+                </Link>
+                <ExitMobileNav>
+                  <span className="closeNavButton">
+                    close <UiIcon icon="Close" size="20" />
+                  </span>
+                </ExitMobileNav>
+              </div>
+            </MobileBottomExitActions>
           </div>
         </MobileSideNavbar>
       )}
@@ -490,6 +493,7 @@ const MobileSideNavbar = styled.div`
     width: 100%;
     box-sizing: border-box;
     position: relative;
+    padding-top: ${pxToRem(24)};
 
     .sideMenuTitle {
       position: absolute;
@@ -500,13 +504,6 @@ const MobileSideNavbar = styled.div`
       font-size: ${pxToRem(14)};
       line-height: 140%;
     }
-
-    .inner-div-options {
-      width: 100%;
-      box-sizing: border-box;
-      padding-top:${pxToRem(24)};
-    }
-
   }
 
   @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
@@ -516,15 +513,29 @@ const MobileSideNavbar = styled.div`
 
 const MobileTabList = styled.ul`
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: ${pxToRem(32)} ${pxToRem(32)};
-
-  list-style-type: none;
-
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-around;
+  padding-left: ${pxToRem(16)};
+  padding-top: ${pxToRem(68)};
+  padding-bottom: ${pxToRem(24)};
+  gap: ${pxToRem(12)};
+  position: absolute;
+`;
+const MobileTabOptions = styled.div`
+  width: 300px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: ${pxToRem(8)} ${pxToRem(16)} ${pxToRem(8)} ${pxToRem(16)};
+
+  &:hover {
+    background: var(--color-primary-20);
+    svg {
+      display: flex
+    }
+  }
 `;
 interface TabProps {
   isActive: boolean;
@@ -533,22 +544,27 @@ interface TabProps {
 const activeTabStyleMobile = `
 border-color: var(--color-primary);
 color: var(--color-primary);
-background-color: var(--color-primary-10);
+// background-color: var(--color-primary-10);
+`;
+
+const ActiveTabMobile = styled.div`
+svg{
+  display:none;
+}
 `;
 const MobileTab = styled.li`
-  padding: ${pxToRem(12)};
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: ${pxToRem(8)};
+  gap: ${pxToRem(8)};
+
   font-style: normal;
   font-weight: 400;
-  font-size: ${pxToRem(24)};
+  font-size: ${pxToRem(20)};
   color: ${({ isActive }: TabProps) =>
     isActive ? 'var(--color-primary)' : 'var(--color-gray-80)'};
-  display: flex;
   flex-basis: 0 0 100%;
-  align-items: center;
-  justify-content: ${({ isExpanded }: TabProps) =>
-    isExpanded ? 'flex-start' : 'center'};
-  border-radius: 0 ${pxToRem(8)} ${pxToRem(8)} 0;
-  gap: ${pxToRem(8)};
 
   svg {
     fill: ${({ isActive }: TabProps) =>
@@ -556,14 +572,11 @@ const MobileTab = styled.li`
   }
 
   .route-name {
-    display: ${({ isExpanded }: TabProps) => isExpanded && 'block'};
+    display: 'block';
   }
-  ${({ isActive }: TabProps) => isActive && activeTabStyleMobile}
-  &:hover {
-    ${activeTabStyleMobile}
-  }
+  // ${({ isActive }: TabProps) => isActive && activeTabStyleMobile}
 
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+  @media only screen and (min-width: ${sizes.mobileSmall}) {
     border-bottom: none;
     border-left: ${pxToRem(4)} solid
       ${({ isActive }: { isActive: boolean }) =>
@@ -704,17 +717,18 @@ const ViewProfile = styled.div`
 
 const MobileBottomExitActions = styled.div`
   box-sizing: border-box;
-  display: column;
+  display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
   padding: 24px;
   gap: 12px;
-  isolation: isolate;
 
   position: absolute;
-  width: 100%;
+  width: 375px;
+  height: 88px;
   left: 0px;
+  top: 593px;
 
   .mobileUserExitActions {
     display: flex;
@@ -725,7 +739,6 @@ const MobileBottomExitActions = styled.div`
     gap: 12px;
 
     width: 100%;
-    height: 40px;
   }
 `;
 const MobileLogoutContainer = styled.div`
@@ -756,6 +769,9 @@ const ExitMobileNav = styled.div`
   border-radius: 8px;
 
   .closeNavButton {
+    display: flex;
+    align-items: center;
+    gap: 2px;
     font-style: normal;
     font-weight: 600;
     font-size: ${pxToRem(12)};

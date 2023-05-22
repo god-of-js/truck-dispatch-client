@@ -49,6 +49,7 @@ import { ReactComponent as Notification } from './icons/notification.svg';
 import { ReactComponent as PasswordCheck } from './icons/password-check.svg';
 import { ReactComponent as Refresh } from './icons/refresh.svg';
 import { ReactComponent as Settings } from './icons/settings.svg';
+import { ReactComponent as Tick } from './icons/tick.svg';
 import { ReactComponent as Truck } from './icons/truck.svg';
 import { ReactComponent as TruckRemove } from './icons/truck-remove.svg';
 import { ReactComponent as TruckTick } from './icons/ticked-truck.svg';
@@ -101,6 +102,7 @@ const icons = {
   Suitcase: <Suitcase />,
   Star: <Star />,
   Settings: <Settings />,
+  Tick: <Tick/>,
   TruckTick: <TruckTick />,
   Truck: <Truck />,
   TruckRemove: <TruckRemove />,
