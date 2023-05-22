@@ -144,7 +144,7 @@ export function generateReference() {
   return key;
 }
 
-export function convertDate(dateToConvert: number) {
+export function convertToFullDate(dateToConvert: number) {
   const date = new Date(dateToConvert);
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const months = [
@@ -172,6 +172,33 @@ export function convertDate(dateToConvert: number) {
   return `${dayOfWeek}, ${month} ${dayOfMonth}${suffix} ${year}`;
 }
 
+export function convertToDdMmmYYYYDateFormat(dateToConvert: string) {
+  const inputDate = dateToConvert;
+
+  const date = new Date(inputDate);
+
+  const monthNames = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+
+  const day = date.getDate();
+  const month = monthNames[date.getMonth()];
+  const year = date.getFullYear();
+
+  return `${day}-${month}-${year}`;
+}
+
 export function saveTokenVerificationInfo(data: TokenVerificationData) {
   localStorage.setItem('otp-pin-id', data.pinId);
   localStorage.setItem('otp-phone-number', data.to);
@@ -191,4 +218,40 @@ function getNumberSuffix(dayOfMonth: number) {
     default:
       return 'th';
   }
+}
+/**
+ * This function can be used for filters e.g the nav filter on the TopNav.
+ * @param
+ * field: string; The field param takes the field been used for the filter.
+ * @param
+ * value: The value param sends the value of the filter, e.g. if the filter currently selected is by Company, then the value would be company or similar.
+ * @param
+ * data: this would be the array that would be filtered to give what we want.
+ */
+export function filterByFieldInObject<T = any>(
+  field: string,
+  value: string,
+  data: any[],
+): T[] {
+  return data.filter((item) => {
+    const fieldParts = field.split('.');
+
+    if (fieldParts.length === 1) {
+      // Base case: Field is not nested
+      return item[field] === value;
+    }
+
+    // Recursive case: Field is nested
+    const [currentField, ...remainingFields] = fieldParts;
+    const nestedItem = item[currentField];
+
+    if (nestedItem) {
+      return (
+        filterByFieldInObject<T>(remainingFields.join('.'), value, [nestedItem])
+          .length > 0
+      );
+    }
+
+    return false;
+  }) as T[];
 }

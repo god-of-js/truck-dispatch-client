@@ -57,11 +57,6 @@ const BidCheckoutPage = lazy(() => import('../pages/bids/BidCheckoutPage'));
 const TransporterJobsPage = lazy(
   () => import('../pages/jobs/TransporterJobsPage'),
 );
-const ViewTransporterJobDetailsPage = lazy(
-  () => import('../pages/jobs/ViewTransporterJobDetailsPage'),
-);
-const BidOnJobPage = lazy(() => import('../pages/jobs/BidOnJobPage'));
-
 const ChatPage = lazy(() => import('../pages/chat/ChatPage'));
 
 // VEHICLES
@@ -199,16 +194,6 @@ const router = createBrowserRouter([
         path: '/available-jobs',
         id: 'Jobs',
         element: <TransporterJobsPage />,
-      },
-      {
-        path: '/available-jobs/:tripId',
-        id: 'Job Detail',
-        element: <ViewTransporterJobDetailsPage />,
-      },
-      {
-        path: '/available-jobs/:tripId/bid',
-        id: 'Bid on Job',
-        element: <BidOnJobPage />,
       },
       {
         path: '/vehicles',

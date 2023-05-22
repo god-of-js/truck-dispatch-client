@@ -1,10 +1,10 @@
-import { createSelector, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import Api from 'Api';
 import Vehicle from 'types/Vehicle';
 import { AppDispatch, AppState, RootState } from '.';
 
 export interface VehicleState {
-  vehicles: any[];
+  vehicles: Vehicle[];
 }
 const initialState: VehicleState = {
   vehicles: [],
@@ -46,6 +46,14 @@ export const getVehicles = () => {
   return (dispatch: AppDispatch) => {
     return Api.getVehicles().then((data) => {
       dispatch(setVehicles(data));
+    });
+  };
+};
+
+export const updateVehicle = (vehicleData: FormData, vehicleId: string) => {
+  return (dispatch: AppDispatch) => {
+    return Api.updateVehicle(vehicleData, vehicleId).then((data) => {
+      dispatch(setVehicle(data));
     });
   };
 };

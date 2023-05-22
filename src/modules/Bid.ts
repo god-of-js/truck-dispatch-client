@@ -1,6 +1,7 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import Api from 'Api';
 import Bid from 'types/Bid';
+import CreateBid from 'types/CreateBid';
 import { AppDispatch, AppState, RootState } from '.';
 
 export interface BidState {
@@ -20,7 +21,13 @@ export const BidsSlice = createSlice({
       state.bids = action.payload;
     },
     setBid: (state: BidState, action: { payload: Bid }) => {
-      state.bid = action.payload;
+      const bid = state.bids.find(({ _id }) => _id === action.payload._id);
+
+      if (bid) {
+        Object.assign(bid, action.payload);
+        return;
+      }
+      state.bids.push(action.payload);
     },
   },
 });
@@ -31,7 +38,7 @@ export default BidsSlice.reducer;
 const bids = (state: RootState) => state.bid.bids;
 export const selectBid = (
   valueToQueryWith: string,
-  queryParam: '_id' | 'transporterId' = '_id',
+  queryParam: '_id' | 'transporterId' | 'tripId' = '_id',
 ) =>
   createSelector(bids, (bidArr: Bid[]) => {
     return bidArr.find((bid) => valueToQueryWith === bid[queryParam]);
@@ -45,17 +52,15 @@ export function getBidsWithTripId(tripId: string) {
   };
 }
 
-export function getTransporterBidWithTripId(tripId: string) {
-  return (dispatch: AppDispatch, state: AppState) => {
-    // Trip has already been loaded.
-    if (state().bid.bid?.tripId === tripId) return;
-    return Api.getTransporterBidWithTripId(tripId).then((data) => {
-      dispatch(setBid(data));
+export function getTransporterBids() {
+  return (dispatch: AppDispatch) => {
+    return Api.getTransporterBids().then((data) => {
+      dispatch(setBids(data));
     });
   };
 }
 
-export function createBid(data: Bid) {
+export function createBid(data: CreateBid) {
   return (dispatch: AppDispatch) => {
     if (!data.tripId) throw new Error('400: No trip id been sent');
     return Api.createBid(data).then((bid) => {

@@ -14,7 +14,7 @@ export default function UiBackButton() {
   return (
     <UiButton variant="primary-text" onClick={goBack}>
       <ButtonStyling>
-        <UiIcon icon="ArrowLeft" /> <span>Go Back </span>
+        <UiIcon icon="CaretLeft" /> <span>Go Back </span>
       </ButtonStyling>
     </UiButton>
   );

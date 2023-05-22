@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Loader from 'components/layout/Loader';
 
 interface Props {
   children?: React.ReactNode;
@@ -53,7 +54,13 @@ export default function UiButton({
       isFullWidth={isFullWidth}
       isSquare={isSquare}
     >
-      {loading ? <span>Loading...</span> : children}
+      {loading ? (
+        <div className="loader-wrapper">
+          <Loader size="s" />
+        </div>
+      ) : (
+        children
+      )}
     </ButtonContainer>
   );
 }
@@ -109,6 +116,15 @@ const ButtonContainer = styled.button<Props>`
   width: ${({ isFullWidth }) => (isFullWidth ? '100%' : 'fit-content')};
   white-space: nowrap;
   transition: all 0.2s ease-in-out;
+
+  .loader-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 ${pxToRem(32)};
+    width: 100%;
+    height: 100%;
+  }
 
   &.primary {
     background-color: var(--color-primary);
@@ -181,6 +197,10 @@ const ButtonContainer = styled.button<Props>`
   &.secondary {
     background-color: var(--color-primary-10);
     color: var(--color-primary);
+    svg {
+      fill: ${({ disabled }) =>
+        disabled ? 'var(--color-primary-30)' : 'var(--color-primary)'};
+    }
     ${({ disabled }) => getColor(disabled!, `var(--color-primary-10)`)};
     ${({ disabled }) => disabled && `color: var(--color-primary-30);`}
 

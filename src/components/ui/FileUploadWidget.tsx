@@ -132,7 +132,7 @@ export default function FileUploadWidget({
     return (
       <FieldUploadStyle>
         {value && !acceptMultiple ? (
-          <div>{getFileName(value)}</div>
+          <div className="file-name">{getFileName(value)}</div>
         ) : (
           <span>Choose file</span>
         )}
@@ -141,7 +141,7 @@ export default function FileUploadWidget({
         </span>
       </FieldUploadStyle>
     );
-  }, [fileUrl]);
+  }, [fileUrl, value]);
 
   useEffect(() => {
     if (value instanceof File && fileType === 'image') {
@@ -149,6 +149,8 @@ export default function FileUploadWidget({
         const file = await readFile(value);
         if (file) setFileUrl(file);
       })();
+    } else if (typeof value === 'string') {
+      setFileUrl(value);
     }
   }, [value]);
 
@@ -198,6 +200,13 @@ const FieldUploadStyle = styled.div`
   color: var(--color-neutralBlack);
   font-size: ${pxToRem(14)};
   line-height: ${pxToRem(24)};
+
+  .file-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 80%;
+  }
   .upload-tag {
     width: 8.5%;
     display: flex;

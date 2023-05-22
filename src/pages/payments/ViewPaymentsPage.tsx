@@ -10,7 +10,11 @@ import { DropDownData } from 'ui/UiDropdownMenu';
 import UiOverlay from 'ui/UiOverlay';
 import UiPill from 'ui/UiPill';
 import UiTable from 'ui/UiTable';
-import { abbreviateNumber, convertDate, toAnyAction } from 'utils/helpers';
+import {
+  abbreviateNumber,
+  convertToFullDate,
+  toAnyAction,
+} from 'utils/helpers';
 import { getTrips } from 'modules/Trips';
 
 function ViewPaymentsPage() {
@@ -71,8 +75,8 @@ function ViewPaymentsPage() {
   const data = useMemo(() => {
     return paymentRequests.map((item) => ({
       ...item,
-      createdAt: <>{convertDate(item.createdAt!)}</>,
-      updatedAt: <>{convertDate(item.updatedAt!)}</>,
+      createdAt: <>{convertToFullDate(item.createdAt!)}</>,
+      updatedAt: <>{convertToFullDate(item.updatedAt!)}</>,
       status: <UiPill variant={getVariant(item.status)}>{item.status}</UiPill>,
       amount: <>NGN {abbreviateNumber(item.amount!)}</>,
     }));
@@ -80,7 +84,7 @@ function ViewPaymentsPage() {
 
   useEffect(() => {
     dispatch(toAnyAction(getPaymentRequestsOfDriver()));
-    dispatch(toAnyAction(getTrips()));
+    // dispatch(toAnyAction(getTrips()));
   }, []);
 
   return (

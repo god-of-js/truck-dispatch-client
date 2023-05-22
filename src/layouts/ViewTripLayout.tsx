@@ -4,7 +4,7 @@ import { Outlet, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { selectTrip } from 'modules/Trips';
+import { getTrip, selectTrip } from 'modules/Trips';
 
 import sizes from 'utils/sizes';
 
@@ -18,6 +18,7 @@ import { getTripRating } from 'modules/Ratings';
 import Rating from 'types/Rating';
 import { getPaymentRequestByTripId } from 'modules/Payments';
 import { RootState } from 'modules/index';
+import { clientBasedUserTypes, serviceBasedUserTypes } from 'utils/constants';
 
 export default function ViewTrip() {
   const { tripId } = useParams();
@@ -28,6 +29,7 @@ export default function ViewTrip() {
   );
   const trip = useSelector(selectTrip(tripId!));
   const [isRatingsModalVisible, setIsRatingsModalVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const unfilteredTabs = [
     {
       label: 'Trip Details',
@@ -57,13 +59,14 @@ export default function ViewTrip() {
 
   const tabs = useMemo(() => {
     return unfilteredTabs.filter((tab) => {
-      if (user?.userType === 'agent') return agentChecks(tab.path);
-      else if (user?.userType === 'transporter')
+      if (clientBasedUserTypes.includes(user?.userType!))
+        return clientChecks(tab.path);
+      if (serviceBasedUserTypes.includes(user?.userType!))
         return transporterChecks(tab.path);
     });
   }, [user, trip, paymentRequest?.status]);
 
-  function agentChecks(path: string) {
+  function clientChecks(path: string) {
     if (path.includes('bids') && trip?.status !== 'awaiting-bid') return false;
     if (
       path.includes('view-payment-request') &&
@@ -101,8 +104,20 @@ export default function ViewTrip() {
     setIsRatingsModalVisible(false);
   }
 
+  function loadTrip() {
+    setLoading(true);
+    dispatch(toAnyAction(getTrip(tripId!))).finally(() => {
+      setLoading(false);
+    });
+  }
+
   useEffect(() => {
-    if (user?.userType === 'agent' && trip?.status === 'completed') {
+    if (!trip) loadTrip();
+
+    if (
+      clientBasedUserTypes.includes(user?.userType!) &&
+      trip?.status === 'completed'
+    ) {
       dispatch(toAnyAction(getTripRating(tripId!))).then((data: Rating) => {
         if (!data) setIsRatingsModalVisible(true);
       });
@@ -115,15 +130,18 @@ export default function ViewTrip() {
 
   return (
     <>
-      {/* TODO: handle is400 */}
       <TabContainer>
         <UiTabs tabs={tabs} />
       </TabContainer>
       <OutletContainer>
         <UiBackButton />
-        <Suspense fallback={<Loader />}>
-          <Outlet />
-        </Suspense>
+        {loading ? (
+          <Loader />
+        ) : (
+          <Suspense fallback={<Loader />}>
+            <Outlet />
+          </Suspense>
+        )}
       </OutletContainer>
       <UiOverlay isVisible={isRatingsModalVisible}>
         <RateTransporter onClose={closeRateTransporter} />

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import Trip from 'types/Trip';
 import sizes from 'utils/sizes';
 import { removeUneditedFields, toAnyAction } from 'utils/helpers';
-import { createTrip, selectTrip, updateTrip } from 'modules/Trips';
+import { createTrip, getTrip, selectTrip, updateTrip } from 'modules/Trips';
 
 import UiTimeline, { TimelineStep } from 'ui/UiTimeline';
 import NewTripForm from 'components/trips/NewTripForm';
@@ -14,7 +14,6 @@ import MessageWithImage from 'ui/MessageWithImage';
 import UiButton from 'ui/UiButton';
 import UiBackButton from 'ui/UiBackButton';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Toast } from 'utils/toast';
 import NewTrip from 'types/NewTrip';
 
 interface Step extends TimelineStep {
@@ -29,7 +28,6 @@ type CurrentStep =
 
 export default function NewTripPage() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { tripId } = useParams();
   const trip = useSelector(selectTrip(tripId || ''));
   const newTripSteps: Step[] = [
@@ -115,6 +113,15 @@ export default function NewTripPage() {
         setLoading(false);
       });
   }
+
+  useEffect(() => {
+    if (tripId) {
+      setLoading(true);
+      dispatch(toAnyAction(getTrip(tripId))).then(() => {
+        setLoading(false);
+      });
+    }
+  }, [tripId]);
 
   return (
     <PageStyling>

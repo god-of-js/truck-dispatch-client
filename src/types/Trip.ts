@@ -18,7 +18,8 @@ export default interface Trip {
   jobType?: (typeof jobTypes)[number];
   weight: number;
   instructions?: string;
-  agentId: string;
+  shipperId: string;
+  tripOwnerUserType?: string;
   transporterId?: string;
   TDO?: string;
   paymentId?: string;

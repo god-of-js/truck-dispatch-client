@@ -1,13 +1,14 @@
-import React, { Ref, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import styled from 'styled-components';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input/input';
-import UiIcon from './UiIcon';
+import UiIcon, { Icons } from './UiIcon';
 import UiField from './UiField';
 
 export type InputType = 'text' | 'password' | 'number' | 'phone' | 'date';
+type Sizes = 'large' | 'md' | 's' | 'text';
 interface Props {
-  label: string;
+  label?: string;
   type?: InputType;
   value: string | null | number;
   placeholder?: string;
@@ -16,6 +17,8 @@ interface Props {
    */
   name: string;
   error?: string;
+  size?: Sizes;
+  icon?: Icons;
   disabled?: boolean;
   inputRef?: React.RefObject<HTMLInputElement>;
   onChange: (event: { name: string; value: string | null }) => void;
@@ -27,6 +30,8 @@ export default function UiInput({
   name,
   value,
   placeholder,
+  size = 'large',
+  icon,
   disabled,
   error,
   inputRef,
@@ -49,7 +54,7 @@ export default function UiInput({
 
   return (
     <UiField label={label} error={error}>
-      <InputContainer>
+      <InputContainer hasIcon={!!icon}>
         {inputType === 'phone' ? (
           <PhoneInputContainer>
             <div className="phone-tag">+234</div>
@@ -62,16 +67,20 @@ export default function UiInput({
             />
           </PhoneInputContainer>
         ) : (
-          <Input
-            type={inputType}
-            value={value || ''}
-            placeholder={placeholder}
-            name={name}
-            ref={inputRef}
-            hasError={!!error}
-            disabled={disabled}
-            onChange={sendValue}
-          />
+          <div className="input-wrapper">
+            {!!icon && <UiIcon icon={icon} size="20" />}
+            <Input
+              type={inputType}
+              value={value || ''}
+              placeholder={placeholder}
+              name={name}
+              ref={inputRef}
+              hasError={!!error}
+              size={size}
+              disabled={disabled}
+              onChange={sendValue}
+            />
+          </div>
         )}
 
         {type === 'password' && (
@@ -87,6 +96,28 @@ export default function UiInput({
   );
 }
 
+interface InputContainerProps {
+  hasIcon: boolean;
+}
+function iconVariant(icon: boolean) {
+  if (icon) {
+    return `
+    .input-wrapper{
+      position: relative;
+      input {
+        padding-left: ${pxToRem(44)};
+      }
+      svg {
+        position: absolute;
+        height: 100%;
+        left: ${pxToRem(14)};
+        top: 0;
+      }
+    }
+    `;
+  }
+}
+
 const PhoneInputContainer = styled.div`
   display: flex;
   .phone-tag {
@@ -100,17 +131,23 @@ const PhoneInputContainer = styled.div`
   }
 `;
 
-const Input = styled.input`
+interface InputProps {
+  hasError: boolean;
+  size: Sizes;
+}
+// TODO: replace any with InputProps.
+const Input = styled.input<any>`
   padding: ${pxToRem(16)};
-  height: var(--base-height);
+  height: ${({ size }) =>
+    `var(--base-height${['large', 'text'].includes(size) ? '' : `-${size}`})`};
   gap: ${pxToRem(8)};
   width: 100%;
   font-size: ${pxToRem(14)};
   font-family: 'thiccboi-medium';
   border: ${pxToRem(1)} solid;
-  border-color: ${({ hasError }: { hasError: boolean }) =>
+  border-color: ${({ hasError }) =>
     hasError ? 'var(--color-danger)' : 'var(--color-gray)'};
-  background: #ffffff;
+  background: transparent;
   outline: none;
   border-radius: ${pxToRem(8)};
   box-sizing: border-box;
@@ -127,8 +164,9 @@ const Input = styled.input`
   }
 `;
 
-const InputContainer = styled.div`
+const InputContainer = styled.div<InputContainerProps>`
   position: relative;
+  ${({ hasIcon }) => iconVariant(!!hasIcon)};
 `;
 
 const IconButton = styled.div`
