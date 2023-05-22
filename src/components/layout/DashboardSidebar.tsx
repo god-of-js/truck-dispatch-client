@@ -169,87 +169,11 @@ export default function DashboardSidebar() {
           </button>
         </div>
       </MobileNav>
-
-      {isMobileExpanded && (
-        <MobileSideNavbar>
-          <div className="inner-div">
-            <span className="sideMenuTitle">SIDE MENU</span>
-
-            <MobileTabList className="sideMenuOptions">
-              {routes.map((route, index) => (
-                <Link to={route.path} key={index}>
-                  <MobileTabOptions>
-                    <MobileTab
-                      isActive={isRouteActive(route.path)}
-                      isExpanded={isExpanded}
-                    >
-                      <UiIcon icon={route.iconName} size="20" />
-                      <div className="route-name">{route.name}</div>
-                    </MobileTab>
-
-                    <ActiveTabMobile>
-                      <UiIcon icon="Tick" size="20" />
-                    </ActiveTabMobile>
-                  </MobileTabOptions>
-                </Link>
-              ))}
-              {/* <Link to="/chat">
-              <MobileTabOptions>
-                <MobileTab isActive={isRouteActive('/chat')} isExpanded={isExpanded}>
-                  <UiIcon icon="Chat" size="20" />
-                  {/* TODO: figure out how to manage message count with new design */}
-              {/* {unreadChat.length !== 0 && (
-                  <MessageCount>{unreadChat.length}</MessageCount>
-                )} */}
-              {/* <span className="route-name">Chat</span> */}
-              {/* </MobileTab> */}
-              {/* </MobileTabOptions> */}
-              {/* </Link> */}
-            </MobileTabList>
-
-            <MobileBottomActions>
-              <div className="mobileUserActions">
-                <Link to="/profile">
-                  <MobileUserContainer>
-                    <UiAvatar avatar={user?.avatar} />
-                    <div className="user-details">
-                      <div>
-                        <div className="user-name">
-                          {/* {user?.firstName} {user?.lastName} */}
-                          Emeka Manuel
-                        </div>
-                        <div className="user-type">Transporter</div>
-                      </div>
-                    </div>
-                  </MobileUserContainer>
-                </Link>
-                <ViewProfile>
-                  <span className="viewProfileButton">View Profile</span>
-                </ViewProfile>
-              </div>
-            </MobileBottomActions>
-            <MobileBottomExitActions>
-              <div className="mobileUserExitActions">
-                <Link to="/logout">
-                  <MobileLogoutContainer>
-                    <span className="logout-text">Logout</span>
-                  </MobileLogoutContainer>
-                </Link>
-                <ExitMobileNav>
-                  <span className="closeNavButton">
-                    close <UiIcon icon="Close" size="20" />
-                  </span>
-                </ExitMobileNav>
-              </div>
-            </MobileBottomExitActions>
-          </div>
-        </MobileSideNavbar>
-      )}
     </Sidebar>
   );
 }
 
-const Sidebar = styled.nav`
+const Sidebar = styled.nav<{ isExpanded: boolean }>`
   background: #ffffff;
   border-top: 1px solid var(--color-gray-200);
   position: fixed;
@@ -289,7 +213,7 @@ const Sidebar = styled.nav`
           color: var(--color-neutralBlack);
           font-size: ${pxToRem(16)};
           font-weight: 700;
-          display: ${({ isExpanded }: { isExpanded: boolean }) =>
+          display: ${({ isExpanded }) =>
             isExpanded ? 'block' : 'none'};
         }
       }
@@ -317,8 +241,8 @@ const Sidebar = styled.nav`
   }
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    width: ${({ isExpanded }: { isExpanded: boolean }) =>
-      isExpanded ? '16%' : '7%'};
+    width: ${({ isExpanded }) =>
+      isExpanded ? pxToRem(240) : pxToRem(124)};
     border-top: none;
     position: static;
     border-right: ${pxToRem(1)} solid var(--color-gray-200);
@@ -349,7 +273,7 @@ background-color: var(--color-primary-10);
 svg {
   fill: var(--color-primary);
 }`;
-const Tab = styled.li`
+const Tab = styled.li<TabProps>`
   padding: ${pxToRem(12)};
   font-size: ${pxToRem(16)};
   color: ${({ isActive }: TabProps) =>
@@ -357,7 +281,7 @@ const Tab = styled.li`
   font-weight: 600;
   display: flex;
   align-items: center;
-  justify-content: ${({ isExpanded }: TabProps) =>
+  justify-content: ${({ isExpanded }) =>
     isExpanded ? 'flex-start' : 'center'};
   border-radius: 0 ${pxToRem(8)} ${pxToRem(8)} 0;
   gap: ${pxToRem(8)};
@@ -368,9 +292,9 @@ const Tab = styled.li`
   }
 
   .route-name {
-    display: ${({ isExpanded }: TabProps) => (isExpanded ? 'block' : 'none')};
+    display: ${({ isExpanded }) => (isExpanded ? 'block' : 'none')};
   }
-  ${({ isActive }: TabProps) => isActive && activeTabStyle}
+  ${({ isActive }) => isActive && activeTabStyle}
   &:hover {
     ${activeTabStyle}
   }
@@ -381,14 +305,14 @@ const Tab = styled.li`
     border-bottom: none;
     padding: ${pxToRem(2)};
     border-bottom: ${pxToRem(4)} solid
-      ${({ isActive }: TabProps) =>
+      ${({ isActive }) =>
         isActive ? 'var(--color-primary)' : 'transparent'};
   }
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     border-bottom: none;
     border-left: ${pxToRem(4)} solid
-      ${({ isActive }: { isActive: boolean }) =>
+      ${({ isActive }) =>
         isActive ? 'var(--color-primary)' : 'transparent'};
     margin-bottom: ${pxToRem(12)};
   }
@@ -408,7 +332,7 @@ const BottomActions = styled.div`
   }
 `;
 
-const UserContainer = styled.div`
+const UserContainer = styled.div<{ isExpanded: boolean }>`
   display: flex;
   font-weight: 600;
   gap: ${pxToRem(8)};
@@ -417,7 +341,7 @@ const UserContainer = styled.div`
   padding: 0 ${pxToRem(24)};
   color: var(--color-gray-80);
   display: flex;
-  justify-content: ${({ isExpanded }: { isExpanded: boolean }) =>
+  justify-content: ${({ isExpanded }) =>
     isExpanded ? 'flex-start' : 'center'};
 
   .user-name {
@@ -607,7 +531,7 @@ const MobileNav = styled.div`
     padding: 0px;
     gap: ${pxToRem(20)};
 
-    width: 80%%;
+    width: 80%;
     height: ${pxToRem(44)};
 
     .mobile-options {
@@ -620,7 +544,6 @@ const MobileNav = styled.div`
       background: var(--color-gray-20);
       border: 1px solid var(--color-gray-20);
       border-radius: 8px;
-      text-edge: cap;
       letter-spacing: -0.02em;
       color: var(--color-gray-70);
 
@@ -636,149 +559,5 @@ const MobileNav = styled.div`
     display: flex;
     align-items: center;
     width: 100%;
-  }
-`;
-
-const MobileBottomActions = styled.div`
-  box-sizing: border-box;
-  display: column;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 24px;
-  gap: 12px;
-  isolation: isolate;
-
-  position: absolute;
-  width: 375px;
-  height: 88px;
-  left: 0px;
-  top: 509px;
-
-  .mobileUserActions {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0px;
-    gap: 12px;
-
-    width: 327px;
-    height: 40px;
-  }
-`;
-
-const MobileUserContainer = styled.div`
-  display: flex;
-  font-weight: 600;
-  gap: ${pxToRem(8)};
-  opacity: 0.8;
-  cursor: pointer;
-  color: var(--color-gray-80);
-  display: flex;
-  justify-content: flex-start;
-
-  .user-name {
-    font-size: ${pxToRem(16)};
-    font-weight: 600;
-    font-family: 'thiccboi-medium';
-  }
-  .user-type {
-    font-size: ${pxToRem(10)};
-    font-weight: 400;
-    margin-top: ${pxToRem(8)};
-    text-transform: uppercase;
-  }
-`;
-const ViewProfile = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: ${pxToRem(12)};
-  gap: 8px;
-
-  background: var(--color-primary-10);
-
-  border: 1px solid var(--color-primary-10);
-  border-radius: 8px;
-
-  .viewProfileButton {
-    font-style: normal;
-    font-weight: 600;
-    font-size: ${pxToRem(12)};
-    line-height: ${pxToRem(12)};
-
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    color: var(--color-primary);
-  }
-`;
-
-const MobileBottomExitActions = styled.div`
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 24px;
-  gap: 12px;
-
-  position: absolute;
-  width: 375px;
-  height: 88px;
-  left: 0px;
-  top: 593px;
-
-  .mobileUserExitActions {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0px;
-    gap: 12px;
-
-    width: 100%;
-  }
-`;
-const MobileLogoutContainer = styled.div`
-  display: flex;
-
-  .logout-text {
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 140%;
-    leading-trim: both;
-    text-edge: cap;
-    letter-spacing: -0.02em;
-    color: var(--color-danger);
-  }
-`;
-
-const ExitMobileNav = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: ${pxToRem(12)};
-
-  background: var(--color-gray-20);
-
-  border: 1px solid var(--color-primary-10);
-  border-radius: 8px;
-
-  .closeNavButton {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    font-style: normal;
-    font-weight: 600;
-    font-size: ${pxToRem(12)};
-    line-height: ${pxToRem(12)};
-
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    color: var(--color-gray-70);
   }
 `;
