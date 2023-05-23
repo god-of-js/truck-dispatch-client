@@ -76,7 +76,7 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
       return;
     }
     setLoading(true);
-   return  dispatch(
+    return dispatch(
       toAnyAction(
         createBid({
           ...formData,
@@ -90,7 +90,10 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
   }
 
   function updateJobBid() {
-    const dataToUpdate = removeUneditedFields<Bid>(bid!, {...formData, vehicle});
+    const dataToUpdate = removeUneditedFields<Bid>(bid!, {
+      ...formData,
+      vehicle,
+    });
     setLoading(true);
     return dispatch(
       toAnyAction(updateBid({ ...dataToUpdate, tripId: jobId! })),
@@ -101,13 +104,12 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
 
   function onSubmit() {
     if (user?.status !== 'verified') {
-      setIsInformUserOfVerificationModalVisible(true)
+      setIsInformUserOfVerificationModalVisible(true);
       return;
     }
-    bid ? updateJobBid() : bidOnJob()
-
+    bid ? updateJobBid() : bidOnJob();
   }
-   useEffect(() => {
+  useEffect(() => {
     dispatch(toAnyAction(getVehicles()));
   }, []);
 

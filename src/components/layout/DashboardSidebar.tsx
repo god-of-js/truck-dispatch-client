@@ -3,12 +3,14 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import sizes from 'utils/sizes';
+import { ReactComponent as AppLogo } from '../../assets/logo.svg';
 
 import UiIcon, { Icons } from '../ui/UiIcon';
 import { RootState } from 'modules/index';
 import { removeUserSessionId } from 'utils/localStorageMethods';
 import { selectUnreadChats } from 'modules/Chat';
 import UiAvatar from 'ui/UiAvatar';
+import UiButton from 'ui/UiButton';
 
 interface Route {
   iconName: Icons;
@@ -20,7 +22,7 @@ export default function DashboardSidebar() {
   const unreadChat = useSelector(selectUnreadChats);
   const navigate = useNavigate();
   const appLocation = useLocation();
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   const [isMobileExpanded, setIsMobileExpanded] = useState(false);
 
   const transporterRoutes: Route[] = [
@@ -71,6 +73,7 @@ export default function DashboardSidebar() {
 
     return 'company';
   }, [user]);
+
   const routes = useMemo(() => {
     if (!user) return [];
 
@@ -83,139 +86,247 @@ export default function DashboardSidebar() {
     return appLocation.pathname.includes(route);
   }
 
-  const logOutUser = () => {
+  function logOutUser(){
     removeUserSessionId();
     navigate('/auth/login');
   };
 
-  const toggleShowNames = () => {
+  function toggleShowNames () {
     setIsExpanded(!isExpanded);
   };
 
-  const toggleShowMobileNav = () => {
-    setIsMobileExpanded(!isMobileExpanded);
-  };
-
   return (
-    <Sidebar isExpanded={isExpanded}>
-      <div className="sidebar__inner">
-        <header>
-          <Link to="/my-trips">
-            <div className="logo-container">
-              <div className="logo-place-holder" />
+    <>
+      <Sidebar isExpanded={isExpanded} isMobileExpanded={isMobileExpanded}>
+        <div className="sidebar__inner">
+          <header className="hide-in-small-screen">
+            <Link to="/my-trips">
+              <AppLogo />
               <span>Truckdispatch</span>
-            </div>
-          </Link>
-          <button className="toggle-btn" onClick={toggleShowNames}>
-            <UiIcon
-              icon={isExpanded ? 'ArrowCircleLeft' : 'ArrowCircleRight'}
-              size="20"
-            />
-          </button>
-        </header>
-
-        <TabList>
-          {routes.map((route, index) => (
-            <Link to={route.path} key={index}>
-              <Tab isActive={isRouteActive(route.path)} isExpanded={isExpanded}>
-                <UiIcon icon={route.iconName} size="24" />
-                {isExpanded && <div className="route-name">{route.name}</div>}
-              </Tab>
             </Link>
-          ))}
-          <Link to="/chat">
-            <Tab isActive={isRouteActive('/chat')} isExpanded={isExpanded}>
-              <UiIcon icon="Chat" size="24" />
-              {/* TODO: figure out how to manage message count with new design */}
-              {/* {unreadChat.length !== 0 && (
-                  <MessageCount>{unreadChat.length}</MessageCount>
-                )} */}
-              <span className="route-name">Chat</span>
-            </Tab>
-          </Link>
-        </TabList>
+            <button className="toggle-btn" onClick={toggleShowNames}>
+              <UiIcon
+                icon={isExpanded ? 'ArrowCircleLeft' : 'ArrowCircleRight'}
+                size="20"
+              />
+            </button>
+          </header>
+          <div className="side-menu-text hide-in-large-screen">SIDE MENU</div>
 
-        <BottomActions>
-          <Link to="/profile">
-            <UserContainer isExpanded={isExpanded}>
-              <UiAvatar avatar={user?.avatar} />
-              <div className="user-details">
-                {isExpanded && (
-                  <div>
-                    <div className="user-name">
-                      {user?.firstName} {user?.lastName}
-                    </div>
-                    <div className="user-type">{userType}</div>
+          <ul>
+            {routes.map((route, index) => (
+              <Link to={route.path} key={index}>
+                <li className={isRouteActive(route.path) ? 'active' : ''}>
+                  <div className="list-item">
+                    <UiIcon icon={route.iconName} size="24" />{' '}
+                    <span>{route.name}</span>
                   </div>
-                )}
+                  <div className="hide-in-large-screen">
+                    {isRouteActive(route.path) && <UiIcon icon="Tick" />}
+                  </div>
+                </li>
+              </Link>
+            ))}
+            <Link to="/chat">
+              <li className={isRouteActive('/chat') ? 'active' : ''}>
+                <div className="list-item">
+                  <UiIcon icon="Chat" size="24" /> <span>Chat</span>
+                </div>
+                {isRouteActive('/chat') && <UiIcon icon="Tick" />}
+              </li>
+            </Link>
+          </ul>
+
+          <div className="bottom-actions">
+            <div className="profile">
+              <div className="user-details">
+                <UiAvatar avatar={user?.avatar} />
+                <div>
+                  <div className="user-name">{`${user?.firstName} ${user?.lastName}`}</div>
+                  <div className="user-type">{userType}</div>
+                </div>
               </div>
-            </UserContainer>
-          </Link>
-          <LogOutContainer isExpanded={isExpanded} onClick={() => logOutUser()}>
-            <div className="to-be-removed">
-              <UiIcon icon="Logout" size="24" />
-              {isExpanded && <p className="logout">Logout</p>}
+              <div className="hide-in-large-screen">
+                <UiButton variant="secondary">View profile</UiButton>
+              </div>
             </div>
-          </LogOutContainer>
-        </BottomActions>
-      </div>
-      <MobileNav>
-        <div className="mobile-bottom-nav">
-          <span className="mobile-options">Jobs</span>
-          <span className="mobile-options">My Trips</span>
-          <span className="mobile-options">Vehicles</span>
-          <button className="mobile-options" onClick={toggleShowMobileNav}>
-            <UiIcon icon="CloseNav" size="24" />
-          </button>
+            <div className="logout-container">
+              <span className="logout-text">Logout</span>
+              <Button
+                className="hide-in-large-screen"
+                onClick={() => setIsMobileExpanded(false)}
+              >
+                <span>Close</span> <UiIcon icon="CloseThick" size="15" />
+              </Button>
+            </div>
+          </div>
         </div>
-      </MobileNav>
-    </Sidebar>
+      </Sidebar>
+      <BottomNav>
+        {routes.slice(0, 3).map((route) => (
+          <Link to={route.path}>
+            <Button className={isRouteActive(route.path) ? 'active' : ''}>
+              {route.name}
+            </Button>
+          </Link>
+        ))}
+        <Button onClick={() => setIsMobileExpanded(true)}>
+          <UiIcon icon="Menu" size="24" />
+        </Button>
+      </BottomNav>
+    </>
   );
 }
 
-const Sidebar = styled.nav<{ isExpanded: boolean }>`
-  background: #ffffff;
-  border-top: 1px solid var(--color-gray-200);
-  position: fixed;
-  z-index: 2;
+const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
+  display: ${({ isMobileExpanded }) => (isMobileExpanded ? 'block' : 'none')};
+  position: absolute;
   bottom: 0;
-  right: 0;
   left: 0;
+  right: 0;
+  background: white;
+  z-index: 2;
+  /* TODO: calc the height of 100% - nav bar height */
+  height: 100%;
 
-  .sidebar__inner {
-    position: relative;
-    height: 100%;
+  .hide-in-small-screen {
+    display: none;
+  }
+
+  .side-menu-text {
+    margin: ${pxToRem(24)} ${pxToRem(16)};
+    font-family: 'thiccboi-extrabold';
+    font-style: normal;
+    font-weight: 700;
+    font-size: ${pxToRem(14)};
+    line-height: 140%;
+    letter-spacing: 0.05em;
+    color: var(--color-gray-70);
+  }
+
+  ul {
+    margin: 0 ${pxToRem(16)};
+    display: grid;
+    gap: ${pxToRem(12)};
+
+    a {
+      text-decoration: none;
+    }
+
+    li {
+      border-radius: ${pxToRem(8)};
+      padding: ${pxToRem(8)};
+      height: ${pxToRem(36)};
+      color: var(--color-gray-70);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .list-item {
+        display: flex;
+        align-items: center;
+        gap: ${pxToRem(8)};
+      }
+
+      &.active {
+        background: var(--color-primary-10);
+        color: var(--color-primary);
+
+        svg {
+          fill: var(--color-primary);
+        }
+      }
+    }
+  }
+
+  .bottom-actions {
+    position: absolute;
+    bottom: 0;
     width: 100%;
 
-    header {
-      border-bottom: ${pxToRem(1)} solid var(--color-gray);
+    .profile {
+      border-bottom: ${pxToRem(1)} solid var(--color-gray-30);
+      border-top: ${pxToRem(1)} solid var(--color-gray-30);
+      padding: ${pxToRem(24)};
       display: flex;
-      justify-content: center;
       align-items: center;
-      padding: ${pxToRem(20)} 0;
-      .logo-container {
+      justify-content: space-between;
+
+      .user-details {
         display: flex;
         align-items: center;
         gap: ${pxToRem(8)};
 
-        @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
-          display: none;
-          border: none;
-        }
-
-        .logo-place-holder {
-          width: ${pxToRem(40)};
-          height: ${pxToRem(40)};
-          background: var(--color-primary);
-          border-radius: ${pxToRem(8)};
-        }
-        span {
-          color: var(--color-neutralBlack);
+        .user-name {
+          font-style: normal;
+          font-weight: 600;
           font-size: ${pxToRem(16)};
-          font-weight: 700;
-          display: ${({ isExpanded }) =>
-            isExpanded ? 'block' : 'none'};
+          line-height: 140%;
+          letter-spacing: -0.02em;
+          color: var(--color-gray-80);
         }
+        .user-type {
+          font-style: normal;
+          font-weight: 400;
+          font-size: ${pxToRem(10)};
+          line-height: 140%;
+          letter-spacing: 0.05em;
+          color: var(--color-gray-80);
+          text-transform: uppercase;
+        }
+      }
+    }
+    .logout-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: ${pxToRem(24)};
+
+      .logout-text {
+        font-style: normal;
+        font-weight: 600;
+        font-size: ${pxToRem(16)};
+        line-height: 140%;
+        letter-spacing: -0.02em;
+        color: var(--color-danger);
+      }
+    }
+  }
+
+  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+    display: block;
+    width: ${({ isExpanded }) => (isExpanded ? pxToRem(260) : pxToRem(124))};
+    border-top: none;
+    position: static;
+    border-right: ${pxToRem(1)} solid var(--color-gray-200);
+
+    .sidebar__inner {
+      height: 100%;
+      width: 100%;
+      position: relative;
+    }
+
+    header {
+      border-bottom: ${pxToRem(1)} solid var(--color-gray);
+      margin-bottom: ${pxToRem(32)};
+      padding: ${pxToRem(28)} ${pxToRem(24)};
+      display: flex !important;
+      align-items: center;
+
+      a {
+        width: 100%;
+        height: 100%;
+        text-decoration: none;
+        font-style: normal;
+        font-family: 'thiccboi-extrabold';
+        font-weight: 700;
+        font-size: ${pxToRem(16)};
+        line-height: 140%;
+        letter-spacing: -0.02em;
+        color: var(--color-neutralBlack);
+        display: flex;
+        align-items: center;
+        gap: ${pxToRem(8)};
       }
 
       .toggle-btn {
@@ -226,338 +337,87 @@ const Sidebar = styled.nav<{ isExpanded: boolean }>`
         border-radius: 50%;
         outline: 0;
         border: transparent;
-
         display: flex;
         justify-content: center;
         align-items: center;
         right: 0;
         margin-right: -${pxToRem(12)};
+      }
+    }
 
-        @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
-          display: none;
+    .side-menu-text {
+      display: none;
+    }
+    .hide-in-large-screen {
+      display: none;
+    }
+    .hide-in-small-screen {
+      display: block;
+    }
+
+    ul {
+      gap: ${pxToRem(24)};
+      li {
+        border-left: ${pxToRem(4)} solid transparent;
+        border-top-left-radius: ${pxToRem(0)};
+        border-bottom-left-radius: ${pxToRem(0)};
+        &.active,
+        &:hover,
+        &:focus {
+          border-left: ${pxToRem(4)} solid var(--color-primary);
+          background: var(--color-primary-10);
+          color: var(--color-primary);
+          svg {
+            fill: var(--color-primary);
+          }
         }
       }
     }
   }
-
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    width: ${({ isExpanded }) =>
-      isExpanded ? pxToRem(240) : pxToRem(124)};
-    border-top: none;
-    position: static;
-    border-right: ${pxToRem(1)} solid var(--color-gray-200);
-  }
 `;
 
-const TabList = styled.ul`
-  padding: ${pxToRem(32)} ${pxToRem(24)};
-  margin: 0;
-  display: flex;
-  justify-content: space-around;
-  list-style-type: none;
-
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    display: block;
-  }
-`;
-
-interface TabProps {
-  isActive: boolean;
-  isExpanded: boolean;
-}
-const activeTabStyle = `
-border-color: var(--color-primary);
-color: var(--color-primary);
-background-color: var(--color-primary-10);
-
-svg {
-  fill: var(--color-primary);
-}`;
-const Tab = styled.li<TabProps>`
-  padding: ${pxToRem(12)};
-  font-size: ${pxToRem(16)};
-  color: ${({ isActive }: TabProps) =>
-    isActive ? 'var(--color-primary)' : 'var(--color-gray-80)'};
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: ${({ isExpanded }) =>
-    isExpanded ? 'flex-start' : 'center'};
-  border-radius: 0 ${pxToRem(8)} ${pxToRem(8)} 0;
-  gap: ${pxToRem(8)};
-
-  svg {
-    fill: ${({ isActive }: TabProps) =>
-      isActive ? 'var(--color-primary)' : 'var(--color-gray-80)'};
-  }
-
-  .route-name {
-    display: ${({ isExpanded }) => (isExpanded ? 'block' : 'none')};
-  }
-  ${({ isActive }) => isActive && activeTabStyle}
-  &:hover {
-    ${activeTabStyle}
-  }
-
-  @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
-    /* Mobile view */
-    display: none;
-    border-bottom: none;
-    padding: ${pxToRem(2)};
-    border-bottom: ${pxToRem(4)} solid
-      ${({ isActive }) =>
-        isActive ? 'var(--color-primary)' : 'transparent'};
-  }
-
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    border-bottom: none;
-    border-left: ${pxToRem(4)} solid
-      ${({ isActive }) =>
-        isActive ? 'var(--color-primary)' : 'transparent'};
-    margin-bottom: ${pxToRem(12)};
-  }
-`;
-
-const BottomActions = styled.div`
-  border-top: ${pxToRem(1)} solid var(--color-gray);
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  margin: 0;
-  padding: ${pxToRem(20)} 0;
-
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    display: block;
-  }
-`;
-
-const UserContainer = styled.div<{ isExpanded: boolean }>`
-  display: flex;
-  font-weight: 600;
-  gap: ${pxToRem(8)};
-  opacity: 0.8;
-  cursor: pointer;
-  padding: 0 ${pxToRem(24)};
-  color: var(--color-gray-80);
-  display: flex;
-  justify-content: ${({ isExpanded }) =>
-    isExpanded ? 'flex-start' : 'center'};
-
-  .user-name {
-    font-size: ${pxToRem(16)};
-    font-weight: 600;
-    font-family: 'thiccboi-medium';
-  }
-  .user-type {
-    font-size: ${pxToRem(10)};
-    font-weight: 400;
-    margin-top: ${pxToRem(8)};
-    text-transform: uppercase;
-  }
-  @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
-    display: none;
-  }
-`;
-
-const LogOutContainer = styled.div`
-  font-weight: 600;
-  opacity: 0.8;
-  cursor: pointer;
-  color: var(--color-danger);
-  padding: ${pxToRem(12)} ${pxToRem(24)};
-  font-size: ${pxToRem(14)};
-
-  .to-be-removed {
-    width: 100%;
-    display: flex;
-    gap: ${pxToRem(8)};
-    justify-content: ${({ isExpanded }: { isExpanded: boolean }) =>
-      isExpanded ? 'flex-start' : 'center'};
-    align-items: center;
-  }
-
-  &:hover {
-    color: var(--color-danger);
-  }
-  @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
-    display: none;
-  }
-`;
-const MessageCount = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 2;
-  background: var(--color-danger-800);
-  color: white;
-  font-size: ${pxToRem(12)};
-  width: ${pxToRem(18)};
-  height: ${pxToRem(18)};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: -${pxToRem(6)};
-  margin-right: -${pxToRem(6)};
-  border-radius: 50%;
-`;
-
-const MobileSideNavbar = styled.div`
-  display: none;
-  position: absolute;
-  height: ${pxToRem(700)};
-  box-sizing: border-box;
-  width: 100%;
+const BottomNav = styled.footer`
+  background: white;
+  border-radius: ${pxToRem(16)} ${pxToRem(16)} 0 0;
+  position: fixed;
   bottom: 0;
   left: 0;
-
-  background: white;
-
-  .inner-div {
-    width: 100%;
-    box-sizing: border-box;
-    position: relative;
-    padding-top: ${pxToRem(24)};
-
-    .sideMenuTitle {
-      position: absolute;
-      padding-top: ${pxToRem(24)};
-      padding-left: ${pxToRem(16)};
-      font-style: normal;
-      font-weight: 700;
-      font-size: ${pxToRem(14)};
-      line-height: 140%;
-    }
-  }
-
-  @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
-    display: flex;
-  }
-`;
-
-const MobileTabList = styled.ul`
+  right: 0;
+  padding: ${pxToRem(20)} ${pxToRem(16)};
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding-left: ${pxToRem(16)};
-  padding-top: ${pxToRem(68)};
-  padding-bottom: ${pxToRem(24)};
-  gap: ${pxToRem(12)};
-  position: absolute;
-`;
-const MobileTabOptions = styled.div`
-  width: 300px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-around;
+  gap: ${pxToRem(10)};
+  z-index: 1;
 
-  padding: ${pxToRem(8)} ${pxToRem(16)} ${pxToRem(8)} ${pxToRem(16)};
-
-  &:hover {
-    background: var(--color-primary-20);
-    svg {
-      display: flex
-    }
+  @media screen and (min-width: ${sizes.mobileLargeWidth}) {
+    display: none;
   }
 `;
-interface TabProps {
-  isActive: boolean;
-  isExpanded: boolean;
-}
-const activeTabStyleMobile = `
-border-color: var(--color-primary);
-color: var(--color-primary);
-// background-color: var(--color-primary-10);
-`;
 
-const ActiveTabMobile = styled.div`
-svg{
-  display:none;
-}
-`;
-const MobileTab = styled.li`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: ${pxToRem(8)};
-  gap: ${pxToRem(8)};
-
+const Button = styled.button`
+  padding: ${pxToRem(12)};
+  gap: ${pxToRem(33)};
+  height: ${pxToRem(44)};
+  background: var(--color-gray-20);
+  border-radius: ${pxToRem(8)};
+  outline: none;
+  border: transparent;
+  font-family: 'thiccboi-bold';
+  letter-spacing: -0.02em;
+  color: var(--color-gray-70);
   font-style: normal;
-  font-weight: 400;
-  font-size: ${pxToRem(20)};
-  color: ${({ isActive }: TabProps) =>
-    isActive ? 'var(--color-primary)' : 'var(--color-gray-80)'};
-  flex-basis: 0 0 100%;
-
-  svg {
-    fill: ${({ isActive }: TabProps) =>
-      isActive ? 'var(--color-primary)' : 'var(--color-gray-80)'};
-  }
-
-  .route-name {
-    display: 'block';
-  }
-  // ${({ isActive }: TabProps) => isActive && activeTabStyleMobile}
-
-  @media only screen and (min-width: ${sizes.mobileSmall}) {
-    border-bottom: none;
-    border-left: ${pxToRem(4)} solid
-      ${({ isActive }: { isActive: boolean }) =>
-        isActive ? 'var(--color-primary)' : 'transparent'};
-    margin-bottom: ${pxToRem(12)};
-  }
-`;
-
-const MobileNav = styled.div`
-  display: none;
-  width: 100%;
-  padding: ${pxToRem(20)} ${pxToRem(16)} ${pxToRem(20)} ${pxToRem(16)};
-  gap: 10px;
+  font-weight: 600;
+  font-size: ${pxToRem(16)};
+  line-height: 140%;
+  border: 1px solid transparent;
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  height: 97px;
-  left: 0px;
-  bottom: 0px;
-  border-radius: 16px 16px 0px 0px;
-  border-top: 1px solid #f1f0f4;
+  align-items: center;
+  gap: ${pxToRem(12)};
 
-  .mobile-bottom-nav {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: space-around;
-    padding: 0px;
-    gap: ${pxToRem(20)};
-
-    width: 80%;
-    height: ${pxToRem(44)};
-
-    .mobile-options {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      padding: ${pxToRem(12)};
-      background: var(--color-gray-20);
-      border: 1px solid var(--color-gray-20);
-      border-radius: 8px;
-      letter-spacing: -0.02em;
-      color: var(--color-gray-70);
-
-      &:hover {
-        color: var(--color-primary);
-        border: 1px solid var(--color-primary);
-        background: var(--color-primary-20);
-      }
-    }
-  }
-
-  @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
-    display: flex;
-    align-items: center;
-    width: 100%;
+  &.active {
+    border-color: var(--color-primary);
+    background: var(--color-primary-10);
+    color: var(--color-primary);
   }
 `;
