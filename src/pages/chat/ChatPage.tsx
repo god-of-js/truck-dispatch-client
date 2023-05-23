@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { RootState } from 'modules/index';
 
 import {
-  selectChatByChatId,
+  selectChatBychatLog,
   createChat,
   readChat,
   selectChatLog,
@@ -24,13 +24,13 @@ import User from 'types/User';
 import uuidv4 from 'utils/uuid';
 
 export default function ChatPage() {
-  const { chatId } = useParams();
+  const { chatLogId } = useParams();
   const dispatch = useDispatch();
   const chatBottomRef = useRef(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const user = useSelector((state: RootState) => state.account.user);
-  const chatLog = useSelector(selectChatLog(chatId!));
-  const chats = useSelector(selectChatByChatId(chatId!));
+  const chatLog = useSelector(selectChatLog(chatLogId!));
+  const chats = useSelector(selectChatBychatLog(chatLogId!));
 
   const defaultFormData = {
     message: '',
@@ -40,7 +40,7 @@ export default function ChatPage() {
 
   const alternateUser = useMemo(() => {
     if (!chatLog || !user) return {} as User;
-    if (chatLog?.clientId === user?._id) {
+    if (chatLog?.client._id === user?._id) {
       return chatLog?.transporter;
     }
 
@@ -55,10 +55,10 @@ export default function ChatPage() {
     const data: Chat = {
       // Temporary ID
       _id: uuidv4(),
-      chatId: chatId!,
+      chatLog: chatLogId!,
       message: formData.message,
-      senderId: user?._id!,
-      receiverId: alternateUser?._id!,
+      sender: user?._id!,
+      receiver: alternateUser?._id!,
       createdAt: Date.now(),
     };
 
@@ -70,7 +70,7 @@ export default function ChatPage() {
     const lastSentChat = chats[chats.length - 1];
     if (
       lastSentChat &&
-      lastSentChat.senderId !== user?._id &&
+      lastSentChat.sender !== user?._id &&
       !lastSentChat.readAt
     ) {
       dispatch(toAnyAction(readChat({ ...lastSentChat, readAt: Date.now() })));
@@ -112,7 +112,7 @@ export default function ChatPage() {
       <ChatContainer>
         <div id="chat-window">
           {chats.map((chat, index) => (
-            <ChatBubble isMine={chat.senderId === user?._id} key={index}>
+            <ChatBubble isMine={chat.sender === user?._id} key={index}>
               <div className="chat-bubble-inner">{chat.message}</div>
             </ChatBubble>
           ))}

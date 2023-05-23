@@ -24,11 +24,11 @@ export default function ChatHeads() {
   }, [chatLogs]);
 
   function alternateUser(log: ChatLog) {
-    return user?._id === log.transporterId ? log.client : log.transporter;
+    return user?._id === log.transporter._id ? log.client : log.transporter;
   }
 
-  function navigateToChat(chatId: string) {
-    navigate(`/chat/${chatId}`);
+  function navigateToChat(chatLog: string) {
+    navigate(`/chat/${chatLog}`);
   }
 
   return (
@@ -37,7 +37,7 @@ export default function ChatHeads() {
         <ChatHead
           key={index}
           hasBeenRead={
-            !!log.lastMessage?.readAt || log.lastMessage?.senderId === user?._id
+            !!log.lastMessage?.readAt || log.lastMessage?.sender === user?._id
           }
           onClick={() => navigateToChat(log._id)}
         >

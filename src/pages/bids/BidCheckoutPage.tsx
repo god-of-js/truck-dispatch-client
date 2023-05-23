@@ -52,7 +52,7 @@ export default function BidCheckoutPage() {
     }
     const paymentData = {
       from: user._id,
-      to: bid.transporterId,
+      to: bid.transporter._id,
       tripId,
       bidId: bid._id,
       paymentReference: payment.reference,
