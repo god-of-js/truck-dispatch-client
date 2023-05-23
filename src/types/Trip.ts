@@ -18,13 +18,10 @@ export default interface Trip {
   jobType?: (typeof jobTypes)[number];
   weight: number;
   instructions?: string;
-  shipperId: string;
   tripOwnerUserType?: string;
-  transporterId?: string;
-  TDO?: string;
-  paymentId?: string;
-  reference: string;
   transporter?: User;
-  tripOwner?: User;
+  tripOwner: User;
+  TDO?: string;
+  reference: string;
   status: 'awaiting-bid' | 'payment-complete' | 'in-progress' | 'completed';
 }

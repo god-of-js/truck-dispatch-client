@@ -15,7 +15,7 @@ interface Props {
   viewJobDetail: (jobId: string) => void;
 }
 export default function JobItem({ job, bidForJob, viewJobDetail }: Props) {
-  const bid = useSelector(selectBid(job._id, 'tripId'));
+  const bid = useSelector(selectBid(job._id, 'trip'));
 
   return (
     <JobItemStyling>

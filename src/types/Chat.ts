@@ -1,9 +1,9 @@
 export default interface Chat {
   _id?: string;
-  chatId: string;
+  chatLog: string;
   message: string;
-  senderId: string;
-  receiverId: string;
+  sender: string;
+  receiver: string;
   temporaryId?: string;
   readAt?: number;
   createdAt?: number;
