@@ -32,7 +32,7 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.account.user);
   const vehicles = useSelector((state: RootState) => state.vehicle.vehicles);
-  const bid = useSelector(selectBid(jobId, 'tripId'));
+  const bid = useSelector(selectBid(jobId, 'trip'));
 
   const [formData, setFormData] = useState<CreateBid>({
     price: NaN,
@@ -96,7 +96,7 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
     });
     setLoading(true);
     return dispatch(
-      toAnyAction(updateBid({ ...dataToUpdate, tripId: jobId! })),
+      toAnyAction(updateBid({ ...dataToUpdate, tripId: jobId!, vehicleId: '' } as CreateBid)),
     ).finally(() => {
       setLoading(false);
     });

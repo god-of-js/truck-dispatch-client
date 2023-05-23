@@ -15,7 +15,7 @@ import AccountDetails from 'types/AccountDetails';
 import BankDetails from 'types/BankDetails';
 import TokenVerificationData from 'types/TokenVerificationData';
 import LoginResponse from 'types/LoginResponse';
-import ChatLogData from 'types/ChatLogData';
+import ChatLogData from 'types/CreateChatLog';
 import ChatLog from 'types/ChatLog';
 import Vehicle from 'types/Vehicle';
 import CreateBid from 'types/CreateBid';
@@ -165,7 +165,7 @@ class ApiService {
     return this.post<Bid>(`/bids/${data.tripId}`, data);
   }
 
-  updateBid(data: Bid): Promise<Bid> {
+  updateBid(data: CreateBid): Promise<Bid> {
     return this.patch<Bid>(`/bids/${data.tripId}`, data);
   }
 
@@ -240,8 +240,8 @@ class ApiService {
     return this.get<ChatLog[]>(`/chat/logs`);
   }
 
-  setChatHasBeenRead(chatId: string) {
-    return this.patch<Chat>(`/chat/read/${chatId}`, {}, true);
+  setChatHasBeenRead(chatLog: string) {
+    return this.patch<Chat>(`/chat/read/${chatLog}`, {}, true);
   }
 
   getBanks(): Promise<Bank[]> {
