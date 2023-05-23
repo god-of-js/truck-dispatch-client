@@ -45,7 +45,7 @@ export default function RateTransporter({ onClose }: Props) {
     setLoading(true);
     let userRated: string;
     if (clientBasedUserTypes.includes(user?.userType!)) {
-      userRated = trip?.transporterId!;
+      userRated = trip?.transporter?._id!;
     } else userRated = trip?.tripOwner?._id!;
 
     Promise.all([
