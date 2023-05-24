@@ -47,19 +47,12 @@ export default function ShipperTripPageContent({ status }: Props) {
     },
     {
       title: 'Trip Status',
-      query: 'status',
+      query: 'statusField',
     },
   ];
 
-  function dropDownData(tripStatus: string): DropDownData[] {
-    if (tripStatus === 'completed' || tripStatus === 'in-progress') {
-      return [
-        {
-          label: 'View Trip',
-          func: navigateToTrip,
-        },
-      ];
-    }
+  function dropDownData(item: unknown): DropDownData[] {
+    const trip = item as Trip;
     return [
       {
         label: 'View Trip',
@@ -69,7 +62,17 @@ export default function ShipperTripPageContent({ status }: Props) {
         label: 'Edit Trip',
         func: editTrip,
       },
-    ];
+    ].filter(({ label }) => {
+      const editIsNotAllowedStatuses = ['in-progress', 'completed'];
+      if (
+        editIsNotAllowedStatuses.includes(trip.status) &&
+        label === 'Edit Trip'
+      ) {
+        return false;
+      }
+
+      return true;
+    });
   }
 
   function responsibleTransporterDetails(transporter?: User) {
@@ -112,12 +115,11 @@ export default function ShipperTripPageContent({ status }: Props) {
       ...trip,
       id: trip._id,
       responsibleTransporter: responsibleTransporterDetails(trip.transporter),
-      status: (
+      statusField: (
         <UiPill variant={getPillVariant(trip.status)}>
           {formatStatus(trip.status)}
         </UiPill>
       ),
-      rawStaus: trip.status,
     }));
   }, [trips]);
 

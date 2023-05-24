@@ -24,6 +24,7 @@ export const clientBasedUserTypes = ['shipper', 'company'];
 
 export const userTypes = [...serviceBasedUserTypes, ...clientBasedUserTypes];
 
+// Do not change order of array
 export const tripStatuses = [
   'awaiting-bid',
   'payment-complete',
