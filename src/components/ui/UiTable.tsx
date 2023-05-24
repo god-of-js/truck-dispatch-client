@@ -13,6 +13,7 @@ interface Header {
 }
 interface Row extends Record<string, any> {
   _id: string;
+  rawStaus: string;
 }
 interface Props {
   // Any is forbidden in this codebase. However, for the sake of the flexibility this component needs,
@@ -25,7 +26,7 @@ interface Props {
   tableTitle: string;
   data: Row[];
   headers: Header[];
-  options?: DropDownData[];
+  options?: DropDownData[] | ((tripStatus: string) => DropDownData[]);
   onRowClick?: (id: string) => void;
   noDataHeaderText?: string;
   noDataImage?: Icons;
@@ -64,6 +65,7 @@ export default function UiTable({
       </NoDataBox>
     );
   }
+  console.log(data);
 
   return (
     <TableContainer>
@@ -90,9 +92,17 @@ export default function UiTable({
                     </TableDataItem>
                   );
                 })}
+
                 {options && (
                   <td className="menu-container">
-                    <UidropdownMenu options={options} itemId={item._id} />
+                    <UidropdownMenu
+                      options={
+                        typeof options === 'function'
+                          ? options(item.rawStaus)
+                          : options
+                      }
+                      itemId={item._id}
+                    />
                   </td>
                 )}
               </TableRow>

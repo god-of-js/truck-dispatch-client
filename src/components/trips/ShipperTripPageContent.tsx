@@ -51,16 +51,26 @@ export default function ShipperTripPageContent({ status }: Props) {
     },
   ];
 
-  const dropDownData: DropDownData[] = [
-    {
-      label: 'View Trip',
-      func: navigateToTrip,
-    },
-    {
-      label: 'Edit Trip',
-      func: editTrip,
-    },
-  ];
+  function dropDownData(tripStatus: string): DropDownData[] {
+    if (tripStatus === 'completed' || tripStatus === 'in-progress') {
+      return [
+        {
+          label: 'View Trip',
+          func: navigateToTrip,
+        },
+      ];
+    }
+    return [
+      {
+        label: 'View Trip',
+        func: navigateToTrip,
+      },
+      {
+        label: 'Edit Trip',
+        func: editTrip,
+      },
+    ];
+  }
 
   function responsibleTransporterDetails(transporter?: User) {
     if (!transporter) return 'Not yet assigned';
@@ -107,6 +117,7 @@ export default function ShipperTripPageContent({ status }: Props) {
           {formatStatus(trip.status)}
         </UiPill>
       ),
+      rawStaus: trip.status,
     }));
   }, [trips]);
 
