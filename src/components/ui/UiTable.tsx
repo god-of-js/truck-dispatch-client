@@ -65,7 +65,6 @@ export default function UiTable({
       </NoDataBox>
     );
   }
-  console.log(data);
 
   return (
     <TableContainer>
