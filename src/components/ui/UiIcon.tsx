@@ -53,6 +53,7 @@ import { ReactComponent as MiniVan } from './icons/mini-van.svg';
 import { ReactComponent as MessageChat } from './icons/chat.svg';
 import { ReactComponent as Moneys } from './icons/moneys.svg';
 import { ReactComponent as Notification } from './icons/notification.svg';
+import { ReactComponent as NoData } from './icons/NoData.svg';
 import { ReactComponent as PasswordCheck } from './icons/password-check.svg';
 import { ReactComponent as PickUpVan } from './icons/pick-up-van.svg';
 import { ReactComponent as Refresh } from './icons/refresh.svg';
@@ -112,6 +113,7 @@ const icons = {
   Money: <Money />,
   MessageChat: <MessageChat />,
   Notification: <Notification />,
+  NoData: <NoData/>,
   PaperPlaneTilt: <PaperPlaneTilt />,
   PasswordCheck: <PasswordCheck />,
   PickUpVan: <PickUpVan />,

@@ -101,14 +101,14 @@ export default function ShipperTripPageContent({ status }: Props) {
 
   const noTripsYet = (
     <NoTripsYet>
-      <UiIcon icon="FolderNotchOpen" size="70" />
+      <UiIcon icon="NoData" size="160" />
       <p>
         You have not been assigned any trips yet. Kindly head over to the{' '}
         <Link to="/available-jobs">Jobs</Link> page to bid for mouthwatering
         trips.
       </p>
       <Link to="/available-jobs">
-        <UiButton variant="neutral">Bid for jobs</UiButton>
+        <UiButton variant="primary">Bid for jobs</UiButton>
       </Link>
     </NoTripsYet>
   );
@@ -143,7 +143,7 @@ const NoTripsYet = styled.div`
 
   p {
     width: 80%;
-    font-size: ${pxToRem(14)};
+    font-size: ${pxToRem(18)};
     @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
       width: 60%;
     }

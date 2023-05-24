@@ -39,7 +39,7 @@ export default function UiTable({
   options,
   onRowClick,
   noDataHeaderText,
-  noDataImage = 'FolderNotchOpen',
+  noDataImage = 'NoData',
   noDataParagraphText = 'You Have No Data',
   noDataPlaceHolder,
 }: Props) {
@@ -56,7 +56,7 @@ export default function UiTable({
           <>
             <h3>{noDataHeaderText}</h3>
             <div className="icon-container">
-              <UiIcon icon={noDataImage} size="70" />
+              <UiIcon icon={noDataImage} size="160" />
             </div>
             <p className="no-data-text">{noDataParagraphText}</p>
           </>
@@ -101,7 +101,7 @@ export default function UiTable({
         </tbody>
       </Table>
 
-      {/* {!data.length && emptyTablePlaceholder()} */}
+      {!data.length && emptyTablePlaceholder()}
     </TableContainer>
   );
 }
@@ -202,7 +202,6 @@ const NoDataBox = styled.div`
   align-items: center;
   height: ${pxToRem(400)};
   width: 100%;
-  background: var(--color-gray);
   text-align: center;
 
   h3,
@@ -212,9 +211,9 @@ const NoDataBox = styled.div`
 
   .no-data-text {
     color: var(--color-gray-500);
-    font-weight: 700;
+    font-weight: 400;
     width: 80%;
-    font-size: ${pxToRem(14)};
+    font-size: ${pxToRem(18)};
     @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
       width: 40%;
     }
