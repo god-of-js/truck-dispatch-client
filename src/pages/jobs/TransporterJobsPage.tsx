@@ -22,19 +22,21 @@ import BidForJob from 'components/jobs/BidForJob';
 import { getTransporterBids } from 'modules/Bid';
 import UiFilterTag from 'ui/UiFilterTag';
 import { editableInputTypes } from '@testing-library/user-event/dist/utils';
+import AllBids from 'components/bids/AllBids';
 
 export default function TransporterJobs() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const senderType = searchParams.get('sender-type');
+  const jobs = useSelector((state: RootState) => state.trips.jobs);
+  const user = useSelector((state: RootState) => state.account.user);
+  const bids = useSelector((state: RootState) => state.bid.bids);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [allJobs, setAllJobs] = useState(0);
   const [allJobsByCompany, setAllJobsByCompany] = useState(0);
   const [allJobsByShipper, setAllJobsByShipper] = useState(0);
 
-  const jobs = useSelector((state: RootState) => state.trips.jobs);
-  const user = useSelector((state: RootState) => state.account.user);
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(true);
@@ -142,14 +144,14 @@ export default function TransporterJobs() {
         <UiFilterTag
           title="MY BIDS"
           isActive={true}
-          value={0}
+          value={bids.length}
           onClick={openAllBids}
         />
       </EdgeChild>
     );
   }
   function handleChange({ value }: { name: string; value: string | null }) {
-    setSearchQuery(value!!);
+    setSearchQuery(value!);
   }
 
   useEffect(() => {
@@ -220,6 +222,9 @@ export default function TransporterJobs() {
           </UiOverlay>
         </>
       )}
+      <UiOverlay isVisible={isAllBidsVisible}>
+        <AllBids onClose={() => setIsAllBidsVisible(false)} />
+      </UiOverlay>
     </>
   );
 }

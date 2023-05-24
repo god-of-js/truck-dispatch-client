@@ -67,7 +67,6 @@ function positionStyling({ position, size }: CardProps) {
         h2 {
           font-size: ${pxToRem(24)};
         }
-
       }
     `;
   }
@@ -84,7 +83,6 @@ interface CardProps {
   size?: Size;
   position?: Position;
 }
-
 const Modal = styled.div`
   width: 100%;
   height: fit-content;
@@ -101,10 +99,10 @@ const ModalCard = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   max-height: 90%;
-  padding: 0 ${pxToRem(12)};
 
   .modal-inner {
     padding-bottom: ${pxToRem(28)};
+    height: 87%;
 
     header {
       display: flex;

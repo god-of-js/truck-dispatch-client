@@ -144,7 +144,7 @@ export function generateReference() {
   return key;
 }
 
-export function convertToFullDate(dateToConvert: number) {
+export function convertToFullDate(dateToConvert: number | string) {
   const date = new Date(dateToConvert);
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const months = [
