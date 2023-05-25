@@ -86,23 +86,29 @@ export default function DashboardSidebar() {
     return appLocation.pathname.includes(route);
   }
 
-  function logOutUser(){
+  function logOutUser() {
     removeUserSessionId();
     navigate('/auth/login');
-  };
+  }
 
-  function toggleShowNames () {
+  function toggleShowNames() {
     setIsExpanded(!isExpanded);
-  };
+  }
+
+  function closeIsMobileExpandedIfOpen() {
+    if (isMobileExpanded) setIsMobileExpanded(false);
+  }
 
   return (
     <>
       <Sidebar isExpanded={isExpanded} isMobileExpanded={isMobileExpanded}>
         <div className="sidebar__inner">
           <header className="hide-in-small-screen">
-            <Link to="/my-trips">
+            <Link to="/my-trips" onClick={closeIsMobileExpandedIfOpen}>
               <AppLogo />
-              <span>Truckdispatch</span>
+              <span className="app-name hide-in-unexpanded-large-screen">
+                TruckDispatch
+              </span>
             </Link>
             <button className="toggle-btn" onClick={toggleShowNames}>
               <UiIcon
@@ -115,11 +121,13 @@ export default function DashboardSidebar() {
 
           <ul>
             {routes.map((route, index) => (
-              <Link to={route.path} key={index}>
+              <Link to={route.path} key={index}  onClick={closeIsMobileExpandedIfOpen}>
                 <li className={isRouteActive(route.path) ? 'active' : ''}>
-                  <div className="list-item">
+                  <div className="list-item-content">
                     <UiIcon icon={route.iconName} size="24" />{' '}
-                    <span>{route.name}</span>
+                    <span className="hide-in-unexpanded-large-screen">
+                      {route.name}
+                    </span>
                   </div>
                   <div className="hide-in-large-screen">
                     {isRouteActive(route.path) && <UiIcon icon="Tick" />}
@@ -127,10 +135,11 @@ export default function DashboardSidebar() {
                 </li>
               </Link>
             ))}
-            <Link to="/chat">
+            <Link to="/chat" onClick={closeIsMobileExpandedIfOpen}>
               <li className={isRouteActive('/chat') ? 'active' : ''}>
-                <div className="list-item">
-                  <UiIcon icon="Chat" size="24" /> <span>Chat</span>
+                <div className="list-item-content">
+                  <UiIcon icon="Chat" size="24" />{' '}
+                  <span className="hide-in-unexpanded-large-screen">Chat</span>
                 </div>
                 {isRouteActive('/chat') && <UiIcon icon="Tick" />}
               </li>
@@ -138,23 +147,32 @@ export default function DashboardSidebar() {
           </ul>
 
           <div className="bottom-actions">
-            <div className="profile">
-              <div className="user-details">
-                <UiAvatar avatar={user?.avatar} />
-                <div>
-                  <div className="user-name">{`${user?.firstName} ${user?.lastName}`}</div>
-                  <div className="user-type">{userType}</div>
+            <Link to="/profile" onClick={closeIsMobileExpandedIfOpen}>
+              <div className="profile">
+                <div className="user-details">
+                  <UiAvatar avatar={user?.avatar} />
+                  <div className="hide-in-unexpanded-large-screen">
+                    <div className="user-name">{`${user?.firstName} ${user?.lastName}`}</div>
+                    <div className="user-type">{userType}</div>
+                  </div>
+                </div>
+                <div className="hide-in-large-screen">
+                  <UiButton variant="secondary">View profile</UiButton>
                 </div>
               </div>
-              <div className="hide-in-large-screen">
-                <UiButton variant="secondary">View profile</UiButton>
-              </div>
-            </div>
+            </Link>
             <div className="logout-container">
-              <span className="logout-text">Logout</span>
+              <div className="logout-content" onClick={logOutUser}>
+                <span className="hide-in-small-screen">
+                  <UiIcon icon="Logout" size="24" />
+                </span>
+                <span className="logout-text hide-in-unexpanded-large-screen">
+                  Logout
+                </span>
+              </div>
               <Button
                 className="hide-in-large-screen"
-                onClick={() => setIsMobileExpanded(false)}
+                onClick={closeIsMobileExpandedIfOpen}
               >
                 <span>Close</span> <UiIcon icon="CloseThick" size="15" />
               </Button>
@@ -222,7 +240,7 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
       align-items: center;
       justify-content: space-between;
 
-      .list-item {
+      .list-item-content {
         display: flex;
         align-items: center;
         gap: ${pxToRem(8)};
@@ -281,6 +299,9 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
       align-items: center;
       justify-content: space-between;
       padding: ${pxToRem(24)};
+      .logout-content {
+        flex-grow: 1;
+      }
 
       .logout-text {
         font-style: normal;
@@ -293,9 +314,11 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
     }
   }
 
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+  @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
     display: block;
-    width: ${({ isExpanded }) => (isExpanded ? pxToRem(260) : pxToRem(124))};
+    width: ${({ isExpanded }) => (isExpanded ? '16%' : '7%')};
+    min-width: ${({ isExpanded }) =>
+      isExpanded ? pxToRem(260) : pxToRem(124)};
     border-top: none;
     position: static;
     border-right: ${pxToRem(1)} solid var(--color-gray-200);
@@ -320,13 +343,14 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
         font-style: normal;
         font-family: 'thiccboi-extrabold';
         font-weight: 700;
-        font-size: ${pxToRem(16)};
+        font-size: ${pxToRem(18)};
         line-height: 140%;
         letter-spacing: -0.02em;
         color: var(--color-neutralBlack);
         display: flex;
         align-items: center;
         gap: ${pxToRem(8)};
+        justify-content: ${({ isExpanded }) => (isExpanded ? '' : 'center')};
       }
 
       .toggle-btn {
@@ -345,6 +369,10 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
       }
     }
 
+    .hide-in-unexpanded-large-screen {
+      display: ${({ isExpanded }) => (isExpanded ? '' : 'none')};
+    }
+
     .side-menu-text {
       display: none;
     }
@@ -356,11 +384,18 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
     }
 
     ul {
-      gap: ${pxToRem(24)};
+      gap: ${pxToRem(20)};
+      margin: 0 ${pxToRem(24)};
       li {
         border-left: ${pxToRem(4)} solid transparent;
         border-top-left-radius: ${pxToRem(0)};
         border-bottom-left-radius: ${pxToRem(0)};
+
+        .list-item-content {
+          justify-content: ${({ isExpanded }) =>
+            isExpanded ? 'flex-start' : 'center'};
+          flex-grow: 1;
+        }
         &.active,
         &:hover,
         &:focus {
@@ -370,6 +405,29 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
           svg {
             fill: var(--color-primary);
           }
+        }
+      }
+    }
+    .bottom-actions {
+      .profile {
+        border-bottom: transparent;
+        padding: ${pxToRem(20)} ${pxToRem(24)} ${pxToRem(8)} ${pxToRem(24)};
+
+        .user-details {
+          flex-grow: 1;
+          justify-content: ${({ isExpanded }) => (isExpanded ? '' : 'center')};
+        }
+      }
+
+      .logout-container {
+        padding: ${pxToRem(8)} ${pxToRem(24)};
+        margin: ${pxToRem(16)} 0;
+
+        .logout-content {
+          display: flex;
+          align-items: flex-start;
+          gap: ${pxToRem(8)};
+          justify-content: ${({ isExpanded }) => (isExpanded ? '' : 'center')};
         }
       }
     }
