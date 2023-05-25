@@ -30,12 +30,14 @@ import { ReactComponent as ArrowRight } from './icons/arrow-right.svg';
 import { ReactComponent as ArrowLeft } from './icons/arrow-left.svg';
 
 import { ReactComponent as Close } from './icons/close.svg';
+import { ReactComponent as CloseThick } from './icons/close-thick.svg';
 import { ReactComponent as Chat } from './icons/chat.svg';
 import { ReactComponent as ArrowCircleRight } from './icons/arrow-circle-right.svg';
 import { ReactComponent as CallReceived } from './icons/call-received.svg';
 import { ReactComponent as Car } from './icons/car.svg';
 import { ReactComponent as ChartSquare } from './icons/chart-square.svg';
 import { ReactComponent as Check } from './icons/check.svg';
+import { ReactComponent as Menu } from './icons/menu.svg';
 import { ReactComponent as Chiller } from './icons/chiller.svg';
 import { ReactComponent as Company } from './icons/company.svg';
 import { ReactComponent as DocumentUpload } from './icons/document-upload.svg';
@@ -59,6 +61,7 @@ import { ReactComponent as Refresh } from './icons/refresh.svg';
 import { ReactComponent as Search } from './icons/search.svg';
 import { ReactComponent as SemiTrailer } from './icons/semi-trailer.svg';
 import { ReactComponent as Settings } from './icons/settings.svg';
+import { ReactComponent as Tick } from './icons/tick.svg';
 import { ReactComponent as Tanker } from './icons/tanker.svg';
 import { ReactComponent as Truck } from './icons/truck.svg';
 import { ReactComponent as TwentyFTTruck } from './icons/20-ft-truck.svg';
@@ -87,6 +90,8 @@ const icons = {
   Chat: <Chat />,
   ChartSquare: <ChartSquare />,
   Close: <Close />,
+  CloseThick: <CloseThick />,
+  Menu: <Menu />,
   CreditCard: <CreditCard />,
   Check: <Check />,
   Chiller: <Chiller />,
@@ -124,6 +129,7 @@ const icons = {
   Suitcase: <Suitcase />,
   Star: <Star />,
   Settings: <Settings />,
+  Tick: <Tick />,
   Tanker: <Tanker />,
   TruckTick: <TruckTick />,
   Trailer: <Trailer />,
