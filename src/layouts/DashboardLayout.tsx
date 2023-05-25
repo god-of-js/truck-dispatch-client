@@ -132,52 +132,6 @@ export default function DashboardLayout() {
     <Layout>
       <DashboardSidebar />
       <Body>
-        {/* {!user?.avatar && (
-          <UiAlert variant="warning">
-            Kindly upload a profile image to foster trust between you and other
-            individuals you may work with. To upload a profile picture,{' '}
-            <Link to="/profile">Click Here</Link>
-          </UiAlert>
-        )}
-        {location.pathname !== '/profile/verification' && (
-          <div>
-            {user?.status === 'unverified' && (
-              <UiAlert variant="warning">
-                Verification is required to access all core features of the
-                application. To complete verification,{' '}
-                <Link to="/profile/verification">Click Here</Link>
-              </UiAlert>
-            )}
-            {user?.status === 'pending_verification' && (
-              <UiAlert variant="info">
-                Your verification has been sent to the admin. Expect to get a
-                text about the status of your verification within 3 working
-                days.
-              </UiAlert>
-            )}
-            {user?.status === 'rejected' && (
-              <UiAlert variant="danger">
-                Your verification request was rejected. Kindly proceed back to
-                the <Link to="/profile/verification">Verification Page</Link> to
-                view why it was rejected and fix the issue.
-              </UiAlert>
-            )}
-          </div>
-        )}
-        {!user?.isEmailVerified && (
-          <UiAlert variant="warning">
-            Your email address has not been verified. To have full access to the
-            dashboard{' '}
-            <UiButton
-              size="s"
-              variant="warning-text"
-              onClick={getEmailVerificationLink}
-              loading={requestVerificationLoading}
-            >
-              Verify your account
-            </UiButton>
-          </UiAlert>
-        )} */}
         {loading ? <Loader /> : <Outlet />}
         <UiOverlay isVisible={verificationHasBeenSent}>
           <EmailHasBeenSentModal
