@@ -24,10 +24,10 @@ interface Props {
 
 export default function UiDropDownMenu({ options, itemId, trigger }: Props) {
   return (
-    <Menu
+    <MenuMainStyled
       menuButton={
         <MenuButtonStyling>
-          {trigger || <UiIcon icon="DotsThreeVertical" size="20" />}
+          {trigger || <UiIcon icon="VerticalDots" size="20" />}
         </MenuButtonStyling>
       }
     >
@@ -38,13 +38,12 @@ export default function UiDropDownMenu({ options, itemId, trigger }: Props) {
           isdanger={option.isDanger ? 'true' : 'false'}
           hasdivider={option.hasDivider ? 'true' : 'false'}
         >
-          {option.icon && option.icon}
-
           {option.path && <Link to={`${option.path}`}>{option.label}</Link>}
           {!option.path && option.label}
+          {option.icon && option.icon}
         </MenuItemStyling>
       ))}
-    </Menu>
+    </MenuMainStyled>
   );
 }
 
@@ -60,16 +59,34 @@ function getThemeBasedOn(props: ThemeProps) {
   }
   ${
     props.isdanger === 'true' &&
-    'color: var(--color-danger); &:hover {background: var(--color-danger-100);}'
+    'color: var(--color-danger); &:hover {background: var(--color-danger-10);}'
   }
   `;
 }
 
 const MenuButtonStyling = styled(MenuButton)`
-  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-gray-50);
   border: transparent;
+  border-radius: ${pxToRem(8)};
+  padding: ${pxToRem(8)} ${pxToRem(8)} ${pxToRem(5)};
   cursor: pointer;
   width: fit-content;
+
+  &:hover {
+    box-shadow: 0px 0px 0px 4px var(--color-gray-20);
+  }
+`;
+const MenuMainStyled = styled(Menu)`
+  ul {
+    padding: ${pxToRem(8)};
+    border-radius: ${pxToRem(16)};
+    box-shadow: 0px 10px 16px rgba(21, 19, 27, 0.1);
+    left: -132px !important;
+    top: 29.067px !important;
+  }
 `;
 
 const MenuItemStyling = styled(MenuItem)`
@@ -78,15 +95,24 @@ const MenuItemStyling = styled(MenuItem)`
   font-weight: normal;
   display: flex;
   align-items: center;
-  gap: ${pxToRem(8)};
+  justify-content: space-between;
+  gap: ${pxToRem(10)};
+  border-radius: ${pxToRem(8)};
+  padding: 0;
+  padding: ${pxToRem(4)} ${pxToRem(8)} !important;
+  color: var(--color-gray-80);
   ${(themeProps: ThemeProps) => getThemeBasedOn(themeProps)};
+
+  &:hover {
+    background: var(--color-gray-30);
+  }
 
   a {
     width: 100%;
     height: 100%;
-    font-size: ${pxToRem(16)};
+    font-size: ${pxToRem(14)};
     color: var(--color-gray-500);
-    font-weight: normal;
+    font-weight: 'thiccboi-semibold';
   }
   span {
     margin-top: 2px;

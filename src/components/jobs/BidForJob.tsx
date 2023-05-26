@@ -96,7 +96,13 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
     });
     setLoading(true);
     return dispatch(
-      toAnyAction(updateBid({ ...dataToUpdate, tripId: jobId!, vehicleId: '' } as CreateBid)),
+      toAnyAction(
+        updateBid({
+          ...dataToUpdate,
+          tripId: jobId!,
+          vehicleId: '',
+        } as CreateBid),
+      ),
     ).finally(() => {
       setLoading(false);
     });

@@ -72,6 +72,7 @@ import { ReactComponent as User } from './icons/user.svg';
 import { ReactComponent as UserOctagon } from './icons/user-octagon.svg';
 import { ReactComponent as UserSquare } from './icons/user-square.svg';
 import { ReactComponent as Van } from './icons/van.svg';
+import { ReactComponent as VerticalDots } from './icons/vertical-dots.svg';
 
 // These icons should be arranged alphabetically for easy sorting
 const icons = {
@@ -91,7 +92,6 @@ const icons = {
   ChartSquare: <ChartSquare />,
   Close: <Close />,
   CloseThick: <CloseThick />,
-  Menu: <Menu />,
   CreditCard: <CreditCard />,
   Check: <Check />,
   Chiller: <Chiller />,
@@ -112,6 +112,7 @@ const icons = {
   LocationTick: <LocationTick />,
   Logout: <Logout />,
   MagicStar: <MagicStar />,
+  Menu: <Menu />,
   MiniVan: <MiniVan />,
   Moneys: <Moneys />,
   Money: <Money />,
@@ -140,6 +141,7 @@ const icons = {
   UsersThree: <UsersThree />,
   UserSquare: <UserSquare />,
   Van: <Van />,
+  VerticalDots: <VerticalDots />,
   TwentyFTTruck: <TwentyFTTruck />,
   X: <X />,
 };

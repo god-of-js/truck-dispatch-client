@@ -121,7 +121,11 @@ export default function DashboardSidebar() {
 
           <ul>
             {routes.map((route, index) => (
-              <Link to={route.path} key={index}  onClick={closeIsMobileExpandedIfOpen}>
+              <Link
+                to={route.path}
+                key={index}
+                onClick={closeIsMobileExpandedIfOpen}
+              >
                 <li className={isRouteActive(route.path) ? 'active' : ''}>
                   <div className="list-item-content">
                     <UiIcon icon={route.iconName} size="24" />{' '}

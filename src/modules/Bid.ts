@@ -42,7 +42,8 @@ export const selectBid = (
 ) =>
   createSelector(bids, (bidArr: Bid[]) => {
     return bidArr.find((bid) => {
-      if (queryParam === 'transporter._id') return valueToQueryWith === bid.transporter._id;
+      if (queryParam === 'transporter._id')
+        return valueToQueryWith === bid.transporter._id;
 
       return valueToQueryWith === bid[queryParam];
     });
