@@ -121,7 +121,11 @@ export default function DashboardSidebar() {
 
           <ul>
             {routes.map((route, index) => (
-              <Link to={route.path} key={index}  onClick={closeIsMobileExpandedIfOpen}>
+              <Link
+                to={route.path}
+                key={index}
+                onClick={closeIsMobileExpandedIfOpen}
+              >
                 <li className={isRouteActive(route.path) ? 'active' : ''}>
                   <div className="list-item-content">
                     <UiIcon icon={route.iconName} size="24" />{' '}
@@ -182,7 +186,7 @@ export default function DashboardSidebar() {
       </Sidebar>
       <BottomNav>
         {routes.slice(0, 3).map((route) => (
-          <Link to={route.path}>
+          <Link to={route.path} key={route.path}>
             <Button className={isRouteActive(route.path) ? 'active' : ''}>
               {route.name}
             </Button>
@@ -239,6 +243,7 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
       display: flex;
       align-items: center;
       justify-content: space-between;
+      cursor: pointer;
 
       .list-item-content {
         display: flex;
