@@ -169,6 +169,9 @@ const VehicleStyling = styled.div`
         max-width: ${pxToRem(160)};
         width: 100%;
         height: ${pxToRem(84)};
+        img {
+          object-fit: cover;
+        }
         .img-remainder {
           display: none;
         }
