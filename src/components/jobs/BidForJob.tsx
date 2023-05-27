@@ -15,7 +15,11 @@ import UiLocationsInput from 'ui/UiLocationsInput';
 import UiModal from 'ui/UiModal';
 import UiSelect from 'ui/UiSelect';
 import UiTextArea from 'ui/UiTextArea';
-import { removeUneditedFields, toAnyAction } from 'utils/helpers';
+import {
+  aValueHasBeenChanged,
+  removeUneditedFields,
+  toAnyAction,
+} from 'utils/helpers';
 import sizes from 'utils/sizes';
 import { Toast } from 'utils/toast';
 import BidForJobSchema from 'utils/validations/BidForJobSchema';
@@ -56,6 +60,12 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
       })),
     [vehicles],
   );
+
+  const buttonIsDisabled = useMemo(() => {
+    const { vehicleId, tripId, ...data } = formData;
+    const editedData = removeUneditedFields(bid!, data);
+    return Object.keys(editedData).length === 0;
+  }, [formData, bid]);
 
   const vehicle = useMemo(() => {
     if (!formData.vehicleId) return null;
@@ -202,8 +212,12 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
                 </div>
               </div>
               <div className="action-btn">
-                <UiButton size="large" loading={loading}>
-                  {bid ? 'Update' : 'Submit'} Bid
+                <UiButton
+                  size="large"
+                  loading={loading}
+                  disabled={buttonIsDisabled}
+                >
+                  {bid ? 'Update' : 'Submit'} Bidt
                 </UiButton>
               </div>
             </>

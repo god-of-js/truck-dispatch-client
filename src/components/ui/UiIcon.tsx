@@ -57,6 +57,7 @@ import { ReactComponent as Moneys } from './icons/moneys.svg';
 import { ReactComponent as Notification } from './icons/notification.svg';
 import { ReactComponent as PasswordCheck } from './icons/password-check.svg';
 import { ReactComponent as PickUpVan } from './icons/pick-up-van.svg';
+import { ReactComponent as ReceiptEdit } from './icons/receipt-edit.svg';
 import { ReactComponent as Refresh } from './icons/refresh.svg';
 import { ReactComponent as Search } from './icons/search.svg';
 import { ReactComponent as SemiTrailer } from './icons/semi-trailer.svg';
@@ -66,6 +67,7 @@ import { ReactComponent as Tanker } from './icons/tanker.svg';
 import { ReactComponent as Truck } from './icons/truck.svg';
 import { ReactComponent as TwentyFTTruck } from './icons/20-ft-truck.svg';
 import { ReactComponent as TruckRemove } from './icons/truck-remove.svg';
+import { ReactComponent as Trash } from './icons/trash.svg';
 import { ReactComponent as TruckTick } from './icons/ticked-truck.svg';
 import { ReactComponent as Trailer } from './icons/trailer.svg';
 import { ReactComponent as User } from './icons/user.svg';
@@ -120,6 +122,7 @@ const icons = {
   PaperPlaneTilt: <PaperPlaneTilt />,
   PasswordCheck: <PasswordCheck />,
   PickUpVan: <PickUpVan />,
+  ReceiptEdit: <ReceiptEdit />,
   Refresh: <Refresh />,
   Search: <Search />,
   SemiTrailer: <SemiTrailer />,
@@ -133,6 +136,7 @@ const icons = {
   Tanker: <Tanker />,
   TruckTick: <TruckTick />,
   Trailer: <Trailer />,
+  Trash: <Trash />,
   Truck: <Truck />,
   TruckRemove: <TruckRemove />,
   User: <User />,

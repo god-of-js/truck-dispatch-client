@@ -6,14 +6,15 @@ import BidItem from './BidItem';
 
 interface Props {
   onClose: () => void;
+  editBid: (jobId: string) => void;
 }
-export default function AllBids({ onClose }: Props) {
+export default function AllBids({ onClose, editBid }: Props) {
   const bids = useSelector((state: RootState) => state.bid.bids);
   return (
     <UiModal title="My Bids" position="right" onClose={onClose}>
       <AllBidsStyling>
         {bids.map((bid) => (
-          <BidItem bid={bid} />
+          <BidItem bid={bid} edit={editBid} key={bid._id} />
         ))}
       </AllBidsStyling>
     </UiModal>

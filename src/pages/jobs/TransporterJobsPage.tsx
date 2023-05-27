@@ -223,7 +223,13 @@ export default function TransporterJobs() {
         </>
       )}
       <UiOverlay isVisible={isAllBidsVisible}>
-        <AllBids onClose={() => setIsAllBidsVisible(false)} />
+        <AllBids
+          onClose={() => setIsAllBidsVisible(false)}
+          editBid={(id) => {
+            bidForJob(id);
+            setIsAllBidsVisible(false);
+          }}
+        />
       </UiOverlay>
     </>
   );
