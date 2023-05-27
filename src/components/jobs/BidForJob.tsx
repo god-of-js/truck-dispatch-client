@@ -62,6 +62,7 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
   );
 
   const buttonIsDisabled = useMemo(() => {
+    if (!bid) return false;
     const { vehicleId, tripId, ...data } = formData;
     const editedData = removeUneditedFields(bid!, data);
     return Object.keys(editedData).length === 0;
@@ -217,7 +218,7 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
                   loading={loading}
                   disabled={buttonIsDisabled}
                 >
-                  {bid ? 'Update' : 'Submit'} Bidt
+                  {bid ? 'Update' : 'Submit'} Bid
                 </UiButton>
               </div>
             </>
