@@ -236,14 +236,14 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
 
 const ComponentStyling = styled.div`
   padding: ${pxToRem(32)} ${pxToRem(24)};
-  display: grid;
-  gap: ${pxToRem(64)};
   height: 100%;
+  overflow-y: auto;
 
   .form-group {
     display: grid;
     grid-template-columns: auto;
     gap: ${pxToRem(24)};
+    margin-top: ${pxToRem(64)};
 
     .base-details {
       display: grid;
@@ -272,15 +272,24 @@ const ComponentStyling = styled.div`
     }
   }
   .action-btn {
-    width: calc(100% - 48px);
-    /* position: absolute; */
+    width: 100%;
     display: flex;
     justify-content: center;
-    /* bottom: 0; */
-    margin: ${pxToRem(100)} auto 0 auto;
+    margin-top: ${pxToRem(100)};
     background: white;
     button {
-      width: 60%;
+      width: 100%;
+    }
+
+    @media screen and (min-width: ${sizes.mobileLargeWidth}) {
+      button {
+        width: 60%;
+      }
+    }
+    @media screen and (min-width: ${sizes.tablet}) {
+      position: absolute;
+      bottom: 0;
+      margin-bottom: ${pxToRem(60)};
     }
   }
 `;
