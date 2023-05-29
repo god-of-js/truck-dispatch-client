@@ -138,6 +138,10 @@ const ButtonContainer = styled.button<Props>`
       background-color: var(--color-primary-50);
       box-shadow: var(--box-shadow-primary);
     }`}
+
+    svg {
+      fill: white;
+    }
   }
   &.danger {
     background-color: var(--color-danger-600);

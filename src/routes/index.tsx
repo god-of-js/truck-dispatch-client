@@ -108,7 +108,7 @@ const router = createBrowserRouter([
         element: <ChatLayout />,
         children: [
           {
-            path: '/chat/:chatId',
+            path: '/chat/:chatLogId',
             id: 'Message',
             element: <ChatPage />,
           },

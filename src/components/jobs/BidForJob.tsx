@@ -15,7 +15,11 @@ import UiLocationsInput from 'ui/UiLocationsInput';
 import UiModal from 'ui/UiModal';
 import UiSelect from 'ui/UiSelect';
 import UiTextArea from 'ui/UiTextArea';
-import { removeUneditedFields, toAnyAction } from 'utils/helpers';
+import {
+  aValueHasBeenChanged,
+  removeUneditedFields,
+  toAnyAction,
+} from 'utils/helpers';
 import sizes from 'utils/sizes';
 import { Toast } from 'utils/toast';
 import BidForJobSchema from 'utils/validations/BidForJobSchema';
@@ -32,7 +36,7 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.account.user);
   const vehicles = useSelector((state: RootState) => state.vehicle.vehicles);
-  const bid = useSelector(selectBid(jobId, 'tripId'));
+  const bid = useSelector(selectBid(jobId, 'trip'));
 
   const [formData, setFormData] = useState<CreateBid>({
     price: NaN,
@@ -56,6 +60,13 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
       })),
     [vehicles],
   );
+
+  const buttonIsDisabled = useMemo(() => {
+    if (!bid) return false;
+    const { vehicleId, tripId, ...data } = formData;
+    const editedData = removeUneditedFields(bid!, data);
+    return Object.keys(editedData).length === 0;
+  }, [formData, bid]);
 
   const vehicle = useMemo(() => {
     if (!formData.vehicleId) return null;
@@ -96,7 +107,13 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
     });
     setLoading(true);
     return dispatch(
-      toAnyAction(updateBid({ ...dataToUpdate, tripId: jobId! })),
+      toAnyAction(
+        updateBid({
+          ...dataToUpdate,
+          tripId: jobId!,
+          vehicleId: '',
+        } as CreateBid),
+      ),
     ).finally(() => {
       setLoading(false);
     });
@@ -196,7 +213,11 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
                 </div>
               </div>
               <div className="action-btn">
-                <UiButton size="large" loading={loading}>
+                <UiButton
+                  size="large"
+                  loading={loading}
+                  disabled={buttonIsDisabled}
+                >
                   {bid ? 'Update' : 'Submit'} Bid
                 </UiButton>
               </div>

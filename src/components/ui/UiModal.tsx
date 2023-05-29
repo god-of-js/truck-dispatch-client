@@ -29,7 +29,7 @@ export default function UiModal({
       <OutsideClickHandler onOutsideClick={onClose}>
         <ModalCard position={position} size={size}>
           <div className="modal-inner">
-            <header>
+            <header className="modal-header">
               {goPrev && (
                 <UiButton variant="icon-neutral" onClick={goPrev}>
                   <UiIcon icon="CaretLeft" size="16" />
@@ -59,7 +59,8 @@ function positionStyling({ position, size }: CardProps) {
       border-radius: 0;
       max-height: 100%;
       width: 80%;
-      header {
+
+      .modal-header {
         border-bottom: ${pxToRem(1)} solid var(--color-gray-20);
         padding: ${pxToRem(26)} ${pxToRem(24)};
 
@@ -89,7 +90,6 @@ interface CardProps {
   size?: Size;
   position?: Position;
 }
-
 const Modal = styled.div`
   width: 100%;
   height: fit-content;
@@ -106,12 +106,12 @@ const ModalCard = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   max-height: 90%;
-  padding: 0 ${pxToRem(12)};
 
   .modal-inner {
     padding-bottom: ${pxToRem(28)};
+    height: 87%;
 
-    header {
+    .modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;

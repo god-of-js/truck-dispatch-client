@@ -25,7 +25,7 @@ interface Props {
   tableTitle: string;
   data: Row[];
   headers: Header[];
-  options?: DropDownData[];
+  options?: DropDownData[] | ((tripStatus: Row) => DropDownData[]);
   onRowClick?: (id: string) => void;
   noDataHeaderText?: string;
   noDataImage?: Icons;
@@ -90,9 +90,15 @@ export default function UiTable({
                     </TableDataItem>
                   );
                 })}
+
                 {options && (
                   <td className="menu-container">
-                    <UidropdownMenu options={options} itemId={item._id} />
+                    <UidropdownMenu
+                      options={
+                        typeof options === 'function' ? options(item) : options
+                      }
+                      itemId={item._id}
+                    />
                   </td>
                 )}
               </TableRow>

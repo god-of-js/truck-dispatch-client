@@ -31,7 +31,6 @@ interface Props {
 }
 
 export default function VerificationForm({ parentLoading, onVerified }: Props) {
-  const user = useSelector((state: RootState) => state.account.user);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState<Verification>({
     _id: '',

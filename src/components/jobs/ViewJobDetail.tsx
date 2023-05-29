@@ -14,10 +14,11 @@ interface Props {
   onClose: () => void;
 }
 export default function ViewJobDetail({ job, onClose, bidOnJob }: Props) {
-  const bid = useSelector(selectBid(job._id, 'tripId'));
+  const bid = useSelector(selectBid(job._id, 'trip'));
   function startBid() {
     bidOnJob(job._id);
   }
+
   return (
     <UiModal title="Job Details" position="right" onClose={onClose}>
       <ComponentStyling>

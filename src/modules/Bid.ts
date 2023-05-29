@@ -38,10 +38,17 @@ export default BidsSlice.reducer;
 const bids = (state: RootState) => state.bid.bids;
 export const selectBid = (
   valueToQueryWith: string,
-  queryParam: '_id' | 'transporterId' | 'tripId' = '_id',
+  queryParam: '_id' | 'transporter' | 'trip' = '_id',
 ) =>
   createSelector(bids, (bidArr: Bid[]) => {
-    return bidArr.find((bid) => valueToQueryWith === bid[queryParam]);
+    return bidArr.find((bid) => {
+      if (queryParam === 'transporter')
+        return valueToQueryWith === bid.transporter._id;
+
+      if (queryParam === 'trip') return valueToQueryWith === bid.trip._id;
+
+      return valueToQueryWith === bid[queryParam];
+    });
   });
 
 export function getBidsWithTripId(tripId: string) {
@@ -70,7 +77,7 @@ export function createBid(data: CreateBid) {
   };
 }
 
-export function updateBid(data: Bid) {
+export function updateBid(data: CreateBid) {
   return (dispatch: AppDispatch) => {
     if (!data.tripId) throw new Error('400: No trip id been sent');
     return Api.updateBid(data).then((bid) => {
