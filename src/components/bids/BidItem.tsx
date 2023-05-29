@@ -13,7 +13,7 @@ interface Props {
 }
 export default function BidItem({ bid, edit }: Props) {
   return (
-    <BidItemStyling>
+    <BidItemStyling className="bid-item">
       <header className="bid-header">
         <div className="user-profile">
           <UiAvatar avatar={bid.trip.tripOwner.avatar} isHalfCurved />
