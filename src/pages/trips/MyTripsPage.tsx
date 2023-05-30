@@ -8,7 +8,7 @@ import UiButton from 'ui/UiButton';
 import UiIcon from 'ui/UiIcon';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
 import { filterByFieldInObject, toAnyAction } from 'utils/helpers';
-import { getTrips } from 'modules/Trips';
+import { getTrips, unassignTrip } from 'modules/Trips';
 import TripsPaginatedResponse from 'types/TripsPaginatedResponse';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import UiTable from 'ui/UiTable';
@@ -173,7 +173,7 @@ export default function MyTripsPage() {
       },
       {
         label: 'Unassign Trip',
-        func: unassignTrip,
+        func: initUnassignTrip,
         isDanger: true,
       },
       {
@@ -224,7 +224,9 @@ export default function MyTripsPage() {
     navigate(`/my-trips/${id}/edit`);
   }
 
-  function unassignTrip(id: string) {}
+  function initUnassignTrip(id: string) {
+    dispatch(toAnyAction(unassignTrip(id)))
+  }
   function cancelTrip(id: string) {}
 
   useEffect(() => {
