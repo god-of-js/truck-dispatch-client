@@ -225,7 +225,7 @@ export default function MyTripsPage() {
   }
 
   function initUnassignTrip(id: string) {
-    dispatch(toAnyAction(unassignTrip(id)))
+    dispatch(toAnyAction(unassignTrip(id)));
   }
   function cancelTrip(id: string) {}
 

@@ -9,7 +9,7 @@ import { loadAccountDetails, loadBanks } from '../../api/paystackIntegrations';
 import Loader from 'components/layout/Loader';
 import CreateAccountNumberSchema from 'utils/validations/CreateAccountNumberSchema';
 import { useDispatch, useSelector } from 'react-redux';
-import { toAnyAction } from 'utils/helpers';
+import { containsOnlyNumbers, toAnyAction } from 'utils/helpers';
 import { createUserBankAccount } from 'modules/Account';
 import BankAccount from 'types/BankDetails';
 import { RootState } from 'modules/index';
@@ -76,22 +76,24 @@ export default function AddAccount({ bankAccountDetails, onClose }: Props) {
   }, []);
 
   const details = useMemo(() => {
+    if (errorMessage)
+      return <div className="error-message">{errorMessage}</div>;
     return accountIsLoading ? (
       <Loader />
-    ) : accountDetails.account_name ? (
+    ) : (
       <div>
         <span className="account-name-title">Account Name:</span>{' '}
         <span className="account-name-value">
           {accountDetails.account_name}
         </span>
       </div>
-    ) : (
-      errorMessage && <div className="error-message">{errorMessage}</div>
     );
   }, [accountDetails.account_name, errorMessage]);
 
   useEffect(() => {
-    if (formData.accountNumber.length > 9 && formData.bankCode) {
+    if (!containsOnlyNumbers(formData.accountNumber)) {
+      setErrorMessage('Invalid account details');
+    } else if (formData.accountNumber.length > 9 && formData.bankCode) {
       setAccountIsLoading(true);
       setAccountDetails(defaultAccountDetails);
       setErrorMessage('');
