@@ -38,7 +38,6 @@ export default function UiTable({
   headers,
   options,
   onRowClick,
-  noDataHeaderText,
   noDataImage = 'NoData',
   noDataParagraphText = 'You Have No Data',
   noDataPlaceHolder,
@@ -54,7 +53,6 @@ export default function UiTable({
           noDataPlaceHolder
         ) : (
           <>
-            <h3>{noDataHeaderText}</h3>
             <div className="icon-container">
               <UiIcon icon={noDataImage} size="160" />
             </div>
