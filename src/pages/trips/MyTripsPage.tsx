@@ -171,6 +171,16 @@ export default function MyTripsPage() {
         label: 'Edit Trip',
         func: editTrip,
       },
+      {
+        label: 'Unassign Trip',
+        func: unassignTrip,
+        isDanger: true,
+      },
+      {
+        label: 'Cancel Trip',
+        func: cancelTrip,
+        isDanger: true,
+      },
     ].filter(({ label }) => {
       const editIsNotAllowedStatuses = ['in-progress', 'completed'];
       if (
@@ -182,7 +192,7 @@ export default function MyTripsPage() {
 
       if (
         serviceBasedUserTypes.includes(user?.userType!) &&
-        label === 'Edit Trip'
+        (label === 'Edit Trip' || label === 'Unassign Trip')
       )
         return false;
 
@@ -210,8 +220,12 @@ export default function MyTripsPage() {
   }
 
   function editTrip(id: string) {
+    if (serviceBasedUserTypes.includes(user?.userType!)) return;
     navigate(`/my-trips/${id}/edit`);
   }
+
+  function unassignTrip(id: string) {}
+  function cancelTrip(id: string) {}
 
   useEffect(() => {
     setPage(1);

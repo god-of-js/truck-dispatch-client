@@ -56,7 +56,7 @@ export default function VehiclesPage() {
           icon="Search"
         />
         {!!vehicles.length && (
-          <UiButton onClick={openAddVehicle}>add new vehicle</UiButton>
+          <UiButton size="large" onClick={openAddVehicle}>add new vehicle</UiButton>
         )}
       </GappedContainerWith12PX>
     );
