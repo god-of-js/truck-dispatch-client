@@ -19,7 +19,7 @@ interface Props {
 export default function UiModal({
   children,
   title,
-  position = 'center',
+  position,
   size = 'lg',
   onClose,
   goPrev,
@@ -75,6 +75,30 @@ function positionStyling({ position, size }: CardProps) {
       @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
         width: 45%;
       }
+    `;
+  }
+  if (position === 'center') {
+    return `
+    position: static;
+    margin: auto;
+    border-radius: ${pxToRem(16)};
+    
+    .modal-header h2 {
+      text-align: center;
+      flex-grow: 1;
+    }
+
+    // .modal-header {
+    //   position: relative;
+    // }
+    
+    // .modal-header h2 {
+    //   position: absolute;
+    //   left: 50%;
+    //   top: 50%;
+    //   transform: translate(-50%, -50%);
+    // }
+
     `;
   }
 
