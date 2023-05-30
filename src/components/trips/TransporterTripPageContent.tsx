@@ -102,13 +102,9 @@ export default function ShipperTripPageContent({ status }: Props) {
   const noTripsYet = (
     <NoTripsYet>
       <UiIcon icon="NoData" size="160" />
-      <p>
-        You have not been assigned any trips yet. Kindly head over to the{' '}
-        <Link to="/available-jobs">Jobs</Link> page to bid for mouthwatering
-        trips.
-      </p>
+      <p>You don’t have any trip here yet, Bid for jobs to get trips</p>
       <Link to="/available-jobs">
-        <UiButton variant="primary">Bid for jobs</UiButton>
+        <UiButton variant="primary">See jobs</UiButton>
       </Link>
     </NoTripsYet>
   );
