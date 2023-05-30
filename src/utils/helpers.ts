@@ -257,3 +257,7 @@ export function filterByFieldInObject<T = any>(
     return false;
   }) as T[];
 }
+
+export function containsOnlyNumbers(value: string) {
+  return /^[0-9]+$/.test(value);
+}
