@@ -16,6 +16,7 @@ import { useLocation } from 'react-router-dom';
 
 export default function MyTripsPage() {
   const user = useSelector((state: RootState) => state.account.user);
+  const trips = useSelector((state: RootState) => state.trips.trips);
   const dispatch = useDispatch();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -86,20 +87,22 @@ export default function MyTripsPage() {
         ) : (
           <TransporterTripPageContent status={status} />
         )}
-        <div className="loader-container">
-          {loading ? (
-            <Loader size="lg" />
-          ) : (
-            <UiButton
-              size="large"
-              variant="secondary"
-              disabled={page === totalPages || !totalPages}
-              onClick={() => setPage(page + 1)}
-            >
-              Load more <UiIcon icon="Refresh" />
-            </UiButton>
-          )}
-        </div>
+        {trips.length > 0 && (
+          <div className="loader-container">
+            {loading ? (
+              <Loader size="lg" />
+            ) : (
+              <UiButton
+                size="large"
+                variant="secondary"
+                disabled={page === totalPages || !totalPages}
+                onClick={() => setPage(page + 1)}
+              >
+                Load more <UiIcon icon="Refresh" />
+              </UiButton>
+            )}
+          </div>
+        )}
       </MyTripsPageStyle>
     </>
   );
