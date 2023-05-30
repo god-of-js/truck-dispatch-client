@@ -208,7 +208,7 @@ const NoDataBox = styled.div`
   }
 
   .no-data-text {
-    color: var(--color-gray-500);
+    color: var(--color-gray-80);
     font-weight: 400;
     width: 80%;
     font-size: ${pxToRem(18)};

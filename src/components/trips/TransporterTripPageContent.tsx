@@ -144,6 +144,7 @@ const NoTripsYet = styled.div`
   p {
     width: 80%;
     font-size: ${pxToRem(18)};
+    color: var(--color-gray-80);
     @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
       width: 60%;
     }
