@@ -86,7 +86,7 @@ class ApiService {
     status?: string | null;
   }) {
     const data = await this.get(
-      `/trips?&page=${page}&limit=${limit}${status && `&status=${status}`}`,
+      `/trips?&page=${page}&limit=${limit}${status ? `&status=${status}` : ''}`,
     );
 
     return {
