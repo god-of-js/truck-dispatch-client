@@ -53,10 +53,11 @@ export default function VehiclesPage() {
           value={searchQuery}
           name="searchQuery"
           placeholder="Search..."
+          size="md"
           icon="Search"
         />
         {!!vehicles.length && (
-          <UiButton size="large" onClick={openAddVehicle}>
+          <UiButton size="md" onClick={openAddVehicle}>
             add new vehicle
           </UiButton>
         )}
