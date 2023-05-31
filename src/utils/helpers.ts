@@ -257,3 +257,35 @@ export function filterByFieldInObject<T = any>(
     return false;
   }) as T[];
 }
+
+type DataObject = {
+  [key: string]: any;
+};
+
+export function searchByFields(fields: string[], data: DataObject): DataObject[] {
+  const searchResults: DataObject[] = [];
+
+  for (const key in data) {
+    if (fields.includes(key)) {
+      const fieldValue = data[key];
+
+      // You can modify the search logic here based on your specific requirements
+      if (typeof fieldValue === 'string' && fieldValue.toLowerCase().includes('search term')) {
+        searchResults.push(data);
+        continue;
+      }
+
+      if (Array.isArray(fieldValue) && fieldValue.some((item: any) => typeof item === 'string' && item.toLowerCase().includes('search term'))) {
+        searchResults.push(data);
+        continue;
+      }
+    }
+
+    if (typeof data[key] === 'object') {
+      const nestedSearchResults = searchByFields(fields, data[key]);
+      searchResults.push(...nestedSearchResults);
+    }
+  }
+
+  return searchResults;
+}
