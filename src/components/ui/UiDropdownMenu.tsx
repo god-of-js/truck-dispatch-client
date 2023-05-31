@@ -59,7 +59,7 @@ function getThemeBasedOn(props: ThemeProps) {
   }
   ${
     props.isdanger === 'true' &&
-    'color: var(--color-danger); &:hover {background: var(--color-danger-10);}'
+    'color: var(--color-danger) !important; &:hover {background: var(--color-danger-10);}'
   }
   `;
 }

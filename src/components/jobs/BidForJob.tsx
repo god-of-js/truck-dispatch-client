@@ -15,7 +15,11 @@ import UiLocationsInput from 'ui/UiLocationsInput';
 import UiModal from 'ui/UiModal';
 import UiSelect from 'ui/UiSelect';
 import UiTextArea from 'ui/UiTextArea';
-import { removeUneditedFields, toAnyAction } from 'utils/helpers';
+import {
+  aValueHasBeenChanged,
+  removeUneditedFields,
+  toAnyAction,
+} from 'utils/helpers';
 import sizes from 'utils/sizes';
 import { Toast } from 'utils/toast';
 import BidForJobSchema from 'utils/validations/BidForJobSchema';
@@ -56,6 +60,13 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
       })),
     [vehicles],
   );
+
+  const buttonIsDisabled = useMemo(() => {
+    if (!bid) return false;
+    const { vehicleId, tripId, ...data } = formData;
+    const editedData = removeUneditedFields(bid!, data);
+    return Object.keys(editedData).length === 0;
+  }, [formData, bid]);
 
   const vehicle = useMemo(() => {
     if (!formData.vehicleId) return null;
@@ -202,7 +213,11 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
                 </div>
               </div>
               <div className="action-btn">
-                <UiButton size="large" loading={loading}>
+                <UiButton
+                  size="large"
+                  loading={loading}
+                  disabled={buttonIsDisabled}
+                >
                   {bid ? 'Update' : 'Submit'} Bid
                 </UiButton>
               </div>
@@ -221,14 +236,14 @@ export default function BidForJob({ jobId, onClose, backToJobDetails }: Props) {
 
 const ComponentStyling = styled.div`
   padding: ${pxToRem(32)} ${pxToRem(24)};
-  display: grid;
-  gap: ${pxToRem(64)};
   height: 100%;
+  overflow-y: auto;
 
   .form-group {
     display: grid;
     grid-template-columns: auto;
     gap: ${pxToRem(24)};
+    margin-top: ${pxToRem(64)};
 
     .base-details {
       display: grid;
@@ -248,6 +263,7 @@ const ComponentStyling = styled.div`
       textarea {
         height: calc(100% - 32px);
         width: 100%;
+        resize: none;
       }
     }
 
@@ -256,15 +272,24 @@ const ComponentStyling = styled.div`
     }
   }
   .action-btn {
-    width: calc(100% - 48px);
-    position: absolute;
+    width: 100%;
     display: flex;
     justify-content: center;
-    bottom: 0;
-    margin: ${pxToRem(40)} 0;
+    margin-top: ${pxToRem(100)};
     background: white;
     button {
-      width: 60%;
+      width: 100%;
+    }
+
+    @media screen and (min-width: ${sizes.mobileLargeWidth}) {
+      button {
+        width: 60%;
+      }
+    }
+    @media screen and (min-width: ${sizes.tablet}) {
+      position: absolute;
+      bottom: 0;
+      margin-bottom: ${pxToRem(60)};
     }
   }
 `;

@@ -121,7 +121,10 @@ class ApiService {
   }
 
   assignTrip(data: AssignTripFormData) {
-    return this.post<Trip>(`/trips/${data.tripId}/assign-trip`, data);
+    return this.post<{ trip: Trip; user: User }>(
+      `/trips/${data.tripId}/assign-trip`,
+      data,
+    );
   }
 
   saveAccountNumber(accountDetails: BankDetails) {
@@ -159,6 +162,11 @@ class ApiService {
 
   uploadTDO(formData: FormData, tripId: string) {
     return this.post<Trip>(`/trips/${tripId}/upload-tdo`, formData);
+  }
+  unassignTrip(tripId: string) {
+    return this.post<{ trip: Trip; user: User }>(
+      `/trips/${tripId}/unassign-trip`,
+    );
   }
 
   createBid(data: CreateBid) {
@@ -268,7 +276,7 @@ class ApiService {
     bankCode: string,
     accountNumber: string,
   ): Promise<AccountDetails> {
-    return this.post(
+    return this.get(
       `/externals/banks/account?account_number=${accountNumber}&bank_code=${bankCode}`,
     );
   }

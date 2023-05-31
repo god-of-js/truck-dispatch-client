@@ -4,17 +4,23 @@ interface Props {
   title: string;
   isActive?: boolean;
   value?: number | string;
+  onClick?: () => void;
 }
-export default function UiFilterTag({ title, isActive, value }: Props) {
+export default function UiFilterTag({
+  title,
+  isActive,
+  value,
+  onClick,
+}: Props) {
   return (
-    <Tag isActive={isActive}>
+    <Tag isActive={isActive} className="ui-filter-tag" onClick={onClick}>
       <span>{title}</span>
       <span className="count">{value}</span>
     </Tag>
   );
 }
 
-const Tag = styled.span`
+const Tag = styled.span<{ isActive?: boolean }>`
   padding: ${pxToRem(8)};
   border-radius: ${pxToRem(8)};
   gap: ${pxToRem(8)};
@@ -26,7 +32,7 @@ const Tag = styled.span`
   font-style: normal;
   font-weight: 600;
   letter-spacing: -0.02em;
-  ${({ isActive }: { isActive?: boolean }) => `
+  ${({ isActive }) => `
         color: ${isActive ? 'var(--color-primary)' : 'var(--color-gray-70)'};
         background: ${
           isActive ? 'var(--color-primary-10)' : 'var(--color-gray-30)'

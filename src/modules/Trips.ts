@@ -79,9 +79,9 @@ export function createTrip(trip: NewTrip) {
 
 export function assignTrip(trip: AssignTripFormData) {
   return (dispatch: AppDispatch) => {
-    return Api.assignTrip(trip).then((trip) => {
-      dispatch(setTrip(trip));
-      return trip;
+    return Api.assignTrip(trip).then((data) => {
+      dispatch(setTrip(data.trip));
+      return data.trip;
     });
   };
 }
@@ -160,6 +160,15 @@ export function uploadTDO(formData: FormData, tripId: string) {
     return Api.uploadTDO(formData, tripId).then((trip) => {
       dispatch(setTrip(trip));
       return trip;
+    });
+  };
+}
+
+export function unassignTrip(tripId: string) {
+  return (dispatch: AppDispatch) => {
+    return Api.unassignTrip(tripId).then((data) => {
+      dispatch(setTrip(data.trip));
+      return data;
     });
   };
 }
