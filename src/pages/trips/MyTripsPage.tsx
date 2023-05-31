@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from 'modules/index';
+import { Icons } from 'ui/UiIcon';
 import { clientBasedUserTypes, serviceBasedUserTypes } from 'utils/constants';
 import Loader from 'components/layout/Loader';
 import UiButton from 'ui/UiButton';
@@ -164,20 +165,21 @@ export default function MyTripsPage() {
     const trip = item as Trip;
     return [
       {
-        label: 'View Trip',
+        label: 'See trip details',
         func: navigateToTrip,
+        endIcon: 'CaretRight' as Icons,
       },
       {
-        label: 'Edit Trip',
+        label: 'Edit trip',
         func: editTrip,
       },
       {
-        label: 'Unassign Trip',
+        label: 'Unassign trip',
         func: initUnassignTrip,
         isDanger: true,
       },
       {
-        label: 'Cancel Trip',
+        label: 'Cancel trip',
         func: cancelTrip,
         isDanger: true,
       },
@@ -185,14 +187,14 @@ export default function MyTripsPage() {
       const editIsNotAllowedStatuses = ['in-progress', 'completed'];
       if (
         editIsNotAllowedStatuses.includes(trip.status) &&
-        label === 'Edit Trip'
+        label === 'Edit trip'
       ) {
         return false;
       }
 
       if (
         serviceBasedUserTypes.includes(user?.userType!) &&
-        (label === 'Edit Trip' || label === 'Unassign Trip')
+        (label === 'Edit trip' || label === 'Unassign trip')
       )
         return false;
 

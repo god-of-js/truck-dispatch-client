@@ -30,7 +30,6 @@ export default function UiModal({
         <ModalCard position={position} size={size}>
           <div className="modal-inner">
             <header className="modal-header">
-              
               {goPrev && (
                 <UiButton variant="icon-neutral" onClick={goPrev}>
                   <UiIcon icon="CaretLeft" size="16" />
