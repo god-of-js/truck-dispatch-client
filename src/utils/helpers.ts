@@ -258,34 +258,25 @@ export function filterByFieldInObject<T = any>(
   }) as T[];
 }
 
-type DataObject = {
+type ObjectFields = {
   [key: string]: any;
 };
 
-export function searchByFields(fields: string[], data: DataObject): DataObject[] {
-  const searchResults: DataObject[] = [];
+export function searchObjects(objects: ObjectFields[], searchFields: string[]): ObjectFields | undefined {
+  for (const obj of objects) {
+    let match = true;
 
-  for (const key in data) {
-    if (fields.includes(key)) {
-      const fieldValue = data[key];
-
-      // You can modify the search logic here based on your specific requirements
-      if (typeof fieldValue === 'string' && fieldValue.toLowerCase().includes('search term')) {
-        searchResults.push(data);
-        continue;
-      }
-
-      if (Array.isArray(fieldValue) && fieldValue.some((item: any) => typeof item === 'string' && item.toLowerCase().includes('search term'))) {
-        searchResults.push(data);
-        continue;
+    for (const field of searchFields) {
+      if (!(field in obj)) {
+        match = false;
+        break;
       }
     }
 
-    if (typeof data[key] === 'object') {
-      const nestedSearchResults = searchByFields(fields, data[key]);
-      searchResults.push(...nestedSearchResults);
+    if (match) {
+      return obj;
     }
   }
 
-  return searchResults;
+  return undefined;
 }
