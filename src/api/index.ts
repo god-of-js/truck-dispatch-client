@@ -163,9 +163,22 @@ class ApiService {
   uploadTDO(formData: FormData, tripId: string) {
     return this.post<Trip>(`/trips/${tripId}/upload-tdo`, formData);
   }
+
   unassignTrip(tripId: string) {
     return this.post<{ trip: Trip; user: User }>(
       `/trips/${tripId}/unassign-trip`,
+    );
+  }
+
+  cancelTripByTripCreator(tripId: string) {
+    return this.delete<{ trip: Trip; user: User }>(
+      `/trips/${tripId}/cancel-trip-by-trip-owner`,
+    );
+  }
+
+  cancelTripByTransporter(tripId: string) {
+    return this.patch<{ trip: Trip; user: User }>(
+      `/trips/${tripId}/cancel-trip-by-transporter`,
     );
   }
 
@@ -303,6 +316,19 @@ class ApiService {
   private patch<T>(url: string, data?: unknown, silent = false): Promise<T> {
     return axiosInstance()
       .patch(url, data)
+      .then(({ data }) => {
+        if (!silent) Toast.success({ msg: data.message });
+        return data.data;
+      })
+      .catch((e) => {
+        Toast.error({ msg: e.message });
+        return Promise.reject(e);
+      });
+  }
+
+  private delete<T>(url: string, silent = false): Promise<T> {
+    return axiosInstance()
+      .delete(url)
       .then(({ data }) => {
         if (!silent) Toast.success({ msg: data.message });
         return data.data;

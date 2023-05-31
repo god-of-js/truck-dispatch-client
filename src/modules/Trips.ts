@@ -172,3 +172,21 @@ export function unassignTrip(tripId: string) {
     });
   };
 }
+
+export function cancelTripByTripCreator(tripId: string) {
+  return (dispatch: AppDispatch) => {
+    return Api.cancelTripByTripCreator(tripId).then((data) => {
+      dispatch(setTrip(data.trip));
+      return data;
+    });
+  };
+}
+
+export function cancelTripByTransporter(tripId: string) {
+  return (dispatch: AppDispatch) => {
+    return Api.cancelTripByTransporter(tripId).then((data) => {
+      dispatch(setTrip(data.trip));
+      return data;
+    });
+  };
+}

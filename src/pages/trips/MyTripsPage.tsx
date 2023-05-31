@@ -9,7 +9,12 @@ import UiButton from 'ui/UiButton';
 import UiIcon from 'ui/UiIcon';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
 import { filterByFieldInObject, toAnyAction } from 'utils/helpers';
-import { getTrips, unassignTrip } from 'modules/Trips';
+import {
+  cancelTripByTransporter,
+  cancelTripByTripCreator,
+  getTrips,
+  unassignTrip,
+} from 'modules/Trips';
 import TripsPaginatedResponse from 'types/TripsPaginatedResponse';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import UiTable from 'ui/UiTable';
@@ -197,6 +202,15 @@ export default function MyTripsPage() {
         (label === 'Edit trip' || label === 'Unassign trip')
       )
         return false;
+      if (!trip.transporter && label === 'Unassign trip') return false;
+
+      if (trip.status === 'completed' && label !== 'See trip details')
+        return false;
+      if (
+        trip.paymentRequest?.status === 'completed' &&
+        (label === 'Cancel trip' || label === 'Unassign trip')
+      )
+        return false;
 
       return true;
     });
@@ -229,7 +243,16 @@ export default function MyTripsPage() {
   function initUnassignTrip(id: string) {
     dispatch(toAnyAction(unassignTrip(id)));
   }
-  function cancelTrip(id: string) {}
+
+  function cancelTrip(id: string) {
+    const action = clientBasedUserTypes.includes(user?.userType!)
+      ? cancelTripByTripCreator
+      : cancelTripByTransporter;
+
+    dispatch(toAnyAction(action(id))).then(() => {
+      console.log(id);
+    });
+  }
 
   useEffect(() => {
     setPage(1);
