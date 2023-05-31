@@ -5,7 +5,7 @@ import {
   typeOfGoods,
 } from 'utils/constants';
 import User from './User';
-
+import PaymentRequest from './PaymentRequest';
 export default interface Trip {
   _id: string;
   pickUpAddress: string;
@@ -24,4 +24,5 @@ export default interface Trip {
   TDO?: string;
   reference: string;
   status: 'awaiting-bid' | 'payment-complete' | 'in-progress' | 'completed';
+  paymentRequest?: PaymentRequest;
 }
