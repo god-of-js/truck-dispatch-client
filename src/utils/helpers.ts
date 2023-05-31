@@ -262,8 +262,16 @@ type ObjectFields = {
   [key: string]: any;
 };
 
-export function searchObjects(objects: ObjectFields[], searchFields: string[]): ObjectFields | undefined {
+ export function searchObjects(objects: ObjectFields[], searchFields: string[]): ObjectFields | undefined {
+  if (!Array.isArray(objects)) {
+    return undefined;
+  }
+
   for (const obj of objects) {
+    if (typeof obj !== 'object' || obj === null) {
+      continue;
+    }
+
     let match = true;
 
     for (const field of searchFields) {
