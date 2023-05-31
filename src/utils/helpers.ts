@@ -1,25 +1,13 @@
 import { AnyAction } from 'redux';
 import TokenVerificationData from 'types/TokenVerificationData';
 
-export function removeKeyValuePairsFromObject<T extends Object>(
-  obj: T,
-  stringToBeRemoved: string[],
-): T {
-  const refinedObj: Record<string, unknown> = {};
-  Object.keys(obj)
-    .filter((key) => !stringToBeRemoved.includes(key))
-    .forEach((key) => {
-      refinedObj[key] = obj[key as keyof T];
-    });
-  return refinedObj as T;
-}
-
 export function toAnyAction(func: unknown) {
   return func as AnyAction;
 }
 
 export function aValueHasBeenChanged<T extends object>(source: T, formData: T) {
   if (!source) return false;
+  // refactor to make use of the removeUneditedFields util
   const keys = Object.keys(source) as (keyof typeof formData)[];
   const formDataKeys = Object.keys(formData);
 
@@ -44,16 +32,25 @@ export function abbreviateNumber(
     { divider: 1e12, suffix: 'T' },
     { divider: 1e9, suffix: 'B' },
     { divider: 1e6, suffix: 'M' },
-    { divider: 1e3, suffix: 'K' },
   ],
 ) {
   for (let i = 0; i < ranges.length; i++) {
     if (num >= ranges[i].divider) {
       const decimals = num % ranges[i].divider ? 2 : 0;
-      return (num / ranges[i].divider).toFixed(decimals) + ranges[i].suffix;
+      const abbreviation = (num / ranges[i].divider).toFixed(decimals);
+      const suffix = ranges[i].suffix;
+
+      if (abbreviation.includes('.')) {
+        // Remove trailing zeros
+        return abbreviation.replace(/\.?0*$/, '') + suffix;
+      }
+
+      return abbreviation + suffix;
     }
   }
-  return num.toString();
+
+  // If the number is below the lowest range, add comma separators
+  return num.toLocaleString();
 }
 
 export function priceWithTDPercent(amount: number | string, percent = 7) {
@@ -77,7 +74,7 @@ export function nairaToKobo(amount: string | number) {
   return value * 100;
 }
 
-export function removeUneditedFields<T>(
+export function removeUneditedFields<T = Record<string, unknown>>(
   sourceObj: Record<string, any>,
   derivedObj: Record<string, any>,
 ): T {
@@ -122,7 +119,12 @@ export function deepRootedToFormData(data: Record<string, any>): FormData {
 
   return formData;
 }
-
+/**
+ *
+ * @param arr: Array of items
+ * @param item: updated item that could potentially have a duplicate in the store
+ * @returns returnArr: An updated arr that has either replaced the item or put it in if it's not in there.
+ */
 export function replaceEditedItem<T extends { _id: any }>(
   arr: T[],
   item: T,
@@ -144,7 +146,7 @@ export function generateReference() {
   return key;
 }
 
-export function convertToFullDate(dateToConvert: number) {
+export function convertToFullDate(dateToConvert: number | string) {
   const date = new Date(dateToConvert);
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const months = [
@@ -254,4 +256,8 @@ export function filterByFieldInObject<T = any>(
 
     return false;
   }) as T[];
+}
+
+export function containsOnlyNumbers(value: string) {
+  return /^[0-9]+$/.test(value);
 }

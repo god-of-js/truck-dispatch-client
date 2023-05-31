@@ -38,12 +38,14 @@ export default BidsSlice.reducer;
 const bids = (state: RootState) => state.bid.bids;
 export const selectBid = (
   valueToQueryWith: string,
-  queryParam: '_id' | 'transporter._id' | 'trip' = '_id',
+  queryParam: '_id' | 'transporter' | 'trip' = '_id',
 ) =>
   createSelector(bids, (bidArr: Bid[]) => {
     return bidArr.find((bid) => {
-      if (queryParam === 'transporter._id')
+      if (queryParam === 'transporter')
         return valueToQueryWith === bid.transporter._id;
+
+      if (queryParam === 'trip') return valueToQueryWith === bid.trip._id;
 
       return valueToQueryWith === bid[queryParam];
     });

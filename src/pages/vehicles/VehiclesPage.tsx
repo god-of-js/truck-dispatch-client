@@ -53,10 +53,13 @@ export default function VehiclesPage() {
           value={searchQuery}
           name="searchQuery"
           placeholder="Search..."
+          size="md"
           icon="Search"
         />
         {!!vehicles.length && (
-          <UiButton onClick={openAddVehicle}>add new vehicle</UiButton>
+          <UiButton size="md" onClick={openAddVehicle}>
+            add new vehicle
+          </UiButton>
         )}
       </GappedContainerWith12PX>
     );

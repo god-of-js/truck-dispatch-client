@@ -9,7 +9,9 @@ export default interface Bid {
   price: number;
   presentLocation?: string;
   vehicle: Vehicle;
-  trip: string;
+  trip: Trip;
   status?: 'pending' | 'accepted' | 'rejected';
   transporter: User;
+  createdAt: string;
+  updatedAt: string;
 }

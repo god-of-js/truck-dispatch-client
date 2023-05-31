@@ -39,7 +39,7 @@ export default function EditVehicle({ onClose, vehicle }: Props) {
   }
 
   return (
-    <UiModal title="Edit Vehicle" onClose={onClose}>
+    <UiModal position={'center'} title="Edit Vehicle" onClose={onClose}>
       <Body>
         <DriverDetailsForm
           finish={editVehicle}

@@ -68,8 +68,6 @@ const ComponentStyling = styled.div`
   padding: ${pxToRem(32)} ${pxToRem(24)};
   display: grid;
   gap: ${pxToRem(40)};
-  padding-bottom: ${pxToRem(80)};
-  margin-bottom: ${pxToRem(40)};
 
   .user-profile {
     display: flex;
@@ -110,14 +108,12 @@ const ComponentStyling = styled.div`
   }
 
   .bid-button-container {
-    position: absolute;
-    bottom: 0;
     width: 100%;
-    margin: ${pxToRem(40)} 0;
+    margin-top: ${pxToRem(60)};
 
     button {
       margin: auto;
-      width: 45%;
+      width: 50%;
     }
   }
 `;
