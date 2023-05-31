@@ -90,6 +90,7 @@ const VehicleStyling = styled.div`
       border-radius: ${pxToRem(8)};
       width: ${pxToRem(100)};
       height: ${pxToRem(100)};
+      object-fit: cover;
     }
 
     .vehicle-type {

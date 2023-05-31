@@ -9,7 +9,7 @@ import AddVehicle from 'components/vehicles/AddVehicle';
 import { toAnyAction } from 'utils/helpers';
 import { getVehicles } from 'modules/Vehicle';
 import { RootState } from 'modules/index';
-import VehicleItem from 'components/vehicles/Vehicle';
+import VehicleItem from 'components/vehicles/VehicleItem';
 import sizes from 'utils/sizes';
 import EditVehicle from 'components/vehicles/EditVehicle';
 import Vehicle from 'types/Vehicle';
