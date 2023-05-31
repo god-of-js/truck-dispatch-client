@@ -19,7 +19,7 @@ interface Props {
 export default function UiModal({
   children,
   title,
-  position = 'center',
+  position,
   size = 'lg',
   onClose,
   goPrev,
@@ -30,6 +30,7 @@ export default function UiModal({
         <ModalCard position={position} size={size}>
           <div className="modal-inner">
             <header className="modal-header">
+              
               {goPrev && (
                 <UiButton variant="icon-neutral" onClick={goPrev}>
                   <UiIcon icon="CaretLeft" size="16" />
@@ -58,7 +59,7 @@ function positionStyling({ position, size }: CardProps) {
       left: initial;
       border-radius: 0;
       max-height: 100%;
-      width: 45%;
+      width: 80%;
 
       .modal-header {
         border-bottom: ${pxToRem(1)} solid var(--color-gray-20);
@@ -68,6 +69,25 @@ function positionStyling({ position, size }: CardProps) {
           font-size: ${pxToRem(24)};
         }
       }
+     
+      @media only screen and (min-width: ${sizes.tabletLargeWidth}) {
+        width: 60%;
+      }
+      @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
+        width: 45%;
+      }
+    `;
+  }
+  if (position === 'center') {
+    return `
+    position: static;
+    margin: auto;
+    border-radius: ${pxToRem(16)};
+    
+    .modal-header h2 {
+      text-align: center;
+      flex-grow: 1;
+    }
     `;
   }
 
@@ -109,6 +129,7 @@ const ModalCard = styled.div`
       justify-content: space-between;
       align-items: center;
       padding: ${pxToRem(18)} ${pxToRem(24)};
+      border-bottom: ${pxToRem(1)} solid var(--color-gray-20);
 
       h2 {
         color: var(--color-neutralBlack);

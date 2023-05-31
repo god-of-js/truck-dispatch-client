@@ -51,6 +51,7 @@ const TextArea = styled.textarea`
   border-radius: ${pxToRem(4)};
   box-sizing: border-box;
   font-family: 'thiccboi-medium', sans-serif;
+  min-height: ${pxToRem(200)};
   &:focus {
     border: ${pxToRem(2)} solid var(--color-primary);
     box-shadow: var(--box-shadow-primary);
