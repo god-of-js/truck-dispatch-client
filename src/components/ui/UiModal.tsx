@@ -30,6 +30,7 @@ export default function UiModal({
         <ModalCard position={position} size={size}>
           <div className="modal-inner">
             <header className="modal-header">
+              
               {goPrev && (
                 <UiButton variant="icon-neutral" onClick={goPrev}>
                   <UiIcon icon="CaretLeft" size="16" />
@@ -87,18 +88,6 @@ function positionStyling({ position, size }: CardProps) {
       text-align: center;
       flex-grow: 1;
     }
-
-    // .modal-header {
-    //   position: relative;
-    // }
-    
-    // .modal-header h2 {
-    //   position: absolute;
-    //   left: 50%;
-    //   top: 50%;
-    //   transform: translate(-50%, -50%);
-    // }
-
     `;
   }
 
@@ -140,6 +129,7 @@ const ModalCard = styled.div`
       justify-content: space-between;
       align-items: center;
       padding: ${pxToRem(18)} ${pxToRem(24)};
+      border-bottom: ${pxToRem(1)} solid var(--color-gray-20);
 
       h2 {
         color: var(--color-neutralBlack);
