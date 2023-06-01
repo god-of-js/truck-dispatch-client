@@ -8,7 +8,11 @@ import Loader from 'components/layout/Loader';
 import UiButton from 'ui/UiButton';
 import UiIcon from 'ui/UiIcon';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
-import { filterByFieldInObject, toAnyAction } from 'utils/helpers';
+import {
+  convertToFullDate,
+  filterByFieldInObject,
+  toAnyAction,
+} from 'utils/helpers';
 import {
   cancelTripByTransporter,
   cancelTripByTripCreator,
@@ -134,8 +138,11 @@ export default function MyTripsPage() {
     return data.map((trip: Trip) => ({
       ...trip,
       id: trip._id,
+      typeOfGoods: <TypeOfGoods>{trip.typeOfGoods}</TypeOfGoods>,
       responsibleTransporter: userDetails(trip.transporter),
       tripOwnerDetails: userDetails(trip.tripOwner),
+      pickUpDate: <DateText>{convertToFullDate(trip.pickUpDate)}</DateText>,
+      deliveryDate: <DateText>{convertToFullDate(trip.deliveryDate)}</DateText>,
       statusField: (
         <UiPill variant={getPillVariant(trip.status)}>
           {formatStatus(trip.status)}
@@ -156,7 +163,7 @@ export default function MyTripsPage() {
   function formatStatus(status: Trip['status']) {
     if (status === 'payment-complete') return 'Pending';
     if (status === 'awaiting-bid') return 'Awaiting Bid';
-    if (status === 'in-progress') return 'In Progress';
+    if (status === 'in-progress') return 'Ongoing';
     if (status === 'completed') return 'Completed';
   }
 
@@ -167,8 +174,8 @@ export default function MyTripsPage() {
       <UserDetails>
         <UiAvatar avatar={tripUser.avatar} />
         <div>
-          <div>{`${tripUser.firstName} ${tripUser.lastName}`}</div>
-          <div className="transporter-phone">{tripUser.phone}</div>
+          <div className="transporter-name">{`${tripUser.firstName} ${tripUser.lastName}`}</div>
+          <div>{tripUser.phone}</div>
         </div>
       </UserDetails>
     );
@@ -345,16 +352,38 @@ const UserDetails = styled.div`
   display: flex;
   gap: ${pxToRem(8)};
   align-items: center;
-  .transporter-phone {
+  .transporter-name {
     font-weight: 400;
     font-size: ${pxToRem(14)};
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%;
+    color: var(--color-neutralBlack);
+    letter-spacing: -0.02em;
+    text-transform: capitalize;
+    font-family: 'thiccboi-extrabold';
   }
 `;
 
+const TypeOfGoods = styled.span`
+  font-family: 'thiccboi-bold';
+  font-style: normal;
+  font-weight: 600;
+  font-size: ${pxToRem(14)};
+  line-height: 140%;
+  letter-spacing: -0.02em;
+  color: var(--color-neutralBlack);
+  text-transform: capitalize;
+`;
 const EdgeChild = styled.div`
   display: flex;
   gap: ${pxToRem(12)};
   .ui-filter-tag {
     cursor: pointer;
   }
+`;
+
+const DateText = styled.span`
+  font-family: 'thiccboi-bold';
+  font-weight: 600;
 `;

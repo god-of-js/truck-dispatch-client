@@ -67,57 +67,57 @@ export default function UiTable({
 
   return (
     <TableContainer>
+      <Table>
+        <TableHeader>
+          <TableRow isHeader>
+            {tableHeaders.map((header, index) => (
+              <TableHeadItem key={index} isMenu={!header.title}>
+                {header.title}
+              </TableHeadItem>
+            ))}
+          </TableRow>
+        </TableHeader>
+        <tbody>
+          {data.map((item) => {
+            return (
+              <TableRow key={item._id}>
+                {headers.map((header, index) => {
+                  return (
+                    <TableDataItem
+                      key={index}
+                      onClick={() => onRowClick?.(item._id)}
+                    >
+                      <div>{item[header.query]}</div>
+                    </TableDataItem>
+                  );
+                })}
 
-
-    <Table>
-      <TableHeader>
-        <TableRow isHeader>
-          {tableHeaders.map((header, index) => (
-            <TableHeadItem key={index} isMenu={!header.title}>
-              {header.title}
-            </TableHeadItem>
-          ))}
-        </TableRow>
-      </TableHeader>
-      <tbody>
-        {data.map((item) => {
-          return (
-            <TableRow key={item._id}>
-              {headers.map((header, index) => {
-                return (
-                  <TableDataItem
-                    key={index}
-                    onClick={() => onRowClick?.(item._id)}
-                  >
-                    <div>{item[header.query]}</div>
+                {options && (
+                  <TableDataItem isMenu>
+                    <div className="menu-container">
+                      <UidropdownMenu
+                        options={
+                          typeof options === 'function'
+                            ? options(item)
+                            : options
+                        }
+                        itemId={item._id}
+                      />
+                    </div>
                   </TableDataItem>
-                );
-              })}
-
-              {options && (
-                <TableDataItem isMenu>
-                  <div className="menu-container">
-                    <UidropdownMenu
-                      options={
-                        typeof options === 'function' ? options(item) : options
-                      }
-                      itemId={item._id}
-                    />
-                  </div>
-                </TableDataItem>
-              )}
-            </TableRow>
-          );
-        })}
-      </tbody>
-    </Table>
+                )}
+              </TableRow>
+            );
+          })}
+        </tbody>
+      </Table>
     </TableContainer>
   );
 }
 
 const TableContainer = styled.div`
   overflow: auto;
-`
+`;
 const Table = styled.table`
   table-layout: fixed;
   width: 100%;
@@ -164,7 +164,6 @@ const TableHeadItem = styled.th<{ isMenu: boolean }>`
   font-style: normal;
   font-weight: 600;
   ${({ isMenu }) => isMenu && `width: ${pxToRem(24)}`};
-
 `;
 
 const TableDataItem = styled.td<{ isMenu?: boolean }>`
