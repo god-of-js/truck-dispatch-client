@@ -23,6 +23,10 @@ import { DropDownData } from 'ui/UiDropdownMenu';
 import UiPill from 'ui/UiPill';
 import User from 'types/User';
 import UiAvatar from 'ui/UiAvatar';
+import UiFilterTag from 'ui/UiFilterTag';
+import UiInput from 'ui/UiInput';
+import { getTransporterBids } from 'modules/Bid';
+import PaginationLoader from 'components/layout/PaginationLoader';
 
 export default function MyTripsPage() {
   const navigate = useNavigate();
@@ -30,7 +34,9 @@ export default function MyTripsPage() {
   const location = useLocation();
   const user = useSelector((state: RootState) => state.account.user);
   const trips = useSelector((state: RootState) => state.trips.trips);
+  const bids = useSelector((state: RootState) => state.bid.bids);
   const searchParams = new URLSearchParams(location.search);
+  const [isAllBidsVisible, setIsAllBidsVisible] = useState(false);
   const status = searchParams.get('status');
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -39,6 +45,7 @@ export default function MyTripsPage() {
   const [totalPendingTrips, setTotalPendingTrips] = useState(0);
   const [totalInProgressTrips, setTotalInProgressTrips] = useState(0);
   const [totalCompletedTrips, setTotalCompletedTrips] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const headers = useMemo(
     () =>
@@ -157,13 +164,13 @@ export default function MyTripsPage() {
     if (!tripUser) return 'Not yet assigned';
 
     return (
-      <TransporterDetails>
+      <UserDetails>
         <UiAvatar avatar={tripUser.avatar} />
         <div>
           <div>{`${tripUser.firstName} ${tripUser.lastName}`}</div>
           <div className="transporter-phone">{tripUser.phone}</div>
         </div>
-      </TransporterDetails>
+      </UserDetails>
     );
   }
   function dropDownData(item: unknown): DropDownData[] {
@@ -254,6 +261,44 @@ export default function MyTripsPage() {
     });
   }
 
+  function openAllBids() {
+    setIsAllBidsVisible(true);
+  }
+  function handleQueryChange({
+    value,
+  }: {
+    name: string;
+    value: string | null;
+  }) {
+    setSearchQuery(value!);
+  }
+  function edgeChild() {
+    return (
+      <EdgeChild>
+        <UiInput
+          onChange={handleQueryChange}
+          value={searchQuery}
+          name="searchQuery"
+          placeholder="Search..."
+          icon="Search"
+          size="md"
+        />
+        {clientBasedUserTypes.includes(user?.userType!) ? (
+          <UiButton size="md">
+            <UiIcon icon="TruckTick" /> <span>Create new trip</span>
+          </UiButton>
+        ) : (
+          <UiFilterTag
+            title="MY BIDS"
+            isActive={true}
+            value={bids.length}
+            onClick={openAllBids}
+          />
+        )}
+      </EdgeChild>
+    );
+  }
+
   useEffect(() => {
     setPage(1);
   }, [status]);
@@ -261,18 +306,18 @@ export default function MyTripsPage() {
   useEffect(() => {
     loadTrips();
   }, [page, status]);
+  useEffect(() => {
+    dispatch(toAnyAction(getTransporterBids()));
+  }, []);
 
   return (
     <>
-      <DashboardTopNav routeName="My Trips" pageFilters={filters} />
+      <DashboardTopNav
+        routeName="My Trips"
+        pageFilters={filters}
+        edgeChild={edgeChild()}
+      />
       <MyTripsPageStyle>
-        {clientBasedUserTypes.includes(user?.userType!) && (
-          <CreateTripButtonContainer>
-            <Link to="/my-trips/new">
-              <UiButton size="md">Create New Trip</UiButton>
-            </Link>
-          </CreateTripButtonContainer>
-        )}
         <UiTable
           data={tripsData}
           headers={headers}
@@ -281,50 +326,35 @@ export default function MyTripsPage() {
           options={dropDownData}
           noDataParagraphText="You have no trips. Create new trip by clicking the button above."
         />
-        <div className="loader-container">
-          {loading ? (
-            <Loader size="lg" />
-          ) : (
-            <UiButton
-              size="large"
-              variant="secondary"
-              disabled={page === totalPages || !totalPages}
-              onClick={() => setPage(page + 1)}
-            >
-              Load more <UiIcon icon="Refresh" />
-            </UiButton>
-          )}
-        </div>
+        <PaginationLoader
+          loading={loading}
+          page={page}
+          totalPages={totalPages}
+          nextPage={() => setPage(page + 1)}
+        />
       </MyTripsPageStyle>
     </>
   );
 }
 
 const MyTripsPageStyle = styled.div`
-  padding: ${pxToRem(24)};
-  .loader-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-
-    button {
-      width: ${pxToRem(182)};
-    }
-  }
+  padding-top: ${pxToRem(24)};
 `;
 
-const CreateTripButtonContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: ${pxToRem(8)};
-`;
-
-const TransporterDetails = styled.div`
+const UserDetails = styled.div`
   display: flex;
   gap: ${pxToRem(8)};
   align-items: center;
   .transporter-phone {
     font-weight: 400;
     font-size: ${pxToRem(14)};
+  }
+`;
+
+const EdgeChild = styled.div`
+  display: flex;
+  gap: ${pxToRem(12)};
+  .ui-filter-tag {
+    cursor: pointer;
   }
 `;

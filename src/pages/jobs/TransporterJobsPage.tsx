@@ -23,6 +23,7 @@ import { getTransporterBids } from 'modules/Bid';
 import UiFilterTag from 'ui/UiFilterTag';
 import { editableInputTypes } from '@testing-library/user-event/dist/utils';
 import AllBids from 'components/bids/AllBids';
+import PaginationLoader from 'components/layout/PaginationLoader';
 
 export default function TransporterJobs() {
   const location = useLocation();
@@ -135,7 +136,7 @@ export default function TransporterJobs() {
     return (
       <EdgeChild>
         <UiInput
-          onChange={handleChange}
+          onChange={handleQueryChange}
           value={searchQuery}
           name="searchQuery"
           placeholder="Search..."
@@ -151,7 +152,12 @@ export default function TransporterJobs() {
       </EdgeChild>
     );
   }
-  function handleChange({ value }: { name: string; value: string | null }) {
+  function handleQueryChange({
+    value,
+  }: {
+    name: string;
+    value: string | null;
+  }) {
     setSearchQuery(value!);
   }
 
@@ -185,20 +191,13 @@ export default function TransporterJobs() {
             />
           );
         })}
-        <div className="loader-container">
-          {loading ? (
-            <Loader size="lg" />
-          ) : (
-            <UiButton
-              size="large"
-              variant="secondary"
-              disabled={page === totalPages || !totalPages}
-              onClick={() => setPage(page + 1)}
-            >
-              Load more <UiIcon icon="Refresh" />
-            </UiButton>
-          )}
-        </div>
+        
+        <PaginationLoader
+          loading={loading}
+          page={page}
+          totalPages={totalPages}
+          nextPage={() => setPage(page + 1)}
+        />
       </MyJobsPageStyle>
       <UiOverlay isVisible={isInformUserOfVerificationModalVisible}>
         <InformUserOfVerification
@@ -241,16 +240,6 @@ const MyJobsPageStyle = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: ${pxToRem(20)};
-
-  .loader-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-
-    button {
-      width: ${pxToRem(182)};
-    }
-  }
 `;
 
 const EdgeChild = styled.div`
