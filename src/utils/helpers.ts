@@ -258,31 +258,35 @@ export function filterByFieldInObject<T = any>(
   }) as T[];
 }
 
-type ObjectFields = {
+type ObjectField = {
   [key: string]: any;
 };
 
- export function searchObjects(objects: ObjectFields[], searchFields: string[]): ObjectFields | undefined {
-  if (!Array.isArray(objects)) {
+export function searchObjectsByField(
+  objects: ObjectField[],
+  searchInput: string,
+  searchFields: string[],
+): ObjectField | undefined {
+  if (!Array.isArray(objects) || !searchInput || !searchFields.length) {
     return undefined;
   }
+
+  const sanitizedInput = searchInput.toLowerCase();
 
   for (const obj of objects) {
     if (typeof obj !== 'object' || obj === null) {
       continue;
     }
 
-    let match = true;
-
     for (const field of searchFields) {
-      if (!(field in obj)) {
-        match = false;
-        break;
-      }
-    }
+      const fieldValue = obj[field];
 
-    if (match) {
-      return obj;
+      if (
+        typeof fieldValue === 'string' &&
+        fieldValue.toLowerCase().includes(sanitizedInput)
+      ) {
+        return obj;
+      }
     }
   }
 
