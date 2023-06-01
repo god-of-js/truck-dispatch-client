@@ -43,6 +43,23 @@ const Pill = styled.div`
     }
   }
 
+  &.success {
+    background: var(--color-success-10);
+    color: var(--color-success);
+
+    .circle {
+      background: var(--color-success);
+    }
+  }
+  &.info {
+    background: var(--color-info-10);
+    color: var(--color-info);
+
+    .circle {
+      background: var(--color-info);
+    }
+  }
+
   &.gray {
     background: var(--color-gray-20);
   }
