@@ -5,7 +5,7 @@ interface Props {
   children: React.ReactNode;
 }
 export default function UiCard({ children }: Props) {
-  return <Card>{children}</Card>;
+  return <Card className="ui-card">{children}</Card>;
 }
 
 const Card = styled.div`

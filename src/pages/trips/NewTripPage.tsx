@@ -9,7 +9,7 @@ import { createTrip, getTrip, selectTrip, updateTrip } from 'modules/Trips';
 
 import UiTimeline, { TimelineStep } from 'ui/UiTimeline';
 import NewTripForm from 'components/trips/NewTripForm';
-import ViewTripDetails from 'components/trips/ViewTripDetails';
+import ViewTripDetails from 'components/trips/TripDetails';
 import MessageWithImage from 'ui/MessageWithImage';
 import UiButton from 'ui/UiButton';
 import UiBackButton from 'ui/UiBackButton';

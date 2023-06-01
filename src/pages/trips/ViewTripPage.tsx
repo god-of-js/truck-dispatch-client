@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import sizes from 'utils/sizes';
 
 import { selectTrip } from 'modules/Trips';
-import ViewTripDetails from 'components/trips/ViewTripDetails';
+import ViewTripDetails from 'components/trips/TripDetails';
 import NotFoundError from 'components/errors/NotFoundError';
 import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
 

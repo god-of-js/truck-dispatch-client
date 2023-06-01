@@ -7,12 +7,14 @@ import UiButton from './UiButton';
 
 type Size = 'lg' | 'sm';
 type Position = 'center' | 'right';
+type BG = 'dark' | 'light';
 
 interface Props {
   children: React.ReactNode;
   position?: Position;
   size?: Size;
   title?: string;
+  bgVariant?: BG;
   onClose: () => void;
   goPrev?: () => void;
 }
@@ -21,13 +23,14 @@ export default function UiModal({
   title,
   position,
   size = 'lg',
+  bgVariant = 'light',
   onClose,
   goPrev,
 }: Props) {
   return (
     <Modal>
       <OutsideClickHandler onOutsideClick={onClose}>
-        <ModalCard position={position} size={size}>
+        <ModalCard position={position} size={size} bgVariant={bgVariant}>
           <div className="modal-inner">
             <header className="modal-header">
               {goPrev && (
@@ -101,14 +104,16 @@ function positionStyling({ position, size }: CardProps) {
 interface CardProps {
   size?: Size;
   position?: Position;
+  bgVariant?: BG;
 }
 const Modal = styled.div`
   width: 100%;
   height: fit-content;
 `;
 
-const ModalCard = styled.div`
-  background: white;
+const ModalCard = styled.div<CardProps>`
+  background: ${({ bgVariant }) =>
+    bgVariant === 'dark' ? 'var(--color-gray-20)' : '#ffffff'};
   border-top-left-radius: ${pxToRem(8)};
   border-top-right-radius: ${pxToRem(8)};
   position: fixed;
@@ -141,7 +146,7 @@ const ModalCard = styled.div`
   }
 
   @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
-    width: ${({ size }: CardProps) => (size === 'lg' ? '50%' : pxToRem(540))};
-    ${(cardProps: CardProps) => positionStyling(cardProps)}
+    width: ${({ size }) => (size === 'lg' ? '50%' : pxToRem(540))};
+    ${(cardProps) => positionStyling(cardProps)}
   }
 `;

@@ -17,6 +17,7 @@ import {
   cancelTripByTransporter,
   cancelTripByTripCreator,
   getTrips,
+  selectJob,
   unassignTrip,
 } from 'modules/Trips';
 import TripsPaginatedResponse from 'types/TripsPaginatedResponse';
@@ -31,6 +32,12 @@ import UiFilterTag from 'ui/UiFilterTag';
 import UiInput from 'ui/UiInput';
 import { getTransporterBids } from 'modules/Bid';
 import PaginationLoader from 'components/layout/PaginationLoader';
+import UiOverlay from 'ui/UiOverlay';
+import InformUserOfVerification from 'components/verification/InformUserOfVerification';
+import ViewJobDetail from 'components/jobs/ViewJobDetail';
+import BidForJob from 'components/jobs/BidForJob';
+import AllBids from 'components/bids/AllBids';
+import CreateTrip from 'components/trips/CreateTrip';
 
 export default function MyTripsPage() {
   const navigate = useNavigate();
@@ -40,7 +47,6 @@ export default function MyTripsPage() {
   const trips = useSelector((state: RootState) => state.trips.trips);
   const bids = useSelector((state: RootState) => state.bid.bids);
   const searchParams = new URLSearchParams(location.search);
-  const [isAllBidsVisible, setIsAllBidsVisible] = useState(false);
   const status = searchParams.get('status');
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -50,6 +56,16 @@ export default function MyTripsPage() {
   const [totalInProgressTrips, setTotalInProgressTrips] = useState(0);
   const [totalCompletedTrips, setTotalCompletedTrips] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
+  const [
+    isInformUserOfVerificationModalVisible,
+    setIsInformUserOfVerificationModalVisible,
+  ] = useState(false);
+  const [isViewJobDetailsVisible, setIsViewJobDetailsVisible] = useState(false);
+  const [isBidForJobVisible, setIsBidForJobVisible] = useState(false);
+  const [isAllBidsVisible, setIsAllBidsVisible] = useState(false);
+  const [isCreateTripVisible, setIsCreateTripVisible] = useState(false);
+  const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
+  const job = useSelector(selectJob(selectedJobId!));
 
   const headers = useMemo(
     () =>
@@ -271,6 +287,7 @@ export default function MyTripsPage() {
   function openAllBids() {
     setIsAllBidsVisible(true);
   }
+
   function handleQueryChange({
     value,
   }: {
@@ -279,6 +296,7 @@ export default function MyTripsPage() {
   }) {
     setSearchQuery(value!);
   }
+
   function edgeChild() {
     return (
       <EdgeChild>
@@ -290,11 +308,12 @@ export default function MyTripsPage() {
           icon="Search"
           size="md"
         />
-        {clientBasedUserTypes.includes(user?.userType!) ? (
-          <UiButton size="md">
+        {clientBasedUserTypes.includes(user?.userType!) && (
+          <UiButton size="md" onClick={() => setIsCreateTripVisible(true)}>
             <UiIcon icon="TruckTick" /> <span>Create new trip</span>
           </UiButton>
-        ) : (
+        )}
+        {serviceBasedUserTypes.includes(user?.userType!) && (
           <UiFilterTag
             title="MY BIDS"
             isActive={true}
@@ -306,6 +325,30 @@ export default function MyTripsPage() {
     );
   }
 
+  function bidForJob(jobId: string) {
+    if (user?.status !== 'verified') {
+      setIsInformUserOfVerificationModalVisible(true);
+      setIsViewJobDetailsVisible(false);
+      return;
+    }
+    if (isViewJobDetailsVisible) setIsViewJobDetailsVisible(false);
+    setSelectedJobId(jobId);
+    setIsBidForJobVisible(true);
+  }
+
+  function backToJobDetails() {
+    setIsViewJobDetailsVisible(true);
+    setIsBidForJobVisible(false);
+  }
+
+  function closeViewDetails() {
+    setIsViewJobDetailsVisible(false);
+  }
+
+  function closeBidOnJob() {
+    setIsBidForJobVisible(false);
+  }
+
   useEffect(() => {
     setPage(1);
   }, [status]);
@@ -313,6 +356,7 @@ export default function MyTripsPage() {
   useEffect(() => {
     loadTrips();
   }, [page, status]);
+
   useEffect(() => {
     dispatch(toAnyAction(getTransporterBids()));
   }, []);
@@ -340,6 +384,43 @@ export default function MyTripsPage() {
           nextPage={() => setPage(page + 1)}
         />
       </MyTripsPageStyle>
+
+      {/* MODALS */}
+      <UiOverlay isVisible={isCreateTripVisible}>
+        <CreateTrip onClose={() => setIsCreateTripVisible(false)} />
+      </UiOverlay>
+      <UiOverlay isVisible={isInformUserOfVerificationModalVisible}>
+        <InformUserOfVerification
+          onClose={() => setIsInformUserOfVerificationModalVisible(false)}
+        />
+      </UiOverlay>
+      {job && (
+        <>
+          <UiOverlay isVisible={isViewJobDetailsVisible}>
+            <ViewJobDetail
+              job={job}
+              bidOnJob={bidForJob}
+              onClose={closeViewDetails}
+            />
+          </UiOverlay>
+          <UiOverlay isVisible={isBidForJobVisible}>
+            <BidForJob
+              jobId={job._id}
+              onClose={closeBidOnJob}
+              backToJobDetails={backToJobDetails}
+            />
+          </UiOverlay>
+        </>
+      )}
+      <UiOverlay isVisible={isAllBidsVisible}>
+        <AllBids
+          onClose={() => setIsAllBidsVisible(false)}
+          editBid={(id) => {
+            bidForJob(id);
+            setIsAllBidsVisible(false);
+          }}
+        />
+      </UiOverlay>
     </>
   );
 }
