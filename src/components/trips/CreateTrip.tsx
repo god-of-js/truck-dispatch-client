@@ -15,8 +15,9 @@ import TripDetails from './TripDetails';
 
 interface Props {
   onClose: () => void;
+  onCreated?: (tripId: string) => void;
 }
-export default function CreateTrip({ onClose }: Props) {
+export default function CreateTrip({ onClose, onCreated }: Props) {
   const dispatch = useDispatch();
   const { tripId } = useParams();
   const trip = useSelector(selectTrip(tripId || ''));

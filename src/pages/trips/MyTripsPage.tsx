@@ -21,7 +21,7 @@ import {
   unassignTrip,
 } from 'modules/Trips';
 import TripsPaginatedResponse from 'types/TripsPaginatedResponse';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import UiTable from 'ui/UiTable';
 import Trip from 'types/Trip';
 import { DropDownData } from 'ui/UiDropdownMenu';
@@ -38,6 +38,7 @@ import ViewJobDetail from 'components/jobs/ViewJobDetail';
 import BidForJob from 'components/jobs/BidForJob';
 import AllBids from 'components/bids/AllBids';
 import CreateTrip from 'components/trips/CreateTrip';
+import TripHasBeenBroadcasted from 'components/trips/TripHasBeenBroadcasted';
 
 export default function MyTripsPage() {
   const navigate = useNavigate();
@@ -64,6 +65,8 @@ export default function MyTripsPage() {
   const [isBidForJobVisible, setIsBidForJobVisible] = useState(false);
   const [isAllBidsVisible, setIsAllBidsVisible] = useState(false);
   const [isCreateTripVisible, setIsCreateTripVisible] = useState(false);
+  const [isTripBroadcastedVisible, setIsTripBroadcastedVisible] = useState(true);
+  const [activeTripId, setActiveTripId] = useState<string | null>(null)
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
   const job = useSelector(selectJob(selectedJobId!));
 
@@ -349,6 +352,11 @@ export default function MyTripsPage() {
     setIsBidForJobVisible(false);
   }
 
+  function showTripBroadcasted(tripId: string) {
+    setActiveTripId(tripId);
+    setIsTripBroadcastedVisible(true);
+  }
+
   useEffect(() => {
     setPage(1);
   }, [status]);
@@ -387,7 +395,15 @@ export default function MyTripsPage() {
 
       {/* MODALS */}
       <UiOverlay isVisible={isCreateTripVisible}>
-        <CreateTrip onClose={() => setIsCreateTripVisible(false)} />
+        <CreateTrip
+          onClose={() => setIsCreateTripVisible(false)}
+          onCreated={showTripBroadcasted}
+        />
+      </UiOverlay>
+      <UiOverlay isVisible={isTripBroadcastedVisible}>
+        <TripHasBeenBroadcasted
+          onClose={() => setIsTripBroadcastedVisible(false)}
+        />
       </UiOverlay>
       <UiOverlay isVisible={isInformUserOfVerificationModalVisible}>
         <InformUserOfVerification
