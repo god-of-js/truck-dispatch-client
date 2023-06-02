@@ -23,6 +23,6 @@ export default interface Trip {
   tripOwner: User;
   TDO?: string;
   reference: string;
-  status: 'awaiting-bid' | 'payment-complete' | 'in-progress' | 'completed';
+  status: 'awaiting-bid' | 'assigned' | 'in-progress' | 'completed';
   paymentRequest?: PaymentRequest;
 }

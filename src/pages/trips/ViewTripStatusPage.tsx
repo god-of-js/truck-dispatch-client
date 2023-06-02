@@ -26,7 +26,7 @@ export default function ViewTripStatus() {
       textContent: string =
         'Kindly accept a bid from a trusted transporter on the platform. We assure you that our transporters undergo a rigorous verification process and we also curate feedback from transporters previous trips to inform you of the transporters efficiency.';
 
-    if (trip?.status === 'payment-complete') {
+    if (trip?.status === 'assigned') {
       heading = "Sit back; we've got this";
       textContent =
         'Your transporter has been notified and would be on his way to your cargo shortly. You can find your transporters contact details below. \n PS: Payment to transporter would be tendered after dispatch is marked as completed; This is an extra security measure to curb fraudulent activities.';
@@ -143,7 +143,7 @@ export default function ViewTripStatus() {
         <CardContainer isSmall>
           {user?.userType === 'transporter' && (
             <>
-              {trip?.status === 'payment-complete' && (
+              {trip?.status === 'assigned' && (
                 <>
                   <h3>Start Trip</h3>
                   <p>
