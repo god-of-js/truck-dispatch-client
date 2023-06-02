@@ -49,7 +49,6 @@ export default function CreateTrip({ tripId, onClose, onCreated }: Props) {
     if (currentStep === 'confirm-details') {
       if (!trip) {
         sendTripToDrivers().then((data: Trip) => {
-          //   setCurrentStep('broadcast-successful');
           onCreated?.(data._id);
           onClose();
         });
