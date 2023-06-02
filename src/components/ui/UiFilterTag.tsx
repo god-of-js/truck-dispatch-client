@@ -27,6 +27,7 @@ const Tag = styled.span<{ isActive?: boolean }>`
   display: flex;
   align-items: center;
   width: fit-content;
+  white-space: no-wrap;
   font-size: ${pxToRem(14)};
   line-height: 140%;
   font-style: normal;

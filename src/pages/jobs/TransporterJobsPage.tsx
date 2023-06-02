@@ -6,7 +6,7 @@ import InformUserOfVerification from 'components/verification/InformUserOfVerifi
 import { RootState } from 'modules/index';
 import { getJobs, selectJob } from 'modules/Trips';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import UiOverlay from 'ui/UiOverlay';
 import { filterByFieldInObject, toAnyAction } from 'utils/helpers';
@@ -174,6 +174,15 @@ export default function TransporterJobs() {
           />
         }
       />
+      <MobileFilters>
+        <div className="filters">
+          {pageFilters.map((filter) => (
+            <Link to={filter.route}>
+              <UiFilterTag title={filter.title} value={filter.value} />{' '}
+            </Link>
+          ))}
+        </div>
+      </MobileFilters>
       <MyJobsPageStyle className="flex-container">
         {filteredJobs.map((job) => {
           return (
@@ -261,4 +270,13 @@ const EdgeNode = styled.div`
       justify-content: center;
     }
   }
+`;
+
+const MobileFilters = styled.div`
+overflow-x: auto;
+.filters {
+  display: flex;
+  align-items: center;
+  gap: ${pxToRem(12)};
+}
 `;
