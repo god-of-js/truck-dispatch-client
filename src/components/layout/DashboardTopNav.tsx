@@ -37,8 +37,7 @@ export default function DashboardTopNav({
       <div className="route-name-container">
         <span className="route-name">{routeName}</span>
         <span className="logo">
-          {' '}
-          <AppLogo />{' '}
+          <AppLogo />
         </span>
         <div className="filters">
           {pageFilters?.map((filter) => (
