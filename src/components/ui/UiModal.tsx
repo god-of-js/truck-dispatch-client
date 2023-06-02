@@ -86,6 +86,7 @@ function positionStyling({ position, size }: CardProps) {
     .modal-header h2 {
       text-align: center;
       flex-grow: 1;
+      margin-left: 40px !important;
     }
     `;
   }
