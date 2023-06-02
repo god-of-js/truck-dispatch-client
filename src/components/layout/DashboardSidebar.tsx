@@ -63,7 +63,7 @@ export default function DashboardSidebar() {
     {
       path: '/my-trips',
       name: 'My Trips',
-      iconName: 'Truck',
+      iconName: 'TruckTick',
     },
   ];
 
