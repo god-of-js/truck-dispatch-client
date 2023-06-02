@@ -151,10 +151,9 @@ export default function MyTripsPage() {
   );
 
   const tripsData = useMemo(() => {
-    // const data = status
-    //   ? filterByFieldInObject<Trip>('status', status, trips)
-    //   : trips;
-    const data: Trip[] = [];
+    const data = status
+      ? filterByFieldInObject<Trip>('status', status, trips)
+      : trips;
 
     return data.map((trip: Trip) => ({
       ...trip,
