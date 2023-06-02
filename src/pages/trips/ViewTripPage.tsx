@@ -25,7 +25,7 @@ export default function ViewTripDetailsPage() {
             />
           </CardContainer>
           <CardContainer>
-            <ViewTripDetails data={trip} notConfirm hideActionButtons />
+            <ViewTripDetails trip={trip} />
           </CardContainer>
         </>
       )) || <NotFoundError />}
