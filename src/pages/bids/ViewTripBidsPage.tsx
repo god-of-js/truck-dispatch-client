@@ -64,7 +64,6 @@ export default function ViewTripBidsPage() {
           data={bidsData}
           headers={headers}
           tableTitle="Bids by transporters"
-          noDataParagraphText="We have broadcasted your trip to our network of transporters. If it's been a couple of minutes since the trip was created, kindly reload the page."
           onRowClick={viewBid}
         />
       </PageStyling>

@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import sizes from 'utils/sizes';
+import UiButton from './UiButton';
 import UidropdownMenu, { DropDownData } from './UiDropdownMenu';
 import UiIcon, { Icons } from './UiIcon';
 
@@ -27,43 +28,23 @@ interface Props {
   headers: Header[];
   options?: DropDownData[] | ((tripStatus: Row) => DropDownData[]);
   onRowClick?: (id: string) => void;
-  noDataHeaderText?: string;
-  noDataImage?: Icons;
-  noDataParagraphText?: string;
-  noDataPlaceHolder?: ReactNode;
+  emptyTableIcon?: Icons;
+  emptyTableText?: string;
+  emptyTableBtnContent?: React.ReactNode;
 }
 
 export default function UiTable({
   data,
   headers,
   options,
+  emptyTableIcon,
+  emptyTableText,
+  emptyTableBtnContent,
   onRowClick,
-  noDataHeaderText,
-  noDataImage = 'FolderNotchOpen',
-  noDataParagraphText = 'You Have No Data',
-  noDataPlaceHolder,
 }: Props) {
   const tableHeaders = options
     ? [...headers, { title: '', query: 'actions' }]
     : headers;
-
-  function emptyTablePlaceholder() {
-    return (
-      <NoDataBox>
-        {noDataPlaceHolder ? (
-          noDataPlaceHolder
-        ) : (
-          <>
-            <h3>{noDataHeaderText}</h3>
-            <div className="icon-container">
-              <UiIcon icon={noDataImage} size="70" />
-            </div>
-            <p className="no-data-text">{noDataParagraphText}</p>
-          </>
-        )}
-      </NoDataBox>
-    );
-  }
 
   return (
     <TableContainer>
@@ -111,6 +92,18 @@ export default function UiTable({
           })}
         </tbody>
       </Table>
+
+      {!data.length && (
+        <div className="empty-container">
+          <div className="icon-container">
+            <div className="icon-container__inner">
+              <UiIcon icon={emptyTableIcon!} size="60" />
+            </div>
+          </div>
+          <p>{emptyTableText}</p>
+          <UiButton size="large">{emptyTableBtnContent}</UiButton>
+        </div>
+      )}
     </TableContainer>
   );
 }
@@ -118,6 +111,46 @@ export default function UiTable({
 const TableContainer = styled.div`
   overflow: auto;
   position: relative;
+
+  .empty-container {
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .icon-container {
+      padding: ${pxToRem(32)};
+      width: ${pxToRem(192)};
+      height: ${pxToRem(192)};
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-gray-30);
+      border-radius: 50%;
+
+      &__inner {
+        padding: ${pxToRem(32)};
+        width: ${pxToRem(128)};
+        height: ${pxToRem(128)};
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--color-gray-50);
+        border-radius: 50%;
+      }
+    }
+    p {
+      font-style: normal;
+      font-weight: 400;
+      font-size: ${pxToRem(24)};
+      line-height: 140%;
+      text-align: center;
+      letter-spacing: -0.02em;
+      color: var(--color-gray-80);
+      max-width: ${pxToRem(360)};
+    }
+  }
 `;
 const Table = styled.table`
   table-layout: fixed;

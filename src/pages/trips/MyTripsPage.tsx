@@ -151,9 +151,10 @@ export default function MyTripsPage() {
   );
 
   const tripsData = useMemo(() => {
-    const data = status
-      ? filterByFieldInObject<Trip>('status', status, trips)
-      : trips;
+    // const data = status
+    //   ? filterByFieldInObject<Trip>('status', status, trips)
+    //   : trips;
+    const data: Trip[] = [];
 
     return data.map((trip: Trip) => ({
       ...trip,
@@ -358,6 +359,17 @@ export default function MyTripsPage() {
     setIsTripBroadcastedVisible(true);
   }
 
+  function emptyTableBtnContent() {
+    if (serviceBasedUserTypes.includes(user?.userType!)) return 'See Jobs';
+
+    return (
+      <>
+        <UiIcon icon="TruckTick" />
+        <span>Create new trip</span>
+      </>
+    );
+  }
+
   useEffect(() => {
     setPage(1);
   }, [status]);
@@ -384,14 +396,18 @@ export default function MyTripsPage() {
           tableTitle="My Trips"
           onRowClick={navigateToTrip}
           options={dropDownData}
-          noDataParagraphText="You have no trips. Create new trip by clicking the button above."
+          emptyTableIcon="TruckTick"
+          emptyTableText="You don’t have any trip here yet, Bid for jobs to get trips"
+          emptyTableBtnContent={emptyTableBtnContent()}
         />
-        <PaginationLoader
-          loading={loading}
-          page={page}
-          totalPages={totalPages}
-          nextPage={() => setPage(page + 1)}
-        />
+        {tripsData.length && (
+          <PaginationLoader
+            loading={loading}
+            page={page}
+            totalPages={totalPages}
+            nextPage={() => setPage(page + 1)}
+          />
+        )}
       </MyTripsPageStyle>
 
       {/* MODALS */}
