@@ -11,6 +11,7 @@ import { removeUserSessionId } from 'utils/localStorageMethods';
 import { selectUnreadChats } from 'modules/Chat';
 import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
+import DashboardTopNav from './DashboardTopNav';
 
 interface Route {
   iconName: Icons;
@@ -101,6 +102,7 @@ export default function DashboardSidebar() {
 
   return (
     <>
+    {/* <DashboardTopNav routeName=''/> */}
       <Sidebar isExpanded={isExpanded} isMobileExpanded={isMobileExpanded}>
         <div className="sidebar__inner">
           <header className="hide-in-small-screen">
@@ -209,7 +211,7 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
   background: white;
   z-index: 2;
   /* TODO: calc the height of 100% - nav bar height */
-  height: 100%;
+  height: ${({ isMobileExpanded }) => (isMobileExpanded ? 'calc(100% - 72px)' : 'none')};
 
   .hide-in-small-screen {
     display: none;

@@ -3,6 +3,9 @@ import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import UiFilterTag from 'ui/UiFilterTag';
 import UiIcon from 'ui/UiIcon';
+import sizes from 'utils/sizes';
+
+import { ReactComponent as AppLogo } from '../../assets/logo.svg';
 
 interface Filter {
   title: string;
@@ -29,7 +32,8 @@ export default function DashboardTopNav({
   return (
     <TopNav>
       <div className="route-name-container">
-        <span className="route-name">{routeName}</span>
+        {/* <span className="route-name">{routeName}</span> */}
+        <span className='logo'> <AppLogo /> </span>
         <div className="filters">
           {pageFilters?.map((filter) => (
             <Link to={filter.route} key={filter.title}>
@@ -44,6 +48,9 @@ export default function DashboardTopNav({
       </div>
       <div className="edge-container">
         {edgeChild}
+        <div className="search-icon">
+          <UiIcon icon="Search" />
+        </div>
         <div className="notification-icon">
           <UiIcon icon="Notification" />
         </div>
@@ -64,6 +71,9 @@ const TopNav = styled.nav`
     align-items: center;
     gap: ${pxToRem(24)};
 
+    .logo {
+      display: none;
+    }
     .filters {
       display: flex;
       align-items: center;
@@ -96,6 +106,42 @@ const TopNav = styled.nav`
         width: ${pxToRem(24)};
         height: ${pxToRem(24)};
         fill: var(--color-gray-80);
+      }
+    }
+    .search-icon {
+      width: 44px;
+      height: 44px;
+      background: white;
+      border-radius: ${pxToRem(8)};
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      svg {
+        width: ${pxToRem(24)};
+        height: ${pxToRem(24)};
+        fill: var(--color-gray-80);
+      }
+      @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
+        display: flex;
+      }
+
+    }
+  }
+
+  @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
+    .route-name-container {
+      display: flex;
+      align-items: center;
+      gap: ${pxToRem(24)};
+
+      .logo {
+        display: flex;
+      }
+      .filters {
+        display: none;
+        align-items: center;
+        gap: ${pxToRem(12)};
       }
     }
   }
