@@ -17,10 +17,11 @@ import {
   cancelTripByTransporter,
   cancelTripByTripCreator,
   getTrips,
+  selectJob,
   unassignTrip,
 } from 'modules/Trips';
 import TripsPaginatedResponse from 'types/TripsPaginatedResponse';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import UiTable from 'ui/UiTable';
 import Trip from 'types/Trip';
 import { DropDownData } from 'ui/UiDropdownMenu';
@@ -31,6 +32,13 @@ import UiFilterTag from 'ui/UiFilterTag';
 import UiInput from 'ui/UiInput';
 import { getTransporterBids } from 'modules/Bid';
 import PaginationLoader from 'components/layout/PaginationLoader';
+import UiOverlay from 'ui/UiOverlay';
+import InformUserOfVerification from 'components/verification/InformUserOfVerification';
+import ViewJobDetail from 'components/jobs/ViewJobDetail';
+import BidForJob from 'components/jobs/BidForJob';
+import AllBids from 'components/bids/AllBids';
+import CreateTrip from 'components/trips/CreateTrip';
+import TripHasBeenBroadcasted from 'components/trips/TripHasBeenBroadcasted';
 
 export default function MyTripsPage() {
   const navigate = useNavigate();
@@ -40,7 +48,6 @@ export default function MyTripsPage() {
   const trips = useSelector((state: RootState) => state.trips.trips);
   const bids = useSelector((state: RootState) => state.bid.bids);
   const searchParams = new URLSearchParams(location.search);
-  const [isAllBidsVisible, setIsAllBidsVisible] = useState(false);
   const status = searchParams.get('status');
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -50,6 +57,19 @@ export default function MyTripsPage() {
   const [totalInProgressTrips, setTotalInProgressTrips] = useState(0);
   const [totalCompletedTrips, setTotalCompletedTrips] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
+  const [
+    isInformUserOfVerificationModalVisible,
+    setIsInformUserOfVerificationModalVisible,
+  ] = useState(false);
+  const [isViewJobDetailsVisible, setIsViewJobDetailsVisible] = useState(false);
+  const [isBidForJobVisible, setIsBidForJobVisible] = useState(false);
+  const [isAllBidsVisible, setIsAllBidsVisible] = useState(false);
+  const [isCreateTripVisible, setIsCreateTripVisible] = useState(false);
+  const [isTripBroadcastedVisible, setIsTripBroadcastedVisible] =
+    useState(false);
+  const [activeTripId, setActiveTripId] = useState<string | null>(null);
+  const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
+  const job = useSelector(selectJob(selectedJobId!));
 
   const headers = useMemo(
     () =>
@@ -152,7 +172,7 @@ export default function MyTripsPage() {
   }, [trips]);
 
   function getPillVariant(status: Trip['status']) {
-    if (status === 'awaiting-bid') return 'gray';
+    if (status === 'awaiting-bid') return 'orange';
     if (status === 'payment-complete') return 'warning';
     if (status === 'in-progress') return 'info';
     if (status === 'completed') return 'success';
@@ -251,7 +271,9 @@ export default function MyTripsPage() {
 
   function editTrip(id: string) {
     if (serviceBasedUserTypes.includes(user?.userType!)) return;
-    navigate(`/my-trips/${id}/edit`);
+    setActiveTripId(id);
+    // Also used for editing trip;
+    setIsCreateTripVisible(true);
   }
 
   function initUnassignTrip(id: string) {
@@ -263,14 +285,13 @@ export default function MyTripsPage() {
       ? cancelTripByTripCreator
       : cancelTripByTransporter;
 
-    dispatch(toAnyAction(action(id))).then(() => {
-      console.log(id);
-    });
+    dispatch(toAnyAction(action(id)));
   }
 
   function openAllBids() {
     setIsAllBidsVisible(true);
   }
+
   function handleQueryChange({
     value,
   }: {
@@ -279,6 +300,7 @@ export default function MyTripsPage() {
   }) {
     setSearchQuery(value!);
   }
+
   function edgeChild() {
     return (
       <EdgeChild>
@@ -290,11 +312,12 @@ export default function MyTripsPage() {
           icon="Search"
           size="md"
         />
-        {clientBasedUserTypes.includes(user?.userType!) ? (
-          <UiButton size="md">
+        {clientBasedUserTypes.includes(user?.userType!) && (
+          <UiButton size="md" onClick={() => setIsCreateTripVisible(true)}>
             <UiIcon icon="TruckTick" /> <span>Create new trip</span>
           </UiButton>
-        ) : (
+        )}
+        {serviceBasedUserTypes.includes(user?.userType!) && (
           <UiFilterTag
             title="MY BIDS"
             isActive={true}
@@ -306,6 +329,35 @@ export default function MyTripsPage() {
     );
   }
 
+  function bidForJob(jobId: string) {
+    if (user?.status !== 'verified') {
+      setIsInformUserOfVerificationModalVisible(true);
+      setIsViewJobDetailsVisible(false);
+      return;
+    }
+    if (isViewJobDetailsVisible) setIsViewJobDetailsVisible(false);
+    setSelectedJobId(jobId);
+    setIsBidForJobVisible(true);
+  }
+
+  function backToJobDetails() {
+    setIsViewJobDetailsVisible(true);
+    setIsBidForJobVisible(false);
+  }
+
+  function closeViewDetails() {
+    setIsViewJobDetailsVisible(false);
+  }
+
+  function closeBidOnJob() {
+    setIsBidForJobVisible(false);
+  }
+
+  function showTripBroadcasted(tripId: string) {
+    setActiveTripId(tripId);
+    setIsTripBroadcastedVisible(true);
+  }
+
   useEffect(() => {
     setPage(1);
   }, [status]);
@@ -313,6 +365,7 @@ export default function MyTripsPage() {
   useEffect(() => {
     loadTrips();
   }, [page, status]);
+
   useEffect(() => {
     dispatch(toAnyAction(getTransporterBids()));
   }, []);
@@ -340,6 +393,58 @@ export default function MyTripsPage() {
           nextPage={() => setPage(page + 1)}
         />
       </MyTripsPageStyle>
+
+      {/* MODALS */}
+      <UiOverlay isVisible={isCreateTripVisible}>
+        <CreateTrip
+          tripId={activeTripId!}
+          onClose={() => {
+            setIsCreateTripVisible(false);
+            setActiveTripId(null);
+          }}
+          onCreated={showTripBroadcasted}
+        />
+      </UiOverlay>
+      {activeTripId && (
+        <UiOverlay isVisible={isTripBroadcastedVisible}>
+          <TripHasBeenBroadcasted
+            tripId={activeTripId!}
+            onClose={() => setIsTripBroadcastedVisible(false)}
+          />
+        </UiOverlay>
+      )}
+      <UiOverlay isVisible={isInformUserOfVerificationModalVisible}>
+        <InformUserOfVerification
+          onClose={() => setIsInformUserOfVerificationModalVisible(false)}
+        />
+      </UiOverlay>
+      {job && (
+        <>
+          <UiOverlay isVisible={isViewJobDetailsVisible}>
+            <ViewJobDetail
+              job={job}
+              bidOnJob={bidForJob}
+              onClose={closeViewDetails}
+            />
+          </UiOverlay>
+          <UiOverlay isVisible={isBidForJobVisible}>
+            <BidForJob
+              jobId={job._id}
+              onClose={closeBidOnJob}
+              backToJobDetails={backToJobDetails}
+            />
+          </UiOverlay>
+        </>
+      )}
+      <UiOverlay isVisible={isAllBidsVisible}>
+        <AllBids
+          onClose={() => setIsAllBidsVisible(false)}
+          editBid={(id) => {
+            bidForJob(id);
+            setIsAllBidsVisible(false);
+          }}
+        />
+      </UiOverlay>
     </>
   );
 }

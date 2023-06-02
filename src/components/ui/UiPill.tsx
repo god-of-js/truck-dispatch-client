@@ -3,7 +3,14 @@ import styled from 'styled-components';
 
 interface Props {
   children: React.ReactNode;
-  variant: 'primary' | 'warning' | 'danger' | 'info' | 'success' | 'gray';
+  variant:
+    | 'primary'
+    | 'warning'
+    | 'danger'
+    | 'info'
+    | 'success'
+    | 'gray'
+    | 'orange';
 }
 export default function ({ children, variant }: Props) {
   return (
@@ -57,6 +64,14 @@ const Pill = styled.div`
 
     .circle {
       background: var(--color-info);
+    }
+  }
+  &.orange {
+    background: var(--color-orange-10);
+    color: var(--color-orange);
+
+    .circle {
+      background: var(--color-orange);
     }
   }
 

@@ -38,7 +38,6 @@ const TransporterAccountsPage = lazy(
 
 // DASHBOARD
 const MyTripsPage = lazy(() => import('../pages/trips/MyTripsPage'));
-const NewTripPage = lazy(() => import('../pages/trips/NewTripPage'));
 const ViewTripPage = lazy(() => import('../pages/trips/ViewTripPage'));
 const ViewTripStatusPage = lazy(
   () => import('../pages/trips/ViewTripStatusPage'),
@@ -62,7 +61,7 @@ const ChatPage = lazy(() => import('../pages/chat/ChatPage'));
 // VEHICLES
 const VehiclesPage = lazy(() => import('../pages/vehicles/VehiclesPage'));
 
-//Transactions
+// Transactions
 
 const ViewPaymentsPage = lazy(
   () => import('../pages/payments/ViewPaymentsPage'),
@@ -123,16 +122,6 @@ const router = createBrowserRouter([
             path: '',
             id: 'My Trips',
             element: <MyTripsPage />,
-          },
-          {
-            path: '/my-trips/new',
-            id: 'New Trip',
-            element: <NewTripPage />,
-          },
-          {
-            path: '/my-trips/:tripId/edit',
-            id: 'Edit Trip',
-            element: <NewTripPage />,
           },
           {
             path: '/my-trips/:tripId',
