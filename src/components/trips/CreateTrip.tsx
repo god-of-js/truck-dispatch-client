@@ -14,12 +14,12 @@ import NewTripForm from './NewTripForm';
 import TripDetails from './TripDetails';
 
 interface Props {
+  tripId?: string;
   onClose: () => void;
   onCreated?: (tripId: string) => void;
 }
-export default function CreateTrip({ onClose, onCreated }: Props) {
+export default function CreateTrip({ tripId, onClose, onCreated }: Props) {
   const dispatch = useDispatch();
-  const { tripId } = useParams();
   const trip = useSelector(selectTrip(tripId || ''));
 
   const [loading, setLoading] = useState(false);
@@ -48,8 +48,10 @@ export default function CreateTrip({ onClose, onCreated }: Props) {
 
     if (currentStep === 'confirm-details') {
       if (!trip) {
-        sendTripToDrivers().then(() => {
+        sendTripToDrivers().then((data: Trip) => {
           //   setCurrentStep('broadcast-successful');
+          onCreated?.(data._id);
+          onClose();
         });
       } else {
         editTrip();
@@ -62,6 +64,7 @@ export default function CreateTrip({ onClose, onCreated }: Props) {
     return dispatch(toAnyAction(createTrip(tripForm as NewTrip)))
       .then((trip: Trip) => {
         setTripForm(trip);
+        return trip;
       })
       .finally(() => {
         setLoading(false);
@@ -103,7 +106,11 @@ export default function CreateTrip({ onClose, onCreated }: Props) {
             <UiButton variant="secondary" onClick={onClose}>
               <UiIcon icon="ArrowLeft" /> <span>BACK TO MY TRIPS</span>
             </UiButton>
-            <NewTripForm tripFormData={tripForm} nextHandler={nextHandler} />
+            <NewTripForm
+              tripFormData={tripForm}
+              tripId={tripId}
+              nextHandler={nextHandler}
+            />
           </>
         )}
         {currentStep === 'confirm-details' && (
@@ -122,7 +129,7 @@ export default function CreateTrip({ onClose, onCreated }: Props) {
             </TripDetailsContainer>
             <SubmitButtonContainer>
               <UiButton size="large" loading={loading} onClick={nextHandler}>
-                {!!trip ? 'Update Trip' : 'Broadcast'} Trip
+                {!!trip ? 'Update' : 'Broadcast'} Trip
               </UiButton>
             </SubmitButtonContainer>
           </>

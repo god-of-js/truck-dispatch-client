@@ -65,8 +65,9 @@ export default function MyTripsPage() {
   const [isBidForJobVisible, setIsBidForJobVisible] = useState(false);
   const [isAllBidsVisible, setIsAllBidsVisible] = useState(false);
   const [isCreateTripVisible, setIsCreateTripVisible] = useState(false);
-  const [isTripBroadcastedVisible, setIsTripBroadcastedVisible] = useState(true);
-  const [activeTripId, setActiveTripId] = useState<string | null>(null)
+  const [isTripBroadcastedVisible, setIsTripBroadcastedVisible] =
+    useState(false);
+  const [activeTripId, setActiveTripId] = useState<string | null>(null);
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
   const job = useSelector(selectJob(selectedJobId!));
 
@@ -171,7 +172,7 @@ export default function MyTripsPage() {
   }, [trips]);
 
   function getPillVariant(status: Trip['status']) {
-    if (status === 'awaiting-bid') return 'gray';
+    if (status === 'awaiting-bid') return 'orange';
     if (status === 'payment-complete') return 'warning';
     if (status === 'in-progress') return 'info';
     if (status === 'completed') return 'success';
@@ -270,7 +271,9 @@ export default function MyTripsPage() {
 
   function editTrip(id: string) {
     if (serviceBasedUserTypes.includes(user?.userType!)) return;
-    navigate(`/my-trips/${id}/edit`);
+    setActiveTripId(id);
+    // Also used for editing trip;
+    setIsCreateTripVisible(true);
   }
 
   function initUnassignTrip(id: string) {
@@ -396,15 +399,22 @@ export default function MyTripsPage() {
       {/* MODALS */}
       <UiOverlay isVisible={isCreateTripVisible}>
         <CreateTrip
-          onClose={() => setIsCreateTripVisible(false)}
+          tripId={activeTripId!}
+          onClose={() => {
+            setIsCreateTripVisible(false);
+            setActiveTripId(null);
+          }}
           onCreated={showTripBroadcasted}
         />
       </UiOverlay>
-      <UiOverlay isVisible={isTripBroadcastedVisible}>
-        <TripHasBeenBroadcasted
-          onClose={() => setIsTripBroadcastedVisible(false)}
-        />
-      </UiOverlay>
+      {activeTripId && (
+        <UiOverlay isVisible={isTripBroadcastedVisible}>
+          <TripHasBeenBroadcasted
+            tripId={activeTripId!}
+            onClose={() => setIsTripBroadcastedVisible(false)}
+          />
+        </UiOverlay>
+      )}
       <UiOverlay isVisible={isInformUserOfVerificationModalVisible}>
         <InformUserOfVerification
           onClose={() => setIsInformUserOfVerificationModalVisible(false)}

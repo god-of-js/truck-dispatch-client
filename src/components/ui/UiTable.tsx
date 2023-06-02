@@ -117,6 +117,7 @@ export default function UiTable({
 
 const TableContainer = styled.div`
   overflow: auto;
+  position: relative;
 `;
 const Table = styled.table`
   table-layout: fixed;

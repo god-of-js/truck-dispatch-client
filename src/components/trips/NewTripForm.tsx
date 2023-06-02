@@ -24,8 +24,9 @@ import UiCard from 'ui/UiCard';
 
 interface Props {
   tripFormData: Trip | NewTrip;
-  nextHandler: (param: NewTrip | Trip) => void;
   tripId?: string;
+  loading?: boolean;
+  nextHandler: (param: NewTrip | Trip) => void;
 }
 export default function NewTripForm({
   tripFormData,

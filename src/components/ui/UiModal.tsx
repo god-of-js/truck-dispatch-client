@@ -5,7 +5,7 @@ import sizes from 'utils/sizes';
 import UiIcon from './UiIcon';
 import UiButton from './UiButton';
 
-type Size = 'lg' | 'sm';
+type Size = 'lg' | 'md' | 'sm';
 type Position = 'center' | 'right';
 type BG = 'dark' | 'light';
 
@@ -21,7 +21,7 @@ interface Props {
 export default function UiModal({
   children,
   title,
-  position,
+  position = 'center',
   size = 'lg',
   bgVariant = 'light',
   onClose,
@@ -97,10 +97,15 @@ function positionStyling({ position, size }: CardProps) {
     position: static;
     margin: auto;
     border-radius: ${pxToRem(16)};
-    ${size === 'lg' ? '50%' : pxToRem(540)}
   `;
 }
 
+function getWidth(size?: Size) {
+  if (size === 'sm') return `width: ${pxToRem(540)};`;
+
+  if (size === 'md') return `width: ${pxToRem(724)};`;
+  return `width: 50%;`;
+}
 interface CardProps {
   size?: Size;
   position?: Position;
@@ -146,7 +151,7 @@ const ModalCard = styled.div<CardProps>`
   }
 
   @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
-    width: ${({ size }) => (size === 'lg' ? '50%' : pxToRem(540))};
+    ${({ size }) => getWidth(size)}
     ${(cardProps) => positionStyling(cardProps)}
   }
 `;
