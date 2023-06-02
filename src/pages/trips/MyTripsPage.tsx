@@ -285,9 +285,7 @@ export default function MyTripsPage() {
       ? cancelTripByTripCreator
       : cancelTripByTransporter;
 
-    dispatch(toAnyAction(action(id))).then(() => {
-      console.log(id);
-    });
+    dispatch(toAnyAction(action(id)));
   }
 
   function openAllBids() {
