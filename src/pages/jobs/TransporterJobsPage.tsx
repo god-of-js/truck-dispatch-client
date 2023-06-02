@@ -20,6 +20,8 @@ import { getTransporterBids } from 'modules/Bid';
 import UiFilterTag from 'ui/UiFilterTag';
 import AllBids from 'components/bids/AllBids';
 import PaginationLoader from 'components/layout/PaginationLoader';
+import UiSearchInput from 'ui/UiSearchInput';
+import UiButton from 'ui/UiButton';
 
 export default function TransporterJobs() {
   const location = useLocation();
@@ -128,24 +130,14 @@ export default function TransporterJobs() {
   function openAllBids() {
     setIsAllBidsVisible(true);
   }
-  function edgeChild() {
+  function edgeNode() {
     return (
-      <EdgeChild>
-        <UiInput
-          onChange={handleQueryChange}
-          value={searchQuery}
-          name="searchQuery"
-          placeholder="Search..."
-          icon="Search"
-          size="md"
-        />
-        <UiFilterTag
-          title="MY BIDS"
-          isActive={true}
-          value={bids.length}
-          onClick={openAllBids}
-        />
-      </EdgeChild>
+      <EdgeNode>
+        <UiButton variant="secondary" size="large" onClick={openAllBids}>
+          <span className="text">MY BIDS</span>
+          <span className="count">{bids.length}</span>
+        </UiButton>
+      </EdgeNode>
     );
   }
   function handleQueryChange({
@@ -174,7 +166,13 @@ export default function TransporterJobs() {
       <DashboardTopNav
         routeName="Jobs"
         pageFilters={pageFilters}
-        edgeChild={edgeChild()}
+        edgeNode={edgeNode()}
+        searchNode={
+          <UiSearchInput
+            searchQuery={searchQuery}
+            handleQueryChange={handleQueryChange}
+          />
+        }
       />
       <MyJobsPageStyle className="flex-container">
         {filteredJobs.map((job) => {
@@ -238,10 +236,29 @@ const MyJobsPageStyle = styled.div`
   gap: ${pxToRem(20)};
 `;
 
-const EdgeChild = styled.div`
-  display: flex;
-  gap: ${pxToRem(12)};
-  .ui-filter-tag {
-    cursor: pointer;
+const EdgeNode = styled.div`
+  button {
+    .text {
+      text-transform: uppercase;
+      font-size: ${pxToRem(14)};
+      line-height: 140%;
+      font-style: normal;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .count {
+      border-radius: ${pxToRem(10)};
+      padding: 0 ${pxToRem(4)};
+      font-size: ${pxToRem(10)};
+      letter-spacing: -0.02em;
+      border-radius: ${pxToRem(2)};
+      height: ${pxToRem(19)};
+      width: ${pxToRem(12)};
+      background: var(--color-primary-20);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 `;

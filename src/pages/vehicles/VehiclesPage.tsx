@@ -45,7 +45,7 @@ export default function VehiclesPage() {
     setSearchQuery(value!!);
   }
 
-  function edgeChildren() {
+  function edgeNoderen() {
     return (
       <GappedContainerWith12PX>
         <UiInput
@@ -71,7 +71,7 @@ export default function VehiclesPage() {
 
   return (
     <>
-      <DashboardTopNav routeName="Vehicles" edgeChild={edgeChildren()} />
+      <DashboardTopNav routeName="Vehicles" edgeNode={edgeNoderen()} />
       <Vehicles>
         {vehicles.map((vehicle) => (
           <VehicleItem

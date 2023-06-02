@@ -44,7 +44,7 @@ export default function UiButton({
   isFullWidth = false,
 }: Props) {
   return (
-    <ButtonContainer
+    <Button
       className={`btn ${variant}`}
       onClick={onClick}
       disabled={disabled || loading}
@@ -61,7 +61,7 @@ export default function UiButton({
       ) : (
         children
       )}
-    </ButtonContainer>
+    </Button>
   );
 }
 
@@ -98,7 +98,7 @@ function getColor(condition: boolean, color: string) {
   return '';
 }
 
-const ButtonContainer = styled.button<Props>`
+const Button = styled.button<Props>`
   ${({ size }) => sizeVariant(size!)}
   border: none;
   cursor: ${({ disabled }) => (disabled ? '' : 'pointer')};
@@ -164,8 +164,6 @@ const ButtonContainer = styled.button<Props>`
   }
 
   &.icon-neutral {
-    width: ${pxToRem(40)};
-    height: ${pxToRem(36)};
     background: var(--color-gray-20);
     border-radius: ${pxToRem(8)};
 

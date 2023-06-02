@@ -37,7 +37,6 @@ const Tag = styled.span<{ isActive?: boolean }>`
         background: ${
           isActive ? 'var(--color-primary-10)' : 'var(--color-gray-30)'
         };
-    
 
         .count {
         color: ${isActive ? 'var(--color-primary)' : ' var(--color-gray-70)'};
