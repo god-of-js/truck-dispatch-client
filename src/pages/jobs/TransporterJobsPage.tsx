@@ -37,7 +37,7 @@ export default function TransporterJobs() {
 
   const dispatch = useDispatch();
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [
     isInformUserOfVerificationModalVisible,
@@ -170,6 +170,18 @@ export default function TransporterJobs() {
     dispatch(toAnyAction(getTransporterBids()));
   }, []);
 
+  function emptyJobs() {
+    if (!loading && !jobs.length) {
+      return (
+        <UiEmptyField
+          emptyIcon="Jobs"
+          emptyText="There are no jobs available now, Please come back later"
+        />
+      );
+    }
+    return;
+  }
+
   return (
     <>
       <DashboardTopNav
@@ -228,14 +240,7 @@ export default function TransporterJobs() {
           }}
         />
       </UiOverlay>
-
-      {!filteredJobs.length && (
-        <UiEmptyField
-          emptyIcon="Jobs"
-          emptyText="There are no jobs available now,
-        Please come back later"
-        />
-      )}
+      {emptyJobs()}
     </>
   );
 }
