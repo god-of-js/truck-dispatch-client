@@ -63,10 +63,6 @@ function positionStyling({ position, size }: CardProps) {
       .modal-header {
         border-bottom: ${pxToRem(1)} solid var(--color-gray-20);
         padding: ${pxToRem(26)} ${pxToRem(24)};
-
-        h2 {
-          font-size: ${pxToRem(24)};
-        }
       }
      
       @media only screen and (min-width: ${sizes.tabletLargeWidth}) {
@@ -144,5 +140,8 @@ const ModalCard = styled.div`
   @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
     width: ${({ size }: CardProps) => (size === 'lg' ? '50%' : pxToRem(540))};
     ${(cardProps: CardProps) => positionStyling(cardProps)}
+    h2 {
+      font-size: ${pxToRem(24)} !important;
+    }
   }
 `;
