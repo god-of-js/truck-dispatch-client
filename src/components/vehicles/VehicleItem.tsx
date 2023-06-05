@@ -167,7 +167,6 @@ const VehicleStyling = styled.div`
 
       .image {
         position: relative;
-        max-width: ${pxToRem(160)};
         width: 100%;
         height: ${pxToRem(84)};
         img {
