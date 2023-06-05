@@ -5,12 +5,13 @@ import UiModal from './UiModal';
 
 interface Props {
   children: React.ReactNode;
-  title?: string;
+  title: string;
   confirmText?: string;
   declineText?: string;
   variant?: 'primary' | 'danger';
+  loading?: boolean;
   onClose: () => void;
-  onClick?: () => void;
+  onProceed?: () => void;
 }
 
 export default function UiConfirmModal({
@@ -19,8 +20,9 @@ export default function UiConfirmModal({
   confirmText = 'yes, proceed',
   declineText = 'not yet',
   variant = 'primary',
+  loading,
   onClose,
-  onClick,
+  onProceed,
 }: Props) {
   return (
     <UiModal title={title} onClose={onClose} size="sm" position="center">
@@ -40,7 +42,8 @@ export default function UiConfirmModal({
             isFullWidth
             size="large"
             variant={variant}
-            onClick={onClick}
+            loading={loading}
+            onClick={onProceed}
           >
             {confirmText}
           </UiButton>
@@ -52,18 +55,22 @@ export default function UiConfirmModal({
 
 const Modal = styled.div`
   display: grid;
-  gap: ${pxToRem(44)};
+  gap: ${pxToRem(40)};
   padding: 0 ${pxToRem(24)};
+  padding-top: ${pxToRem(44)};
 
   .modal-content {
     font-weight: 400;
     font-size: ${pxToRem(20)};
     line-height: ${pxToRem(28)};
+    font-style: normal;
     text-align: center;
-    margin-top: ${pxToRem(45)};
+    color: var(--color-neutralBlack);
+    text-align: center;
+    margin: auto;
 
     @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
-      padding: 0 ${pxToRem(116)};
+      width: 65%;
     }
   }
 `;
@@ -72,4 +79,5 @@ const SubmitButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   gap: ${pxToRem(16)};
+  margin-top: 0;
 `;

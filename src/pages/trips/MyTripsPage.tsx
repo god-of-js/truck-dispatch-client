@@ -39,6 +39,8 @@ import BidForJob from 'components/jobs/BidForJob';
 import AllBids from 'components/bids/AllBids';
 import CreateTrip from 'components/trips/CreateTrip';
 import TripHasBeenBroadcasted from 'components/trips/TripHasBeenBroadcasted';
+import UiConfirmModal from 'ui/UiConfirmModal';
+import { Toast } from 'utils/toast';
 
 export default function MyTripsPage() {
   const navigate = useNavigate();
@@ -64,6 +66,8 @@ export default function MyTripsPage() {
   const [isViewJobDetailsVisible, setIsViewJobDetailsVisible] = useState(false);
   const [isBidForJobVisible, setIsBidForJobVisible] = useState(false);
   const [isAllBidsVisible, setIsAllBidsVisible] = useState(false);
+  const [isCancelTripVisible, setIsCancelTripVisible] = useState(false);
+  const [isCancelTripLoading, setIsCancelTripLoading] = useState(false);
   const [isCreateTripVisible, setIsCreateTripVisible] = useState(false);
   const [isTripBroadcastedVisible, setIsTripBroadcastedVisible] =
     useState(false);
@@ -219,7 +223,7 @@ export default function MyTripsPage() {
       },
       {
         label: 'Cancel trip',
-        func: cancelTrip,
+        func: initCancelTrip,
         isDanger: true,
       },
     ].filter(({ label }) => {
@@ -280,12 +284,24 @@ export default function MyTripsPage() {
     dispatch(toAnyAction(unassignTrip(id)));
   }
 
-  function cancelTrip(id: string) {
+  function initCancelTrip(id: string) {
+    setActiveTripId(id);
+    setIsCancelTripVisible(true);
+  }
+  function cancelTrip() {
+    if (!activeTripId) {
+      Toast.error({ msg: 'Trip ID was not provided.' });
+      return;
+    }
+    setIsCancelTripLoading(true);
     const action = clientBasedUserTypes.includes(user?.userType!)
       ? cancelTripByTripCreator
       : cancelTripByTransporter;
 
-    dispatch(toAnyAction(action(id)));
+    dispatch(toAnyAction(action(activeTripId))).finally(() => {
+      setIsCancelTripLoading(false);
+      setIsCancelTripVisible(false);
+    });
   }
 
   function openAllBids() {
@@ -459,6 +475,19 @@ export default function MyTripsPage() {
             setIsAllBidsVisible(false);
           }}
         />
+      </UiOverlay>
+
+      <UiOverlay isVisible={isCancelTripVisible}>
+        <UiConfirmModal
+          title="Cancel Trip"
+          variant="danger"
+          loading={isCancelTripLoading}
+          onClose={() => setIsCancelTripVisible(false)}
+          onProceed={cancelTrip}
+        >
+          Are you sure you want to cancel this trip? This process cannot be
+          undone.
+        </UiConfirmModal>
       </UiOverlay>
     </>
   );
