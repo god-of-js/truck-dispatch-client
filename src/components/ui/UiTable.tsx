@@ -1,9 +1,9 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import sizes from 'utils/sizes';
-import UiButton from './UiButton';
 import UidropdownMenu, { DropDownData } from './UiDropdownMenu';
-import UiIcon, { Icons } from './UiIcon';
+import { Icons } from './UiIcon';
+import UiEmptyList from './UiEmptyList';
 
 interface Header {
   title: string;
@@ -94,15 +94,11 @@ export default function UiTable({
       </Table>
 
       {!data.length && (
-        <div className="empty-container">
-          <div className="icon-container">
-            <div className="icon-container__inner">
-              <UiIcon icon={emptyTableIcon!} size="60" />
-            </div>
-          </div>
-          <p>{emptyTableText}</p>
-          <UiButton size="large">{emptyTableBtnContent}</UiButton>
-        </div>
+        <UiEmptyList
+          emptyBtnContent={emptyTableBtnContent}
+          emptyIcon={emptyTableIcon}
+          emptyText={emptyTableText}
+        />
       )}
     </TableContainer>
   );
@@ -111,47 +107,8 @@ export default function UiTable({
 const TableContainer = styled.div`
   overflow-x: auto;
   position: relative;
-
-  .empty-container {
-    height: 60vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    .icon-container {
-      padding: ${pxToRem(32)};
-      width: ${pxToRem(192)};
-      height: ${pxToRem(192)};
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--color-gray-30);
-      border-radius: 50%;
-
-      &__inner {
-        padding: ${pxToRem(32)};
-        width: ${pxToRem(128)};
-        height: ${pxToRem(128)};
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: var(--color-gray-50);
-        border-radius: 50%;
-      }
-    }
-    p {
-      font-style: normal;
-      font-weight: 400;
-      font-size: ${pxToRem(24)};
-      line-height: 140%;
-      text-align: center;
-      letter-spacing: -0.02em;
-      color: var(--color-gray-80);
-      max-width: ${pxToRem(360)};
-    }
-  }
 `;
+
 const Table = styled.table`
   table-layout: fixed;
   width: 100%;
