@@ -1,14 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
+import UiIcon, { Icons } from './UiIcon';
 
+const icons: { [key: string]: Icons } = {
+  // modify the icons to fit the variants
+  primary: 'Tick',
+  warning: 'Tick',
+  danger: 'Tick',
+  info: 'Tick',
+  success: 'Tick',
+  gray: 'Tick',
+};
 interface Props {
   children: React.ReactNode;
   variant: 'primary' | 'warning' | 'danger' | 'info' | 'success' | 'gray';
+  hasIcon?: boolean;
 }
-export default function ({ children, variant }: Props) {
+export default function ({ children, variant, hasIcon }: Props) {
   return (
     <Pill className={variant}>
-      <div className="circle" />
+      {hasIcon && <UiIcon icon={icons[variant]} />}
       {children}
     </Pill>
   );
