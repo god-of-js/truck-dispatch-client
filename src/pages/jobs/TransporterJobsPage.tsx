@@ -20,7 +20,7 @@ import { getTransporterBids } from 'modules/Bid';
 import UiFilterTag from 'ui/UiFilterTag';
 import AllBids from 'components/bids/AllBids';
 import PaginationLoader from 'components/layout/PaginationLoader';
-import UiEmptyField from 'ui/UiEmptyField';
+import UiEmptyList from 'ui/UiEmptyList';
 
 export default function TransporterJobs() {
   const location = useLocation();
@@ -173,7 +173,7 @@ export default function TransporterJobs() {
   function emptyJobs() {
     if (!loading && !jobs.length) {
       return (
-        <UiEmptyField
+        <UiEmptyList
           emptyIcon="Jobs"
           emptyText="There are no jobs available now, Please come back later"
         />
@@ -201,12 +201,14 @@ export default function TransporterJobs() {
           );
         })}
 
-        <PaginationLoader
-          loading={loading}
-          page={page}
-          totalPages={totalPages}
-          nextPage={() => setPage(page + 1)}
-        />
+        {(loading || !!filteredJobs.length) && (
+          <PaginationLoader
+            loading={loading}
+            page={page}
+            totalPages={totalPages}
+            nextPage={() => setPage(page + 1)}
+          />
+        )}
       </MyJobsPageStyle>
       <UiOverlay isVisible={isInformUserOfVerificationModalVisible}>
         <InformUserOfVerification

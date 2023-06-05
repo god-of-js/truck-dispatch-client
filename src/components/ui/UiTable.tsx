@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import sizes from 'utils/sizes';
 import UidropdownMenu, { DropDownData } from './UiDropdownMenu';
 import { Icons } from './UiIcon';
-import UiEmptyField from './UiEmptyField';
+import UiEmptyList from './UiEmptyList';
 
 interface Header {
   title: string;
@@ -94,7 +94,7 @@ export default function UiTable({
       </Table>
 
       {!data.length && (
-        <UiEmptyField
+        <UiEmptyList
           emptyBtnContent={emptyTableBtnContent}
           emptyIcon={emptyTableIcon}
           emptyText={emptyTableText}
