@@ -291,6 +291,10 @@ export function searchObjectsByField(
       }
     }
   }
-
   return matchingObjects;
+}
+
+
+export function containsOnlyNumbers(value: string) {
+  return /^[0-9]+$/.test(value);
 }

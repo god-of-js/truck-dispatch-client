@@ -9,7 +9,7 @@ import AddVehicle from 'components/vehicles/AddVehicle';
 import { toAnyAction } from 'utils/helpers';
 import { getVehicles } from 'modules/Vehicle';
 import { RootState } from 'modules/index';
-import VehicleItem from 'components/vehicles/Vehicle';
+import VehicleItem from 'components/vehicles/VehicleItem';
 import sizes from 'utils/sizes';
 import EditVehicle from 'components/vehicles/EditVehicle';
 import Vehicle from 'types/Vehicle';
@@ -53,10 +53,13 @@ export default function VehiclesPage() {
           value={searchQuery}
           name="searchQuery"
           placeholder="Search..."
+          size="md"
           icon="Search"
         />
         {!!vehicles.length && (
-          <UiButton onClick={openAddVehicle}>add new vehicle</UiButton>
+          <UiButton size="md" onClick={openAddVehicle}>
+            add new vehicle
+          </UiButton>
         )}
       </GappedContainerWith12PX>
     );

@@ -5,14 +5,16 @@ import sizes from 'utils/sizes';
 import UiIcon from './UiIcon';
 import UiButton from './UiButton';
 
-type Size = 'lg' | 'sm';
+type Size = 'lg' | 'md' | 'sm';
 type Position = 'center' | 'right';
+type BG = 'dark' | 'light';
 
 interface Props {
   children: React.ReactNode;
   position?: Position;
   size?: Size;
   title?: string;
+  bgVariant?: BG;
   onClose: () => void;
   goPrev?: () => void;
 }
@@ -21,13 +23,14 @@ export default function UiModal({
   title,
   position = 'center',
   size = 'lg',
+  bgVariant = 'light',
   onClose,
   goPrev,
 }: Props) {
   return (
     <Modal>
       <OutsideClickHandler onOutsideClick={onClose}>
-        <ModalCard position={position} size={size}>
+        <ModalCard position={position} size={size} bgVariant={bgVariant}>
           <div className="modal-inner">
             <header className="modal-header">
               {goPrev && (
@@ -58,7 +61,7 @@ function positionStyling({ position, size }: CardProps) {
       left: initial;
       border-radius: 0;
       max-height: 100%;
-      width: 45%;
+      width: 80%;
 
       .modal-header {
         border-bottom: ${pxToRem(1)} solid var(--color-gray-20);
@@ -68,6 +71,25 @@ function positionStyling({ position, size }: CardProps) {
           font-size: ${pxToRem(24)};
         }
       }
+     
+      @media only screen and (min-width: ${sizes.tabletLargeWidth}) {
+        width: 60%;
+      }
+      @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
+        width: 45%;
+      }
+    `;
+  }
+  if (position === 'center') {
+    return `
+    position: static;
+    margin: auto;
+    border-radius: ${pxToRem(16)};
+    
+    .modal-header h2 {
+      text-align: center;
+      flex-grow: 1;
+    }
     `;
   }
 
@@ -75,21 +97,28 @@ function positionStyling({ position, size }: CardProps) {
     position: static;
     margin: auto;
     border-radius: ${pxToRem(16)};
-    ${size === 'lg' ? '50%' : pxToRem(540)}
   `;
 }
 
+function getWidth(size?: Size) {
+  if (size === 'sm') return `width: ${pxToRem(540)};`;
+
+  if (size === 'md') return `width: ${pxToRem(724)};`;
+  return `width: 50%;`;
+}
 interface CardProps {
   size?: Size;
   position?: Position;
+  bgVariant?: BG;
 }
 const Modal = styled.div`
   width: 100%;
   height: fit-content;
 `;
 
-const ModalCard = styled.div`
-  background: white;
+const ModalCard = styled.div<CardProps>`
+  background: ${({ bgVariant }) =>
+    bgVariant === 'dark' ? 'var(--color-gray-20)' : '#ffffff'};
   border-top-left-radius: ${pxToRem(8)};
   border-top-right-radius: ${pxToRem(8)};
   position: fixed;
@@ -109,6 +138,7 @@ const ModalCard = styled.div`
       justify-content: space-between;
       align-items: center;
       padding: ${pxToRem(18)} ${pxToRem(24)};
+      border-bottom: ${pxToRem(1)} solid var(--color-gray-20);
 
       h2 {
         color: var(--color-neutralBlack);
@@ -121,7 +151,7 @@ const ModalCard = styled.div`
   }
 
   @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
-    width: ${({ size }: CardProps) => (size === 'lg' ? '50%' : pxToRem(540))};
-    ${(cardProps: CardProps) => positionStyling(cardProps)}
+    ${({ size }) => getWidth(size)}
+    ${(cardProps) => positionStyling(cardProps)}
   }
 `;

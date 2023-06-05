@@ -54,7 +54,7 @@ export default function DashboardTopNav({
 
 const TopNav = styled.nav`
   padding: ${pxToRem(12)} 0;
-  height: ${pxToRem(48)};
+  height: ${pxToRem(72)};
   display: flex;
   align-items: center;
   justify-content: space-between;
