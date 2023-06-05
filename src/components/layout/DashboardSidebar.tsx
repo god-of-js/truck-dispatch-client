@@ -64,6 +64,21 @@ export default function DashboardSidebar() {
       name: 'My Trips',
       iconName: 'TruckTick',
     },
+    {
+      path: '/wallet',
+      name: 'Wallet',
+      iconName: 'TruckTick',
+    },
+    {
+      path: '/transporters',
+      name: 'Transporters',
+      iconName: 'Truck',
+    },
+    {
+      path: '/contacts',
+      name: 'Contacts',
+      iconName: 'TruckTick',
+    },
   ];
 
   const userType = useMemo(() => {
