@@ -128,6 +128,7 @@ export default function TransporterJobs() {
   function openAllBids() {
     setIsAllBidsVisible(true);
   }
+
   function edgeChild() {
     return (
       <EdgeChild>

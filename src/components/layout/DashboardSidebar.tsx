@@ -306,6 +306,7 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
       padding: ${pxToRem(24)};
       .logout-content {
         flex-grow: 1;
+        cursor: pointer;
       }
 
       .logout-text {
