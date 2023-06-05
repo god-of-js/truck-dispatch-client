@@ -266,12 +266,13 @@ export function searchObjectsByField(
   objects: ObjectField[],
   searchInput: string,
   searchFields: string[],
-): ObjectField | undefined {
+): ObjectField[] {
   if (!Array.isArray(objects) || !searchInput || !searchFields.length) {
-    return undefined;
+    return [];
   }
 
   const sanitizedInput = searchInput.toLowerCase();
+  const matchingObjects: ObjectField[] = [];
 
   for (const obj of objects) {
     if (typeof obj !== 'object' || obj === null) {
@@ -285,10 +286,11 @@ export function searchObjectsByField(
         typeof fieldValue === 'string' &&
         fieldValue.toLowerCase().includes(sanitizedInput)
       ) {
-        return obj;
+        matchingObjects.push(obj);
+        break;
       }
     }
   }
 
-  return undefined;
+  return matchingObjects;
 }
