@@ -1,6 +1,7 @@
 import Vehicle from './Vehicle';
 
 export default interface PaymentRequest {
+  trip: any;
   _id: string;
   vehicle: Vehicle;
   proofVideo: string;

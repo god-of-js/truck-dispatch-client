@@ -58,6 +58,7 @@ import { ReactComponent as Moneys } from './icons/moneys.svg';
 import { ReactComponent as Notification } from './icons/notification.svg';
 import { ReactComponent as PasswordCheck } from './icons/password-check.svg';
 import { ReactComponent as PickUpVan } from './icons/pick-up-van.svg';
+import { ReactComponent as PlayCircle } from './icons/play-circle.svg';
 import { ReactComponent as ReceiptEdit } from './icons/receipt-edit.svg';
 import { ReactComponent as Refresh } from './icons/refresh.svg';
 import { ReactComponent as Search } from './icons/search.svg';
@@ -125,6 +126,7 @@ const icons = {
   PaperPlaneTilt: <PaperPlaneTilt />,
   PasswordCheck: <PasswordCheck />,
   PickUpVan: <PickUpVan />,
+  PlayCircle: <PlayCircle />,
   ReceiptEdit: <ReceiptEdit />,
   Refresh: <Refresh />,
   Search: <Search />,
@@ -172,9 +174,9 @@ const IconStyle = styled.span`
 
   svg {
     width: ${({ size }: { size?: Props['size'] }) =>
-      pxToRem((size && parseInt(size)) || 16)};
+    pxToRem((size && parseInt(size)) || 16)};
     height: ${({ size }: { size?: Props['size'] }) =>
-      pxToRem((size && parseInt(size)) || 16)};
+    pxToRem((size && parseInt(size)) || 16)};
     fill: var(--color-gray-80);
   }
 `;

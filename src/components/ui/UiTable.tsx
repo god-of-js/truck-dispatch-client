@@ -138,6 +138,10 @@ const TableContainer = styled.div`
         justify-content: center;
         background: var(--color-gray-50);
         border-radius: 50%;
+
+        span {
+          display: flex
+        }
       }
     }
     p {

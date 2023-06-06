@@ -145,8 +145,7 @@ class ApiService {
     senderType?: string;
   }) {
     const data = await this.get(
-      `/trips/jobs?page=${page}&limit=${limit}${
-        senderType ? `&senderType=${senderType}` : ''
+      `/trips/jobs?page=${page}&limit=${limit}${senderType ? `&senderType=${senderType}` : ''
       }`,
     );
 
@@ -209,7 +208,7 @@ class ApiService {
   }
 
   getPaymentRequestsOfDriver() {
-    return this.get<PaymentRequest[]>('/payment/payment-requests');
+    return this.get<PaymentRequest[]>('/payment/payment-requests')
   }
 
   getPaymentRequestByTripId(tripId: string) {

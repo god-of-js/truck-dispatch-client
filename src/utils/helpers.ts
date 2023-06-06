@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { AnyAction } from 'redux';
 import TokenVerificationData from 'types/TokenVerificationData';
 
@@ -146,6 +147,15 @@ export function generateReference() {
   return key;
 }
 
+export function convertToFullDateWithTime(dateToConvert: number | string) {
+  return moment(dateToConvert).format('MMMM Do YYYY, h:mm a');
+}
+
+export function truncateText(text: string, length: number = 15) {
+  if (text.length <= length) return text;
+  return text.substr(0, length) + "...";
+}
+
 export function convertToFullDate(dateToConvert: number | string) {
   const date = new Date(dateToConvert);
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -174,7 +184,7 @@ export function convertToFullDate(dateToConvert: number | string) {
   return `${dayOfWeek}, ${month} ${dayOfMonth}${suffix} ${year}`;
 }
 
-export function convertToDdMmmYYYYDateFormat(dateToConvert: string) {
+export function convertToDdMmmYYYYDateFormat(dateToConvert: string | number) {
   const inputDate = dateToConvert;
 
   const date = new Date(inputDate);
