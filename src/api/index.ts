@@ -190,7 +190,7 @@ class ApiService {
     return this.patch<Bid>(`/bids/${data.tripId}`, data);
   }
 
-  deleteBid(tripId: string, bidId: string ): Promise<Bid> {
+  deleteBid(bidId: string, tripId: string): Promise<Bid> {
     return this.delete<Bid>(`/bids/${tripId}/${bidId}`);
   }
 

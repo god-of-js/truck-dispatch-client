@@ -15,7 +15,12 @@ export default function AllBids({ onClose, editBid, deleteBid }: Props) {
     <UiModal title="My Bids" position="right" onClose={onClose}>
       <AllBidsStyling>
         {bids.map((bid) => (
-          <BidItem bid={bid} edit={editBid} key={bid._id} deleteItem={deleteBid} />
+          <BidItem
+            bid={bid}
+            edit={editBid}
+            key={bid._id}
+            deleteItem={deleteBid}
+          />
         ))}
       </AllBidsStyling>
     </UiModal>

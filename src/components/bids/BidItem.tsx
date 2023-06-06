@@ -74,7 +74,12 @@ export default function BidItem({ bid, edit, deleteItem }: Props) {
           <UiButton onClick={() => edit(bid.trip._id)}>
             <UiIcon icon="ReceiptEdit" /> Edit Bid
           </UiButton>
-          <UiButton onClick={() => {deleteItem(bid._id, bid.trip._id)}} variant="danger-secondary">
+          <UiButton
+            onClick={() => {
+              deleteItem(bid._id, bid.trip._id);
+            }}
+            variant="danger-secondary"
+          >
             <UiIcon icon="Trash" />
           </UiButton>
         </div>
