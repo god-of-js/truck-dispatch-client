@@ -12,14 +12,14 @@ interface Filter {
 interface Props {
   routeName: string;
   startChild?: React.ReactNode;
-  edgeChild?: React.ReactNode;
+  edgeNode?: React.ReactNode;
   pageFilters?: Filter[];
 }
 export default function DashboardTopNav({
   routeName,
   startChild,
   pageFilters,
-  edgeChild,
+  edgeNode,
 }: Props) {
   const location = useLocation();
   const presentRoute = useMemo(() => {
@@ -44,7 +44,7 @@ export default function DashboardTopNav({
         </div>
       </div>
       <div className="edge-container">
-        {edgeChild}
+        {edgeNode}
         <div className="notification-icon">
           <UiIcon icon="Notification" />
         </div>

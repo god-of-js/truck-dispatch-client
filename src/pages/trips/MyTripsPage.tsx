@@ -300,9 +300,9 @@ export default function MyTripsPage() {
     setSearchQuery(value!);
   }
 
-  function edgeChild() {
+  function edgeNode() {
     return (
-      <EdgeChild>
+      <EdgeNodeContainer>
         <UiInput
           onChange={handleQueryChange}
           value={searchQuery}
@@ -324,7 +324,7 @@ export default function MyTripsPage() {
             onClick={openAllBids}
           />
         )}
-      </EdgeChild>
+      </EdgeNodeContainer>
     );
   }
 
@@ -385,7 +385,7 @@ export default function MyTripsPage() {
       <DashboardTopNav
         routeName="My Trips"
         pageFilters={filters}
-        edgeChild={edgeChild()}
+        edgeNode={edgeNode()}
       />
       <MyTripsPageStyle>
         <UiTable
@@ -477,7 +477,7 @@ const TypeOfGoods = styled.span`
   color: var(--color-neutralBlack);
   text-transform: capitalize;
 `;
-const EdgeChild = styled.div`
+const EdgeNodeContainer = styled.div`
   display: flex;
   gap: ${pxToRem(12)};
   .ui-filter-tag {

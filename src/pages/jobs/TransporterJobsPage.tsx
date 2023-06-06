@@ -130,9 +130,9 @@ export default function TransporterJobs() {
     setIsAllBidsVisible(true);
   }
 
-  function edgeChild() {
+  function edgeNode() {
     return (
-      <EdgeChild>
+      <edgeNode>
         <UiInput
           onChange={handleQueryChange}
           value={searchQuery}
@@ -147,7 +147,7 @@ export default function TransporterJobs() {
           value={bids.length}
           onClick={openAllBids}
         />
-      </EdgeChild>
+      </edgeNode>
     );
   }
   function handleQueryChange({
@@ -188,7 +188,7 @@ export default function TransporterJobs() {
       <DashboardTopNav
         routeName="Jobs"
         pageFilters={pageFilters}
-        edgeChild={edgeChild()}
+        edgeNode={edgeNode()}
       />
       <MyJobsPageStyle className="flex-container">
         {filteredJobs.map((job) => {
@@ -255,7 +255,7 @@ const MyJobsPageStyle = styled.div`
   gap: ${pxToRem(20)};
 `;
 
-const EdgeChild = styled.div`
+const edgeNode = styled.div`
   display: flex;
   gap: ${pxToRem(12)};
   .ui-filter-tag {

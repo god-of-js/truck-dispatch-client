@@ -1,20 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 
+export type PillType =
+  | 'primary'
+  | 'warning'
+  | 'danger'
+  | 'info'
+  | 'success'
+  | 'gray'
+  | 'orange';
 interface Props {
   children: React.ReactNode;
-  variant:
-    | 'primary'
-    | 'warning'
-    | 'danger'
-    | 'info'
-    | 'success'
-    | 'gray'
-    | 'orange';
+  variant: PillType;
 }
 export default function ({ children, variant }: Props) {
   return (
-    <Pill className={variant}>
+    <Pill className={variant + ' ui-pill'}>
       <div className="circle" />
       {children}
     </Pill>
@@ -77,5 +78,10 @@ const Pill = styled.div`
 
   &.gray {
     background: var(--color-gray-20);
+    color: var(--color-gray-70);
+
+    .circle {
+      background: var(--color-gray-70);
+    }
   }
 `;

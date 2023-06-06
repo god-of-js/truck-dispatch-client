@@ -14,21 +14,56 @@ import { RootState } from 'modules/index';
 import { clientBasedUserTypes } from 'utils/constants';
 import TripDetailPaymentCard from 'components/trips/TripDetailPaymentCard';
 import UserDetails from 'ui/UserDetails';
+import UiButton from 'ui/UiButton';
+import UiIcon from 'ui/UiIcon';
+import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
+import UiPill, { PillType } from 'ui/UiPill';
+import Trip from 'types/Trip';
 
 export default function TripDetailsPage() {
   const user = useSelector((state: RootState) => state.account.user);
   const { tripId } = useParams();
   const trip = useSelector(selectTrip(tripId!));
-  console.log(trip);
 
   const userIsClientBasedUser = useMemo(
     () => clientBasedUserTypes.includes(user?.userType!),
     [user],
   );
 
+  const statusText = useMemo(() => {
+    if (trip?.status === 'assigned') return 'Pending';
+    if (trip?.status === 'awaiting-bid') return 'Awaiting Bid';
+    if (trip?.status === 'in-progress') return 'Ongoing';
+    if (trip?.status === 'completed') return 'Completed';
+  }, [trip]);
+
+  const statusVariant = useMemo(() => {
+    if (trip?.status === 'awaiting-bid') return 'orange';
+    if (trip?.status === 'assigned') return 'warning';
+    if (trip?.status === 'in-progress') return 'info';
+    if (trip?.status === 'completed') return 'success';
+
+    return 'success';
+  }, [trip]);
+
+  const TripStatusIndicator = useMemo(() => {
+    return (
+      <StatusIndicator>
+        <span className="trip-status-text">Trip Status:</span>
+        <div className="pill-container">
+          <UiPill variant={statusVariant}>{statusText}</UiPill>
+        </div>
+      </StatusIndicator>
+    );
+  }, [trip]);
+
   return (
     <>
-      <DashboardTopNav routeName="Trip Details" startChild={<UiBackButton />} />
+      <DashboardTopNav
+        routeName="Trip Details"
+        startChild={<UiBackButton />}
+        edgeNode={TripStatusIndicator}
+      />
       {/* Add not found here. */}
       {trip && (
         <TripDetailsStyling>
@@ -72,6 +107,21 @@ export default function TripDetailsPage() {
                 <div className="driver-and-vehicle-details__field__title">
                   Responsible Driver
                 </div>
+                <UserDetails
+                  userName={`${trip.tripOwner.firstName} ${trip.tripOwner.lastName}`}
+                  avatar={trip.tripOwner.avatar}
+                  phoneOrEmail={
+                    trip.status !== 'completed' ? trip.tripOwner.phone : ''
+                  }
+                />
+              </div>
+              <UiButton variant="icon-neutral">
+                <UiIcon icon="ArrowRight" />
+              </UiButton>
+              <div className="driver-and-vehicle-details__field">
+                <div className="driver-and-vehicle-details__field__title">
+                  Vehicle Details
+                </div>
                 {/* <UserDetails avatar={trip.} /> */}
               </div>
             </div>
@@ -84,11 +134,46 @@ export default function TripDetailsPage() {
                 userName={`${trip.tripOwner.firstName} ${trip.tripOwner.lastName}`}
                 avatar={trip.tripOwner.avatar}
                 avatarIsHalfCurved
-                phoneOrEmail={trip.tripOwner.phone}
+                phoneOrEmail={
+                  trip.status !== 'completed' ? trip.tripOwner.phone : ''
+                }
               />
             )}
           </UiCard>
-          <div></div>
+          <div className="double-grid">
+            <UiCard>
+              <div className="card-title">Transfer Delivery Order</div>
+              <p className="description-text">
+                This is a document that authorizes the release of cargo from a
+                shipping terminal or port to the authorized transporter for
+                final delivery.
+              </p>
+              <div className="double-items">
+                {userIsClientBasedUser && !trip.TDO && (
+                  <UiButton isFullWidth> Upload TDO</UiButton>
+                )}
+                {!userIsClientBasedUser && !!trip.TDO && (
+                  <UiButton isFullWidth> Download TDO</UiButton>
+                )}
+              </div>
+            </UiCard>
+            {userIsClientBasedUser && trip.status === 'awaiting-bid' && (
+              <UiCard>
+                <div className="card-title">Bids</div>
+                <p className="description-text">
+                  Bids are requests transporters send to enable them assist you
+                  in your trip. Accept a bid to officially begin your trip.
+                </p>
+                <div className="bottom">
+                  <div className="double-items">
+                    <UiButton isFullWidth>
+                      View bids sent for this trip
+                    </UiButton>
+                  </div>
+                </div>
+              </UiCard>
+            )}
+          </div>
         </TripDetailsStyling>
       )}
     </>
@@ -122,7 +207,7 @@ const TripDetailsStyling = styled.div`
     letter-spacing: -0.02em;
     color: var(--color-gray-80);
   }
-  .no-payment-made {
+  .description-text {
     font-style: normal;
     font-weight: 400;
     font-size: ${pxToRem(16)};
@@ -131,6 +216,9 @@ const TripDetailsStyling = styled.div`
     color: var(--color-gray-60);
   }
   .driver-and-vehicle-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     &__field {
       &__title {
         font-style: normal;
@@ -140,12 +228,45 @@ const TripDetailsStyling = styled.div`
         letter-spacing: 0.05em;
         color: var(--color-gray-70);
         text-transform: uppercase;
+        margin-bottom: ${pxToRem(12)};
       }
     }
   }
-
+  .double-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: ${pxToRem(20)};
+  }
   @media screen and (min-width: ${sizes.mobileLargeWidth}) {
     grid-template-columns: 2fr 1fr;
     gap: ${pxToRem(20)};
+
+    .double-grid {
+      grid-template-columns: repeat(2, 2fr);
+    }
+  }
+`;
+
+const StatusIndicator = styled.div`
+  display: flex;
+  gap: ${pxToRem(12)};
+  align-items: center;
+  .trip-status-text {
+    font-weight: 600;
+    font-size: ${pxToRem(14)};
+    line-height: 140%;
+    letter-spacing: -0.02em;
+    color: var(--color-neutralBlack);
+  }
+  .pill-container {
+    background: #fff;
+    border-radius: ${pxToRem(20)};
+    padding: ${pxToRem(4)};
+
+    .ui-pill {
+      border-radius: ${pxToRem(16)};
+      padding: ${pxToRem(8)};
+      height: ${pxToRem(20)};
+    }
   }
 `;

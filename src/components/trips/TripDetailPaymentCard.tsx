@@ -21,7 +21,7 @@ export default function TripDetailPaymentCard({ isClient, payment }: Props) {
     <UiCard>
       <PaymentCard>
         <div className="card-title">Payment</div>
-        <div className="no-payment-made">
+        <div className="description-text">
           No payment has been made yet by the shipper
         </div>
         <BottomContainer>
