@@ -160,10 +160,12 @@ const Body = styled.div`
   position: relative;
   overflow-x: auto;
   width: 100%;
-  padding: 0 ${pxToRem(24)};
   .alert-container {
     padding: ${pxToRem(16)};
   }
+  /* @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
+    padding: 0 ${pxToRem(24)};
+  } */
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     width: 97%;
     border-top: none;

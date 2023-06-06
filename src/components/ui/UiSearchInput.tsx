@@ -12,35 +12,7 @@ export default function UiSearchInput({
   searchQuery,
   handleQueryChange,
 }: Props) {
-  return (
-    <SearchInputContainer>
-      <UiInput
-        onChange={handleQueryChange}
-        value={searchQuery}
-        name="searchQuery"
-        placeholder="Search..."
-        icon="Search"
-        size="md"
-      />
-      <UiButton variant="icon-neutral" size="large">
-        <UiIcon icon="Search" size="24" />
-      </UiButton>
-    </SearchInputContainer>
-  );
+  return <SearchInputContainer></SearchInputContainer>;
 }
 
-const SearchInputContainer = styled.span`
-  .ui-field {
-    display: none;
-  }
-
-  @media screen and (min-width: ${sizes.mobileSmall}) {
-    .ui-field {
-      display: block;
-    }
-
-    button {
-      display: none !important;
-    }
-  }
-`;
+const SearchInputContainer = styled.span``;
