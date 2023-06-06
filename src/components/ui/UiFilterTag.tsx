@@ -33,6 +33,7 @@ const Tag = styled.span<{ isActive?: boolean; customWidth?: number }>`
   gap: ${pxToRem(8)};
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: ${({ customWidth }) =>
     customWidth ? pxToRem(customWidth) : 'fit-content'};
   white-space: no-wrap;

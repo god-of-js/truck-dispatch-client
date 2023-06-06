@@ -6,21 +6,18 @@ import InformUserOfVerification from 'components/verification/InformUserOfVerifi
 import { RootState } from 'modules/index';
 import { getJobs, selectJob } from 'modules/Trips';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import UiOverlay from 'ui/UiOverlay';
 import { filterByFieldInObject, toAnyAction } from 'utils/helpers';
 import Trip from 'types/Trip';
-import UiInput from 'ui/UiInput';
 import { clientBasedUserTypes } from 'utils/constants';
 import JobsResponse from 'types/JobsResponse';
 import ViewJobDetail from 'components/jobs/ViewJobDetail';
 import BidForJob from 'components/jobs/BidForJob';
 import { getTransporterBids } from 'modules/Bid';
-import UiFilterTag from 'ui/UiFilterTag';
 import AllBids from 'components/bids/AllBids';
 import PaginationLoader from 'components/layout/PaginationLoader';
-import UiSearchInput from 'ui/UiSearchInput';
 import UiButton from 'ui/UiButton';
 import UiEmptyList from 'ui/UiEmptyList';
 
@@ -58,16 +55,19 @@ export default function TransporterJobs() {
         title: 'All',
         route: '/available-jobs',
         value: allJobs,
+        customWidth: 38,
       },
       {
         title: 'By Companies',
         route: '/available-jobs?sender-type=company',
         value: allJobsByCompany,
+        customWidth: 112,
       },
       {
         title: 'By Shippers',
         route: '/available-jobs?sender-type=shipper',
         value: allJobsByShipper,
+        customWidth: 94,
       },
     ],
     [allJobs, allJobsByCompany, allJobsByShipper],
@@ -242,6 +242,7 @@ export default function TransporterJobs() {
 
 const MyJobsPageStyle = styled.div`
   margin: ${pxToRem(32)} 0;
+  padding: 0 ${pxToRem(24)};
   display: flex;
   flex-wrap: wrap;
   gap: ${pxToRem(20)};

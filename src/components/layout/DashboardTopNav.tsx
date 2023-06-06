@@ -6,15 +6,16 @@ import UiButton from 'ui/UiButton';
 import UiFilterTag from 'ui/UiFilterTag';
 import UiIcon from 'ui/UiIcon';
 import UiInput, { OnChangeParams } from 'ui/UiInput';
-import UiSearchInput from 'ui/UiSearchInput';
 import sizes from 'utils/sizes';
 
 import { ReactComponent as AppLogo } from '../../assets/logo.svg';
+import routes from './routes';
 
 interface Filter {
   title: string;
   route: string;
   value?: string | number;
+  customWidth: number;
 }
 interface Props {
   routeName: string;
@@ -39,6 +40,14 @@ export default function DashboardTopNav({
     return location.pathname + location.search;
   }, [location.pathname, location.search]);
 
+  const routeIconName = useMemo(() => {
+    const activeRoute = routes.find(({ path }) =>
+      location.pathname.includes(path),
+    );
+
+    return activeRoute?.iconName;
+  }, [location]);
+
   return (
     <TopNavContainer>
       <TopNav>
@@ -54,6 +63,7 @@ export default function DashboardTopNav({
                   title={filter.title}
                   isActive={filter.route === presentRoute}
                   value={filter.value}
+                  customWidth={filter.customWidth}
                 />
               </Link>
             ))}
@@ -97,14 +107,15 @@ export default function DashboardTopNav({
       </TopNav>
       <BottomTopNav>
         <div className="route-name-container">
-
-        <span className="route-name">{routeName}</span>
+          {routeIconName && <UiIcon icon={routeIconName} size="28" />}
+          <span className="route-name">{routeName}</span>
         </div>
         <div className="filters">
           {pageFilters?.map((filter) => (
             <Link to={filter.route} key={filter.title}>
               <UiFilterTag
                 title={filter.title}
+                customWidth={filter.customWidth}
                 isActive={filter.route === presentRoute}
                 value={filter.value}
               />
@@ -190,6 +201,8 @@ const TopNav = styled.nav`
 
   @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
     .route-name-container {
+      display: flex;
+      gap: ${pxToRem(8)};
       .logo {
         display: none;
       }
@@ -224,27 +237,34 @@ const TopNav = styled.nav`
 
 const BottomTopNav = styled.div`
   display: block;
-  overflow-x: auto;
   padding: ${pxToRem(12)} ${pxToRem(24)};
   border-bottom: ${pxToRem(1)} solid var(--color-gray-30);
   border-top: ${pxToRem(1)} solid var(--color-gray-30);
 
   .route-name-container {
     margin-bottom: ${pxToRem(4)};
-  }
-  .route-name {
-    font-style: normal;
-    font-weight: 700;
-    font-size: ${pxToRem(24)};
-    line-height: 140%;
-    letter-spacing: -0.02em;
-    color: var(--color-neutralBlack);
+    display: flex;
+    align-items: center;
+    gap: ${pxToRem(8)};
+
+    svg {
+      fill: var(--color-neutralBlack);
+    }
+    .route-name {
+      font-style: normal;
+      font-weight: 700;
+      font-size: ${pxToRem(24)};
+      line-height: 140%;
+      letter-spacing: -0.02em;
+      color: var(--color-neutralBlack);
+    }
   }
 
   .filters {
     display: flex;
     align-items: center;
     gap: ${pxToRem(12)};
+    overflow-x: auto;
   }
 
   @media only screen and (min-width: ${sizes.mobileLargeWidth}) {

@@ -5,19 +5,14 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import sizes from 'utils/sizes';
 import { ReactComponent as AppLogo } from '../../assets/logo.svg';
 
-import UiIcon, { Icons } from '../ui/UiIcon';
+import UiIcon from '../ui/UiIcon';
 import { RootState } from 'modules/index';
 import { removeUserSessionId } from 'utils/localStorageMethods';
 import { selectUnreadChats } from 'modules/Chat';
 import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
-import DashboardTopNav from './DashboardTopNav';
+import { shipperRoutes, transporterRoutes } from './routes';
 
-interface Route {
-  iconName: Icons;
-  path: string;
-  name: string;
-}
 export default function DashboardSidebar() {
   const user = useSelector((state: RootState) => state.account.user);
   const unreadChat = useSelector(selectUnreadChats);
@@ -25,47 +20,6 @@ export default function DashboardSidebar() {
   const appLocation = useLocation();
   const [isExpanded, setIsExpanded] = useState(true);
   const [isMobileExpanded, setIsMobileExpanded] = useState(false);
-
-  const transporterRoutes: Route[] = [
-    {
-      path: '/available-jobs',
-      name: 'Jobs',
-      iconName: 'Jobs',
-    },
-    {
-      path: '/my-trips',
-      name: 'My Trips',
-      iconName: 'TruckTick',
-    },
-    {
-      path: '/payments',
-      name: 'Payments',
-      iconName: 'Moneys',
-    },
-    {
-      path: '/vehicles',
-      name: 'Vehicles',
-      iconName: 'Truck',
-    },
-    {
-      path: '/',
-      name: 'Analytics',
-      iconName: 'ChartSquare',
-    },
-    {
-      path: '/',
-      name: 'Settings',
-      iconName: 'Settings',
-    },
-  ];
-
-  const shipperRoutes: Route[] = [
-    {
-      path: '/my-trips',
-      name: 'My Trips',
-      iconName: 'TruckTick',
-    },
-  ];
 
   const userType = useMemo(() => {
     if (user?.userType === 'transporter') return 'transporter';

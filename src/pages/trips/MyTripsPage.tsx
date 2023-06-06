@@ -303,7 +303,7 @@ export default function MyTripsPage() {
 
   function edgeNode() {
     return (
-      <edgeNode>
+      <EdgeNode>
         <UiInput
           onChange={handleQueryChange}
           value={searchQuery}
@@ -325,7 +325,7 @@ export default function MyTripsPage() {
             onClick={openAllBids}
           />
         )}
-      </edgeNode>
+      </EdgeNode>
     );
   }
 
@@ -465,7 +465,7 @@ export default function MyTripsPage() {
 }
 
 const MyTripsPageStyle = styled.div`
-  padding-top: ${pxToRem(24)};
+  padding: ${pxToRem(24)};
 `;
 
 const UserDetails = styled.div`
@@ -495,7 +495,7 @@ const TypeOfGoods = styled.span`
   color: var(--color-neutralBlack);
   text-transform: capitalize;
 `;
-const edgeNode = styled.div`
+const EdgeNode = styled.div`
   display: flex;
   gap: ${pxToRem(12)};
   .ui-filter-tag {
