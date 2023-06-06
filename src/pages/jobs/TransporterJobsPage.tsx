@@ -132,7 +132,7 @@ export default function TransporterJobs() {
 
   function edgeNode() {
     return (
-      <edgeNode>
+      <EdgeNode>
         <UiInput
           onChange={handleQueryChange}
           value={searchQuery}
@@ -147,7 +147,7 @@ export default function TransporterJobs() {
           value={bids.length}
           onClick={openAllBids}
         />
-      </edgeNode>
+      </EdgeNode>
     );
   }
   function handleQueryChange({
@@ -255,7 +255,7 @@ const MyJobsPageStyle = styled.div`
   gap: ${pxToRem(20)};
 `;
 
-const edgeNode = styled.div`
+const EdgeNode = styled.div`
   display: flex;
   gap: ${pxToRem(12)};
   .ui-filter-tag {

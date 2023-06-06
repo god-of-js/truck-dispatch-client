@@ -195,7 +195,7 @@ export default function MyTripsPage() {
       <UserDetails
         userName={`${tripUser.firstName} ${tripUser.lastName}`}
         avatar={tripUser.avatar}
-        phoneOrEmail={trip.status !== 'completed' ? tripUser.phone : ''}
+        profileSubtitle={trip.status !== 'completed' ? tripUser.phone : ''}
       />
     );
   }

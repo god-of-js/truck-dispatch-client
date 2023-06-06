@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { selectTrip } from 'modules/Trips';
 import styled from 'styled-components';
@@ -61,7 +61,7 @@ export default function TripDetailsPage() {
     <>
       <DashboardTopNav
         routeName="Trip Details"
-        startChild={<UiBackButton />}
+        startNode={<UiBackButton />}
         edgeNode={TripStatusIndicator}
       />
       {/* Add not found here. */}
@@ -110,7 +110,7 @@ export default function TripDetailsPage() {
                 <UserDetails
                   userName={`${trip.tripOwner.firstName} ${trip.tripOwner.lastName}`}
                   avatar={trip.tripOwner.avatar}
-                  phoneOrEmail={
+                  profileSubtitle={
                     trip.status !== 'completed' ? trip.tripOwner.phone : ''
                   }
                 />
@@ -134,7 +134,7 @@ export default function TripDetailsPage() {
                 userName={`${trip.tripOwner.firstName} ${trip.tripOwner.lastName}`}
                 avatar={trip.tripOwner.avatar}
                 avatarIsHalfCurved
-                phoneOrEmail={
+                profileSubtitle={
                   trip.status !== 'completed' ? trip.tripOwner.phone : ''
                 }
               />
@@ -166,9 +166,11 @@ export default function TripDetailsPage() {
                 </p>
                 <div className="bottom">
                   <div className="double-items">
-                    <UiButton isFullWidth>
-                      View bids sent for this trip
-                    </UiButton>
+                    <Link to={`/my-trips/${trip._id}/bids`}>
+                      <UiButton isFullWidth>
+                        View bids sent for this trip
+                      </UiButton>
+                    </Link>
                   </div>
                 </div>
               </UiCard>

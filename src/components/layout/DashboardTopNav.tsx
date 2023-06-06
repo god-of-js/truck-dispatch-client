@@ -11,13 +11,13 @@ interface Filter {
 }
 interface Props {
   routeName: string;
-  startChild?: React.ReactNode;
+  startNode?: React.ReactNode;
   edgeNode?: React.ReactNode;
   pageFilters?: Filter[];
 }
 export default function DashboardTopNav({
   routeName,
-  startChild,
+  startNode,
   pageFilters,
   edgeNode,
 }: Props) {
@@ -29,7 +29,7 @@ export default function DashboardTopNav({
   return (
     <TopNav>
       <div className="route-name-container">
-        {startChild}
+        {startNode}
         <span className="route-name">{routeName}</span>
         <div className="filters">
           {pageFilters?.map((filter) => (

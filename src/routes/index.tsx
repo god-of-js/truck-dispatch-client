@@ -39,9 +39,9 @@ const TransporterAccountsPage = lazy(
 // DASHBOARD
 const MyTripsPage = lazy(() => import('../pages/trips/MyTripsPage'));
 const TripDetailsPage = lazy(() => import('../pages/trips/TripDetailsPage'));
-const TripBidsPage = lazy(() => import('../pages/bids/TripBidsPage'));
+const TripBidsPage = lazy(() => import('../pages/trips/TripBidsPage'));
 const TripBidDetailsPage = lazy(
-  () => import('../pages/bids/TripBidDetailsPage'),
+  () => import('../pages/trips/TripBidDetailsPage'),
 );
 const BidCheckoutPage = lazy(() => import('../pages/bids/BidCheckoutPage'));
 

@@ -3,11 +3,13 @@ import UiAvatar from './UiAvatar';
 import UiButton from './UiButton';
 import UiIcon from './UiIcon';
 
+type Sizes = 'large' | 'sm' | 'md'
 interface Props {
   userId?: string;
   avatar?: string;
   userName: string;
-  phoneOrEmail?: string;
+  size?: Sizes;
+  profileSubtitle?: string;
   showPhone?: boolean;
   showViewProfile?: boolean;
   showMessage?: boolean;
@@ -16,19 +18,20 @@ interface Props {
 export default function UserDetails({
   avatar,
   userName,
-  phoneOrEmail,
+  profileSubtitle,
   avatarIsHalfCurved,
+  size = 'large',
   showMessage,
   showViewProfile,
 }: Props) {
   return (
-    <UserDetailsStyling>
+    <UserDetailsStyling size={size}>
       <div className="user-profile">
         <UiAvatar avatar={avatar} isHalfCurved={avatarIsHalfCurved} />
         <div>
           <div className="user-details-name">{userName}</div>
-          <div className="user-details-phone-or-email">
-            {phoneOrEmail || '**********'}
+          <div className="profile-subtitle">
+            {profileSubtitle || '**********'}
           </div>
         </div>
       </div>
@@ -48,7 +51,7 @@ export default function UserDetails({
   );
 }
 
-const UserDetailsStyling = styled.div`
+const UserDetailsStyling = styled.div<{ size: Sizes}>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -62,16 +65,17 @@ const UserDetailsStyling = styled.div`
   .user-details-name {
     font-style: normal;
     font-weight: 600;
-    font-size: ${pxToRem(16)};
+    font-size: ${({ size }) => size === 'sm' ? pxToRem(14) : pxToRem(16)};
     line-height: 140%;
     letter-spacing: -0.02em;
     color: var(--color-neutralBlack);
+    text-transform: capitalize;
   }
 
-  .user-details-phone-or-email {
+  .profile-subtitle {
     font-style: normal;
     font-weight: 400;
-    font-size: ${pxToRem(14)};
+    font-size: ${({ size }) => size === 'sm' ? pxToRem(10) : pxToRem(14)};
     line-height: 140%;
     letter-spacing: -0.02em;
     color: var(--color-gray-80);
