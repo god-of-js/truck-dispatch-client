@@ -20,6 +20,7 @@ import { getTransporterBids } from 'modules/Bid';
 import UiFilterTag from 'ui/UiFilterTag';
 import AllBids from 'components/bids/AllBids';
 import PaginationLoader from 'components/layout/PaginationLoader';
+import UiEmptyField from 'ui/UiEmptyField';
 
 export default function TransporterJobs() {
   const location = useLocation();
@@ -227,6 +228,14 @@ export default function TransporterJobs() {
           }}
         />
       </UiOverlay>
+
+      {!filteredJobs.length && (
+        <UiEmptyField
+          emptyIcon="Jobs"
+          emptyText="There are no jobs available now,
+        Please come back later"
+        />
+      )}
     </>
   );
 }
