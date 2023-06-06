@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import sizes from 'utils/sizes';
+import UiButton from './UiButton';
 import UidropdownMenu, { DropDownData } from './UiDropdownMenu';
 import UiIcon, { Icons } from './UiIcon';
 
@@ -27,51 +28,33 @@ interface Props {
   headers: Header[];
   options?: DropDownData[] | ((tripStatus: Row) => DropDownData[]);
   onRowClick?: (id: string) => void;
-  noDataHeaderText?: string;
-  noDataImage?: Icons;
-  noDataParagraphText?: string;
-  noDataPlaceHolder?: ReactNode;
+  emptyTableIcon?: Icons;
+  emptyTableText?: string;
+  emptyTableBtnContent?: React.ReactNode;
 }
 
 export default function UiTable({
   data,
   headers,
   options,
+  emptyTableIcon,
+  emptyTableText,
+  emptyTableBtnContent,
   onRowClick,
-  noDataHeaderText,
-  noDataImage = 'FolderNotchOpen',
-  noDataParagraphText = 'You Have No Data',
-  noDataPlaceHolder,
 }: Props) {
   const tableHeaders = options
     ? [...headers, { title: '', query: 'actions' }]
     : headers;
 
-  function emptyTablePlaceholder() {
-    return (
-      <NoDataBox>
-        {noDataPlaceHolder ? (
-          noDataPlaceHolder
-        ) : (
-          <>
-            <h3>{noDataHeaderText}</h3>
-            <div className="icon-container">
-              <UiIcon icon={noDataImage} size="70" />
-            </div>
-            <p className="no-data-text">{noDataParagraphText}</p>
-          </>
-        )}
-      </NoDataBox>
-    );
-  }
-
   return (
     <TableContainer>
       <Table>
         <TableHeader>
-          <TableRow>
+          <TableRow isHeader>
             {tableHeaders.map((header, index) => (
-              <TableHeadItem key={index}>{header.title}</TableHeadItem>
+              <TableHeadItem key={index} isMenu={!header.title}>
+                {header.title}
+              </TableHeadItem>
             ))}
           </TableRow>
         </TableHeader>
@@ -85,21 +68,24 @@ export default function UiTable({
                       key={index}
                       onClick={() => onRowClick?.(item._id)}
                     >
-                      <div className="mobile-title">{header.title}</div>
                       <div>{item[header.query]}</div>
                     </TableDataItem>
                   );
                 })}
 
                 {options && (
-                  <td className="menu-container">
-                    <UidropdownMenu
-                      options={
-                        typeof options === 'function' ? options(item) : options
-                      }
-                      itemId={item._id}
-                    />
-                  </td>
+                  <TableDataItem isMenu>
+                    <div className="menu-container">
+                      <UidropdownMenu
+                        options={
+                          typeof options === 'function'
+                            ? options(item)
+                            : options
+                        }
+                        itemId={item._id}
+                      />
+                    </div>
+                  </TableDataItem>
                 )}
               </TableRow>
             );
@@ -107,98 +93,121 @@ export default function UiTable({
         </tbody>
       </Table>
 
-      {/* {!data.length && emptyTablePlaceholder()} */}
+      {!data.length && (
+        <div className="empty-container">
+          <div className="icon-container">
+            <div className="icon-container__inner">
+              <UiIcon icon={emptyTableIcon!} size="60" />
+            </div>
+          </div>
+          <p>{emptyTableText}</p>
+          <UiButton size="large">{emptyTableBtnContent}</UiButton>
+        </div>
+      )}
     </TableContainer>
   );
 }
 
 const TableContainer = styled.div`
-  border: none;
-`;
-
-const Table = styled.table`
+  overflow-x: auto;
   position: relative;
+
+  .empty-container {
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .icon-container {
+      padding: ${pxToRem(32)};
+      width: ${pxToRem(192)};
+      height: ${pxToRem(192)};
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-gray-30);
+      border-radius: 50%;
+
+      &__inner {
+        padding: ${pxToRem(32)};
+        width: ${pxToRem(128)};
+        height: ${pxToRem(128)};
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--color-gray-50);
+        border-radius: 50%;
+      }
+    }
+    p {
+      font-style: normal;
+      font-weight: 400;
+      font-size: ${pxToRem(24)};
+      line-height: 140%;
+      text-align: center;
+      letter-spacing: -0.02em;
+      color: var(--color-gray-80);
+      max-width: ${pxToRem(360)};
+    }
+  }
+`;
+const Table = styled.table`
   table-layout: fixed;
   width: 100%;
+  min-width: ${pxToRem(1200)};
   border-spacing: ${pxToRem(0)} ${pxToRem(8)};
 `;
 
 const TableHeader = styled.thead`
-  display: none;
-
-  @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
-    display: table-header-group;
-    width: 100%;
-    border-bottom: ${pxToRem(1)} solid var(--color-gray-200);
-  }
+  width: 100%;
 `;
 
-const TableRow = styled.tr`
-  border-bottom: ${pxToRem(1)} solid var(--color-gray-200);
+const TableRow = styled.tr<{ isHeader?: boolean }>`
   text-align: left;
   cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  position: relative;
   margin-bottom: ${pxToRem(20)};
+  overflow: hidden;
+  background: ${({ isHeader }) =>
+    isHeader ? 'var(--color-primary-10)' : '#ffffff'};
 
-  .mobile-title {
-    font-size: ${pxToRem(12)};
-  }
+  td,
+  th {
+    &:last-child {
+      border-top-right-radius: ${pxToRem(8)};
+      border-bottom-right-radius: ${pxToRem(8)};
+      height: 100%;
 
-  .menu-container {
-    height: 98.5%;
-    width: fit-content;
-    position: absolute;
-    background: #ffffff;
-    display: flex;
-    align-items: flex-start;
-    right: 0;
-    @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
-      align-items: center;
-      justify-content: flex-end;
-      width: 13%;
-    }
-  }
-
-  @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
-    display: table-row;
-
-    td,
-    th {
-      &:last-child {
-        border-top-right-radius: ${pxToRem(8)};
-        border-bottom-right-radius: ${pxToRem(8)};
-      }
-      &:first-child {
-        border-top-left-radius: ${pxToRem(8)};
-        border-bottom-left-radius: ${pxToRem(8)};
+      .menu-container {
+        width: ${pxToRem(32)};
+        margin-left: auto;
       }
     }
-
-    .mobile-title {
-      display: none;
+    &:first-child {
+      border-top-left-radius: ${pxToRem(8)};
+      border-bottom-left-radius: ${pxToRem(8)};
     }
-  }
-  &:last-child {
-    border-bottom: transparent;
   }
 `;
 
-const TableHeadItem = styled.th`
-  padding: ${pxToRem(12)} ${pxToRem(24)};
-  color: var(--color-gray-500);
-  background: #f2f0fb;
-  font-size: ${pxToRem(12)};
-`;
-
-const TableDataItem = styled.td`
-  padding: ${pxToRem(12)} ${pxToRem(24)};
-  color: var(--color-gray-500);
-  font-weight: 700;
+const TableHeadItem = styled.th<{ isMenu: boolean }>`
+  height: ${pxToRem(48)};
+  padding: 0 ${pxToRem(24)};
+  color: var(--color-gray-70);
   font-size: ${pxToRem(14)};
-  line-height: ${pxToRem(20)};
-  background: #ffffff;
+  font-style: normal;
+  font-weight: 600;
+  ${({ isMenu }) => isMenu && `width: ${pxToRem(24)}`};
+`;
+
+const TableDataItem = styled.td<{ isMenu?: boolean }>`
+  padding: ${pxToRem(26)} ${pxToRem(24)};
+  color: var(--color-neutralBlack);
+  font-size: ${pxToRem(14)};
+  line-height: ${pxToRem(16)};
+  font-style: normal;
+  font-weight: 400;
+  ${({ isMenu }) => isMenu && `width: ${pxToRem(24)};`}
 `;
 
 const NoDataBox = styled.div`
@@ -208,7 +217,6 @@ const NoDataBox = styled.div`
   align-items: center;
   height: ${pxToRem(400)};
   width: 100%;
-  background: var(--color-gray);
   text-align: center;
 
   h3,

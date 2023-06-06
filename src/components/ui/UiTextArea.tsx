@@ -46,11 +46,12 @@ const TextArea = styled.textarea`
   border: ${pxToRem(1)} solid;
   border-color: ${({ hasError }: { hasError: boolean }) =>
     hasError ? 'var(--color-danger)' : 'var(--color-gray)'};
-  background: #ffffff;
   outline: none;
   border-radius: ${pxToRem(4)};
   box-sizing: border-box;
   font-family: 'thiccboi-medium', sans-serif;
+  min-height: ${pxToRem(200)};
+  background: transparent;
   &:focus {
     border: ${pxToRem(2)} solid var(--color-primary);
     box-shadow: var(--box-shadow-primary);

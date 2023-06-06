@@ -25,7 +25,8 @@ import {
 } from 'phosphor-react';
 
 import { ReactComponent as ArrowCircleLeft } from './icons/arrow-circle-left.svg';
-import { ReactComponent as CaretLeft } from './icons/arrow-left.svg';
+import { ReactComponent as CaretLeft } from './icons/caret-left.svg';
+import { ReactComponent as CaretRight } from './icons/caret-right.svg';
 import { ReactComponent as ArrowRight } from './icons/arrow-right.svg';
 import { ReactComponent as ArrowLeft } from './icons/arrow-left.svg';
 
@@ -74,6 +75,7 @@ import { ReactComponent as User } from './icons/user.svg';
 import { ReactComponent as UserOctagon } from './icons/user-octagon.svg';
 import { ReactComponent as UserSquare } from './icons/user-square.svg';
 import { ReactComponent as Van } from './icons/van.svg';
+import { ReactComponent as VerticalDots } from './icons/vertical-dots.svg';
 
 // These icons should be arranged alphabetically for easy sorting
 const icons = {
@@ -81,6 +83,7 @@ const icons = {
   ArrowCircleRight: <ArrowCircleRight />,
   ArrowLeft: <ArrowLeft />,
   CaretLeft: <CaretLeft />,
+  CaretRight: <CaretRight />,
   ArrowRight: <ArrowRight />,
   ArrowUpRight: <ArrowUpRight />,
   Buildings: <Company />,
@@ -93,7 +96,6 @@ const icons = {
   ChartSquare: <ChartSquare />,
   Close: <Close />,
   CloseThick: <CloseThick />,
-  Menu: <Menu />,
   CreditCard: <CreditCard />,
   Check: <Check />,
   Chiller: <Chiller />,
@@ -114,6 +116,7 @@ const icons = {
   LocationTick: <LocationTick />,
   Logout: <Logout />,
   MagicStar: <MagicStar />,
+  Menu: <Menu />,
   MiniVan: <MiniVan />,
   Moneys: <Moneys />,
   Money: <Money />,
@@ -144,6 +147,7 @@ const icons = {
   UsersThree: <UsersThree />,
   UserSquare: <UserSquare />,
   Van: <Van />,
+  VerticalDots: <VerticalDots />,
   TwentyFTTruck: <TwentyFTTruck />,
   X: <X />,
 };

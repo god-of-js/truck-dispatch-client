@@ -26,6 +26,9 @@ const AllBidsStyling = styled.div`
   background: var(--color-gray-20);
   padding: ${pxToRem(32)} ${pxToRem(24)};
   height: 100%;
-  display: grid;
-  gap: ${pxToRem(12)};
+  overflow-y: auto;
+
+  .bid-item {
+    margin-bottom: ${pxToRem(24)};
+  }
 `;

@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
+import styled from 'styled-components';
 
 interface Props {
   size?: 'lg' | 's';
@@ -40,20 +40,21 @@ function sizeVar(size: Sizes) {
 
 export default function Loader({ variant, size = 'lg' }: Props) {
   return (
-    <LoaderStyle size={size}>
-      <GlobalStyle />
-      <div className="loadingSpinner">
-        <div className={`spinner ${variant}`}></div>
-      </div>
-    </LoaderStyle>
+    <LoaderContainer>
+      <LoaderStyle size={size}>
+        <div className="loadingSpinner">
+          <div className={`spinner ${variant}`}></div>
+        </div>
+      </LoaderStyle>
+    </LoaderContainer>
   );
 }
 
-const GlobalStyle = createGlobalStyle`
-  html, body {
-    height: 100%;
-    width: 100%;
-  }
+const LoaderContainer = styled.div`
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const LoaderStyle = styled.div<Props>`

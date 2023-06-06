@@ -86,7 +86,7 @@ class ApiService {
     status?: string | null;
   }) {
     const data = await this.get(
-      `/trips?&page=${page}&limit=${limit}${status && `&status=${status}`}`,
+      `/trips?&page=${page}&limit=${limit}${status ? `&status=${status}` : ''}`,
     );
 
     return {
@@ -121,7 +121,10 @@ class ApiService {
   }
 
   assignTrip(data: AssignTripFormData) {
-    return this.post<Trip>(`/trips/${data.tripId}/assign-trip`, data);
+    return this.post<{ trip: Trip; user: User }>(
+      `/trips/${data.tripId}/assign-trip`,
+      data,
+    );
   }
 
   saveAccountNumber(accountDetails: BankDetails) {
@@ -159,6 +162,24 @@ class ApiService {
 
   uploadTDO(formData: FormData, tripId: string) {
     return this.post<Trip>(`/trips/${tripId}/upload-tdo`, formData);
+  }
+
+  unassignTrip(tripId: string) {
+    return this.post<{ trip: Trip; user: User }>(
+      `/trips/${tripId}/unassign-trip`,
+    );
+  }
+
+  cancelTripByTripCreator(tripId: string) {
+    return this.delete<{ trip: Trip; user: User }>(
+      `/trips/${tripId}/cancel-trip-by-trip-owner`,
+    );
+  }
+
+  cancelTripByTransporter(tripId: string) {
+    return this.patch<{ trip: Trip; user: User }>(
+      `/trips/${tripId}/cancel-trip-by-transporter`,
+    );
   }
 
   createBid(data: CreateBid) {
@@ -272,7 +293,7 @@ class ApiService {
     bankCode: string,
     accountNumber: string,
   ): Promise<AccountDetails> {
-    return this.post(
+    return this.get(
       `/externals/banks/account?account_number=${accountNumber}&bank_code=${bankCode}`,
     );
   }
