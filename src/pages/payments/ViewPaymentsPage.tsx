@@ -68,11 +68,7 @@ function ViewPaymentsPage() {
     {
       title: 'Status',
       query: 'status',
-    },
-    {
-      title: '',
-      query: 'operation',
-    },
+    }
   ];
   const options: DropDownData[] = [
     {
