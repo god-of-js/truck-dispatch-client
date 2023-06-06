@@ -6,12 +6,13 @@ import UiDataField from 'ui/UiDataField';
 import UiIcon from 'ui/UiIcon';
 import UiPill from 'ui/UiPill';
 import { abbreviateNumber, convertToFullDate } from 'utils/helpers';
-import { deleteBid } from 'modules/Bid';
+
 interface Props {
   bid: Bid;
   edit: (jobId: string) => void;
+  deleteItem: (bidId: string, tripId: string) => void;
 }
-export default function BidItem({ bid, edit }: Props) {
+export default function BidItem({ bid, edit, deleteItem }: Props) {
   return (
     <BidItemStyling>
       <header className="bid-header">
@@ -73,7 +74,7 @@ export default function BidItem({ bid, edit }: Props) {
           <UiButton onClick={() => edit(bid.trip._id)}>
             <UiIcon icon="ReceiptEdit" /> Edit Bid
           </UiButton>
-          <UiButton onClick={() => {deleteBid(bid.trip._id, bid._id)}} variant="danger-secondary">
+          <UiButton onClick={() => {deleteItem(bid._id, bid.trip._id)}} variant="danger-secondary">
             <UiIcon icon="Trash" />
           </UiButton>
         </div>

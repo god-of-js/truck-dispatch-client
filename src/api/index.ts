@@ -170,7 +170,7 @@ class ApiService {
   }
 
   deleteBid(tripId: string, bidId: string ): Promise<Bid> {
-    return this.delete<Bid>(`/bids/${tripId}/${bidId}`, bidId);
+    return this.delete<Bid>(`/bids/${tripId}/${bidId}`);
   }
 
   requestPaymentByTransporter(
@@ -309,12 +309,10 @@ class ApiService {
       });
   }
 
-  private delete<T>(url: string, data?: unknown, silent = false): Promise<T> {
+  private delete<T>(url: string, silent = false): Promise<T> {
     return axiosInstance()
-      .delete(url, data!!)
+      .delete(url)
       .then(({ data }) => {
-        console.log('data deleted');
-        
         if (!silent) Toast.success({ msg: data.message });
         return data.data;
       })

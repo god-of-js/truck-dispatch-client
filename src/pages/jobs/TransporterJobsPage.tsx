@@ -150,6 +150,9 @@ export default function TransporterJobs() {
       </EdgeChild>
     );
   }
+  function deleteTransporterBid(bidId: string, tripId: string) {
+    setSelectedJobId(bidId);
+  }
   function handleChange({ value }: { name: string; value: string | null }) {
     setSearchQuery(value!);
   }
@@ -229,6 +232,7 @@ export default function TransporterJobs() {
             bidForJob(id);
             setIsAllBidsVisible(false);
           }}
+          deleteBid={deleteTransporterBid}
         />
       </UiOverlay>
     </>
