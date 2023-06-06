@@ -22,6 +22,7 @@ import AllBids from 'components/bids/AllBids';
 import PaginationLoader from 'components/layout/PaginationLoader';
 import UiSearchInput from 'ui/UiSearchInput';
 import UiButton from 'ui/UiButton';
+import UiEmptyList from 'ui/UiEmptyList';
 
 export default function TransporterJobs() {
   const location = useLocation();
@@ -38,7 +39,7 @@ export default function TransporterJobs() {
 
   const dispatch = useDispatch();
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [
     isInformUserOfVerificationModalVisible,
@@ -161,6 +162,18 @@ export default function TransporterJobs() {
     dispatch(toAnyAction(getTransporterBids()));
   }, []);
 
+  function emptyJobs() {
+    if (!loading && !jobs.length) {
+      return (
+        <UiEmptyList
+          emptyIcon="Jobs"
+          emptyText="There are no jobs available now, Please come back later"
+        />
+      );
+    }
+    return;
+  }
+
   return (
     <>
       <DashboardTopNav
@@ -181,12 +194,14 @@ export default function TransporterJobs() {
           );
         })}
 
-        <PaginationLoader
-          loading={loading}
-          page={page}
-          totalPages={totalPages}
-          nextPage={() => setPage(page + 1)}
-        />
+        {(loading || !!filteredJobs.length) && (
+          <PaginationLoader
+            loading={loading}
+            page={page}
+            totalPages={totalPages}
+            nextPage={() => setPage(page + 1)}
+          />
+        )}
       </MyJobsPageStyle>
       <UiOverlay isVisible={isInformUserOfVerificationModalVisible}>
         <InformUserOfVerification
@@ -220,6 +235,7 @@ export default function TransporterJobs() {
           }}
         />
       </UiOverlay>
+      {emptyJobs()}
     </>
   );
 }
