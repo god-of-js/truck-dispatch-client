@@ -105,7 +105,8 @@ export default function UiTable({
 }
 
 const TableContainer = styled.div`
-  overflow: auto;
+  overflow-x: auto;
+  padding-bottom: ${pxToRem(120)};
   position: relative;
 `;
 
@@ -164,30 +165,6 @@ const TableDataItem = styled.td<{ isMenu?: boolean }>`
   line-height: ${pxToRem(16)};
   font-style: normal;
   font-weight: 400;
+  overflow-x: hidden;
   ${({ isMenu }) => isMenu && `width: ${pxToRem(24)};`}
-`;
-
-const NoDataBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: ${pxToRem(400)};
-  width: 100%;
-  text-align: center;
-
-  h3,
-  .icon-container {
-    color: var(--color-gray-500);
-  }
-
-  .no-data-text {
-    color: var(--color-gray-500);
-    font-weight: 700;
-    width: 80%;
-    font-size: ${pxToRem(14)};
-    @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
-      width: 40%;
-    }
-  }
 `;

@@ -39,6 +39,7 @@ import BidForJob from 'components/jobs/BidForJob';
 import AllBids from 'components/bids/AllBids';
 import CreateTrip from 'components/trips/CreateTrip';
 import TripHasBeenBroadcasted from 'components/trips/TripHasBeenBroadcasted';
+import UserDetails from 'ui/UserDetails';
 
 export default function MyTripsPage() {
   const navigate = useNavigate();
@@ -159,8 +160,8 @@ export default function MyTripsPage() {
       ...trip,
       id: trip._id,
       typeOfGoods: <TypeOfGoods>{trip.typeOfGoods}</TypeOfGoods>,
-      responsibleTransporter: userDetails(trip.transporter),
-      tripOwnerDetails: userDetails(trip.tripOwner),
+      responsibleTransporter: userDetails(trip, trip.transporter),
+      tripOwnerDetails: userDetails(trip, trip.tripOwner),
       pickUpDate: <DateText>{convertToFullDate(trip.pickUpDate)}</DateText>,
       deliveryDate: <DateText>{convertToFullDate(trip.deliveryDate)}</DateText>,
       statusField: (
@@ -187,17 +188,15 @@ export default function MyTripsPage() {
     if (status === 'completed') return 'Completed';
   }
 
-  function userDetails(tripUser?: User) {
+  function userDetails(trip: Trip, tripUser?: User) {
     if (!tripUser) return 'Not yet assigned';
 
     return (
-      <UserDetails>
-        <UiAvatar avatar={tripUser.avatar} />
-        <div>
-          <div className="transporter-name">{`${tripUser.firstName} ${tripUser.lastName}`}</div>
-          <div>{tripUser.phone}</div>
-        </div>
-      </UserDetails>
+      <UserDetails
+        userName={`${tripUser.firstName} ${tripUser.lastName}`}
+        avatar={tripUser.avatar}
+        phoneOrEmail={trip.status !== 'completed' ? tripUser.phone : ''}
+      />
     );
   }
   function dropDownData(item: unknown): DropDownData[] {
@@ -466,23 +465,6 @@ export default function MyTripsPage() {
 
 const MyTripsPageStyle = styled.div`
   padding-top: ${pxToRem(24)};
-`;
-
-const UserDetails = styled.div`
-  display: flex;
-  gap: ${pxToRem(8)};
-  align-items: center;
-  .transporter-name {
-    font-weight: 400;
-    font-size: ${pxToRem(14)};
-    font-style: normal;
-    font-weight: 700;
-    line-height: 140%;
-    color: var(--color-neutralBlack);
-    letter-spacing: -0.02em;
-    text-transform: capitalize;
-    font-family: 'thiccboi-extrabold';
-  }
 `;
 
 const TypeOfGoods = styled.span`

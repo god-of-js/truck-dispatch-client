@@ -29,6 +29,7 @@ export default function DashboardTopNav({
   return (
     <TopNav>
       <div className="route-name-container">
+        {startChild}
         <span className="route-name">{routeName}</span>
         <div className="filters">
           {pageFilters?.map((filter) => (

@@ -40,7 +40,9 @@ const TransporterAccountsPage = lazy(
 const MyTripsPage = lazy(() => import('../pages/trips/MyTripsPage'));
 const TripDetailsPage = lazy(() => import('../pages/trips/TripDetailsPage'));
 const TripBidsPage = lazy(() => import('../pages/bids/TripBidsPage'));
-const TripBidDetailsPage = lazy(() => import('../pages/bids/TripBidDetailsPage'));
+const TripBidDetailsPage = lazy(
+  () => import('../pages/bids/TripBidDetailsPage'),
+);
 const BidCheckoutPage = lazy(() => import('../pages/bids/BidCheckoutPage'));
 
 const TransporterJobsPage = lazy(
@@ -53,9 +55,7 @@ const VehiclesPage = lazy(() => import('../pages/vehicles/VehiclesPage'));
 
 // Transactions
 
-const PaymentsPage = lazy(
-  () => import('../pages/payments/PaymentsPage'),
-);
+const PaymentsPage = lazy(() => import('../pages/payments/PaymentsPage'));
 
 const router = createBrowserRouter([
   {

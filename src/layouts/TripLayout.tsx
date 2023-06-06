@@ -52,7 +52,7 @@ export default function TripLayout() {
 
   return (
     <>
-    {/* TODO: Deprecate this Layout file. */}
+      {/* TODO: Deprecate this Layout file. */}
       {loading ? <Loader /> : <Outlet />}
       <UiOverlay isVisible={isRatingsModalVisible}>
         <RateTransporter onClose={closeRateTransporter} />

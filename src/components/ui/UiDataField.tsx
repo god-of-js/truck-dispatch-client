@@ -1,11 +1,10 @@
 import styled from 'styled-components';
-import UiButton from './UiButton';
 
 type Variant = 'text-area' | 'field';
 type Sizes = 's' | 'l';
 interface Props {
   title: string;
-  value?: string;
+  value?: string | number;
   variant?: Variant;
   size?: Sizes;
   isBordered?: boolean;

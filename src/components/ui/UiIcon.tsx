@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
-
-
 import { ReactComponent as ArrowCircleLeft } from './icons/arrow-circle-left.svg';
+import { ReactComponent as ArrowCircleRight } from './icons/arrow-circle-right.svg';
 import { ReactComponent as CaretLeft } from './icons/caret-left.svg';
 import { ReactComponent as CaretRight } from './icons/caret-right.svg';
 import { ReactComponent as ArrowRight } from './icons/arrow-right.svg';
@@ -11,7 +10,6 @@ import { ReactComponent as ArrowLeft } from './icons/arrow-left.svg';
 import { ReactComponent as Close } from './icons/close.svg';
 import { ReactComponent as CloseThick } from './icons/close-thick.svg';
 import { ReactComponent as Chat } from './icons/chat.svg';
-import { ReactComponent as ArrowCircleRight } from './icons/arrow-circle-right.svg';
 import { ReactComponent as CallReceived } from './icons/call-received.svg';
 import { ReactComponent as Car } from './icons/car.svg';
 import { ReactComponent as ChartSquare } from './icons/chart-square.svg';
@@ -20,10 +18,12 @@ import { ReactComponent as Menu } from './icons/menu.svg';
 import { ReactComponent as Chiller } from './icons/chiller.svg';
 import { ReactComponent as Company } from './icons/company.svg';
 import { ReactComponent as DocumentUpload } from './icons/document-upload.svg';
+import { ReactComponent as DoubleChat } from './icons/double-chat.svg';
 import { ReactComponent as DuoTrucks } from './icons/duo-trucks.svg';
 import { ReactComponent as Eye } from './icons/eye.svg';
 import { ReactComponent as EyeSlash } from './icons/eye-slash.svg';
 import { ReactComponent as FlatBed } from './icons/flatbed.svg';
+import { ReactComponent as Information } from './icons/information.svg';
 import { ReactComponent as Jobs } from './icons/jobs.svg';
 import { ReactComponent as InfoCircle } from './icons/info-circle.svg';
 import { ReactComponent as Location } from './icons/location.svg';
@@ -31,11 +31,11 @@ import { ReactComponent as LocationTick } from './icons/location-tick.svg';
 import { ReactComponent as Logout } from './icons/log-out.svg';
 import { ReactComponent as MagicStar } from './icons/magic-star.svg';
 import { ReactComponent as MiniVan } from './icons/mini-van.svg';
-import { ReactComponent as MessageChat } from './icons/chat.svg';
 import { ReactComponent as Moneys } from './icons/moneys.svg';
 import { ReactComponent as Notification } from './icons/notification.svg';
 import { ReactComponent as PasswordCheck } from './icons/password-check.svg';
 import { ReactComponent as PickUpVan } from './icons/pick-up-van.svg';
+import { ReactComponent as PlayCircle } from './icons/play-circle.svg';
 import { ReactComponent as ReceiptEdit } from './icons/receipt-edit.svg';
 import { ReactComponent as Refresh } from './icons/refresh.svg';
 import { ReactComponent as Search } from './icons/search.svg';
@@ -73,10 +73,12 @@ const icons = {
   Check: <Check />,
   Chiller: <Chiller />,
   DocumentUpload: <DocumentUpload />,
+  DoubleChat: <DoubleChat />,
   DuoTrucks: <DuoTrucks />,
   Eye: <Eye />,
   EyeSlash: <EyeSlash />,
   FlatBed: <FlatBed />,
+  Information: <Information />,
   InfoCircle: <InfoCircle />,
   Jobs: <Jobs />,
   Location: <Location />,
@@ -86,10 +88,10 @@ const icons = {
   Menu: <Menu />,
   MiniVan: <MiniVan />,
   Moneys: <Moneys />,
-  MessageChat: <MessageChat />,
   Notification: <Notification />,
   PasswordCheck: <PasswordCheck />,
   PickUpVan: <PickUpVan />,
+  PlayCircle: <PlayCircle />,
   ReceiptEdit: <ReceiptEdit />,
   Refresh: <Refresh />,
   Search: <Search />,
