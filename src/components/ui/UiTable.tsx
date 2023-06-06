@@ -107,7 +107,6 @@ export default function UiTable({
 const TableContainer = styled.div`
   overflow: auto;
   position: relative;
-
   .empty-container {
     height: 60vh;
     display: flex;
