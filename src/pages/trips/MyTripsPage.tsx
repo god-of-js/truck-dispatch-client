@@ -30,7 +30,7 @@ import User from 'types/User';
 import UiAvatar from 'ui/UiAvatar';
 import UiFilterTag from 'ui/UiFilterTag';
 import UiInput from 'ui/UiInput';
-import { getTransporterBids } from 'modules/Bid';
+import { deleteBid, getTransporterBids } from 'modules/Bid';
 import PaginationLoader from 'components/layout/PaginationLoader';
 import UiOverlay from 'ui/UiOverlay';
 import InformUserOfVerification from 'components/verification/InformUserOfVerification';
@@ -73,6 +73,9 @@ export default function MyTripsPage() {
     useState(false);
   const [activeTripId, setActiveTripId] = useState<string | null>(null);
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
+  const [selectedBidId, setSelectedBidId] = useState<string | null>(null);
+  const [isDeleteBidVisible, setIsDeleteBidVisible] = useState(false);
+  const [isDeleteBidLoading, setIsDeleteBidLoading] = useState(false);
   const job = useSelector(selectJob(selectedJobId!));
 
   const headers = useMemo(
@@ -254,6 +257,25 @@ export default function MyTripsPage() {
     });
   }
 
+  function showDeleteBidModal(bidId: string, tripId: string) {
+    setSelectedJobId(tripId);
+    setSelectedBidId(bidId);
+    setIsDeleteBidVisible(true);
+  }
+
+  function deleteTransporterBid() {
+    if (!selectedBidId || !selectedJobId) {
+      Toast.error({ msg: 'Bid cannot be deleted' });
+      return;
+    }
+    setIsDeleteBidLoading(true);
+    dispatch(toAnyAction(deleteBid(selectedBidId, selectedJobId))).finally(
+      () => {
+        setIsDeleteBidLoading(false);
+        setIsDeleteBidVisible(false);
+      },
+    );
+  }
   function loadTrips() {
     setLoading(true);
     dispatch(toAnyAction(getTrips({ page, limit: 20, status })))
@@ -474,6 +496,7 @@ export default function MyTripsPage() {
             bidForJob(id);
             setIsAllBidsVisible(false);
           }}
+          deleteBid={showDeleteBidModal}
         />
       </UiOverlay>
 
@@ -487,6 +510,18 @@ export default function MyTripsPage() {
         >
           Are you sure you want to cancel this trip? This process cannot be
           undone.
+        </UiConfirmModal>
+      </UiOverlay>
+      <UiOverlay isVisible={isDeleteBidVisible}>
+        <UiConfirmModal
+          title="Delete Bid"
+          variant="danger"
+          loading={isDeleteBidLoading}
+          onClose={() => setIsDeleteBidVisible(false)}
+          onProceed={deleteTransporterBid}
+        >
+          Are you sure you want to delete this bid? Your candidacy for this role
+          would immediately be revoked.
         </UiConfirmModal>
       </UiOverlay>
     </>
