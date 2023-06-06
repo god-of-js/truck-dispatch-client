@@ -169,6 +169,10 @@ class ApiService {
     return this.patch<Bid>(`/bids/${data.tripId}`, data);
   }
 
+  deleteBid(tripId: string, bidId: string ): Promise<Bid> {
+    return this.delete<Bid>(`/bids/${tripId}/${bidId}`, bidId);
+  }
+
   requestPaymentByTransporter(
     data: FormData,
     tripId: string,
@@ -296,6 +300,21 @@ class ApiService {
     return axiosInstance()
       .patch(url, data)
       .then(({ data }) => {
+        if (!silent) Toast.success({ msg: data.message });
+        return data.data;
+      })
+      .catch((e) => {
+        Toast.error({ msg: e.message });
+        return Promise.reject(e);
+      });
+  }
+
+  private delete<T>(url: string, data?: unknown, silent = false): Promise<T> {
+    return axiosInstance()
+      .delete(url, data!!)
+      .then(({ data }) => {
+        console.log('data deleted');
+        
         if (!silent) Toast.success({ msg: data.message });
         return data.data;
       })

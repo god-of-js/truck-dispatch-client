@@ -29,10 +29,13 @@ export const BidsSlice = createSlice({
       }
       state.bids.push(action.payload);
     },
+    removeBid: ( state: BidState, action: { payload: string } ) => {
+      state.bids.filter(({ _id }) => _id !== action.payload )
+    }
   },
 });
 
-export const { setBids, setBid } = BidsSlice.actions;
+export const { setBids, setBid, removeBid } = BidsSlice.actions;
 export default BidsSlice.reducer;
 
 const bids = (state: RootState) => state.bid.bids;
@@ -86,3 +89,14 @@ export function updateBid(data: CreateBid) {
     });
   };
 }
+
+export function deleteBid(tripId: string, bidId: string) {
+  return (dispatch: AppDispatch) => {
+    return Api.deleteBid(tripId, bidId).then(()=>{
+      console.log('bid deleted');
+      
+      dispatch(removeBid(bidId))
+    })
+  }
+}
+

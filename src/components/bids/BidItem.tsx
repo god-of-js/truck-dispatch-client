@@ -6,7 +6,7 @@ import UiDataField from 'ui/UiDataField';
 import UiIcon from 'ui/UiIcon';
 import UiPill from 'ui/UiPill';
 import { abbreviateNumber, convertToFullDate } from 'utils/helpers';
-
+import { deleteBid } from 'modules/Bid';
 interface Props {
   bid: Bid;
   edit: (jobId: string) => void;
@@ -16,10 +16,10 @@ export default function BidItem({ bid, edit }: Props) {
     <BidItemStyling>
       <header className="bid-header">
         <div className="user-profile">
-          <UiAvatar avatar={bid.trip.tripOwner.avatar} isHalfCurved />
+          <UiAvatar avatar={bid.trip.tripOwner?.avatar} isHalfCurved />
           <div className="user-profile__details">
-            <div className="name">{`${bid.trip.tripOwner.firstName} ${bid.trip.tripOwner.lastName}`}</div>
-            <div className="user-type">{bid.trip.tripOwner.userType}</div>
+            <div className="name">{`${bid.trip.tripOwner?.firstName} ${bid.trip.tripOwner?.lastName}`}</div>
+            <div className="user-type">{bid.trip.tripOwner?.userType}</div>
           </div>
         </div>
         <div className="time-of-creation">
@@ -73,7 +73,7 @@ export default function BidItem({ bid, edit }: Props) {
           <UiButton onClick={() => edit(bid.trip._id)}>
             <UiIcon icon="ReceiptEdit" /> Edit Bid
           </UiButton>
-          <UiButton variant="danger-secondary">
+          <UiButton onClick={() => {deleteBid(bid.trip._id, bid._id)}} variant="danger-secondary">
             <UiIcon icon="Trash" />
           </UiButton>
         </div>
