@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import UiIcon, { Icons } from './UiIcon';
 
 export type PillType =
   | 'primary'
@@ -9,14 +10,32 @@ export type PillType =
   | 'success'
   | 'gray'
   | 'orange';
+  const icons: { [key: string]: Icons } = {
+    // modify the icons to fit the variants
+    primary: 'Tick',
+    warning: 'Tick',
+    danger: 'Tick',
+    info: 'Tick',
+    success: 'Tick',
+    gray: 'Tick',
+  };
 interface Props {
   children: React.ReactNode;
-  variant: PillType;
+  variant: 
+  | 'primary'
+  | 'warning'
+  | 'danger'
+  | 'info'
+  | 'success'
+  | 'gray'
+  | 'orange';
+  hasIcon?: boolean;
 }
-export default function ({ children, variant }: Props) {
+export default function ({ children, variant, hasIcon }: Props) {
   return (
     <Pill className={variant + ' ui-pill'}>
       <div className="circle" />
+      {hasIcon && <UiIcon icon={icons[variant]} />}
       {children}
     </Pill>
   );
