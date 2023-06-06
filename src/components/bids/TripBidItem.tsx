@@ -28,7 +28,7 @@ export default function TripBidItem({ bid }: Props) {
         <UiDropDownMenu options={[]} />
       </header>
 
-      <div className="fields">
+      <div className="fields ">
         <div className="field-item">
           <div className="field-name">Type of Goods</div>
           <div className="type-of-goods-value">Lorem ipsum</div>
@@ -43,14 +43,14 @@ export default function TripBidItem({ bid }: Props) {
           </div>
 
           <div>
-            <div className="field-name">Delivery date</div>
-            <div className="field-value">date</div>
+            <div className="field-name">Propose trip price</div>
+            <div className="field-value">&#8358;{bid.price}</div>
           </div>
         </div>
 
         <SubmitButtonContainer className="submit-button-tripbiditemstyling">
-          <UiButton>{bid ? 'Update Bid' : 'bid now'}</UiButton>
-          <UiButton variant="secondary">View full Details</UiButton>
+          <UiButton variant="secondary" isFullWidth>Negotiate Bid</UiButton>
+          <UiButton isFullWidth>Accept Bid</UiButton>
         </SubmitButtonContainer>
       </div>
     </TripBidItemStyling>
@@ -117,11 +117,7 @@ const TripBidItemStyling = styled.div`
 `;
 
 const SubmitButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: ${pxToRem(16)};
-
-  & button:last-child {
-    flex-grow: 1;
-  }
 `;
