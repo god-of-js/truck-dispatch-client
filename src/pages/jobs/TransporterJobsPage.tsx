@@ -2,27 +2,25 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import JobItem from 'components/jobs/JobItem';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
-import Loader from 'components/layout/Loader';
 import InformUserOfVerification from 'components/verification/InformUserOfVerification';
 import { RootState } from 'modules/index';
 import { getJobs, selectJob } from 'modules/Trips';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import UiOverlay from 'ui/UiOverlay';
 import { filterByFieldInObject, toAnyAction } from 'utils/helpers';
 import Trip from 'types/Trip';
 import UiInput from 'ui/UiInput';
-import UiButton from 'ui/UiButton';
-import UiIcon from 'ui/UiIcon';
 import { clientBasedUserTypes } from 'utils/constants';
 import JobsResponse from 'types/JobsResponse';
 import ViewJobDetail from 'components/jobs/ViewJobDetail';
 import BidForJob from 'components/jobs/BidForJob';
 import { getTransporterBids } from 'modules/Bid';
 import UiFilterTag from 'ui/UiFilterTag';
-import { editableInputTypes } from '@testing-library/user-event/dist/utils';
 import AllBids from 'components/bids/AllBids';
+import PaginationLoader from 'components/layout/PaginationLoader';
+import UiEmptyList from 'ui/UiEmptyList';
 
 export default function TransporterJobs() {
   const location = useLocation();
@@ -39,7 +37,7 @@ export default function TransporterJobs() {
 
   const dispatch = useDispatch();
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [
     isInformUserOfVerificationModalVisible,
@@ -135,7 +133,7 @@ export default function TransporterJobs() {
     return (
       <EdgeChild>
         <UiInput
-          onChange={handleChange}
+          onChange={handleQueryChange}
           value={searchQuery}
           name="searchQuery"
           placeholder="Search..."
@@ -151,7 +149,12 @@ export default function TransporterJobs() {
       </EdgeChild>
     );
   }
-  function handleChange({ value }: { name: string; value: string | null }) {
+  function handleQueryChange({
+    value,
+  }: {
+    name: string;
+    value: string | null;
+  }) {
     setSearchQuery(value!);
   }
 
@@ -166,6 +169,18 @@ export default function TransporterJobs() {
   useEffect(() => {
     dispatch(toAnyAction(getTransporterBids()));
   }, []);
+
+  function emptyJobs() {
+    if (!loading && !jobs.length) {
+      return (
+        <UiEmptyList
+          emptyIcon="Jobs"
+          emptyText="There are no jobs available now, Please come back later"
+        />
+      );
+    }
+    return;
+  }
 
   return (
     <>
@@ -185,20 +200,15 @@ export default function TransporterJobs() {
             />
           );
         })}
-        <div className="loader-container">
-          {loading ? (
-            <Loader size="lg" />
-          ) : (
-            <UiButton
-              size="large"
-              variant="secondary"
-              disabled={page === totalPages || !totalPages}
-              onClick={() => setPage(page + 1)}
-            >
-              Load more <UiIcon icon="Refresh" />
-            </UiButton>
-          )}
-        </div>
+
+        {(loading || !!filteredJobs.length) && (
+          <PaginationLoader
+            loading={loading}
+            page={page}
+            totalPages={totalPages}
+            nextPage={() => setPage(page + 1)}
+          />
+        )}
       </MyJobsPageStyle>
       <UiOverlay isVisible={isInformUserOfVerificationModalVisible}>
         <InformUserOfVerification
@@ -232,6 +242,7 @@ export default function TransporterJobs() {
           }}
         />
       </UiOverlay>
+      {emptyJobs()}
     </>
   );
 }
@@ -241,16 +252,6 @@ const MyJobsPageStyle = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: ${pxToRem(20)};
-
-  .loader-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-
-    button {
-      width: ${pxToRem(182)};
-    }
-  }
 `;
 
 const EdgeChild = styled.div`

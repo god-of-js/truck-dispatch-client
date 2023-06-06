@@ -30,8 +30,12 @@ export const TripsSlice = createSlice({
         ({ _id }) => _id === action.payload._id,
       );
 
-      if (index === -1) state.trips.push(action.payload);
+      if (index === -1) state.trips.unshift(action.payload);
       else state.trips[index] = action.payload;
+    },
+    removeTrip: (state: TripState, action: { payload: string }) => {
+      const index = state.trips.findIndex(({ _id }) => _id === action.payload);
+      if (index !== -1) state.trips.splice(index, 1);
     },
     setJob: (state: TripState, action: { payload: Trip }) => {
       const index = state.jobs.findIndex(
@@ -53,8 +57,15 @@ export const TripsSlice = createSlice({
   },
 });
 
-export const { setTrips, appendTrips, setJobs, appendJobs, setTrip, setJob } =
-  TripsSlice.actions;
+export const {
+  setTrips,
+  removeTrip,
+  appendTrips,
+  setJobs,
+  appendJobs,
+  setTrip,
+  setJob,
+} = TripsSlice.actions;
 export default TripsSlice.reducer;
 
 // SELECTORS
@@ -143,6 +154,7 @@ export function getTrip(tripId: string) {
   return async (dispatch: AppDispatch) => {
     return Api.getTrip(tripId).then((trip) => {
       dispatch(setTrip(trip));
+      return trip;
     });
   };
 }
@@ -168,6 +180,24 @@ export function unassignTrip(tripId: string) {
   return (dispatch: AppDispatch) => {
     return Api.unassignTrip(tripId).then((data) => {
       dispatch(setTrip(data.trip));
+      return data;
+    });
+  };
+}
+
+export function cancelTripByTripCreator(tripId: string) {
+  return (dispatch: AppDispatch) => {
+    return Api.cancelTripByTripCreator(tripId).then((data) => {
+      dispatch(removeTrip(tripId));
+      return data;
+    });
+  };
+}
+
+export function cancelTripByTransporter(tripId: string) {
+  return (dispatch: AppDispatch) => {
+    return Api.cancelTripByTransporter(tripId).then((data) => {
+      dispatch(removeTrip(data.trip._id));
       return data;
     });
   };

@@ -13,7 +13,14 @@ const icons: { [key: string]: Icons } = {
 };
 interface Props {
   children: React.ReactNode;
-  variant: 'primary' | 'warning' | 'danger' | 'info' | 'success' | 'gray';
+  variant: 
+  | 'primary'
+  | 'warning'
+  | 'danger'
+  | 'info'
+  | 'success'
+  | 'gray'
+  | 'orange';
   hasIcon?: boolean;
 }
 export default function ({ children, variant, hasIcon }: Props) {
@@ -51,6 +58,31 @@ const Pill = styled.div`
 
     .circle {
       background: var(--color-warning);
+    }
+  }
+
+  &.success {
+    background: var(--color-success-10);
+    color: var(--color-success);
+
+    .circle {
+      background: var(--color-success);
+    }
+  }
+  &.info {
+    background: var(--color-info-10);
+    color: var(--color-info);
+
+    .circle {
+      background: var(--color-info);
+    }
+  }
+  &.orange {
+    background: var(--color-orange-10);
+    color: var(--color-orange);
+
+    .circle {
+      background: var(--color-orange);
     }
   }
 

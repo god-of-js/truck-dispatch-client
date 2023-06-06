@@ -5,6 +5,14 @@ import { GOOGLE_MAPS_KEY } from './privateKeys';
 export default function loadServices() {
   // Load external scripts after website has completely mounted.
 
+  let script: HTMLScriptElement | null = document.createElement('script');
+  script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_KEY}&libraries=places&callback=initMap`;
+  script.async = true;
+  script.defer = true;
+  document.head.appendChild(script);
+
+  if (import.meta?.env?.MODE === 'development') return;
+
   let intercomScript: HTMLScriptElement | null =
     document.createElement('script');
   intercomScript.innerHTML = `
@@ -60,10 +68,4 @@ export default function loadServices() {
       });
     });
   }
-
-  let script: HTMLScriptElement | null = document.createElement('script');
-  script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_KEY}&libraries=places&callback=initMap`;
-  script.async = true;
-  script.defer = true;
-  document.head.appendChild(script);
 }
