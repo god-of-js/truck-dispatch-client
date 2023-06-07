@@ -22,4 +22,5 @@ export default interface User {
   isEmailVerified?: boolean;
   isPhoneVerified?: boolean;
   createdAt?: number;
+  noOfVehicles?: number;
 }

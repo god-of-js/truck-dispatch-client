@@ -1,15 +1,43 @@
+import Ratings from 'components/ratings/Ratings';
 import { useMemo } from 'react';
 import styled from 'styled-components';
 import Bid from 'types/Bid';
 import UiButton from 'ui/UiButton';
-import UiDropDownMenu from 'ui/UiDropdownMenu';
+import UiDropDownMenu, { DropDownData } from 'ui/UiDropdownMenu';
+import UiIcon from 'ui/UiIcon';
 import UserDetails from 'ui/UserDetails';
+import { abbreviateNumber, priceWithTDPercent } from 'utils/helpers';
 import sizes from 'utils/sizes';
 
 interface Props {
   bid: Bid;
+  negotiate: (bidId: string) => void;
+  accept: (bidId: string) => void;
+  viewBidDetails: (bidId: string) => void;
+  viewSenderDetails: (bidId: string) => void;
 }
-export default function TripBidItem({ bid }: Props) {
+export default function TripBidItem({
+  bid,
+  accept,
+  negotiate,
+  viewBidDetails,
+  viewSenderDetails,
+}: Props) {
+  const options: DropDownData[] = [
+    {
+      label: 'Transporter Profile',
+      icon: 'User',
+      endIcon: 'CaretRight',
+      func: viewBidDetails,
+    },
+    {
+      label: 'Bid Details',
+      icon: 'InfoCircleOutline',
+      endIcon: 'CaretRight',
+      func: viewBidDetails,
+    },
+  ];
+
   const formattedUserType = useMemo(() => {
     if (bid.transporter.userType === 'transport') return 'TRANSPORTER';
 
@@ -25,32 +53,56 @@ export default function TripBidItem({ bid }: Props) {
           size="sm"
           profileSubtitle={formattedUserType}
         />
-        <UiDropDownMenu options={[]} />
+        <UiDropDownMenu options={options} itemId={bid._id} />
       </header>
 
       <div className="fields ">
-        <div className="field-item">
-          <div className="field-name">Type of Goods</div>
-          <div className="type-of-goods-value">Lorem ipsum</div>
+        <div className="double-field-item">
+          <div>
+            <div className="field-name">Number of vehicles</div>
+            <div className="field-value">{bid.transporter.noOfVehicles}</div>
+          </div>
+          <div>
+            <div className="field-name">Completed Trips</div>
+            <div className="field-value">{bid.transporter.completedTrips}</div>
+          </div>
         </div>
 
-        <div className="field-item"></div>
-
-        <div className="field-item date-container">
+        <div className="field-item vehicle-location">
+          <UiIcon icon="Location" />
           <div>
-            <div className="field-name">PickUp date</div>
-            <div className="field-value">date</div>
+            <div className="field-name">Vehicle current Location</div>
+            <div className="field-value">{bid.presentLocation}</div>
+          </div>
+        </div>
+
+        <div className="field-item--without-border">
+          <div>
+            <div className="field-name">Transporter Rating</div>
+            <div className="field-value">
+              <Ratings rating={bid.transporter.rating} />
+            </div>
           </div>
 
           <div>
             <div className="field-name">Propose trip price</div>
-            <div className="field-value">&#8358;{bid.price}</div>
+            <div className="price">
+              &#8358;{abbreviateNumber(priceWithTDPercent(bid.price))}
+            </div>
           </div>
         </div>
 
         <SubmitButtonContainer className="submit-button-tripbiditemstyling">
-          <UiButton variant="secondary" isFullWidth>Negotiate Bid</UiButton>
-          <UiButton isFullWidth>Accept Bid</UiButton>
+          <UiButton
+            variant="secondary"
+            isFullWidth
+            onClick={() => negotiate(bid._id)}
+          >
+            Negotiate Bid
+          </UiButton>
+          <UiButton isFullWidth onClick={() => accept(bid._id)}>
+            Accept Bid
+          </UiButton>
         </SubmitButtonContainer>
       </div>
     </TripBidItemStyling>
@@ -60,7 +112,6 @@ export default function TripBidItem({ bid }: Props) {
 const TripBidItemStyling = styled.div`
   max-width: ${pxToRem(332)};
   border-radius: ${pxToRem(16)};
-  overflow: hidden;
   background: #ffffff;
   width: 100%;
   font-weight: 600;
@@ -77,9 +128,11 @@ const TripBidItemStyling = styled.div`
     align-items: center;
     justify-content: space-between;
     gap: ${pxToRem(12)};
+    border-top-left-radius: ${pxToRem(16)};
+    border-top-right-radius: ${pxToRem(16)};
 
     .user-details-name {
-        color: var(--color-gray-80);
+      color: var(--color-gray-80);
     }
   }
 
@@ -91,20 +144,28 @@ const TripBidItemStyling = styled.div`
     color: var(--color-gray-70);
     line-height: 140%;
     letter-spacing: 0.05em;
+    margin-bottom: ${pxToRem(8)};
   }
 
   .field-value {
     font-style: normal;
     font-weight: 600;
-    font-size: 14px;
+    font-size: ${pxToRem(14)};
     line-height: 140%;
     letter-spacing: -0.02em;
     color: var(--color-neutralBlack);
   }
 
-  .field-item {
+  .field-item,
+  .double-field-item {
     border-bottom: ${pxToRem(1)} solid var(--color-gray);
     padding: ${pxToRem(0)} 0 ${pxToRem(16)} 0;
+  }
+
+  .double-field-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .fields {
@@ -113,11 +174,32 @@ const TripBidItemStyling = styled.div`
     gap: ${pxToRem(16)};
     padding: ${pxToRem(16)} ${pxToRem(24)} ${pxToRem(24)} ${pxToRem(24)};
   }
+  .field-item--without-border {
+    display: flex;
+    flex-direction: column;
+    gap: ${pxToRem(20)};
+  }
+  .price {
+    font-style: normal;
+    font-weight: 600;
+    font-size: ${pxToRem(28)};
+    line-height: ${pxToRem(32)};
+    letter-spacing: -0.02em;
+    color: var(--color-neutralBlack);
+  }
 
+  .vehicle-location {
+    display: flex;
+    align-items: flex-start;
+    gap: ${pxToRem(8)};
+    svg {
+      fill: var(--color-primary);
+    }
+  }
 `;
 
 const SubmitButtonContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: ${pxToRem(16)};
+  gap: ${pxToRem(12)};
 `;

@@ -10,25 +10,25 @@ export type PillType =
   | 'success'
   | 'gray'
   | 'orange';
-  const icons: { [key: string]: Icons } = {
-    // modify the icons to fit the variants
-    primary: 'Tick',
-    warning: 'Tick',
-    danger: 'Tick',
-    info: 'Tick',
-    success: 'Tick',
-    gray: 'Tick',
-  };
+const icons: { [key: string]: Icons } = {
+  // modify the icons to fit the variants
+  primary: 'Tick',
+  warning: 'Tick',
+  danger: 'Tick',
+  info: 'Tick',
+  success: 'Tick',
+  gray: 'Tick',
+};
 interface Props {
   children: React.ReactNode;
-  variant: 
-  | 'primary'
-  | 'warning'
-  | 'danger'
-  | 'info'
-  | 'success'
-  | 'gray'
-  | 'orange';
+  variant:
+    | 'primary'
+    | 'warning'
+    | 'danger'
+    | 'info'
+    | 'success'
+    | 'gray'
+    | 'orange';
   hasIcon?: boolean;
 }
 export default function ({ children, variant, hasIcon }: Props) {

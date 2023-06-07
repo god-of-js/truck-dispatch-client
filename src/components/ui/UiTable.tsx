@@ -1,6 +1,5 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import sizes from 'utils/sizes';
 import UidropdownMenu, { DropDownData } from './UiDropdownMenu';
 import { Icons } from './UiIcon';
 import UiEmptyList from './UiEmptyList';
@@ -165,6 +164,5 @@ const TableDataItem = styled.td<{ isMenu?: boolean }>`
   line-height: ${pxToRem(16)};
   font-style: normal;
   font-weight: 400;
-  overflow-x: hidden;
-  ${({ isMenu }) => isMenu && `width: ${pxToRem(24)};`}
+  ${({ isMenu }) => (isMenu ? `width: ${pxToRem(24)};` : 'overflow-x: hidden;')}
 `;

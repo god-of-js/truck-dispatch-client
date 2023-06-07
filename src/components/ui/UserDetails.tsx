@@ -3,7 +3,7 @@ import UiAvatar from './UiAvatar';
 import UiButton from './UiButton';
 import UiIcon from './UiIcon';
 
-type Sizes = 'large' | 'sm' | 'md'
+type Sizes = 'large' | 'sm' | 'md';
 interface Props {
   userId?: string;
   avatar?: string;
@@ -51,7 +51,7 @@ export default function UserDetails({
   );
 }
 
-const UserDetailsStyling = styled.div<{ size: Sizes}>`
+const UserDetailsStyling = styled.div<{ size: Sizes }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -65,7 +65,7 @@ const UserDetailsStyling = styled.div<{ size: Sizes}>`
   .user-details-name {
     font-style: normal;
     font-weight: 600;
-    font-size: ${({ size }) => size === 'sm' ? pxToRem(14) : pxToRem(16)};
+    font-size: ${({ size }) => (size === 'sm' ? pxToRem(14) : pxToRem(16))};
     line-height: 140%;
     letter-spacing: -0.02em;
     color: var(--color-neutralBlack);
@@ -75,7 +75,7 @@ const UserDetailsStyling = styled.div<{ size: Sizes}>`
   .profile-subtitle {
     font-style: normal;
     font-weight: 400;
-    font-size: ${({ size }) => size === 'sm' ? pxToRem(10) : pxToRem(14)};
+    font-size: ${({ size }) => (size === 'sm' ? pxToRem(10) : pxToRem(14))};
     line-height: 140%;
     letter-spacing: -0.02em;
     color: var(--color-gray-80);

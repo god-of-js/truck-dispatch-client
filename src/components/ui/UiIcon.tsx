@@ -23,9 +23,11 @@ import { ReactComponent as DuoTrucks } from './icons/duo-trucks.svg';
 import { ReactComponent as Eye } from './icons/eye.svg';
 import { ReactComponent as EyeSlash } from './icons/eye-slash.svg';
 import { ReactComponent as FlatBed } from './icons/flatbed.svg';
+import { ReactComponent as GoldStar } from './icons/gold-star.svg';
 import { ReactComponent as Information } from './icons/information.svg';
 import { ReactComponent as Jobs } from './icons/jobs.svg';
 import { ReactComponent as InfoCircle } from './icons/info-circle.svg';
+import { ReactComponent as InfoCircleOutline } from './icons/info-circle-outline.svg';
 import { ReactComponent as Location } from './icons/location.svg';
 import { ReactComponent as LocationTick } from './icons/location-tick.svg';
 import { ReactComponent as Logout } from './icons/log-out.svg';
@@ -41,6 +43,7 @@ import { ReactComponent as Refresh } from './icons/refresh.svg';
 import { ReactComponent as Search } from './icons/search.svg';
 import { ReactComponent as SemiTrailer } from './icons/semi-trailer.svg';
 import { ReactComponent as Settings } from './icons/settings.svg';
+import { ReactComponent as Star } from './icons/star.svg';
 import { ReactComponent as Tick } from './icons/tick.svg';
 import { ReactComponent as Tanker } from './icons/tanker.svg';
 import { ReactComponent as Truck } from './icons/truck.svg';
@@ -78,8 +81,10 @@ const icons = {
   Eye: <Eye />,
   EyeSlash: <EyeSlash />,
   FlatBed: <FlatBed />,
+  GoldStar: <GoldStar />,
   Information: <Information />,
   InfoCircle: <InfoCircle />,
+  InfoCircleOutline: <InfoCircleOutline />,
   Jobs: <Jobs />,
   Location: <Location />,
   LocationTick: <LocationTick />,
@@ -97,6 +102,7 @@ const icons = {
   Search: <Search />,
   SemiTrailer: <SemiTrailer />,
   Settings: <Settings />,
+  Star: <Star />,
   Tick: <Tick />,
   Tanker: <Tanker />,
   TruckTick: <TruckTick />,

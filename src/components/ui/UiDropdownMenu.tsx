@@ -25,41 +25,48 @@ interface Props {
 
 export default function UiDropDownMenu({ options, itemId, trigger }: Props) {
   return (
-    <MenuMainStyled
-      menuButton={
-        <MenuButtonStyling>
-          {trigger || <UiIcon icon="VerticalDots" size="20" />}
-        </MenuButtonStyling>
-      }
-    >
-      {options.map((option, index) => (
-        <MenuItemStyling
-          onClick={() => option.func?.(itemId!)}
-          key={index}
-          isdanger={option.isDanger ? 'true' : 'false'}
-          hasdivider={option.hasDivider ? 'true' : 'false'}
-        >
-          <span>
-            {option.path && (
-              <Link to={`${option.path}`}>
-                {option.icon && <UiIcon icon={option.icon} />}
-                {option.label}
-              </Link>
-            )}
-            {!option.path && (
-              <span>
-                {option.label}
-                {option.icon && <UiIcon icon={option.icon} />}
-              </span>
-            )}
-          </span>
-          {option.endIcon && <UiIcon icon={option.endIcon} />}
-        </MenuItemStyling>
-      ))}
-    </MenuMainStyled>
+    <RelativeContainer>
+      <MenuMainStyled
+        menuButton={
+          <MenuButtonStyling>
+            {trigger || <UiIcon icon="VerticalDots" size="20" />}
+          </MenuButtonStyling>
+        }
+      >
+        {options.map((option, index) => (
+          <MenuItemStyling
+            onClick={() => option.func?.(itemId!)}
+            key={index}
+            isdanger={option.isDanger ? 'true' : 'false'}
+            hasdivider={option.hasDivider ? 'true' : 'false'}
+          >
+            <span className="content">
+              {option.path && (
+                <Link to={`${option.path}`}>
+                  {option.icon && <UiIcon icon={option.icon} />}
+                  {option.label}
+                </Link>
+              )}
+              {!option.path && (
+                <span className="content">
+                  {option.icon && <UiIcon icon={option.icon} />}
+
+                  <span className="content__text">{option.label}</span>
+                </span>
+              )}
+            </span>
+            {option.endIcon && <UiIcon icon={option.endIcon} />}
+          </MenuItemStyling>
+        ))}
+      </MenuMainStyled>
+    </RelativeContainer>
   );
 }
 
+const RelativeContainer = styled.div`
+  position: relative;
+  overflow: visible;
+`;
 interface ThemeProps {
   hasdivider?: string;
   isdanger?: string;
@@ -72,6 +79,7 @@ const MenuButtonStyling = styled(MenuButton)`
   background: var(--color-gray-50);
   border: transparent;
   border-radius: ${pxToRem(8)};
+  position: relative;
   padding: ${pxToRem(8)} ${pxToRem(8)} ${pxToRem(5)};
   cursor: pointer;
   width: fit-content;
@@ -85,8 +93,8 @@ const MenuMainStyled = styled(Menu)`
     padding: ${pxToRem(8)};
     border-radius: ${pxToRem(16)};
     box-shadow: 0px 10px 16px rgba(21, 19, 27, 0.1);
-    left: -132px !important;
-    top: 29.067px !important;
+    top: ${pxToRem(12)} !important;
+    left: -${pxToRem(132)} !important;
   }
 `;
 
@@ -118,7 +126,13 @@ const MenuItemStyling = styled(MenuItem)<ThemeProps>`
     color: var(--color-gray-500);
     font-weight: 'thiccboi-semibold';
   }
-  span {
-    margin-top: 2px;
+  .content {
+    display: flex;
+    align-items: center;
+    gap: ${pxToRem(8)};
+
+    &__text {
+      margin-bottom: ${pxToRem(2)};
+    }
   }
 `;

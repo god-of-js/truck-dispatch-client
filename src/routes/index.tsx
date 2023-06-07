@@ -8,7 +8,6 @@ const AuthLayout = lazy(() => import('../layouts/AuthLayout'));
 const DashboardLayout = lazy(() => import('../layouts/DashboardLayout'));
 const ProfileLayout = lazy(() => import('../layouts/ProfileLayout'));
 const TripLayout = lazy(() => import('../layouts/TripLayout'));
-const TripBidsLayout = lazy(() => import('../layouts/ViewTripBidsLayout'));
 const TripsLayout = lazy(() => import('../layouts/TripsLayout'));
 const ChatLayout = lazy(() => import('../layouts/ChatLayout'));
 
@@ -40,10 +39,6 @@ const TransporterAccountsPage = lazy(
 const MyTripsPage = lazy(() => import('../pages/trips/MyTripsPage'));
 const TripDetailsPage = lazy(() => import('../pages/trips/TripDetailsPage'));
 const TripBidsPage = lazy(() => import('../pages/trips/TripBidsPage'));
-const TripBidDetailsPage = lazy(
-  () => import('../pages/trips/TripBidDetailsPage'),
-);
-const BidCheckoutPage = lazy(() => import('../pages/bids/BidCheckoutPage'));
 
 const TransporterJobsPage = lazy(
   () => import('../pages/jobs/TransporterJobsPage'),
@@ -126,24 +121,7 @@ const router = createBrowserRouter([
               {
                 path: '/my-trips/:tripId/bids',
                 id: 'TripBidsLayout',
-                element: <TripBidsLayout />,
-                children: [
-                  {
-                    path: '',
-                    id: 'Trip Bids',
-                    element: <TripBidsPage />,
-                  },
-                  {
-                    path: '/my-trips/:tripId/bids/:bidId',
-                    id: 'Trip Bid',
-                    element: <TripBidDetailsPage />,
-                  },
-                  {
-                    path: '/my-trips/:tripId/bids/:bidId/checkout',
-                    id: 'Checkout Trip Bid',
-                    element: <BidCheckoutPage />,
-                  },
-                ],
+                element: <TripBidsPage />,
               },
             ],
           },

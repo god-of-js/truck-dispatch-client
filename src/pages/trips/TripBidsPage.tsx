@@ -1,30 +1,44 @@
-import React, { useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { abbreviateNumber, priceWithTDPercent } from 'utils/helpers';
-
-import UiTable from 'ui/UiTable';
 import { RootState } from 'modules/index';
-import Bid from 'types/Bid';
-import UiAvatar from 'ui/UiAvatar';
-import Ratings from 'components/ratings/Ratings';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
 import UiBackButton from 'ui/UiBackButton';
 import TripBidItem from 'components/bids/TripBidItem';
+import PaginationLoader from 'components/layout/PaginationLoader';
+import { toAnyAction } from 'utils/helpers';
+import { getBidsWithTripId } from 'modules/Bid';
 
 export default function TripBidsPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const { tripId } = useParams();
   const bids = useSelector((state: RootState) => state.bid.bids);
-  useEffect(() => {
-    console.log(bids);
-  }, [bids]);
+  const [pageLoading, setPageLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   function viewBid(bidId: string) {
     // navigate(`/my-trips/${tripId}/bids/${bidId}`);
   }
+  function viewSenderDetails(bidId: string) {
+    // navigate(`/my-trips/${tripId}/bids/${bidId}`);
+  }
+  function negotiateBid(bidId: string) {}
 
+  function acceptBid(bidId: string) {}
+
+  function loadNextPage() {}
+
+  useEffect(() => {
+    if (tripId) {
+      dispatch(toAnyAction(getBidsWithTripId(tripId))).finally(() =>
+      setPageLoading(false),
+      );
+    }
+  }, []);
   return (
     <>
       <DashboardTopNav
@@ -34,9 +48,22 @@ export default function TripBidsPage() {
 
       <PageStyling>
         {bids.map((bid) => (
-          <TripBidItem bid={bid} key={bid._id} />
+          <TripBidItem
+            bid={bid}
+            key={bid._id}
+            negotiate={negotiateBid}
+            accept={acceptBid}
+            viewBidDetails={viewBid}
+            viewSenderDetails={viewSenderDetails}
+          />
         ))}
       </PageStyling>
+      <PaginationLoader
+        loading={pageLoading}
+        nextPage={loadNextPage}
+        totalPages={totalPages}
+        page={page}
+      />
     </>
   );
 }
