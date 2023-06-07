@@ -188,6 +188,7 @@ export default function TripDetailsPage() {
 const TripDetailsStyling = styled.div`
   display: grid;
   grid-template-columns: 1fr;
+  padding: 0 ${pxToRem(24)};
 
   .card-title {
     font-style: normal;
