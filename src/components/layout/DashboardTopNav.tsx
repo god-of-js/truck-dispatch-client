@@ -20,7 +20,6 @@ interface Filter {
 interface Props {
   routeName: string;
   edgeNode?: React.ReactNode;
-  searchNode?: React.ReactNode;
   startNode?: React.ReactNode;
   pageFilters?: Filter[];
   searchQuery?: string;
