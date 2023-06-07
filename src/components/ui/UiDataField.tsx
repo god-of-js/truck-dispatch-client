@@ -1,10 +1,11 @@
+import React from 'react';
 import styled from 'styled-components';
 
 type Variant = 'text-area' | 'field';
 type Sizes = 's' | 'l';
 interface Props {
   title: string;
-  value?: string | number;
+  value?: React.ReactNode;
   variant?: Variant;
   size?: Sizes;
   isBordered?: boolean;
@@ -17,7 +18,12 @@ export default function UiDataField({
   size = 'l',
 }: Props) {
   return (
-    <FieldStyling variant={variant} isBordered={isBordered} size={size}>
+    <FieldStyling
+      variant={variant}
+      className="ui-data-field"
+      isBordered={isBordered}
+      size={size}
+    >
       <div className="field-title">{title}</div>
       <div className="field-value">{value ? value : 'N/A'}</div>
       {/* TODO: immplement view more */}

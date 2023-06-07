@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -10,35 +10,50 @@ import TripBidItem from 'components/bids/TripBidItem';
 import PaginationLoader from 'components/layout/PaginationLoader';
 import { toAnyAction } from 'utils/helpers';
 import { getBidsWithTripId } from 'modules/Bid';
+import UiOverlay from 'ui/UiOverlay';
+import TripBidFullDetails from 'components/bids/TripBidFullDetails';
+import UiEmptyField from 'ui/UiEmptyList';
 
 export default function TripBidsPage() {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { tripId } = useParams();
   const bids = useSelector((state: RootState) => state.bid.bids);
   const [pageLoading, setPageLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [isBidDetailsVisible, setIsBidDetailsVisible] = useState(false);
+  const [selectedBidId, setActiveBidId] = useState<string | null>(null);
+
+  const bid = useMemo(() => {
+    return bids.find(({ _id }) => _id === selectedBidId);
+  }, [selectedBidId, bids]);
 
   function viewBid(bidId: string) {
-    // navigate(`/my-trips/${tripId}/bids/${bidId}`);
+    setActiveBidId(bidId);
+    setIsBidDetailsVisible(true);
   }
   function viewSenderDetails(bidId: string) {
     // navigate(`/my-trips/${tripId}/bids/${bidId}`);
   }
-  function negotiateBid(bidId: string) {}
+  function negotiateBid(bidId: string) {
+    setActiveBidId(bidId);
+  }
 
   function acceptBid(bidId: string) {}
 
-  function loadNextPage() {}
-
-  useEffect(() => {
+  function loadPage() {
     if (tripId) {
       dispatch(toAnyAction(getBidsWithTripId(tripId))).finally(() =>
-      setPageLoading(false),
+        setPageLoading(false),
       );
     }
+  }
+
+  useEffect(() => {
+    loadPage();
   }, []);
+
   return (
     <>
       <DashboardTopNav
@@ -58,12 +73,26 @@ export default function TripBidsPage() {
           />
         ))}
       </PageStyling>
+      {!bids.length && (
+        <UiEmptyField
+          emptyIcon="Jobs"
+          emptyText="Nothing here yet. Your trip has been broadcasted to our network. Watch this page for bids"
+        />
+      )}
       <PaginationLoader
         loading={pageLoading}
-        nextPage={loadNextPage}
+        nextPage={loadPage}
         totalPages={totalPages}
         page={page}
       />
+      {bid && (
+        <UiOverlay isVisible={isBidDetailsVisible}>
+          <TripBidFullDetails
+            bid={bid}
+            onClose={() => setIsBidDetailsVisible(false)}
+          />
+        </UiOverlay>
+      )}
     </>
   );
 }

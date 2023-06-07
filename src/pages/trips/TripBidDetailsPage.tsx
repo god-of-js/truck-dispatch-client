@@ -12,6 +12,7 @@ import sizes from 'utils/sizes';
 
 export default function ViewTripBidPage() {
   const { bidId, tripId } = useParams();
+  // Deprecated
   const bid = useSelector(selectBid(bidId as string));
   const user = useSelector((state: RootState) => state.account.user);
 

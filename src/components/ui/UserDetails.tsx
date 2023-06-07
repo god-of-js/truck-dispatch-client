@@ -10,7 +10,6 @@ interface Props {
   userName: string;
   size?: Sizes;
   profileSubtitle?: string;
-  showPhone?: boolean;
   showViewProfile?: boolean;
   showMessage?: boolean;
   avatarIsHalfCurved?: boolean;
@@ -55,6 +54,7 @@ const UserDetailsStyling = styled.div<{ size: Sizes }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: ${pxToRem(16)};
 
   .user-profile {
     display: flex;
@@ -79,6 +79,7 @@ const UserDetailsStyling = styled.div<{ size: Sizes }>`
     line-height: 140%;
     letter-spacing: -0.02em;
     color: var(--color-gray-80);
+    text-transform: uppercase;
   }
 
   .user-details-actions {

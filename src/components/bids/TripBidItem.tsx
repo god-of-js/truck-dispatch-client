@@ -85,14 +85,14 @@ export default function TripBidItem({
           </div>
 
           <div>
-            <div className="field-name">Propose trip price</div>
+            <div className="field-name">Proposed trip price</div>
             <div className="price">
               &#8358;{abbreviateNumber(priceWithTDPercent(bid.price))}
             </div>
           </div>
         </div>
 
-        <SubmitButtonContainer className="submit-button-tripbiditemstyling">
+        <SubmitButtonContainer>
           <UiButton
             variant="secondary"
             isFullWidth
