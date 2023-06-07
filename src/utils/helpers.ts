@@ -277,18 +277,18 @@ export function filterByFieldInObject<T = any>(
 }
 
 export function searchObjectsByField<T extends Record<string, any>>(
-  objects: T[],
+  arr: T[],
   searchInput: string,
   searchFields: (keyof T)[],
 ): T[] {
-  if (!Array.isArray(objects) || !searchInput || !searchFields.length) {
+  if (!Array.isArray(arr) || !searchInput || !searchFields.length) {
     return [];
   }
 
   const sanitizedInput = searchInput.toLowerCase();
   const matchingObjects: T[] = [];
 
-  for (const obj of objects) {
+  for (const obj of arr) {
     if (typeof obj !== 'object' || obj === null) {
       continue;
     }
