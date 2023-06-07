@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { AnyAction } from 'redux';
 import TokenVerificationData from 'types/TokenVerificationData';
 import { userTypes } from './constants';
@@ -149,12 +148,20 @@ export function generateReference() {
 }
 
 export function convertToFullDateWithTime(dateToConvert: number | string) {
-  return moment(dateToConvert).format('MMMM Do YYYY, h:mm a');
+  const date = new Date(dateToConvert);
+  return date.toLocaleString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  });
 }
 
 export function truncateText(text: string, length: number = 15) {
   if (text.length <= length) return text;
-  return text.substr(0, length) + "...";
+  return text.substr(0, length) + '...';
 }
 
 export function convertToFullDate(dateToConvert: number | string) {

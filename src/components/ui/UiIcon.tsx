@@ -142,9 +142,9 @@ const IconStyle = styled.span`
 
   svg {
     width: ${({ size }: { size?: Props['size'] }) =>
-    pxToRem((size && parseInt(size)) || 16)};
+      pxToRem((size && parseInt(size)) || 16)};
     height: ${({ size }: { size?: Props['size'] }) =>
-    pxToRem((size && parseInt(size)) || 16)};
+      pxToRem((size && parseInt(size)) || 16)};
     fill: var(--color-gray-80);
   }
 `;

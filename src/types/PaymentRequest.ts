@@ -8,7 +8,6 @@ export default interface PaymentRequest {
   status: 'pending' | 'rejected' | 'completed';
   transporterId: string;
   trip: Trip;
-  tripId: string;
   tripReference: string;
   paymentReference?: string;
   reference: string;

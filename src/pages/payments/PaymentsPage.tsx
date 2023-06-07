@@ -17,7 +17,6 @@ import {
   toAnyAction,
   truncateText,
 } from 'utils/helpers';
-import { getTrips } from 'modules/Trips';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
 import UiInput from 'ui/UiInput';
 import { serviceBasedUserTypes } from 'utils/constants';
@@ -25,10 +24,10 @@ import UiIcon from 'ui/UiIcon';
 import UiAvatar from 'ui/UiAvatar';
 import User from 'types/User';
 import UiButton from 'ui/UiButton';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { filterByFieldInObject } from 'utils/helpers';
 
-function ViewPaymentsPage() {
+function PaymentsPage() {
   const dispatch = useDispatch();
   const location = useLocation();
   const paymentRequests = useSelector(
@@ -47,7 +46,7 @@ function ViewPaymentsPage() {
   const headers = [
     {
       title: 'Payment ID',
-      query: 'truncatedId',
+      query: 'reference',
     },
     {
       title: 'Sender',
@@ -68,7 +67,7 @@ function ViewPaymentsPage() {
     {
       title: 'Status',
       query: 'status',
-    }
+    },
   ];
   const options: DropDownData[] = [
     {
@@ -113,27 +112,35 @@ function ViewPaymentsPage() {
 
     return data.map((item) => ({
       ...item,
-      _id: item._id,
-      truncatedId: truncateText(item._id),
+      reference: `#${item.reference}`,
       from: userDetails(item.trip.tripOwner),
       createdAt: <>{convertToFullDateWithTime(item.createdAt!)}</>,
       updatedAt: <>{convertToFullDate(item.updatedAt!)}</>,
       status: <UiPill variant={getVariant(item.status)}>{item.status}</UiPill>,
       amount: <AmountText>NGN {abbreviateNumber(item.amount!)}</AmountText>,
-      proofVideo:
+      proofVideo: (
         <UiButton variant="secondary">
           <UiIcon icon="PlayCircle" />
           <span>Proof Video</span>
-        </UiButton>,
+        </UiButton>
+      ),
     }));
   }, [paymentRequests, status]);
 
   useEffect(() => {
-    dispatch(toAnyAction(getPaymentRequestsOfDriver())).then((requests: any) => {
-      setTotalPayments(requests.length);
-      setTotalPendingPayments(requests.filter((request: any) => request.status === 'pending').length)
-      setTotalCompletedPayments(requests.filter((request: any) => request.status === 'completed').length)
-    });
+    dispatch(toAnyAction(getPaymentRequestsOfDriver())).then(
+      (requests: any) => {
+        setTotalPayments(requests.length);
+        setTotalPendingPayments(
+          requests.filter((request: any) => request.status === 'pending')
+            .length,
+        );
+        setTotalCompletedPayments(
+          requests.filter((request: any) => request.status === 'completed')
+            .length,
+        );
+      },
+    );
     // dispatch(toAnyAction(getTrips()));
   }, []);
 
@@ -155,7 +162,7 @@ function ViewPaymentsPage() {
         value: totalCompletedPayments,
       },
     ],
-    [totalPayments, totalPendingPayments, totalCompletedPayments,],
+    [totalPayments, totalPendingPayments, totalCompletedPayments],
   );
 
   function handleQueryChange({
@@ -198,7 +205,7 @@ function ViewPaymentsPage() {
       <DashboardTopNav
         routeName="Payments"
         pageFilters={filters}
-        edgeChild={edgeChild()}
+        edgeNode={edgeChild()}
       />
       <PageStyling>
         <UiTable
@@ -257,7 +264,7 @@ const UserDetails = styled.div`
 const AmountText = styled.span`
   font-family: thiccboi-bold;
   font-weight: 700;
-  font-size: 20px
+  font-size: 20px;
 `;
 
-export default ViewPaymentsPage;
+export default PaymentsPage;

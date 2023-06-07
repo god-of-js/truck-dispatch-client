@@ -105,51 +105,9 @@ export default function UiTable({
 
 const TableContainer = styled.div`
   overflow-x: auto;
+  /* TODO: figure out why  */
   padding-bottom: ${pxToRem(120)};
   position: relative;
-  .empty-container {
-    height: 60vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    .icon-container {
-      padding: ${pxToRem(32)};
-      width: ${pxToRem(192)};
-      height: ${pxToRem(192)};
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--color-gray-30);
-      border-radius: 50%;
-
-      &__inner {
-        padding: ${pxToRem(32)};
-        width: ${pxToRem(128)};
-        height: ${pxToRem(128)};
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: var(--color-gray-50);
-        border-radius: 50%;
-
-        span {
-          display: flex
-        }
-      }
-    }
-    p {
-      font-style: normal;
-      font-weight: 400;
-      font-size: ${pxToRem(24)};
-      line-height: 140%;
-      text-align: center;
-      letter-spacing: -0.02em;
-      color: var(--color-gray-80);
-      max-width: ${pxToRem(360)};
-    }
-  }
 `;
 
 const Table = styled.table`
