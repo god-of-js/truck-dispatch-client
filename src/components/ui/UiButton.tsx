@@ -145,11 +145,11 @@ const ButtonContainer = styled.button<Props>`
     }
   }
   &.danger {
-    background-color: var(--color-danger-600);
+    background-color: var(--color-danger);
     color: white;
 
     &:hover {
-      background-color: var(--color-danger-700);
+      background-color: var(--color-danger-40);
     }
   }
 
