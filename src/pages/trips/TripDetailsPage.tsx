@@ -16,9 +16,7 @@ import TripDetailPaymentCard from 'components/trips/TripDetailPaymentCard';
 import UserDetails from 'ui/UserDetails';
 import UiButton from 'ui/UiButton';
 import UiIcon from 'ui/UiIcon';
-import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
-import UiPill, { PillType } from 'ui/UiPill';
-import Trip from 'types/Trip';
+import UiPill from 'ui/UiPill';
 
 export default function TripDetailsPage() {
   const user = useSelector((state: RootState) => state.account.user);
@@ -31,15 +29,16 @@ export default function TripDetailsPage() {
   );
 
   const statusText = useMemo(() => {
-    if (trip?.status === 'assigned') return 'Pending';
+    if (trip?.status === 'assigned') return 'Assigned';
     if (trip?.status === 'awaiting-bid') return 'Awaiting Bid';
     if (trip?.status === 'in-progress') return 'Ongoing';
     if (trip?.status === 'completed') return 'Completed';
+    return trip?.status;
   }, [trip]);
 
   const statusVariant = useMemo(() => {
     if (trip?.status === 'awaiting-bid') return 'orange';
-    if (trip?.status === 'assigned') return 'warning';
+    if (trip?.status === 'assigned') return 'rose';
     if (trip?.status === 'in-progress') return 'info';
     if (trip?.status === 'completed') return 'success';
 

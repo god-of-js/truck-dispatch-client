@@ -103,7 +103,10 @@ export default function TripBidsPage() {
             />
           </UiOverlay>
           <UiOverlay isVisible={isMakePaymentVisible}>
-            <MakePayment onClose={() => setIsMakePaymentVisible(false)} />
+            <MakePayment
+              bid={bid}
+              onClose={() => setIsMakePaymentVisible(false)}
+            />
           </UiOverlay>
         </>
       )}

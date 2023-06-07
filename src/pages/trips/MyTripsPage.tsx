@@ -174,7 +174,7 @@ export default function MyTripsPage() {
 
   function getPillVariant(status: Trip['status']) {
     if (status === 'awaiting-bid') return 'orange';
-    if (status === 'assigned') return 'warning';
+    if (status === 'assigned') return 'rose';
     if (status === 'in-progress') return 'info';
     if (status === 'completed') return 'success';
 
@@ -182,7 +182,7 @@ export default function MyTripsPage() {
   }
 
   function formatStatus(status: Trip['status']) {
-    if (status === 'assigned') return 'Pending';
+    if (status === 'assigned') return 'Assigned';
     if (status === 'awaiting-bid') return 'Awaiting Bid';
     if (status === 'in-progress') return 'Ongoing';
     if (status === 'completed') return 'Completed';

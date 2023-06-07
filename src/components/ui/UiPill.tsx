@@ -9,6 +9,7 @@ export type PillType =
   | 'info'
   | 'success'
   | 'gray'
+  | 'rose'
   | 'orange';
 const icons: { [key: string]: Icons } = {
   // modify the icons to fit the variants
@@ -21,21 +22,15 @@ const icons: { [key: string]: Icons } = {
 };
 interface Props {
   children: React.ReactNode;
-  variant:
-    | 'primary'
-    | 'warning'
-    | 'danger'
-    | 'info'
-    | 'success'
-    | 'gray'
-    | 'orange';
+  variant: PillType;
   hasIcon?: boolean;
 }
 export default function ({ children, variant, hasIcon }: Props) {
   return (
     <Pill className={variant + ' ui-pill'}>
-      <div className="circle" />
-      {hasIcon && <UiIcon icon={icons[variant]} />}
+      <div className="circle">
+        {hasIcon && <UiIcon icon={icons[variant]} />}
+      </div>
       {children}
     </Pill>
   );
@@ -84,6 +79,14 @@ const Pill = styled.div`
 
     .circle {
       background: var(--color-info);
+    }
+  }
+  &.rose {
+    background: var(--color-rose-10);
+    color: var(--color-rose);
+
+    .circle {
+      background: var(--color-rose);
     }
   }
   &.orange {
