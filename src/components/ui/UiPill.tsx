@@ -2,6 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import UiIcon, { Icons } from './UiIcon';
 
+export type PillType =
+  | 'primary'
+  | 'warning'
+  | 'danger'
+  | 'info'
+  | 'success'
+  | 'gray'
+  | 'rose'
+  | 'orange';
 const icons: { [key: string]: Icons } = {
   // modify the icons to fit the variants
   primary: 'Tick',
@@ -13,20 +22,15 @@ const icons: { [key: string]: Icons } = {
 };
 interface Props {
   children: React.ReactNode;
-  variant: 
-  | 'primary'
-  | 'warning'
-  | 'danger'
-  | 'info'
-  | 'success'
-  | 'gray'
-  | 'orange';
+  variant: PillType;
   hasIcon?: boolean;
 }
 export default function ({ children, variant, hasIcon }: Props) {
   return (
-    <Pill className={variant}>
-      {hasIcon && <UiIcon icon={icons[variant]} />}
+    <Pill className={variant + ' ui-pill'}>
+      <div className="circle">
+        {hasIcon && <UiIcon icon={icons[variant]} />}
+      </div>
       {children}
     </Pill>
   );
@@ -77,6 +81,14 @@ const Pill = styled.div`
       background: var(--color-info);
     }
   }
+  &.rose {
+    background: var(--color-rose-10);
+    color: var(--color-rose);
+
+    .circle {
+      background: var(--color-rose);
+    }
+  }
   &.orange {
     background: var(--color-orange-10);
     color: var(--color-orange);
@@ -88,5 +100,10 @@ const Pill = styled.div`
 
   &.gray {
     background: var(--color-gray-20);
+    color: var(--color-gray-70);
+
+    .circle {
+      background: var(--color-gray-70);
+    }
   }
 `;

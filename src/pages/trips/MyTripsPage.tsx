@@ -27,7 +27,6 @@ import Trip from 'types/Trip';
 import { DropDownData } from 'ui/UiDropdownMenu';
 import UiPill from 'ui/UiPill';
 import User from 'types/User';
-import UiAvatar from 'ui/UiAvatar';
 import UiFilterTag from 'ui/UiFilterTag';
 import UiInput from 'ui/UiInput';
 import { deleteBid, getTransporterBids } from 'modules/Bid';
@@ -39,6 +38,7 @@ import BidForJob from 'components/jobs/BidForJob';
 import AllBids from 'components/bids/AllBids';
 import CreateTrip from 'components/trips/CreateTrip';
 import TripHasBeenBroadcasted from 'components/trips/TripHasBeenBroadcasted';
+import UserDetails from 'ui/UserDetails';
 import UiConfirmModal from 'ui/UiConfirmModal';
 import { Toast } from 'utils/toast';
 
@@ -166,8 +166,8 @@ export default function MyTripsPage() {
       ...trip,
       id: trip._id,
       typeOfGoods: <TypeOfGoods>{trip.typeOfGoods}</TypeOfGoods>,
-      responsibleTransporter: userDetails(trip.transporter),
-      tripOwnerDetails: userDetails(trip.tripOwner),
+      responsibleTransporter: userDetails(trip, trip.transporter),
+      tripOwnerDetails: userDetails(trip, trip.tripOwner),
       pickUpDate: <DateText>{convertToFullDate(trip.pickUpDate)}</DateText>,
       deliveryDate: <DateText>{convertToFullDate(trip.deliveryDate)}</DateText>,
       statusField: (
@@ -180,7 +180,7 @@ export default function MyTripsPage() {
 
   function getPillVariant(status: Trip['status']) {
     if (status === 'awaiting-bid') return 'orange';
-    if (status === 'payment-complete') return 'warning';
+    if (status === 'assigned') return 'rose';
     if (status === 'in-progress') return 'info';
     if (status === 'completed') return 'success';
 
@@ -188,23 +188,21 @@ export default function MyTripsPage() {
   }
 
   function formatStatus(status: Trip['status']) {
-    if (status === 'payment-complete') return 'Pending';
+    if (status === 'assigned') return 'Assigned';
     if (status === 'awaiting-bid') return 'Awaiting Bid';
     if (status === 'in-progress') return 'Ongoing';
     if (status === 'completed') return 'Completed';
   }
 
-  function userDetails(tripUser?: User) {
+  function userDetails(trip: Trip, tripUser?: User) {
     if (!tripUser) return 'Not yet assigned';
 
     return (
-      <UserDetails>
-        <UiAvatar avatar={tripUser.avatar} />
-        <div>
-          <div className="transporter-name">{`${tripUser.firstName} ${tripUser.lastName}`}</div>
-          <div>{tripUser.phone}</div>
-        </div>
-      </UserDetails>
+      <UserDetails
+        userName={`${tripUser.firstName} ${tripUser.lastName}`}
+        avatar={tripUser.avatar}
+        profileSubtitle={trip.status !== 'completed' ? tripUser.phone : ''}
+      />
     );
   }
   function dropDownData(item: unknown): DropDownData[] {
@@ -339,9 +337,9 @@ export default function MyTripsPage() {
     setSearchQuery(value!);
   }
 
-  function edgeChild() {
+  function edgeNode() {
     return (
-      <EdgeChild>
+      <EdgeNodeContainer>
         <UiInput
           onChange={handleQueryChange}
           value={searchQuery}
@@ -363,7 +361,7 @@ export default function MyTripsPage() {
             onClick={openAllBids}
           />
         )}
-      </EdgeChild>
+      </EdgeNodeContainer>
     );
   }
 
@@ -424,7 +422,7 @@ export default function MyTripsPage() {
       <DashboardTopNav
         routeName="My Trips"
         pageFilters={filters}
-        edgeChild={edgeChild()}
+        edgeNode={edgeNode()}
       />
       <MyTripsPageStyle>
         <UiTable
@@ -532,23 +530,6 @@ const MyTripsPageStyle = styled.div`
   padding-top: ${pxToRem(24)};
 `;
 
-const UserDetails = styled.div`
-  display: flex;
-  gap: ${pxToRem(8)};
-  align-items: center;
-  .transporter-name {
-    font-weight: 400;
-    font-size: ${pxToRem(14)};
-    font-style: normal;
-    font-weight: 700;
-    line-height: 140%;
-    color: var(--color-neutralBlack);
-    letter-spacing: -0.02em;
-    text-transform: capitalize;
-    font-family: 'thiccboi-extrabold';
-  }
-`;
-
 const TypeOfGoods = styled.span`
   font-family: 'thiccboi-bold';
   font-style: normal;
@@ -559,7 +540,7 @@ const TypeOfGoods = styled.span`
   color: var(--color-neutralBlack);
   text-transform: capitalize;
 `;
-const EdgeChild = styled.div`
+const EdgeNodeContainer = styled.div`
   display: flex;
   gap: ${pxToRem(12)};
   .ui-filter-tag {

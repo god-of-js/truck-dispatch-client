@@ -10,6 +10,7 @@ interface Props {
     | 'primary'
     | 'secondary'
     | 'danger-secondary'
+    | 'warning-secondary'
     | 'tertiary'
     | 'neutral'
     | 'icon-neutral'
@@ -240,6 +241,18 @@ const ButtonContainer = styled.button<Props>`
       background: var(--color-danger-20);
       box-shadow: var(--box-shadow-primary);
     }
+  }
+  &.warning-secondary {
+    background: var(--color-warning-10);
+    color: var(--color-warning);
+
+    svg {
+      fill: var(--color-warning);
+    }
+
+    ${({ disabled }) =>
+      !disabled &&
+      '&:hover {background: var(--color-warning-20); box-shadow: var(--box-shadow-primary); }'}
   }
 
   &.dark {

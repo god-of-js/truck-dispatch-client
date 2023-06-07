@@ -135,9 +135,10 @@ export default function TransporterJobs() {
   function openAllBids() {
     setIsAllBidsVisible(true);
   }
-  function edgeChild() {
+
+  function edgeNode() {
     return (
-      <EdgeChild>
+      <EdgeNode>
         <UiInput
           onChange={handleQueryChange}
           value={searchQuery}
@@ -152,7 +153,7 @@ export default function TransporterJobs() {
           value={bids.length}
           onClick={openAllBids}
         />
-      </EdgeChild>
+      </EdgeNode>
     );
   }
   function showDeleteBidModal(bidId: string, tripId: string) {
@@ -212,7 +213,7 @@ export default function TransporterJobs() {
       <DashboardTopNav
         routeName="Jobs"
         pageFilters={pageFilters}
-        edgeChild={edgeChild()}
+        edgeNode={edgeNode()}
       />
       <MyJobsPageStyle className="flex-container">
         {filteredJobs.map((job) => {
@@ -292,7 +293,7 @@ const MyJobsPageStyle = styled.div`
   gap: ${pxToRem(20)};
 `;
 
-const EdgeChild = styled.div`
+const EdgeNode = styled.div`
   display: flex;
   gap: ${pxToRem(12)};
   .ui-filter-tag {
