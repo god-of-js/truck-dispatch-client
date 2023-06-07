@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 import { ReactComponent as ArrowCircleLeft } from './icons/arrow-circle-left.svg';
 import { ReactComponent as ArrowCircleRight } from './icons/arrow-circle-right.svg';
+import { ReactComponent as CaretDown } from './icons/caret-down.svg';
+import { ReactComponent as CaretUp } from './icons/caret-up.svg';
 import { ReactComponent as CaretLeft } from './icons/caret-left.svg';
 import { ReactComponent as CaretRight } from './icons/caret-right.svg';
 import { ReactComponent as ArrowRight } from './icons/arrow-right.svg';
@@ -63,6 +65,8 @@ const icons = {
   ArrowCircleLeft: <ArrowCircleLeft />,
   ArrowCircleRight: <ArrowCircleRight />,
   ArrowLeft: <ArrowLeft />,
+  CaretDown: <CaretDown />,
+  CaretUp: <CaretUp />,
   CaretLeft: <CaretLeft />,
   CaretRight: <CaretRight />,
   ArrowRight: <ArrowRight />,

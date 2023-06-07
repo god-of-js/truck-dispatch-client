@@ -70,7 +70,7 @@ export default function ProfileDetailsPage() {
                 onClick={() => setIsEditable(true)}
               >
                 Edit Profile
-                <UiIcon icon="PencilSimple" size="20" />
+                {/* <UiIcon icon="PencilSimple" size="20" /> */}
               </UiButton>
             </div>
           )}
