@@ -68,6 +68,8 @@ export default function MyTripsPage() {
   const [isAllBidsVisible, setIsAllBidsVisible] = useState(false);
   const [isCancelTripVisible, setIsCancelTripVisible] = useState(false);
   const [isCancelTripLoading, setIsCancelTripLoading] = useState(false);
+  const [isUnassignTripVisble, setIsUnassignTripVisible] = useState(false);
+  const [isUnassignTripLoading, setIsUnassignTripLoading] = useState(false);
   const [isCreateTripVisible, setIsCreateTripVisible] = useState(false);
   const [isTripBroadcastedVisible, setIsTripBroadcastedVisible] =
     useState(false);
@@ -281,13 +283,27 @@ export default function MyTripsPage() {
   }
 
   function initUnassignTrip(id: string) {
-    dispatch(toAnyAction(unassignTrip(id)));
+    setActiveTripId(id);
+    setIsUnassignTripVisible(true);
+  }
+
+  function cancelUnassignTrip() {
+    if (!activeTripId) {
+      Toast.error({ msg: 'Trip ID was not provided.' });
+      return;
+    }
+    setIsUnassignTripLoading(true);
+    dispatch(toAnyAction(unassignTrip(activeTripId))).finally(() => {
+      setIsUnassignTripLoading(false);
+      setIsUnassignTripVisible(false);
+    });
   }
 
   function initCancelTrip(id: string) {
     setActiveTripId(id);
     setIsCancelTripVisible(true);
   }
+
   function cancelTrip() {
     if (!activeTripId) {
       Toast.error({ msg: 'Trip ID was not provided.' });
@@ -486,6 +502,18 @@ export default function MyTripsPage() {
           onProceed={cancelTrip}
         >
           Are you sure you want to cancel this trip? This process cannot be
+          undone.
+        </UiConfirmModal>
+      </UiOverlay>
+      <UiOverlay isVisible={isUnassignTripVisble}>
+        <UiConfirmModal
+          title="Unassign Trip"
+          variant="danger"
+          loading={isUnassignTripLoading}
+          onClose={() => setIsUnassignTripVisible(false)}
+          onProceed={cancelUnassignTrip}
+        >
+          Are you sure you want to unassign this trip? This process cannot be
           undone.
         </UiConfirmModal>
       </UiOverlay>

@@ -3,20 +3,7 @@ import styled from 'styled-components';
 
 interface Props {
   size?: 'lg' | 's';
-  variant?:
-    | 'primary'
-    | 'secondary'
-    | 'danger-secondary'
-    | 'tertiary'
-    | 'neutral'
-    | 'icon-neutral'
-    | 'primary-outlined'
-    | 'secondary-outlined'
-    | 'primary-text'
-    | 'warning-text'
-    | 'dark'
-    | 'dark-outlined'
-    | 'danger';
+  variant?: 'white' | 'primary';
 }
 
 type Sizes = 'lg' | 's';
@@ -38,7 +25,7 @@ function sizeVar(size: Sizes) {
   }
 }
 
-export default function Loader({ variant, size = 'lg' }: Props) {
+export default function Loader({ variant = 'primary', size = 'lg' }: Props) {
   return (
     <LoaderContainer>
       <LoaderStyle size={size}>
@@ -67,9 +54,16 @@ const LoaderStyle = styled.div<Props>`
 
   .spinner {
     ${({ size }) => sizeVar(size!)}
-    border-left-color: var(--color-primary);
     border-radius: 50%;
     animation: spin 1s linear infinite;
+
+    &.primary {
+      border-left-color: var(--color-primary);
+    }
+
+    &.white {
+      border-left-color: #fff;
+    }
   }
 
   @keyframes spin {
