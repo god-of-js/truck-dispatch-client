@@ -101,16 +101,16 @@ export default function TripDetailsPage() {
           <UiCard>
             <div className="card-title">Driver & Vehicle details</div>
 
-            <div className="driver-and-vehicle-details">
+            {trip.acceptedBid && <div className="driver-and-vehicle-details">
               <div className="driver-and-vehicle-details__field">
                 <div className="driver-and-vehicle-details__field__title">
                   Responsible Driver
                 </div>
                 <UserDetails
-                  userName={`${trip.tripOwner.firstName} ${trip.tripOwner.lastName}`}
-                  avatar={trip.tripOwner.avatar}
+                  userName={trip.acceptedBid.vehicle.driver.name}
+                  avatar={trip.acceptedBid.vehicle.driver.avatar}
                   profileSubtitle={
-                    trip.status !== 'completed' ? trip.tripOwner.phone : ''
+                    trip.status !== 'completed' ? trip.acceptedBid.vehicle.driver.phone : ''
                   }
                 />
               </div>
@@ -123,7 +123,7 @@ export default function TripDetailsPage() {
                 </div>
                 {/* <UserDetails avatar={trip.} /> */}
               </div>
-            </div>
+            </div>}
           </UiCard>
           <UiCard>
             <div className="card-title">Responsible Shipper</div>

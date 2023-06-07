@@ -6,10 +6,12 @@ import {
 } from 'utils/constants';
 import User from './User';
 import PaymentRequest from './PaymentRequest';
+import Bid from './Bid';
 export default interface Trip {
   _id: string;
   pickUpAddress: string;
   deliveryAddress: string;
+  acceptedBid: Bid;
   pickUpDate: string;
   deliveryDate: string;
   typeOfGoods: (typeof typeOfGoods)[number];
