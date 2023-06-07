@@ -160,7 +160,7 @@ const Body = styled.div`
   position: relative;
   overflow-x: auto;
   width: 100%;
-  padding: 0 ${pxToRem(24)};
+  /* padding: 0 ${pxToRem(24)}; */
   .alert-container {
     padding: ${pxToRem(16)};
   }
