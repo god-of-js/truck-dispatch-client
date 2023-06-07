@@ -20,6 +20,7 @@ export default function JobItem({ job, bidForJob, viewJobDetail }: Props) {
   return (
     <JobItemStyling>
       <header>
+        {/* TODO: switch to UserDetails component */}
         <div className="user-profile">
           <UiAvatar avatar={job.tripOwner?.avatar} isHalfCurved />
           <div>

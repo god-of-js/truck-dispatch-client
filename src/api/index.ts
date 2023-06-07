@@ -189,6 +189,10 @@ class ApiService {
     return this.patch<Bid>(`/bids/${data.tripId}`, data);
   }
 
+  deleteBid(bidId: string, tripId: string): Promise<Bid> {
+    return this.delete<Bid>(`/bids/${tripId}/${bidId}`);
+  }
+
   requestPaymentByTransporter(
     data: FormData,
     tripId: string,

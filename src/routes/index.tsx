@@ -7,8 +7,7 @@ const PageError = lazy(() => import('../components/errors/PageError'));
 const AuthLayout = lazy(() => import('../layouts/AuthLayout'));
 const DashboardLayout = lazy(() => import('../layouts/DashboardLayout'));
 const ProfileLayout = lazy(() => import('../layouts/ProfileLayout'));
-const ViewTripLayout = lazy(() => import('../layouts/ViewTripLayout'));
-const ViewTripBidsLayout = lazy(() => import('../layouts/ViewTripBidsLayout'));
+const TripLayout = lazy(() => import('../layouts/TripLayout'));
 const TripsLayout = lazy(() => import('../layouts/TripsLayout'));
 const ChatLayout = lazy(() => import('../layouts/ChatLayout'));
 
@@ -38,20 +37,8 @@ const TransporterAccountsPage = lazy(
 
 // DASHBOARD
 const MyTripsPage = lazy(() => import('../pages/trips/MyTripsPage'));
-const ViewTripPage = lazy(() => import('../pages/trips/ViewTripPage'));
-const ViewTripStatusPage = lazy(
-  () => import('../pages/trips/ViewTripStatusPage'),
-);
-const ViewTripRequestPaymentPage = lazy(
-  () => import('../pages/trips/RequestPaymentPage'),
-);
-const ViewTripTDOPage = lazy(() => import('../pages/trips/ViewTripTDOPage'));
-const ViewRequestForPayment = lazy(
-  () => import('../pages/trips/ViewRequestForPayment'),
-);
-const ViewTripBidsPage = lazy(() => import('../pages/bids/ViewTripBidsPage'));
-const ViewTripBidPage = lazy(() => import('../pages/bids/ViewTripBidPage'));
-const BidCheckoutPage = lazy(() => import('../pages/bids/BidCheckoutPage'));
+const TripDetailsPage = lazy(() => import('../pages/trips/TripDetailsPage'));
+const TripBidsPage = lazy(() => import('../pages/trips/TripBidsPage'));
 
 const TransporterJobsPage = lazy(
   () => import('../pages/jobs/TransporterJobsPage'),
@@ -63,9 +50,7 @@ const VehiclesPage = lazy(() => import('../pages/vehicles/VehiclesPage'));
 
 // Transactions
 
-const ViewPaymentsPage = lazy(
-  () => import('../pages/payments/ViewPaymentsPage'),
-);
+const PaymentsPage = lazy(() => import('../pages/payments/PaymentsPage'));
 
 const router = createBrowserRouter([
   {
@@ -125,55 +110,18 @@ const router = createBrowserRouter([
           },
           {
             path: '/my-trips/:tripId',
-            id: 'View Trip Layout',
-            element: <ViewTripLayout />,
+            id: 'Trip Layout',
+            element: <TripLayout />,
             children: [
               {
                 path: '/my-trips/:tripId',
-                id: 'View Trip',
-                element: <ViewTripPage />,
-              },
-              {
-                path: '/my-trips/:tripId/status',
-                id: 'View Trip Status',
-                element: <ViewTripStatusPage />,
-              },
-              {
-                path: '/my-trips/:tripId/terminal-delivery-order',
-                id: 'View Trip TDO',
-                element: <ViewTripTDOPage />,
-              },
-              {
-                path: '/my-trips/:tripId/request-payment-for-trip',
-                id: 'Request payment for trip',
-                element: <ViewTripRequestPaymentPage />,
-              },
-              {
-                path: '/my-trips/:tripId/view-payment-request',
-                id: 'View Request payment for trip',
-                element: <ViewRequestForPayment />,
+                id: 'TripDetails',
+                element: <TripDetailsPage />,
               },
               {
                 path: '/my-trips/:tripId/bids',
-                id: 'View Trip Bids Layout',
-                element: <ViewTripBidsLayout />,
-                children: [
-                  {
-                    path: '',
-                    id: 'View Trip Bids',
-                    element: <ViewTripBidsPage />,
-                  },
-                  {
-                    path: '/my-trips/:tripId/bids/:bidId',
-                    id: 'View Trip Bid',
-                    element: <ViewTripBidPage />,
-                  },
-                  {
-                    path: '/my-trips/:tripId/bids/:bidId/checkout',
-                    id: 'Checkout Trip Bid',
-                    element: <BidCheckoutPage />,
-                  },
-                ],
+                id: 'TripBidsLayout',
+                element: <TripBidsPage />,
               },
             ],
           },
@@ -192,7 +140,7 @@ const router = createBrowserRouter([
       {
         path: '/payments',
         id: 'Payments',
-        element: <ViewPaymentsPage />,
+        element: <PaymentsPage />,
       },
     ],
   },

@@ -12,9 +12,12 @@ export default function UiBackButton() {
   }
 
   return (
-    <UiButton variant="primary-text" onClick={goBack}>
+    <UiButton variant="secondary" onClick={goBack}>
       <ButtonStyling>
-        <UiIcon icon="CaretLeft" /> <span>Go Back </span>
+        <div className="icon-container">
+          <UiIcon icon="ArrowLeft" size="12" />
+        </div>
+        <span>Go Back </span>
       </ButtonStyling>
     </UiButton>
   );
@@ -22,5 +25,16 @@ export default function UiBackButton() {
 
 const ButtonStyling = styled.div`
   display: flex;
+  align-items: center;
   gap: ${pxToRem(12)};
+
+  /* .icon-container {
+    background: var(--color-primary);
+    padding: ${pxToRem(2)} ${pxToRem(4)};
+    border-radius: ${pxToRem(4)};
+
+    svg {
+      fill: #fff;
+    }
+  } */
 `;
