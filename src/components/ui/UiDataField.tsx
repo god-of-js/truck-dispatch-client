@@ -10,7 +10,7 @@ interface Props {
   variant?: Variant;
   size?: Sizes;
   isBordered?: boolean;
-  icon?: Icons
+  icon?: Icons;
 }
 export default function UiDataField({
   title,
@@ -18,7 +18,7 @@ export default function UiDataField({
   isBordered,
   variant = 'field',
   size = 'l',
-  icon
+  icon,
 }: Props) {
   return (
     <FieldStyling
@@ -28,10 +28,9 @@ export default function UiDataField({
       size={size}
     >
       {icon && <UiIcon icon={icon} />}
-      <div className='ui-data-field__inner'>
-
-      <div className="field-title">{title}</div>
-      <div className="field-value">{value ? value : 'N/A'}</div>
+      <div className="ui-data-field__inner">
+        <div className="field-title">{title}</div>
+        <div className="field-value">{value ? value : 'N/A'}</div>
       </div>
     </FieldStyling>
   );

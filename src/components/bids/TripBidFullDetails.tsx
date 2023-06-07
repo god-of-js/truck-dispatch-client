@@ -10,12 +10,20 @@ import {
   formatUserType,
   priceWithTDPercent,
 } from 'utils/helpers';
+import sizes from 'utils/sizes';
 
 interface Props {
   bid: Bid;
   onClose: () => void;
+  negotiate: (bidId: string) => void;
+  accept: (bidId: string) => void;
 }
-export default function TripBidFullDetails({ bid, onClose }: Props) {
+export default function TripBidFullDetails({
+  bid,
+  onClose,
+  negotiate,
+  accept,
+}: Props) {
   return (
     <UiModal onClose={onClose} title="Bid Details">
       <BidDetailsStyling>
@@ -47,12 +55,11 @@ export default function TripBidFullDetails({ bid, onClose }: Props) {
           </div>
           <div className="grid-2">
             <div className="location-container">
-
-            <UiDataField
-              title="Current vehicle location"
-              value={bid.presentLocation}
-              icon="Location"
-            />
+              <UiDataField
+                title="Current vehicle location"
+                value={bid.presentLocation}
+                icon="Location"
+              />
             </div>
             <UiDataField
               title="Proposed trip price"
@@ -69,8 +76,10 @@ export default function TripBidFullDetails({ bid, onClose }: Props) {
         </div>
 
         <div className="action-btns">
-          <UiButton variant="secondary">Negotiate Bid</UiButton>
-          <UiButton>Accept Bid</UiButton>
+          <UiButton variant="secondary" onClick={() => negotiate(bid._id)}>
+            Negotiate Bid
+          </UiButton>
+          <UiButton onClick={() => accept(bid._id)}>Accept Bid</UiButton>
         </div>
       </BidDetailsStyling>
     </UiModal>
@@ -92,17 +101,22 @@ const BidDetailsStyling = styled.div`
   }
   .grid-3 {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
     gap: ${pxToRem(12)};
+    @media screen and (min-width: ${sizes.mobileLargeWidth}) {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
   .grid-2 {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
     gap: ${pxToRem(12)};
+
+    @media screen and (min-width: ${sizes.mobileLargeWidth}) {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
   .location-container {
     svg {
-      fill: var(--color-primary)
+      fill: var(--color-primary);
     }
   }
   .price {

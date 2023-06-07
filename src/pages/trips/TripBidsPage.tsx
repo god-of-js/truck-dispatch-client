@@ -13,6 +13,7 @@ import { getBidsWithTripId } from 'modules/Bid';
 import UiOverlay from 'ui/UiOverlay';
 import TripBidFullDetails from 'components/bids/TripBidFullDetails';
 import UiEmptyField from 'ui/UiEmptyList';
+import MakePayment from 'components/payment/MakePayment';
 
 export default function TripBidsPage() {
   const navigate = useNavigate();
@@ -23,11 +24,12 @@ export default function TripBidsPage() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isBidDetailsVisible, setIsBidDetailsVisible] = useState(false);
-  const [selectedBidId, setActiveBidId] = useState<string | null>(null);
+  const [isMakePaymentVisible, setIsMakePaymentVisible] = useState(true);
+  const [activeBidId, setActiveBidId] = useState<string | null>(null);
 
   const bid = useMemo(() => {
-    return bids.find(({ _id }) => _id === selectedBidId);
-  }, [selectedBidId, bids]);
+    return bids.find(({ _id }) => _id === activeBidId);
+  }, [activeBidId, bids]);
 
   function viewBid(bidId: string) {
     setActiveBidId(bidId);
@@ -40,7 +42,11 @@ export default function TripBidsPage() {
     setActiveBidId(bidId);
   }
 
-  function acceptBid(bidId: string) {}
+  function acceptBid(bidId: string) {
+    setActiveBidId(bidId);
+    setIsMakePaymentVisible(true);
+    setIsBidDetailsVisible(false);
+  }
 
   function loadPage() {
     if (tripId) {
@@ -85,13 +91,21 @@ export default function TripBidsPage() {
         totalPages={totalPages}
         page={page}
       />
+      {isMakePaymentVisible}
       {bid && (
-        <UiOverlay isVisible={isBidDetailsVisible}>
-          <TripBidFullDetails
-            bid={bid}
-            onClose={() => setIsBidDetailsVisible(false)}
-          />
-        </UiOverlay>
+        <>
+          <UiOverlay isVisible={isBidDetailsVisible}>
+            <TripBidFullDetails
+              bid={bid}
+              negotiate={negotiateBid}
+              accept={acceptBid}
+              onClose={() => setIsBidDetailsVisible(false)}
+            />
+          </UiOverlay>
+          <UiOverlay isVisible={isMakePaymentVisible}>
+            <MakePayment onClose={() => setIsMakePaymentVisible(false)} />
+          </UiOverlay>
+        </>
       )}
     </>
   );
