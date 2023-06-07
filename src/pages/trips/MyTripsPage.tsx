@@ -536,7 +536,7 @@ export default function MyTripsPage() {
 }
 
 const MyTripsPageStyle = styled.div`
-  padding-top: ${pxToRem(24)};
+  padding: ${pxToRem(24)};
 `;
 
 const TypeOfGoods = styled.span`

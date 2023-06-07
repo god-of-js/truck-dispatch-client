@@ -113,6 +113,7 @@ const GappedContainerWith12PX = styled.div`
 `;
 
 const EmptyVehicleContainer = styled.div`
+  padding: 0 ${pxToRem(24)};
   height: 70vh;
   display: flex;
   align-items: center;
@@ -138,6 +139,7 @@ const EmptyVehicleContainer = styled.div`
 const Vehicles = styled.div`
   display: grid;
   gap: ${pxToRem(22)};
+  padding: 0 ${pxToRem(24)};
   padding-top: ${pxToRem(32)};
 
   @media screen and (min-width: ${sizes.mobileSmall}) {
