@@ -24,7 +24,7 @@ export default function UiAlert({
             icon
           ) : (
             <button onClick={() => setIsAlertVisible(false)}>
-              <UiIcon icon="X" />
+              {/* <UiIcon icon="X" /> */}
             </button>
           )}
 

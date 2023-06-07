@@ -27,10 +27,9 @@ import Trip from 'types/Trip';
 import { DropDownData } from 'ui/UiDropdownMenu';
 import UiPill from 'ui/UiPill';
 import User from 'types/User';
-import UiAvatar from 'ui/UiAvatar';
 import UiFilterTag from 'ui/UiFilterTag';
 import UiInput from 'ui/UiInput';
-import { getTransporterBids } from 'modules/Bid';
+import { deleteBid, getTransporterBids } from 'modules/Bid';
 import PaginationLoader from 'components/layout/PaginationLoader';
 import UiOverlay from 'ui/UiOverlay';
 import InformUserOfVerification from 'components/verification/InformUserOfVerification';
@@ -39,6 +38,7 @@ import BidForJob from 'components/jobs/BidForJob';
 import AllBids from 'components/bids/AllBids';
 import CreateTrip from 'components/trips/CreateTrip';
 import TripHasBeenBroadcasted from 'components/trips/TripHasBeenBroadcasted';
+import UserDetails from 'ui/UserDetails';
 import UiConfirmModal from 'ui/UiConfirmModal';
 import { Toast } from 'utils/toast';
 
@@ -75,6 +75,9 @@ export default function MyTripsPage() {
     useState(false);
   const [activeTripId, setActiveTripId] = useState<string | null>(null);
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
+  const [selectedBidId, setSelectedBidId] = useState<string | null>(null);
+  const [isDeleteBidVisible, setIsDeleteBidVisible] = useState(false);
+  const [isDeleteBidLoading, setIsDeleteBidLoading] = useState(false);
   const job = useSelector(selectJob(selectedJobId!));
 
   const headers = useMemo(
@@ -165,8 +168,8 @@ export default function MyTripsPage() {
       ...trip,
       id: trip._id,
       typeOfGoods: <TypeOfGoods>{trip.typeOfGoods}</TypeOfGoods>,
-      responsibleTransporter: userDetails(trip.transporter),
-      tripOwnerDetails: userDetails(trip.tripOwner),
+      responsibleTransporter: userDetails(trip, trip.transporter),
+      tripOwnerDetails: userDetails(trip, trip.tripOwner),
       pickUpDate: <DateText>{convertToFullDate(trip.pickUpDate)}</DateText>,
       deliveryDate: <DateText>{convertToFullDate(trip.deliveryDate)}</DateText>,
       statusField: (
@@ -179,7 +182,7 @@ export default function MyTripsPage() {
 
   function getPillVariant(status: Trip['status']) {
     if (status === 'awaiting-bid') return 'orange';
-    if (status === 'payment-complete') return 'warning';
+    if (status === 'assigned') return 'rose';
     if (status === 'in-progress') return 'info';
     if (status === 'completed') return 'success';
 
@@ -187,23 +190,21 @@ export default function MyTripsPage() {
   }
 
   function formatStatus(status: Trip['status']) {
-    if (status === 'payment-complete') return 'Pending';
+    if (status === 'assigned') return 'Assigned';
     if (status === 'awaiting-bid') return 'Awaiting Bid';
     if (status === 'in-progress') return 'Ongoing';
     if (status === 'completed') return 'Completed';
   }
 
-  function userDetails(tripUser?: User) {
+  function userDetails(trip: Trip, tripUser?: User) {
     if (!tripUser) return 'Not yet assigned';
 
     return (
-      <UserDetails>
-        <UiAvatar avatar={tripUser.avatar} />
-        <div>
-          <div className="transporter-name">{`${tripUser.firstName} ${tripUser.lastName}`}</div>
-          <div>{tripUser.phone}</div>
-        </div>
-      </UserDetails>
+      <UserDetails
+        userName={`${tripUser.firstName} ${tripUser.lastName}`}
+        avatar={tripUser.avatar}
+        profileSubtitle={trip.status !== 'completed' ? tripUser.phone : ''}
+      />
     );
   }
   function dropDownData(item: unknown): DropDownData[] {
@@ -256,6 +257,25 @@ export default function MyTripsPage() {
     });
   }
 
+  function showDeleteBidModal(bidId: string, tripId: string) {
+    setSelectedJobId(tripId);
+    setSelectedBidId(bidId);
+    setIsDeleteBidVisible(true);
+  }
+
+  function deleteTransporterBid() {
+    if (!selectedBidId || !selectedJobId) {
+      Toast.error({ msg: 'Bid cannot be deleted' });
+      return;
+    }
+    setIsDeleteBidLoading(true);
+    dispatch(toAnyAction(deleteBid(selectedBidId, selectedJobId))).finally(
+      () => {
+        setIsDeleteBidLoading(false);
+        setIsDeleteBidVisible(false);
+      },
+    );
+  }
   function loadTrips() {
     setLoading(true);
     dispatch(toAnyAction(getTrips({ page, limit: 20, status })))
@@ -333,9 +353,9 @@ export default function MyTripsPage() {
     setSearchQuery(value!);
   }
 
-  function edgeChild() {
+  function edgeNode() {
     return (
-      <EdgeChild>
+      <EdgeNodeContainer>
         <UiInput
           onChange={handleQueryChange}
           value={searchQuery}
@@ -357,7 +377,7 @@ export default function MyTripsPage() {
             onClick={openAllBids}
           />
         )}
-      </EdgeChild>
+      </EdgeNodeContainer>
     );
   }
 
@@ -418,7 +438,7 @@ export default function MyTripsPage() {
       <DashboardTopNav
         routeName="My Trips"
         pageFilters={filters}
-        edgeChild={edgeChild()}
+        edgeNode={edgeNode()}
       />
       <MyTripsPageStyle>
         <UiTable
@@ -490,6 +510,7 @@ export default function MyTripsPage() {
             bidForJob(id);
             setIsAllBidsVisible(false);
           }}
+          deleteBid={showDeleteBidModal}
         />
       </UiOverlay>
 
@@ -503,6 +524,18 @@ export default function MyTripsPage() {
         >
           Are you sure you want to cancel this trip? This process cannot be
           undone.
+        </UiConfirmModal>
+      </UiOverlay>
+      <UiOverlay isVisible={isDeleteBidVisible}>
+        <UiConfirmModal
+          title="Delete Bid"
+          variant="danger"
+          loading={isDeleteBidLoading}
+          onClose={() => setIsDeleteBidVisible(false)}
+          onProceed={deleteTransporterBid}
+        >
+          Are you sure you want to delete this bid? Your candidacy for this role
+          would immediately be revoked.
         </UiConfirmModal>
       </UiOverlay>
       <UiOverlay isVisible={isUnassignTripVisble}>
@@ -525,23 +558,6 @@ const MyTripsPageStyle = styled.div`
   padding-top: ${pxToRem(24)};
 `;
 
-const UserDetails = styled.div`
-  display: flex;
-  gap: ${pxToRem(8)};
-  align-items: center;
-  .transporter-name {
-    font-weight: 400;
-    font-size: ${pxToRem(14)};
-    font-style: normal;
-    font-weight: 700;
-    line-height: 140%;
-    color: var(--color-neutralBlack);
-    letter-spacing: -0.02em;
-    text-transform: capitalize;
-    font-family: 'thiccboi-extrabold';
-  }
-`;
-
 const TypeOfGoods = styled.span`
   font-family: 'thiccboi-bold';
   font-style: normal;
@@ -552,7 +568,7 @@ const TypeOfGoods = styled.span`
   color: var(--color-neutralBlack);
   text-transform: capitalize;
 `;
-const EdgeChild = styled.div`
+const EdgeNodeContainer = styled.div`
   display: flex;
   gap: ${pxToRem(12)};
   .ui-filter-tag {

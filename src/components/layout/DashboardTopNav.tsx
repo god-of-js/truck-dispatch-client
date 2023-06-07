@@ -11,15 +11,15 @@ interface Filter {
 }
 interface Props {
   routeName: string;
-  startChild?: React.ReactNode;
-  edgeChild?: React.ReactNode;
+  startNode?: React.ReactNode;
+  edgeNode?: React.ReactNode;
   pageFilters?: Filter[];
 }
 export default function DashboardTopNav({
   routeName,
-  startChild,
+  startNode,
   pageFilters,
-  edgeChild,
+  edgeNode,
 }: Props) {
   const location = useLocation();
   const presentRoute = useMemo(() => {
@@ -29,6 +29,7 @@ export default function DashboardTopNav({
   return (
     <TopNav>
       <div className="route-name-container">
+        {startNode}
         <span className="route-name">{routeName}</span>
         <div className="filters">
           {pageFilters?.map((filter) => (
@@ -43,7 +44,7 @@ export default function DashboardTopNav({
         </div>
       </div>
       <div className="edge-container">
-        {edgeChild}
+        {edgeNode}
         <div className="notification-icon">
           <UiIcon icon="Notification" />
         </div>

@@ -1,5 +1,6 @@
 import { AnyAction } from 'redux';
 import TokenVerificationData from 'types/TokenVerificationData';
+import { userTypes } from './constants';
 
 export function toAnyAction(func: unknown) {
   return func as AnyAction;
@@ -260,4 +261,14 @@ export function filterByFieldInObject<T = any>(
 
 export function containsOnlyNumbers(value: string) {
   return /^[0-9]+$/.test(value);
+}
+
+export function formatUserType(userType: (typeof userTypes)[number]) {
+  if (!userType.includes('company')) {
+    return userType;
+  }
+
+  if (userType === 'transportCompany') return 'transport company';
+
+  return 'company';
 }

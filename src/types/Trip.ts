@@ -6,10 +6,12 @@ import {
 } from 'utils/constants';
 import User from './User';
 import PaymentRequest from './PaymentRequest';
+import Bid from './Bid';
 export default interface Trip {
   _id: string;
   pickUpAddress: string;
   deliveryAddress: string;
+  acceptedBid: Bid;
   pickUpDate: string;
   deliveryDate: string;
   typeOfGoods: (typeof typeOfGoods)[number];
@@ -23,6 +25,6 @@ export default interface Trip {
   tripOwner: User;
   TDO?: string;
   reference: string;
-  status: 'awaiting-bid' | 'payment-complete' | 'in-progress' | 'completed';
+  status: 'awaiting-bid' | 'assigned' | 'in-progress' | 'completed';
   paymentRequest?: PaymentRequest;
 }
