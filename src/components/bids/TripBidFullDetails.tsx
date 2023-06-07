@@ -46,10 +46,14 @@ export default function TripBidFullDetails({ bid, onClose }: Props) {
             />
           </div>
           <div className="grid-2">
+            <div className="location-container">
+
             <UiDataField
               title="Current vehicle location"
               value={bid.presentLocation}
+              icon="Location"
             />
+            </div>
             <UiDataField
               title="Proposed trip price"
               value={
@@ -95,6 +99,11 @@ const BidDetailsStyling = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: ${pxToRem(12)};
+  }
+  .location-container {
+    svg {
+      fill: var(--color-primary)
+    }
   }
   .price {
     font-style: normal;
