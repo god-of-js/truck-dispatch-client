@@ -30,7 +30,7 @@ import User from 'types/User';
 import UiAvatar from 'ui/UiAvatar';
 import UiFilterTag from 'ui/UiFilterTag';
 import UiInput from 'ui/UiInput';
-import { getTransporterBids } from 'modules/Bid';
+import { deleteBid, getTransporterBids } from 'modules/Bid';
 import PaginationLoader from 'components/layout/PaginationLoader';
 import UiOverlay from 'ui/UiOverlay';
 import InformUserOfVerification from 'components/verification/InformUserOfVerification';
@@ -39,6 +39,8 @@ import BidForJob from 'components/jobs/BidForJob';
 import AllBids from 'components/bids/AllBids';
 import CreateTrip from 'components/trips/CreateTrip';
 import TripHasBeenBroadcasted from 'components/trips/TripHasBeenBroadcasted';
+import UiConfirmModal from 'ui/UiConfirmModal';
+import { Toast } from 'utils/toast';
 
 export default function MyTripsPage() {
   const navigate = useNavigate();
@@ -64,11 +66,16 @@ export default function MyTripsPage() {
   const [isViewJobDetailsVisible, setIsViewJobDetailsVisible] = useState(false);
   const [isBidForJobVisible, setIsBidForJobVisible] = useState(false);
   const [isAllBidsVisible, setIsAllBidsVisible] = useState(false);
+  const [isCancelTripVisible, setIsCancelTripVisible] = useState(false);
+  const [isCancelTripLoading, setIsCancelTripLoading] = useState(false);
   const [isCreateTripVisible, setIsCreateTripVisible] = useState(false);
   const [isTripBroadcastedVisible, setIsTripBroadcastedVisible] =
     useState(false);
   const [activeTripId, setActiveTripId] = useState<string | null>(null);
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
+  const [selectedBidId, setSelectedBidId] = useState<string | null>(null);
+  const [isDeleteBidVisible, setIsDeleteBidVisible] = useState(false);
+  const [isDeleteBidLoading, setIsDeleteBidLoading] = useState(false);
   const job = useSelector(selectJob(selectedJobId!));
 
   const headers = useMemo(
@@ -219,7 +226,7 @@ export default function MyTripsPage() {
       },
       {
         label: 'Cancel trip',
-        func: cancelTrip,
+        func: initCancelTrip,
         isDanger: true,
       },
     ].filter(({ label }) => {
@@ -250,6 +257,25 @@ export default function MyTripsPage() {
     });
   }
 
+  function showDeleteBidModal(bidId: string, tripId: string) {
+    setSelectedJobId(tripId);
+    setSelectedBidId(bidId);
+    setIsDeleteBidVisible(true);
+  }
+
+  function deleteTransporterBid() {
+    if (!selectedBidId || !selectedJobId) {
+      Toast.error({ msg: 'Bid cannot be deleted' });
+      return;
+    }
+    setIsDeleteBidLoading(true);
+    dispatch(toAnyAction(deleteBid(selectedBidId, selectedJobId))).finally(
+      () => {
+        setIsDeleteBidLoading(false);
+        setIsDeleteBidVisible(false);
+      },
+    );
+  }
   function loadTrips() {
     setLoading(true);
     dispatch(toAnyAction(getTrips({ page, limit: 20, status })))
@@ -280,12 +306,24 @@ export default function MyTripsPage() {
     dispatch(toAnyAction(unassignTrip(id)));
   }
 
-  function cancelTrip(id: string) {
+  function initCancelTrip(id: string) {
+    setActiveTripId(id);
+    setIsCancelTripVisible(true);
+  }
+  function cancelTrip() {
+    if (!activeTripId) {
+      Toast.error({ msg: 'Trip ID was not provided.' });
+      return;
+    }
+    setIsCancelTripLoading(true);
     const action = clientBasedUserTypes.includes(user?.userType!)
       ? cancelTripByTripCreator
       : cancelTripByTransporter;
 
-    dispatch(toAnyAction(action(id)));
+    dispatch(toAnyAction(action(activeTripId))).finally(() => {
+      setIsCancelTripLoading(false);
+      setIsCancelTripVisible(false);
+    });
   }
 
   function openAllBids() {
@@ -458,7 +496,33 @@ export default function MyTripsPage() {
             bidForJob(id);
             setIsAllBidsVisible(false);
           }}
+          deleteBid={showDeleteBidModal}
         />
+      </UiOverlay>
+
+      <UiOverlay isVisible={isCancelTripVisible}>
+        <UiConfirmModal
+          title="Cancel Trip"
+          variant="danger"
+          loading={isCancelTripLoading}
+          onClose={() => setIsCancelTripVisible(false)}
+          onProceed={cancelTrip}
+        >
+          Are you sure you want to cancel this trip? This process cannot be
+          undone.
+        </UiConfirmModal>
+      </UiOverlay>
+      <UiOverlay isVisible={isDeleteBidVisible}>
+        <UiConfirmModal
+          title="Delete Bid"
+          variant="danger"
+          loading={isDeleteBidLoading}
+          onClose={() => setIsDeleteBidVisible(false)}
+          onProceed={deleteTransporterBid}
+        >
+          Are you sure you want to delete this bid? Your candidacy for this role
+          would immediately be revoked.
+        </UiConfirmModal>
       </UiOverlay>
     </>
   );
