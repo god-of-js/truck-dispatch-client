@@ -153,11 +153,17 @@ export default function MyTripsPage() {
 
   const searchFields: (keyof Trip)[] = ['transporter'];
 
+  const  queriedTrips = useMemo(() => {
+    if (searchQuery) return searchObjectsByField<Trip>(trips, searchQuery, searchFields);
+
+    if (status) return filterByFieldInObject<Trip>('status', status, trips)
+
+    return trips
+
+  }, [searchQuery, trips, status])
+
   const tripsData = useMemo(() => {
-    const data = status
-      ? filterByFieldInObject<Trip>('status', status, trips)
-      : trips;
-    return searchObjectsByField(data, searchQuery, searchFields).map(
+    return queriedTrips.map(
       (trip: Trip) => ({
         ...trip,
         id: trip._id,
