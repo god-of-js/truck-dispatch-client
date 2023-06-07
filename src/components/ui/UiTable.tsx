@@ -105,6 +105,7 @@ export default function UiTable({
 
 const TableContainer = styled.div`
   overflow-x: auto;
+  /* TODO: figure out why  */
   padding-bottom: ${pxToRem(120)};
   position: relative;
 `;
