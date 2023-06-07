@@ -15,7 +15,7 @@ export default function TripPickupAndDropOff({
   variant = 'light-primary',
 }: Props) {
   return (
-    <TripPickupAndDropOffStyle className="variant">
+    <TripPickupAndDropOffStyle className={variant}>
       <div className="indicator">
         <div className="from-icon-container">
           <UiIcon icon="Location" />

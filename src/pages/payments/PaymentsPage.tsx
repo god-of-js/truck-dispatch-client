@@ -77,7 +77,7 @@ function ViewPaymentsPage() {
       ...item,
       createdAt: <>{convertToFullDate(item.createdAt!)}</>,
       updatedAt: <>{convertToFullDate(item.updatedAt!)}</>,
-      status: <UiPill variant={getVariant(item.status)}>{item.status}</UiPill>,
+      status: <UiPill variant={getVariant(item.status)} hasIcon>{item.status}</UiPill>,
       amount: <>NGN {abbreviateNumber(item.amount!)}</>,
     }));
   }, [paymentRequests]);
