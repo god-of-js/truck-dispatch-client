@@ -16,10 +16,12 @@ import { clientBasedUserTypes } from 'utils/constants';
 import JobsResponse from 'types/JobsResponse';
 import ViewJobDetail from 'components/jobs/ViewJobDetail';
 import BidForJob from 'components/jobs/BidForJob';
-import { getTransporterBids } from 'modules/Bid';
+import { deleteBid, getTransporterBids } from 'modules/Bid';
 import UiFilterTag from 'ui/UiFilterTag';
 import AllBids from 'components/bids/AllBids';
 import PaginationLoader from 'components/layout/PaginationLoader';
+import UiConfirmModal from 'ui/UiConfirmModal';
+import { Toast } from 'utils/toast';
 import UiEmptyList from 'ui/UiEmptyList';
 
 export default function TransporterJobs() {
@@ -47,6 +49,9 @@ export default function TransporterJobs() {
   const [isBidForJobVisible, setIsBidForJobVisible] = useState(false);
   const [isAllBidsVisible, setIsAllBidsVisible] = useState(false);
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
+  const [selectedBidId, setSelectedBidId] = useState<string | null>(null);
+  const [isDeleteBidVisible, setIsDeleteBidVisible] = useState(false);
+  const [isDeleteBidLoading, setIsDeleteBidLoading] = useState(false);
 
   const job = useSelector(selectJob(selectedJobId!));
 
@@ -116,6 +121,7 @@ export default function TransporterJobs() {
   function backToJobDetails() {
     setIsViewJobDetailsVisible(true);
     setIsBidForJobVisible(false);
+    setIsDeleteBidVisible(true);
   }
 
   function closeViewDetails() {
@@ -129,9 +135,10 @@ export default function TransporterJobs() {
   function openAllBids() {
     setIsAllBidsVisible(true);
   }
-  function edgeChild() {
+
+  function edgeNode() {
     return (
-      <EdgeChild>
+      <EdgeNode>
         <UiInput
           onChange={handleQueryChange}
           value={searchQuery}
@@ -146,7 +153,26 @@ export default function TransporterJobs() {
           value={bids.length}
           onClick={openAllBids}
         />
-      </EdgeChild>
+      </EdgeNode>
+    );
+  }
+  function showDeleteBidModal(bidId: string, tripId: string) {
+    setSelectedJobId(tripId);
+    setSelectedBidId(bidId);
+    setIsDeleteBidVisible(true);
+  }
+
+  function deleteTransporterBid() {
+    if (!selectedBidId || !selectedJobId) {
+      Toast.error({ msg: 'Bid cannot be deleted' });
+      return;
+    }
+    setIsDeleteBidLoading(true);
+    dispatch(toAnyAction(deleteBid(selectedBidId, selectedJobId))).finally(
+      () => {
+        setIsDeleteBidLoading(false);
+        setIsDeleteBidVisible(false);
+      },
     );
   }
   function handleQueryChange({
@@ -187,7 +213,7 @@ export default function TransporterJobs() {
       <DashboardTopNav
         routeName="Jobs"
         pageFilters={pageFilters}
-        edgeChild={edgeChild()}
+        edgeNode={edgeNode()}
       />
       <MyJobsPageStyle className="flex-container">
         {filteredJobs.map((job) => {
@@ -240,7 +266,20 @@ export default function TransporterJobs() {
             bidForJob(id);
             setIsAllBidsVisible(false);
           }}
+          deleteBid={showDeleteBidModal}
         />
+      </UiOverlay>
+      <UiOverlay isVisible={isDeleteBidVisible}>
+        <UiConfirmModal
+          title="Delete Bid"
+          variant="danger"
+          loading={isDeleteBidLoading}
+          onClose={() => setIsDeleteBidVisible(false)}
+          onProceed={deleteTransporterBid}
+        >
+          Are you sure you want to delete this bid? Your candidacy for this role
+          would immediately be revoked.
+        </UiConfirmModal>
       </UiOverlay>
       {emptyJobs()}
     </>
@@ -254,7 +293,7 @@ const MyJobsPageStyle = styled.div`
   gap: ${pxToRem(20)};
 `;
 
-const EdgeChild = styled.div`
+const EdgeNode = styled.div`
   display: flex;
   gap: ${pxToRem(12)};
   .ui-filter-tag {

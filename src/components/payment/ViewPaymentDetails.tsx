@@ -12,7 +12,7 @@ interface Props {
   payment: PaymentRequest;
 }
 export default function ViewPaymentDetails({ onClose, payment }: Props) {
-  const trip = useSelector(selectTrip(payment.tripId));
+  const trip = useSelector(selectTrip(payment.trip._id));
   return (
     <UiModal onClose={onClose}>
       <DetailsContainer>

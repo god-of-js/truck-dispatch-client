@@ -1,5 +1,6 @@
 import { AnyAction } from 'redux';
 import TokenVerificationData from 'types/TokenVerificationData';
+import { userTypes } from './constants';
 
 export function toAnyAction(func: unknown) {
   return func as AnyAction;
@@ -146,6 +147,23 @@ export function generateReference() {
   return key;
 }
 
+export function convertToFullDateWithTime(dateToConvert: number | string) {
+  const date = new Date(dateToConvert);
+  return date.toLocaleString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  });
+}
+
+export function truncateText(text: string, length: number = 15) {
+  if (text.length <= length) return text;
+  return text.substr(0, length) + '...';
+}
+
 export function convertToFullDate(dateToConvert: number | string) {
   const date = new Date(dateToConvert);
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -174,7 +192,7 @@ export function convertToFullDate(dateToConvert: number | string) {
   return `${dayOfWeek}, ${month} ${dayOfMonth}${suffix} ${year}`;
 }
 
-export function convertToDdMmmYYYYDateFormat(dateToConvert: string) {
+export function convertToDdMmmYYYYDateFormat(dateToConvert: string | number) {
   const inputDate = dateToConvert;
 
   const date = new Date(inputDate);
@@ -309,4 +327,14 @@ export function searchObjectsByField<T extends Record<string, any>>(
 
 export function containsOnlyNumbers(value: string) {
   return /^[0-9]+$/.test(value);
+}
+
+export function formatUserType(userType: (typeof userTypes)[number]) {
+  if (!userType.includes('company')) {
+    return userType;
+  }
+
+  if (userType === 'transportCompany') return 'transport company';
+
+  return 'company';
 }
