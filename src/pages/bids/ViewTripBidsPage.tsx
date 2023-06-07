@@ -72,7 +72,7 @@ export default function ViewTripBidsPage() {
 }
 
 const PageStyling = styled.div`
-  padding: 0 ${pxToRem(20)};
+  padding: 0 ${pxToRem(24)};
 `;
 
 const TransporterDetails = styled.div`

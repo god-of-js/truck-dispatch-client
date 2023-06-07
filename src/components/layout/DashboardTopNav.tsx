@@ -15,7 +15,7 @@ interface Filter {
   title: string;
   route: string;
   value?: string | number;
-  customWidth: number;
+  customWidth?: number;
 }
 interface Props {
   routeName: string;
