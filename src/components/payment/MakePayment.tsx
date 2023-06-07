@@ -25,14 +25,13 @@ import UiCard from 'ui/UiCard';
 import { ReactComponent as AppLogo } from '../../assets/logo.svg';
 import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
 import UserDetails from 'ui/UserDetails';
+import ATMCard from './ATMCard';
 
 interface Props {
   bid: Bid;
-  back: () => void;
-
   onClose: () => void;
 }
-export default function MakePayment({ bid, back, onClose }: Props) {
+export default function MakePayment({ bid, onClose }: Props) {
   const { tripId } = useParams();
   const trip = useSelector(selectTrip(tripId!));
   const dispatch = useDispatch();
@@ -141,30 +140,21 @@ export default function MakePayment({ bid, back, onClose }: Props) {
           <div className="grid-item">
             <div className="h-fit-content">
               <UiCard variant="primary-light">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit,
-                ducimus aliquam quia deleniti mollitia aspernatur quisquam quasi
-                alias corporis amet esse nam blanditiis doloribus? Vitae, nobis.
-                Nostrum quis ea at?
+                <ATMCard />
               </UiCard>
             </div>
             <div className="h-fit-content">
-              <UiCard variant="primary-light">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Doloribus, expedita? Esse velit dignissimos, sunt aspernatur rem
-                asperiores suscipit ea nihil ipsa amet dolorum sit odio vitae
-                cupiditate labore? Enim, suscipit.
-              </UiCard>
+              <UiCard variant="primary-light">Paystack</UiCard>
             </div>
           </div>
           <div className="btn-container">
-
-          <UiButton
-            loading={loading}
-            isFullWidth
-            onClick={() => initializePayment(onSuccess)}
-          >
-            Proceed
-          </UiButton>
+            <UiButton
+              loading={loading}
+              isFullWidth
+              onClick={() => initializePayment(onSuccess)}
+            >
+              Proceed
+            </UiButton>
           </div>
         </div>
       </ModalBody>
@@ -261,7 +251,7 @@ const ModalBody = styled.div`
       color: var(--color-neutralBlack);
     }
 
-    .btn-container{
+    .btn-container {
       margin-top: ${pxToRem(24)};
     }
     @media screen and (min-width: ${sizes.mobileLargeWidth}) {

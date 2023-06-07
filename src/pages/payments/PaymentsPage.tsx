@@ -15,7 +15,6 @@ import {
   convertToFullDate,
   toAnyAction,
 } from 'utils/helpers';
-import { getTrips } from 'modules/Trips';
 
 function ViewPaymentsPage() {
   const dispatch = useDispatch();
@@ -77,14 +76,17 @@ function ViewPaymentsPage() {
       ...item,
       createdAt: <>{convertToFullDate(item.createdAt!)}</>,
       updatedAt: <>{convertToFullDate(item.updatedAt!)}</>,
-      status: <UiPill variant={getVariant(item.status)} hasIcon>{item.status}</UiPill>,
+      status: (
+        <UiPill variant={getVariant(item.status)} hasIcon>
+          {item.status}
+        </UiPill>
+      ),
       amount: <>NGN {abbreviateNumber(item.amount!)}</>,
     }));
   }, [paymentRequests]);
 
   useEffect(() => {
     dispatch(toAnyAction(getPaymentRequestsOfDriver()));
-    // dispatch(toAnyAction(getTrips()));
   }, []);
 
   return (
