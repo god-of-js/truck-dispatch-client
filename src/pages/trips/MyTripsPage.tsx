@@ -39,6 +39,7 @@ import BidForJob from 'components/jobs/BidForJob';
 import AllBids from 'components/bids/AllBids';
 import CreateTrip from 'components/trips/CreateTrip';
 import TripHasBeenBroadcasted from 'components/trips/TripHasBeenBroadcasted';
+import { searchObjectsByField } from 'utils/helpers';
 
 export default function MyTripsPage() {
   const navigate = useNavigate();
@@ -150,26 +151,31 @@ export default function MyTripsPage() {
     [totalTrips, totalPendingTrips, totalInProgressTrips, totalCompletedTrips],
   );
 
+  const searchFields: (keyof Trip)[] = ['transporter'];
+
   const tripsData = useMemo(() => {
     const data = status
       ? filterByFieldInObject<Trip>('status', status, trips)
       : trips;
-
-    return data.map((trip: Trip) => ({
-      ...trip,
-      id: trip._id,
-      typeOfGoods: <TypeOfGoods>{trip.typeOfGoods}</TypeOfGoods>,
-      responsibleTransporter: userDetails(trip.transporter),
-      tripOwnerDetails: userDetails(trip.tripOwner),
-      pickUpDate: <DateText>{convertToFullDate(trip.pickUpDate)}</DateText>,
-      deliveryDate: <DateText>{convertToFullDate(trip.deliveryDate)}</DateText>,
-      statusField: (
-        <UiPill variant={getPillVariant(trip.status)}>
-          {formatStatus(trip.status)}
-        </UiPill>
-      ),
-    }));
-  }, [trips]);
+    return searchObjectsByField(data, searchQuery, searchFields).map(
+      (trip: Trip) => ({
+        ...trip,
+        id: trip._id,
+        typeOfGoods: <TypeOfGoods>{trip.typeOfGoods}</TypeOfGoods>,
+        responsibleTransporter: userDetails(trip.transporter),
+        tripOwnerDetails: userDetails(trip.tripOwner),
+        pickUpDate: <DateText>{convertToFullDate(trip.pickUpDate)}</DateText>,
+        deliveryDate: (
+          <DateText>{convertToFullDate(trip.deliveryDate)}</DateText>
+        ),
+        statusField: (
+          <UiPill variant={getPillVariant(trip.status)}>
+            {formatStatus(trip.status)}
+          </UiPill>
+        ),
+      }),
+    );
+  }, [trips, searchQuery]);
 
   function getPillVariant(status: Trip['status']) {
     if (status === 'awaiting-bid') return 'orange';

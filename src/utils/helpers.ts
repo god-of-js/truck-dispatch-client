@@ -258,26 +258,24 @@ export function filterByFieldInObject<T = any>(
   }) as T[];
 }
 
-type ObjectField = {
-  [key: string]: any;
-};
-
-export function searchObjectsByField(
-  objects: ObjectField[],
+export function searchObjectsByField<T extends Record<string, any>>(
+  objects: T[],
   searchInput: string,
-  searchFields: string[],
-): ObjectField[] {
+  searchFields: (keyof T)[],
+): T[] {
   if (!Array.isArray(objects) || !searchInput || !searchFields.length) {
     return [];
   }
 
   const sanitizedInput = searchInput.toLowerCase();
-  const matchingObjects: ObjectField[] = [];
+  const matchingObjects: T[] = [];
 
   for (const obj of objects) {
     if (typeof obj !== 'object' || obj === null) {
       continue;
     }
+
+    let match = true;
 
     for (const field of searchFields) {
       const fieldValue = obj[field];
@@ -286,11 +284,25 @@ export function searchObjectsByField(
         typeof fieldValue === 'string' &&
         fieldValue.toLowerCase().includes(sanitizedInput)
       ) {
-        matchingObjects.push(obj);
-        break;
+        continue;
       }
+
+      if (
+        typeof fieldValue === 'object' &&
+        JSON.stringify(fieldValue).toLowerCase().includes(sanitizedInput)
+      ) {
+        continue;
+      }
+
+      match = false;
+      break;
+    }
+
+    if (match) {
+      matchingObjects.push(obj);
     }
   }
+
   return matchingObjects;
 }
 
