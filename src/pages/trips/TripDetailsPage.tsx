@@ -101,29 +101,33 @@ export default function TripDetailsPage() {
           <UiCard>
             <div className="card-title">Driver & Vehicle details</div>
 
-            {trip.acceptedBid && <div className="driver-and-vehicle-details">
-              <div className="driver-and-vehicle-details__field">
-                <div className="driver-and-vehicle-details__field__title">
-                  Responsible Driver
+            {trip.acceptedBid && (
+              <div className="driver-and-vehicle-details">
+                <div className="driver-and-vehicle-details__field">
+                  <div className="driver-and-vehicle-details__field__title">
+                    Responsible Driver
+                  </div>
+                  <UserDetails
+                    userName={trip.acceptedBid.vehicle.driver.name}
+                    avatar={trip.acceptedBid.vehicle.driver.avatar}
+                    profileSubtitle={
+                      trip.status !== 'completed'
+                        ? trip.acceptedBid.vehicle.driver.phone
+                        : ''
+                    }
+                  />
                 </div>
-                <UserDetails
-                  userName={trip.acceptedBid.vehicle.driver.name}
-                  avatar={trip.acceptedBid.vehicle.driver.avatar}
-                  profileSubtitle={
-                    trip.status !== 'completed' ? trip.acceptedBid.vehicle.driver.phone : ''
-                  }
-                />
-              </div>
-              <UiButton variant="icon-neutral">
-                <UiIcon icon="ArrowRight" />
-              </UiButton>
-              <div className="driver-and-vehicle-details__field">
-                <div className="driver-and-vehicle-details__field__title">
-                  Vehicle Details
+                <UiButton variant="icon-neutral">
+                  <UiIcon icon="ArrowRight" />
+                </UiButton>
+                <div className="driver-and-vehicle-details__field">
+                  <div className="driver-and-vehicle-details__field__title">
+                    Vehicle Details
+                  </div>
+                  {/* <UserDetails avatar={trip.} /> */}
                 </div>
-                {/* <UserDetails avatar={trip.} /> */}
               </div>
-            </div>}
+            )}
           </UiCard>
           <UiCard>
             <div className="card-title">Responsible Shipper</div>
