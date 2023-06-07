@@ -29,10 +29,19 @@ export const BidsSlice = createSlice({
       }
       state.bids.push(action.payload);
     },
+    removeBid: (state: BidState, action: { payload: string }) => {
+      const indexOfDeletedBid = state.bids.findIndex(
+        ({ _id }) => _id === action.payload,
+      );
+
+      if (indexOfDeletedBid === -1) return;
+
+      state.bids.splice(indexOfDeletedBid, 1);
+    },
   },
 });
 
-export const { setBids, setBid } = BidsSlice.actions;
+export const { setBids, setBid, removeBid } = BidsSlice.actions;
 export default BidsSlice.reducer;
 
 const bids = (state: RootState) => state.bid.bids;
@@ -83,6 +92,14 @@ export function updateBid(data: CreateBid) {
     return Api.updateBid(data).then((bid) => {
       dispatch(setBid(bid));
       return bid;
+    });
+  };
+}
+
+export function deleteBid(bidId: string, tripId: string) {
+  return (dispatch: AppDispatch) => {
+    return Api.deleteBid(bidId, tripId).then(() => {
+      dispatch(removeBid(bidId));
     });
   };
 }

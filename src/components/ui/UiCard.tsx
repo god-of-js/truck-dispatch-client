@@ -13,4 +13,17 @@ const Card = styled.div`
   border: 1px solid var(--color-gray-200);
   padding: ${pxToRem(20)};
   border-radius: ${pxToRem(8)};
+  position: relative;
+
+  .double-items {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .bottom {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    padding-bottom: ${pxToRem(20)};
+  }
 `;

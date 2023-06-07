@@ -1,14 +1,16 @@
+import React from 'react';
 import styled from 'styled-components';
-import UiButton from './UiButton';
+import UiIcon, { Icons } from './UiIcon';
 
 type Variant = 'text-area' | 'field';
 type Sizes = 's' | 'l';
 interface Props {
   title: string;
-  value?: string;
+  value?: React.ReactNode;
   variant?: Variant;
   size?: Sizes;
   isBordered?: boolean;
+  icon?: Icons;
 }
 export default function UiDataField({
   title,
@@ -16,13 +18,20 @@ export default function UiDataField({
   isBordered,
   variant = 'field',
   size = 'l',
+  icon,
 }: Props) {
   return (
-    <FieldStyling variant={variant} isBordered={isBordered} size={size}>
-      <div className="field-title">{title}</div>
-      <div className="field-value">{value ? value : 'N/A'}</div>
-      {/* TODO: immplement view more */}
-      {/* <UiButton textCasing='lowercase' variant='primary-text' size='large'>view more</UiButton> */}
+    <FieldStyling
+      variant={variant}
+      className="ui-data-field"
+      isBordered={isBordered}
+      size={size}
+    >
+      {icon && <UiIcon icon={icon} />}
+      <div className="ui-data-field__inner">
+        <div className="field-title">{title}</div>
+        <div className="field-value">{value ? value : 'N/A'}</div>
+      </div>
     </FieldStyling>
   );
 }
@@ -36,6 +45,8 @@ const FieldStyling = styled.div<StylingProps>`
   padding: ${({ size }) => pxToRem(size === 's' ? 12 : 16)} ${pxToRem(16)};
   background: var(--color-gray-20);
   border-radius: ${pxToRem(8)};
+  display: flex;
+  gap: ${pxToRem(12)};
   ${({ isBordered }) =>
     isBordered && `border: ${pxToRem(1)} solid var(--color-gray-30);`}
   ${({ variant }) => variant === 'text-area' && `min-height: ${pxToRem(100)}`};

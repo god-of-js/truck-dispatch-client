@@ -41,7 +41,7 @@ const paymentRequests = (state: RootState) => state.payment.paymentRequests;
 
 export const selectPaymentRequestByTripId = (id: string) =>
   createSelector(paymentRequests, (requestArr) =>
-    requestArr.find(({ tripId }) => tripId === id),
+    requestArr.find(({ trip }) => trip._id === id),
   );
 
 export function requestPaymentByTransporter(data: FormData, tripId: string) {

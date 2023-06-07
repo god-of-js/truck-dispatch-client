@@ -141,7 +141,7 @@ export default function ChatPage() {
                     onChange={updateMessage}
                   />
                   <button type="submit" disabled={!formData.message}>
-                    <UiIcon icon="PaperPlaneTilt" />
+                    {/* <UiIcon icon="PaperPlaneTilt" /> */}
                   </button>
                 </div>
               </div>

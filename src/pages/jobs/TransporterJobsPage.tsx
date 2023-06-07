@@ -15,10 +15,13 @@ import { clientBasedUserTypes } from 'utils/constants';
 import JobsResponse from 'types/JobsResponse';
 import ViewJobDetail from 'components/jobs/ViewJobDetail';
 import BidForJob from 'components/jobs/BidForJob';
-import { getTransporterBids } from 'modules/Bid';
+import { deleteBid, getTransporterBids } from 'modules/Bid';
 import AllBids from 'components/bids/AllBids';
 import PaginationLoader from 'components/layout/PaginationLoader';
 import UiButton from 'ui/UiButton';
+import UiFilterTag from 'ui/UiFilterTag';
+import UiConfirmModal from 'ui/UiConfirmModal';
+import { Toast } from 'utils/toast';
 import UiEmptyList from 'ui/UiEmptyList';
 
 export default function TransporterJobs() {
@@ -46,6 +49,9 @@ export default function TransporterJobs() {
   const [isBidForJobVisible, setIsBidForJobVisible] = useState(false);
   const [isAllBidsVisible, setIsAllBidsVisible] = useState(false);
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
+  const [selectedBidId, setSelectedBidId] = useState<string | null>(null);
+  const [isDeleteBidVisible, setIsDeleteBidVisible] = useState(false);
+  const [isDeleteBidLoading, setIsDeleteBidLoading] = useState(false);
 
   const job = useSelector(selectJob(selectedJobId!));
 
@@ -118,6 +124,7 @@ export default function TransporterJobs() {
   function backToJobDetails() {
     setIsViewJobDetailsVisible(true);
     setIsBidForJobVisible(false);
+    setIsDeleteBidVisible(true);
   }
 
   function closeViewDetails() {
@@ -139,6 +146,24 @@ export default function TransporterJobs() {
           <span className="count">{bids.length}</span>
         </UiButton>
       </EdgeNode>
+    )}
+  function showDeleteBidModal(bidId: string, tripId: string) {
+    setSelectedJobId(tripId);
+    setSelectedBidId(bidId);
+    setIsDeleteBidVisible(true);
+  }
+
+  function deleteTransporterBid() {
+    if (!selectedBidId || !selectedJobId) {
+      Toast.error({ msg: 'Bid cannot be deleted' });
+      return;
+    }
+    setIsDeleteBidLoading(true);
+    dispatch(toAnyAction(deleteBid(selectedBidId, selectedJobId))).finally(
+      () => {
+        setIsDeleteBidLoading(false);
+        setIsDeleteBidVisible(false);
+      },
     );
   }
   function handleQueryChange({
@@ -233,7 +258,20 @@ export default function TransporterJobs() {
             bidForJob(id);
             setIsAllBidsVisible(false);
           }}
+          deleteBid={showDeleteBidModal}
         />
+      </UiOverlay>
+      <UiOverlay isVisible={isDeleteBidVisible}>
+        <UiConfirmModal
+          title="Delete Bid"
+          variant="danger"
+          loading={isDeleteBidLoading}
+          onClose={() => setIsDeleteBidVisible(false)}
+          onProceed={deleteTransporterBid}
+        >
+          Are you sure you want to delete this bid? Your candidacy for this role
+          would immediately be revoked.
+        </UiConfirmModal>
       </UiOverlay>
       {emptyJobs()}
     </>
@@ -271,6 +309,10 @@ const EdgeNode = styled.div`
       display: flex;
       align-items: center;
       justify-content: center;
-    }
+    }}
+  display: flex;
+  gap: ${pxToRem(12)};
+  .ui-filter-tag {
+    cursor: pointer;
   }
 `;

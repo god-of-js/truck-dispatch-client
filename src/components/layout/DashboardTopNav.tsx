@@ -19,16 +19,16 @@ interface Filter {
 }
 interface Props {
   routeName: string;
-  startChild?: React.ReactNode;
   edgeNode?: React.ReactNode;
   searchNode?: React.ReactNode;
+  startNode?: React.ReactNode;
   pageFilters?: Filter[];
   searchQuery?: string;
   handleQueryChange?: (params: OnChangeParams) => void;
 }
 export default function DashboardTopNav({
   routeName,
-  startChild,
+  startNode,
   pageFilters,
   edgeNode,
   searchQuery,
@@ -51,6 +51,7 @@ export default function DashboardTopNav({
   return (
     <TopNavContainer>
       <TopNav>
+      {startNode}
         <div className="route-name-container">
           <span className="route-name">{routeName}</span>
           <span className="logo">
