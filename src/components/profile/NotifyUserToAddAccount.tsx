@@ -6,10 +6,11 @@ import UiModal from 'ui/UiModal';
 
 interface Props {
   onClose: () => void;
+  isVisible: boolean
 }
-export default function NotifyUserToAddAccount({ onClose }: Props) {
+export default function NotifyUserToAddAccount({ onClose, isVisible }: Props) {
   return (
-    <UiModal onClose={onClose}>
+    <UiModal isVisible={isVisible} onClose={onClose}>
       <Header>Add Payout Account</Header>
       <TextContent>
         In order to receive payment for a trip, you need to add your account to

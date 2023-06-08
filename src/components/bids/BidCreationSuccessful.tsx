@@ -4,10 +4,11 @@ import UiModal from 'ui/UiModal';
 
 interface Props {
   onClose: () => void;
+  isVisible: boolean
 }
-export default function BidCreationSuccessful({ onClose }: Props) {
+export default function BidCreationSuccessful({ onClose, isVisible }: Props) {
   return (
-    <UiModal onClose={onClose}>
+    <UiModal isVisible={isVisible} onClose={onClose}>
       <Header>Bid has been sent successfully</Header>
       <TextContent>
         Your bid has been sent to the trip owner successfully. If you are a good

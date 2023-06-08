@@ -14,11 +14,13 @@ interface Props {
   onClose: () => void;
   tripId: string;
   paymentRequestId: string;
+  isVisible: boolean
 }
 export default function ConfirmApprovePayment({
   tripId,
   paymentRequestId,
   onClose,
+  isVisible
 }: Props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -37,7 +39,7 @@ export default function ConfirmApprovePayment({
   }
 
   return (
-    <UiModal size="sm" onClose={onClose}>
+    <UiModal isVisible={isVisible} size="sm" onClose={onClose}>
       <ApprovePaymentStyling>
         <h2>Approve Payment</h2>
         <p>
