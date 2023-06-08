@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { usePaystackPayment } from 'react-paystack';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,9 +23,11 @@ import UiIcon from 'ui/UiIcon';
 import sizes from 'utils/sizes';
 import UiCard from 'ui/UiCard';
 import { ReactComponent as AppLogo } from '../../assets/logo.svg';
+import { ReactComponent as PaystackLogo } from '../../assets/img/paystack.svg';
 import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
 import UserDetails from 'ui/UserDetails';
 import ATMCard from './ATMCard';
+import UiCheckbox from 'ui/UiCheckbox';
 
 interface Props {
   bid: Bid;
@@ -46,6 +48,9 @@ export default function MakePayment({ bid, onClose }: Props) {
     amount: nairaToKobo(priceWithTDPercent(bid?.price || 0)),
     publicKey: paystackPublickKey,
   };
+  const [paymentMethod, setPaymentMethod] = useState<'paystack' | 'balance'>(
+    'balance',
+  );
   function onSuccess(payment?: Payment) {
     if (!bid || !trip || !payment || !user) {
       Toast.error({ msg: 'User or Trip does not exist' });
@@ -70,6 +75,16 @@ export default function MakePayment({ bid, onClose }: Props) {
       .finally(() => setLoading(false));
   }
 
+  const payWithBalanceIsPossible = useMemo(() => {
+    if (paymentMethod === 'balance') return true;
+  }, [user?.balance, paymentMethod]);
+
+  function setPaymentMethodAsBalance() {
+    setPaymentMethod('balance');
+  }
+  function setPaymentMethodAsPaystack() {
+    setPaymentMethod('paystack');
+  }
   const initializePayment = usePaystackPayment(paystackConfig);
   return (
     <UiModal position="right" title="Make Payment" onClose={onClose}>
@@ -138,13 +153,40 @@ export default function MakePayment({ bid, onClose }: Props) {
             </div>
           </div>
           <div className="grid-item">
-            <div className="h-fit-content">
+            <div
+              className="h-fit-content cursor-pointer"
+              onClick={setPaymentMethodAsBalance}
+            >
               <UiCard variant="primary-light">
+                <div className="pay-with-balance-header payment-method">
+                  <div className="icon-with-title">
+                    <UiIcon icon="Card" size="20" />
+                    <span>Pay with balance</span>
+                  </div>
+                  <UiCheckbox
+                    value={paymentMethod === 'balance'}
+                    onChange={setPaymentMethodAsBalance}
+                  />
+                </div>
                 <ATMCard />
               </UiCard>
             </div>
-            <div className="h-fit-content">
-              <UiCard variant="primary-light">Paystack</UiCard>
+            <div
+              className="h-fit-content cursor-pointer"
+              onClick={setPaymentMethodAsPaystack}
+            >
+              <UiCard variant="primary-light">
+                <div className="payment-method">
+                  <div className="icon-with-title">
+                    <PaystackLogo />
+                    <span>Paystack</span>
+                  </div>
+                  <UiCheckbox
+                    value={paymentMethod === 'paystack'}
+                    onChange={setPaymentMethodAsPaystack}
+                  />
+                </div>
+              </UiCard>
             </div>
           </div>
           <div className="btn-container">
@@ -253,6 +295,33 @@ const ModalBody = styled.div`
 
     .btn-container {
       margin-top: ${pxToRem(24)};
+    }
+
+    .pay-with-balance-header {
+      margin-bottom: ${pxToRem(16)};
+
+      svg {
+        fill: var(--color-primary);
+      }
+    }
+    .payment-method {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .icon-with-title {
+        display: flex;
+        align-items: center;
+        gap: ${pxToRem(12)};
+        font-weight: 500;
+        font-size: ${pxToRem(14)};
+        line-height: ${pxToRem(18)};
+        color: #171520;
+      }
+    }
+
+    .cursor-pointer {
+      cursor: pointer;
     }
     @media screen and (min-width: ${sizes.mobileLargeWidth}) {
       grid-template-columns: repeat(2, 1fr);

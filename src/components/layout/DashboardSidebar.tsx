@@ -22,7 +22,7 @@ export default function DashboardSidebar() {
   const unreadChat = useSelector(selectUnreadChats);
   const navigate = useNavigate();
   const appLocation = useLocation();
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [isMobileExpanded, setIsMobileExpanded] = useState(false);
 
   const transporterRoutes: Route[] = [
