@@ -17,8 +17,7 @@ import {
 } from 'utils/helpers';
 import { paystackPublickKey } from 'utils/privateKeys';
 import Payment from 'types/Payment';
-import { assignTrip, selectTrip } from 'modules/Trips';
-import { Toast } from 'utils/toast';
+import { selectTrip } from 'modules/Trips';
 import UiIcon from 'ui/UiIcon';
 import sizes from 'utils/sizes';
 import UiCard from 'ui/UiCard';
@@ -28,17 +27,18 @@ import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
 import UserDetails from 'ui/UserDetails';
 import ATMCard from './ATMCard';
 import UiCheckbox from 'ui/UiCheckbox';
-import AssignTripFormData from 'types/AssignTripFormData';
+import PaymentMethods from 'types/PaymentMethods';
 
 interface Props {
   bid: Bid;
+  payWithBalance: () => void;
+  payWithPaystack: (paymentdetails?: Payment) => void;
   onClose: () => void;
 }
-export default function MakePayment({ bid, onClose }: Props) {
+export default function MakePayment({ bid, payWithBalance, payWithPaystack, onClose }: Props) {
+  // When there are more payment cases, refactor this to handle them.
   const { tripId } = useParams();
   const trip = useSelector(selectTrip(tripId!));
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.account.user);
   const [loading, setLoading] = useState(false);
   const paystackConfig = {
@@ -49,37 +49,9 @@ export default function MakePayment({ bid, onClose }: Props) {
     amount: nairaToKobo(priceWithTDPercent(bid?.price || 0)),
     publicKey: paystackPublickKey,
   };
-  const [paymentMethod, setPaymentMethod] = useState<'paystack' | 'balance'>(
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethods>(
     user?.balance! >= bid.price ? 'balance' : 'paystack',
   );
-  function assignTripToTransporter(payment?: Payment) {
-    if (!bid || !trip || !payment || !user) {
-      Toast.error({ msg: 'User or Trip does not exist' });
-      return;
-    }
-    setLoading(true);
-    const paymentData: AssignTripFormData = {
-      from: user._id,
-      to: bid.transporter._id,
-      tripId: trip._id,
-      bidId: bid._id,
-      amountInBid: bid?.price,
-      totalAmountPaid: priceWithTDPercent(bid?.price),
-      transaction: payment.transaction,
-      paymentSource: paymentMethod
-    };
-
-    if (payment) paymentData.processorReference = payment.reference;
-    dispatch(toAnyAction(assignTrip(paymentData)))
-      .then(() => {
-        navigate(`/my-trips/${tripId}`);
-      })
-      .finally(() => setLoading(false));
-  }
-
-  const payWithBalanceIsPossible = useMemo(() => {
-    if (paymentMethod === 'balance') return true;
-  }, [user?.balance, paymentMethod]);
 
   function setPaymentMethodAsBalance() {
     setPaymentMethod('balance');
@@ -88,13 +60,17 @@ export default function MakePayment({ bid, onClose }: Props) {
     setPaymentMethod('paystack');
   }
 
+  function proceedAfterPaystack(processorDetails?: Payment) {
+    payWithPaystack(processorDetails)
+  }
+
   function proceedWithPayment() {
     if (paymentMethod === 'balance') {
-      assignTripToTransporter();
+      payWithBalance();
       return;
     }
 
-    initializePayment(assignTripToTransporter)
+    initializePayment(proceedAfterPaystack)
   }
   const initializePayment = usePaystackPayment(paystackConfig);
   return (
