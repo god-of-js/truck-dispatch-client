@@ -28,7 +28,7 @@ const ATMCardStyling = styled.div`
   min-height: ${pxToRem(180)};
   overflow: hidden;
   position: relative;
-  height: 100px;
+  height: ${pxToRem(100)};
   border-radius: ${pxToRem(10)};
   background-size: 100%;
   color: #fff;
@@ -44,15 +44,14 @@ const ATMCardStyling = styled.div`
       #9747ff 23.09%,
       rgba(151, 71, 255, 0) 89.87%
     );
-    width: 155px;
-    height: 155px;
+    width: ${pxToRem(155)};
+    height: ${pxToRem(155)};
     border-radius: 50%;
   }
   .bottom-circle {
     background: var(--color-primary-50);
-
-    width: 100px;
-    height: 100px;
+    width: ${pxToRem(100)};
+    height: ${pxToRem(100)};
     position: absolute;
     z-index: 0;
     border-radius: 50%;
@@ -62,8 +61,8 @@ const ATMCardStyling = styled.div`
     left: -15%;
   }
   .centered-circle {
-    width: 20px;
-    height: 20px;
+    width: ${pxToRem(20)};;
+    height: ${pxToRem(20)};;
     background: var(--color-primary-50);
     border-radius: 50%;
     position: absolute;
@@ -83,23 +82,23 @@ const ATMCardStyling = styled.div`
     .balance-value {
       font-style: normal;
       font-weight: 600;
-      font-size: 32px;
+      font-size: ${pxToRem(32)};;
       color: var(--color-primary-10);
     }
 
     .balance-title {
       font-style: normal;
       font-weight: 600;
-      font-size: 16px;
-      line-height: 16px;
+      font-size: ${pxToRem(16)};;
+      line-height: ${pxToRem(16)};;
       color: var(--color-primary-10);
     }
 
     .user-name {
       font-style: normal;
       font-weight: 600;
-      font-size: 14px;
-      line-height: 26px;
+      font-size: ${pxToRem(14)};;
+      line-height: ${pxToRem(26)};;
       color: var(--color-primary-10);
       text-transform: capitalize;
     }
