@@ -62,13 +62,15 @@ export default function TripBidsPage() {
     }
   }
 
-
-  function assignTripToTransporter(paymentMethod: 'paystack' | 'balance', payment?: Payment) {
+  function assignTripToTransporter(
+    paymentMethod: 'paystack' | 'balance',
+    payment?: Payment,
+  ) {
     if (!bid || !trip || !payment || !user) {
       Toast.error({ msg: 'User or Trip does not exist' });
       return;
     }
-  
+
     const paymentData: AssignTripFormData = {
       from: user._id,
       to: bid.transporter._id,
@@ -77,14 +79,13 @@ export default function TripBidsPage() {
       amountInBid: bid?.price,
       totalAmountPaid: priceWithTDPercent(bid?.price),
       transaction: payment.transaction,
-      paymentSource: paymentMethod
+      paymentSource: paymentMethod,
     };
 
     if (payment) paymentData.processorReference = payment.reference;
-    dispatch(toAnyAction(assignTrip(paymentData)))
-      .then(() => {
-        navigate(`/my-trips/${tripId}`);
-      });
+    dispatch(toAnyAction(assignTrip(paymentData))).then(() => {
+      navigate(`/my-trips/${tripId}`);
+    });
   }
 
   useEffect(() => {
@@ -136,7 +137,9 @@ export default function TripBidsPage() {
             bid={bid}
             isVisible={isMakePaymentVisible}
             payWithBalance={() => setIsPayWithBalanceVisible(true)}
-            payWithPaystack={(param) => assignTripToTransporter('paystack', param)}
+            payWithPaystack={(param) =>
+              assignTripToTransporter('paystack', param)
+            }
             onClose={() => setIsMakePaymentVisible(false)}
           />
         </>

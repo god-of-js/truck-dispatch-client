@@ -1,3 +1,3 @@
 type PaymentMethods = 'balance' | 'paystack';
 
-export default  PaymentMethods
+export default PaymentMethods;

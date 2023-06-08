@@ -52,7 +52,7 @@ export default function DashboardTopNav({
     <TopNavContainer>
       <TopNav>
         <div className="start-container">
-      {startNode}
+          {startNode}
           <span className="route-name">{routeName}</span>
           <span className="logo">
             <AppLogo />

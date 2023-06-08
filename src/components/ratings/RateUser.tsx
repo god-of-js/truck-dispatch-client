@@ -19,7 +19,7 @@ import { publishUserRating } from 'modules/Ratings';
 
 interface Props {
   onClose: () => void;
-  isVisible: boolean
+  isVisible: boolean;
 }
 export default function RateTransporter({ onClose, isVisible }: Props) {
   const { tripId } = useParams();

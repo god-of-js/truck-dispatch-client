@@ -12,7 +12,7 @@ interface Props {
   loading?: boolean;
   onClose: () => void;
   onProceed?: () => void;
-  isVisible: boolean
+  isVisible: boolean;
 }
 
 export default function UiConfirmModal({
@@ -24,10 +24,16 @@ export default function UiConfirmModal({
   loading,
   onClose,
   onProceed,
-  isVisible
+  isVisible,
 }: Props) {
   return (
-    <UiModal isVisible={isVisible} title={title} onClose={onClose} size="sm" position="center">
+    <UiModal
+      isVisible={isVisible}
+      title={title}
+      onClose={onClose}
+      size="sm"
+      position="center"
+    >
       <Modal>
         <div className="modal-content">{children}</div>
 

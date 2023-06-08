@@ -10,9 +10,13 @@ import { selectTrip } from 'modules/Trips';
 interface Props {
   onClose: () => void;
   payment: PaymentRequest;
-  isVisible: boolean
+  isVisible: boolean;
 }
-export default function ViewPaymentDetails({ onClose, isVisible, payment }: Props) {
+export default function ViewPaymentDetails({
+  onClose,
+  isVisible,
+  payment,
+}: Props) {
   const trip = useSelector(selectTrip(payment.trip._id));
   return (
     <UiModal isVisible={isVisible} onClose={onClose}>

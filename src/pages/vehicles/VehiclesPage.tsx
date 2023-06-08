@@ -95,7 +95,11 @@ export default function VehiclesPage() {
       <AddVehicle isVisible={isAddVehicleVisible} onClose={closeAddVehicle} />
 
       {selectedVehicle && (
-        <EditVehicle isVisible={isEditVehicleVisible} onClose={closeEditVehicle} vehicle={selectedVehicle} />
+        <EditVehicle
+          isVisible={isEditVehicleVisible}
+          onClose={closeEditVehicle}
+          vehicle={selectedVehicle}
+        />
       )}
     </>
   );

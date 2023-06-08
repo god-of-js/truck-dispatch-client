@@ -17,9 +17,14 @@ interface Props {
   tripId?: string;
   onClose: () => void;
   onCreated?: (tripId: string) => void;
-  isVisible: boolean
+  isVisible: boolean;
 }
-export default function CreateTrip({ tripId, onClose, onCreated, isVisible }: Props) {
+export default function CreateTrip({
+  tripId,
+  onClose,
+  onCreated,
+  isVisible,
+}: Props) {
   const dispatch = useDispatch();
   const trip = useSelector(selectTrip(tripId || ''));
 

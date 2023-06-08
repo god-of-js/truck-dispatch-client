@@ -1,7 +1,7 @@
-import { useMemo, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { usePaystackPayment } from 'react-paystack';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from 'modules/index';
 import Bid from 'types/Bid';
@@ -13,7 +13,6 @@ import {
   nairaToKobo,
   priceWithTDPercent,
   tdPercentageWithVAT,
-  toAnyAction,
 } from 'utils/helpers';
 import { paystackPublickKey } from 'utils/privateKeys';
 import Payment from 'types/Payment';
@@ -31,12 +30,18 @@ import PaymentMethods from 'types/PaymentMethods';
 
 interface Props {
   bid: Bid;
-  isVisible: boolean,
+  isVisible: boolean;
   payWithBalance: () => void;
   payWithPaystack: (paymentdetails?: Payment) => void;
   onClose: () => void;
 }
-export default function MakePayment({ bid, payWithBalance, isVisible, payWithPaystack, onClose }: Props) {
+export default function MakePayment({
+  bid,
+  payWithBalance,
+  isVisible,
+  payWithPaystack,
+  onClose,
+}: Props) {
   // When there are more payment cases, refactor this to handle them.
   const { tripId } = useParams();
   const trip = useSelector(selectTrip(tripId!));
@@ -62,7 +67,7 @@ export default function MakePayment({ bid, payWithBalance, isVisible, payWithPay
   }
 
   function proceedAfterPaystack(processorDetails?: Payment) {
-    payWithPaystack(processorDetails)
+    payWithPaystack(processorDetails);
   }
 
   function proceedWithPayment() {
@@ -71,11 +76,16 @@ export default function MakePayment({ bid, payWithBalance, isVisible, payWithPay
       return;
     }
 
-    initializePayment(proceedAfterPaystack)
+    initializePayment(proceedAfterPaystack);
   }
   const initializePayment = usePaystackPayment(paystackConfig);
   return (
-    <UiModal isVisible={isVisible} position="right" title="Make Payment" onClose={onClose}>
+    <UiModal
+      isVisible={isVisible}
+      position="right"
+      title="Make Payment"
+      onClose={onClose}
+    >
       <ModalBody>
         <UiButton variant="secondary" onClick={onClose}>
           <UiIcon icon="ArrowLeft" /> Back to Transporter Bids

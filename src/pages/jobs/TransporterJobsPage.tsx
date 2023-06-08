@@ -145,7 +145,7 @@ export default function TransporterJobs() {
           <span className="count">{bids.length}</span>
         </UiButton>
       </EdgeNode>
-    )
+    );
   }
   function showDeleteBidModal(bidId: string, tripId: string) {
     setSelectedJobId(tripId);
@@ -304,7 +304,8 @@ const EdgeNode = styled.div`
       display: flex;
       align-items: center;
       justify-content: center;
-    }}
+    }
+  }
   display: flex;
   gap: ${pxToRem(12)};
   .ui-filter-tag {

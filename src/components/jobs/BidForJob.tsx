@@ -30,9 +30,14 @@ interface Props {
   jobId: string;
   onClose: () => void;
   backToJobDetails: () => void;
-  isVisible: boolean
+  isVisible: boolean;
 }
-export default function BidForJob({ jobId, onClose, backToJobDetails, isVisible }: Props) {
+export default function BidForJob({
+  jobId,
+  onClose,
+  backToJobDetails,
+  isVisible,
+}: Props) {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.account.user);
   const vehicles = useSelector((state: RootState) => state.vehicle.vehicles);
@@ -144,7 +149,12 @@ export default function BidForJob({ jobId, onClose, backToJobDetails, isVisible 
   }, [bid]);
 
   return (
-    <UiModal isVisible={isVisible} position="right" title="Submit Bid" onClose={onClose}>
+    <UiModal
+      isVisible={isVisible}
+      position="right"
+      title="Submit Bid"
+      onClose={onClose}
+    >
       <ComponentStyling>
         <UiButton variant="secondary" onClick={backToJobDetails}>
           <UiIcon icon="ArrowLeft" /> Back to job details

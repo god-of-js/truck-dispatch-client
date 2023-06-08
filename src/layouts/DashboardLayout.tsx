@@ -80,9 +80,10 @@ export default function DashboardLayout() {
       // Sign in user by saving the session ID
       saveUserSessionId(token);
       navigate(
-        `${location.pathname}${isPhoneVerified === 'false'
-          ? '?isPhoneVerified=' + isPhoneVerified
-          : ''
+        `${location.pathname}${
+          isPhoneVerified === 'false'
+            ? '?isPhoneVerified=' + isPhoneVerified
+            : ''
         }`,
       );
     } else if (action === 'verify-email' && token) {
