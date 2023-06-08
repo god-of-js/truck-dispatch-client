@@ -123,7 +123,7 @@ export default function TransporterJobs() {
   function backToJobDetails() {
     setIsViewJobDetailsVisible(true);
     setIsBidForJobVisible(false);
-    setIsDeleteBidVisible(true);
+    setIsDeleteBidVisible(false);
   }
 
   function closeViewDetails() {

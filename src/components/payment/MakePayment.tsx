@@ -31,6 +31,7 @@ import PaymentMethods from 'types/PaymentMethods';
 interface Props {
   bid: Bid;
   isVisible: boolean;
+  loading: boolean;
   payWithBalance: () => void;
   payWithPaystack: (paymentdetails?: Payment) => void;
   onClose: () => void;
@@ -52,7 +53,7 @@ export default function MakePayment({
     firstName: user?.firstName,
     lastName: user?.lastName,
     phone: user?.phone,
-    amount: nairaToKobo(priceWithTDPercent(bid?.price || 0)),
+    amount: Math.round(nairaToKobo(priceWithTDPercent(bid.price))),
     publicKey: paystackPublickKey,
   };
 
@@ -77,7 +78,6 @@ export default function MakePayment({
       payWithBalance();
       return;
     }
-
     initializePayment(proceedAfterPaystack);
   }
   const initializePayment = usePaystackPayment(paystackConfig);

@@ -4,13 +4,14 @@ interface Props {
   value: boolean;
   onChange: (value?: boolean) => void;
 }
-export default function UiCheckbox({ value, onChange }: Props) {
+export default function UiCheckbox({ value = false, onChange }: Props) {
   return (
     <CheckBox
       type="checkbox"
       checked={value}
       onKeyDown={() => onChange(!value)}
       onClick={() => onChange(!value)}
+      onChange={() => onChange(!value)}
     />
   );
 }

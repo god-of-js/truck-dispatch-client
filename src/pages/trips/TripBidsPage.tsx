@@ -27,6 +27,7 @@ export default function TripBidsPage() {
   const user = useSelector((state: RootState) => state.account.user);
   const bids = useSelector((state: RootState) => state.bid.bids);
   const [pageLoading, setPageLoading] = useState(false);
+  const [assignLoading, setAssignLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isBidDetailsVisible, setIsBidDetailsVisible] = useState(false);
@@ -67,17 +68,11 @@ export default function TripBidsPage() {
     paymentMethod: 'paystack' | 'balance',
     payment?: Payment,
   ) {
-    console.log({
-      bid,
-      trip,
-      payment,
-      user,
-    });
     if (!bid || !trip || !user) {
       Toast.error({ msg: 'User or Trip does not exist' });
       return;
     }
-
+    setAssignLoading(true)
     const paymentData: AssignTripFormData = {
       from: user._id,
       to: bid.transporter._id,
@@ -92,7 +87,7 @@ export default function TripBidsPage() {
     if (payment) paymentData.processorReference = payment.reference;
     dispatch(toAnyAction(assignTrip(paymentData))).then(() => {
       navigate(`/my-trips/${tripId}`);
-    });
+    }).finally(() => setAssignLoading(false));
   }
 
   useEffect(() => {
@@ -141,6 +136,7 @@ export default function TripBidsPage() {
             onClose={() => setIsBidDetailsVisible(false)}
           />
           <MakePayment
+            loading={assignLoading}
             bid={bid}
             isVisible={isMakePaymentVisible}
             payWithBalance={() => setIsPayWithBalanceVisible(true)}
@@ -151,6 +147,7 @@ export default function TripBidsPage() {
           />
           <UiConfirmModal
             isVisible={isPayWithBalanceVisible}
+            loading={assignLoading}
             variant="secondary"
             notYetVariant="danger-secondary"
             title="Approve Payment"
