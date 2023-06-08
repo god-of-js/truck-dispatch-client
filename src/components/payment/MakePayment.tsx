@@ -28,6 +28,7 @@ import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
 import UserDetails from 'ui/UserDetails';
 import ATMCard from './ATMCard';
 import UiCheckbox from 'ui/UiCheckbox';
+import AssignTripFormData from 'types/AssignTripFormData';
 
 interface Props {
   bid: Bid;
@@ -49,25 +50,26 @@ export default function MakePayment({ bid, onClose }: Props) {
     publicKey: paystackPublickKey,
   };
   const [paymentMethod, setPaymentMethod] = useState<'paystack' | 'balance'>(
-    'balance',
+    user?.balance! >= bid.price ? 'balance' : 'paystack',
   );
-  function onSuccess(payment?: Payment) {
+  function assignTripToTransporter(payment?: Payment) {
     if (!bid || !trip || !payment || !user) {
       Toast.error({ msg: 'User or Trip does not exist' });
       return;
     }
     setLoading(true);
-    const paymentData = {
+    const paymentData: AssignTripFormData = {
       from: user._id,
       to: bid.transporter._id,
       tripId: trip._id,
       bidId: bid._id,
-      paymentReference: payment.reference,
       amountInBid: bid?.price,
       totalAmountPaid: priceWithTDPercent(bid?.price),
       transaction: payment.transaction,
+      paymentSource: paymentMethod
     };
 
+    if (payment) paymentData.processorReference = payment.reference;
     dispatch(toAnyAction(assignTrip(paymentData)))
       .then(() => {
         navigate(`/my-trips/${tripId}`);
@@ -84,6 +86,15 @@ export default function MakePayment({ bid, onClose }: Props) {
   }
   function setPaymentMethodAsPaystack() {
     setPaymentMethod('paystack');
+  }
+
+  function proceedWithPayment() {
+    if (paymentMethod === 'balance') {
+      assignTripToTransporter();
+      return;
+    }
+
+    initializePayment(assignTripToTransporter)
   }
   const initializePayment = usePaystackPayment(paystackConfig);
   return (
@@ -193,7 +204,7 @@ export default function MakePayment({ bid, onClose }: Props) {
             <UiButton
               loading={loading}
               isFullWidth
-              onClick={() => initializePayment(onSuccess)}
+              onClick={proceedWithPayment}
             >
               Proceed
             </UiButton>
