@@ -7,7 +7,6 @@ import { RootState } from 'modules/index';
 import { getPaymentRequestsOfDriver } from 'modules/Payments';
 import PaymentRequest from 'types/PaymentRequest';
 import { DropDownData } from 'ui/UiDropdownMenu';
-import UiOverlay from 'ui/UiOverlay';
 import UiPill from 'ui/UiPill';
 import UiTable from 'ui/UiTable';
 import {
@@ -218,15 +217,14 @@ function PaymentsPage() {
           emptyTableText="Nothing here yet. Start taking jobs to get payments."
           emptyTableBtnContent={emptyTableBtnContent()}
         />
-        <UiOverlay isVisible={isViewPaymentVisible}>
-          {selectedPayment && (
-            <ViewPaymentDetails
-              onClose={() => setIsViewPaymentVisible(false)}
-              payment={selectedPayment}
-              key={selectedPayment._id}
-            />
-          )}
-        </UiOverlay>
+        {selectedPayment && (
+          <ViewPaymentDetails
+            isVisible={isViewPaymentVisible}
+            onClose={() => setIsViewPaymentVisible(false)}
+            payment={selectedPayment}
+            key={selectedPayment._id}
+          />
+        )}
       </PageStyling>
     </>
   );

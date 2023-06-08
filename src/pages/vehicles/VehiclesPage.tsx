@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 import UiButton from 'ui/UiButton';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
-import UiOverlay from 'ui/UiOverlay';
 import AddVehicle from 'components/vehicles/AddVehicle';
 import { toAnyAction } from 'utils/helpers';
 import { getVehicles } from 'modules/Vehicle';
@@ -93,15 +92,11 @@ export default function VehiclesPage() {
         </EmptyVehicleContainer>
       )}
 
-      <UiOverlay isVisible={isAddVehicleVisible}>
-        <AddVehicle onClose={closeAddVehicle} />
-      </UiOverlay>
+      <AddVehicle isVisible={isAddVehicleVisible} onClose={closeAddVehicle} />
 
-      <UiOverlay isVisible={isEditVehicleVisible}>
-        {selectedVehicle && (
-          <EditVehicle onClose={closeEditVehicle} vehicle={selectedVehicle} />
-        )}
-      </UiOverlay>
+      {selectedVehicle && (
+        <EditVehicle isVisible={isEditVehicleVisible} onClose={closeEditVehicle} vehicle={selectedVehicle} />
+      )}
     </>
   );
 }

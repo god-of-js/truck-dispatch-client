@@ -17,8 +17,9 @@ import { RootState } from 'modules/index';
 interface Props {
   onClose: () => void;
   bankAccountDetails: BankAccount | null;
+  isVisible: boolean
 }
-export default function AddAccount({ bankAccountDetails, onClose }: Props) {
+export default function AddAccount({ bankAccountDetails, onClose, isVisible }: Props) {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.account.user);
   const [formData, setFormData] = useState<{
@@ -111,7 +112,7 @@ export default function AddAccount({ bankAccountDetails, onClose }: Props) {
   }, [formData]);
 
   return (
-    <UiModal size="sm" onClose={onClose}>
+    <UiModal isVisible={isVisible} size="sm" onClose={onClose}>
       <UiForm
         formData={{ ...formData, ...accountDetails }}
         schema={CreateAccountNumberSchema}
