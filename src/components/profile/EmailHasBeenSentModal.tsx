@@ -9,8 +9,9 @@ import { toAnyAction } from 'utils/helpers';
 
 interface Props {
   onClose: () => void;
+  isVisible: boolean
 }
-export default function EmailHasBeenSentModal({ onClose }: Props) {
+export default function EmailHasBeenSentModal({ onClose, isVisible }: Props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
@@ -22,7 +23,7 @@ export default function EmailHasBeenSentModal({ onClose }: Props) {
   }
 
   return (
-    <UiModal size="sm" onClose={onClose}>
+    <UiModal isVisible={isVisible} size="sm" onClose={onClose}>
       <Styling>
         <h2>Email Verification has been sent</h2>
         <p>

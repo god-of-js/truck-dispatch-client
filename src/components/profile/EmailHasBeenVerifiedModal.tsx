@@ -6,10 +6,11 @@ import UiModal from 'ui/UiModal';
 
 interface Props {
   onClose: () => void;
+  isVisible: boolean
 }
-export default function EmailHasBeenVerifiedModal({ onClose }: Props) {
+export default function EmailHasBeenVerifiedModal({ onClose, isVisible }: Props) {
   return (
-    <UiModal size="sm" onClose={onClose}>
+    <UiModal isVisible={isVisible} size="sm" onClose={onClose}>
       <Styling>
         <h2>Your email has been verified &#127881; &#127881;</h2>
         <p>

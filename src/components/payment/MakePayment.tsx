@@ -31,11 +31,12 @@ import PaymentMethods from 'types/PaymentMethods';
 
 interface Props {
   bid: Bid;
+  isVisible: boolean,
   payWithBalance: () => void;
   payWithPaystack: (paymentdetails?: Payment) => void;
   onClose: () => void;
 }
-export default function MakePayment({ bid, payWithBalance, payWithPaystack, onClose }: Props) {
+export default function MakePayment({ bid, payWithBalance, isVisible, payWithPaystack, onClose }: Props) {
   // When there are more payment cases, refactor this to handle them.
   const { tripId } = useParams();
   const trip = useSelector(selectTrip(tripId!));
@@ -74,7 +75,7 @@ export default function MakePayment({ bid, payWithBalance, payWithPaystack, onCl
   }
   const initializePayment = usePaystackPayment(paystackConfig);
   return (
-    <UiModal position="right" title="Make Payment" onClose={onClose}>
+    <UiModal isVisible={isVisible} position="right" title="Make Payment" onClose={onClose}>
       <ModalBody>
         <UiButton variant="secondary" onClick={onClose}>
           <UiIcon icon="ArrowLeft" /> Back to Transporter Bids

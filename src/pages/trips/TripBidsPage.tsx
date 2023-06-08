@@ -10,7 +10,6 @@ import TripBidItem from 'components/bids/TripBidItem';
 import PaginationLoader from 'components/layout/PaginationLoader';
 import { priceWithTDPercent, toAnyAction } from 'utils/helpers';
 import { getBidsWithTripId } from 'modules/Bid';
-import UiOverlay from 'ui/UiOverlay';
 import TripBidFullDetails from 'components/bids/TripBidFullDetails';
 import UiEmptyField from 'ui/UiEmptyList';
 import MakePayment from 'components/payment/MakePayment';
@@ -126,22 +125,20 @@ export default function TripBidsPage() {
       {isMakePaymentVisible}
       {bid && (
         <>
-          <UiOverlay isVisible={isBidDetailsVisible}>
-            <TripBidFullDetails
-              bid={bid}
-              negotiate={negotiateBid}
-              accept={acceptBid}
-              onClose={() => setIsBidDetailsVisible(false)}
-            />
-          </UiOverlay>
-          <UiOverlay isVisible={isMakePaymentVisible}>
-            <MakePayment
-              bid={bid}
-              payWithBalance={() => setIsPayWithBalanceVisible(true)}
-              payWithPaystack={(param) => assignTripToTransporter('paystack', param)}
-              onClose={() => setIsMakePaymentVisible(false)}
-            />
-          </UiOverlay>
+          <TripBidFullDetails
+            bid={bid}
+            isVisible={isBidDetailsVisible}
+            negotiate={negotiateBid}
+            accept={acceptBid}
+            onClose={() => setIsBidDetailsVisible(false)}
+          />
+          <MakePayment
+            bid={bid}
+            isVisible={isMakePaymentVisible}
+            payWithBalance={() => setIsPayWithBalanceVisible(true)}
+            payWithPaystack={(param) => assignTripToTransporter('paystack', param)}
+            onClose={() => setIsMakePaymentVisible(false)}
+          />
         </>
       )}
     </>

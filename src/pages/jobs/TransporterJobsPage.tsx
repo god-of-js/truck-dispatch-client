@@ -8,18 +8,17 @@ import { getJobs, selectJob } from 'modules/Trips';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import UiOverlay from 'ui/UiOverlay';
 import { filterByFieldInObject, toAnyAction } from 'utils/helpers';
 import Trip from 'types/Trip';
-import UiInput from 'ui/UiInput';
 import { clientBasedUserTypes } from 'utils/constants';
 import JobsResponse from 'types/JobsResponse';
 import ViewJobDetail from 'components/jobs/ViewJobDetail';
 import BidForJob from 'components/jobs/BidForJob';
 import { deleteBid, getTransporterBids } from 'modules/Bid';
-import UiFilterTag from 'ui/UiFilterTag';
 import AllBids from 'components/bids/AllBids';
 import PaginationLoader from 'components/layout/PaginationLoader';
+import UiButton from 'ui/UiButton';
+import UiFilterTag from 'ui/UiFilterTag';
 import UiConfirmModal from 'ui/UiConfirmModal';
 import { Toast } from 'utils/toast';
 import UiEmptyList from 'ui/UiEmptyList';
@@ -61,16 +60,19 @@ export default function TransporterJobs() {
         title: 'All',
         route: '/available-jobs',
         value: allJobs,
+        customWidth: 38,
       },
       {
         title: 'By Companies',
         route: '/available-jobs?sender-type=company',
         value: allJobsByCompany,
+        customWidth: 112,
       },
       {
         title: 'By Shippers',
         route: '/available-jobs?sender-type=shipper',
         value: allJobsByShipper,
+        customWidth: 94,
       },
     ],
     [allJobs, allJobsByCompany, allJobsByShipper],
@@ -135,26 +137,15 @@ export default function TransporterJobs() {
   function openAllBids() {
     setIsAllBidsVisible(true);
   }
-
   function edgeNode() {
     return (
       <EdgeNode>
-        <UiInput
-          onChange={handleQueryChange}
-          value={searchQuery}
-          name="searchQuery"
-          placeholder="Search..."
-          icon="Search"
-          size="md"
-        />
-        <UiFilterTag
-          title="MY BIDS"
-          isActive={true}
-          value={bids.length}
-          onClick={openAllBids}
-        />
+        <UiButton variant="secondary" size="large" onClick={openAllBids}>
+          <span className="text">MY BIDS</span>
+          <span className="count">{bids.length}</span>
+        </UiButton>
       </EdgeNode>
-    );
+    )
   }
   function showDeleteBidModal(bidId: string, tripId: string) {
     setSelectedJobId(tripId);
@@ -213,6 +204,7 @@ export default function TransporterJobs() {
       <DashboardTopNav
         routeName="Jobs"
         pageFilters={pageFilters}
+        handleQueryChange={handleQueryChange}
         edgeNode={edgeNode()}
       />
       <MyJobsPageStyle className="flex-container">
@@ -236,51 +228,46 @@ export default function TransporterJobs() {
           />
         )}
       </MyJobsPageStyle>
-      <UiOverlay isVisible={isInformUserOfVerificationModalVisible}>
-        <InformUserOfVerification
-          onClose={() => setIsInformUserOfVerificationModalVisible(false)}
-        />
-      </UiOverlay>
+      <InformUserOfVerification
+        isVisible={isInformUserOfVerificationModalVisible}
+        onClose={() => setIsInformUserOfVerificationModalVisible(false)}
+      />
       {job && (
         <>
-          <UiOverlay isVisible={isViewJobDetailsVisible}>
-            <ViewJobDetail
-              job={job}
-              bidOnJob={bidForJob}
-              onClose={closeViewDetails}
-            />
-          </UiOverlay>
-          <UiOverlay isVisible={isBidForJobVisible}>
-            <BidForJob
-              jobId={job._id}
-              onClose={closeBidOnJob}
-              backToJobDetails={backToJobDetails}
-            />
-          </UiOverlay>
+          <ViewJobDetail
+            isVisible={isViewJobDetailsVisible}
+            job={job}
+            bidOnJob={bidForJob}
+            onClose={closeViewDetails}
+          />
+          <BidForJob
+            isVisible={isBidForJobVisible}
+            jobId={job._id}
+            onClose={closeBidOnJob}
+            backToJobDetails={backToJobDetails}
+          />
         </>
       )}
-      <UiOverlay isVisible={isAllBidsVisible}>
-        <AllBids
-          onClose={() => setIsAllBidsVisible(false)}
-          editBid={(id) => {
-            bidForJob(id);
-            setIsAllBidsVisible(false);
-          }}
-          deleteBid={showDeleteBidModal}
-        />
-      </UiOverlay>
-      <UiOverlay isVisible={isDeleteBidVisible}>
-        <UiConfirmModal
-          title="Delete Bid"
-          variant="danger"
-          loading={isDeleteBidLoading}
-          onClose={() => setIsDeleteBidVisible(false)}
-          onProceed={deleteTransporterBid}
-        >
-          Are you sure you want to delete this bid? Your candidacy for this role
-          would immediately be revoked.
-        </UiConfirmModal>
-      </UiOverlay>
+      <AllBids
+        isVisible={isAllBidsVisible}
+        onClose={() => setIsAllBidsVisible(false)}
+        editBid={(id) => {
+          bidForJob(id);
+          setIsAllBidsVisible(false);
+        }}
+        deleteBid={showDeleteBidModal}
+      />
+      <UiConfirmModal
+        isVisible={isDeleteBidVisible}
+        title="Delete Bid"
+        variant="danger"
+        loading={isDeleteBidLoading}
+        onClose={() => setIsDeleteBidVisible(false)}
+        onProceed={deleteTransporterBid}
+      >
+        Are you sure you want to delete this bid? Your candidacy for this role
+        would immediately be revoked.
+      </UiConfirmModal>
       {emptyJobs()}
     </>
   );
@@ -288,12 +275,36 @@ export default function TransporterJobs() {
 
 const MyJobsPageStyle = styled.div`
   margin: ${pxToRem(32)} 0;
+  padding: 0 ${pxToRem(24)};
   display: flex;
   flex-wrap: wrap;
   gap: ${pxToRem(20)};
 `;
 
 const EdgeNode = styled.div`
+  button {
+    .text {
+      text-transform: uppercase;
+      font-size: ${pxToRem(14)};
+      line-height: 140%;
+      font-style: normal;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .count {
+      border-radius: ${pxToRem(10)};
+      padding: 0 ${pxToRem(4)};
+      font-size: ${pxToRem(10)};
+      letter-spacing: -0.02em;
+      border-radius: ${pxToRem(2)};
+      height: ${pxToRem(19)};
+      width: ${pxToRem(12)};
+      background: var(--color-primary-20);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }}
   display: flex;
   gap: ${pxToRem(12)};
   .ui-filter-tag {

@@ -10,15 +10,16 @@ interface Props {
   job: Trip;
   bidOnJob: (jobId: string) => void;
   onClose: () => void;
+  isVisible: boolean
 }
-export default function ViewJobDetail({ job, onClose, bidOnJob }: Props) {
+export default function ViewJobDetail({ job, onClose, bidOnJob, isVisible }: Props) {
   const bid = useSelector(selectBid(job._id, 'trip'));
   function startBid() {
     bidOnJob(job._id);
   }
 
   return (
-    <UiModal title="Job Details" position="right" onClose={onClose}>
+    <UiModal isVisible={isVisible} title="Job Details" position="right" onClose={onClose}>
       <ComponentStyling>
         <TripDetails trip={job} />
 
