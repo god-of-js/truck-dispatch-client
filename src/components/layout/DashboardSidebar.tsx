@@ -12,7 +12,6 @@ import { selectUnreadChats } from 'modules/Chat';
 import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
 import { shipperRoutes, transporterRoutes } from './routes';
-import { toAnyAction } from 'utils/helpers';
 import { setUser } from 'modules/Account';
 
 export default function DashboardSidebar() {
