@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import sizes from 'utils/sizes';
 import { ReactComponent as AppLogo } from '../../assets/logo.svg';
@@ -12,11 +12,13 @@ import { selectUnreadChats } from 'modules/Chat';
 import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
 import { shipperRoutes, transporterRoutes } from './routes';
+import { setUser } from 'modules/Account';
 
 export default function DashboardSidebar() {
   const user = useSelector((state: RootState) => state.account.user);
   const unreadChat = useSelector(selectUnreadChats);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const appLocation = useLocation();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobileExpanded, setIsMobileExpanded] = useState(false);
@@ -44,6 +46,8 @@ export default function DashboardSidebar() {
   function logOutUser() {
     removeUserSessionId();
     navigate('/auth/login');
+    dispatch(setUser(null));
+    window.location.reload();
   }
 
   function toggleShowNames() {
@@ -281,7 +285,7 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
     display: block;
     width: ${({ isExpanded }) => (isExpanded ? '16%' : '7%')};
     min-width: ${({ isExpanded }) =>
-      isExpanded ? pxToRem(260) : pxToRem(124)};
+    isExpanded ? pxToRem(260) : pxToRem(124)};
     border-top: none;
     position: static;
     border-right: ${pxToRem(1)} solid var(--color-gray-200);
@@ -356,7 +360,7 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
 
         .list-item-content {
           justify-content: ${({ isExpanded }) =>
-            isExpanded ? 'flex-start' : 'center'};
+    isExpanded ? 'flex-start' : 'center'};
           flex-grow: 1;
         }
         &.active,
