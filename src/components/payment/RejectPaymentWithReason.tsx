@@ -15,12 +15,14 @@ interface Props {
   paymentRequest?: PaymentRequest | null;
   tripId: string;
   paymentRequestId: string;
+  isVisible: boolean
 }
 export default function RejectPaymentWithReason({
   paymentRequest,
   tripId,
   paymentRequestId,
   onClose,
+  isVisible
 }: Props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -42,7 +44,7 @@ export default function RejectPaymentWithReason({
       });
   }
   return (
-    <UiModal onClose={onClose}>
+    <UiModal isVisible={isVisible} onClose={onClose}>
       <h2>Reject Payment</h2>
       <p>
         Inform the transporter of the reason his request for payment was
