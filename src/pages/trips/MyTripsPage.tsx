@@ -31,7 +31,6 @@ import UiFilterTag from 'ui/UiFilterTag';
 import UiInput from 'ui/UiInput';
 import { deleteBid, getTransporterBids } from 'modules/Bid';
 import PaginationLoader from 'components/layout/PaginationLoader';
-import UiOverlay from 'ui/UiOverlay';
 import InformUserOfVerification from 'components/verification/InformUserOfVerification';
 import ViewJobDetail from 'components/jobs/ViewJobDetail';
 import BidForJob from 'components/jobs/BidForJob';
@@ -446,82 +445,74 @@ export default function MyTripsPage() {
       </MyTripsPageStyle>
 
       {/* MODALS */}
-      <UiOverlay isVisible={isCreateTripVisible}>
-        <CreateTrip
-          tripId={activeTripId!}
-          onClose={() => {
-            setIsCreateTripVisible(false);
-            setActiveTripId(null);
-          }}
-          onCreated={showTripBroadcasted}
-        />
-      </UiOverlay>
+      <CreateTrip
+        isVisible={isCreateTripVisible}
+        tripId={activeTripId!}
+        onClose={() => {
+          setIsCreateTripVisible(false);
+          setActiveTripId(null);
+        }}
+        onCreated={showTripBroadcasted}
+      />
       {activeTripId && (
-        <UiOverlay isVisible={isTripBroadcastedVisible}>
-          <TripHasBeenBroadcasted
-            tripId={activeTripId!}
-            onClose={() => setIsTripBroadcastedVisible(false)}
-          />
-        </UiOverlay>
-      )}
-      <UiOverlay isVisible={isInformUserOfVerificationModalVisible}>
-        <InformUserOfVerification
-          onClose={() => setIsInformUserOfVerificationModalVisible(false)}
+        <TripHasBeenBroadcasted
+          isVisible={isTripBroadcastedVisible}
+          tripId={activeTripId!}
+          onClose={() => setIsTripBroadcastedVisible(false)}
         />
-      </UiOverlay>
+      )}
+      <InformUserOfVerification
+        isVisible={isInformUserOfVerificationModalVisible}
+        onClose={() => setIsInformUserOfVerificationModalVisible(false)}
+      />
       {job && (
         <>
-          <UiOverlay isVisible={isViewJobDetailsVisible}>
-            <ViewJobDetail
-              job={job}
-              bidOnJob={bidForJob}
-              onClose={closeViewDetails}
-            />
-          </UiOverlay>
-          <UiOverlay isVisible={isBidForJobVisible}>
-            <BidForJob
-              jobId={job._id}
-              onClose={closeBidOnJob}
-              backToJobDetails={backToJobDetails}
-            />
-          </UiOverlay>
+          <ViewJobDetail
+            job={job}
+            isVisible={isViewJobDetailsVisible}
+            bidOnJob={bidForJob}
+            onClose={closeViewDetails}
+          />
+          <BidForJob
+            isVisible={isBidForJobVisible}
+            jobId={job._id}
+            onClose={closeBidOnJob}
+            backToJobDetails={backToJobDetails}
+          />
         </>
       )}
-      <UiOverlay isVisible={isAllBidsVisible}>
-        <AllBids
-          onClose={() => setIsAllBidsVisible(false)}
-          editBid={(id) => {
-            bidForJob(id);
-            setIsAllBidsVisible(false);
-          }}
-          deleteBid={showDeleteBidModal}
-        />
-      </UiOverlay>
+      <AllBids
+        isVisible={isAllBidsVisible}
+        onClose={() => setIsAllBidsVisible(false)}
+        editBid={(id) => {
+          bidForJob(id);
+          setIsAllBidsVisible(false);
+        }}
+        deleteBid={showDeleteBidModal}
+      />
 
-      <UiOverlay isVisible={isCancelTripVisible}>
-        <UiConfirmModal
-          title="Cancel Trip"
-          variant="danger"
-          loading={isCancelTripLoading}
-          onClose={() => setIsCancelTripVisible(false)}
-          onProceed={cancelTrip}
-        >
-          Are you sure you want to cancel this trip? This process cannot be
-          undone.
-        </UiConfirmModal>
-      </UiOverlay>
-      <UiOverlay isVisible={isDeleteBidVisible}>
-        <UiConfirmModal
-          title="Delete Bid"
-          variant="danger"
-          loading={isDeleteBidLoading}
-          onClose={() => setIsDeleteBidVisible(false)}
-          onProceed={deleteTransporterBid}
-        >
-          Are you sure you want to delete this bid? Your candidacy for this role
-          would immediately be revoked.
-        </UiConfirmModal>
-      </UiOverlay>
+      <UiConfirmModal
+        isVisible={isCancelTripVisible}
+        title="Cancel Trip"
+        variant="danger"
+        loading={isCancelTripLoading}
+        onClose={() => setIsCancelTripVisible(false)}
+        onProceed={cancelTrip}
+      >
+        Are you sure you want to cancel this trip? This process cannot be
+        undone.
+      </UiConfirmModal>
+      <UiConfirmModal
+        isVisible={isDeleteBidVisible}
+        title="Delete Bid"
+        variant="danger"
+        loading={isDeleteBidLoading}
+        onClose={() => setIsDeleteBidVisible(false)}
+        onProceed={deleteTransporterBid}
+      >
+        Are you sure you want to delete this bid? Your candidacy for this role
+        would immediately be revoked.
+      </UiConfirmModal>
     </>
   );
 }

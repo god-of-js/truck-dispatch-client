@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import UiButton from 'components/ui/UiButton';
-import UiOverlay from 'components/ui/UiOverlay';
 import AddAccount from 'components/profile/AddAccount';
 import { useSelector } from 'react-redux';
 import sizes from 'utils/sizes';
@@ -71,12 +70,11 @@ export default function AccountDetailsPage() {
           {bankDetails}
         </UiCard>
       </AccountPageStyling>
-      <UiOverlay isVisible={changeBankModal}>
-        <AddAccount
-          bankAccountDetails={accountDetails || null}
-          onClose={() => setChangeBankModal(false)}
-        />
-      </UiOverlay>
+      <AddAccount
+        isVisible={changeBankModal}
+        bankAccountDetails={accountDetails || null}
+        onClose={() => setChangeBankModal(false)}
+      />
     </>
   );
 }

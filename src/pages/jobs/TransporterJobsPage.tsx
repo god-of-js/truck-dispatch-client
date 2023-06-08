@@ -8,7 +8,6 @@ import { getJobs, selectJob } from 'modules/Trips';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import UiOverlay from 'ui/UiOverlay';
 import { filterByFieldInObject, toAnyAction } from 'utils/helpers';
 import Trip from 'types/Trip';
 import { clientBasedUserTypes } from 'utils/constants';
@@ -146,7 +145,8 @@ export default function TransporterJobs() {
           <span className="count">{bids.length}</span>
         </UiButton>
       </EdgeNode>
-    )}
+    )
+  }
   function showDeleteBidModal(bidId: string, tripId: string) {
     setSelectedJobId(tripId);
     setSelectedBidId(bidId);
@@ -228,51 +228,46 @@ export default function TransporterJobs() {
           />
         )}
       </MyJobsPageStyle>
-      <UiOverlay isVisible={isInformUserOfVerificationModalVisible}>
-        <InformUserOfVerification
-          onClose={() => setIsInformUserOfVerificationModalVisible(false)}
-        />
-      </UiOverlay>
+      <InformUserOfVerification
+        isVisible={isInformUserOfVerificationModalVisible}
+        onClose={() => setIsInformUserOfVerificationModalVisible(false)}
+      />
       {job && (
         <>
-          <UiOverlay isVisible={isViewJobDetailsVisible}>
-            <ViewJobDetail
-              job={job}
-              bidOnJob={bidForJob}
-              onClose={closeViewDetails}
-            />
-          </UiOverlay>
-          <UiOverlay isVisible={isBidForJobVisible}>
-            <BidForJob
-              jobId={job._id}
-              onClose={closeBidOnJob}
-              backToJobDetails={backToJobDetails}
-            />
-          </UiOverlay>
+          <ViewJobDetail
+            isVisible={isViewJobDetailsVisible}
+            job={job}
+            bidOnJob={bidForJob}
+            onClose={closeViewDetails}
+          />
+          <BidForJob
+            isVisible={isBidForJobVisible}
+            jobId={job._id}
+            onClose={closeBidOnJob}
+            backToJobDetails={backToJobDetails}
+          />
         </>
       )}
-      <UiOverlay isVisible={isAllBidsVisible}>
-        <AllBids
-          onClose={() => setIsAllBidsVisible(false)}
-          editBid={(id) => {
-            bidForJob(id);
-            setIsAllBidsVisible(false);
-          }}
-          deleteBid={showDeleteBidModal}
-        />
-      </UiOverlay>
-      <UiOverlay isVisible={isDeleteBidVisible}>
-        <UiConfirmModal
-          title="Delete Bid"
-          variant="danger"
-          loading={isDeleteBidLoading}
-          onClose={() => setIsDeleteBidVisible(false)}
-          onProceed={deleteTransporterBid}
-        >
-          Are you sure you want to delete this bid? Your candidacy for this role
-          would immediately be revoked.
-        </UiConfirmModal>
-      </UiOverlay>
+      <AllBids
+        isVisible={isAllBidsVisible}
+        onClose={() => setIsAllBidsVisible(false)}
+        editBid={(id) => {
+          bidForJob(id);
+          setIsAllBidsVisible(false);
+        }}
+        deleteBid={showDeleteBidModal}
+      />
+      <UiConfirmModal
+        isVisible={isDeleteBidVisible}
+        title="Delete Bid"
+        variant="danger"
+        loading={isDeleteBidLoading}
+        onClose={() => setIsDeleteBidVisible(false)}
+        onProceed={deleteTransporterBid}
+      >
+        Are you sure you want to delete this bid? Your candidacy for this role
+        would immediately be revoked.
+      </UiConfirmModal>
       {emptyJobs()}
     </>
   );

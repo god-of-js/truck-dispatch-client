@@ -19,8 +19,9 @@ import { publishUserRating } from 'modules/Ratings';
 
 interface Props {
   onClose: () => void;
+  isVisible: boolean
 }
-export default function RateTransporter({ onClose }: Props) {
+export default function RateTransporter({ onClose, isVisible }: Props) {
   const { tripId } = useParams();
   const dispatch = useDispatch();
   const trip = useSelector(selectTrip(tripId || ''));
@@ -59,7 +60,7 @@ export default function RateTransporter({ onClose }: Props) {
   }
 
   return (
-    <UiModal onClose={onClose}>
+    <UiModal isVisible={isVisible} onClose={onClose}>
       <RatingsHeader>Rate Trip</RatingsHeader>
       <Paragraph>
         Rate your trip to earn bonuses on your next trip and improve the user

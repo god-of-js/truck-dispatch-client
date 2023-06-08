@@ -15,10 +15,10 @@ import { Toast } from 'utils/toast';
 
 interface Props {
   bid: Bid;
-
+  isVisible: boolean,
   onClose: () => void;
 }
-export default function MakePayment({ bid, onClose }: Props) {
+export default function MakePayment({ bid, isVisible, onClose }: Props) {
   const { tripId } = useParams();
   const trip = useSelector(selectTrip(tripId!));
   const dispatch = useDispatch();
@@ -59,7 +59,7 @@ export default function MakePayment({ bid, onClose }: Props) {
 
   const initializePayment = usePaystackPayment(paystackConfig);
   return (
-    <UiModal title="Make Payment" onClose={onClose}>
+    <UiModal isVisible={isVisible} title="Make Payment" onClose={onClose}>
       <ModalBody>
         <UiButton
           loading={loading}

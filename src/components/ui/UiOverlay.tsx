@@ -4,9 +4,10 @@ import styled from 'styled-components';
 interface Props {
   children: React.ReactNode;
   isVisible: boolean;
+  onClick?: () => void;
 }
-export default function UiOverlay({ children, isVisible }: Props) {
-  return <>{isVisible && <Overlay>{children}</Overlay>}</>;
+export default function UiOverlay({ children, isVisible, onClick }: Props) {
+  return <>{isVisible && <Overlay onClick={onClick}>{children}</Overlay>}</>;
 }
 
 const Overlay = styled.div`
