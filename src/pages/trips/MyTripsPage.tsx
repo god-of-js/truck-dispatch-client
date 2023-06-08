@@ -435,7 +435,7 @@ export default function MyTripsPage() {
           emptyTableText="You don’t have any trip here yet, Bid for jobs to get trips"
           emptyTableBtnContent={emptyTableBtnContent()}
         />
-        {tripsData.length && (
+        {!!tripsData.length && (
           <PaginationLoader
             loading={loading}
             page={page}
