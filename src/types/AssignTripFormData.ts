@@ -6,6 +6,6 @@ export default interface AssignTripFormData {
   processorReference?: string;
   amountInBid: number;
   totalAmountPaid: number;
-  transaction: string;
+  transaction?: string;
   paymentSource: 'balance' | 'paystack';
 }

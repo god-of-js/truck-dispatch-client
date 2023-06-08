@@ -17,6 +17,7 @@ import { assignTrip, selectTrip } from 'modules/Trips';
 import AssignTripFormData from 'types/AssignTripFormData';
 import { Toast } from 'utils/toast';
 import Payment from 'types/Payment';
+import UiConfirmModal from 'ui/UiConfirmModal';
 
 export default function TripBidsPage() {
   const navigate = useNavigate();
@@ -66,7 +67,13 @@ export default function TripBidsPage() {
     paymentMethod: 'paystack' | 'balance',
     payment?: Payment,
   ) {
-    if (!bid || !trip || !payment || !user) {
+    console.log({
+      bid,
+      trip,
+      payment,
+      user,
+    });
+    if (!bid || !trip || !user) {
       Toast.error({ msg: 'User or Trip does not exist' });
       return;
     }
@@ -78,7 +85,7 @@ export default function TripBidsPage() {
       bidId: bid._id,
       amountInBid: bid?.price,
       totalAmountPaid: priceWithTDPercent(bid?.price),
-      transaction: payment.transaction,
+      transaction: payment?.transaction,
       paymentSource: paymentMethod,
     };
 
@@ -142,6 +149,18 @@ export default function TripBidsPage() {
             }
             onClose={() => setIsMakePaymentVisible(false)}
           />
+          <UiConfirmModal
+            isVisible={isPayWithBalanceVisible}
+            variant="secondary"
+            notYetVariant="danger-secondary"
+            title="Approve Payment"
+            onClose={() => setIsPayWithBalanceVisible(false)}
+            onProceed={() => assignTripToTransporter('balance')}
+          >
+            <b>&#8358;{bid.price}</b> will be deducted from your wallet balance.{' '}
+            <br />
+            Do you want to proceed?
+          </UiConfirmModal>
         </>
       )}
     </>

@@ -55,6 +55,7 @@ export default function MakePayment({
     amount: nairaToKobo(priceWithTDPercent(bid?.price || 0)),
     publicKey: paystackPublickKey,
   };
+
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethods>(
     user?.balance! >= bid.price ? 'balance' : 'paystack',
   );
@@ -62,6 +63,7 @@ export default function MakePayment({
   function setPaymentMethodAsBalance() {
     setPaymentMethod('balance');
   }
+
   function setPaymentMethodAsPaystack() {
     setPaymentMethod('paystack');
   }

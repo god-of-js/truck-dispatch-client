@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import sizes from 'utils/sizes';
-import UiButton from './UiButton';
+import UiButton, { ButtonVariant } from './UiButton';
 import UiModal from './UiModal';
 
 interface Props {
@@ -8,7 +8,8 @@ interface Props {
   title: string;
   confirmText?: string;
   declineText?: string;
-  variant?: 'primary' | 'danger';
+  variant?: ButtonVariant;
+  notYetVariant?: ButtonVariant;
   loading?: boolean;
   onClose: () => void;
   onProceed?: () => void;
@@ -21,6 +22,7 @@ export default function UiConfirmModal({
   confirmText = 'yes, proceed',
   declineText = 'not yet',
   variant = 'primary',
+  notYetVariant = 'secondary',
   loading,
   onClose,
   onProceed,
@@ -41,7 +43,7 @@ export default function UiConfirmModal({
           <UiButton
             isFullWidth
             size="large"
-            variant="secondary"
+            variant={notYetVariant}
             onClick={onClose}
           >
             {declineText}
