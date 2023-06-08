@@ -147,6 +147,7 @@ export default function TripBidsPage() {
 
 const PageStyling = styled.div`
   margin: ${pxToRem(32)} 0;
+  padding: ${pxToRem(12)} ${pxToRem(24)};
   display: flex;
   flex-wrap: wrap;
   gap: ${pxToRem(20)};

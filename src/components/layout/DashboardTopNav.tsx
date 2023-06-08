@@ -51,8 +51,8 @@ export default function DashboardTopNav({
   return (
     <TopNavContainer>
       <TopNav>
+        <div className="start-container">
       {startNode}
-        <div className="route-name-container">
           <span className="route-name">{routeName}</span>
           <span className="logo">
             <AppLogo />
@@ -141,7 +141,7 @@ const TopNav = styled.nav`
   align-items: center;
   justify-content: space-between;
 
-  .route-name-container {
+  .start-container {
     display: flex;
     align-items: center;
     gap: ${pxToRem(24)};
@@ -201,7 +201,7 @@ const TopNav = styled.nav`
   }
 
   @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
-    .route-name-container {
+    .start-container {
       display: flex;
       gap: ${pxToRem(8)};
       .logo {
@@ -228,7 +228,7 @@ const TopNav = styled.nav`
   }
 
   @media only screen and (min-width: ${sizes.tabletLargeWidth}) {
-    .route-name-container {
+    .start-container {
       .filters {
         display: flex;
       }
