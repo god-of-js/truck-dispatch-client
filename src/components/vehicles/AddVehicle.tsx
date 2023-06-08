@@ -12,7 +12,7 @@ import UploadVehicleImages from './UploadVehicleImages';
 
 interface Props {
   onClose: () => void;
-  isVisible: boolean
+  isVisible: boolean;
 }
 export default function AddVehicle({ isVisible, onClose }: Props) {
   const dispatch = useDispatch();
@@ -81,7 +81,12 @@ export default function AddVehicle({ isVisible, onClose }: Props) {
   }
 
   return (
-    <UiModal isVisible={isVisible} title="Add Vehicle" onClose={onClose} goPrev={goPrev}>
+    <UiModal
+      isVisible={isVisible}
+      title="Add Vehicle"
+      onClose={onClose}
+      goPrev={goPrev}
+    >
       <UiSteps steps={steps} currentStepTitle={currentStepTitle} noDetail />
       <Body>
         <Suspense>

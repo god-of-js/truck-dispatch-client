@@ -189,6 +189,8 @@ const TripDetailsStyling = styled.div`
   display: grid;
   grid-template-columns: 1fr;
 
+  padding: ${pxToRem(12)} ${pxToRem(24)};
+
   .card-title {
     font-style: normal;
     font-weight: 600;

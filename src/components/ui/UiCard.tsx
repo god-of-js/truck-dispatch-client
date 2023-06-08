@@ -3,17 +3,25 @@ import styled from 'styled-components';
 
 interface Props {
   children: React.ReactNode;
+  variant?: 'light' | 'primary-light';
 }
-export default function UiCard({ children }: Props) {
-  return <Card className="ui-card">{children}</Card>;
+export default function UiCard({ children, variant = 'light' }: Props) {
+  return <Card className={'ui-card ' + variant}>{children}</Card>;
 }
 
 const Card = styled.div`
-  background: #ffffff;
   border: 1px solid var(--color-gray-200);
   padding: ${pxToRem(20)};
   border-radius: ${pxToRem(8)};
   position: relative;
+
+  &.light {
+    background: #ffffff;
+  }
+
+  &.primary-light {
+    background: var(--color-primary-10);
+  }
 
   .double-items {
     display: grid;

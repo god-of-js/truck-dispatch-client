@@ -17,7 +17,7 @@ interface Props {
   bgVariant?: BG;
   onClose: () => void;
   goPrev?: () => void;
-  isVisible: boolean
+  isVisible: boolean;
 }
 export default function UiModal({
   children,
@@ -27,14 +27,19 @@ export default function UiModal({
   bgVariant = 'light',
   onClose,
   goPrev,
-  isVisible
+  isVisible,
 }: Props) {
   return (
     <UiOverlay onClick={onClose} isVisible={isVisible}>
       <Modal>
-        <ModalCard onClick={(event) => {
-          event.stopPropagation()
-        }} position={position} size={size} bgVariant={bgVariant}>
+        <ModalCard
+          onClick={(event) => {
+            event.stopPropagation();
+          }}
+          position={position}
+          size={size}
+          bgVariant={bgVariant}
+        >
           <div className="modal-inner">
             <header className="modal-header">
               {goPrev && (

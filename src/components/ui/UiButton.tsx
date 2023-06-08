@@ -1,26 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
 import Loader from 'components/layout/Loader';
-
+export type ButtonVariant =
+  | 'primary'
+  | 'secondary'
+  | 'danger-secondary'
+  | 'warning-secondary'
+  | 'tertiary'
+  | 'neutral'
+  | 'icon-neutral'
+  | 'primary-outlined'
+  | 'secondary-outlined'
+  | 'primary-text'
+  | 'warning-text'
+  | 'dark'
+  | 'dark-outlined'
+  | 'danger';
 interface Props {
   children?: React.ReactNode;
   disabled?: boolean;
   loading?: boolean;
-  variant?:
-    | 'primary'
-    | 'secondary'
-    | 'danger-secondary'
-    | 'warning-secondary'
-    | 'tertiary'
-    | 'neutral'
-    | 'icon-neutral'
-    | 'primary-outlined'
-    | 'secondary-outlined'
-    | 'primary-text'
-    | 'warning-text'
-    | 'dark'
-    | 'dark-outlined'
-    | 'danger';
+  variant?: ButtonVariant;
   size?: Sizes;
   type?: 'submit' | 'button';
   textCasing?: 'uppercase' | 'lowercase' | 'capitalize' | 'normal';

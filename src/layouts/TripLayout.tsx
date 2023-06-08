@@ -53,7 +53,10 @@ export default function TripLayout() {
     <>
       {/* TODO: Deprecate this Layout file. */}
       {loading ? <Loader /> : <Outlet />}
-      <RateTransporter isVisible={isRatingsModalVisible} onClose={closeRateTransporter} />
+      <RateTransporter
+        isVisible={isRatingsModalVisible}
+        onClose={closeRateTransporter}
+      />
     </>
   );
 }

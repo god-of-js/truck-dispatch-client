@@ -15,7 +15,7 @@ import { updateVehicle } from 'modules/Vehicle';
 interface Props {
   onClose: () => void;
   vehicle: Vehicle;
-  isVisible: boolean
+  isVisible: boolean;
 }
 
 export default function EditVehicle({ isVisible, onClose, vehicle }: Props) {
@@ -40,7 +40,12 @@ export default function EditVehicle({ isVisible, onClose, vehicle }: Props) {
   }
 
   return (
-    <UiModal isVisible={isVisible} position={'center'} title="Edit Vehicle" onClose={onClose}>
+    <UiModal
+      isVisible={isVisible}
+      position={'center'}
+      title="Edit Vehicle"
+      onClose={onClose}
+    >
       <Body>
         <DriverDetailsForm
           finish={editVehicle}

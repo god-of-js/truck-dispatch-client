@@ -9,7 +9,7 @@ import { toAnyAction } from 'utils/helpers';
 
 interface Props {
   onClose: () => void;
-  isVisible: boolean
+  isVisible: boolean;
 }
 export default function EmailHasBeenSentModal({ onClose, isVisible }: Props) {
   const dispatch = useDispatch();

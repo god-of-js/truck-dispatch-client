@@ -17,14 +17,14 @@ interface Props {
   onClose: () => void;
   negotiate: (bidId: string) => void;
   accept: (bidId: string) => void;
-  isVisible: boolean
+  isVisible: boolean;
 }
 export default function TripBidFullDetails({
   bid,
   onClose,
   negotiate,
   accept,
-  isVisible
+  isVisible,
 }: Props) {
   return (
     <UiModal isVisible={isVisible} onClose={onClose} title="Bid Details">

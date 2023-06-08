@@ -56,7 +56,7 @@ export function abbreviateNumber(
 
 export function priceWithTDPercent(amount: number | string, percent = 7) {
   const value = parseInt(`${amount}`);
-  return value + tdPercentage(amount);
+  return value + tdPercentageWithVAT(value);
 }
 
 export function tdPercentage(amount: number | string, percent = 7) {
@@ -65,6 +65,17 @@ export function tdPercentage(amount: number | string, percent = 7) {
     value = parseInt(`${amount}`);
   }
   return Math.round((percent / 100) * value);
+}
+
+export function tdPercentageWithVAT(amount: number) {
+  const valueToBeTaxedOn = tdPercentage(amount);
+  return valueToBeTaxedOn + calculateVAT(valueToBeTaxedOn);
+}
+
+export function calculateVAT(amount: number): number {
+  const vatRate = 0.075; // 7.5% VAT rate
+  const vatAmount = amount * vatRate;
+  return vatAmount;
 }
 
 export function nairaToKobo(amount: string | number) {
@@ -135,16 +146,6 @@ export function replaceEditedItem<T extends { _id: any }>(
   data[currentTripIndex] = item;
 
   return data;
-}
-
-export function generateReference() {
-  const alphanumeric =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let key = '';
-  for (let i = 0; i < 6; i++) {
-    key += alphanumeric.charAt(Math.floor(Math.random() * alphanumeric.length));
-  }
-  return key;
 }
 
 export function convertToFullDateWithTime(dateToConvert: number | string) {

@@ -14,7 +14,6 @@ import {
   convertToFullDate,
   convertToFullDateWithTime,
   toAnyAction,
-  truncateText,
 } from 'utils/helpers';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
 import UiInput from 'ui/UiInput';
@@ -127,20 +126,7 @@ function PaymentsPage() {
   }, [paymentRequests, status]);
 
   useEffect(() => {
-    dispatch(toAnyAction(getPaymentRequestsOfDriver())).then(
-      (requests: any) => {
-        setTotalPayments(requests.length);
-        setTotalPendingPayments(
-          requests.filter((request: any) => request.status === 'pending')
-            .length,
-        );
-        setTotalCompletedPayments(
-          requests.filter((request: any) => request.status === 'completed')
-            .length,
-        );
-      },
-    );
-    // dispatch(toAnyAction(getTrips()));
+    dispatch(toAnyAction(getPaymentRequestsOfDriver()));
   }, []);
 
   const filters = useMemo(

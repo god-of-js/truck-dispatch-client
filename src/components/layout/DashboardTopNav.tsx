@@ -51,8 +51,8 @@ export default function DashboardTopNav({
   return (
     <TopNavContainer>
       <TopNav>
-      {startNode}
-        <div className="route-name-container">
+        <div className="start-container">
+          {startNode}
           <span className="route-name">{routeName}</span>
           <span className="logo">
             <AppLogo />
@@ -108,7 +108,10 @@ export default function DashboardTopNav({
       </TopNav>
       <BottomTopNav>
         <div className="route-name-container">
+          <span className="route-icon">
+
           {routeIconName && <UiIcon icon={routeIconName} size="28" />}
+          </span>
           <span className="route-name">{routeName}</span>
         </div>
         <div className="filters">
@@ -141,7 +144,7 @@ const TopNav = styled.nav`
   align-items: center;
   justify-content: space-between;
 
-  .route-name-container {
+  .start-container {
     display: flex;
     align-items: center;
     gap: ${pxToRem(24)};
@@ -201,7 +204,7 @@ const TopNav = styled.nav`
   }
 
   @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
-    .route-name-container {
+    .start-container {
       display: flex;
       gap: ${pxToRem(8)};
       .logo {
@@ -228,7 +231,7 @@ const TopNav = styled.nav`
   }
 
   @media only screen and (min-width: ${sizes.tabletLargeWidth}) {
-    .route-name-container {
+    .start-container {
       .filters {
         display: flex;
       }
@@ -271,7 +274,7 @@ const BottomTopNav = styled.div`
   @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
     border-bottom: transparent;
     border-top: transparent;
-    .route-name {
+    .route-name, .route-icon {
       display: none;
     }
   }

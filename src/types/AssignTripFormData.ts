@@ -3,8 +3,9 @@ export default interface AssignTripFormData {
   to: string;
   tripId: string;
   bidId: string;
-  paymentReference: string;
+  processorReference?: string;
   amountInBid: number;
   totalAmountPaid: number;
-  transaction: string;
+  transaction?: string;
+  paymentSource: 'balance' | 'paystack';
 }

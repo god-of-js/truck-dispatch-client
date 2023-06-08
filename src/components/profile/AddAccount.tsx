@@ -17,9 +17,13 @@ import { RootState } from 'modules/index';
 interface Props {
   onClose: () => void;
   bankAccountDetails: BankAccount | null;
-  isVisible: boolean
+  isVisible: boolean;
 }
-export default function AddAccount({ bankAccountDetails, onClose, isVisible }: Props) {
+export default function AddAccount({
+  bankAccountDetails,
+  onClose,
+  isVisible,
+}: Props) {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.account.user);
   const [formData, setFormData] = useState<{
