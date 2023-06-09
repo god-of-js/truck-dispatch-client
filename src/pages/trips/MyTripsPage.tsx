@@ -307,7 +307,7 @@ export default function MyTripsPage() {
     setIsUnassignTripVisible(true);
   }
 
-  function cancelUnassignTrip() {
+  function triggerUnassignTrip() {
     if (!activeTripId) {
       Toast.error({ msg: 'Trip ID was not provided.' });
       return;
@@ -544,7 +544,7 @@ export default function MyTripsPage() {
           variant="danger"
           loading={isUnassignTripLoading}
           onClose={() => setIsUnassignTripVisible(false)}
-          onProceed={cancelUnassignTrip}
+          onProceed={triggerUnassignTrip}
         >
           Are you sure you want to unassign this trip? This process cannot be
           undone.
