@@ -7,6 +7,7 @@ import UiField from './UiField';
 
 export type InputType = 'text' | 'password' | 'number' | 'phone' | 'date';
 type Sizes = 'large' | 'md' | 's' | 'text';
+export type OnChangeParams = { name: string; value: string | null };
 interface Props {
   label?: string;
   type?: InputType;
@@ -21,7 +22,7 @@ interface Props {
   icon?: Icons;
   disabled?: boolean;
   inputRef?: React.RefObject<HTMLInputElement>;
-  onChange: (event: { name: string; value: string | null }) => void;
+  onChange: (event: OnChangeParams) => void;
 }
 
 export default function UiInput({

@@ -11,8 +11,6 @@ export default function loadServices() {
   script.defer = true;
   document.head.appendChild(script);
 
-  if (import.meta?.env?.MODE === 'development') return;
-
   let intercomScript: HTMLScriptElement | null =
     document.createElement('script');
   intercomScript.innerHTML = `

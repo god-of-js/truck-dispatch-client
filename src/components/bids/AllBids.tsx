@@ -8,11 +8,22 @@ interface Props {
   onClose: () => void;
   editBid: (jobId: string) => void;
   deleteBid: (bidId: string, jobId: string) => void;
+  isVisible: boolean;
 }
-export default function AllBids({ onClose, editBid, deleteBid }: Props) {
+export default function AllBids({
+  onClose,
+  editBid,
+  deleteBid,
+  isVisible,
+}: Props) {
   const bids = useSelector((state: RootState) => state.bid.bids);
   return (
-    <UiModal title="My Bids" position="right" onClose={onClose}>
+    <UiModal
+      isVisible={isVisible}
+      title="My Bids"
+      position="right"
+      onClose={onClose}
+    >
       <AllBidsStyling>
         {bids.map((bid) => (
           <BidItem

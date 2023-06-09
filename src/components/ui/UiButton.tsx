@@ -1,26 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
 import Loader from 'components/layout/Loader';
-
+export type ButtonVariant =
+  | 'primary'
+  | 'secondary'
+  | 'danger-secondary'
+  | 'warning-secondary'
+  | 'tertiary'
+  | 'neutral'
+  | 'icon-neutral'
+  | 'primary-outlined'
+  | 'secondary-outlined'
+  | 'primary-text'
+  | 'warning-text'
+  | 'dark'
+  | 'dark-outlined'
+  | 'danger';
 interface Props {
   children?: React.ReactNode;
   disabled?: boolean;
   loading?: boolean;
-  variant?:
-    | 'primary'
-    | 'secondary'
-    | 'danger-secondary'
-    | 'warning-secondary'
-    | 'tertiary'
-    | 'neutral'
-    | 'icon-neutral'
-    | 'primary-outlined'
-    | 'secondary-outlined'
-    | 'primary-text'
-    | 'warning-text'
-    | 'dark'
-    | 'dark-outlined'
-    | 'danger';
+  variant?: ButtonVariant;
   size?: Sizes;
   type?: 'submit' | 'button';
   textCasing?: 'uppercase' | 'lowercase' | 'capitalize' | 'normal';
@@ -45,7 +45,7 @@ export default function UiButton({
   isFullWidth = false,
 }: Props) {
   return (
-    <ButtonContainer
+    <Button
       className={`btn ${variant}`}
       onClick={onClick}
       disabled={disabled || loading}
@@ -62,7 +62,7 @@ export default function UiButton({
       ) : (
         children
       )}
-    </ButtonContainer>
+    </Button>
   );
 }
 
@@ -99,7 +99,7 @@ function getColor(condition: boolean, color: string) {
   return '';
 }
 
-const ButtonContainer = styled.button<Props>`
+const Button = styled.button<Props>`
   ${({ size }) => sizeVariant(size!)}
   border: none;
   cursor: ${({ disabled }) => (disabled ? '' : 'pointer')};
@@ -166,8 +166,6 @@ const ButtonContainer = styled.button<Props>`
   }
 
   &.icon-neutral {
-    width: ${pxToRem(40)};
-    height: ${pxToRem(36)};
     background: var(--color-gray-20);
     border-radius: ${pxToRem(8)};
 

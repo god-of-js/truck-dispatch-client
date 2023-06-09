@@ -12,8 +12,9 @@ import UploadVehicleImages from './UploadVehicleImages';
 
 interface Props {
   onClose: () => void;
+  isVisible: boolean;
 }
-export default function AddVehicle({ onClose }: Props) {
+export default function AddVehicle({ isVisible, onClose }: Props) {
   const dispatch = useDispatch();
   const [vehicle, setVehicleData] = useState<CreateVehicleData>({
     plateNumber: '',
@@ -80,7 +81,12 @@ export default function AddVehicle({ onClose }: Props) {
   }
 
   return (
-    <UiModal title="Add Vehicle" onClose={onClose} goPrev={goPrev}>
+    <UiModal
+      isVisible={isVisible}
+      title="Add Vehicle"
+      onClose={onClose}
+      goPrev={goPrev}
+    >
       <UiSteps steps={steps} currentStepTitle={currentStepTitle} noDetail />
       <Body>
         <Suspense>

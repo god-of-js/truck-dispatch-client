@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 import UiButton from 'ui/UiButton';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
-import UiOverlay from 'ui/UiOverlay';
 import AddVehicle from 'components/vehicles/AddVehicle';
 import { toAnyAction } from 'utils/helpers';
 import { getVehicles } from 'modules/Vehicle';
@@ -93,15 +92,15 @@ export default function VehiclesPage() {
         </EmptyVehicleContainer>
       )}
 
-      <UiOverlay isVisible={isAddVehicleVisible}>
-        <AddVehicle onClose={closeAddVehicle} />
-      </UiOverlay>
+      <AddVehicle isVisible={isAddVehicleVisible} onClose={closeAddVehicle} />
 
-      <UiOverlay isVisible={isEditVehicleVisible}>
-        {selectedVehicle && (
-          <EditVehicle onClose={closeEditVehicle} vehicle={selectedVehicle} />
-        )}
-      </UiOverlay>
+      {selectedVehicle && (
+        <EditVehicle
+          isVisible={isEditVehicleVisible}
+          onClose={closeEditVehicle}
+          vehicle={selectedVehicle}
+        />
+      )}
     </>
   );
 }
@@ -113,6 +112,7 @@ const GappedContainerWith12PX = styled.div`
 `;
 
 const EmptyVehicleContainer = styled.div`
+  padding: 0 ${pxToRem(24)};
   height: 70vh;
   display: flex;
   align-items: center;
@@ -138,6 +138,7 @@ const EmptyVehicleContainer = styled.div`
 const Vehicles = styled.div`
   display: grid;
   gap: ${pxToRem(22)};
+  padding: 0 ${pxToRem(24)};
   padding-top: ${pxToRem(32)};
 
   @media screen and (min-width: ${sizes.mobileSmall}) {

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import sizes from 'utils/sizes';
-import UiButton from './UiButton';
+import UiButton, { ButtonVariant } from './UiButton';
 import UiModal from './UiModal';
 
 interface Props {
@@ -8,10 +8,12 @@ interface Props {
   title: string;
   confirmText?: string;
   declineText?: string;
-  variant?: 'primary' | 'danger';
+  variant?: ButtonVariant;
+  notYetVariant?: ButtonVariant;
   loading?: boolean;
   onClose: () => void;
   onProceed?: () => void;
+  isVisible: boolean;
 }
 
 export default function UiConfirmModal({
@@ -20,12 +22,20 @@ export default function UiConfirmModal({
   confirmText = 'yes, proceed',
   declineText = 'not yet',
   variant = 'primary',
+  notYetVariant = 'secondary',
   loading,
   onClose,
   onProceed,
+  isVisible,
 }: Props) {
   return (
-    <UiModal title={title} onClose={onClose} size="sm" position="center">
+    <UiModal
+      isVisible={isVisible}
+      title={title}
+      onClose={onClose}
+      size="sm"
+      position="center"
+    >
       <Modal>
         <div className="modal-content">{children}</div>
 
@@ -33,7 +43,7 @@ export default function UiConfirmModal({
           <UiButton
             isFullWidth
             size="large"
-            variant="secondary"
+            variant={notYetVariant}
             onClick={onClose}
           >
             {declineText}

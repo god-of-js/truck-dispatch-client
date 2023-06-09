@@ -6,6 +6,7 @@ export default interface User {
   firstName: string;
   lastName: string;
   email: string;
+  balance?: number;
   phone: string;
   avatar?: string;
   completedTrips?: number;

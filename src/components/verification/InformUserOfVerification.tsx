@@ -6,10 +6,14 @@ import UiModal from 'ui/UiModal';
 
 interface Props {
   onClose: () => void;
+  isVisible: boolean;
 }
-export default function InformUserOfVerification({ onClose }: Props) {
+export default function InformUserOfVerification({
+  isVisible,
+  onClose,
+}: Props) {
   return (
-    <UiModal onClose={onClose}>
+    <UiModal isVisible={isVisible} onClose={onClose}>
       <Header>Verification is required for this action</Header>
       <TextContent>
         For security purposes, verification is required before you can gain

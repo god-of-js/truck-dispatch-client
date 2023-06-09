@@ -20,7 +20,6 @@ import { Toast } from 'utils/toast';
 import { getChatLogs, getUserChat, setChat, setChatLog } from 'modules/Chat';
 import { WEB_SOCKET_URL } from 'utils/privateKeys';
 import UiButton from 'ui/UiButton';
-import UiOverlay from 'ui/UiOverlay';
 import EmailHasBeenSentModal from 'components/profile/EmailHasBeenSentModal';
 import Loader from 'components/layout/Loader';
 import EmailHasBeenVerifiedModal from 'components/profile/EmailHasBeenVerifiedModal';
@@ -133,16 +132,14 @@ export default function DashboardLayout() {
       <DashboardSidebar />
       <Body>
         {loading ? <Loader /> : <Outlet />}
-        <UiOverlay isVisible={verificationHasBeenSent}>
-          <EmailHasBeenSentModal
-            onClose={() => setVerificationHasBeenSent(false)}
-          />
-        </UiOverlay>
-        <UiOverlay isVisible={emailHasBeenVerified}>
-          <EmailHasBeenVerifiedModal
-            onClose={() => setEmailHasBeenVerified(false)}
-          />
-        </UiOverlay>
+        <EmailHasBeenSentModal
+          isVisible={verificationHasBeenSent}
+          onClose={() => setVerificationHasBeenSent(false)}
+        />
+        <EmailHasBeenVerifiedModal
+          isVisible={emailHasBeenVerified}
+          onClose={() => setEmailHasBeenVerified(false)}
+        />
       </Body>
     </Layout>
   );
@@ -160,7 +157,7 @@ const Body = styled.div`
   position: relative;
   overflow-x: auto;
   width: 100%;
-  padding: 0 ${pxToRem(24)};
+  /* padding: 0 ${pxToRem(24)}; */
   .alert-container {
     padding: ${pxToRem(16)};
   }

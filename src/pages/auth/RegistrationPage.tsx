@@ -32,10 +32,10 @@ export default function RegistrationPage() {
       title: 'Personal details',
       detail: 'Please provide your full name, email and phone number',
     },
-    {
-      title: 'Verify phone number',
-      detail: 'Please provide your full name, email and phone number',
-    },
+    // {
+    //   title: 'Verify phone number',
+    //   detail: 'Please provide your full name, email and phone number',
+    // },
     {
       title: 'Company Details',
       detail: 'Provide the company name, address and registration details',
@@ -112,8 +112,8 @@ export default function RegistrationPage() {
       <StyledAuthContent>
         {(currentStepTitle === 'Account handler details' ||
           currentStepTitle === 'Personal details') && (
-          <PersonalDetailsForm goToNext={goToNext} />
-        )}
+            <PersonalDetailsForm goToNext={goToNext} />
+          )}
         {currentStepTitle === 'Verify phone number' && (
           <VerifyPhoneForm goToNext={goToNext} />
         )}

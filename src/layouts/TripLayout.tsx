@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getTrip, selectTrip } from 'modules/Trips';
 
 import Loader from 'components/layout/Loader';
-import UiOverlay from 'ui/UiOverlay';
 import RateTransporter from 'components/ratings/RateUser';
 import { toAnyAction } from 'utils/helpers';
 import { getTripRating } from 'modules/Ratings';
@@ -54,9 +53,10 @@ export default function TripLayout() {
     <>
       {/* TODO: Deprecate this Layout file. */}
       {loading ? <Loader /> : <Outlet />}
-      <UiOverlay isVisible={isRatingsModalVisible}>
-        <RateTransporter onClose={closeRateTransporter} />
-      </UiOverlay>
+      <RateTransporter
+        isVisible={isRatingsModalVisible}
+        onClose={closeRateTransporter}
+      />
     </>
   );
 }

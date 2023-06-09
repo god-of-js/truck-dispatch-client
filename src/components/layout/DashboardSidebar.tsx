@@ -1,85 +1,27 @@
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import sizes from 'utils/sizes';
 import { ReactComponent as AppLogo } from '../../assets/logo.svg';
 
-import UiIcon, { Icons } from '../ui/UiIcon';
+import UiIcon from '../ui/UiIcon';
 import { RootState } from 'modules/index';
 import { removeUserSessionId } from 'utils/localStorageMethods';
 import { selectUnreadChats } from 'modules/Chat';
 import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
+import { shipperRoutes, transporterRoutes } from './routes';
+import { setUser } from 'modules/Account';
 
-interface Route {
-  iconName: Icons;
-  path: string;
-  name: string;
-}
 export default function DashboardSidebar() {
   const user = useSelector((state: RootState) => state.account.user);
   const unreadChat = useSelector(selectUnreadChats);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const appLocation = useLocation();
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [isMobileExpanded, setIsMobileExpanded] = useState(false);
-
-  const transporterRoutes: Route[] = [
-    {
-      path: '/available-jobs',
-      name: 'Jobs',
-      iconName: 'Jobs',
-    },
-    {
-      path: '/my-trips',
-      name: 'My Trips',
-      iconName: 'TruckTick',
-    },
-    {
-      path: '/payments',
-      name: 'Payments',
-      iconName: 'Moneys',
-    },
-    {
-      path: '/vehicles',
-      name: 'Vehicles',
-      iconName: 'Truck',
-    },
-    {
-      path: '/',
-      name: 'Analytics',
-      iconName: 'ChartSquare',
-    },
-    {
-      path: '/',
-      name: 'Settings',
-      iconName: 'Settings',
-    },
-  ];
-
-  const shipperRoutes: Route[] = [
-    {
-      path: '/my-trips',
-      name: 'My Trips',
-      iconName: 'TruckTick',
-    },
-    {
-      path: '/wallet',
-      name: 'Wallet',
-      iconName: 'TruckTick',
-    },
-    {
-      path: '/transporters',
-      name: 'Transporters',
-      iconName: 'Truck',
-    },
-    {
-      path: '/contacts',
-      name: 'Contacts',
-      iconName: 'TruckTick',
-    },
-  ];
 
   const userType = useMemo(() => {
     if (user?.userType === 'transporter') return 'transporter';
@@ -104,6 +46,8 @@ export default function DashboardSidebar() {
   function logOutUser() {
     removeUserSessionId();
     navigate('/auth/login');
+    dispatch(setUser(null));
+    window.location.reload();
   }
 
   function toggleShowNames() {
@@ -116,6 +60,7 @@ export default function DashboardSidebar() {
 
   return (
     <>
+      {/* <DashboardTopNav routeName=''/> */}
       <Sidebar isExpanded={isExpanded} isMobileExpanded={isMobileExpanded}>
         <div className="sidebar__inner">
           <header className="hide-in-small-screen">
@@ -224,7 +169,8 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
   background: white;
   z-index: 2;
   /* TODO: calc the height of 100% - nav bar height */
-  height: 100%;
+  height: ${({ isMobileExpanded }) =>
+    isMobileExpanded ? 'calc(100% - 72px)' : 'none'};
 
   .hide-in-small-screen {
     display: none;
@@ -339,7 +285,7 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
     display: block;
     width: ${({ isExpanded }) => (isExpanded ? '16%' : '7%')};
     min-width: ${({ isExpanded }) =>
-      isExpanded ? pxToRem(260) : pxToRem(124)};
+    isExpanded ? pxToRem(260) : pxToRem(124)};
     border-top: none;
     position: static;
     border-right: ${pxToRem(1)} solid var(--color-gray-200);
@@ -414,7 +360,7 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
 
         .list-item-content {
           justify-content: ${({ isExpanded }) =>
-            isExpanded ? 'flex-start' : 'center'};
+    isExpanded ? 'flex-start' : 'center'};
           flex-grow: 1;
         }
         &.active,

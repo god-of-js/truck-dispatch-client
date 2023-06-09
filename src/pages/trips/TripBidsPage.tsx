@@ -8,22 +8,30 @@ import DashboardTopNav from 'components/layout/DashboardTopNav';
 import UiBackButton from 'ui/UiBackButton';
 import TripBidItem from 'components/bids/TripBidItem';
 import PaginationLoader from 'components/layout/PaginationLoader';
-import { toAnyAction } from 'utils/helpers';
+import { priceWithTDPercent, toAnyAction } from 'utils/helpers';
 import { getBidsWithTripId } from 'modules/Bid';
-import UiOverlay from 'ui/UiOverlay';
 import TripBidFullDetails from 'components/bids/TripBidFullDetails';
 import UiEmptyField from 'ui/UiEmptyList';
 import MakePayment from 'components/payment/MakePayment';
+import { assignTrip, selectTrip } from 'modules/Trips';
+import AssignTripFormData from 'types/AssignTripFormData';
+import { Toast } from 'utils/toast';
+import Payment from 'types/Payment';
+import UiConfirmModal from 'ui/UiConfirmModal';
 
 export default function TripBidsPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { tripId } = useParams();
+  const trip = useSelector(selectTrip(tripId!));
+  const user = useSelector((state: RootState) => state.account.user);
   const bids = useSelector((state: RootState) => state.bid.bids);
   const [pageLoading, setPageLoading] = useState(false);
+  const [assignLoading, setAssignLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isBidDetailsVisible, setIsBidDetailsVisible] = useState(false);
+  const [isPayWithBalanceVisible, setIsPayWithBalanceVisible] = useState(false);
   const [isMakePaymentVisible, setIsMakePaymentVisible] = useState(true);
   const [activeBidId, setActiveBidId] = useState<string | null>(null);
 
@@ -54,6 +62,32 @@ export default function TripBidsPage() {
         setPageLoading(false),
       );
     }
+  }
+
+  function assignTripToTransporter(
+    paymentMethod: 'paystack' | 'balance',
+    payment?: Payment,
+  ) {
+    if (!bid || !trip || !user) {
+      Toast.error({ msg: 'User or Trip does not exist' });
+      return;
+    }
+    setAssignLoading(true)
+    const paymentData: AssignTripFormData = {
+      from: user._id,
+      to: bid.transporter._id,
+      tripId: trip._id,
+      bidId: bid._id,
+      amountInBid: bid?.price,
+      totalAmountPaid: priceWithTDPercent(bid?.price),
+      transaction: payment?.transaction,
+      paymentSource: paymentMethod,
+    };
+
+    if (payment) paymentData.processorReference = payment.reference;
+    dispatch(toAnyAction(assignTrip(paymentData))).then(() => {
+      navigate(`/my-trips/${tripId}`);
+    }).finally(() => setAssignLoading(false));
   }
 
   useEffect(() => {
@@ -94,20 +128,36 @@ export default function TripBidsPage() {
       {isMakePaymentVisible}
       {bid && (
         <>
-          <UiOverlay isVisible={isBidDetailsVisible}>
-            <TripBidFullDetails
-              bid={bid}
-              negotiate={negotiateBid}
-              accept={acceptBid}
-              onClose={() => setIsBidDetailsVisible(false)}
-            />
-          </UiOverlay>
-          <UiOverlay isVisible={isMakePaymentVisible}>
-            <MakePayment
-              bid={bid}
-              onClose={() => setIsMakePaymentVisible(false)}
-            />
-          </UiOverlay>
+          <TripBidFullDetails
+            bid={bid}
+            isVisible={isBidDetailsVisible}
+            negotiate={negotiateBid}
+            accept={acceptBid}
+            onClose={() => setIsBidDetailsVisible(false)}
+          />
+          <MakePayment
+            loading={assignLoading}
+            bid={bid}
+            isVisible={isMakePaymentVisible}
+            payWithBalance={() => setIsPayWithBalanceVisible(true)}
+            payWithPaystack={(param) =>
+              assignTripToTransporter('paystack', param)
+            }
+            onClose={() => setIsMakePaymentVisible(false)}
+          />
+          <UiConfirmModal
+            isVisible={isPayWithBalanceVisible}
+            loading={assignLoading}
+            variant="secondary"
+            notYetVariant="danger-secondary"
+            title="Approve Payment"
+            onClose={() => setIsPayWithBalanceVisible(false)}
+            onProceed={() => assignTripToTransporter('balance')}
+          >
+            <b>&#8358;{bid.price}</b> will be deducted from your wallet balance.{' '}
+            <br />
+            Do you want to proceed?
+          </UiConfirmModal>
         </>
       )}
     </>
@@ -116,6 +166,7 @@ export default function TripBidsPage() {
 
 const PageStyling = styled.div`
   margin: ${pxToRem(32)} 0;
+  padding: ${pxToRem(12)} ${pxToRem(24)};
   display: flex;
   flex-wrap: wrap;
   gap: ${pxToRem(20)};

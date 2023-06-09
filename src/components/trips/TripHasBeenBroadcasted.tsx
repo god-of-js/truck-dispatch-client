@@ -7,10 +7,20 @@ import { ReactComponent as BroadCasted } from '../../assets/img/broadcast.svg';
 interface Props {
   onClose: () => void;
   tripId: string;
+  isVisible: boolean;
 }
-export default function TripHasBeenBroadcasted({ tripId, onClose }: Props) {
+export default function TripHasBeenBroadcasted({
+  tripId,
+  onClose,
+  isVisible,
+}: Props) {
   return (
-    <UiModal title="Broadcasted Trip" size="md" onClose={onClose}>
+    <UiModal
+      isVisible={isVisible}
+      title="Broadcasted Trip"
+      size="md"
+      onClose={onClose}
+    >
       <ComponentLayout>
         <BroadCasted />
         <h4>Your trip has been broadcasted</h4>
