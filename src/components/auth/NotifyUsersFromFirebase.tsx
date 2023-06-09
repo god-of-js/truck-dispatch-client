@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 interface Props {
   onClose: () => void;
-  isVisible: boolean
+  isVisible: boolean;
 }
 
 export default function NotifyUsersFromFirebase({ onClose, isVisible }: Props) {

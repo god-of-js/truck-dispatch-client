@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import FileUploadWidget from './FileUploadWidget';
 import UiButton from './UiButton';
 import UiIcon from './UiIcon';
-import EmptyAvatar from '../../assets/img/empty-profile-pic.png'
+import EmptyAvatar from '../../assets/img/empty-profile-pic.png';
 
 type Size = 'sm' | 'lg';
 
@@ -48,8 +48,7 @@ export default function UiAvatar({
   return (
     <AvatarContainer>
       <Avatar size={size} isHalfCurved={isHalfCurved}>
-          <img src={avatar ? formattedAvatar : EmptyAvatar} alt="" />
-        
+        <img src={avatar ? formattedAvatar : EmptyAvatar} alt="" />
       </Avatar>
       {isEdit && (
         <FileUploadWidget

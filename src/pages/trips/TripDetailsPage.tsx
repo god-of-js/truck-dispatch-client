@@ -11,7 +11,7 @@ import UiCard from 'ui/UiCard';
 import UiDataField from 'ui/UiDataField';
 import TripPickUpAndDeliverWithDates from 'components/trips/TripPickUpAndDeliverWithDates';
 import { RootState } from 'modules/index';
-import { clientBasedUserTypes } from 'utils/constants';
+import { clientBasedUserTypes, serviceBasedUserTypes } from 'utils/constants';
 import TripDetailPaymentCard from 'components/trips/TripDetailPaymentCard';
 import UserDetails from 'ui/UserDetails';
 import UiButton from 'ui/UiButton';
@@ -25,6 +25,10 @@ export default function TripDetailsPage() {
 
   const userIsClientBasedUser = useMemo(
     () => clientBasedUserTypes.includes(user?.userType!),
+    [user],
+  );
+  const userIsServiceBasedUser = useMemo(
+    () => serviceBasedUserTypes.includes(user?.userType!),
     [user],
   );
 
@@ -130,18 +134,41 @@ export default function TripDetailsPage() {
             )}
           </UiCard>
           <UiCard>
-            <div className="card-title">Responsible Shipper</div>
+            <div className="responsible-user">
+            <div className="card-title">
+              {userIsServiceBasedUser ? 'Trip Owner' : 'Responsible Shipper'}
+            </div>
 
-            {!userIsClientBasedUser && (
+            {userIsServiceBasedUser && (
               <UserDetails
                 userName={`${trip.tripOwner.firstName} ${trip.tripOwner.lastName}`}
                 avatar={trip.tripOwner.avatar}
                 avatarIsHalfCurved
+                showMessage
+                showViewProfile
                 profileSubtitle={
                   trip.status !== 'completed' ? trip.tripOwner.phone : ''
                 }
               />
             )}
+            {userIsClientBasedUser && (
+              <>
+                {!!trip.transporter ? (
+                  <UserDetails
+                    userName={`${trip.transporter.firstName} ${trip.transporter.lastName}`}
+                    avatar={trip.transporter.avatar}
+                    showMessage
+                    showViewProfile
+                    profileSubtitle={
+                      trip.status !== 'completed' ? trip.transporter.phone : ''
+                    }
+                  />
+                ) : (
+                  <UserDetails userName="Unassigned" />
+                )}
+              </>
+            )}
+            </div>
           </UiCard>
           <div className="double-grid">
             <UiCard>
@@ -243,6 +270,12 @@ const TripDetailsStyling = styled.div`
     display: grid;
     grid-template-columns: 1fr;
     gap: ${pxToRem(20)};
+  }
+  .responsible-user {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-between; */
+    height: 100%;
   }
   @media screen and (min-width: ${sizes.mobileLargeWidth}) {
     grid-template-columns: 2fr 1fr;
