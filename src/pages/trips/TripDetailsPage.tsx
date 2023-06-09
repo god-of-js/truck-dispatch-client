@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 
@@ -17,11 +17,13 @@ import UserDetails from 'ui/UserDetails';
 import UiButton from 'ui/UiButton';
 import UiIcon from 'ui/UiIcon';
 import UiPill from 'ui/UiPill';
+import RequestPayment from 'components/payment/RequestPayment';
 
 export default function TripDetailsPage() {
   const user = useSelector((state: RootState) => state.account.user);
   const { tripId } = useParams();
   const trip = useSelector(selectTrip(tripId!));
+  const [requestPaymentIsVisible, setRequestPaymentIsVisible] = useState(true);
 
   const userIsClientBasedUser = useMemo(
     () => clientBasedUserTypes.includes(user?.userType!),
@@ -49,14 +51,22 @@ export default function TripDetailsPage() {
     return 'success';
   }, [trip]);
 
-  const TripStatusIndicator = useMemo(() => {
+  const edgeNode = useMemo(() => {
     return (
-      <StatusIndicator>
-        <span className="trip-status-text">Trip Status:</span>
-        <div className="pill-container">
-          <UiPill variant={statusVariant}>{statusText}</UiPill>
-        </div>
-      </StatusIndicator>
+      <EdgeNode>
+        <StatusIndicator>
+          <span className="trip-status-text">Trip Status:</span>
+          <div className="pill-container">
+            <UiPill variant={statusVariant}>{statusText}</UiPill>
+          </div>
+        </StatusIndicator>
+        {userIsServiceBasedUser && trip?.status === 'assigned' && (
+          <UiButton>Start Trip</UiButton>
+        )}
+        {userIsServiceBasedUser && trip?.status === 'in-progress' && (
+          <UiButton>Complete Trip</UiButton>
+        )}
+      </EdgeNode>
     );
   }, [trip]);
 
@@ -65,7 +75,7 @@ export default function TripDetailsPage() {
       <DashboardTopNav
         routeName="Trip Details"
         startNode={<UiBackButton />}
-        edgeNode={TripStatusIndicator}
+        edgeNode={edgeNode}
       />
       {/* Add not found here. */}
       {trip && (
@@ -134,7 +144,6 @@ export default function TripDetailsPage() {
             )}
           </UiCard>
           <UiCard>
-            <div className="responsible-user">
             <div className="card-title">
               {userIsServiceBasedUser ? 'Trip Owner' : 'Responsible Shipper'}
             </div>
@@ -168,7 +177,6 @@ export default function TripDetailsPage() {
                 )}
               </>
             )}
-            </div>
           </UiCard>
           <div className="double-grid">
             <UiCard>
@@ -208,6 +216,10 @@ export default function TripDetailsPage() {
           </div>
         </TripDetailsStyling>
       )}
+      <RequestPayment
+        isVisible={requestPaymentIsVisible}
+        onClose={() => setRequestPaymentIsVisible(false)}
+      />
     </>
   );
 }
@@ -271,12 +283,6 @@ const TripDetailsStyling = styled.div`
     grid-template-columns: 1fr;
     gap: ${pxToRem(20)};
   }
-  .responsible-user {
-    display: flex;
-    flex-direction: column;
-    /* justify-content: space-between; */
-    height: 100%;
-  }
   @media screen and (min-width: ${sizes.mobileLargeWidth}) {
     grid-template-columns: 2fr 1fr;
     gap: ${pxToRem(20)};
@@ -308,5 +314,15 @@ const StatusIndicator = styled.div`
       padding: ${pxToRem(8)};
       height: ${pxToRem(20)};
     }
+  }
+`;
+
+const EdgeNode = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${pxToRem(12)};
+
+  button {
+    min-width: ${pxToRem(133)};
   }
 `;
