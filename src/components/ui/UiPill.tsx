@@ -11,32 +11,33 @@ export type PillType =
   | 'gray'
   | 'rose'
   | 'orange';
+
 const icons: { [key: string]: Icons } = {
-  // modify the icons to fit the variants
   primary: 'Tick',
-  warning: 'Tick',
-  danger: 'Tick',
+  warning: 'UiPillSuccess',
+  danger: 'UiPillRejected',
   info: 'Tick',
-  success: 'Tick',
+  success: 'UiPillSuccess',
   gray: 'Tick',
+  orange: 'UiPillPending',
 };
+
 interface Props {
   children: React.ReactNode;
   variant: PillType;
   hasIcon?: boolean;
 }
-export default function ({ children, variant, hasIcon }: Props) {
+
+export default function Pill({ children, variant, hasIcon = true }: Props) {
   return (
-    <Pill className={variant + ' ui-pill'}>
-      <div className="circle">
-        {hasIcon && <UiIcon icon={icons[variant]} />}
-      </div>
-      {children}
-    </Pill>
+    <StyledPill className={variant + ' ui-pill'} hasIcon={hasIcon}>
+      {hasIcon && <UiIcon icon={icons[variant]} />}
+      <StyledChildren>{children}</StyledChildren>
+    </StyledPill>
   );
 }
 
-const Pill = styled.div`
+const StyledPill = styled.div<{ hasIcon?: boolean }>`
   display: flex;
   align-items: center;
   gap: ${pxToRem(4)};
@@ -54,6 +55,7 @@ const Pill = styled.div`
     width: 8px;
     height: 8px;
     border-radius: 50%;
+    display: ${(props) => (props.hasIcon ? 'none' : 'block')};
   }
 
   &.warning {
@@ -73,6 +75,7 @@ const Pill = styled.div`
       background: var(--color-success);
     }
   }
+
   &.info {
     background: var(--color-info-10);
     color: var(--color-info);
@@ -81,6 +84,7 @@ const Pill = styled.div`
       background: var(--color-info);
     }
   }
+
   &.rose {
     background: var(--color-rose-10);
     color: var(--color-rose);
@@ -89,6 +93,7 @@ const Pill = styled.div`
       background: var(--color-rose);
     }
   }
+
   &.orange {
     background: var(--color-orange-10);
     color: var(--color-orange);
@@ -106,4 +111,7 @@ const Pill = styled.div`
       background: var(--color-gray-70);
     }
   }
+`
+const StyledChildren = styled.div`
+  white-space: nowrap;
 `;

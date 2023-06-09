@@ -58,6 +58,12 @@ import { ReactComponent as Trailer } from './icons/trailer.svg';
 import { ReactComponent as User } from './icons/user.svg';
 import { ReactComponent as UserOctagon } from './icons/user-octagon.svg';
 import { ReactComponent as UserSquare } from './icons/user-square.svg';
+
+import { ReactComponent as UiPillPending } from './icons/uiPill-pending.svg';
+import { ReactComponent as UiPillSuccess } from './icons/uiPill-success.svg';
+import { ReactComponent as UiPillRejected } from './icons/uiPill-rejected.svg';
+
+
 import { ReactComponent as Van } from './icons/van.svg';
 import { ReactComponent as VerticalDots } from './icons/vertical-dots.svg';
 
@@ -116,6 +122,10 @@ const icons = {
   Trash: <Trash />,
   Truck: <Truck />,
   TruckRemove: <TruckRemove />,
+  UiPillPending: <UiPillPending />,
+  UiPillRejected: <UiPillRejected />,
+  UiPillSuccess: <UiPillSuccess />,
+
   User: <User />,
   UserOctagon: <UserOctagon />,
   UserSquare: <UserSquare />,
