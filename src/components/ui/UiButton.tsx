@@ -57,7 +57,7 @@ export default function UiButton({
     >
       {loading ? (
         <div className="loader-wrapper">
-          <Loader size="s" />
+          <Loader variant="white" size="s" />
         </div>
       ) : (
         children
@@ -129,7 +129,8 @@ const Button = styled.button<Props>`
 
   &.primary {
     background-color: var(--color-primary);
-    ${({ disabled }) => getColor(disabled!, 'var(--color-primary-20)')};
+    ${({ disabled, loading }) => getColor(disabled! && !loading, 'var(--color-primary-20)')};
+    ${({ loading }) => getColor(loading!, 'var(--color-primary-50)')};
     color: white;
 
     ${({ disabled }) =>

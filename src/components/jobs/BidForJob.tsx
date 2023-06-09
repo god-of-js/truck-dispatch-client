@@ -298,7 +298,7 @@ const ComponentStyling = styled.div`
     @media screen and (min-width: ${sizes.tablet}) {
       position: absolute;
       bottom: 0;
-      margin-bottom: ${pxToRem(60)};
+      /* margin-bottom: ${pxToRem(60)}; */
     }
   }
 `;

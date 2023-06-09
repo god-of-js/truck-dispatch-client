@@ -67,6 +67,8 @@ export default function MyTripsPage() {
   const [isAllBidsVisible, setIsAllBidsVisible] = useState(false);
   const [isCancelTripVisible, setIsCancelTripVisible] = useState(false);
   const [isCancelTripLoading, setIsCancelTripLoading] = useState(false);
+  const [isUnassignTripVisble, setIsUnassignTripVisible] = useState(false);
+  const [isUnassignTripLoading, setIsUnassignTripLoading] = useState(false);
   const [isCreateTripVisible, setIsCreateTripVisible] = useState(false);
   const [isTripBroadcastedVisible, setIsTripBroadcastedVisible] =
     useState(false);
@@ -194,7 +196,9 @@ export default function MyTripsPage() {
   }
 
   function userDetails(trip: Trip, tripUser?: User) {
-    if (!tripUser) return 'Not yet assigned';
+    if (!tripUser) return  <UserDetails
+      userName="Unassigned"
+    />;
 
     return (
       <UserDetails
@@ -300,13 +304,27 @@ export default function MyTripsPage() {
   }
 
   function initUnassignTrip(id: string) {
-    dispatch(toAnyAction(unassignTrip(id)));
+    setActiveTripId(id);
+    setIsUnassignTripVisible(true);
+  }
+
+  function triggerUnassignTrip() {
+    if (!activeTripId) {
+      Toast.error({ msg: 'Trip ID was not provided.' });
+      return;
+    }
+    setIsUnassignTripLoading(true);
+    dispatch(toAnyAction(unassignTrip(activeTripId))).finally(() => {
+      setIsUnassignTripLoading(false);
+      setIsUnassignTripVisible(false);
+    });
   }
 
   function initCancelTrip(id: string) {
     setActiveTripId(id);
     setIsCancelTripVisible(true);
   }
+
   function cancelTrip() {
     if (!activeTripId) {
       Toast.error({ msg: 'Trip ID was not provided.' });
@@ -513,6 +531,17 @@ export default function MyTripsPage() {
         Are you sure you want to delete this bid? Your candidacy for this role
         would immediately be revoked.
       </UiConfirmModal>
+        <UiConfirmModal
+          title="Unassign Trip"
+          isVisible={isUnassignTripVisble}
+          variant="danger"
+          loading={isUnassignTripLoading}
+          onClose={() => setIsUnassignTripVisible(false)}
+          onProceed={triggerUnassignTrip}
+        >
+          Are you sure you want to unassign this trip? This process cannot be
+          undone.
+        </UiConfirmModal>
     </>
   );
 }
