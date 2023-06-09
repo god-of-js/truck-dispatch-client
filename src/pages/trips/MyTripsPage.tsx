@@ -197,7 +197,10 @@ export default function MyTripsPage() {
   }
 
   function userDetails(trip: Trip, tripUser?: User) {
-    if (!tripUser) return 'Not yet assigned';
+    if (!tripUser) return  <UserDetails
+      userName={`Unassigned`}
+      profileSubtitle="************"
+    />;
 
     return (
       <UserDetails
