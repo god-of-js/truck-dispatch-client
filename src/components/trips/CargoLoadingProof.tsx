@@ -1,21 +1,27 @@
+import { Divide } from 'phosphor-react';
 import styled from 'styled-components';
+import PaymentRequest from 'types/PaymentRequest';
 import UiButton from 'ui/UiButton';
 import UiModal from 'ui/UiModal';
 import UiVideoPlayer from 'ui/UiVideoPlayer';
 
 interface Props {
   isVisible: boolean;
-  proofVideo: string;
+  isClient: boolean;
+  paymentRequest: PaymentRequest;
   onClose: () => void;
   approvePayment: () => void;
   rejectPayment: () => void;
+  updatePaymentRequest: () => void;
 }
 export default function CargoLoadingProof({
   isVisible,
-  proofVideo,
+  isClient,
+  paymentRequest,
   onClose,
   rejectPayment,
   approvePayment,
+  updatePaymentRequest,
 }: Props) {
   return (
     <UiModal
@@ -29,19 +35,35 @@ export default function CargoLoadingProof({
           serves as evidence of cargo being loaded onto the truck. It's
           important to note that once payment is made, it cannot be reversed.
         </p>
-        <UiVideoPlayer video={proofVideo} />
-        <div className="button-container">
-          <UiButton variant="primary" size="large" onClick={approvePayment}>
-            Approve Payment
-          </UiButton>
-          <UiButton
-            variant="danger-secondary"
-            size="large"
-            onClick={rejectPayment}
-          >
-            Reject Payment
-          </UiButton>
-        </div>
+        <UiVideoPlayer video={paymentRequest.proofVideo} />
+        {paymentRequest.status !== 'completed' && (
+          <>
+            {isClient ? (
+              <div className="button-container">
+                <UiButton
+                  variant="primary"
+                  size="large"
+                  onClick={approvePayment}
+                >
+                  Approve Payment
+                </UiButton>
+                <UiButton
+                  variant="danger-secondary"
+                  size="large"
+                  onClick={rejectPayment}
+                >
+                  Reject Payment
+                </UiButton>
+              </div>
+            ) : (
+              <div className="button-container">
+                <UiButton size="large" onClick={updatePaymentRequest}>
+                  Update Payment Request
+                </UiButton>
+              </div>
+            )}
+          </>
+        )}
       </ModalBody>
     </UiModal>
   );

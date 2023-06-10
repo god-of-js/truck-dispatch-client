@@ -102,7 +102,7 @@ export default function TripDetailPaymentCard({
           {payment?.status === 'completed' && (
             <UiButton disabled variant="success-secondary">
               <UiIcon icon="CheckCircle" />
-              Completed
+              Payment Completed
             </UiButton>
           )}
           {requestIsPending && (

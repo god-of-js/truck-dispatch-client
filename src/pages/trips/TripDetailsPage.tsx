@@ -275,6 +275,7 @@ export default function TripDetailsPage() {
           </div>
 
           <RequestPayment
+            key={`${requestPaymentIsVisible}`}
             isVisible={requestPaymentIsVisible}
             addAccountDetails={() => setAddAccountIsVisible(false)}
             paymentRequest={trip.paymentRequest}
@@ -305,14 +306,20 @@ export default function TripDetailsPage() {
           {!!trip.paymentRequest?.proofVideo && (
             <CargoLoadingProof
               isVisible={cargoLoadingProofIsVisible}
-              proofVideo={trip.paymentRequest?.proofVideo}
+              isClient={userIsClientBasedUser}
+              paymentRequest={trip.paymentRequest}
               approvePayment={initApprovePayment}
               rejectPayment={initRejectPayment}
+              updatePaymentRequest={() => {
+                setRequestPaymentIsVisible(true);
+                setCargoLoadingProofIsVisible(false);
+              }}
               onClose={() => setCargoLoadingProofIsVisible(false)}
             />
           )}
           {!!trip.paymentRequest && (
             <RejectPaymentRequest
+              key={`${rejectPaymentRequestIsVisible}`}
               isVisible={rejectPaymentRequestIsVisible}
               tripId={trip._id}
               paymentRequestId={trip.paymentRequest?._id!}
