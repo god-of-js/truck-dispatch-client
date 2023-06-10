@@ -14,13 +14,13 @@ interface Props {
   onClose: () => void;
   tripId: string;
   paymentRequestId: string;
-  isVisible: boolean
+  isVisible: boolean;
 }
 export default function ConfirmApprovePayment({
   tripId,
   paymentRequestId,
   onClose,
-  isVisible
+  isVisible,
 }: Props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();

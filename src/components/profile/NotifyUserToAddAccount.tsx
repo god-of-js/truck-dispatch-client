@@ -6,7 +6,7 @@ import UiModal from 'ui/UiModal';
 
 interface Props {
   onClose: () => void;
-  isVisible: boolean
+  isVisible: boolean;
 }
 export default function NotifyUserToAddAccount({ onClose, isVisible }: Props) {
   return (

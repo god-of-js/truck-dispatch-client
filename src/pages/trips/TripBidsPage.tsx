@@ -72,7 +72,7 @@ export default function TripBidsPage() {
       Toast.error({ msg: 'User or Trip does not exist' });
       return;
     }
-    setAssignLoading(true)
+    setAssignLoading(true);
     const paymentData: AssignTripFormData = {
       from: user._id,
       to: bid.transporter._id,
@@ -85,9 +85,11 @@ export default function TripBidsPage() {
     };
 
     if (payment) paymentData.processorReference = payment.reference;
-    dispatch(toAnyAction(assignTrip(paymentData))).then(() => {
-      navigate(`/my-trips/${tripId}`);
-    }).finally(() => setAssignLoading(false));
+    dispatch(toAnyAction(assignTrip(paymentData)))
+      .then(() => {
+        navigate(`/my-trips/${tripId}`);
+      })
+      .finally(() => setAssignLoading(false));
   }
 
   useEffect(() => {

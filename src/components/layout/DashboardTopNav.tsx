@@ -109,8 +109,7 @@ export default function DashboardTopNav({
       <BottomTopNav>
         <div className="route-name-container">
           <span className="route-icon">
-
-          {routeIconName && <UiIcon icon={routeIconName} size="28" />}
+            {routeIconName && <UiIcon icon={routeIconName} size="28" />}
           </span>
           <span className="route-name">{routeName}</span>
         </div>
@@ -274,7 +273,8 @@ const BottomTopNav = styled.div`
   @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
     border-bottom: transparent;
     border-top: transparent;
-    .route-name, .route-icon {
+    .route-name,
+    .route-icon {
       display: none;
     }
   }

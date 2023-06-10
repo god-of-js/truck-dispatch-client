@@ -285,7 +285,7 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
     display: block;
     width: ${({ isExpanded }) => (isExpanded ? '16%' : '7%')};
     min-width: ${({ isExpanded }) =>
-    isExpanded ? pxToRem(260) : pxToRem(124)};
+      isExpanded ? pxToRem(260) : pxToRem(124)};
     border-top: none;
     position: static;
     border-right: ${pxToRem(1)} solid var(--color-gray-200);
@@ -360,7 +360,7 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
 
         .list-item-content {
           justify-content: ${({ isExpanded }) =>
-    isExpanded ? 'flex-start' : 'center'};
+            isExpanded ? 'flex-start' : 'center'};
           flex-grow: 1;
         }
         &.active,
