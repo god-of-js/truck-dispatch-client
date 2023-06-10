@@ -12,12 +12,14 @@ interface Props {
   requestPayment: () => void;
   approvePayment: () => void;
   viewLoadingProof: () => void;
+  showReasonForReject: () => void;
 }
 export default function TripDetailPaymentCard({
   isClient,
   payment,
   requestPayment,
   viewLoadingProof,
+  showReasonForReject,
 }: Props) {
   const showRequestPayment = useMemo(() => {
     return !isClient && !payment;
@@ -37,6 +39,9 @@ export default function TripDetailPaymentCard({
     return isClient || !!payment;
   }, [isClient, payment]);
 
+  const paymentWasRejectedIsVisible = useMemo(() => {
+    return !isClient && payment?.status === 'rejected';
+  }, [isClient, payment]);
   const statusIconDetails: { icon: Icons; className: string } = useMemo(() => {
     if (!payment) return {} as { icon: Icons; className: string };
 
@@ -101,6 +106,16 @@ export default function TripDetailPaymentCard({
           )}
           {approvePaymentIsVisible && (
             <UiButton disabled={!payment}>Approve Payment</UiButton>
+          )}
+          {paymentWasRejectedIsVisible && (
+            <UiButton variant="danger-secondary" onClick={showReasonForReject}>
+              <div className="request-rejected">
+                <span>Request rejected</span>
+                <div className="icon-container">
+                  <UiIcon icon="CaretDownBold" size="10" />
+                </div>
+              </div>
+            </UiButton>
           )}
           {loadingProofIsVisible && (
             <UiButton
@@ -188,5 +203,26 @@ const BottomContainer = styled.div`
 
   button {
     width: 100%;
+  }
+
+  .request-rejected {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    .icon-container {
+      background: var(--color-danger);
+      min-width: ${pxToRem(46)};
+      height: ${pxToRem(28)};
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: ${pxToRem(6)};
+
+      svg {
+        fill: white;
+      }
+    }
   }
 `;

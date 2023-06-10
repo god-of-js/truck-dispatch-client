@@ -32,6 +32,8 @@ export default function TripDetailsPage() {
   const [rejectPaymentRequestIsVisible, setRejectPaymentRequestIsVisible] =
     useState(false);
   const [addAccountIsVisible, setAddAccountIsVisible] = useState(false);
+  const [reasonForRejectIsVisible, setReasonForRejectIsVisible] =
+    useState(false);
 
   const userIsClientBasedUser = useMemo(
     () => clientBasedUserTypes.includes(user?.userType!),
@@ -83,13 +85,16 @@ export default function TripDetailsPage() {
   }
 
   function initRejectPayment() {
-    setCargoLoadingProofIsVisible(false)
+    setCargoLoadingProofIsVisible(false);
     setRejectPaymentRequestIsVisible(true);
   }
 
   function initApprovePayment() {}
   function viewLoadingProof() {
     setCargoLoadingProofIsVisible(true);
+  }
+  function viewReasonForReject() {
+    setReasonForRejectIsVisible(true);
   }
 
   return (
@@ -135,6 +140,7 @@ export default function TripDetailsPage() {
             payment={trip?.paymentRequest}
             approvePayment={initApprovePayment}
             viewLoadingProof={viewLoadingProof}
+            showReasonForReject={viewReasonForReject}
             requestPayment={() => setRequestPaymentIsVisible(true)}
           />
           <UiCard>
@@ -250,6 +256,7 @@ export default function TripDetailsPage() {
           <RequestPayment
             isVisible={requestPaymentIsVisible}
             addAccountDetails={() => setAddAccountIsVisible(false)}
+            paymentRequest={trip.paymentRequest}
             tripId={trip._id}
             onClose={() => setRequestPaymentIsVisible(false)}
           />
@@ -279,6 +286,21 @@ export default function TripDetailsPage() {
               onClose={() => setRejectPaymentRequestIsVisible(false)}
             />
           )}
+          <div className="reason-for-reject">
+            <UiConfirmModal
+              isVisible={reasonForRejectIsVisible}
+              hideNotYetButton
+              title="Reason for request rejection"
+              confirmText="Update payment request"
+              onProceed={() => {
+                setReasonForRejectIsVisible(false);
+                setRequestPaymentIsVisible(true);
+              }}
+              onClose={() => setReasonForRejectIsVisible(false)}
+            >
+              {trip.paymentRequest?.reasonForReject}
+            </UiConfirmModal>
+          </div>
         </TripDetailsStyling>
       )}
     </>
@@ -359,6 +381,13 @@ const TripDetailsStyling = styled.div`
     display: grid;
     grid-template-columns: 1fr;
     gap: ${pxToRem(20)};
+  }
+
+  .reason-for-reject {
+    .modal-content {
+      width: 90%;
+      text-align: left;
+    }
   }
   @media screen and (min-width: ${sizes.mobileLargeWidth}) {
     grid-template-columns: 2fr 1fr;

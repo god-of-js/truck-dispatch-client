@@ -8,21 +8,10 @@ export function toAnyAction(func: unknown) {
 
 export function aValueHasBeenChanged<T extends object>(source: T, formData: T) {
   if (!source) return false;
-  // refactor to make use of the removeUneditedFields util
-  const keys = Object.keys(source) as (keyof typeof formData)[];
-  const formDataKeys = Object.keys(formData);
+  
+  const editedData = removeUneditedFields(source, formData);
 
-  if (keys.length !== formDataKeys.length) {
-    return false;
-  }
-
-  for (let key of keys) {
-    if (source[key] !== formData[key]) {
-      return false;
-    }
-  }
-
-  return true;
+  return !!Object.keys(editedData).length;
 }
 
 export function abbreviateNumber(

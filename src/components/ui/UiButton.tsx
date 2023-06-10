@@ -27,7 +27,7 @@ interface Props {
   isSquare?: boolean;
   /** This prop decides if we want the button to fit the content or be full width */
   isFullWidth?: boolean;
-  onClick?: () => void;
+  onClick?: (e?: React.MouseEvent) => void;
 }
 
 type Sizes = 'large' | 'md' | 's' | 'text';

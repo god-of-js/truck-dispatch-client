@@ -3,7 +3,7 @@ import {
   requestPaymentByTransporter,
   updatePaymentRequestByTransporter,
 } from 'modules/Payments';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import PaymentRequest from 'types/PaymentRequest';
@@ -31,11 +31,19 @@ export default function RequestPayment({
 }: Props) {
   const user = useSelector((state: RootState) => state.account.user);
   const dispatch = useDispatch();
-  const [formData, setFormData] = useState<{ proofVideo: File | null }>({
-    proofVideo: null,
+  const [formData, setFormData] = useState<{
+    proofVideo: File | null | string;
+  }>({
+    proofVideo: paymentRequest?.proofVideo as string,
   });
   const [loading, setLoading] = useState(false);
 
+  const requestBtnIsDisabled = useMemo(() => {
+    if (!paymentRequest) return false;
+
+    return typeof formData.proofVideo === 'string';
+    
+  }, [paymentRequest, formData])
   function setValue({ value }: { value: File | File[]; name: string }) {
     setFormData({ proofVideo: value as File });
   }
@@ -99,14 +107,15 @@ export default function RequestPayment({
                       isFullWidth
                       disabled={loading}
                       variant="secondary"
+                      onClick={(event) => event?.preventDefault()}
                     >
                       Change Video
                     </UiButton>
                   </div>
                 </FileUploadWidget>
               )}
-              <UiButton size="large" loading={loading}>
-                Request Payment
+              <UiButton size="large" loading={loading} disabled={requestBtnIsDisabled}>
+                {paymentRequest ? 'Update Payment Request' : 'Request Payment'}
               </UiButton>
             </div>
           </ModalBody>
