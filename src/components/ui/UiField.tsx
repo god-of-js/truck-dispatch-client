@@ -27,4 +27,5 @@ const Label = styled.label`
   color: var(--color-neutralBlack);
   font-weight: 700;
   line-height: ${pxToRem(32)};
+  text-align: left;
 `;

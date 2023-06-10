@@ -10,11 +10,14 @@ interface Props {
   isClient: boolean;
   payment?: PaymentRequest;
   requestPayment: () => void;
+  approvePayment: () => void;
+  viewLoadingProof: () => void;
 }
 export default function TripDetailPaymentCard({
   isClient,
   payment,
   requestPayment,
+  viewLoadingProof,
 }: Props) {
   const showRequestPayment = useMemo(() => {
     return !isClient && !payment;
@@ -35,18 +38,18 @@ export default function TripDetailPaymentCard({
   }, [isClient, payment]);
 
   const statusIconDetails: { icon: Icons; className: string } = useMemo(() => {
-    if (!payment) return {} as { icon: Icons; className: string } ;
+    if (!payment) return {} as { icon: Icons; className: string };
 
     if (payment.status === 'completed') {
       return {
-        icon: 'Information',
+        icon: 'CheckCircle',
         className: 'completed',
       };
     }
 
     if (payment.status === 'rejected') {
       return {
-        icon: 'Check',
+        icon: 'CloseCircle',
         className: 'rejected',
       };
     }
@@ -100,7 +103,11 @@ export default function TripDetailPaymentCard({
             <UiButton disabled={!payment}>Approve Payment</UiButton>
           )}
           {loadingProofIsVisible && (
-            <UiButton variant="secondary" disabled={!payment}>
+            <UiButton
+              variant="secondary"
+              onClick={viewLoadingProof}
+              disabled={!payment}
+            >
               <UiIcon icon="PlayCircle" /> <span>Loading Proof</span>
             </UiButton>
           )}
@@ -149,7 +156,21 @@ const PaymentCard = styled.div`
           background: var(--color-warning-10);
 
           svg {
-            fill: var(--color-warning)
+            fill: var(--color-warning);
+          }
+        }
+        &.rejected {
+          background: var(--color-danger-10);
+
+          svg {
+            fill: var(--color-danger);
+          }
+        }
+        &.completed {
+          background: var(--color-success-10);
+
+          svg {
+            fill: var(--color-success);
           }
         }
       }

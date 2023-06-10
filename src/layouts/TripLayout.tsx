@@ -9,7 +9,6 @@ import RateTransporter from 'components/ratings/RateUser';
 import { toAnyAction } from 'utils/helpers';
 import { getTripRating } from 'modules/Ratings';
 import Rating from 'types/Rating';
-import { getPaymentRequestByTripId } from 'modules/Payments';
 import { RootState } from 'modules/index';
 import { clientBasedUserTypes } from 'utils/constants';
 
@@ -44,10 +43,6 @@ export default function TripLayout() {
       });
     }
   }, [tripId, trip]);
-
-  useEffect(() => {
-    dispatch(toAnyAction(getPaymentRequestByTripId(tripId!)));
-  }, [tripId]);
 
   return (
     <>

@@ -16,6 +16,7 @@ export default function UiVideoPlayer({ video }: Props) {
       setVideoUrl(URL.createObjectURL(video));
     }
   }, [video]);
+
   return (
     <VideoPlayer>
       <ReactPlayer url={videoUrl} controls />
@@ -24,8 +25,11 @@ export default function UiVideoPlayer({ video }: Props) {
 }
 
 const VideoPlayer = styled.div`
+  display: flex;
+  justify-content: center;
   video {
     border-radius: ${pxToRem(9)};
     background: rgba(21, 19, 27, 0.5);
+    width: 100%;
   }
 `;

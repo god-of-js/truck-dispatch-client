@@ -19,14 +19,20 @@ import UiIcon from 'ui/UiIcon';
 import UiPill from 'ui/UiPill';
 import RequestPayment from 'components/payment/RequestPayment';
 import UiConfirmModal from 'ui/UiConfirmModal';
+import CargoLoadingProof from 'components/trips/CargoLoadingProof';
+import RejectPaymentRequest from 'components/trips/RejectPaymentRequest';
 
 export default function TripDetailsPage() {
   const user = useSelector((state: RootState) => state.account.user);
   const { tripId } = useParams();
   const trip = useSelector(selectTrip(tripId!));
   const [requestPaymentIsVisible, setRequestPaymentIsVisible] = useState(false);
+  const [cargoLoadingProofIsVisible, setCargoLoadingProofIsVisible] =
+    useState(false);
+  const [rejectPaymentRequestIsVisible, setRejectPaymentRequestIsVisible] =
+    useState(false);
   const [addAccountIsVisible, setAddAccountIsVisible] = useState(false);
-  console.log(trip);
+
   const userIsClientBasedUser = useMemo(
     () => clientBasedUserTypes.includes(user?.userType!),
     [user],
@@ -75,6 +81,17 @@ export default function TripDetailsPage() {
   function redirectToAddAccount() {
     // TODO: implement add account.
   }
+
+  function initRejectPayment() {
+    setCargoLoadingProofIsVisible(false)
+    setRejectPaymentRequestIsVisible(true);
+  }
+
+  function initApprovePayment() {}
+  function viewLoadingProof() {
+    setCargoLoadingProofIsVisible(true);
+  }
+
   return (
     <>
       <DashboardTopNav
@@ -116,6 +133,8 @@ export default function TripDetailsPage() {
           <TripDetailPaymentCard
             isClient={userIsClientBasedUser}
             payment={trip?.paymentRequest}
+            approvePayment={initApprovePayment}
+            viewLoadingProof={viewLoadingProof}
             requestPayment={() => setRequestPaymentIsVisible(true)}
           />
           <UiCard>
@@ -243,6 +262,23 @@ export default function TripDetailsPage() {
             You are yet to add your payout account. Kindly add your account to
             be able to request payment.
           </UiConfirmModal>
+          {!!trip.paymentRequest?.proofVideo && (
+            <CargoLoadingProof
+              isVisible={cargoLoadingProofIsVisible}
+              proofVideo={trip.paymentRequest?.proofVideo}
+              approvePayment={initApprovePayment}
+              rejectPayment={initRejectPayment}
+              onClose={() => setCargoLoadingProofIsVisible(false)}
+            />
+          )}
+          {!!trip.paymentRequest && (
+            <RejectPaymentRequest
+              isVisible={rejectPaymentRequestIsVisible}
+              tripId={trip._id}
+              paymentRequestId={trip.paymentRequest?._id!}
+              onClose={() => setRejectPaymentRequestIsVisible(false)}
+            />
+          )}
         </TripDetailsStyling>
       )}
     </>
