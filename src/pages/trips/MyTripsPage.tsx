@@ -6,6 +6,7 @@ import { Icons } from 'ui/UiIcon';
 import { clientBasedUserTypes, serviceBasedUserTypes } from 'utils/constants';
 import Loader from 'components/layout/Loader';
 import UiButton from 'ui/UiButton';
+import UiEmptyField from 'ui/UiEmptyList';
 import UiIcon from 'ui/UiIcon';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
 import {
@@ -393,13 +394,14 @@ export default function MyTripsPage() {
     setIsTripBroadcastedVisible(true);
   }
 
+
   function emptyTableBtnContent() {
     if (serviceBasedUserTypes.includes(user?.userType!)) return 'See Jobs';
 
     return (
       <>
         <UiIcon icon="TruckTick" />
-        <span>Create new trip</span>
+        <span>Create new Trip</span>
       </>
     );
   }
@@ -433,7 +435,9 @@ export default function MyTripsPage() {
           emptyTableIcon="TruckTick"
           emptyTableText="You don’t have any trip here yet, Bid for jobs to get trips"
           emptyTableBtnContent={emptyTableBtnContent()}
+          emptyTableAction={() => setIsCreateTripVisible(true)}
         />
+
         {!!tripsData.length && (
           <PaginationLoader
             loading={loading}
