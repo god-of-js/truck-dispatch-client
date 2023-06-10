@@ -13,13 +13,9 @@ export type PillType =
   | 'orange';
 
 const icons: { [key: string]: Icons } = {
-  primary: 'Tick',
-  warning: 'UiPillSuccess',
-  danger: 'UiPillRejected',
-  info: 'Tick',
-  success: 'UiPillSuccess',
-  gray: 'Tick',
-  orange: 'UiPillPending',
+  warning: 'Information',
+  danger: 'CloseCircle',
+  success: 'CheckCircle',
 };
 
 interface Props {
@@ -28,10 +24,10 @@ interface Props {
   hasIcon?: boolean;
 }
 
-export default function Pill({ children, variant, hasIcon = true }: Props) {
+export default function Pill({ children, variant, hasIcon }: Props) {
   return (
     <StyledPill className={variant + ' ui-pill'} hasIcon={hasIcon}>
-      {hasIcon && <UiIcon icon={icons[variant]} />}
+      {hasIcon ? <UiIcon icon={icons[variant]} /> : <div className="circle" />}
       <StyledChildren>{children}</StyledChildren>
     </StyledPill>
   );
@@ -52,8 +48,8 @@ const StyledPill = styled.div<{ hasIcon?: boolean }>`
   letter-spacing: -0.02em;
 
   .circle {
-    width: 8px;
-    height: 8px;
+    width: ${pxToRem(8)};
+    height: ${pxToRem(8)};
     border-radius: 50%;
     display: ${(props) => (props.hasIcon ? 'none' : 'block')};
   }
@@ -65,14 +61,31 @@ const StyledPill = styled.div<{ hasIcon?: boolean }>`
     .circle {
       background: var(--color-warning);
     }
+    svg {
+      fill: var(--color-warning);
+    }
   }
 
+  &.danger {
+    background: var(--color-danger-10);
+    color: var(--color-danger);
+
+    .circle {
+      background: var(--color-danger);
+    }
+    svg {
+      fill: var(--color-danger);
+    }
+  }
   &.success {
     background: var(--color-success-10);
     color: var(--color-success);
 
     .circle {
       background: var(--color-success);
+    }
+    svg {
+      fill: var(--color-success);
     }
   }
 
@@ -83,6 +96,9 @@ const StyledPill = styled.div<{ hasIcon?: boolean }>`
     .circle {
       background: var(--color-info);
     }
+    svg {
+      fill: var(--color-info);
+    }
   }
 
   &.rose {
@@ -92,6 +108,9 @@ const StyledPill = styled.div<{ hasIcon?: boolean }>`
     .circle {
       background: var(--color-rose);
     }
+    svg {
+      fill: var(--color-rose);
+    }
   }
 
   &.orange {
@@ -100,6 +119,9 @@ const StyledPill = styled.div<{ hasIcon?: boolean }>`
 
     .circle {
       background: var(--color-orange);
+    }
+    svg {
+      fill: var(--color-orange);
     }
   }
 
@@ -111,7 +133,7 @@ const StyledPill = styled.div<{ hasIcon?: boolean }>`
       background: var(--color-gray-70);
     }
   }
-`
+`;
 const StyledChildren = styled.div`
   white-space: nowrap;
 `;

@@ -59,10 +59,8 @@ import { ReactComponent as User } from './icons/user.svg';
 import { ReactComponent as UserOctagon } from './icons/user-octagon.svg';
 import { ReactComponent as UserSquare } from './icons/user-square.svg';
 
-import { ReactComponent as UiPillPending } from './icons/uiPill-pending.svg';
-import { ReactComponent as UiPillSuccess } from './icons/uiPill-success.svg';
-import { ReactComponent as UiPillRejected } from './icons/uiPill-rejected.svg';
-
+import { ReactComponent as CheckCircle } from './icons/check-circle.svg';
+import { ReactComponent as CloseCircle } from './icons/close-circle.svg';
 
 import { ReactComponent as Van } from './icons/van.svg';
 import { ReactComponent as VerticalDots } from './icons/vertical-dots.svg';
@@ -86,7 +84,9 @@ const icons = {
   Close: <Close />,
   CloseThick: <CloseThick />,
   Check: <Check />,
+  CheckCircle: <CheckCircle />,
   Chiller: <Chiller />,
+  CloseCircle: <CloseCircle />,
   DocumentUpload: <DocumentUpload />,
   DoubleChat: <DoubleChat />,
   DuoTrucks: <DuoTrucks />,
@@ -122,9 +122,6 @@ const icons = {
   Trash: <Trash />,
   Truck: <Truck />,
   TruckRemove: <TruckRemove />,
-  UiPillPending: <UiPillPending />,
-  UiPillRejected: <UiPillRejected />,
-  UiPillSuccess: <UiPillSuccess />,
 
   User: <User />,
   UserOctagon: <UserOctagon />,
