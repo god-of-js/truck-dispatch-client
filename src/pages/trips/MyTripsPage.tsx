@@ -196,9 +196,7 @@ export default function MyTripsPage() {
   }
 
   function userDetails(trip: Trip, tripUser?: User) {
-    if (!tripUser) return  <UserDetails
-      userName="Unassigned"
-    />;
+    if (!tripUser) return <UserDetails userName="Unassigned" />;
 
     return (
       <UserDetails
@@ -531,17 +529,17 @@ export default function MyTripsPage() {
         Are you sure you want to delete this bid? Your candidacy for this role
         would immediately be revoked.
       </UiConfirmModal>
-        <UiConfirmModal
-          title="Unassign Trip"
-          isVisible={isUnassignTripVisble}
-          variant="danger"
-          loading={isUnassignTripLoading}
-          onClose={() => setIsUnassignTripVisible(false)}
-          onProceed={triggerUnassignTrip}
-        >
-          Are you sure you want to unassign this trip? This process cannot be
-          undone.
-        </UiConfirmModal>
+      <UiConfirmModal
+        title="Unassign Trip"
+        isVisible={isUnassignTripVisble}
+        variant="danger"
+        loading={isUnassignTripLoading}
+        onClose={() => setIsUnassignTripVisible(false)}
+        onProceed={triggerUnassignTrip}
+      >
+        Are you sure you want to unassign this trip? This process cannot be
+        undone.
+      </UiConfirmModal>
     </>
   );
 }

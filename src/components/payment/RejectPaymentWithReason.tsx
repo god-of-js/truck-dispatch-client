@@ -1,4 +1,4 @@
-import { rejectPaymentRequest } from 'modules/Payments';
+import { rejectPaymentRequest } from 'modules/Trips';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';

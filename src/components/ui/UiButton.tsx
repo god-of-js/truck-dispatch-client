@@ -6,6 +6,7 @@ export type ButtonVariant =
   | 'secondary'
   | 'danger-secondary'
   | 'warning-secondary'
+  | 'success-secondary'
   | 'tertiary'
   | 'neutral'
   | 'icon-neutral'
@@ -27,7 +28,7 @@ interface Props {
   isSquare?: boolean;
   /** This prop decides if we want the button to fit the content or be full width */
   isFullWidth?: boolean;
-  onClick?: () => void;
+  onClick?: (e?: any) => void;
 }
 
 type Sizes = 'large' | 'md' | 's' | 'text';
@@ -129,7 +130,8 @@ const Button = styled.button<Props>`
 
   &.primary {
     background-color: var(--color-primary);
-    ${({ disabled, loading }) => getColor(disabled! && !loading, 'var(--color-primary-20)')};
+    ${({ disabled, loading }) =>
+      getColor(disabled! && !loading, 'var(--color-primary-20)')};
     ${({ loading }) => getColor(loading!, 'var(--color-primary-50)')};
     color: white;
 
@@ -229,6 +231,23 @@ const Button = styled.button<Props>`
     }`}
   }
 
+  &.success-secondary {
+    background: var(--color-success-10);
+    color: var(--color-success);
+
+    svg {
+      fill: var(--color-success);
+    }
+    ${({ disabled }) =>
+      !disabled &&
+      `
+      
+    &:hover {
+      background: var(--color-success-20);
+      box-shadow: var(--box-shadow-primary);
+    }
+    `}
+  }
   &.danger-secondary {
     background: var(--color-danger-10);
     color: var(--color-danger);

@@ -6,6 +6,7 @@ import { ReactComponent as ArrowRight } from './icons/arrow-right.svg';
 import { ReactComponent as ArrowLeft } from './icons/arrow-left.svg';
 import { ReactComponent as Card } from './icons/card.svg';
 import { ReactComponent as CaretDown } from './icons/caret-down.svg';
+import { ReactComponent as CaretDownBold } from './icons/caret-down-bold.svg';
 import { ReactComponent as CaretUp } from './icons/caret-up.svg';
 import { ReactComponent as CaretLeft } from './icons/caret-left.svg';
 import { ReactComponent as CaretRight } from './icons/caret-right.svg';
@@ -72,6 +73,7 @@ const icons = {
   ArrowLeft: <ArrowLeft />,
   Card: <Card />,
   CaretDown: <CaretDown />,
+  CaretDownBold: <CaretDownBold />,
   CaretUp: <CaretUp />,
   CaretLeft: <CaretLeft />,
   CaretRight: <CaretRight />,
