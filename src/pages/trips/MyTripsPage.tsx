@@ -6,7 +6,6 @@ import { Icons } from 'ui/UiIcon';
 import { clientBasedUserTypes, serviceBasedUserTypes } from 'utils/constants';
 import Loader from 'components/layout/Loader';
 import UiButton from 'ui/UiButton';
-import UiEmptyField from 'ui/UiEmptyList';
 import UiIcon from 'ui/UiIcon';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
 import {
