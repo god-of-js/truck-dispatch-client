@@ -1,4 +1,4 @@
-import { approvePaymentRequest } from 'modules/Payments';
+import { approvePaymentRequest } from 'modules/Trips';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';

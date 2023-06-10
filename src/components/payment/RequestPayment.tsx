@@ -2,7 +2,7 @@ import { RootState } from 'modules/index';
 import {
   requestPaymentByTransporter,
   updatePaymentRequestByTransporter,
-} from 'modules/Payments';
+} from 'modules/Trips';
 import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
