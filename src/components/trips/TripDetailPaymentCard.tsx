@@ -34,8 +34,8 @@ export default function TripDetailPaymentCard({
     return isClient || !!payment;
   }, [isClient, payment]);
 
-  const statusIconDetails = useMemo<{ icon: Icons; className: string }>(() => {
-    if (!payment) return {};
+  const statusIconDetails: { icon: Icons; className: string } = useMemo(() => {
+    if (!payment) return {} as { icon: Icons; className: string } ;
 
     if (payment.status === 'completed') {
       return {
