@@ -219,6 +219,21 @@ export function convertToDdMmmYYYYDateFormat(dateToConvert: string | number) {
 
   return `${day}-${month}-${year}`;
 }
+export function getTime(time: string | number) {
+  const date = new Date(time);
+
+  let hours = date.getHours();
+  let minutes: string | number = date.getMinutes();
+  const period = hours >= 12 ? 'PM' : 'AM';
+
+  // Convert hours to 12-hour format
+  hours = hours % 12 || 12;
+
+  // Add leading zero to minutes if needed
+  minutes = minutes < 10 ? `0${minutes}` : minutes;
+
+  return `${hours}:${minutes} ${period}`;
+}
 
 export function saveTokenVerificationInfo(data: TokenVerificationData) {
   localStorage.setItem('otp-pin-id', data.pinId);

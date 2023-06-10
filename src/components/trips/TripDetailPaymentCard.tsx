@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import PaymentRequest from 'types/PaymentRequest';
 import UiButton from 'ui/UiButton';
 import UiCard from 'ui/UiCard';
-import UiIcon from 'ui/UiIcon';
-import { abbreviateNumber } from 'utils/helpers';
+import UiIcon, { Icons } from 'ui/UiIcon';
+import { abbreviateNumber, convertToFullDate, getTime } from 'utils/helpers';
 
 interface Props {
   isClient: boolean;
@@ -34,6 +34,29 @@ export default function TripDetailPaymentCard({
     return isClient || !!payment;
   }, [isClient, payment]);
 
+  const statusIconDetails = useMemo<{ icon: Icons; className: string }>(() => {
+    if (!payment) return {};
+
+    if (payment.status === 'completed') {
+      return {
+        icon: 'Information',
+        className: 'completed',
+      };
+    }
+
+    if (payment.status === 'rejected') {
+      return {
+        icon: 'Check',
+        className: 'rejected',
+      };
+    }
+
+    return {
+      icon: 'Information',
+      className: 'pending',
+    };
+  }, [payment?.status]);
+
   return (
     <UiCard>
       <PaymentCard>
@@ -49,6 +72,15 @@ export default function TripDetailPaymentCard({
             <span className="amount">
               &#8358; {abbreviateNumber(payment.amount)}
             </span>
+            <div className="time-with-icon">
+              <div>
+                <div>{convertToFullDate(payment.createdAt!)}</div>
+                <div>{getTime(payment.createdAt!)}</div>
+              </div>
+              <div className={`icon-container ${statusIconDetails.className}`}>
+                <UiIcon icon={statusIconDetails.icon} size="16" />
+              </div>
+            </div>
           </div>
         )}
 
@@ -94,6 +126,33 @@ const PaymentCard = styled.div`
       line-height: 140%;
       letter-spacing: -0.02em;
       color: var(--color-neutralBlack);
+    }
+
+    .time-with-icon {
+      display: flex;
+      font-weight: 400;
+      font-size: ${pxToRem(12)};
+      line-height: ${pxToRem(16)};
+      gap: ${pxToRem(16)};
+      text-align: right;
+      color: var(--color-neutralBlack);
+
+      .icon-container {
+        width: ${pxToRem(36)};
+        height: ${pxToRem(36)};
+        border-radius: ${pxToRem(36)};
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &.pending {
+          background: var(--color-warning-10);
+
+          svg {
+            fill: var(--color-warning)
+          }
+        }
+      }
     }
   }
 `;
