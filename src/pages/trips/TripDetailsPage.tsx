@@ -2,7 +2,11 @@ import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 
-import { approvePaymentRequest, selectTrip } from 'modules/Trips';
+import {
+  approvePaymentRequest,
+  selectTrip,
+  updateTripStatus,
+} from 'modules/Trips';
 import styled from 'styled-components';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
 import UiBackButton from 'ui/UiBackButton';
@@ -22,6 +26,7 @@ import UiConfirmModal from 'ui/UiConfirmModal';
 import CargoLoadingProof from 'components/trips/CargoLoadingProof';
 import RejectPaymentRequest from 'components/trips/RejectPaymentRequest';
 import { toAnyAction } from 'utils/helpers';
+import Trip from 'types/Trip';
 
 export default function TripDetailsPage() {
   const dispatch = useDispatch();
@@ -37,6 +42,8 @@ export default function TripDetailsPage() {
   const [approvePaymentIsVisible, setApprovePaymentIsVisible] = useState(false);
   const [approvePaymentIsLoading, setApprovePaymentIsLoading] = useState(false);
   const [reasonForRejectIsVisible, setReasonForRejectIsVisible] =
+    useState(false);
+  const [changeTripStatusIsLoading, setChangeTripStatusIsLoading] =
     useState(false);
 
   const userIsClientBasedUser = useMemo(
@@ -75,14 +82,24 @@ export default function TripDetailsPage() {
           </div>
         </StatusIndicator>
         {userIsServiceBasedUser && trip?.status === 'assigned' && (
-          <UiButton>Start Trip</UiButton>
+          <UiButton
+            loading={changeTripStatusIsLoading}
+            onClick={() => changeStatus('in-progress')}
+          >
+            Start Trip
+          </UiButton>
         )}
         {userIsServiceBasedUser && trip?.status === 'in-progress' && (
-          <UiButton>Complete Trip</UiButton>
+          <UiButton
+            loading={changeTripStatusIsLoading}
+            onClick={() => changeStatus('completed')}
+          >
+            Complete Trip
+          </UiButton>
         )}
       </EdgeNode>
     );
-  }, [trip]);
+  }, [trip, changeTripStatusIsLoading]);
 
   function redirectToAddAccount() {
     // TODO: implement add account.
@@ -97,6 +114,12 @@ export default function TripDetailsPage() {
     setApprovePaymentIsVisible(true);
   }
 
+  function changeStatus(status: Trip['status']) {
+    setChangeTripStatusIsLoading(true);
+    dispatch(toAnyAction(updateTripStatus(trip?._id!, status))).finally(() => {
+      setChangeTripStatusIsLoading(false);
+    });
+  }
   async function approvePayment() {
     if (!trip || !trip.paymentRequest?._id) return;
     setApprovePaymentIsLoading(true);
@@ -275,7 +298,7 @@ export default function TripDetailsPage() {
           </div>
 
           <RequestPayment
-            key={`${requestPaymentIsVisible}`}
+            key={`${requestPaymentIsVisible}-requestPaymentIsVisible`}
             isVisible={requestPaymentIsVisible}
             addAccountDetails={() => setAddAccountIsVisible(false)}
             paymentRequest={trip.paymentRequest}
@@ -319,7 +342,7 @@ export default function TripDetailsPage() {
           )}
           {!!trip.paymentRequest && (
             <RejectPaymentRequest
-              key={`${rejectPaymentRequestIsVisible}`}
+              key={`${rejectPaymentRequestIsVisible}-rejectPaymentRequestIsVisible`}
               isVisible={rejectPaymentRequestIsVisible}
               tripId={trip._id}
               paymentRequestId={trip.paymentRequest?._id!}
@@ -350,6 +373,7 @@ export default function TripDetailsPage() {
 const TripDetailsStyling = styled.div`
   display: grid;
   grid-template-columns: 1fr;
+  gap: ${pxToRem(20)};
 
   padding: ${pxToRem(12)} ${pxToRem(24)};
 
@@ -431,7 +455,6 @@ const TripDetailsStyling = styled.div`
   }
   @media screen and (min-width: ${sizes.mobileLargeWidth}) {
     grid-template-columns: 2fr 1fr;
-    gap: ${pxToRem(20)};
 
     .double-grid {
       grid-template-columns: repeat(2, 2fr);
