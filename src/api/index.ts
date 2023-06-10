@@ -194,10 +194,7 @@ class ApiService {
     return this.delete<Bid>(`/bids/${tripId}/${bidId}`);
   }
 
-  requestPaymentByTransporter(
-    data: FormData,
-    tripId: string,
-  ): Promise<Trip> {
+  requestPaymentByTransporter(data: FormData, tripId: string): Promise<Trip> {
     return this.post(`/payment/request-payment/trip/${tripId}`, data);
   }
 

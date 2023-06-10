@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 
-import { selectTrip } from 'modules/Trips';
+import { approvePaymentRequest, selectTrip } from 'modules/Trips';
 import styled from 'styled-components';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
 import UiBackButton from 'ui/UiBackButton';
@@ -21,8 +21,10 @@ import RequestPayment from 'components/payment/RequestPayment';
 import UiConfirmModal from 'ui/UiConfirmModal';
 import CargoLoadingProof from 'components/trips/CargoLoadingProof';
 import RejectPaymentRequest from 'components/trips/RejectPaymentRequest';
+import { toAnyAction } from 'utils/helpers';
 
 export default function TripDetailsPage() {
+  const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.account.user);
   const { tripId } = useParams();
   const trip = useSelector(selectTrip(tripId!));
@@ -32,6 +34,8 @@ export default function TripDetailsPage() {
   const [rejectPaymentRequestIsVisible, setRejectPaymentRequestIsVisible] =
     useState(false);
   const [addAccountIsVisible, setAddAccountIsVisible] = useState(false);
+  const [approvePaymentIsVisible, setApprovePaymentIsVisible] = useState(false);
+  const [approvePaymentIsLoading, setApprovePaymentIsLoading] = useState(false);
   const [reasonForRejectIsVisible, setReasonForRejectIsVisible] =
     useState(false);
 
@@ -89,7 +93,24 @@ export default function TripDetailsPage() {
     setRejectPaymentRequestIsVisible(true);
   }
 
-  function initApprovePayment() {}
+  function initApprovePayment() {
+    setApprovePaymentIsVisible(true);
+  }
+
+  async function approvePayment() {
+    if (!trip || !trip.paymentRequest?._id) return;
+    setApprovePaymentIsLoading(true);
+    dispatch(
+      toAnyAction(approvePaymentRequest(trip._id, trip.paymentRequest._id)),
+    )
+      .then(() => {
+        setApprovePaymentIsVisible(false);
+      })
+      .finally(() => {
+        setApprovePaymentIsLoading(false);
+      });
+  }
+
   function viewLoadingProof() {
     setCargoLoadingProofIsVisible(true);
   }
@@ -268,6 +289,18 @@ export default function TripDetailsPage() {
           >
             You are yet to add your payout account. Kindly add your account to
             be able to request payment.
+          </UiConfirmModal>
+          <UiConfirmModal
+            title="Approve Payment"
+            isVisible={approvePaymentIsVisible}
+            notYetVariant="danger-secondary"
+            variant="secondary"
+            loading={approvePaymentIsLoading}
+            onClose={() => setApprovePaymentIsVisible(false)}
+            onProceed={approvePayment}
+          >
+            Are you sure you want to approve payment for this trip? This process
+            cannot be undone.
           </UiConfirmModal>
           {!!trip.paymentRequest?.proofVideo && (
             <CargoLoadingProof

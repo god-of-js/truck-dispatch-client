@@ -42,8 +42,7 @@ export default function RequestPayment({
     if (!paymentRequest) return false;
 
     return typeof formData.proofVideo === 'string';
-    
-  }, [paymentRequest, formData])
+  }, [paymentRequest, formData]);
   function setValue({ value }: { value: File | File[]; name: string }) {
     setFormData({ proofVideo: value as File });
   }
@@ -114,7 +113,11 @@ export default function RequestPayment({
                   </div>
                 </FileUploadWidget>
               )}
-              <UiButton size="large" loading={loading} disabled={requestBtnIsDisabled}>
+              <UiButton
+                size="large"
+                loading={loading}
+                disabled={requestBtnIsDisabled}
+              >
                 {paymentRequest ? 'Update Payment Request' : 'Request Payment'}
               </UiButton>
             </div>

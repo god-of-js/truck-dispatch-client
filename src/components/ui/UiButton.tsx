@@ -6,6 +6,7 @@ export type ButtonVariant =
   | 'secondary'
   | 'danger-secondary'
   | 'warning-secondary'
+  | 'success-secondary'
   | 'tertiary'
   | 'neutral'
   | 'icon-neutral'
@@ -230,6 +231,23 @@ const Button = styled.button<Props>`
     }`}
   }
 
+  &.success-secondary {
+    background: var(--color-success-10);
+    color: var(--color-success);
+
+    svg {
+      fill: var(--color-success);
+    }
+    ${({ disabled }) =>
+      !disabled &&
+      `
+      
+    &:hover {
+      background: var(--color-success-20);
+      box-shadow: var(--box-shadow-primary);
+    }
+    `}
+  }
   &.danger-secondary {
     background: var(--color-danger-10);
     color: var(--color-danger);

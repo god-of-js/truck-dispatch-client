@@ -20,6 +20,7 @@ export default function TripDetailPaymentCard({
   requestPayment,
   viewLoadingProof,
   showReasonForReject,
+  approvePayment,
 }: Props) {
   const showRequestPayment = useMemo(() => {
     return !isClient && !payment;
@@ -98,6 +99,12 @@ export default function TripDetailPaymentCard({
               Request Payment
             </UiButton>
           )}
+          {payment?.status === 'completed' && (
+            <UiButton disabled variant="success-secondary">
+              <UiIcon icon="CheckCircle" />
+              Completed
+            </UiButton>
+          )}
           {requestIsPending && (
             <UiButton disabled variant="warning-secondary">
               <UiIcon icon="Information" />
@@ -105,7 +112,9 @@ export default function TripDetailPaymentCard({
             </UiButton>
           )}
           {approvePaymentIsVisible && (
-            <UiButton disabled={!payment}>Approve Payment</UiButton>
+            <UiButton disabled={!payment} onClick={approvePayment}>
+              Approve Payment
+            </UiButton>
           )}
           {paymentWasRejectedIsVisible && (
             <UiButton variant="danger-secondary" onClick={showReasonForReject}>

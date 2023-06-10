@@ -205,11 +205,9 @@ export function cancelTripByTransporter(tripId: string) {
 
 export function requestPaymentByTransporter(data: FormData, tripId: string) {
   return (dispatch: AppDispatch, state: AppState) => {
-    return Api.requestPaymentByTransporter(data, tripId).then(
-      (trip) => {
-        dispatch(setTrip(trip));
-      },
-    );
+    return Api.requestPaymentByTransporter(data, tripId).then((trip) => {
+      dispatch(setTrip(trip));
+    });
   };
 }
 
@@ -245,10 +243,8 @@ export function approvePaymentRequest(
   paymentRequestId: string,
 ) {
   return (dispatch: AppDispatch) => {
-    return Api.approvePaymentRequest(tripId, paymentRequestId).then(
-      (trip) => {
-        dispatch(setTrip(trip));
-      },
-    );
+    return Api.approvePaymentRequest(tripId, paymentRequestId).then((trip) => {
+      dispatch(setTrip(trip));
+    });
   };
 }

@@ -8,7 +8,7 @@ export function toAnyAction(func: unknown) {
 
 export function aValueHasBeenChanged<T extends object>(source: T, formData: T) {
   if (!source) return false;
-  
+
   const editedData = removeUneditedFields(source, formData);
 
   return !!Object.keys(editedData).length;
