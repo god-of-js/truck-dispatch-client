@@ -18,13 +18,15 @@ import UiButton from 'ui/UiButton';
 import UiIcon from 'ui/UiIcon';
 import UiPill from 'ui/UiPill';
 import RequestPayment from 'components/payment/RequestPayment';
+import UiConfirmModal from 'ui/UiConfirmModal';
 
 export default function TripDetailsPage() {
   const user = useSelector((state: RootState) => state.account.user);
   const { tripId } = useParams();
   const trip = useSelector(selectTrip(tripId!));
-  const [requestPaymentIsVisible, setRequestPaymentIsVisible] = useState(true);
-
+  const [requestPaymentIsVisible, setRequestPaymentIsVisible] = useState(false);
+  const [addAccountIsVisible, setAddAccountIsVisible] = useState(false);
+  console.log(trip);
   const userIsClientBasedUser = useMemo(
     () => clientBasedUserTypes.includes(user?.userType!),
     [user],
@@ -70,6 +72,9 @@ export default function TripDetailsPage() {
     );
   }, [trip]);
 
+  function redirectToAddAccount() {
+    // TODO: implement add account.
+  }
   return (
     <>
       <DashboardTopNav
@@ -111,6 +116,7 @@ export default function TripDetailsPage() {
           <TripDetailPaymentCard
             isClient={userIsClientBasedUser}
             payment={trip?.paymentRequest}
+            requestPayment={() => setRequestPaymentIsVisible(true)}
           />
           <UiCard>
             <div className="card-title">Driver & Vehicle details</div>
@@ -138,7 +144,14 @@ export default function TripDetailsPage() {
                   <div className="driver-and-vehicle-details__field__title">
                     Vehicle Details
                   </div>
-                  {/* <UserDetails avatar={trip.} /> */}
+                  <div className="vehicle-details">
+                    <div className="vehicle-details__type">
+                      {trip.acceptedBid.vehicle.vehicleType}
+                    </div>
+                    <div className="vehicle-details__plate-number">
+                      {trip.acceptedBid.vehicle.plateNumber}
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
@@ -214,12 +227,24 @@ export default function TripDetailsPage() {
               </UiCard>
             )}
           </div>
+
+          <RequestPayment
+            isVisible={requestPaymentIsVisible}
+            addAccountDetails={() => setAddAccountIsVisible(false)}
+            tripId={trip._id}
+            onClose={() => setRequestPaymentIsVisible(false)}
+          />
+          <UiConfirmModal
+            title="Add Payout Account"
+            isVisible={addAccountIsVisible}
+            onClose={() => setAddAccountIsVisible(false)}
+            onProceed={redirectToAddAccount}
+          >
+            You are yet to add your payout account. Kindly add your account to
+            be able to request payment.
+          </UiConfirmModal>
         </TripDetailsStyling>
       )}
-      <RequestPayment
-        isVisible={requestPaymentIsVisible}
-        onClose={() => setRequestPaymentIsVisible(false)}
-      />
     </>
   );
 }
@@ -276,6 +301,22 @@ const TripDetailsStyling = styled.div`
         text-transform: uppercase;
         margin-bottom: ${pxToRem(12)};
       }
+    }
+  }
+  .vehicle-details {
+    &__type {
+      font-weight: 600;
+      font-size: ${pxToRem(16)};
+      line-height: 140%;
+      letter-spacing: -0.02em;
+      color: var(--color-neutralBlack);
+    }
+    &__plate-number {
+      font-weight: 400;
+      font-size: ${pxToRem(14)};
+      line-height: 140%;
+      letter-spacing: -0.02em;
+      color: var(--color-gray-80);
     }
   }
   .double-grid {

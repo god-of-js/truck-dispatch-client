@@ -1,54 +1,117 @@
+import { RootState } from 'modules/index';
+import {
+  requestPaymentByTransporter,
+  updatePaymentRequestByTransporter,
+} from 'modules/Payments';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import PaymentRequest from 'types/PaymentRequest';
 import FileUploadWidget from 'ui/FileUploadWidget';
 import UiButton from 'ui/UiButton';
+import UiForm from 'ui/UiForm';
 import UiModal from 'ui/UiModal';
+import UiVideoPlayer from 'ui/UiVideoPlayer';
+import { deepRootedToFormData, toAnyAction } from 'utils/helpers';
+import RequestPaymentSchema from 'utils/validations/RequestPaymentSchema';
 
 interface Props {
   isVisible: boolean;
+  tripId: string;
+  paymentRequest?: PaymentRequest;
+  addAccountDetails: () => void;
   onClose: () => void;
 }
-export default function RequestPayment({ isVisible, onClose }: Props) {
+export default function RequestPayment({
+  isVisible,
+  paymentRequest,
+  tripId,
+  onClose,
+  addAccountDetails,
+}: Props) {
+  const user = useSelector((state: RootState) => state.account.user);
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState<{ proofVideo: File | null }>({
     proofVideo: null,
   });
+  const [loading, setLoading] = useState(false);
 
   function setValue({ value }: { value: File | File[]; name: string }) {
     setFormData({ proofVideo: value as File });
   }
+
+  function requestTripPayment() {
+    if (!user?.bankDetails) {
+      addAccountDetails();
+      return;
+    }
+
+    setLoading(true);
+    const data = deepRootedToFormData(formData);
+    const request = paymentRequest
+      ? updatePaymentRequestByTransporter(data, tripId, paymentRequest?._id)
+      : requestPaymentByTransporter(data, tripId);
+    dispatch(toAnyAction(request))
+      .then(() => {
+        onClose();
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
   return (
     <UiModal title="Request Payment" isVisible={isVisible} onClose={onClose}>
-      <ModalBody>
-        <p>
-          Upload a video that clearly shows the cargo being loaded into the
-          truck,
-          <br /> also ensure that the truck’s plate number is visible.
-        </p>
-        {!formData.proofVideo &&<FileUploadWidget
-          value={formData.proofVideo}
-          name="proofVideo"
-          styleType="with-drag-and-drop"
-          fileType="video"
-          onChange={setValue}
-        />}
-        <div className="btn-container">
-          {!!formData.proofVideo && (
-            <FileUploadWidget
-              value={formData.proofVideo}
-              name="proofVideo"
-              fileType="video"
-              onChange={setValue}
-            >
-              <div className="w-100-button">
-                <UiButton size="large" isFullWidth variant="secondary">
-                  Change Video
-                </UiButton>
-              </div>
-            </FileUploadWidget>
-          )}
-          <UiButton size="large">Request Payment</UiButton>
-        </div>
-      </ModalBody>
+      <UiForm
+        formData={formData}
+        schema={RequestPaymentSchema}
+        onSubmit={requestTripPayment}
+      >
+        {({ errors }) => (
+          <ModalBody>
+            <p>
+              Upload a video that clearly shows the cargo being loaded into the
+              truck,
+              <br /> also ensure that the truck’s plate number is visible.
+            </p>
+            {!formData.proofVideo ? (
+              <FileUploadWidget
+                value={formData.proofVideo}
+                name="proofVideo"
+                styleType="with-drag-and-drop"
+                fileType="video"
+                error={errors.proofVideo}
+                onChange={setValue}
+              />
+            ) : (
+              <UiVideoPlayer video={formData.proofVideo} />
+            )}
+            <div className="btn-container">
+              {!!formData.proofVideo && (
+                <FileUploadWidget
+                  value={formData.proofVideo}
+                  name="proofVideo"
+                  fileType="video"
+                  onChange={setValue}
+                >
+                  <div className="w-100-button">
+                    <UiButton
+                      size="large"
+                      isFullWidth
+                      disabled={loading}
+                      variant="secondary"
+                    >
+                      Change Video
+                    </UiButton>
+                  </div>
+                </FileUploadWidget>
+              )}
+              <UiButton size="large" loading={loading}>
+                Request Payment
+              </UiButton>
+            </div>
+          </ModalBody>
+        )}
+      </UiForm>
     </UiModal>
   );
 }
