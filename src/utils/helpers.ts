@@ -281,49 +281,30 @@ export function searchObjectsByField<T extends Record<string, any>>(
   searchInput: string,
   searchFields: (keyof T)[],
 ): T[] {
-  if (!Array.isArray(arr) || !searchInput || !searchFields.length) {
+  if (!Array.isArray(arr) || !searchInput.trim() || !searchFields.length) {
     return [];
   }
 
-  const sanitizedInput = searchInput.toLowerCase();
-  const matchingObjects: T[] = [];
+  const sanitizedInput = searchInput.trim().toLowerCase();
 
-  for (const obj of arr) {
-    if (typeof obj !== 'object' || obj === null) {
-      continue;
-    }
-
-    let match = true;
-
-    for (const field of searchFields) {
-      const fieldValue = obj[field];
-
-      if (
-        typeof fieldValue === 'string' &&
-        fieldValue.toLowerCase().includes(sanitizedInput)
-      ) {
-        continue;
+  return arr.filter((item) => {
+    return searchFields?.some((key) => {
+      const value = item[key];
+      if (typeof value === 'string') {
+        const sanitizedValue = value.trim().toLowerCase();
+        return sanitizedValue.includes(sanitizedInput);
+      } else if (Array.isArray(value)) {
+        return value.some((v: string) =>
+          v.trim().toLowerCase().includes(sanitizedInput),
+        );
+      } else if (typeof value === 'object') {
+        const sanitizedValue = JSON.stringify(value).toLowerCase();
+        return sanitizedValue.includes(sanitizedInput);
       }
-
-      if (
-        typeof fieldValue === 'object' &&
-        JSON.stringify(fieldValue).toLowerCase().includes(sanitizedInput)
-      ) {
-        continue;
-      }
-
-      match = false;
-      break;
-    }
-
-    if (match) {
-      matchingObjects.push(obj);
-    }
-  }
-
-  return matchingObjects;
+      return false;
+    });
+  });
 }
-
 
 export function containsOnlyNumbers(value: string) {
   return /^[0-9]+$/.test(value);

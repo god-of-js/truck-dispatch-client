@@ -157,7 +157,7 @@ export default function MyTripsPage() {
     [totalTrips, totalPendingTrips, totalInProgressTrips, totalCompletedTrips],
   );
 
-  const searchFields: (keyof Trip)[] = ['transporter', 'tripOwner'];
+  const searchFields: (keyof Trip)[] = ['transporter', 'tripOwner', 'pickUpAddress', 'typeOfGoods'];
 
   const  queriedTrips = useMemo(() => {
     if (searchQuery) return searchObjectsByField<Trip>(trips, searchQuery, searchFields);
