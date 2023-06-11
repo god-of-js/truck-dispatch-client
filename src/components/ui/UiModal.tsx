@@ -81,7 +81,7 @@ function positionStyling({ position, size }: CardProps) {
         width: 60%;
       }
       @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
-        width: 45%;
+        width: 62%;
       }
     `;
   }
