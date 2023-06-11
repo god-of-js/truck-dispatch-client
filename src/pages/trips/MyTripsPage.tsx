@@ -355,14 +355,6 @@ export default function MyTripsPage() {
   function edgeNode() {
     return (
       <EdgeNodeContainer>
-        <UiInput
-          onChange={handleQueryChange}
-          value={searchQuery}
-          name="searchQuery"
-          placeholder="Search..."
-          icon="Search"
-          size="md"
-        />
         {clientBasedUserTypes.includes(user?.userType!) && (
           <UiButton size="md" onClick={() => setIsCreateTripVisible(true)}>
             <UiIcon icon="TruckTick" /> <span>Create new trip</span>
@@ -445,8 +437,10 @@ export default function MyTripsPage() {
     <>
       <DashboardTopNav
         routeName="My Trips"
+        searchQuery={searchQuery}
         pageFilters={filters}
         edgeNode={edgeNode()}
+        handleQueryChange={handleQueryChange}
       />
       <MyTripsPageStyle>
         <UiTable
