@@ -277,6 +277,9 @@ class ApiService {
   updateVehicle(vehicleData: FormData, vehicleId: string) {
     return this.patch<Vehicle>(`/vehicle/${vehicleId}`, vehicleData);
   }
+  deleteVehicle(vehicleId: string) {
+    return this.delete(`/vehicle/${vehicleId}`);
+  }
 
   getVehicles() {
     return this.get<Vehicle[]>(`/vehicle`);
