@@ -35,7 +35,6 @@ export default function UiForm({
         {},
       );
     }
-    console.log(errors);
     return errors;
   }
 

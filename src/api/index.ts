@@ -277,6 +277,9 @@ class ApiService {
   updateVehicle(vehicleData: FormData, vehicleId: string) {
     return this.patch<Vehicle>(`/vehicle/${vehicleId}`, vehicleData);
   }
+  deleteVehicle(vehicleId: string) {
+    return this.delete(`/vehicle/${vehicleId}`);
+  }
 
   getVehicles() {
     return this.get<Vehicle[]>(`/vehicle`);
@@ -331,6 +334,7 @@ class ApiService {
         return data.data;
       })
       .catch((e) => {
+        console.log(e);
         Toast.error({ msg: e.message });
         return Promise.reject(e);
       });

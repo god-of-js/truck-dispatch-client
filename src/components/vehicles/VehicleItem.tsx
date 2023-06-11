@@ -10,8 +10,13 @@ import sizes from 'utils/sizes';
 interface Props {
   vehicle: Vehicle;
   openEditVehicle: (vehicle: Vehicle) => void;
+  openDeleteVehicle: (vehicleId: string) => void;
 }
-export default function VehicleComponent({ vehicle, openEditVehicle }: Props) {
+export default function VehicleComponent({
+  vehicle,
+  openEditVehicle,
+  openDeleteVehicle,
+}: Props) {
   const images = Object.values(vehicle.images).slice(0, 4);
 
   function editVehicle() {
@@ -62,7 +67,11 @@ export default function VehicleComponent({ vehicle, openEditVehicle }: Props) {
         <UiButton variant="secondary" size="large" onClick={editVehicle}>
           Edit truck details
         </UiButton>
-        <UiButton variant="danger-secondary" size="large">
+        <UiButton
+          variant="danger-secondary"
+          size="large"
+          onClick={() => openDeleteVehicle(vehicle._id)}
+        >
           <UiIcon icon="TruckRemove" />
         </UiButton>
       </div>
