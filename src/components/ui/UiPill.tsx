@@ -11,32 +11,29 @@ export type PillType =
   | 'gray'
   | 'rose'
   | 'orange';
+
 const icons: { [key: string]: Icons } = {
-  // modify the icons to fit the variants
-  primary: 'Tick',
-  warning: 'Tick',
-  danger: 'Tick',
-  info: 'Tick',
-  success: 'Tick',
-  gray: 'Tick',
+  warning: 'Information',
+  danger: 'CloseCircle',
+  success: 'CheckCircle',
 };
+
 interface Props {
   children: React.ReactNode;
   variant: PillType;
   hasIcon?: boolean;
 }
-export default function ({ children, variant, hasIcon }: Props) {
+
+export default function Pill({ children, variant, hasIcon }: Props) {
   return (
-    <Pill className={variant + ' ui-pill'}>
-      <div className="circle">
-        {hasIcon && <UiIcon icon={icons[variant]} />}
-      </div>
-      {children}
-    </Pill>
+    <StyledPill className={variant + ' ui-pill'} hasIcon={hasIcon}>
+      {hasIcon ? <UiIcon icon={icons[variant]} /> : <div className="circle" />}
+      <StyledChildren>{children}</StyledChildren>
+    </StyledPill>
   );
 }
 
-const Pill = styled.div`
+const StyledPill = styled.div<{ hasIcon?: boolean }>`
   display: flex;
   align-items: center;
   gap: ${pxToRem(4)};
@@ -51,9 +48,10 @@ const Pill = styled.div`
   letter-spacing: -0.02em;
 
   .circle {
-    width: 8px;
-    height: 8px;
+    width: ${pxToRem(8)};
+    height: ${pxToRem(8)};
     border-radius: 50%;
+    display: ${(props) => (props.hasIcon ? 'none' : 'block')};
   }
 
   &.warning {
@@ -63,8 +61,22 @@ const Pill = styled.div`
     .circle {
       background: var(--color-warning);
     }
+    svg {
+      fill: var(--color-warning);
+    }
   }
 
+  &.danger {
+    background: var(--color-danger-10);
+    color: var(--color-danger);
+
+    .circle {
+      background: var(--color-danger);
+    }
+    svg {
+      fill: var(--color-danger);
+    }
+  }
   &.success {
     background: var(--color-success-10);
     color: var(--color-success);
@@ -72,7 +84,11 @@ const Pill = styled.div`
     .circle {
       background: var(--color-success);
     }
+    svg {
+      fill: var(--color-success);
+    }
   }
+
   &.info {
     background: var(--color-info-10);
     color: var(--color-info);
@@ -80,7 +96,11 @@ const Pill = styled.div`
     .circle {
       background: var(--color-info);
     }
+    svg {
+      fill: var(--color-info);
+    }
   }
+
   &.rose {
     background: var(--color-rose-10);
     color: var(--color-rose);
@@ -88,13 +108,20 @@ const Pill = styled.div`
     .circle {
       background: var(--color-rose);
     }
+    svg {
+      fill: var(--color-rose);
+    }
   }
+
   &.orange {
     background: var(--color-orange-10);
     color: var(--color-orange);
 
     .circle {
       background: var(--color-orange);
+    }
+    svg {
+      fill: var(--color-orange);
     }
   }
 
@@ -106,4 +133,7 @@ const Pill = styled.div`
       background: var(--color-gray-70);
     }
   }
+`;
+const StyledChildren = styled.div`
+  white-space: nowrap;
 `;

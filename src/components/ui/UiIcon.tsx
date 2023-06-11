@@ -6,6 +6,7 @@ import { ReactComponent as ArrowRight } from './icons/arrow-right.svg';
 import { ReactComponent as ArrowLeft } from './icons/arrow-left.svg';
 import { ReactComponent as Card } from './icons/card.svg';
 import { ReactComponent as CaretDown } from './icons/caret-down.svg';
+import { ReactComponent as CaretDownBold } from './icons/caret-down-bold.svg';
 import { ReactComponent as CaretUp } from './icons/caret-up.svg';
 import { ReactComponent as CaretLeft } from './icons/caret-left.svg';
 import { ReactComponent as CaretRight } from './icons/caret-right.svg';
@@ -58,6 +59,10 @@ import { ReactComponent as Trailer } from './icons/trailer.svg';
 import { ReactComponent as User } from './icons/user.svg';
 import { ReactComponent as UserOctagon } from './icons/user-octagon.svg';
 import { ReactComponent as UserSquare } from './icons/user-square.svg';
+
+import { ReactComponent as CheckCircle } from './icons/check-circle.svg';
+import { ReactComponent as CloseCircle } from './icons/close-circle.svg';
+
 import { ReactComponent as Van } from './icons/van.svg';
 import { ReactComponent as VerticalDots } from './icons/vertical-dots.svg';
 
@@ -68,6 +73,7 @@ const icons = {
   ArrowLeft: <ArrowLeft />,
   Card: <Card />,
   CaretDown: <CaretDown />,
+  CaretDownBold: <CaretDownBold />,
   CaretUp: <CaretUp />,
   CaretLeft: <CaretLeft />,
   CaretRight: <CaretRight />,
@@ -80,7 +86,9 @@ const icons = {
   Close: <Close />,
   CloseThick: <CloseThick />,
   Check: <Check />,
+  CheckCircle: <CheckCircle />,
   Chiller: <Chiller />,
+  CloseCircle: <CloseCircle />,
   DocumentUpload: <DocumentUpload />,
   DoubleChat: <DoubleChat />,
   DuoTrucks: <DuoTrucks />,
@@ -116,6 +124,7 @@ const icons = {
   Trash: <Trash />,
   Truck: <Truck />,
   TruckRemove: <TruckRemove />,
+
   User: <User />,
   UserOctagon: <UserOctagon />,
   UserSquare: <UserSquare />,
