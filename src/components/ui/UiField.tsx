@@ -19,6 +19,7 @@ export default function UiField({ error, label, children }: Props) {
 const Message = styled.div`
   color: var(--color-danger);
   font-size: ${pxToRem(12)};
+  text-align: left;
 `;
 
 const Label = styled.label`
@@ -26,4 +27,5 @@ const Label = styled.label`
   color: var(--color-neutralBlack);
   font-weight: 700;
   line-height: ${pxToRem(32)};
+  text-align: left;
 `;

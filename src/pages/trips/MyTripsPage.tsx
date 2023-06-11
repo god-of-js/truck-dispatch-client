@@ -196,9 +196,7 @@ export default function MyTripsPage() {
   }
 
   function userDetails(trip: Trip, tripUser?: User) {
-    if (!tripUser) return  <UserDetails
-      userName="Unassigned"
-    />;
+    if (!tripUser) return <UserDetails userName="Unassigned" />;
 
     return (
       <UserDetails
@@ -357,14 +355,6 @@ export default function MyTripsPage() {
   function edgeNode() {
     return (
       <EdgeNodeContainer>
-        <UiInput
-          onChange={handleQueryChange}
-          value={searchQuery}
-          name="searchQuery"
-          placeholder="Search..."
-          icon="Search"
-          size="md"
-        />
         {clientBasedUserTypes.includes(user?.userType!) && (
           <UiButton size="md" onClick={() => setIsCreateTripVisible(true)}>
             <UiIcon icon="TruckTick" /> <span>Create new trip</span>
@@ -417,9 +407,18 @@ export default function MyTripsPage() {
     return (
       <>
         <UiIcon icon="TruckTick" />
-        <span>Create new trip</span>
+        <span>Create new Trip</span>
       </>
     );
+  }
+
+  function emptyTableAction() {
+    if (serviceBasedUserTypes.includes(user?.userType!)) {
+      navigate('/available-jobs');
+      return;
+    }
+
+    setIsCreateTripVisible(true);
   }
 
   useEffect(() => {
@@ -438,8 +437,10 @@ export default function MyTripsPage() {
     <>
       <DashboardTopNav
         routeName="My Trips"
+        searchQuery={searchQuery}
         pageFilters={filters}
         edgeNode={edgeNode()}
+        handleQueryChange={handleQueryChange}
       />
       <MyTripsPageStyle>
         <UiTable
@@ -451,7 +452,9 @@ export default function MyTripsPage() {
           emptyTableIcon="TruckTick"
           emptyTableText="You don’t have any trip here yet, Bid for jobs to get trips"
           emptyTableBtnContent={emptyTableBtnContent()}
+          emptyTableAction={emptyTableAction}
         />
+
         {!!tripsData.length && (
           <PaginationLoader
             loading={loading}
@@ -531,17 +534,17 @@ export default function MyTripsPage() {
         Are you sure you want to delete this bid? Your candidacy for this role
         would immediately be revoked.
       </UiConfirmModal>
-        <UiConfirmModal
-          title="Unassign Trip"
-          isVisible={isUnassignTripVisble}
-          variant="danger"
-          loading={isUnassignTripLoading}
-          onClose={() => setIsUnassignTripVisible(false)}
-          onProceed={triggerUnassignTrip}
-        >
-          Are you sure you want to unassign this trip? This process cannot be
-          undone.
-        </UiConfirmModal>
+      <UiConfirmModal
+        title="Unassign Trip"
+        isVisible={isUnassignTripVisble}
+        variant="danger"
+        loading={isUnassignTripLoading}
+        onClose={() => setIsUnassignTripVisible(false)}
+        onProceed={triggerUnassignTrip}
+      >
+        Are you sure you want to unassign this trip? This process cannot be
+        undone.
+      </UiConfirmModal>
     </>
   );
 }

@@ -8,21 +8,10 @@ export function toAnyAction(func: unknown) {
 
 export function aValueHasBeenChanged<T extends object>(source: T, formData: T) {
   if (!source) return false;
-  // refactor to make use of the removeUneditedFields util
-  const keys = Object.keys(source) as (keyof typeof formData)[];
-  const formDataKeys = Object.keys(formData);
 
-  if (keys.length !== formDataKeys.length) {
-    return false;
-  }
+  const editedData = removeUneditedFields(source, formData);
 
-  for (let key of keys) {
-    if (source[key] !== formData[key]) {
-      return false;
-    }
-  }
-
-  return true;
+  return !!Object.keys(editedData).length;
 }
 
 export function abbreviateNumber(
@@ -218,6 +207,21 @@ export function convertToDdMmmYYYYDateFormat(dateToConvert: string | number) {
   const year = date.getFullYear();
 
   return `${day}-${month}-${year}`;
+}
+export function getTime(time: string | number) {
+  const date = new Date(time);
+
+  let hours = date.getHours();
+  let minutes: string | number = date.getMinutes();
+  const period = hours >= 12 ? 'PM' : 'AM';
+
+  // Convert hours to 12-hour format
+  hours = hours % 12 || 12;
+
+  // Add leading zero to minutes if needed
+  minutes = minutes < 10 ? `0${minutes}` : minutes;
+
+  return `${hours}:${minutes} ${period}`;
 }
 
 export function saveTokenVerificationInfo(data: TokenVerificationData) {

@@ -1,4 +1,4 @@
-import { approvePaymentRequest } from 'modules/Payments';
+import { approvePaymentRequest } from 'modules/Trips';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -14,13 +14,13 @@ interface Props {
   onClose: () => void;
   tripId: string;
   paymentRequestId: string;
-  isVisible: boolean
+  isVisible: boolean;
 }
 export default function ConfirmApprovePayment({
   tripId,
   paymentRequestId,
   onClose,
-  isVisible
+  isVisible,
 }: Props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();

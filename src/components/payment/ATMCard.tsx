@@ -61,8 +61,8 @@ const ATMCardStyling = styled.div`
     left: -15%;
   }
   .centered-circle {
-    width: ${pxToRem(20)};;
-    height: ${pxToRem(20)};;
+    width: ${pxToRem(20)};
+    height: ${pxToRem(20)};
     background: var(--color-primary-50);
     border-radius: 50%;
     position: absolute;
@@ -82,23 +82,23 @@ const ATMCardStyling = styled.div`
     .balance-value {
       font-style: normal;
       font-weight: 600;
-      font-size: ${pxToRem(32)};;
+      font-size: ${pxToRem(32)};
       color: var(--color-primary-10);
     }
 
     .balance-title {
       font-style: normal;
       font-weight: 600;
-      font-size: ${pxToRem(16)};;
-      line-height: ${pxToRem(16)};;
+      font-size: ${pxToRem(16)};
+      line-height: ${pxToRem(16)};
       color: var(--color-primary-10);
     }
 
     .user-name {
       font-style: normal;
       font-weight: 600;
-      font-size: ${pxToRem(14)};;
-      line-height: ${pxToRem(26)};;
+      font-size: ${pxToRem(14)};
+      line-height: ${pxToRem(26)};
       color: var(--color-primary-10);
       text-transform: capitalize;
     }

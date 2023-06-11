@@ -194,10 +194,7 @@ class ApiService {
     return this.delete<Bid>(`/bids/${tripId}/${bidId}`);
   }
 
-  requestPaymentByTransporter(
-    data: FormData,
-    tripId: string,
-  ): Promise<PaymentRequest> {
+  requestPaymentByTransporter(data: FormData, tripId: string): Promise<Trip> {
     return this.post(`/payment/request-payment/trip/${tripId}`, data);
   }
 
@@ -205,7 +202,7 @@ class ApiService {
     data: FormData,
     tripId: string,
     paymentRequestId: string,
-  ): Promise<PaymentRequest> {
+  ): Promise<Trip> {
     return this.patch(
       `/payment/request-payment/trip/${tripId}/update/${paymentRequestId}`,
       data,
@@ -216,23 +213,19 @@ class ApiService {
     return this.get<PaymentRequest[]>('/payment/payment-requests');
   }
 
-  getPaymentRequestByTripId(tripId: string) {
-    return this.get<PaymentRequest>(`/payment/payment-request/trip/${tripId}`);
-  }
-
   rejectPaymentRequest(
     tripId: string,
     paymentRequestId: string,
     data: { reasonForReject: string },
   ) {
-    return this.post<PaymentRequest>(
+    return this.post<Trip>(
       `/payment/payment-request/trip/${tripId}/reject/${paymentRequestId}`,
       data,
     );
   }
 
   approvePaymentRequest(tripId: string, paymentRequestId: string) {
-    return this.post<PaymentRequest>(
+    return this.post<Trip>(
       `/payment/payment-request/trip/${tripId}/approve/${paymentRequestId}`,
     );
   }
@@ -283,6 +276,9 @@ class ApiService {
 
   updateVehicle(vehicleData: FormData, vehicleId: string) {
     return this.patch<Vehicle>(`/vehicle/${vehicleId}`, vehicleData);
+  }
+  deleteVehicle(vehicleId: string) {
+    return this.delete(`/vehicle/${vehicleId}`);
   }
 
   getVehicles() {
