@@ -334,7 +334,6 @@ class ApiService {
         return data.data;
       })
       .catch((e) => {
-        console.log(e);
         Toast.error({ msg: e.message });
         return Promise.reject(e);
       });
