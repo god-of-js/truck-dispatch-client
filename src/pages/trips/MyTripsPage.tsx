@@ -157,34 +157,47 @@ export default function MyTripsPage() {
     [totalTrips, totalPendingTrips, totalInProgressTrips, totalCompletedTrips],
   );
 
-  const searchFields: (keyof Trip)[] = ['transporter', 'tripOwner', 'pickUpAddress', 'typeOfGoods'];
+  const searchFields = [
+    'fullName',
+    'pickUpAddress',
+    'deliveryAddress',
+    'typeOfGoods',
+  ];
 
-  const  queriedTrips = useMemo(() => {
-    if (searchQuery) return searchObjectsByField<Trip>(trips, searchQuery, searchFields);
+  const queriedTrips = useMemo(() => {
+    const tripsWithFullName = trips.map((trip) => ({
+      ...trip,
+      fullName: !serviceBasedUserTypes.includes(user?.userType!)
+        ? `${trip.transporter?.firstName} ${trip.transporter?.lastName}`
+        : `${trip.tripOwner?.firstName} ${trip.tripOwner?.lastName}`,
+    }));
+    if (searchQuery)
+      return searchObjectsByField<Trip>(
+        tripsWithFullName,
+        searchQuery,
+        searchFields,
+      );
 
-    if (status) return filterByFieldInObject<Trip>('status', status, trips)
+    if (status) return filterByFieldInObject<Trip>('status', status, trips);
 
-    return trips
-
-  }, [searchQuery, trips, status])
+    return trips;
+  }, [searchQuery, trips, status]);
 
   const tripsData = useMemo(() => {
-    return queriedTrips.map(
-      (trip: Trip) => ({
-        ...trip,
-        id: trip._id,
-        typeOfGoods: <TypeOfGoods>{trip.typeOfGoods}</TypeOfGoods>,
-        responsibleTransporter: userDetails(trip, trip.transporter),
-        tripOwnerDetails: userDetails(trip, trip.tripOwner),
-        pickUpDate: <DateText>{convertToFullDate(trip.pickUpDate)}</DateText>,
-        deliveryDate: <DateText>{convertToFullDate(trip.deliveryDate)}</DateText>,
-        statusField: (
-          <UiPill variant={getPillVariant(trip.status)}>
-            {formatStatus(trip.status)}
-          </UiPill>
-        ),
-      }),
-    );
+    return queriedTrips.map((trip: Trip) => ({
+      ...trip,
+      id: trip._id,
+      typeOfGoods: <TypeOfGoods>{trip.typeOfGoods}</TypeOfGoods>,
+      responsibleTransporter: userDetails(trip, trip.transporter),
+      tripOwnerDetails: userDetails(trip, trip.tripOwner),
+      pickUpDate: <DateText>{convertToFullDate(trip.pickUpDate)}</DateText>,
+      deliveryDate: <DateText>{convertToFullDate(trip.deliveryDate)}</DateText>,
+      statusField: (
+        <UiPill variant={getPillVariant(trip.status)}>
+          {formatStatus(trip.status)}
+        </UiPill>
+      ),
+    }));
   }, [trips, searchQuery]);
 
   function getPillVariant(status: Trip['status']) {

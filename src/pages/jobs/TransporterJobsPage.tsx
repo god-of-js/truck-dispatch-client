@@ -9,7 +9,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import UiOverlay from 'ui/UiOverlay';
-import { filterByFieldInObject, toAnyAction } from 'utils/helpers';
+import {
+  filterByFieldInObject,
+  searchObjectsByField,
+  toAnyAction,
+} from 'utils/helpers';
 import Trip from 'types/Trip';
 import { clientBasedUserTypes } from 'utils/constants';
 import JobsResponse from 'types/JobsResponse';
@@ -80,6 +84,15 @@ export default function TransporterJobs() {
   );
 
   const filteredJobs = useMemo(() => {
+    if (searchQuery)
+      return searchObjectsByField(
+        jobs.map((job) => ({
+          ...job,
+          fullName: `${job.tripOwner.firstName} ${job.tripOwner.lastName} `,
+        })),
+        searchQuery,
+        ['fullName', 'deliveryAddress', 'pickUpAddress', 'typeOfGoods'],
+      );
     if (!senderType) return jobs;
     return filterByFieldInObject<Trip>('tripOwnerUserType', senderType, jobs);
   }, [jobs, senderType]);
@@ -146,7 +159,8 @@ export default function TransporterJobs() {
           <span className="count">{bids.length}</span>
         </UiButton>
       </EdgeNode>
-    )}
+    );
+  }
   function showDeleteBidModal(bidId: string, tripId: string) {
     setSelectedJobId(tripId);
     setSelectedBidId(bidId);
@@ -204,6 +218,7 @@ export default function TransporterJobs() {
       <DashboardTopNav
         routeName="Jobs"
         pageFilters={pageFilters}
+        searchQuery={searchQuery}
         handleQueryChange={handleQueryChange}
         edgeNode={edgeNode()}
       />
@@ -309,7 +324,8 @@ const EdgeNode = styled.div`
       display: flex;
       align-items: center;
       justify-content: center;
-    }}
+    }
+  }
   display: flex;
   gap: ${pxToRem(12)};
   .ui-filter-tag {

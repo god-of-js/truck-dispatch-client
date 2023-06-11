@@ -279,15 +279,15 @@ export function filterByFieldInObject<T = any>(
 export function searchObjectsByField<T extends Record<string, any>>(
   arr: T[],
   searchInput: string,
-  searchFields: (keyof T)[],
+  searchFields: string[],
 ): T[] {
   if (!Array.isArray(arr) || !searchInput.trim() || !searchFields.length) {
     return [];
   }
 
   const sanitizedInput = searchInput.trim().toLowerCase();
-
   return arr.filter((item) => {
+    console.log(item);
     return searchFields?.some((key) => {
       const value = item[key];
       if (typeof value === 'string') {
