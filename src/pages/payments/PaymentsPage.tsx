@@ -22,12 +22,13 @@ import UiIcon from 'ui/UiIcon';
 import UiAvatar from 'ui/UiAvatar';
 import User from 'types/User';
 import UiButton from 'ui/UiButton';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { filterByFieldInObject } from 'utils/helpers';
 
 function PaymentsPage() {
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
   const paymentRequests = useSelector(
     (state: RootState) => state.payment.paymentRequests,
   );
@@ -170,6 +171,10 @@ function PaymentsPage() {
     );
   }
 
+  function emptyTableAction() {
+    navigate('/available-jobs');
+  }
+
   function edgeChild() {
     return (
       <EdgeChild>
@@ -202,6 +207,7 @@ function PaymentsPage() {
           emptyTableIcon="Moneys"
           emptyTableText="Nothing here yet. Start taking jobs to get payments."
           emptyTableBtnContent={emptyTableBtnContent()}
+          emptyTableAction={emptyTableAction}
         />
         {selectedPayment && (
           <ViewPaymentDetails

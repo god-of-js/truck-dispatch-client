@@ -393,7 +393,6 @@ export default function MyTripsPage() {
     setIsTripBroadcastedVisible(true);
   }
 
-
   function emptyTableBtnContent() {
     if (serviceBasedUserTypes.includes(user?.userType!)) return 'See Jobs';
 
@@ -403,6 +402,15 @@ export default function MyTripsPage() {
         <span>Create new Trip</span>
       </>
     );
+  }
+
+  function emptyTableAction() {
+    if (serviceBasedUserTypes.includes(user?.userType!)) {
+      navigate('/available-jobs');
+      return;
+    }
+
+    setIsCreateTripVisible(true);
   }
 
   useEffect(() => {
@@ -434,7 +442,7 @@ export default function MyTripsPage() {
           emptyTableIcon="TruckTick"
           emptyTableText="You don’t have any trip here yet, Bid for jobs to get trips"
           emptyTableBtnContent={emptyTableBtnContent()}
-          emptyTableAction={() => setIsCreateTripVisible(true)}
+          emptyTableAction={emptyTableAction}
         />
 
         {!!tripsData.length && (
