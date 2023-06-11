@@ -173,6 +173,10 @@ export default function PaymentsPage() {
     );
   }
 
+  function emptyTableAction() {
+    navigate('/available-jobs');
+  }
+
   return (
     <>
       <DashboardTopNav
@@ -191,6 +195,7 @@ export default function PaymentsPage() {
           emptyTableIcon="Moneys"
           emptyTableText="Nothing here yet. Start taking jobs to get payments."
           emptyTableBtnContent={emptyTableBtnContent()}
+          emptyTableAction={emptyTableAction}
         />
         {selectedPayment && (
           <ViewPaymentDetails

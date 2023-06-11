@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Api from 'Api';
 import Vehicle from 'types/Vehicle';
-import { AppDispatch, AppState, RootState } from '.';
+import { AppDispatch } from '.';
 
 export interface VehicleState {
   vehicles: Vehicle[];
@@ -27,10 +27,15 @@ export const vehicleSlice = createSlice({
 
       state.vehicles[vehicleIndex] = action.payload;
     },
+    removeVehicle(state: VehicleState, action: { payload: string }) {
+      state.vehicles = state.vehicles.filter(
+        ({ _id }) => _id !== action.payload,
+      );
+    },
   },
 });
 
-export const { setVehicles, setVehicle } = vehicleSlice.actions;
+export const { setVehicles, setVehicle, removeVehicle } = vehicleSlice.actions;
 
 export default vehicleSlice.reducer;
 
@@ -54,6 +59,14 @@ export const updateVehicle = (vehicleData: FormData, vehicleId: string) => {
   return (dispatch: AppDispatch) => {
     return Api.updateVehicle(vehicleData, vehicleId).then((data) => {
       dispatch(setVehicle(data));
+    });
+  };
+};
+
+export const deleteVehicle = (vehicleId: string) => {
+  return (dispatch: AppDispatch) => {
+    return Api.deleteVehicle(vehicleId).then(() => {
+      dispatch(removeVehicle(vehicleId));
     });
   };
 };

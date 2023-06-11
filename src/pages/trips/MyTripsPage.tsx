@@ -355,14 +355,6 @@ export default function MyTripsPage() {
   function edgeNode() {
     return (
       <EdgeNodeContainer>
-        <UiInput
-          onChange={handleQueryChange}
-          value={searchQuery}
-          name="searchQuery"
-          placeholder="Search..."
-          icon="Search"
-          size="md"
-        />
         {clientBasedUserTypes.includes(user?.userType!) && (
           <UiButton size="md" onClick={() => setIsCreateTripVisible(true)}>
             <UiIcon icon="TruckTick" /> <span>Create new trip</span>
@@ -415,9 +407,18 @@ export default function MyTripsPage() {
     return (
       <>
         <UiIcon icon="TruckTick" />
-        <span>Create new trip</span>
+        <span>Create new Trip</span>
       </>
     );
+  }
+
+  function emptyTableAction() {
+    if (serviceBasedUserTypes.includes(user?.userType!)) {
+      navigate('/available-jobs');
+      return;
+    }
+
+    setIsCreateTripVisible(true);
   }
 
   useEffect(() => {
@@ -436,8 +437,10 @@ export default function MyTripsPage() {
     <>
       <DashboardTopNav
         routeName="My Trips"
+        searchQuery={searchQuery}
         pageFilters={filters}
         edgeNode={edgeNode()}
+        handleQueryChange={handleQueryChange}
       />
       <MyTripsPageStyle>
         <UiTable
@@ -449,7 +452,9 @@ export default function MyTripsPage() {
           emptyTableIcon="TruckTick"
           emptyTableText="You don’t have any trip here yet, Bid for jobs to get trips"
           emptyTableBtnContent={emptyTableBtnContent()}
+          emptyTableAction={emptyTableAction}
         />
+
         {!!tripsData.length && (
           <PaginationLoader
             loading={loading}
