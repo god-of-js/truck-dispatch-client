@@ -30,7 +30,7 @@ interface Props {
   emptyTableIcon?: Icons;
   emptyTableText?: string;
   emptyTableBtnContent?: React.ReactNode;
-  emptyTableAction: () => void;
+  emptyTableAction?: () => void;
 }
 
 export default function UiTable({
