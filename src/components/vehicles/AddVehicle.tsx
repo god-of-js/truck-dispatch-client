@@ -48,6 +48,30 @@ export default function AddVehicle({ isVisible, onClose }: Props) {
   ];
   const [currentStepTitle, setCurrentStepTitle] = useState(steps[0].title);
 
+  function closeModal() {
+    setVehicleData((prevState) => ({
+      ...prevState,
+      plateNumber: '',
+      vehicleType: '',
+      images: {
+        frontView: null,
+        backView: null,
+        leftSideView: null,
+        rightSideView: null,
+        driversCockPit: null,
+        backInnerView: null,
+      },
+      driver: {
+        name: '',
+        phone: '',
+        driverLicense: '',
+        avatar: null,
+      },
+    }));
+    setCurrentStepTitle(steps[0].title);
+    onClose();
+  }
+
   function nextStep(data: Partial<CreateVehicleData>) {
     setVehicleData((formData) => ({
       ...formData,
@@ -84,7 +108,7 @@ export default function AddVehicle({ isVisible, onClose }: Props) {
     <UiModal
       isVisible={isVisible}
       title="Add Vehicle"
-      onClose={onClose}
+      onClose={closeModal}
       goPrev={goPrev}
     >
       <UiSteps steps={steps} currentStepTitle={currentStepTitle} noDetail />
