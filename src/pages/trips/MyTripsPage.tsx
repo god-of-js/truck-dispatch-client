@@ -30,7 +30,6 @@ import UiFilterTag from 'ui/UiFilterTag';
 import UiInput from 'ui/UiInput';
 import { deleteBid, getTransporterBids } from 'modules/Bid';
 import PaginationLoader from 'components/layout/PaginationLoader';
-import UiOverlay from 'ui/UiOverlay';
 import InformUserOfVerification from 'components/verification/InformUserOfVerification';
 import ViewJobDetail from 'components/jobs/ViewJobDetail';
 import BidForJob from 'components/jobs/BidForJob';
@@ -68,6 +67,8 @@ export default function MyTripsPage() {
   const [isAllBidsVisible, setIsAllBidsVisible] = useState(false);
   const [isCancelTripVisible, setIsCancelTripVisible] = useState(false);
   const [isCancelTripLoading, setIsCancelTripLoading] = useState(false);
+  const [isUnassignTripVisble, setIsUnassignTripVisible] = useState(false);
+  const [isUnassignTripLoading, setIsUnassignTripLoading] = useState(false);
   const [isCreateTripVisible, setIsCreateTripVisible] = useState(false);
   const [isTripBroadcastedVisible, setIsTripBroadcastedVisible] =
     useState(false);
@@ -217,7 +218,7 @@ export default function MyTripsPage() {
   }
 
   function userDetails(trip: Trip, tripUser?: User) {
-    if (!tripUser) return 'Not yet assigned';
+    if (!tripUser) return <UserDetails userName="Unassigned" />;
 
     return (
       <UserDetails
@@ -323,13 +324,27 @@ export default function MyTripsPage() {
   }
 
   function initUnassignTrip(id: string) {
-    dispatch(toAnyAction(unassignTrip(id)));
+    setActiveTripId(id);
+    setIsUnassignTripVisible(true);
+  }
+
+  function triggerUnassignTrip() {
+    if (!activeTripId) {
+      Toast.error({ msg: 'Trip ID was not provided.' });
+      return;
+    }
+    setIsUnassignTripLoading(true);
+    dispatch(toAnyAction(unassignTrip(activeTripId))).finally(() => {
+      setIsUnassignTripLoading(false);
+      setIsUnassignTripVisible(false);
+    });
   }
 
   function initCancelTrip(id: string) {
     setActiveTripId(id);
     setIsCancelTripVisible(true);
   }
+
   function cancelTrip() {
     if (!activeTripId) {
       Toast.error({ msg: 'Trip ID was not provided.' });
@@ -414,9 +429,18 @@ export default function MyTripsPage() {
     return (
       <>
         <UiIcon icon="TruckTick" />
-        <span>Create new trip</span>
+        <span>Create new Trip</span>
       </>
     );
+  }
+
+  function emptyTableAction() {
+    if (serviceBasedUserTypes.includes(user?.userType!)) {
+      navigate('/available-jobs');
+      return;
+    }
+
+    setIsCreateTripVisible(true);
   }
 
   useEffect(() => {
@@ -435,10 +459,10 @@ export default function MyTripsPage() {
     <>
       <DashboardTopNav
         routeName="My Trips"
-        handleQueryChange={handleQueryChange}
         searchQuery={searchQuery}
         pageFilters={filters}
         edgeNode={edgeNode()}
+        handleQueryChange={handleQueryChange}
       />
       <MyTripsPageStyle>
         <UiTable
@@ -450,8 +474,10 @@ export default function MyTripsPage() {
           emptyTableIcon="TruckTick"
           emptyTableText="You don’t have any trip here yet, Bid for jobs to get trips"
           emptyTableBtnContent={emptyTableBtnContent()}
+          emptyTableAction={emptyTableAction}
         />
-        {tripsData.length && (
+
+        {!!tripsData.length && (
           <PaginationLoader
             loading={loading}
             page={page}
@@ -462,82 +488,85 @@ export default function MyTripsPage() {
       </MyTripsPageStyle>
 
       {/* MODALS */}
-      <UiOverlay isVisible={isCreateTripVisible}>
-        <CreateTrip
-          tripId={activeTripId!}
-          onClose={() => {
-            setIsCreateTripVisible(false);
-            setActiveTripId(null);
-          }}
-          onCreated={showTripBroadcasted}
-        />
-      </UiOverlay>
+      <CreateTrip
+        isVisible={isCreateTripVisible}
+        tripId={activeTripId!}
+        onClose={() => {
+          setIsCreateTripVisible(false);
+          setActiveTripId(null);
+        }}
+        onCreated={showTripBroadcasted}
+      />
       {activeTripId && (
-        <UiOverlay isVisible={isTripBroadcastedVisible}>
-          <TripHasBeenBroadcasted
-            tripId={activeTripId!}
-            onClose={() => setIsTripBroadcastedVisible(false)}
-          />
-        </UiOverlay>
-      )}
-      <UiOverlay isVisible={isInformUserOfVerificationModalVisible}>
-        <InformUserOfVerification
-          onClose={() => setIsInformUserOfVerificationModalVisible(false)}
+        <TripHasBeenBroadcasted
+          isVisible={isTripBroadcastedVisible}
+          tripId={activeTripId!}
+          onClose={() => setIsTripBroadcastedVisible(false)}
         />
-      </UiOverlay>
+      )}
+      <InformUserOfVerification
+        isVisible={isInformUserOfVerificationModalVisible}
+        onClose={() => setIsInformUserOfVerificationModalVisible(false)}
+      />
       {job && (
         <>
-          <UiOverlay isVisible={isViewJobDetailsVisible}>
-            <ViewJobDetail
-              job={job}
-              bidOnJob={bidForJob}
-              onClose={closeViewDetails}
-            />
-          </UiOverlay>
-          <UiOverlay isVisible={isBidForJobVisible}>
-            <BidForJob
-              jobId={job._id}
-              onClose={closeBidOnJob}
-              backToJobDetails={backToJobDetails}
-            />
-          </UiOverlay>
+          <ViewJobDetail
+            job={job}
+            isVisible={isViewJobDetailsVisible}
+            bidOnJob={bidForJob}
+            onClose={closeViewDetails}
+          />
+          <BidForJob
+            isVisible={isBidForJobVisible}
+            jobId={job._id}
+            onClose={closeBidOnJob}
+            backToJobDetails={backToJobDetails}
+          />
         </>
       )}
-      <UiOverlay isVisible={isAllBidsVisible}>
-        <AllBids
-          onClose={() => setIsAllBidsVisible(false)}
-          editBid={(id) => {
-            bidForJob(id);
-            setIsAllBidsVisible(false);
-          }}
-          deleteBid={showDeleteBidModal}
-        />
-      </UiOverlay>
+      <AllBids
+        isVisible={isAllBidsVisible}
+        onClose={() => setIsAllBidsVisible(false)}
+        editBid={(id) => {
+          bidForJob(id);
+          setIsAllBidsVisible(false);
+        }}
+        deleteBid={showDeleteBidModal}
+      />
 
-      <UiOverlay isVisible={isCancelTripVisible}>
-        <UiConfirmModal
-          title="Cancel Trip"
-          variant="danger"
-          loading={isCancelTripLoading}
-          onClose={() => setIsCancelTripVisible(false)}
-          onProceed={cancelTrip}
-        >
-          Are you sure you want to cancel this trip? This process cannot be
-          undone.
-        </UiConfirmModal>
-      </UiOverlay>
-      <UiOverlay isVisible={isDeleteBidVisible}>
-        <UiConfirmModal
-          title="Delete Bid"
-          variant="danger"
-          loading={isDeleteBidLoading}
-          onClose={() => setIsDeleteBidVisible(false)}
-          onProceed={deleteTransporterBid}
-        >
-          Are you sure you want to delete this bid? Your candidacy for this role
-          would immediately be revoked.
-        </UiConfirmModal>
-      </UiOverlay>
+      <UiConfirmModal
+        isVisible={isCancelTripVisible}
+        title="Cancel Trip"
+        variant="danger"
+        loading={isCancelTripLoading}
+        onClose={() => setIsCancelTripVisible(false)}
+        onProceed={cancelTrip}
+      >
+        Are you sure you want to cancel this trip? This process cannot be
+        undone.
+      </UiConfirmModal>
+      <UiConfirmModal
+        isVisible={isDeleteBidVisible}
+        title="Delete Bid"
+        variant="danger"
+        loading={isDeleteBidLoading}
+        onClose={() => setIsDeleteBidVisible(false)}
+        onProceed={deleteTransporterBid}
+      >
+        Are you sure you want to delete this bid? Your candidacy for this role
+        would immediately be revoked.
+      </UiConfirmModal>
+      <UiConfirmModal
+        title="Unassign Trip"
+        isVisible={isUnassignTripVisble}
+        variant="danger"
+        loading={isUnassignTripLoading}
+        onClose={() => setIsUnassignTripVisible(false)}
+        onProceed={triggerUnassignTrip}
+      >
+        Are you sure you want to unassign this trip? This process cannot be
+        undone.
+      </UiConfirmModal>
     </>
   );
 }

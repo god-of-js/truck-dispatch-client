@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import OutsideClickHandler from 'react-outside-click-handler';
 import sizes from 'utils/sizes';
 import UiIcon from './UiIcon';
 import UiButton from './UiButton';
+import UiOverlay from './UiOverlay';
 
 type Size = 'lg' | 'md' | 'sm';
 type Position = 'center' | 'right';
@@ -17,6 +17,7 @@ interface Props {
   bgVariant?: BG;
   onClose: () => void;
   goPrev?: () => void;
+  isVisible: boolean;
 }
 export default function UiModal({
   children,
@@ -26,11 +27,19 @@ export default function UiModal({
   bgVariant = 'light',
   onClose,
   goPrev,
+  isVisible,
 }: Props) {
   return (
-    <Modal>
-      <OutsideClickHandler onOutsideClick={onClose}>
-        <ModalCard position={position} size={size} bgVariant={bgVariant}>
+    <UiOverlay onClick={onClose} isVisible={isVisible}>
+      <Modal>
+        <ModalCard
+          onClick={(event) => {
+            event.stopPropagation();
+          }}
+          position={position}
+          size={size}
+          bgVariant={bgVariant}
+        >
           <div className="modal-inner">
             <header className="modal-header">
               {goPrev && (
@@ -46,8 +55,8 @@ export default function UiModal({
             {children}
           </div>
         </ModalCard>
-      </OutsideClickHandler>
-    </Modal>
+      </Modal>
+    </UiOverlay>
   );
 }
 

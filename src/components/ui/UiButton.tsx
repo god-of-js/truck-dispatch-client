@@ -1,33 +1,34 @@
 import React from 'react';
 import styled from 'styled-components';
 import Loader from 'components/layout/Loader';
-
+export type ButtonVariant =
+  | 'primary'
+  | 'secondary'
+  | 'danger-secondary'
+  | 'warning-secondary'
+  | 'success-secondary'
+  | 'tertiary'
+  | 'neutral'
+  | 'icon-neutral'
+  | 'primary-outlined'
+  | 'secondary-outlined'
+  | 'primary-text'
+  | 'warning-text'
+  | 'dark'
+  | 'dark-outlined'
+  | 'danger';
 interface Props {
   children?: React.ReactNode;
   disabled?: boolean;
   loading?: boolean;
-  variant?:
-    | 'primary'
-    | 'secondary'
-    | 'danger-secondary'
-    | 'warning-secondary'
-    | 'tertiary'
-    | 'neutral'
-    | 'icon-neutral'
-    | 'primary-outlined'
-    | 'secondary-outlined'
-    | 'primary-text'
-    | 'warning-text'
-    | 'dark'
-    | 'dark-outlined'
-    | 'danger';
+  variant?: ButtonVariant;
   size?: Sizes;
   type?: 'submit' | 'button';
   textCasing?: 'uppercase' | 'lowercase' | 'capitalize' | 'normal';
   isSquare?: boolean;
   /** This prop decides if we want the button to fit the content or be full width */
   isFullWidth?: boolean;
-  onClick?: () => void;
+  onClick?: (e?: any) => void;
 }
 
 type Sizes = 'large' | 'md' | 's' | 'text';
@@ -57,7 +58,7 @@ export default function UiButton({
     >
       {loading ? (
         <div className="loader-wrapper">
-          <Loader size="s" />
+          <Loader variant="white" size="s" />
         </div>
       ) : (
         children
@@ -129,7 +130,9 @@ const Button = styled.button<Props>`
 
   &.primary {
     background-color: var(--color-primary);
-    ${({ disabled }) => getColor(disabled!, 'var(--color-primary-20)')};
+    ${({ disabled, loading }) =>
+      getColor(disabled! && !loading, 'var(--color-primary-20)')};
+    ${({ loading }) => getColor(loading!, 'var(--color-primary-50)')};
     color: white;
 
     ${({ disabled }) =>
@@ -228,6 +231,23 @@ const Button = styled.button<Props>`
     }`}
   }
 
+  &.success-secondary {
+    background: var(--color-success-10);
+    color: var(--color-success);
+
+    svg {
+      fill: var(--color-success);
+    }
+    ${({ disabled }) =>
+      !disabled &&
+      `
+      
+    &:hover {
+      background: var(--color-success-20);
+      box-shadow: var(--box-shadow-primary);
+    }
+    `}
+  }
   &.danger-secondary {
     background: var(--color-danger-10);
     color: var(--color-danger);

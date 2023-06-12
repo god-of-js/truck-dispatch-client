@@ -7,7 +7,6 @@ import { RootState } from 'modules/index';
 import { getPaymentRequestsOfDriver } from 'modules/Payments';
 import PaymentRequest from 'types/PaymentRequest';
 import { DropDownData } from 'ui/UiDropdownMenu';
-import UiOverlay from 'ui/UiOverlay';
 import UiPill from 'ui/UiPill';
 import UiTable from 'ui/UiTable';
 import {
@@ -15,21 +14,20 @@ import {
   convertToFullDate,
   convertToFullDateWithTime,
   toAnyAction,
-  truncateText,
 } from 'utils/helpers';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
-import UiInput from 'ui/UiInput';
 import { serviceBasedUserTypes } from 'utils/constants';
 import UiIcon from 'ui/UiIcon';
 import UiAvatar from 'ui/UiAvatar';
 import User from 'types/User';
 import UiButton from 'ui/UiButton';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { filterByFieldInObject } from 'utils/helpers';
 
-function PaymentsPage() {
+export default function PaymentsPage() {
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
   const paymentRequests = useSelector(
     (state: RootState) => state.payment.paymentRequests,
   );
@@ -71,16 +69,15 @@ function PaymentsPage() {
   ];
   const options: DropDownData[] = [
     {
-      label: 'View Payment',
-      func: showPaymentDetails,
+      label: 'See Trip details',
+      func: goToTripDetails,
     },
   ];
 
-  function showPaymentDetails(id: string) {
-    const req = paymentRequests.find((request) => request._id === id);
-    if (!req) throw new Error('request does not exist');
-    setSelectedPayment(req);
-    setIsViewPaymentVisible(true);
+  function goToTripDetails(paymentId: string) {
+    const payment = paymentRequests.find(({ _id }) => _id === paymentId);
+
+    if (payment) navigate(`/my-trips/${payment.trip._id}`);
   }
 
   function userDetails(tripUser?: User) {
@@ -116,7 +113,11 @@ function PaymentsPage() {
       from: userDetails(item.trip.tripOwner),
       createdAt: <>{convertToFullDateWithTime(item.createdAt!)}</>,
       updatedAt: <>{convertToFullDate(item.updatedAt!)}</>,
-      status: <UiPill variant={getVariant(item.status)}>{item.status}</UiPill>,
+      status: (
+        <UiPill variant={getVariant(item.status)} hasIcon>
+          {item.status}
+        </UiPill>
+      ),
       amount: <AmountText>NGN {abbreviateNumber(item.amount!)}</AmountText>,
       proofVideo: (
         <UiButton variant="secondary">
@@ -128,20 +129,7 @@ function PaymentsPage() {
   }, [paymentRequests, status]);
 
   useEffect(() => {
-    dispatch(toAnyAction(getPaymentRequestsOfDriver())).then(
-      (requests: any) => {
-        setTotalPayments(requests.length);
-        setTotalPendingPayments(
-          requests.filter((request: any) => request.status === 'pending')
-            .length,
-        );
-        setTotalCompletedPayments(
-          requests.filter((request: any) => request.status === 'completed')
-            .length,
-        );
-      },
-    );
-    // dispatch(toAnyAction(getTrips()));
+    dispatch(toAnyAction(getPaymentRequestsOfDriver()));
   }, []);
 
   const filters = useMemo(
@@ -180,24 +168,13 @@ function PaymentsPage() {
     return (
       <>
         <UiIcon icon="TruckTick" />
-        <span>Create new trip</span>
+        <span>Bid for jobs</span>
       </>
     );
   }
 
-  function edgeChild() {
-    return (
-      <EdgeChild>
-        <UiInput
-          onChange={handleQueryChange}
-          value={searchQuery}
-          name="searchQuery"
-          placeholder="Search..."
-          icon="Search"
-          size="md"
-        />
-      </EdgeChild>
-    );
+  function emptyTableAction() {
+    navigate('/available-jobs');
   }
 
   return (
@@ -205,7 +182,8 @@ function PaymentsPage() {
       <DashboardTopNav
         routeName="Payments"
         pageFilters={filters}
-        edgeNode={edgeChild()}
+        handleQueryChange={handleQueryChange}
+        searchQuery={searchQuery}
       />
       <PageStyling>
         <UiTable
@@ -213,20 +191,20 @@ function PaymentsPage() {
           data={data}
           headers={headers}
           options={options}
-          onRowClick={showPaymentDetails}
+          onRowClick={goToTripDetails}
           emptyTableIcon="Moneys"
           emptyTableText="Nothing here yet. Start taking jobs to get payments."
           emptyTableBtnContent={emptyTableBtnContent()}
+          emptyTableAction={emptyTableAction}
         />
-        <UiOverlay isVisible={isViewPaymentVisible}>
-          {selectedPayment && (
-            <ViewPaymentDetails
-              onClose={() => setIsViewPaymentVisible(false)}
-              payment={selectedPayment}
-              key={selectedPayment._id}
-            />
-          )}
-        </UiOverlay>
+        {selectedPayment && (
+          <ViewPaymentDetails
+            isVisible={isViewPaymentVisible}
+            onClose={() => setIsViewPaymentVisible(false)}
+            payment={selectedPayment}
+            key={selectedPayment._id}
+          />
+        )}
       </PageStyling>
     </>
   );
@@ -234,14 +212,6 @@ function PaymentsPage() {
 
 const PageStyling = styled.div`
   padding: ${pxToRem(24)};
-`;
-
-const EdgeChild = styled.div`
-  display: flex;
-  gap: ${pxToRem(12)};
-  .ui-filter-tag {
-    cursor: pointer;
-  }
 `;
 
 const UserDetails = styled.div`
@@ -262,9 +232,6 @@ const UserDetails = styled.div`
 `;
 
 const AmountText = styled.span`
-  font-family: thiccboi-bold;
   font-weight: 700;
-  font-size: 20px;
+  font-size: ${pxToRem(20)};
 `;
-
-export default PaymentsPage;

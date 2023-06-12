@@ -8,21 +8,10 @@ export function toAnyAction(func: unknown) {
 
 export function aValueHasBeenChanged<T extends object>(source: T, formData: T) {
   if (!source) return false;
-  // refactor to make use of the removeUneditedFields util
-  const keys = Object.keys(source) as (keyof typeof formData)[];
-  const formDataKeys = Object.keys(formData);
 
-  if (keys.length !== formDataKeys.length) {
-    return false;
-  }
+  const editedData = removeUneditedFields(source, formData);
 
-  for (let key of keys) {
-    if (source[key] !== formData[key]) {
-      return false;
-    }
-  }
-
-  return true;
+  return !!Object.keys(editedData).length;
 }
 
 export function abbreviateNumber(
@@ -56,7 +45,7 @@ export function abbreviateNumber(
 
 export function priceWithTDPercent(amount: number | string, percent = 7) {
   const value = parseInt(`${amount}`);
-  return value + tdPercentage(amount);
+  return value + tdPercentageWithVAT(value);
 }
 
 export function tdPercentage(amount: number | string, percent = 7) {
@@ -65,6 +54,17 @@ export function tdPercentage(amount: number | string, percent = 7) {
     value = parseInt(`${amount}`);
   }
   return Math.round((percent / 100) * value);
+}
+
+export function tdPercentageWithVAT(amount: number) {
+  const valueToBeTaxedOn = tdPercentage(amount);
+  return valueToBeTaxedOn + calculateVAT(valueToBeTaxedOn);
+}
+
+export function calculateVAT(amount: number): number {
+  const vatRate = 0.075; // 7.5% VAT rate
+  const vatAmount = amount * vatRate;
+  return vatAmount;
 }
 
 export function nairaToKobo(amount: string | number) {
@@ -137,16 +137,6 @@ export function replaceEditedItem<T extends { _id: any }>(
   return data;
 }
 
-export function generateReference() {
-  const alphanumeric =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let key = '';
-  for (let i = 0; i < 6; i++) {
-    key += alphanumeric.charAt(Math.floor(Math.random() * alphanumeric.length));
-  }
-  return key;
-}
-
 export function convertToFullDateWithTime(dateToConvert: number | string) {
   const date = new Date(dateToConvert);
   return date.toLocaleString('en-US', {
@@ -217,6 +207,21 @@ export function convertToDdMmmYYYYDateFormat(dateToConvert: string | number) {
   const year = date.getFullYear();
 
   return `${day}-${month}-${year}`;
+}
+export function getTime(time: string | number) {
+  const date = new Date(time);
+
+  let hours = date.getHours();
+  let minutes: string | number = date.getMinutes();
+  const period = hours >= 12 ? 'PM' : 'AM';
+
+  // Convert hours to 12-hour format
+  hours = hours % 12 || 12;
+
+  // Add leading zero to minutes if needed
+  minutes = minutes < 10 ? `0${minutes}` : minutes;
+
+  return `${hours}:${minutes} ${period}`;
 }
 
 export function saveTokenVerificationInfo(data: TokenVerificationData) {

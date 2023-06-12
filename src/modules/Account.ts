@@ -20,7 +20,7 @@ export const accountSlice = createSlice({
   name: 'account',
   initialState,
   reducers: {
-    setUser: (state: AccountState, action: { payload: User }) => {
+    setUser: (state: AccountState, action: { payload: User | null }) => {
       state.user = action.payload;
     },
   },

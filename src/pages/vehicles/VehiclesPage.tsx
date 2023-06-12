@@ -4,24 +4,29 @@ import styled from 'styled-components';
 
 import UiButton from 'ui/UiButton';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
-import UiOverlay from 'ui/UiOverlay';
 import AddVehicle from 'components/vehicles/AddVehicle';
 import { toAnyAction } from 'utils/helpers';
-import { getVehicles } from 'modules/Vehicle';
+import { getVehicles, deleteVehicle } from 'modules/Vehicle';
 import { RootState } from 'modules/index';
 import VehicleItem from 'components/vehicles/VehicleItem';
 import sizes from 'utils/sizes';
 import EditVehicle from 'components/vehicles/EditVehicle';
 import Vehicle from 'types/Vehicle';
 import UiIcon from 'ui/UiIcon';
-import UiInput from 'ui/UiInput';
+import UiConfirmModal from 'ui/UiConfirmModal';
+import { Toast } from 'utils/toast';
 
 export default function VehiclesPage() {
   const dispatch = useDispatch();
   const vehicles = useSelector((state: RootState) => state.vehicle.vehicles);
   const [isAddVehicleVisible, setIsAddVehicleVisible] = useState(false);
   const [isEditVehicleVisible, setIsEditVehicleVisible] = useState(false);
+  const [deleteVehicleIsLoading, setDeleteVehicleIsLoading] = useState(false);
+  const [deleteVehicleIsVisible, setDeleteVehicleIsVisible] = useState(false);
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
+  const [selectedVehicleId, setSelectedVehicleId] = useState<string | null>(
+    null,
+  );
   const [searchQuery, setSearchQuery] = useState('');
   function closeAddVehicle() {
     setIsAddVehicleVisible(false);
@@ -40,30 +45,39 @@ export default function VehiclesPage() {
     setSelectedVehicle(vehicle);
     setIsEditVehicleVisible(true);
   }
+  function openDeleteVehicle(vehicleId: string) {
+    setSelectedVehicleId(vehicleId);
+    setDeleteVehicleIsVisible(true);
+  }
+
+  function triggerDeleteVehicle() {
+    if (!selectedVehicleId) {
+      Toast.error({ msg: 'Vehicle Id was not set.' });
+      return;
+    }
+    setDeleteVehicleIsLoading(true);
+    dispatch(toAnyAction(deleteVehicle(selectedVehicleId)))
+      .then(() => {
+        setDeleteVehicleIsVisible(false);
+      })
+      .finally(() => {
+        setDeleteVehicleIsLoading(false);
+      });
+  }
 
   function handleChange({ value }: { name: string; value: string | null }) {
     setSearchQuery(value!!);
   }
 
-  function edgeNoderen() {
-    return (
-      <GappedContainerWith12PX>
-        <UiInput
-          onChange={handleChange}
-          value={searchQuery}
-          name="searchQuery"
-          placeholder="Search..."
-          size="md"
-          icon="Search"
-        />
-        {!!vehicles.length && (
-          <UiButton size="md" onClick={openAddVehicle}>
-            add new vehicle
-          </UiButton>
-        )}
-      </GappedContainerWith12PX>
-    );
-  }
+  const edgeNode = (
+    <GappedContainerWith12PX>
+      {!!vehicles.length && (
+        <UiButton size="md" onClick={openAddVehicle}>
+          add new vehicle
+        </UiButton>
+      )}
+    </GappedContainerWith12PX>
+  );
 
   useEffect(() => {
     dispatch(toAnyAction(getVehicles()));
@@ -71,13 +85,19 @@ export default function VehiclesPage() {
 
   return (
     <>
-      <DashboardTopNav routeName="Vehicles" edgeNode={edgeNoderen()} />
+      <DashboardTopNav
+        routeName="Vehicles"
+        searchQuery={searchQuery}
+        edgeNode={edgeNode}
+        handleQueryChange={handleChange}
+      />
       <Vehicles>
         {vehicles.map((vehicle) => (
           <VehicleItem
             vehicle={vehicle}
             key={vehicle._id}
             openEditVehicle={openEditVehicle}
+            openDeleteVehicle={openDeleteVehicle}
           />
         ))}
       </Vehicles>
@@ -93,15 +113,26 @@ export default function VehiclesPage() {
         </EmptyVehicleContainer>
       )}
 
-      <UiOverlay isVisible={isAddVehicleVisible}>
-        <AddVehicle onClose={closeAddVehicle} />
-      </UiOverlay>
+      <UiConfirmModal
+        isVisible={deleteVehicleIsVisible}
+        variant="danger"
+        title="Delete Vehicle"
+        loading={deleteVehicleIsLoading}
+        onClose={() => setDeleteVehicleIsVisible(false)}
+        onProceed={triggerDeleteVehicle}
+      >
+        Are you sure you want to delete this vehicle? This process cannot be
+        undone.
+      </UiConfirmModal>
+      <AddVehicle isVisible={isAddVehicleVisible} onClose={closeAddVehicle} />
 
-      <UiOverlay isVisible={isEditVehicleVisible}>
-        {selectedVehicle && (
-          <EditVehicle onClose={closeEditVehicle} vehicle={selectedVehicle} />
-        )}
-      </UiOverlay>
+      {selectedVehicle && (
+        <EditVehicle
+          isVisible={isEditVehicleVisible}
+          onClose={closeEditVehicle}
+          vehicle={selectedVehicle}
+        />
+      )}
     </>
   );
 }

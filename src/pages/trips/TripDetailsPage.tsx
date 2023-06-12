@@ -1,8 +1,12 @@
-import React, { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 
-import { selectTrip } from 'modules/Trips';
+import {
+  approvePaymentRequest,
+  selectTrip,
+  updateTripStatus,
+} from 'modules/Trips';
 import styled from 'styled-components';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
 import UiBackButton from 'ui/UiBackButton';
@@ -11,20 +15,43 @@ import UiCard from 'ui/UiCard';
 import UiDataField from 'ui/UiDataField';
 import TripPickUpAndDeliverWithDates from 'components/trips/TripPickUpAndDeliverWithDates';
 import { RootState } from 'modules/index';
-import { clientBasedUserTypes } from 'utils/constants';
+import { clientBasedUserTypes, serviceBasedUserTypes } from 'utils/constants';
 import TripDetailPaymentCard from 'components/trips/TripDetailPaymentCard';
 import UserDetails from 'ui/UserDetails';
 import UiButton from 'ui/UiButton';
 import UiIcon from 'ui/UiIcon';
 import UiPill from 'ui/UiPill';
+import RequestPayment from 'components/payment/RequestPayment';
+import UiConfirmModal from 'ui/UiConfirmModal';
+import CargoLoadingProof from 'components/trips/CargoLoadingProof';
+import RejectPaymentRequest from 'components/trips/RejectPaymentRequest';
+import { toAnyAction } from 'utils/helpers';
+import Trip from 'types/Trip';
 
 export default function TripDetailsPage() {
+  const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.account.user);
   const { tripId } = useParams();
   const trip = useSelector(selectTrip(tripId!));
+  const [requestPaymentIsVisible, setRequestPaymentIsVisible] = useState(false);
+  const [cargoLoadingProofIsVisible, setCargoLoadingProofIsVisible] =
+    useState(false);
+  const [rejectPaymentRequestIsVisible, setRejectPaymentRequestIsVisible] =
+    useState(false);
+  const [addAccountIsVisible, setAddAccountIsVisible] = useState(false);
+  const [approvePaymentIsVisible, setApprovePaymentIsVisible] = useState(false);
+  const [approvePaymentIsLoading, setApprovePaymentIsLoading] = useState(false);
+  const [reasonForRejectIsVisible, setReasonForRejectIsVisible] =
+    useState(false);
+  const [changeTripStatusIsLoading, setChangeTripStatusIsLoading] =
+    useState(false);
 
   const userIsClientBasedUser = useMemo(
     () => clientBasedUserTypes.includes(user?.userType!),
+    [user],
+  );
+  const userIsServiceBasedUser = useMemo(
+    () => serviceBasedUserTypes.includes(user?.userType!),
     [user],
   );
 
@@ -45,23 +72,81 @@ export default function TripDetailsPage() {
     return 'success';
   }, [trip]);
 
-  const TripStatusIndicator = useMemo(() => {
+  const edgeNode = useMemo(() => {
     return (
-      <StatusIndicator>
-        <span className="trip-status-text">Trip Status:</span>
-        <div className="pill-container">
-          <UiPill variant={statusVariant}>{statusText}</UiPill>
-        </div>
-      </StatusIndicator>
+      <EdgeNode>
+        <StatusIndicator>
+          <span className="trip-status-text">Trip Status:</span>
+          <div className="pill-container">
+            <UiPill variant={statusVariant}>{statusText}</UiPill>
+          </div>
+        </StatusIndicator>
+        {userIsServiceBasedUser && trip?.status === 'assigned' && (
+          <UiButton
+            loading={changeTripStatusIsLoading}
+            onClick={() => changeStatus('in-progress')}
+          >
+            Start Trip
+          </UiButton>
+        )}
+        {userIsServiceBasedUser && trip?.status === 'in-progress' && (
+          <UiButton
+            loading={changeTripStatusIsLoading}
+            onClick={() => changeStatus('completed')}
+          >
+            Complete Trip
+          </UiButton>
+        )}
+      </EdgeNode>
     );
-  }, [trip]);
+  }, [trip, changeTripStatusIsLoading]);
+
+  function redirectToAddAccount() {
+    // TODO: implement add account.
+  }
+
+  function initRejectPayment() {
+    setCargoLoadingProofIsVisible(false);
+    setRejectPaymentRequestIsVisible(true);
+  }
+
+  function initApprovePayment() {
+    setApprovePaymentIsVisible(true);
+  }
+
+  function changeStatus(status: Trip['status']) {
+    setChangeTripStatusIsLoading(true);
+    dispatch(toAnyAction(updateTripStatus(trip?._id!, status))).finally(() => {
+      setChangeTripStatusIsLoading(false);
+    });
+  }
+  async function approvePayment() {
+    if (!trip || !trip.paymentRequest?._id) return;
+    setApprovePaymentIsLoading(true);
+    dispatch(
+      toAnyAction(approvePaymentRequest(trip._id, trip.paymentRequest._id)),
+    )
+      .then(() => {
+        setApprovePaymentIsVisible(false);
+      })
+      .finally(() => {
+        setApprovePaymentIsLoading(false);
+      });
+  }
+
+  function viewLoadingProof() {
+    setCargoLoadingProofIsVisible(true);
+  }
+  function viewReasonForReject() {
+    setReasonForRejectIsVisible(true);
+  }
 
   return (
     <>
       <DashboardTopNav
         routeName="Trip Details"
         startNode={<UiBackButton />}
-        edgeNode={TripStatusIndicator}
+        edgeNode={edgeNode}
       />
       {/* Add not found here. */}
       {trip && (
@@ -97,6 +182,10 @@ export default function TripDetailsPage() {
           <TripDetailPaymentCard
             isClient={userIsClientBasedUser}
             payment={trip?.paymentRequest}
+            approvePayment={initApprovePayment}
+            viewLoadingProof={viewLoadingProof}
+            showReasonForReject={viewReasonForReject}
+            requestPayment={() => setRequestPaymentIsVisible(true)}
           />
           <UiCard>
             <div className="card-title">Driver & Vehicle details</div>
@@ -124,23 +213,51 @@ export default function TripDetailsPage() {
                   <div className="driver-and-vehicle-details__field__title">
                     Vehicle Details
                   </div>
-                  {/* <UserDetails avatar={trip.} /> */}
+                  <div className="vehicle-details">
+                    <div className="vehicle-details__type">
+                      {trip.acceptedBid.vehicle.vehicleType}
+                    </div>
+                    <div className="vehicle-details__plate-number">
+                      {trip.acceptedBid.vehicle.plateNumber}
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
           </UiCard>
           <UiCard>
-            <div className="card-title">Responsible Shipper</div>
+            <div className="card-title">
+              {userIsServiceBasedUser ? 'Trip Owner' : 'Responsible Shipper'}
+            </div>
 
-            {!userIsClientBasedUser && (
+            {userIsServiceBasedUser && (
               <UserDetails
                 userName={`${trip.tripOwner.firstName} ${trip.tripOwner.lastName}`}
                 avatar={trip.tripOwner.avatar}
                 avatarIsHalfCurved
+                showMessage
+                showViewProfile
                 profileSubtitle={
                   trip.status !== 'completed' ? trip.tripOwner.phone : ''
                 }
               />
+            )}
+            {userIsClientBasedUser && (
+              <>
+                {!!trip.transporter ? (
+                  <UserDetails
+                    userName={`${trip.transporter.firstName} ${trip.transporter.lastName}`}
+                    avatar={trip.transporter.avatar}
+                    showMessage
+                    showViewProfile
+                    profileSubtitle={
+                      trip.status !== 'completed' ? trip.transporter.phone : ''
+                    }
+                  />
+                ) : (
+                  <UserDetails userName="Unassigned" />
+                )}
+              </>
             )}
           </UiCard>
           <div className="double-grid">
@@ -179,6 +296,74 @@ export default function TripDetailsPage() {
               </UiCard>
             )}
           </div>
+
+          <RequestPayment
+            key={`${requestPaymentIsVisible}-requestPaymentIsVisible`}
+            isVisible={requestPaymentIsVisible}
+            addAccountDetails={() => setAddAccountIsVisible(false)}
+            paymentRequest={trip.paymentRequest}
+            tripId={trip._id}
+            onClose={() => setRequestPaymentIsVisible(false)}
+          />
+          <UiConfirmModal
+            title="Add Payout Account"
+            isVisible={addAccountIsVisible}
+            onClose={() => setAddAccountIsVisible(false)}
+            onProceed={redirectToAddAccount}
+          >
+            You are yet to add your payout account. Kindly add your account to
+            be able to request payment.
+          </UiConfirmModal>
+          <UiConfirmModal
+            title="Approve Payment"
+            isVisible={approvePaymentIsVisible}
+            notYetVariant="danger-secondary"
+            variant="secondary"
+            loading={approvePaymentIsLoading}
+            onClose={() => setApprovePaymentIsVisible(false)}
+            onProceed={approvePayment}
+          >
+            Are you sure you want to approve payment for this trip? This process
+            cannot be undone.
+          </UiConfirmModal>
+          {!!trip.paymentRequest?.proofVideo && (
+            <CargoLoadingProof
+              isVisible={cargoLoadingProofIsVisible}
+              isClient={userIsClientBasedUser}
+              paymentRequest={trip.paymentRequest}
+              approvePayment={initApprovePayment}
+              rejectPayment={initRejectPayment}
+              updatePaymentRequest={() => {
+                setRequestPaymentIsVisible(true);
+                setCargoLoadingProofIsVisible(false);
+              }}
+              onClose={() => setCargoLoadingProofIsVisible(false)}
+            />
+          )}
+          {!!trip.paymentRequest && (
+            <RejectPaymentRequest
+              key={`${rejectPaymentRequestIsVisible}-rejectPaymentRequestIsVisible`}
+              isVisible={rejectPaymentRequestIsVisible}
+              tripId={trip._id}
+              paymentRequestId={trip.paymentRequest?._id!}
+              onClose={() => setRejectPaymentRequestIsVisible(false)}
+            />
+          )}
+          <div className="reason-for-reject">
+            <UiConfirmModal
+              isVisible={reasonForRejectIsVisible}
+              hideNotYetButton
+              title="Reason for request rejection"
+              confirmText="Update payment request"
+              onProceed={() => {
+                setReasonForRejectIsVisible(false);
+                setRequestPaymentIsVisible(true);
+              }}
+              onClose={() => setReasonForRejectIsVisible(false)}
+            >
+              {trip.paymentRequest?.reasonForReject}
+            </UiConfirmModal>
+          </div>
         </TripDetailsStyling>
       )}
     </>
@@ -188,6 +373,8 @@ export default function TripDetailsPage() {
 const TripDetailsStyling = styled.div`
   display: grid;
   grid-template-columns: 1fr;
+  gap: ${pxToRem(20)};
+
   padding: 0 ${pxToRem(24)};
 
   .card-title {
@@ -238,14 +425,36 @@ const TripDetailsStyling = styled.div`
       }
     }
   }
+  .vehicle-details {
+    &__type {
+      font-weight: 600;
+      font-size: ${pxToRem(16)};
+      line-height: 140%;
+      letter-spacing: -0.02em;
+      color: var(--color-neutralBlack);
+    }
+    &__plate-number {
+      font-weight: 400;
+      font-size: ${pxToRem(14)};
+      line-height: 140%;
+      letter-spacing: -0.02em;
+      color: var(--color-gray-80);
+    }
+  }
   .double-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: ${pxToRem(20)};
   }
+
+  .reason-for-reject {
+    .modal-content {
+      width: 90%;
+      text-align: left;
+    }
+  }
   @media screen and (min-width: ${sizes.mobileLargeWidth}) {
     grid-template-columns: 2fr 1fr;
-    gap: ${pxToRem(20)};
 
     .double-grid {
       grid-template-columns: repeat(2, 2fr);
@@ -274,5 +483,15 @@ const StatusIndicator = styled.div`
       padding: ${pxToRem(8)};
       height: ${pxToRem(20)};
     }
+  }
+`;
+
+const EdgeNode = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${pxToRem(12)};
+
+  button {
+    min-width: ${pxToRem(133)};
   }
 `;

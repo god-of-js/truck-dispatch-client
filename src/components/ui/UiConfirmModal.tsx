@@ -1,14 +1,17 @@
 import styled from 'styled-components';
 import sizes from 'utils/sizes';
-import UiButton from './UiButton';
+import UiButton, { ButtonVariant } from './UiButton';
 import UiModal from './UiModal';
 
 interface Props {
   children: React.ReactNode;
   title: string;
+  isVisible: boolean;
   confirmText?: string;
+  hideNotYetButton?: boolean;
   declineText?: string;
-  variant?: 'primary' | 'danger';
+  variant?: ButtonVariant;
+  notYetVariant?: ButtonVariant;
   loading?: boolean;
   onClose: () => void;
   onProceed?: () => void;
@@ -20,26 +23,31 @@ export default function UiConfirmModal({
   confirmText = 'yes, proceed',
   declineText = 'not yet',
   variant = 'primary',
+  notYetVariant = 'secondary',
+  hideNotYetButton,
+  isVisible,
   loading,
   onClose,
   onProceed,
 }: Props) {
   return (
-    <UiModal title={title} onClose={onClose} size="sm" position="center">
+    <UiModal
+      isVisible={isVisible}
+      title={title}
+      onClose={onClose}
+      size="sm"
+      position="center"
+    >
       <Modal>
         <div className="modal-content">{children}</div>
 
         <SubmitButtonContainer>
+          {!hideNotYetButton && (
+            <UiButton size="large" variant={notYetVariant} onClick={onClose}>
+              {declineText}
+            </UiButton>
+          )}
           <UiButton
-            isFullWidth
-            size="large"
-            variant="secondary"
-            onClick={onClose}
-          >
-            {declineText}
-          </UiButton>
-          <UiButton
-            isFullWidth
             size="large"
             variant={variant}
             loading={loading}
@@ -77,7 +85,11 @@ const Modal = styled.div`
 
 const SubmitButtonContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   gap: ${pxToRem(16)};
   margin-top: 0;
+
+  button {
+    width: 50%;
+  }
 `;

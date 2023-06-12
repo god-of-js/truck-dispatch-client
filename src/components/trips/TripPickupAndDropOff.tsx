@@ -7,14 +7,15 @@ interface Props {
   pickup: string;
   dropOff: string;
   status?: Trip['status'];
+  variant?: 'gray' | 'light-primary';
 }
 export default function TripPickupAndDropOff({
   pickup,
   dropOff,
-  status,
+  variant = 'light-primary',
 }: Props) {
   return (
-    <TripPickupAndDropOffStyle>
+    <TripPickupAndDropOffStyle className={variant}>
       <div className="indicator">
         <div className="from-icon-container">
           <UiIcon icon="Location" />
@@ -43,6 +44,16 @@ const TripPickupAndDropOffStyle = styled.div`
   display: flex;
   gap: ${pxToRem(12)};
 
+  &.light-primary {
+    .indicator {
+      background: var(--color-primary-10);
+    }
+  }
+  &.gray {
+    .indicator {
+      background: var(--color-gray-10);
+    }
+  }
   .title {
     text-transform: uppercase;
     font-weight: 400;
@@ -75,7 +86,6 @@ const TripPickupAndDropOffStyle = styled.div`
     flex-direction: column;
     align-items: center;
     gap: ${pxToRem(4)};
-    background: var(--color-primary-10);
     border-radius: ${pxToRem(20)};
     padding: ${pxToRem(4)};
 

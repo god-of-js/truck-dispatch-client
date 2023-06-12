@@ -3,11 +3,12 @@ import styled from 'styled-components';
 
 interface Props {
   onClose: () => void;
+  isVisible: boolean;
 }
 
-export default function NotifyUsersFromFirebase({ onClose }: Props) {
+export default function NotifyUsersFromFirebase({ onClose, isVisible }: Props) {
   return (
-    <UiModal onClose={onClose}>
+    <UiModal isVisible={isVisible} onClose={onClose}>
       <Header>Login Directions</Header>
       <TextContent>
         We recently underwent a database migration. Due to security reasons, you
