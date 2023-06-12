@@ -292,9 +292,8 @@ export function searchObjectsByField<T extends Record<string, any>>(
 
   const sanitizedInput = searchInput.trim().toLowerCase();
   return arr.filter((item) => {
-    console.log(item);
-    return searchFields?.some((key) => {
-      const value = item[key];
+    return searchFields?.some((field) => {
+      const value = getFieldFromObject(item, field);
       if (typeof value === 'string') {
         const sanitizedValue = value.trim().toLowerCase();
         return sanitizedValue.includes(sanitizedInput);
@@ -302,7 +301,7 @@ export function searchObjectsByField<T extends Record<string, any>>(
         return value.some((v: string) =>
           v.trim().toLowerCase().includes(sanitizedInput),
         );
-      } else if (typeof value === 'object') {
+      } else if (typeof value === 'object' && value !== null) {
         const sanitizedValue = JSON.stringify(value).toLowerCase();
         return sanitizedValue.includes(sanitizedInput);
       }
@@ -310,6 +309,21 @@ export function searchObjectsByField<T extends Record<string, any>>(
     });
   });
 }
+
+function getFieldFromObject(obj: Record<string, any>, fieldPath: string): any {
+  const fields = fieldPath.split('.');
+  let value: Record<string, any> | undefined = obj;
+  for (const field of fields) {
+    if (value && typeof value === 'object' && field in value) {
+      value = value[field];
+    } else {
+      value = undefined;
+      break;
+    }
+  }
+  return value;
+}
+
 
 export function containsOnlyNumbers(value: string) {
   return /^[0-9]+$/.test(value);
