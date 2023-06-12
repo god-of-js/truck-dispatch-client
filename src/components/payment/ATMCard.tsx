@@ -2,16 +2,13 @@ import { RootState } from 'modules/index';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { abbreviateNumber } from 'utils/helpers';
-import Bid from 'types/Bid';
-
 interface Props {
-  bid: Bid;
+  isActive: boolean
 }
-export default function ATMCard({ bid }: Props) {
+export default function ATMCard({ isActive}: Props) {
   const user = useSelector((state: RootState) => state.account.user);
-  const isBalanceEnough = user?.balance! > bid.price;
   return (
-    <ATMCardStyling isBalanceEnough={isBalanceEnough}>
+    <ATMCardStyling isActive={isActive}>
       <div>
         <div className="big-top-circle circle" />
         <div className="centered-circle" />
@@ -28,9 +25,9 @@ export default function ATMCard({ bid }: Props) {
   );
 }
 
-const ATMCardStyling = styled.div<{ isBalanceEnough: boolean }>`
-  background-color: ${(props) =>
-    props.isBalanceEnough ? 'var(--color-primary)' : 'var(--color-primary-30)'};
+const ATMCardStyling = styled.div<{ isActive: boolean }>`
+  background-color: var(--color-primary);
+  ${({ isActive }) => !isActive && 'opacity: 0.5;'}
   min-height: ${pxToRem(180)};
   overflow: hidden;
   position: relative;
@@ -45,19 +42,13 @@ const ATMCardStyling = styled.div<{ isBalanceEnough: boolean }>`
     right: 0;
     margin-right: -5%;
     margin-top: -10%;
-    background: ${(props) =>
-      props.isBalanceEnough
-        ? 'linear-gradient(225.55deg,#9747ff 23.09%,rgba(151, 71, 255, 0) 89.87%)'
-        : 'linear-gradient(225.55deg,#9747ff 23.09%,rgba(151, 71, 255, 0) 0.5.87%)'};
+    background: linear-gradient(225.55deg,#9747ff 23.09%,rgba(151, 71, 255, 0) 89.87%);
     width: ${pxToRem(155)};
     height: ${pxToRem(155)};
     border-radius: 50%;
   }
   .bottom-circle {
-    background: ${(props) =>
-      props.isBalanceEnough
-        ? 'var(--color-primary-50)'
-        : 'var(--color-primary-30)'};
+    background: var(--color-primary-50);
     width: ${pxToRem(100)};
     height: ${pxToRem(100)};
     position: absolute;
@@ -71,10 +62,7 @@ const ATMCardStyling = styled.div<{ isBalanceEnough: boolean }>`
   .centered-circle {
     width: ${pxToRem(20)};
     height: ${pxToRem(20)};
-    background: ${(props) =>
-      props.isBalanceEnough
-        ? 'var(--color-primary-50)'
-        : 'var(--color-primary-30)'};
+    background: var(--color-primary-50);
     border-radius: 50%;
     position: absolute;
     top: 68%;

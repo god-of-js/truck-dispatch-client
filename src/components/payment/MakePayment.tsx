@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { usePaystackPayment } from 'react-paystack';
 import { useSelector } from 'react-redux';
@@ -39,8 +39,9 @@ interface Props {
 }
 export default function MakePayment({
   bid,
-  payWithBalance,
   isVisible,
+  loading,
+  payWithBalance,
   payWithPaystack,
   onClose,
 }: Props) {
@@ -50,7 +51,6 @@ export default function MakePayment({
 
   const user = useSelector((state: RootState) => state.account.user);
 
-  const [loading, setLoading] = useState(false);
   const paystackConfig = {
     email: user?.email || '',
     firstName: user?.firstName,
@@ -64,7 +64,13 @@ export default function MakePayment({
     user?.balance! >= bid.price ? 'balance' : 'paystack',
   );
 
+  const isBalanceSufficient = useMemo(() => {
+    return user?.balance! >= bid.price;
+  }, [user?.balance, bid.price]);
+  
+
   function setPaymentMethodAsBalance() {
+    if (!isBalanceSufficient) return;
     setPaymentMethod('balance');
   }
 
@@ -85,7 +91,6 @@ export default function MakePayment({
   }
   const initializePayment = usePaystackPayment(paystackConfig);
 
-  const isBalanceEnough = user?.balance! > bid.price;
 
   return (
     <UiModal
@@ -94,7 +99,7 @@ export default function MakePayment({
       title="Make Payment"
       onClose={onClose}
     >
-      <ModalBody isBalanceEnough={isBalanceEnough}>
+      <ModalBody isBalanceEnough={isBalanceSufficient}>
         <UiButton variant="secondary" onClick={onClose}>
           <UiIcon icon="ArrowLeft" /> Back to Transporter Bids
         </UiButton>
@@ -175,7 +180,7 @@ export default function MakePayment({
                   />
                 </div>
                 <div className="atmCard">
-                  <ATMCard bid={bid} />
+                  <ATMCard isActive={isBalanceSufficient} />
                 </div>
 
                 {user?.balance! < bid.price && (
