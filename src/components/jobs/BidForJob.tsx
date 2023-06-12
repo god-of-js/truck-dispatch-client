@@ -30,12 +30,14 @@ interface Props {
   jobId: string;
   onClose: () => void;
   backToJobDetails: () => void;
+  initCreateVehicle: () => void;
   isVisible: boolean;
 }
 export default function BidForJob({
   jobId,
   onClose,
   backToJobDetails,
+  initCreateVehicle,
   isVisible,
 }: Props) {
   const dispatch = useDispatch();
@@ -68,8 +70,11 @@ export default function BidForJob({
 
   const buttonIsDisabled = useMemo(() => {
     if (!bid) return false;
-    const { vehicleId, tripId, ...data } = formData;
-    const editedData = removeUneditedFields(bid!, data);
+    const { tripId, ...data } = formData;
+    const editedData = removeUneditedFields(
+      { ...bid, vehicleId: bid.vehicle._id },
+      data,
+    );
     return Object.keys(editedData).length === 0;
   }, [formData, bid]);
 
@@ -186,6 +191,18 @@ export default function BidForJob({
                       onChange={fillForm}
                       options={vehicleData}
                     />
+                    <ButtonContainer>
+                      <UiButton
+                        variant="primary-text"
+                        textCasing="normal"
+                        size="text"
+                        type="button"
+                        onClick={initCreateVehicle}
+                      >
+                        Add new vehicle?
+                      </UiButton>
+                    </ButtonContainer>
+
                     {vehicle && (
                       <UiDataField
                         title="Plate Number"
@@ -300,5 +317,11 @@ const ComponentStyling = styled.div`
       bottom: 0;
       /* margin-bottom: ${pxToRem(60)}; */
     }
+  }
+`;
+
+const ButtonContainer = styled.div`
+  button {
+    margin-top: 0;
   }
 `;
