@@ -31,17 +31,18 @@ const Tag = styled.span<{ isActive?: boolean; customWidth?: number }>`
   padding: ${pxToRem(8)};
   border-radius: ${pxToRem(8)};
   gap: ${pxToRem(8)};
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  width: ${({ customWidth }) =>
-    customWidth ? pxToRem(customWidth) : 'fit-content'};
-  white-space: no-wrap;
+  width: ${({ customWidth }) => customWidth ? `${customWidth}px` : 'fit-content'};
+  white-space: nowrap; 
   font-size: ${pxToRem(14)};
   line-height: 140%;
   font-style: normal;
   font-weight: 600;
   letter-spacing: -0.02em;
+
+
   ${({ isActive }) => `
         color: ${isActive ? 'var(--color-primary)' : 'var(--color-gray-70)'};
         background: ${
