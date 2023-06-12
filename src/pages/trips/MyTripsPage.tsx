@@ -40,6 +40,7 @@ import TripHasBeenBroadcasted from 'components/trips/TripHasBeenBroadcasted';
 import UserDetails from 'ui/UserDetails';
 import UiConfirmModal from 'ui/UiConfirmModal';
 import { Toast } from 'utils/toast';
+import AddVehicle from 'components/vehicles/AddVehicle';
 
 export default function MyTripsPage() {
   const navigate = useNavigate();
@@ -77,6 +78,7 @@ export default function MyTripsPage() {
   const [selectedBidId, setSelectedBidId] = useState<string | null>(null);
   const [isDeleteBidVisible, setIsDeleteBidVisible] = useState(false);
   const [isDeleteBidLoading, setIsDeleteBidLoading] = useState(false);
+  const [createVehicleIsVisible, setCreateVehicleIsVisible] = useState(false);
   const job = useSelector(selectJob(selectedJobId!));
 
   const headers = useMemo(
@@ -499,6 +501,7 @@ export default function MyTripsPage() {
             jobId={job._id}
             onClose={closeBidOnJob}
             backToJobDetails={backToJobDetails}
+            initCreateVehicle={() => setCreateVehicleIsVisible(true)}
           />
         </>
       )}
@@ -545,6 +548,10 @@ export default function MyTripsPage() {
         Are you sure you want to unassign this trip? This process cannot be
         undone.
       </UiConfirmModal>
+      <AddVehicle
+        isVisible={createVehicleIsVisible}
+        onClose={() => setCreateVehicleIsVisible(false)}
+      />
     </>
   );
 }

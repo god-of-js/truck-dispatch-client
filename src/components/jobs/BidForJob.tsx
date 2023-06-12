@@ -70,8 +70,11 @@ export default function BidForJob({
 
   const buttonIsDisabled = useMemo(() => {
     if (!bid) return false;
-    const { vehicleId, tripId, ...data } = formData;
-    const editedData = removeUneditedFields(bid!, data);
+    const { tripId, ...data } = formData;
+    const editedData = removeUneditedFields(
+      { ...bid, vehicleId: bid.vehicle._id },
+      data,
+    );
     return Object.keys(editedData).length === 0;
   }, [formData, bid]);
 
@@ -196,7 +199,7 @@ export default function BidForJob({
                         type="button"
                         onClick={initCreateVehicle}
                       >
-                        {!vehicle && `Can't Find Vehicle?`}
+                        Add new vehicle?
                       </UiButton>
                     </ButtonContainer>
 
