@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { toAnyAction } from 'utils/helpers';
 import { createOrFetchChatLog } from 'modules/Chat';
 import ChatLog from 'types/ChatLog';
+import DashboardTopNav from 'components/layout/DashboardTopNav';
 
 export default function ChatLayout() {
   const location = useLocation();
@@ -29,6 +30,8 @@ export default function ChatLayout() {
   }, [clientId, transporterId, isLoading]);
 
   return (
+    <>
+    <DashboardTopNav routeName='Chat' />
     <ChatLayoutDesign>
       <div className="card">
         <div className="chat-heads-container">
@@ -46,7 +49,7 @@ export default function ChatLayout() {
           <Outlet key={location.pathname} />
         </div>
       </div>
-    </ChatLayoutDesign>
+    </ChatLayoutDesign></>
   );
 }
 

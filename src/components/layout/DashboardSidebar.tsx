@@ -105,7 +105,7 @@ export default function DashboardSidebar() {
                   <UiIcon icon="Chat" size="24" />{' '}
                   <span className="hide-in-unexpanded-large-screen">Chat</span>
                 </div>
-                {isRouteActive('/chat') && <UiIcon icon="Tick" />}
+                {isRouteActive('/chat') && <div className="hide-in-large-screen"><UiIcon icon="Tick" /></div> }
               </li>
             </Link>
           </ul>
