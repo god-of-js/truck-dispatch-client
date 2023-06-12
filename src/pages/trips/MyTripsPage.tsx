@@ -550,6 +550,7 @@ export default function MyTripsPage() {
       </UiConfirmModal>
       <AddVehicle
         isVisible={createVehicleIsVisible}
+        key={`${createVehicleIsVisible}-AddVehicle`}
         onClose={() => setCreateVehicleIsVisible(false)}
       />
     </>

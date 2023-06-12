@@ -49,26 +49,6 @@ export default function AddVehicle({ isVisible, onClose }: Props) {
   const [currentStepTitle, setCurrentStepTitle] = useState(steps[0].title);
 
   function closeModal() {
-    setVehicleData((prevState) => ({
-      ...prevState,
-      plateNumber: '',
-      vehicleType: '',
-      images: {
-        frontView: null,
-        backView: null,
-        leftSideView: null,
-        rightSideView: null,
-        driversCockPit: null,
-        backInnerView: null,
-      },
-      driver: {
-        name: '',
-        phone: '',
-        driverLicense: '',
-        avatar: null,
-      },
-    }));
-    setCurrentStepTitle(steps[0].title);
     onClose();
   }
 
