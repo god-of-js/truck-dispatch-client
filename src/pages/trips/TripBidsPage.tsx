@@ -8,7 +8,11 @@ import DashboardTopNav from 'components/layout/DashboardTopNav';
 import UiBackButton from 'ui/UiBackButton';
 import TripBidItem from 'components/bids/TripBidItem';
 import PaginationLoader from 'components/layout/PaginationLoader';
-import { priceWithTDPercent, searchObjectsByField, toAnyAction } from 'utils/helpers';
+import {
+  priceWithTDPercent,
+  searchObjectsByField,
+  toAnyAction,
+} from 'utils/helpers';
 import { getBidsWithTripId } from 'modules/Bid';
 import TripBidFullDetails from 'components/bids/TripBidFullDetails';
 import UiEmptyField from 'ui/UiEmptyList';
@@ -33,6 +37,7 @@ export default function TripBidsPage() {
   const [isBidDetailsVisible, setIsBidDetailsVisible] = useState(false);
   const [isPayWithBalanceVisible, setIsPayWithBalanceVisible] = useState(false);
   const [isMakePaymentVisible, setIsMakePaymentVisible] = useState(true);
+  const [isAcceptedBidVisible, setIsAcceptedBidVisible] = useState(false);
   const [activeBidId, setActiveBidId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -41,13 +46,17 @@ export default function TripBidsPage() {
   }, [activeBidId, bids]);
 
   const sortedBids = useMemo(() => {
-    if (!searchQuery) return bids
+    if (!searchQuery) return bids;
 
-    return searchObjectsByField(bids.map((bid) => ({
-      ...bid, 
-      fullName: `${bid.transporter.firstName} ${bid.transporter.lastName}`
-    })), searchQuery, ['fullName'])
-  }, [bids, searchQuery])
+    return searchObjectsByField(
+      bids.map((bid) => ({
+        ...bid,
+        fullName: `${bid.transporter.firstName} ${bid.transporter.lastName}`,
+      })),
+      searchQuery,
+      ['fullName'],
+    );
+  }, [bids, searchQuery]);
   function handleQueryChange({
     value,
   }: {
@@ -81,6 +90,10 @@ export default function TripBidsPage() {
     }
   }
 
+  function navigateToTripDetails() {
+    navigate(`/my-trips/${tripId}`);
+  }
+
   function assignTripToTransporter(
     paymentMethod: 'paystack' | 'balance',
     payment?: Payment,
@@ -104,7 +117,7 @@ export default function TripBidsPage() {
     if (payment) paymentData.processorReference = payment.reference;
     dispatch(toAnyAction(assignTrip(paymentData)))
       .then(() => {
-        navigate(`/my-trips/${tripId}`);
+        setIsAcceptedBidVisible(true);
       })
       .finally(() => setAssignLoading(false));
   }
@@ -178,6 +191,15 @@ export default function TripBidsPage() {
             <b>&#8358;{bid.price}</b> will be deducted from your wallet balance.{' '}
             <br />
             Do you want to proceed?
+          </UiConfirmModal>
+          <UiConfirmModal
+            isVisible={isAcceptedBidVisible}
+            onProceed={navigateToTripDetails}
+            onClose={() => setIsAcceptedBidVisible(false)}
+            title="Bid Accepted"
+            hideNotYetButton
+          >
+            The bid has been accepted go to trip details
           </UiConfirmModal>
         </>
       )}
