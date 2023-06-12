@@ -15,14 +15,14 @@ interface Props {
   paymentRequest?: PaymentRequest | null;
   tripId: string;
   paymentRequestId: string;
-  isVisible: boolean
+  isVisible: boolean;
 }
 export default function RejectPaymentWithReason({
   paymentRequest,
   tripId,
   paymentRequestId,
   onClose,
-  isVisible
+  isVisible,
 }: Props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);

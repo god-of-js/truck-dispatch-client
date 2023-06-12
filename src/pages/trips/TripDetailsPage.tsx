@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 
@@ -17,8 +17,10 @@ import UserDetails from 'ui/UserDetails';
 import UiButton from 'ui/UiButton';
 import UiIcon from 'ui/UiIcon';
 import UiPill from 'ui/UiPill';
+import UploadTDO from '../../components/trips/UploadTDO';
 
 export default function TripDetailsPage() {
+  const [showTDOModal, setShowTDOModal] = useState(false);
   const user = useSelector((state: RootState) => state.account.user);
   const { tripId } = useParams();
   const trip = useSelector(selectTrip(tripId!));
@@ -153,7 +155,10 @@ export default function TripDetailsPage() {
               </p>
               <div className="double-items">
                 {userIsClientBasedUser && !trip.TDO && (
-                  <UiButton isFullWidth> Upload TDO</UiButton>
+                  <UiButton isFullWidth onClick={() => setShowTDOModal(true)}>
+                    {' '}
+                    Upload TDO
+                  </UiButton>
                 )}
                 {!userIsClientBasedUser && !!trip.TDO && (
                   <UiButton isFullWidth> Download TDO</UiButton>
@@ -181,6 +186,11 @@ export default function TripDetailsPage() {
           </div>
         </TripDetailsStyling>
       )}
+      <UploadTDO
+        trip={trip}
+        onClose={() => setShowTDOModal(false)}
+        isVisible={showTDOModal}
+      />
     </>
   );
 }

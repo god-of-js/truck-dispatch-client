@@ -40,7 +40,7 @@ export default function FileUploadWidget({
   };
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const [fileUrl, setFileUrl] = useState('');
+  const [fileUrl, setFileUrl] = useState<File | File[] | null | string>(null);
 
   function pickImages() {
     inputRef.current?.click();
@@ -51,10 +51,7 @@ export default function FileUploadWidget({
     const selectedFiles = fileInput?.files ? fileInput.files : null;
 
     if (!selectedFiles) return;
-    if (!acceptMultiple) {
-      onChange({ name, value: selectedFiles[0] });
-      return;
-    }
+    if (!acceptMultiple) return onChange({ name, value: selectedFiles[0] });
 
     const dataToSend = {
       name,
@@ -94,9 +91,9 @@ export default function FileUploadWidget({
   function withDragAndDrop() {
     return (
       <WithDragAndDropStyle hasContent={!!value}>
-        {fileUrl ? (
+        {value ? (
           <>
-            <img src={fileUrl} />
+            <p>{getFileName(name)}</p>
             <div className="reselect-file">
               <UiIcon icon="Refresh" size="32" />
             </div>
@@ -141,7 +138,7 @@ export default function FileUploadWidget({
         </span>
       </FieldUploadStyle>
     );
-  }, [fileUrl, value]);
+  }, [fileUrl, value, name]);
 
   useEffect(() => {
     if (value instanceof File && fileType === 'image') {
@@ -290,6 +287,7 @@ const WithDragAndDropStyle = styled.div`
     flex-direction: column;
     width: ${pxToRem(104)};
     gap: ${pxToRem(8)};
+    height: 320px;
   }
 
   .drag-and-drop-text {
