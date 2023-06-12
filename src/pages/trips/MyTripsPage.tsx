@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { RootState } from 'modules/index';
 import { Icons } from 'ui/UiIcon';
 import { clientBasedUserTypes, serviceBasedUserTypes } from 'utils/constants';
-import Loader from 'components/layout/Loader';
 import UiButton from 'ui/UiButton';
 import UiIcon from 'ui/UiIcon';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
@@ -37,6 +36,7 @@ import BidForJob from 'components/jobs/BidForJob';
 import AllBids from 'components/bids/AllBids';
 import CreateTrip from 'components/trips/CreateTrip';
 import TripHasBeenBroadcasted from 'components/trips/TripHasBeenBroadcasted';
+import { searchObjectsByField } from 'utils/helpers';
 import UserDetails from 'ui/UserDetails';
 import UiConfirmModal from 'ui/UiConfirmModal';
 import { Toast } from 'utils/toast';
@@ -158,12 +158,34 @@ export default function MyTripsPage() {
     [totalTrips, totalPendingTrips, totalInProgressTrips, totalCompletedTrips],
   );
 
-  const tripsData = useMemo(() => {
-    const data = status
-      ? filterByFieldInObject<Trip>('status', status, trips)
-      : trips;
+  const searchFields = [
+    'fullName',
+    'pickUpAddress',
+    'deliveryAddress',
+    'typeOfGoods',
+  ];
 
-    return data.map((trip: Trip) => ({
+  const queriedTrips = useMemo(() => {
+    const tripsWithFullName = trips.map((trip) => ({
+      ...trip,
+      fullName: !serviceBasedUserTypes.includes(user?.userType!)
+        ? `${trip.transporter?.firstName} ${trip.transporter?.lastName}`
+        : `${trip.tripOwner?.firstName} ${trip.tripOwner?.lastName}`,
+    }));
+    if (searchQuery)
+      return searchObjectsByField<Trip>(
+        tripsWithFullName,
+        searchQuery,
+        searchFields,
+      );
+
+    if (status) return filterByFieldInObject<Trip>('status', status, trips);
+
+    return trips;
+  }, [searchQuery, trips, status]);
+
+  const tripsData = useMemo(() => {
+    return queriedTrips.map((trip: Trip) => ({
       ...trip,
       id: trip._id,
       typeOfGoods: <TypeOfGoods>{trip.typeOfGoods}</TypeOfGoods>,
@@ -177,7 +199,7 @@ export default function MyTripsPage() {
         </UiPill>
       ),
     }));
-  }, [trips]);
+  }, [trips, searchQuery]);
 
   function getPillVariant(status: Trip['status']) {
     if (status === 'awaiting-bid') return 'orange';

@@ -375,7 +375,7 @@ const TripDetailsStyling = styled.div`
   grid-template-columns: 1fr;
   gap: ${pxToRem(20)};
 
-  padding: ${pxToRem(12)} ${pxToRem(24)};
+  padding: 0 ${pxToRem(24)};
 
   .card-title {
     font-style: normal;

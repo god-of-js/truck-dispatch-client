@@ -8,7 +8,12 @@ import { getJobs, selectJob } from 'modules/Trips';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { filterByFieldInObject, toAnyAction } from 'utils/helpers';
+import UiOverlay from 'ui/UiOverlay';
+import {
+  filterByFieldInObject,
+  searchObjectsByField,
+  toAnyAction,
+} from 'utils/helpers';
 import Trip from 'types/Trip';
 import { clientBasedUserTypes } from 'utils/constants';
 import JobsResponse from 'types/JobsResponse';
@@ -79,6 +84,15 @@ export default function TransporterJobs() {
   );
 
   const filteredJobs = useMemo(() => {
+    if (searchQuery)
+      return searchObjectsByField(
+        jobs.map((job) => ({
+          ...job,
+          fullName: `${job.tripOwner.firstName} ${job.tripOwner.lastName} `,
+        })),
+        searchQuery,
+        ['fullName', 'deliveryAddress', 'pickUpAddress', 'typeOfGoods'],
+      );
     if (!senderType) return jobs;
     return filterByFieldInObject<Trip>('tripOwnerUserType', senderType, jobs);
   }, [jobs, senderType]);
@@ -204,6 +218,7 @@ export default function TransporterJobs() {
       <DashboardTopNav
         routeName="Jobs"
         pageFilters={pageFilters}
+        searchQuery={searchQuery}
         handleQueryChange={handleQueryChange}
         edgeNode={edgeNode()}
       />

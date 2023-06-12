@@ -51,6 +51,7 @@ import { ReactComponent as Star } from './icons/star.svg';
 import { ReactComponent as Tick } from './icons/tick.svg';
 import { ReactComponent as Tanker } from './icons/tanker.svg';
 import { ReactComponent as Truck } from './icons/truck.svg';
+import { ReactComponent as TruckBold } from './icons/truck-bold.svg';
 import { ReactComponent as TwentyFTTruck } from './icons/20-ft-truck.svg';
 import { ReactComponent as TruckRemove } from './icons/truck-remove.svg';
 import { ReactComponent as Trash } from './icons/trash.svg';
@@ -123,6 +124,7 @@ const icons = {
   Trailer: <Trailer />,
   Trash: <Trash />,
   Truck: <Truck />,
+  TruckBold: <TruckBold />,
   TruckRemove: <TruckRemove />,
 
   User: <User />,

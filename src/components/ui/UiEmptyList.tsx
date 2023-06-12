@@ -9,7 +9,7 @@ interface Props {
   onActionButtonClick?: () => void; // Prop for triggering function from parent component
 }
 
-export default function UiEmptyField({
+export default function UiEmptyList({
   emptyIcon,
   emptyBtnContent,
   emptyText,
