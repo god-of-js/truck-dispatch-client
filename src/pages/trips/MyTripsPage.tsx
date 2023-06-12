@@ -363,12 +363,10 @@ export default function MyTripsPage() {
           </UiButton>
         )}
         {serviceBasedUserTypes.includes(user?.userType!) && (
-          <UiFilterTag
-            title="MY BIDS"
-            isActive={true}
-            value={bids.length}
-            onClick={openAllBids}
-          />
+          <UiButton variant="secondary" size="large" onClick={openAllBids}>
+            <span className="text">MY BIDS</span>
+            <span className="count">{bids.length}</span>
+          </UiButton>
         )}
       </EdgeNodeContainer>
     );
@@ -571,7 +569,32 @@ const TypeOfGoods = styled.span`
   color: var(--color-neutralBlack);
   text-transform: capitalize;
 `;
+
 const EdgeNodeContainer = styled.div`
+  button {
+    .text {
+      text-transform: uppercase;
+      font-size: ${pxToRem(14)};
+      line-height: 140%;
+      font-style: normal;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .count {
+      border-radius: ${pxToRem(10)};
+      padding: 0 ${pxToRem(4)};
+      font-size: ${pxToRem(10)};
+      letter-spacing: -0.02em;
+      border-radius: ${pxToRem(2)};
+      height: ${pxToRem(19)};
+      width: ${pxToRem(12)};
+      background: var(--color-primary-20);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
   display: flex;
   gap: ${pxToRem(12)};
   .ui-filter-tag {

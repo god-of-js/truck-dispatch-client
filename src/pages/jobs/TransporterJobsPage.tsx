@@ -274,6 +274,7 @@ export default function TransporterJobs() {
       </UiConfirmModal>
       <AddVehicle
         isVisible={createVehicleIsVisible}
+        key={`${createVehicleIsVisible}-AddVehicle`}
         onClose={() => setCreateVehicleIsVisible(false)}
       />
       {emptyJobs()}

@@ -48,10 +48,6 @@ export default function AddVehicle({ isVisible, onClose }: Props) {
   ];
   const [currentStepTitle, setCurrentStepTitle] = useState(steps[0].title);
 
-  function closeModal() {
-    onClose();
-  }
-
   function nextStep(data: Partial<CreateVehicleData>) {
     setVehicleData((formData) => ({
       ...formData,
@@ -88,7 +84,7 @@ export default function AddVehicle({ isVisible, onClose }: Props) {
     <UiModal
       isVisible={isVisible}
       title="Add Vehicle"
-      onClose={closeModal}
+      onClose={onClose}
       goPrev={goPrev}
     >
       <UiSteps steps={steps} currentStepTitle={currentStepTitle} noDetail />
