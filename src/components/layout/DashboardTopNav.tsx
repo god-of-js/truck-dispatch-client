@@ -100,9 +100,9 @@ export default function DashboardTopNav({
             </>
           )}
           <div className="edge-node">{edgeNode}</div>
-          <UiButton variant="icon-neutral" size="large">
+          {false && <UiButton variant="icon-neutral" size="large">
             <UiIcon icon="Notification" size="24" />
-          </UiButton>
+          </UiButton>}
         </div>
       </TopNav>
       <BottomTopNav>

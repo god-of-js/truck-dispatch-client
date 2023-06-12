@@ -8,7 +8,7 @@ interface Props {
   onRate?: (rating: number) => void;
 }
 export default function Ratings({ isActive = false, rating, onRate }: Props) {
-  const [activeStar, setActiveStar] = useState(0);
+  const [activeStar, setActiveStar] = useState(rating);
   useEffect(() => {
     if (isActive) {
       const stars = document.querySelectorAll('.star');
