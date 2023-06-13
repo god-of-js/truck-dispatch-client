@@ -47,7 +47,7 @@ export default function TripDetailsPage() {
     useState(false);
   const [changeTripStatusIsLoading, setChangeTripStatusIsLoading] =
     useState(false);
-  const [showTDOModal, setShowTDOModal] = useState(false);
+  const [uploadTDOIsVisible, setUploadTDOIsVisible] = useState(false);
 
   const userIsClientBasedUser = useMemo(
     () => clientBasedUserTypes.includes(user?.userType!),
@@ -273,7 +273,7 @@ export default function TripDetailsPage() {
               </p>
               <div className="double-items">
                 {userIsClientBasedUser && !trip.TDO && (
-                  <UiButton isFullWidth onClick={() => setShowTDOModal(true)}>
+                  <UiButton isFullWidth onClick={() => setUploadTDOIsVisible(true)}>
                     Upload TDO
                   </UiButton>
                 )}
@@ -377,8 +377,9 @@ export default function TripDetailsPage() {
       {trip && (
         <UploadTripTDO
           trip={trip}
-          onClose={() => setShowTDOModal(false)}
-          isVisible={showTDOModal}
+          key={`${uploadTDOIsVisible}-uploadTDOIsVisible`}
+          onClose={() => setUploadTDOIsVisible(false)}
+          isVisible={uploadTDOIsVisible}
         />
       )}
     </>

@@ -40,7 +40,7 @@ export default function FileUploadWidget({
   };
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const [fileUrl, setFileUrl] = useState<File | File[] | null | string>(null);
+  const [fileUrl, setFileUrl] = useState('');
 
   function pickImages() {
     inputRef.current?.click();
@@ -96,7 +96,7 @@ export default function FileUploadWidget({
       >
         {fileUrl ? (
           <>
-            <p>{getFileName(name)}</p>
+            <img src={fileUrl} />
             <div className="reselect-file">
               <UiIcon icon="Refresh" size="32" />
             </div>
