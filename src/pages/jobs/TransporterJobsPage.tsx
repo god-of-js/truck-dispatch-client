@@ -8,7 +8,12 @@ import { getJobs, selectJob } from 'modules/Trips';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { filterByFieldInObject, toAnyAction } from 'utils/helpers';
+import UiOverlay from 'ui/UiOverlay';
+import {
+  filterByFieldInObject,
+  searchObjectsByField,
+  toAnyAction,
+} from 'utils/helpers';
 import Trip from 'types/Trip';
 import { clientBasedUserTypes } from 'utils/constants';
 import JobsResponse from 'types/JobsResponse';
@@ -22,6 +27,7 @@ import UiFilterTag from 'ui/UiFilterTag';
 import UiConfirmModal from 'ui/UiConfirmModal';
 import { Toast } from 'utils/toast';
 import UiEmptyList from 'ui/UiEmptyList';
+import AddVehicle from 'components/vehicles/AddVehicle';
 
 export default function TransporterJobs() {
   const location = useLocation();
@@ -51,6 +57,7 @@ export default function TransporterJobs() {
   const [selectedBidId, setSelectedBidId] = useState<string | null>(null);
   const [isDeleteBidVisible, setIsDeleteBidVisible] = useState(false);
   const [isDeleteBidLoading, setIsDeleteBidLoading] = useState(false);
+  const [createVehicleIsVisible, setCreateVehicleIsVisible] = useState(false);
 
   const job = useSelector(selectJob(selectedJobId!));
 
@@ -79,6 +86,15 @@ export default function TransporterJobs() {
   );
 
   const filteredJobs = useMemo(() => {
+    if (searchQuery)
+      return searchObjectsByField(
+        jobs.map((job) => ({
+          ...job,
+          fullName: `${job.tripOwner.firstName} ${job.tripOwner.lastName} `,
+        })),
+        searchQuery,
+        ['fullName', 'deliveryAddress', 'pickUpAddress', 'typeOfGoods'],
+      );
     if (!senderType) return jobs;
     return filterByFieldInObject<Trip>('tripOwnerUserType', senderType, jobs);
   }, [jobs, senderType]);
@@ -132,6 +148,7 @@ export default function TransporterJobs() {
 
   function closeBidOnJob() {
     setIsBidForJobVisible(false);
+    setSelectedJobId(null);
   }
 
   function openAllBids() {
@@ -204,6 +221,7 @@ export default function TransporterJobs() {
       <DashboardTopNav
         routeName="Jobs"
         pageFilters={pageFilters}
+        searchQuery={searchQuery}
         handleQueryChange={handleQueryChange}
         edgeNode={edgeNode()}
       />
@@ -245,6 +263,7 @@ export default function TransporterJobs() {
             jobId={job._id}
             onClose={closeBidOnJob}
             backToJobDetails={backToJobDetails}
+            initCreateVehicle={() => setCreateVehicleIsVisible(true)}
           />
         </>
       )}
@@ -268,6 +287,11 @@ export default function TransporterJobs() {
         Are you sure you want to delete this bid? Your candidacy for this role
         would immediately be revoked.
       </UiConfirmModal>
+      <AddVehicle
+        isVisible={createVehicleIsVisible}
+        key={`${createVehicleIsVisible}-AddVehicle`}
+        onClose={() => setCreateVehicleIsVisible(false)}
+      />
       {emptyJobs()}
     </>
   );

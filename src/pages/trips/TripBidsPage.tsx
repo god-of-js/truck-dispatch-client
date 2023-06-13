@@ -8,7 +8,7 @@ import DashboardTopNav from 'components/layout/DashboardTopNav';
 import UiBackButton from 'ui/UiBackButton';
 import TripBidItem from 'components/bids/TripBidItem';
 import PaginationLoader from 'components/layout/PaginationLoader';
-import { priceWithTDPercent, toAnyAction } from 'utils/helpers';
+import { priceWithTDPercent, searchObjectsByField, toAnyAction } from 'utils/helpers';
 import { getBidsWithTripId } from 'modules/Bid';
 import TripBidFullDetails from 'components/bids/TripBidFullDetails';
 import UiEmptyField from 'ui/UiEmptyList';
@@ -34,11 +34,28 @@ export default function TripBidsPage() {
   const [isPayWithBalanceVisible, setIsPayWithBalanceVisible] = useState(false);
   const [isMakePaymentVisible, setIsMakePaymentVisible] = useState(true);
   const [activeBidId, setActiveBidId] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const bid = useMemo(() => {
     return bids.find(({ _id }) => _id === activeBidId);
   }, [activeBidId, bids]);
 
+  const sortedBids = useMemo(() => {
+    if (!searchQuery) return bids
+
+    return searchObjectsByField(bids.map((bid) => ({
+      ...bid, 
+      fullName: `${bid.transporter.firstName} ${bid.transporter.lastName}`
+    })), searchQuery, ['fullName'])
+  }, [bids, searchQuery])
+  function handleQueryChange({
+    value,
+  }: {
+    name: string;
+    value: string | null;
+  }) {
+    setSearchQuery(value!);
+  }
   function viewBid(bidId: string) {
     setActiveBidId(bidId);
     setIsBidDetailsVisible(true);
@@ -101,10 +118,12 @@ export default function TripBidsPage() {
       <DashboardTopNav
         routeName="Transporter Bids"
         startNode={<UiBackButton />}
+        searchQuery={searchQuery}
+        handleQueryChange={handleQueryChange}
       />
 
       <PageStyling>
-        {bids.map((bid) => (
+        {sortedBids.map((bid) => (
           <TripBidItem
             bid={bid}
             key={bid._id}
@@ -168,7 +187,7 @@ export default function TripBidsPage() {
 
 const PageStyling = styled.div`
   margin: ${pxToRem(32)} 0;
-  padding: ${pxToRem(12)} ${pxToRem(24)};
+  padding: 0 ${pxToRem(24)};
   display: flex;
   flex-wrap: wrap;
   gap: ${pxToRem(20)};

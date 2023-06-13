@@ -8,21 +8,10 @@ export function toAnyAction(func: unknown) {
 
 export function aValueHasBeenChanged<T extends object>(source: T, formData: T) {
   if (!source) return false;
-  // refactor to make use of the removeUneditedFields util
-  const keys = Object.keys(source) as (keyof typeof formData)[];
-  const formDataKeys = Object.keys(formData);
 
-  if (keys.length !== formDataKeys.length) {
-    return false;
-  }
+  const editedData = removeUneditedFields(source, formData);
 
-  for (let key of keys) {
-    if (source[key] !== formData[key]) {
-      return false;
-    }
-  }
-
-  return true;
+  return !!Object.keys(editedData).length;
 }
 
 export function abbreviateNumber(
@@ -219,6 +208,21 @@ export function convertToDdMmmYYYYDateFormat(dateToConvert: string | number) {
 
   return `${day}-${month}-${year}`;
 }
+export function getTime(time: string | number) {
+  const date = new Date(time);
+
+  let hours = date.getHours();
+  let minutes: string | number = date.getMinutes();
+  const period = hours >= 12 ? 'PM' : 'AM';
+
+  // Convert hours to 12-hour format
+  hours = hours % 12 || 12;
+
+  // Add leading zero to minutes if needed
+  minutes = minutes < 10 ? `0${minutes}` : minutes;
+
+  return `${hours}:${minutes} ${period}`;
+}
 
 export function saveTokenVerificationInfo(data: TokenVerificationData) {
   localStorage.setItem('otp-pin-id', data.pinId);
@@ -276,6 +280,50 @@ export function filterByFieldInObject<T = any>(
     return false;
   }) as T[];
 }
+
+export function searchObjectsByField<T extends Record<string, any>>(
+  arr: T[],
+  searchInput: string,
+  searchFields: string[],
+): T[] {
+  if (!Array.isArray(arr) || !searchInput.trim() || !searchFields.length) {
+    return [];
+  }
+
+  const sanitizedInput = searchInput.trim().toLowerCase();
+  return arr.filter((item) => {
+    return searchFields?.some((field) => {
+      const value = getFieldFromObject(item, field);
+      if (typeof value === 'string') {
+        const sanitizedValue = value.trim().toLowerCase();
+        return sanitizedValue.includes(sanitizedInput);
+      } else if (Array.isArray(value)) {
+        return value.some((v: string) =>
+          v.trim().toLowerCase().includes(sanitizedInput),
+        );
+      } else if (typeof value === 'object' && value !== null) {
+        const sanitizedValue = JSON.stringify(value).toLowerCase();
+        return sanitizedValue.includes(sanitizedInput);
+      }
+      return false;
+    });
+  });
+}
+
+function getFieldFromObject(obj: Record<string, any>, fieldPath: string): any {
+  const fields = fieldPath.split('.');
+  let value: Record<string, any> | undefined = obj;
+  for (const field of fields) {
+    if (value && typeof value === 'object' && field in value) {
+      value = value[field];
+    } else {
+      value = undefined;
+      break;
+    }
+  }
+  return value;
+}
+
 
 export function containsOnlyNumbers(value: string) {
   return /^[0-9]+$/.test(value);

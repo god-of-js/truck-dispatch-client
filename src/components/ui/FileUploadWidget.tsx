@@ -90,8 +90,11 @@ export default function FileUploadWidget({
 
   function withDragAndDrop() {
     return (
-      <WithDragAndDropStyle hasContent={!!value}>
-        {value ? (
+      <WithDragAndDropStyle
+        hasContent={!!value}
+        className="drag-and-drop-container"
+      >
+        {fileUrl ? (
           <>
             <p>{getFileName(name)}</p>
             <div className="reselect-file">
@@ -285,7 +288,7 @@ const WithDragAndDropStyle = styled.div`
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width: ${pxToRem(104)};
+    width: 30%;
     gap: ${pxToRem(8)};
     height: 320px;
   }

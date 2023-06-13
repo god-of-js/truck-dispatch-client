@@ -6,13 +6,20 @@ interface Props {
   emptyIcon?: Icons;
   emptyText?: string;
   emptyBtnContent?: React.ReactNode;
+  onActionButtonClick?: () => void; // Prop for triggering function from parent component
 }
 
-export default function UiEmptyField({
+export default function UiEmptyList({
   emptyIcon,
   emptyBtnContent,
   emptyText,
+  onActionButtonClick,
 }: Props) {
+  const handleActionButtonClick = () => {
+    if (onActionButtonClick) {
+      onActionButtonClick(); // Trigger the function from the parent component
+    }
+  };
   return (
     <EmptyField>
       <div className="empty-container">
@@ -22,7 +29,11 @@ export default function UiEmptyField({
           </div>
         </div>
         <p>{emptyText}</p>
-        {emptyBtnContent && <UiButton size="large">{emptyBtnContent}</UiButton>}
+        {emptyBtnContent && (
+          <UiButton size="large" onClick={handleActionButtonClick}>
+            {emptyBtnContent}
+          </UiButton>
+        )}
       </div>
     </EmptyField>
   );

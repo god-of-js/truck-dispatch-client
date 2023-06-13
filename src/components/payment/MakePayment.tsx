@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { usePaystackPayment } from 'react-paystack';
 import { useSelector } from 'react-redux';
@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { RootState } from 'modules/index';
 import Bid from 'types/Bid';
 import UiButton from 'ui/UiButton';
+import UiAlert from 'ui/UiAlert';
 import UiModal from 'ui/UiModal';
 import {
   abbreviateNumber,
@@ -38,16 +39,18 @@ interface Props {
 }
 export default function MakePayment({
   bid,
-  payWithBalance,
   isVisible,
+  loading,
+  payWithBalance,
   payWithPaystack,
   onClose,
 }: Props) {
   // When there are more payment cases, refactor this to handle them.
   const { tripId } = useParams();
   const trip = useSelector(selectTrip(tripId!));
+
   const user = useSelector((state: RootState) => state.account.user);
-  const [loading, setLoading] = useState(false);
+
   const paystackConfig = {
     email: user?.email || '',
     firstName: user?.firstName,
@@ -61,7 +64,13 @@ export default function MakePayment({
     user?.balance! >= bid.price ? 'balance' : 'paystack',
   );
 
+  const isBalanceSufficient = useMemo(() => {
+    return user?.balance! >= bid.price;
+  }, [user?.balance, bid.price]);
+  
+
   function setPaymentMethodAsBalance() {
+    if (!isBalanceSufficient) return;
     setPaymentMethod('balance');
   }
 
@@ -81,6 +90,8 @@ export default function MakePayment({
     initializePayment(proceedAfterPaystack);
   }
   const initializePayment = usePaystackPayment(paystackConfig);
+
+
   return (
     <UiModal
       isVisible={isVisible}
@@ -88,7 +99,7 @@ export default function MakePayment({
       title="Make Payment"
       onClose={onClose}
     >
-      <ModalBody>
+      <ModalBody isBalanceEnough={isBalanceSufficient}>
         <UiButton variant="secondary" onClick={onClose}>
           <UiIcon icon="ArrowLeft" /> Back to Transporter Bids
         </UiButton>
@@ -168,7 +179,28 @@ export default function MakePayment({
                     onChange={setPaymentMethodAsBalance}
                   />
                 </div>
-                <ATMCard />
+                <div className="atmCard">
+                  <ATMCard isActive={isBalanceSufficient} />
+                </div>
+
+                {user?.balance! < bid.price && (
+                  <div className="alert-notification">
+                    <UiAlert
+                      variant="gray"
+                      icon={<UiIcon icon="Information" size="17" />}
+                    >
+                      <span className="alert-warning">
+                        <span className="alert-header">
+                          Insufficient Balance
+                        </span>{' '}
+                        <span className="alert-message">
+                          You can add funds to your balance by utilizing the
+                          wallet section and making a deposit.
+                        </span>
+                      </span>
+                    </UiAlert>
+                  </div>
+                )}
               </UiCard>
             </div>
             <div
@@ -204,8 +236,12 @@ export default function MakePayment({
   );
 }
 
-const ModalBody = styled.div`
+const ModalBody = styled.div<{ isBalanceEnough: boolean }>`
   padding: ${pxToRem(26)} ${pxToRem(24)};
+
+  svg {
+    fill: var(--color-danger);
+  }
 
   .modal-body__inner {
     margin-top: ${pxToRem(48)};
@@ -297,11 +333,38 @@ const ModalBody = styled.div`
       margin-top: ${pxToRem(24)};
     }
 
+    .atmCard {
+      margin-bottom: ${pxToRem(10)};
+    }
+
+    .alert-warning {
+      display: flex;
+      flex-direction: column;
+      font-style: normal;
+      font-size: ${pxToRem(14)};
+      line-height: ${pxToRem(16)};
+      gap: ${pxToRem(4)};
+      .alert-header {
+        font-weight: 700;
+        color: var(--color-danger);
+      }
+
+      .alert-message {
+        font-weight: 300;
+        color: var(--color-gray-70);
+        line-height: ${pxToRem(16)};
+
+      }
+    }
+
     .pay-with-balance-header {
       margin-bottom: ${pxToRem(16)};
 
       svg {
-        fill: var(--color-primary);
+        fill: ${(props) =>
+          props.isBalanceEnough
+            ? 'var(--color-primary)'
+            : 'var(--color-primary-30)'};
       }
     }
     .payment-method {

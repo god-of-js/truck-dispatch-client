@@ -135,6 +135,7 @@ const ListItem = styled.li`
       svg {
         width: ${pxToRem(12)};
         height: ${pxToRem(12)};
+        fill: white;
       }
     }
 

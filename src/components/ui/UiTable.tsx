@@ -30,6 +30,7 @@ interface Props {
   emptyTableIcon?: Icons;
   emptyTableText?: string;
   emptyTableBtnContent?: React.ReactNode;
+  emptyTableAction?: () => void;
 }
 
 export default function UiTable({
@@ -39,6 +40,7 @@ export default function UiTable({
   emptyTableIcon,
   emptyTableText,
   emptyTableBtnContent,
+  emptyTableAction,
   onRowClick,
 }: Props) {
   const tableHeaders = options
@@ -97,6 +99,7 @@ export default function UiTable({
           emptyBtnContent={emptyTableBtnContent}
           emptyIcon={emptyTableIcon}
           emptyText={emptyTableText}
+          onActionButtonClick={emptyTableAction}
         />
       )}
     </TableContainer>

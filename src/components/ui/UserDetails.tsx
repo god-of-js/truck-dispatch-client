@@ -30,7 +30,7 @@ export default function UserDetails({
         <div>
           <div className="user-details-name">{userName}</div>
           <div className="profile-subtitle">
-            {profileSubtitle || '**********'}
+            {profileSubtitle || '********************'}
           </div>
         </div>
       </div>

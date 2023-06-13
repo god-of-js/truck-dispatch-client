@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { RootState } from 'modules/index';
 import { Icons } from 'ui/UiIcon';
 import { clientBasedUserTypes, serviceBasedUserTypes } from 'utils/constants';
-import Loader from 'components/layout/Loader';
 import UiButton from 'ui/UiButton';
 import UiIcon from 'ui/UiIcon';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
@@ -37,9 +36,11 @@ import BidForJob from 'components/jobs/BidForJob';
 import AllBids from 'components/bids/AllBids';
 import CreateTrip from 'components/trips/CreateTrip';
 import TripHasBeenBroadcasted from 'components/trips/TripHasBeenBroadcasted';
+import { searchObjectsByField } from 'utils/helpers';
 import UserDetails from 'ui/UserDetails';
 import UiConfirmModal from 'ui/UiConfirmModal';
 import { Toast } from 'utils/toast';
+import AddVehicle from 'components/vehicles/AddVehicle';
 
 export default function MyTripsPage() {
   const navigate = useNavigate();
@@ -67,6 +68,8 @@ export default function MyTripsPage() {
   const [isAllBidsVisible, setIsAllBidsVisible] = useState(false);
   const [isCancelTripVisible, setIsCancelTripVisible] = useState(false);
   const [isCancelTripLoading, setIsCancelTripLoading] = useState(false);
+  const [isUnassignTripVisble, setIsUnassignTripVisible] = useState(false);
+  const [isUnassignTripLoading, setIsUnassignTripLoading] = useState(false);
   const [isCreateTripVisible, setIsCreateTripVisible] = useState(false);
   const [isTripBroadcastedVisible, setIsTripBroadcastedVisible] =
     useState(false);
@@ -75,6 +78,7 @@ export default function MyTripsPage() {
   const [selectedBidId, setSelectedBidId] = useState<string | null>(null);
   const [isDeleteBidVisible, setIsDeleteBidVisible] = useState(false);
   const [isDeleteBidLoading, setIsDeleteBidLoading] = useState(false);
+  const [createVehicleIsVisible, setCreateVehicleIsVisible] = useState(false);
   const job = useSelector(selectJob(selectedJobId!));
 
   const headers = useMemo(
@@ -156,12 +160,34 @@ export default function MyTripsPage() {
     [totalTrips, totalPendingTrips, totalInProgressTrips, totalCompletedTrips],
   );
 
-  const tripsData = useMemo(() => {
-    const data = status
-      ? filterByFieldInObject<Trip>('status', status, trips)
-      : trips;
+  const searchFields = [
+    'fullName',
+    'pickUpAddress',
+    'deliveryAddress',
+    'typeOfGoods',
+  ];
 
-    return data.map((trip: Trip) => ({
+  const queriedTrips = useMemo(() => {
+    const tripsWithFullName = trips.map((trip) => ({
+      ...trip,
+      fullName: !serviceBasedUserTypes.includes(user?.userType!)
+        ? `${trip.transporter?.firstName} ${trip.transporter?.lastName}`
+        : `${trip.tripOwner?.firstName} ${trip.tripOwner?.lastName}`,
+    }));
+    if (searchQuery)
+      return searchObjectsByField<Trip>(
+        tripsWithFullName,
+        searchQuery,
+        searchFields,
+      );
+
+    if (status) return filterByFieldInObject<Trip>('status', status, trips);
+
+    return trips;
+  }, [searchQuery, trips, status]);
+
+  const tripsData = useMemo(() => {
+    return queriedTrips.map((trip: Trip) => ({
       ...trip,
       id: trip._id,
       typeOfGoods: <TypeOfGoods>{trip.typeOfGoods}</TypeOfGoods>,
@@ -175,7 +201,7 @@ export default function MyTripsPage() {
         </UiPill>
       ),
     }));
-  }, [trips]);
+  }, [trips, searchQuery]);
 
   function getPillVariant(status: Trip['status']) {
     if (status === 'awaiting-bid') return 'orange';
@@ -194,7 +220,7 @@ export default function MyTripsPage() {
   }
 
   function userDetails(trip: Trip, tripUser?: User) {
-    if (!tripUser) return 'Not yet assigned';
+    if (!tripUser) return <UserDetails userName="Unassigned" />;
 
     return (
       <UserDetails
@@ -300,13 +326,27 @@ export default function MyTripsPage() {
   }
 
   function initUnassignTrip(id: string) {
-    dispatch(toAnyAction(unassignTrip(id)));
+    setActiveTripId(id);
+    setIsUnassignTripVisible(true);
+  }
+
+  function triggerUnassignTrip() {
+    if (!activeTripId) {
+      Toast.error({ msg: 'Trip ID was not provided.' });
+      return;
+    }
+    setIsUnassignTripLoading(true);
+    dispatch(toAnyAction(unassignTrip(activeTripId))).finally(() => {
+      setIsUnassignTripLoading(false);
+      setIsUnassignTripVisible(false);
+    });
   }
 
   function initCancelTrip(id: string) {
     setActiveTripId(id);
     setIsCancelTripVisible(true);
   }
+
   function cancelTrip() {
     if (!activeTripId) {
       Toast.error({ msg: 'Trip ID was not provided.' });
@@ -339,26 +379,16 @@ export default function MyTripsPage() {
   function edgeNode() {
     return (
       <EdgeNodeContainer>
-        <UiInput
-          onChange={handleQueryChange}
-          value={searchQuery}
-          name="searchQuery"
-          placeholder="Search..."
-          icon="Search"
-          size="md"
-        />
         {clientBasedUserTypes.includes(user?.userType!) && (
           <UiButton size="md" onClick={() => setIsCreateTripVisible(true)}>
             <UiIcon icon="TruckTick" /> <span>Create new trip</span>
           </UiButton>
         )}
         {serviceBasedUserTypes.includes(user?.userType!) && (
-          <UiFilterTag
-            title="MY BIDS"
-            isActive={true}
-            value={bids.length}
-            onClick={openAllBids}
-          />
+          <UiButton variant="secondary" size="large" onClick={openAllBids}>
+            <span className="text">MY BIDS</span>
+            <span className="count">{bids.length}</span>
+          </UiButton>
         )}
       </EdgeNodeContainer>
     );
@@ -399,9 +429,18 @@ export default function MyTripsPage() {
     return (
       <>
         <UiIcon icon="TruckTick" />
-        <span>Create new trip</span>
+        <span>Create new Trip</span>
       </>
     );
+  }
+
+  function emptyTableAction() {
+    if (serviceBasedUserTypes.includes(user?.userType!)) {
+      navigate('/available-jobs');
+      return;
+    }
+
+    setIsCreateTripVisible(true);
   }
 
   useEffect(() => {
@@ -420,8 +459,10 @@ export default function MyTripsPage() {
     <>
       <DashboardTopNav
         routeName="My Trips"
+        searchQuery={searchQuery}
         pageFilters={filters}
         edgeNode={edgeNode()}
+        handleQueryChange={handleQueryChange}
       />
       <MyTripsPageStyle>
         <UiTable
@@ -433,7 +474,9 @@ export default function MyTripsPage() {
           emptyTableIcon="TruckTick"
           emptyTableText="You don’t have any trip here yet, Bid for jobs to get trips"
           emptyTableBtnContent={emptyTableBtnContent()}
+          emptyTableAction={emptyTableAction}
         />
+
         {!!tripsData.length && (
           <PaginationLoader
             loading={loading}
@@ -478,6 +521,7 @@ export default function MyTripsPage() {
             jobId={job._id}
             onClose={closeBidOnJob}
             backToJobDetails={backToJobDetails}
+            initCreateVehicle={() => setCreateVehicleIsVisible(true)}
           />
         </>
       )}
@@ -513,6 +557,22 @@ export default function MyTripsPage() {
         Are you sure you want to delete this bid? Your candidacy for this role
         would immediately be revoked.
       </UiConfirmModal>
+      <UiConfirmModal
+        title="Unassign Trip"
+        isVisible={isUnassignTripVisble}
+        variant="danger"
+        loading={isUnassignTripLoading}
+        onClose={() => setIsUnassignTripVisible(false)}
+        onProceed={triggerUnassignTrip}
+      >
+        Are you sure you want to unassign this trip? This process cannot be
+        undone.
+      </UiConfirmModal>
+      <AddVehicle
+        isVisible={createVehicleIsVisible}
+        key={`${createVehicleIsVisible}-AddVehicle`}
+        onClose={() => setCreateVehicleIsVisible(false)}
+      />
     </>
   );
 }
@@ -531,7 +591,32 @@ const TypeOfGoods = styled.span`
   color: var(--color-neutralBlack);
   text-transform: capitalize;
 `;
+
 const EdgeNodeContainer = styled.div`
+  button {
+    .text {
+      text-transform: uppercase;
+      font-size: ${pxToRem(14)};
+      line-height: 140%;
+      font-style: normal;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .count {
+      border-radius: ${pxToRem(10)};
+      padding: 0 ${pxToRem(4)};
+      font-size: ${pxToRem(10)};
+      letter-spacing: -0.02em;
+      border-radius: ${pxToRem(2)};
+      height: ${pxToRem(19)};
+      width: ${pxToRem(12)};
+      background: var(--color-primary-20);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
   display: flex;
   gap: ${pxToRem(12)};
   .ui-filter-tag {

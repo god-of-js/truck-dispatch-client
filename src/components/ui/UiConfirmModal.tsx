@@ -6,14 +6,15 @@ import UiModal from './UiModal';
 interface Props {
   children: React.ReactNode;
   title: string;
+  isVisible: boolean;
   confirmText?: string;
+  hideNotYetButton?: boolean;
   declineText?: string;
   variant?: ButtonVariant;
   notYetVariant?: ButtonVariant;
   loading?: boolean;
   onClose: () => void;
   onProceed?: () => void;
-  isVisible: boolean;
 }
 
 export default function UiConfirmModal({
@@ -23,10 +24,11 @@ export default function UiConfirmModal({
   declineText = 'not yet',
   variant = 'primary',
   notYetVariant = 'secondary',
+  hideNotYetButton,
+  isVisible,
   loading,
   onClose,
   onProceed,
-  isVisible,
 }: Props) {
   return (
     <UiModal
@@ -40,16 +42,12 @@ export default function UiConfirmModal({
         <div className="modal-content">{children}</div>
 
         <SubmitButtonContainer>
+          {!hideNotYetButton && (
+            <UiButton size="large" variant={notYetVariant} onClick={onClose}>
+              {declineText}
+            </UiButton>
+          )}
           <UiButton
-            isFullWidth
-            size="large"
-            variant={notYetVariant}
-            onClick={onClose}
-          >
-            {declineText}
-          </UiButton>
-          <UiButton
-            isFullWidth
             size="large"
             variant={variant}
             loading={loading}
@@ -87,7 +85,11 @@ const Modal = styled.div`
 
 const SubmitButtonContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   gap: ${pxToRem(16)};
   margin-top: 0;
+
+  button {
+    width: 50%;
+  }
 `;
