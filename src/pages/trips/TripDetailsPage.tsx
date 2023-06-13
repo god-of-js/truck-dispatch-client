@@ -186,11 +186,13 @@ export default function TripDetailsPage() {
           </div>
         </TripDetailsStyling>
       )}
-      <UploadTDO
-        trip={trip}
-        onClose={() => setShowTDOModal(false)}
-        isVisible={showTDOModal}
-      />
+      {trip && (
+        <UploadTDO
+          trip={trip}
+          onClose={() => setShowTDOModal(false)}
+          isVisible={showTDOModal}
+        />
+      )}
     </>
   );
 }

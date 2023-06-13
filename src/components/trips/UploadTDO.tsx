@@ -1,13 +1,13 @@
-import { uploadTDO } from 'modules/Trips';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import Trip from 'types/Trip';
+import { deepRootedToFormData, toAnyAction } from 'utils/helpers';
+import { uploadTDO } from 'modules/Trips';
 import FileUploadWidget from 'ui/FileUploadWidget';
 import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
 import UiModal from 'ui/UiModal';
-import { deepRootedToFormData, toAnyAction } from 'utils/helpers';
 import UploadTDO from 'utils/validations/UploadTDO';
 
 interface Props {
@@ -15,7 +15,6 @@ interface Props {
   isVisible: boolean;
   trip: Trip;
 }
-
 export default function ViewPaymentDetails({
   onClose,
   isVisible,
@@ -46,7 +45,6 @@ export default function ViewPaymentDetails({
   }
 
   function closeModal() {
-    setLoading(false);
     onClose();
   }
 
@@ -57,7 +55,7 @@ export default function ViewPaymentDetails({
       onClose={closeModal}
     >
       <Description>
-        Upload the TDO of this trip to enable the responsible transporter access
+        Upload the Terminal Delivery Order of this trip to grant the responsible transporter access
         to the cargo or container.
       </Description>
 
