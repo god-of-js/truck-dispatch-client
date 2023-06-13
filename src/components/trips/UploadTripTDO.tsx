@@ -8,18 +8,14 @@ import FileUploadWidget from 'ui/FileUploadWidget';
 import UiButton from 'ui/UiButton';
 import UiForm from 'ui/UiForm';
 import UiModal from 'ui/UiModal';
-import UploadTDO from 'utils/validations/UploadTDO';
+import UploadTDOSchema from 'utils/validations/UploadTDOSchema';
 
 interface Props {
   onClose: () => void;
   isVisible: boolean;
   trip: Trip;
 }
-export default function ViewPaymentDetails({
-  onClose,
-  isVisible,
-  trip,
-}: Props) {
+export default function UploadTripTDO({ onClose, isVisible, trip }: Props) {
   const [loading, setLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<{ TDO: File | null }>({
     TDO: null,
@@ -34,6 +30,7 @@ export default function ViewPaymentDetails({
   }
 
   async function submitTDO() {
+    setLoading(true);
     const formattedData = deepRootedToFormData(formData);
     dispatch(toAnyAction(uploadTDO(formattedData, trip._id)))
       .then(() => {
@@ -54,57 +51,58 @@ export default function ViewPaymentDetails({
       isVisible={isVisible}
       onClose={closeModal}
     >
-      <Description>
-        Upload the Terminal Delivery Order of this trip to grant the responsible transporter access
-        to the cargo or container.
-      </Description>
-
-      <UiForm formData={formData} schema={UploadTDO} onSubmit={submitTDO}>
+      <UiForm formData={formData} schema={UploadTDOSchema} onSubmit={submitTDO}>
         {({ errors }) => (
-          <div>
-            <FileUploadContainer>
-              <FileUploadWidget
-                name={'TDO'}
-                fileType="document"
-                value={formData.TDO}
-                error={errors.TDO}
-                onChange={handleTDOUpload}
-                styleType="with-drag-and-drop"
-              />
-            </FileUploadContainer>
-            <ActionsContainer>
+          <UploadTDOStyling>
+            <p>
+              Upload the Terminal Delivery Order of this trip to grant the
+              responsible transporter access to the cargo or container.
+            </p>
+            <FileUploadWidget
+              name={'TDO'}
+              fileType="document"
+              value={formData.TDO}
+              error={errors.TDO}
+              onChange={handleTDOUpload}
+              styleType="with-drag-and-drop"
+            />
+            <div className="btn-container">
               <UiButton type="submit" loading={loading}>
-                Complete
+                Upload TDO
               </UiButton>
-              <UiButton variant="danger-secondary">Delete File</UiButton>
-            </ActionsContainer>
-          </div>
+            </div>
+          </UploadTDOStyling>
         )}
       </UiForm>
     </UiModal>
   );
 }
 
-const Description = styled.p`
-  font-family: 'thiccboi-regular';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  text-align: center;
-  justify-content: center;
-  width: 70%;
-  margin: auto;
-  margin-top: 24px;
-`;
+const UploadTDOStyling = styled.div`
+  padding: ${pxToRem(26)} ${pxToRem(24)};
+  display: grid;
+  gap: ${pxToRem(24)};
+  p {
+    font-family: 'thiccboi-regular';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+    justify-content: center;
+    width: 70%;
+    margin: auto;
+    margin-top: 24px;
+  }
 
-const FileUploadContainer = styled.div`
-  padding: 3%;
-`;
+  .btn-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 
-const ActionsContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+    button {
+      width: 40%;
+    }
+  }
 `;

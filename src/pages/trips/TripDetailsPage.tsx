@@ -28,6 +28,7 @@ import CargoLoadingProof from 'components/trips/CargoLoadingProof';
 import RejectPaymentRequest from 'components/trips/RejectPaymentRequest';
 import { toAnyAction } from 'utils/helpers';
 import Trip from 'types/Trip';
+import UploadTripTDO from 'components/trips/UploadTripTDO';
 
 export default function TripDetailsPage() {
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ export default function TripDetailsPage() {
     useState(false);
   const [changeTripStatusIsLoading, setChangeTripStatusIsLoading] =
     useState(false);
-    const [showTDOModal, setShowTDOModal] = useState(false);
+  const [showTDOModal, setShowTDOModal] = useState(false);
 
   const userIsClientBasedUser = useMemo(
     () => clientBasedUserTypes.includes(user?.userType!),
@@ -372,7 +373,7 @@ export default function TripDetailsPage() {
         </TripDetailsStyling>
       )}
       {trip && (
-        <UploadTDO
+        <UploadTripTDO
           trip={trip}
           onClose={() => setShowTDOModal(false)}
           isVisible={showTDOModal}

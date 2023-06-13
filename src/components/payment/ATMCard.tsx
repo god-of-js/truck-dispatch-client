@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { abbreviateNumber } from 'utils/helpers';
 interface Props {
-  isActive: boolean
+  isActive: boolean;
 }
-export default function ATMCard({ isActive}: Props) {
+export default function ATMCard({ isActive }: Props) {
   const user = useSelector((state: RootState) => state.account.user);
   return (
     <ATMCardStyling isActive={isActive}>
@@ -42,7 +42,11 @@ const ATMCardStyling = styled.div<{ isActive: boolean }>`
     right: 0;
     margin-right: -5%;
     margin-top: -10%;
-    background: linear-gradient(225.55deg,#9747ff 23.09%,rgba(151, 71, 255, 0) 89.87%);
+    background: linear-gradient(
+      225.55deg,
+      #9747ff 23.09%,
+      rgba(151, 71, 255, 0) 89.87%
+    );
     width: ${pxToRem(155)};
     height: ${pxToRem(155)};
     border-radius: 50%;

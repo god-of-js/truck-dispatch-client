@@ -34,14 +34,14 @@ const Tag = styled.span<{ isActive?: boolean; customWidth?: number }>`
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  width: ${({ customWidth }) => customWidth ? `${customWidth}px` : 'fit-content'};
-  white-space: nowrap; 
+  width: ${({ customWidth }) =>
+    customWidth ? `${customWidth}px` : 'fit-content'};
+  white-space: nowrap;
   font-size: ${pxToRem(14)};
   line-height: 140%;
   font-style: normal;
   font-weight: 600;
   letter-spacing: -0.02em;
-
 
   ${({ isActive }) => `
         color: ${isActive ? 'var(--color-primary)' : 'var(--color-gray-70)'};

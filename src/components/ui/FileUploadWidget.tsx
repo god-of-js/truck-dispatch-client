@@ -91,7 +91,7 @@ export default function FileUploadWidget({
   function withDragAndDrop() {
     return (
       <WithDragAndDropStyle
-        hasContent={!!value}
+        hasContent={!!fileUrl}
         className="drag-and-drop-container"
       >
         {fileUrl ? (
@@ -103,8 +103,11 @@ export default function FileUploadWidget({
           </>
         ) : (
           <div className="content">
+            {value && <div className="file-name">{getFileName(value)}</div>}
             <div className="drag-and-drop-text">
-              Drag and drop file inside here
+              {value
+                ? 'Drag and drop file inside here to change file'
+                : 'Drag and drop file inside here'}
             </div>
             <div className="or-container">
               <div className="dash" />
@@ -230,7 +233,7 @@ const FieldUploadStyle = styled.div`
 interface WithDragAndDropProps {
   hasContent: boolean;
 }
-const WithDragAndDropStyle = styled.div`
+const WithDragAndDropStyle = styled.div<WithDragAndDropProps>`
   position: relative;
   background-color: var(--color-gray-20);
   box-sizing: border-box;
@@ -238,9 +241,10 @@ const WithDragAndDropStyle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
   height: 100%;
   width: 100%;
-  ${({ hasContent }: WithDragAndDropProps) =>
+  ${({ hasContent }) =>
     !hasContent &&
     `
   padding: ${pxToRem(24)};

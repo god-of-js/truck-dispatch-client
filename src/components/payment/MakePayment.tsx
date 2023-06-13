@@ -67,7 +67,6 @@ export default function MakePayment({
   const isBalanceSufficient = useMemo(() => {
     return user?.balance! >= bid.price;
   }, [user?.balance, bid.price]);
-  
 
   function setPaymentMethodAsBalance() {
     if (!isBalanceSufficient) return;
@@ -90,7 +89,6 @@ export default function MakePayment({
     initializePayment(proceedAfterPaystack);
   }
   const initializePayment = usePaystackPayment(paystackConfig);
-
 
   return (
     <UiModal
@@ -353,7 +351,6 @@ const ModalBody = styled.div<{ isBalanceEnough: boolean }>`
         font-weight: 300;
         color: var(--color-gray-70);
         line-height: ${pxToRem(16)};
-
       }
     }
 
