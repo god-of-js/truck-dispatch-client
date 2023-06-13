@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import UiButton from 'ui/UiButton';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
 import AddVehicle from 'components/vehicles/AddVehicle';
-import { toAnyAction } from 'utils/helpers';
+import { searchObjectsByField, toAnyAction } from 'utils/helpers';
 import { getVehicles, deleteVehicle } from 'modules/Vehicle';
 import { RootState } from 'modules/index';
 import VehicleItem from 'components/vehicles/VehicleItem';
@@ -28,6 +28,16 @@ export default function VehiclesPage() {
     null,
   );
   const [searchQuery, setSearchQuery] = useState('');
+
+  const sortedVehicles = useMemo(() => {
+    console.log(vehicles[0]);
+    if (!searchQuery) return vehicles;
+    return searchObjectsByField(vehicles, searchQuery, [
+      'plateNumber',
+      'vehicleType',
+      'driver.name',
+    ]);
+  }, [vehicles, searchQuery]);
   function closeAddVehicle() {
     setIsAddVehicleVisible(false);
   }
@@ -73,6 +83,7 @@ export default function VehiclesPage() {
     <GappedContainerWith12PX>
       {!!vehicles.length && (
         <UiButton size="md" onClick={openAddVehicle}>
+          <UiIcon icon="TruckBold" />
           add new vehicle
         </UiButton>
       )}
@@ -92,7 +103,7 @@ export default function VehiclesPage() {
         handleQueryChange={handleChange}
       />
       <Vehicles>
-        {vehicles.map((vehicle) => (
+        {sortedVehicles.map((vehicle) => (
           <VehicleItem
             vehicle={vehicle}
             key={vehicle._id}
@@ -124,7 +135,11 @@ export default function VehiclesPage() {
         Are you sure you want to delete this vehicle? This process cannot be
         undone.
       </UiConfirmModal>
-      <AddVehicle isVisible={isAddVehicleVisible} onClose={closeAddVehicle} />
+      <AddVehicle
+        isVisible={isAddVehicleVisible}
+        key={`${isAddVehicleVisible}-AddVehicle`}
+        onClose={closeAddVehicle}
+      />
 
       {selectedVehicle && (
         <EditVehicle

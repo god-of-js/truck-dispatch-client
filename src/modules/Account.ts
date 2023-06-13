@@ -46,24 +46,23 @@ export function sendOTP(phone: string) {
     });
   };
 }
+
 export function verifyOtp(pin: string) {
   return async () => {
-    const otpPinId = localStorage.getItem('otp-pin-id');
     const otpPhone = localStorage.getItem('otp-phone-number');
 
-    if (!otpPinId || !otpPhone)
+    if (!otpPhone)
       throw new Error(
         'Something went wrong. Kindly request a new OTP for verification',
       );
 
     const data = {
       pin,
-      pin_id: otpPinId,
       phone: otpPhone,
     };
+
     return Api.verifyPhone(data)
       .then(() => {
-        localStorage.removeItem('otp-pin-id');
         localStorage.removeItem('otp-phone-number');
       })
       .catch((err) => Promise.reject(err.data));

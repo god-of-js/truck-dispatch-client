@@ -225,7 +225,6 @@ export function getTime(time: string | number) {
 }
 
 export function saveTokenVerificationInfo(data: TokenVerificationData) {
-  localStorage.setItem('otp-pin-id', data.pinId);
   localStorage.setItem('otp-phone-number', data.to);
 }
 
@@ -279,6 +278,49 @@ export function filterByFieldInObject<T = any>(
 
     return false;
   }) as T[];
+}
+
+export function searchObjectsByField<T extends Record<string, any>>(
+  arr: T[],
+  searchInput: string,
+  searchFields: string[],
+): T[] {
+  if (!Array.isArray(arr) || !searchInput.trim() || !searchFields.length) {
+    return [];
+  }
+
+  const sanitizedInput = searchInput.trim().toLowerCase();
+  return arr.filter((item) => {
+    return searchFields?.some((field) => {
+      const value = getFieldFromObject(item, field);
+      if (typeof value === 'string') {
+        const sanitizedValue = value.trim().toLowerCase();
+        return sanitizedValue.includes(sanitizedInput);
+      } else if (Array.isArray(value)) {
+        return value.some((v: string) =>
+          v.trim().toLowerCase().includes(sanitizedInput),
+        );
+      } else if (typeof value === 'object' && value !== null) {
+        const sanitizedValue = JSON.stringify(value).toLowerCase();
+        return sanitizedValue.includes(sanitizedInput);
+      }
+      return false;
+    });
+  });
+}
+
+function getFieldFromObject(obj: Record<string, any>, fieldPath: string): any {
+  const fields = fieldPath.split('.');
+  let value: Record<string, any> | undefined = obj;
+  for (const field of fields) {
+    if (value && typeof value === 'object' && field in value) {
+      value = value[field];
+    } else {
+      value = undefined;
+      break;
+    }
+  }
+  return value;
 }
 
 export function containsOnlyNumbers(value: string) {

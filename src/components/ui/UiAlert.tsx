@@ -58,7 +58,7 @@ function generateSchemeBasedOnVariant(variant: Variant): string {
 const Alert = styled.div`
   font-size: ${pxToRem(14)};
   padding: ${pxToRem(16)};
-  border-radius: ${pxToRem(4)};
+  border-radius: ${pxToRem(8)};
   display: flex;
   justify-content: space-between;
   gap: ${pxToRem(9.4)};

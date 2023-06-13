@@ -42,6 +42,9 @@ export default function LoginPage() {
       })
       .catch((err: Error) => {
         let msg = err.message;
+        if (msg === 'Phone has not been verified') {
+          navigate('/auth/verify-phone');
+        }
         if (msg === 'Login directions have been sent to your email') {
           setIsNotifyUserToResetVisible(true);
         }

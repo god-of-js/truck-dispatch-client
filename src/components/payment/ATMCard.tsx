@@ -2,11 +2,13 @@ import { RootState } from 'modules/index';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { abbreviateNumber } from 'utils/helpers';
-
-export default function ATMCard() {
+interface Props {
+  isActive: boolean;
+}
+export default function ATMCard({ isActive }: Props) {
   const user = useSelector((state: RootState) => state.account.user);
   return (
-    <ATMCardStyling>
+    <ATMCardStyling isActive={isActive}>
       <div>
         <div className="big-top-circle circle" />
         <div className="centered-circle" />
@@ -23,8 +25,9 @@ export default function ATMCard() {
   );
 }
 
-const ATMCardStyling = styled.div`
+const ATMCardStyling = styled.div<{ isActive: boolean }>`
   background-color: var(--color-primary);
+  ${({ isActive }) => !isActive && 'opacity: 0.5;'}
   min-height: ${pxToRem(180)};
   overflow: hidden;
   position: relative;
