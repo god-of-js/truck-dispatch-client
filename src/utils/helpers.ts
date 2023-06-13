@@ -225,7 +225,6 @@ export function getTime(time: string | number) {
 }
 
 export function saveTokenVerificationInfo(data: TokenVerificationData) {
-  localStorage.setItem('otp-pin-id', data.pinId);
   localStorage.setItem('otp-phone-number', data.to);
 }
 
