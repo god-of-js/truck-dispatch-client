@@ -274,12 +274,14 @@ export default function TripDetailsPage() {
               <div className="double-items">
                 {userIsClientBasedUser && !trip.TDO && (
                   <UiButton isFullWidth onClick={() => setShowTDOModal(true)}>
-                    {' '}
                     Upload TDO
                   </UiButton>
                 )}
-                {!userIsClientBasedUser && !!trip.TDO && (
-                  <UiButton isFullWidth> Download TDO</UiButton>
+                {!!trip.TDO && (
+                  <a href={trip.TDO} target="_blank">
+
+                    <UiButton isFullWidth> View TDO</UiButton>
+                  </a>
                 )}
               </div>
             </UiCard>
