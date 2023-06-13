@@ -21,12 +21,14 @@ import UserDetails from 'ui/UserDetails';
 import UiButton from 'ui/UiButton';
 import UiIcon from 'ui/UiIcon';
 import UiPill from 'ui/UiPill';
+
 import RequestPayment from 'components/payment/RequestPayment';
 import UiConfirmModal from 'ui/UiConfirmModal';
 import CargoLoadingProof from 'components/trips/CargoLoadingProof';
 import RejectPaymentRequest from 'components/trips/RejectPaymentRequest';
 import { toAnyAction } from 'utils/helpers';
 import Trip from 'types/Trip';
+import UploadTripTDO from 'components/trips/UploadTripTDO';
 
 export default function TripDetailsPage() {
   const dispatch = useDispatch();
@@ -45,6 +47,7 @@ export default function TripDetailsPage() {
     useState(false);
   const [changeTripStatusIsLoading, setChangeTripStatusIsLoading] =
     useState(false);
+  const [uploadTDOIsVisible, setUploadTDOIsVisible] = useState(false);
 
   const userIsClientBasedUser = useMemo(
     () => clientBasedUserTypes.includes(user?.userType!),
@@ -270,10 +273,15 @@ export default function TripDetailsPage() {
               </p>
               <div className="double-items">
                 {userIsClientBasedUser && !trip.TDO && (
-                  <UiButton isFullWidth> Upload TDO</UiButton>
+                  <UiButton isFullWidth onClick={() => setUploadTDOIsVisible(true)}>
+                    Upload TDO
+                  </UiButton>
                 )}
-                {!userIsClientBasedUser && !!trip.TDO && (
-                  <UiButton isFullWidth> Download TDO</UiButton>
+                {!!trip.TDO && (
+                  <a href={trip.TDO} target="_blank">
+
+                    <UiButton isFullWidth> View TDO</UiButton>
+                  </a>
                 )}
               </div>
             </UiCard>
@@ -365,6 +373,14 @@ export default function TripDetailsPage() {
             </UiConfirmModal>
           </div>
         </TripDetailsStyling>
+      )}
+      {trip && (
+        <UploadTripTDO
+          trip={trip}
+          key={`${uploadTDOIsVisible}-uploadTDOIsVisible`}
+          onClose={() => setUploadTDOIsVisible(false)}
+          isVisible={uploadTDOIsVisible}
+        />
       )}
     </>
   );

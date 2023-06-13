@@ -32,8 +32,12 @@ export default function VehiclesPage() {
   const sortedVehicles = useMemo(() => {
     console.log(vehicles[0]);
     if (!searchQuery) return vehicles;
-    return searchObjectsByField(vehicles, searchQuery, ['plateNumber', 'vehicleType', 'driver.name'])
-  }, [vehicles, searchQuery])
+    return searchObjectsByField(vehicles, searchQuery, [
+      'plateNumber',
+      'vehicleType',
+      'driver.name',
+    ]);
+  }, [vehicles, searchQuery]);
   function closeAddVehicle() {
     setIsAddVehicleVisible(false);
   }

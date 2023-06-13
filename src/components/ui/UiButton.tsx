@@ -81,7 +81,7 @@ function sizeVariant(size: Sizes) {
   if (size === 'md')
     return `
     padding: ${pxToRem(12)};
-    height:${pxToRem(40)};
+    height:${pxToRem(44)};
     font-size: ${pxToRem(12)};
     line-height: ${pxToRem(12)};
   `;
@@ -89,7 +89,7 @@ function sizeVariant(size: Sizes) {
   if (size === 'large')
     return `
     padding:  ${pxToRem(16)}; 
-    height: ${pxToRem(46)};
+    height: ${pxToRem(48)};
     font-size: ${pxToRem(14)};
     line-height: ${pxToRem(14)};
   `;

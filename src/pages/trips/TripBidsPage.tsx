@@ -8,7 +8,11 @@ import DashboardTopNav from 'components/layout/DashboardTopNav';
 import UiBackButton from 'ui/UiBackButton';
 import TripBidItem from 'components/bids/TripBidItem';
 import PaginationLoader from 'components/layout/PaginationLoader';
-import { priceWithTDPercent, searchObjectsByField, toAnyAction } from 'utils/helpers';
+import {
+  priceWithTDPercent,
+  searchObjectsByField,
+  toAnyAction,
+} from 'utils/helpers';
 import { getBidsWithTripId } from 'modules/Bid';
 import TripBidFullDetails from 'components/bids/TripBidFullDetails';
 import UiEmptyField from 'ui/UiEmptyList';
@@ -41,13 +45,17 @@ export default function TripBidsPage() {
   }, [activeBidId, bids]);
 
   const sortedBids = useMemo(() => {
-    if (!searchQuery) return bids
+    if (!searchQuery) return bids;
 
-    return searchObjectsByField(bids.map((bid) => ({
-      ...bid, 
-      fullName: `${bid.transporter.firstName} ${bid.transporter.lastName}`
-    })), searchQuery, ['fullName'])
-  }, [bids, searchQuery])
+    return searchObjectsByField(
+      bids.map((bid) => ({
+        ...bid,
+        fullName: `${bid.transporter.firstName} ${bid.transporter.lastName}`,
+      })),
+      searchQuery,
+      ['fullName'],
+    );
+  }, [bids, searchQuery]);
   function handleQueryChange({
     value,
   }: {

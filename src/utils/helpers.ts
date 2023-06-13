@@ -324,7 +324,6 @@ function getFieldFromObject(obj: Record<string, any>, fieldPath: string): any {
   return value;
 }
 
-
 export function containsOnlyNumbers(value: string) {
   return /^[0-9]+$/.test(value);
 }

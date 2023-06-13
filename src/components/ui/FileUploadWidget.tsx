@@ -51,10 +51,7 @@ export default function FileUploadWidget({
     const selectedFiles = fileInput?.files ? fileInput.files : null;
 
     if (!selectedFiles) return;
-    if (!acceptMultiple) {
-      onChange({ name, value: selectedFiles[0] });
-      return;
-    }
+    if (!acceptMultiple) return onChange({ name, value: selectedFiles[0] });
 
     const dataToSend = {
       name,
@@ -94,7 +91,7 @@ export default function FileUploadWidget({
   function withDragAndDrop() {
     return (
       <WithDragAndDropStyle
-        hasContent={!!value}
+        hasContent={!!fileUrl}
         className="drag-and-drop-container"
       >
         {fileUrl ? (
@@ -106,8 +103,11 @@ export default function FileUploadWidget({
           </>
         ) : (
           <div className="content">
+            {value && <div className="file-name">{getFileName(value)}</div>}
             <div className="drag-and-drop-text">
-              Drag and drop file inside here
+              {value
+                ? 'Drag and drop file inside here to change file'
+                : 'Drag and drop file inside here'}
             </div>
             <div className="or-container">
               <div className="dash" />
@@ -144,7 +144,7 @@ export default function FileUploadWidget({
         </span>
       </FieldUploadStyle>
     );
-  }, [fileUrl, value]);
+  }, [fileUrl, value, name]);
 
   useEffect(() => {
     if (value instanceof File && fileType === 'image') {
@@ -233,7 +233,7 @@ const FieldUploadStyle = styled.div`
 interface WithDragAndDropProps {
   hasContent: boolean;
 }
-const WithDragAndDropStyle = styled.div`
+const WithDragAndDropStyle = styled.div<WithDragAndDropProps>`
   position: relative;
   background-color: var(--color-gray-20);
   box-sizing: border-box;
@@ -241,9 +241,10 @@ const WithDragAndDropStyle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
   height: 100%;
   width: 100%;
-  ${({ hasContent }: WithDragAndDropProps) =>
+  ${({ hasContent }) =>
     !hasContent &&
     `
   padding: ${pxToRem(24)};
@@ -293,6 +294,7 @@ const WithDragAndDropStyle = styled.div`
     flex-direction: column;
     width: 30%;
     gap: ${pxToRem(8)};
+    height: 320px;
   }
 
   .drag-and-drop-text {
