@@ -161,7 +161,7 @@ const ChatPageStyling = styled.div`
 
 const Header = styled.header`
   padding: ${pxToRem(12)};
-  border-bottom: 1px solid var(--color-gray-200);
+  border-bottom: 1px solid var(--color-gray-20);
   background-color: white;
   position: absolute;
   top: 0;
@@ -177,7 +177,7 @@ const Header = styled.header`
 
 const ChatContainer = styled.div`
   padding: ${pxToRem(80)} ${pxToRem(32)} ${pxToRem(80)} ${pxToRem(32)};
-  background: var(--color-gray-100);
+  background: var(--color-gray-10);
   height: 80%;
   overflow: scroll;
 `;

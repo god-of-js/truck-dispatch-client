@@ -237,6 +237,7 @@ export default function TripDetailsPage() {
               <UserDetails
                 userName={`${trip.tripOwner.firstName} ${trip.tripOwner.lastName}`}
                 avatar={trip.tripOwner.avatar}
+                userId={trip.tripOwner._id}
                 avatarIsHalfCurved
                 showMessage
                 showViewProfile
@@ -251,6 +252,7 @@ export default function TripDetailsPage() {
                   <UserDetails
                     userName={`${trip.transporter.firstName} ${trip.transporter.lastName}`}
                     avatar={trip.transporter.avatar}
+                    userId={trip.transporter._id}
                     showMessage
                     showViewProfile
                     profileSubtitle={

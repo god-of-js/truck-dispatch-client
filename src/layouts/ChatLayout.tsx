@@ -6,8 +6,9 @@ import sizes from 'utils/sizes';
 import { useDispatch } from 'react-redux';
 import { toAnyAction } from 'utils/helpers';
 import { createOrFetchChatLog } from 'modules/Chat';
-import ChatLog from 'types/ChatLog';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
+import UiConfirmModal from 'ui/UiConfirmModal';
+import Loader from 'components/layout/Loader';
 
 export default function ChatLayout() {
   const location = useLocation();
@@ -17,17 +18,22 @@ export default function ChatLayout() {
   const transporterId = new URLSearchParams(location.search).get(
     'transporterId',
   );
-  const [isLoading, setIsLoading] = useState(false);
-  useEffect(() => {
-    if (clientId && transporterId && !isLoading) {
-      setIsLoading(true);
-      dispatch(
+  const [chatLogCreationInProgress, setChatLogCreationInProgress] =
+    useState(false);
+  async function createCallLog() {
+    if (clientId && transporterId && !chatLogCreationInProgress) {
+      setChatLogCreationInProgress(true);
+      const log = await dispatch(
         toAnyAction(createOrFetchChatLog({ clientId, transporterId })),
-      ).then((log: ChatLog) => {
-        navigate(`/chat/${log._id}`);
-      });
+      );
+
+      if (log) navigate(`/chat/${log._id}`);
+      setChatLogCreationInProgress(false);
     }
-  }, [clientId, transporterId, isLoading]);
+  }
+  useEffect(() => {
+    createCallLog();
+  }, [clientId, transporterId, chatLogCreationInProgress]);
 
   return (
     <>
@@ -50,17 +56,25 @@ export default function ChatLayout() {
           </div>
         </div>
       </ChatLayoutDesign>
+      <UiConfirmModal
+        title="Chat Loading"
+        isVisible={chatLogCreationInProgress}
+        hideActions
+        hideModalClose
+        onClose={() => setChatLogCreationInProgress(false)}
+      >
+        Chat log creation in progress <Loader />
+      </UiConfirmModal>
     </>
   );
 }
 
 const ChatLayoutDesign = styled.div`
-  padding-top: ${pxToRem(24)};
+  padding: ${pxToRem(12)} ${pxToRem(24)};
   height: 85vh;
 
   .card {
-    background: var(--color-gray-100);
-    width: 90%;
+    background: var(--color-gray-10);
     height: 100%;
     margin: auto;
     border: 1px solid var(--color-gray-200);
