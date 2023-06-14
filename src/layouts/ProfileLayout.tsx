@@ -8,6 +8,7 @@ import { RootState } from 'modules/index';
 import Loader from 'components/layout/Loader';
 import UiTabs from 'components/ui/UiTabs';
 import { useSelector } from 'react-redux';
+import { clientBasedUserTypes } from 'utils/constants';
 
 export default function ProfileLayout() {
   const user = useSelector((state: RootState) => state.account.user);
@@ -30,7 +31,7 @@ export default function ProfileLayout() {
       path: '/profile/manage-password',
     },
   ].filter((route) => {
-    if (user?.userType === 'agent')
+    if (clientBasedUserTypes.includes(user?.userType!))
       return (
         route.path === '/profile' || route.path === '/profile/manage-password'
       );

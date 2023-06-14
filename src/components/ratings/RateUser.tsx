@@ -19,8 +19,9 @@ import { publishUserRating } from 'modules/Ratings';
 
 interface Props {
   onClose: () => void;
+  isVisible: boolean;
 }
-export default function RateTransporter({ onClose }: Props) {
+export default function RateTransporter({ onClose, isVisible }: Props) {
   const { tripId } = useParams();
   const dispatch = useDispatch();
   const trip = useSelector(selectTrip(tripId || ''));
@@ -45,7 +46,7 @@ export default function RateTransporter({ onClose }: Props) {
     setLoading(true);
     let userRated: string;
     if (clientBasedUserTypes.includes(user?.userType!)) {
-      userRated = trip?.transporterId!;
+      userRated = trip?.transporter?._id!;
     } else userRated = trip?.tripOwner?._id!;
 
     Promise.all([
@@ -59,11 +60,11 @@ export default function RateTransporter({ onClose }: Props) {
   }
 
   return (
-    <UiModal onClose={onClose}>
+    <UiModal isVisible={isVisible} onClose={onClose}>
       <RatingsHeader>Rate Trip</RatingsHeader>
       <Paragraph>
         Rate your trip to earn bonuses on your next trip and improve the user
-        experience for yourself and other agents
+        experience for yourself and other users
       </Paragraph>
       <User>
         <UiAvatar avatar={trip?.transporter?.avatar} />
@@ -71,7 +72,7 @@ export default function RateTransporter({ onClose }: Props) {
           {trip?.transporter?.firstName} {trip?.transporter?.lastName}
         </div>
       </User>
-      <UiField label="Rate Transporter" name="rating">
+      <UiField label="Rate Transporter">
         <Ratings
           rating={data.starRating}
           isActive

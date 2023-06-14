@@ -7,20 +7,19 @@ const PageError = lazy(() => import('../components/errors/PageError'));
 const AuthLayout = lazy(() => import('../layouts/AuthLayout'));
 const DashboardLayout = lazy(() => import('../layouts/DashboardLayout'));
 const ProfileLayout = lazy(() => import('../layouts/ProfileLayout'));
-const ViewTripLayout = lazy(() => import('../layouts/ViewTripLayout'));
-const ViewTripBidsLayout = lazy(() => import('../layouts/ViewTripBidsLayout'));
+const TripLayout = lazy(() => import('../layouts/TripLayout'));
 const TripsLayout = lazy(() => import('../layouts/TripsLayout'));
 const ChatLayout = lazy(() => import('../layouts/ChatLayout'));
 
 // Auth
 const RegistrationPage = lazy(() => import('../pages/auth/RegistrationPage'));
+const VerifyPhonePage = lazy(() => import('../pages/auth/VerifyPhonePage'));
+const SelectUsertypePage = lazy(
+  () => import('../pages/auth/SelectUsertypePage'),
+);
 const LoginPage = lazy(() => import('../pages/auth/LoginPage'));
 const ForgotPasswordPage = lazy(
   () => import('../pages/auth/ForgotPasswordPage'),
-);
-const VerifyPhonePage = lazy(() => import('../pages/auth/VerifyPhonePage'));
-const RequestVerificationCodePage = lazy(
-  () => import('../pages/auth/RequestVerificationCodePage'),
 );
 
 // Profile
@@ -39,37 +38,20 @@ const TransporterAccountsPage = lazy(
 
 // DASHBOARD
 const MyTripsPage = lazy(() => import('../pages/trips/MyTripsPage'));
-const NewTripPage = lazy(() => import('../pages/trips/NewTripPage'));
-const ViewTripPage = lazy(() => import('../pages/trips/ViewTripPage'));
-const ViewTripStatusPage = lazy(
-  () => import('../pages/trips/ViewTripStatusPage'),
-);
-const ViewTripRequestPaymentPage = lazy(
-  () => import('../pages/trips/RequestPaymentPage'),
-);
-const ViewTripTDOPage = lazy(() => import('../pages/trips/ViewTripTDOPage'));
-const ViewRequestForPayment = lazy(
-  () => import('../pages/trips/ViewRequestForPayment'),
-);
-const ViewTripBidsPage = lazy(() => import('../pages/bids/ViewTripBidsPage'));
-const ViewTripBidPage = lazy(() => import('../pages/bids/ViewTripBidPage'));
-const BidCheckoutPage = lazy(() => import('../pages/bids/BidCheckoutPage'));
+const TripDetailsPage = lazy(() => import('../pages/trips/TripDetailsPage'));
+const TripBidsPage = lazy(() => import('../pages/trips/TripBidsPage'));
 
 const TransporterJobsPage = lazy(
   () => import('../pages/jobs/TransporterJobsPage'),
 );
-const ViewTransporterJobDetailsPage = lazy(
-  () => import('../pages/jobs/ViewTransporterJobDetailsPage'),
-);
-const BidOnJobPage = lazy(() => import('../pages/jobs/BidOnJobPage'));
-
 const ChatPage = lazy(() => import('../pages/chat/ChatPage'));
 
-//Transactions
+// VEHICLES
+const VehiclesPage = lazy(() => import('../pages/vehicles/VehiclesPage'));
 
-const ViewPaymentsPage = lazy(
-  () => import('../pages/payments/ViewPaymentsPage'),
-);
+// Transactions
+
+const PaymentsPage = lazy(() => import('../pages/payments/PaymentsPage'));
 
 const router = createBrowserRouter([
   {
@@ -111,7 +93,7 @@ const router = createBrowserRouter([
         element: <ChatLayout />,
         children: [
           {
-            path: '/chat/:chatId',
+            path: '/chat/:chatLogId',
             id: 'Message',
             element: <ChatPage />,
           },
@@ -128,66 +110,19 @@ const router = createBrowserRouter([
             element: <MyTripsPage />,
           },
           {
-            path: '/my-trips/new',
-            id: 'New Trip',
-            element: <NewTripPage />,
-          },
-          {
-            path: '/my-trips/:tripId/edit',
-            id: 'Edit Trip',
-            element: <NewTripPage />,
-          },
-          {
             path: '/my-trips/:tripId',
-            id: 'View Trip Layout',
-            element: <ViewTripLayout />,
+            id: 'Trip Layout',
+            element: <TripLayout />,
             children: [
               {
                 path: '/my-trips/:tripId',
-                id: 'View Trip',
-                element: <ViewTripPage />,
-              },
-              {
-                path: '/my-trips/:tripId/status',
-                id: 'View Trip Status',
-                element: <ViewTripStatusPage />,
-              },
-              {
-                path: '/my-trips/:tripId/terminal-delivery-order',
-                id: 'View Trip TDO',
-                element: <ViewTripTDOPage />,
-              },
-              {
-                path: '/my-trips/:tripId/request-payment-for-trip',
-                id: 'Request payment for trip',
-                element: <ViewTripRequestPaymentPage />,
-              },
-              {
-                path: '/my-trips/:tripId/view-payment-request',
-                id: 'View Request payment for trip',
-                element: <ViewRequestForPayment />,
+                id: 'TripDetails',
+                element: <TripDetailsPage />,
               },
               {
                 path: '/my-trips/:tripId/bids',
-                id: 'View Trip Bids Layout',
-                element: <ViewTripBidsLayout />,
-                children: [
-                  {
-                    path: '',
-                    id: 'View Trip Bids',
-                    element: <ViewTripBidsPage />,
-                  },
-                  {
-                    path: '/my-trips/:tripId/bids/:bidId',
-                    id: 'View Trip Bid',
-                    element: <ViewTripBidPage />,
-                  },
-                  {
-                    path: '/my-trips/:tripId/bids/:bidId/checkout',
-                    id: 'Checkout Trip Bid',
-                    element: <BidCheckoutPage />,
-                  },
-                ],
+                id: 'TripBidsLayout',
+                element: <TripBidsPage />,
               },
             ],
           },
@@ -199,19 +134,14 @@ const router = createBrowserRouter([
         element: <TransporterJobsPage />,
       },
       {
-        path: '/available-jobs/:tripId',
-        id: 'Job Detail',
-        element: <ViewTransporterJobDetailsPage />,
-      },
-      {
-        path: '/available-jobs/:tripId/bid',
-        id: 'Bid on Job',
-        element: <BidOnJobPage />,
+        path: '/vehicles',
+        id: 'Vehicles',
+        element: <VehiclesPage />,
       },
       {
         path: '/payments',
         id: 'Payments',
-        element: <ViewPaymentsPage />,
+        element: <PaymentsPage />,
       },
     ],
   },
@@ -220,8 +150,16 @@ const router = createBrowserRouter([
     element: <AuthLayout />,
     children: [
       {
+        path: 'join',
+        element: <SelectUsertypePage />,
+      },
+      {
         path: 'join/:userType',
         element: <RegistrationPage />,
+      },
+      {
+        path: 'verify-phone',
+        element: <VerifyPhonePage />,
       },
       {
         path: 'login',
@@ -230,14 +168,6 @@ const router = createBrowserRouter([
       {
         path: 'forgot-password',
         element: <ForgotPasswordPage />,
-      },
-      {
-        path: 'verify-phone',
-        element: <VerifyPhonePage />,
-      },
-      {
-        path: 'verify-phone/request-code',
-        element: <RequestVerificationCodePage />,
       },
     ],
   },

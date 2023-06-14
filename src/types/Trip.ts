@@ -5,11 +5,13 @@ import {
   typeOfGoods,
 } from 'utils/constants';
 import User from './User';
-
+import PaymentRequest from './PaymentRequest';
+import Bid from './Bid';
 export default interface Trip {
   _id: string;
   pickUpAddress: string;
   deliveryAddress: string;
+  acceptedBid: Bid;
   pickUpDate: string;
   deliveryDate: string;
   typeOfGoods: (typeof typeOfGoods)[number];
@@ -18,12 +20,11 @@ export default interface Trip {
   jobType?: (typeof jobTypes)[number];
   weight: number;
   instructions?: string;
-  agentId: string;
-  transporterId?: string;
-  TDO?: string;
-  paymentId?: string;
-  reference: string;
+  tripOwnerUserType?: string;
   transporter?: User;
-  tripOwner?: User;
-  status: 'awaiting-bid' | 'payment-complete' | 'in-progress' | 'completed';
+  tripOwner: User;
+  TDO?: string;
+  reference: string;
+  status: 'awaiting-bid' | 'assigned' | 'in-progress' | 'completed';
+  paymentRequest?: PaymentRequest;
 }

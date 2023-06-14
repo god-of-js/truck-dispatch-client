@@ -1,12 +1,16 @@
 import axios from 'axios';
 import { BACKEND_URL } from 'utils/privateKeys';
 import { Toast } from 'utils/toast';
-import { getUserSessionId, removeUserSessionId } from 'utils/userSession';
+import {
+  getAuthSessionId,
+  getUserSessionId,
+  removeUserSessionId,
+} from 'utils/localStorageMethods';
 
 let isRedirecting = false;
 const instance = axios.create({
   baseURL: BACKEND_URL,
-  timeout: 40000,
+  timeout: 240000,
 });
 
 instance.interceptors.response.use(
@@ -34,7 +38,8 @@ instance.interceptors.response.use(
 
 function authorizedInstance() {
   if (!instance.defaults.headers.Authorization) {
-    const token = getUserSessionId();
+    // Auth session ID is in case of authentications.
+    const token = getUserSessionId() || getAuthSessionId();
     if (token) instance.defaults.headers.Authorization = `Bearer ${token}`;
   }
   return instance;

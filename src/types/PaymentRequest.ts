@@ -1,3 +1,4 @@
+import Trip from './Trip';
 import Vehicle from './Vehicle';
 
 export default interface PaymentRequest {
@@ -6,7 +7,7 @@ export default interface PaymentRequest {
   proofVideo: string;
   status: 'pending' | 'rejected' | 'completed';
   transporterId: string;
-  tripId: string;
+  trip: Trip;
   tripReference: string;
   paymentReference?: string;
   reference: string;

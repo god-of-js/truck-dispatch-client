@@ -3,13 +3,12 @@ import styled from 'styled-components';
 
 interface Props {
   error?: string;
-  name: string;
   label?: string;
   children: React.ReactNode;
 }
-export default function UiField({ error, label, name, children }: Props) {
+export default function UiField({ error, label, children }: Props) {
   return (
-    <div>
+    <div className="ui-field">
       <Label>{label}</Label>
       {children}
       <Message>{error}</Message>
@@ -20,10 +19,13 @@ export default function UiField({ error, label, name, children }: Props) {
 const Message = styled.div`
   color: var(--color-danger);
   font-size: ${pxToRem(12)};
+  text-align: left;
 `;
 
 const Label = styled.label`
   font-size: ${pxToRem(14)};
-  color: var(--color-gray-500);
-  font-weight: bold;
+  color: var(--color-neutralBlack);
+  font-weight: 700;
+  line-height: ${pxToRem(32)};
+  text-align: left;
 `;

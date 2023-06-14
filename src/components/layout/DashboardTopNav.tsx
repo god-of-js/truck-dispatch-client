@@ -1,151 +1,285 @@
-import React, { useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
-import { pathToRegexp, Key } from 'path-to-regexp';
+import React, { useMemo, useState } from 'react';
+import OutsideClickHandler from 'react-outside-click-handler';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import UiButton from 'ui/UiButton';
+import UiFilterTag from 'ui/UiFilterTag';
 import UiIcon from 'ui/UiIcon';
-import UiAvatar from 'ui/UiAvatar';
-import UiDropDownMenu, { DropDownData } from 'ui/UiDropdownMenu';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from 'modules/index';
-import { removeUserSessionId } from 'utils/userSession';
+import UiInput, { OnChangeParams } from 'ui/UiInput';
+import sizes from 'utils/sizes';
 
-interface Params {
-  [key: string]: string;
+import { ReactComponent as AppLogo } from '../../assets/logo.svg';
+import routes from './routes';
+
+interface Filter {
+  title: string;
+  route: string;
+  value?: string | number;
+  customWidth?: number;
 }
-export default function DashboardTopNav() {
-  const navigate = useNavigate();
-  const user = useSelector((state: RootState) => state.account.user);
-  function logOutUser() {
-    removeUserSessionId();
-    navigate('/auth/login');
-    window.location.reload();
-  }
-
-  const dropDownData: DropDownData[] = [
-    {
-      label: 'View Profile',
-      path: '/profile',
-      icon: <UiIcon icon="User" />,
-    },
-    {
-      label: 'Bank Accounts',
-      path: '/profile/accounts',
-      icon: <UiIcon icon="CreditCard" />,
-    },
-    {
-      label: 'Log out',
-      isDanger: true,
-      hasDivider: true,
-      func: logOutUser,
-      icon: <UiIcon icon="SignOut" />,
-    },
-  ].filter(({ path }) => {
-    if (path === '/profile/accounts' && user?.userType === 'agent')
-      return false;
-
-    return true;
-  });
-
+interface Props {
+  routeName: string;
+  edgeNode?: React.ReactNode;
+  startNode?: React.ReactNode;
+  pageFilters?: Filter[];
+  searchQuery?: string;
+  handleQueryChange?: (params: OnChangeParams) => void;
+}
+export default function DashboardTopNav({
+  routeName,
+  startNode,
+  pageFilters,
+  edgeNode,
+  searchQuery,
+  handleQueryChange,
+}: Props) {
   const location = useLocation();
+  const [isInputVisible, setIsInputVisible] = useState(false);
+  const presentRoute = useMemo(() => {
+    return location.pathname + location.search;
+  }, [location.pathname, location.search]);
 
-  const routeNames = {
-    '/available-jobs': 'Available Jobs',
-    '/available-jobs/:id': 'View Job Details',
-    '/available-jobs/:id/Bid': 'Bid On Job',
-    '/my-trips': 'My Trips',
-    '/my-trips/new': 'Create New Trip',
-    '/my-trips/:id': 'My Trip',
-    '/my-trips/:id/status': 'My Trip Status',
-    '/my-trips/:id/terminal-delivery-order': 'Manage Trip TDO',
-    '/my-trips/:id/request-payment-for-trip': 'Request Trip  Payment',
-    '/my-trips/:id/bids': 'Trip Bids',
-    '/my-trips/:id/bids/:id': 'Trip Bid',
-    '/my-trips/:id/bids/:id/checkout': 'Pay for Trip',
-    '/chat': 'Chat',
-    '/payments': 'Payments',
-    '/chat/:id': 'Chat',
-    '/profile': 'Profile',
-    '/profile/accounts': 'Account',
-    '/profile/verification': 'Verification',
-    '/profile/manage-password': 'Manage Password',
-    '/my-trips/:id/view-payment-request': 'View Payment Request',
-  };
+  const routeIconName = useMemo(() => {
+    const activeRoute = routes.find(({ path }) =>
+      location.pathname.includes(path),
+    );
 
-  type RouteNames = keyof typeof routeNames;
-
-  const routeName = useMemo(() => {
-    const pathname = location.pathname;
-    const keys: Key[] = [];
-    const patterns = Object.keys(routeNames)
-      .map((path) => {
-        const pattern = pathToRegexp(path, keys);
-        const match = pattern.exec(pathname);
-        if (match) {
-          const params = match
-            .slice(1)
-            .reduce((params: Params, value: string, i: number) => {
-              params[keys[i].name!] = value;
-              return params;
-            }, {});
-          return [routeNames[path as RouteNames], params];
-        }
-        return null;
-      })
-      .filter((x) => x);
-
-    if (patterns.length) {
-      // @ts-ignore
-      const [name, params] = patterns[0];
-      if (Object.keys(params).length) {
-        return name.replace(/:(\w+)/g, (_: string, key: string) => {
-          return params[key];
-        });
-      }
-      return name;
-    }
-    return '';
-  }, [location.pathname]);
+    return activeRoute?.iconName;
+  }, [location]);
 
   return (
-    <TopNav>
-      <span>{routeName}</span>
-      <UiDropDownMenu
-        key={`${user?.avatar}`}
-        options={dropDownData}
-        trigger={
-          <div className="avatar-caret-flex">
-            <UiAvatar avatar={user?.avatar} />
-            <UiIcon icon="CaretDown" />
+    <TopNavContainer>
+      <TopNav>
+        <div className="start-container">
+          {startNode}
+          <span className="route-name">{routeName}</span>
+          <span className="logo">
+            <AppLogo />
+          </span>
+          <div className="filters">
+            {pageFilters?.map((filter) => (
+              <Link to={filter.route} key={filter.title}>
+                <UiFilterTag
+                  title={filter.title}
+                  isActive={filter.route === presentRoute}
+                  value={filter.value}
+                  customWidth={filter.customWidth}
+                />
+              </Link>
+            ))}
           </div>
-        }
-      />
-    </TopNav>
+        </div>
+        <div className="edge-container">
+          {handleQueryChange && (
+            <>
+              <span className={!isInputVisible ? 'search-input' : ''}>
+                <OutsideClickHandler
+                  onOutsideClick={() => setIsInputVisible(false)}
+                >
+                  <UiInput
+                    onChange={handleQueryChange}
+                    value={searchQuery || null}
+                    name="searchQuery"
+                    placeholder="Search..."
+                    icon="Search"
+                    size="md"
+                  />
+                </OutsideClickHandler>
+              </span>
+              {!isInputVisible && (
+                <span className="search-btn">
+                  <UiButton
+                    variant="icon-neutral"
+                    size="large"
+                    onClick={() => setIsInputVisible(true)}
+                  >
+                    <UiIcon icon="Search" size="24" />
+                  </UiButton>
+                </span>
+              )}
+            </>
+          )}
+          <div className="edge-node">{edgeNode}</div>
+          {false && (
+            <UiButton variant="icon-neutral" size="large">
+              <UiIcon icon="Notification" size="24" />
+            </UiButton>
+          )}
+        </div>
+      </TopNav>
+      <BottomTopNav>
+        <div className="route-name-container">
+          <span className="route-icon">
+            {routeIconName && <UiIcon icon={routeIconName} size="28" />}
+          </span>
+          <span className="route-name">{routeName}</span>
+        </div>
+        <div className="filters">
+          {pageFilters?.map((filter) => (
+            <Link to={filter.route} key={filter.title}>
+              <UiFilterTag
+                title={filter.title}
+                customWidth={filter.customWidth}
+                isActive={filter.route === presentRoute}
+                value={filter.value}
+              />
+            </Link>
+          ))}
+        </div>
+      </BottomTopNav>
+    </TopNavContainer>
   );
 }
 
+const TopNavContainer = styled.div`
+  @media only screen and (max-width: ${sizes.mobileLargeWidth}) {
+    background: #fff;
+  }
+`;
+
 const TopNav = styled.nav`
-  background-color: #ffffff;
-  border-bottom: ${pxToRem(1)} solid var(--color-gray-200);
   padding: ${pxToRem(12)} ${pxToRem(24)};
+  height: ${pxToRem(72)};
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  .avatar-caret-flex {
+  .start-container {
     display: flex;
     align-items: center;
-    gap: ${pxToRem(5)};
+    gap: ${pxToRem(24)};
 
-    span {
-      font-size: ${pxToRem(16)};
-      font-weight: 600;
-      color: var(--color-gray-400);
+    .filters {
+      display: none;
+      align-items: center;
+      gap: ${pxToRem(12)};
     }
   }
-  .avatar-caret-flex:hover {
-    span {
-      color: var(--color-gray-600);
+
+  .route-name {
+    color: var(--color-neutralBlack);
+    font-size: ${pxToRem(20)};
+    font-weight: 700;
+    font-family: 'thiccboi-extrabold';
+    display: none;
+  }
+
+  .edge-container {
+    display: flex;
+    align-items: center;
+    gap: ${pxToRem(12)};
+    .notification-icon {
+      width: 44px;
+      height: 44px;
+      background: white;
+      border-radius: ${pxToRem(8)};
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      svg {
+        width: ${pxToRem(24)};
+        height: ${pxToRem(24)};
+        fill: var(--color-gray-80);
+      }
     }
+
+    .search-input {
+      display: none;
+    }
+    /* TODO: remove when mobile input has been properly thought out. */
+    .search-btn {
+      display: none !important;
+    }
+
+    @media screen and (min-width: ${sizes.mobileLargeWidth}) {
+      .search-input {
+        display: block;
+      }
+
+      /* .search-btn {
+        display: none !important;
+      } */
+    }
+  }
+
+  @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
+    .start-container {
+      display: flex;
+      gap: ${pxToRem(8)};
+      .logo {
+        display: none;
+      }
+    }
+    .route-name {
+      display: block;
+    }
+
+    button {
+      &.icon-neutral {
+        background: white;
+      }
+    }
+  }
+
+  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+    .edge-container {
+      .edge-node {
+        display: block;
+      }
+    }
+  }
+
+  @media only screen and (min-width: ${sizes.tabletLargeWidth}) {
+    .start-container {
+      .filters {
+        display: flex;
+      }
+    }
+  }
+`;
+
+const BottomTopNav = styled.div`
+  display: block;
+  padding: ${pxToRem(12)} ${pxToRem(24)};
+  border-bottom: ${pxToRem(1)} solid var(--color-gray-30);
+  border-top: ${pxToRem(1)} solid var(--color-gray-30);
+
+  .route-name-container {
+    margin-bottom: ${pxToRem(4)};
+    display: flex;
+    align-items: center;
+    gap: ${pxToRem(8)};
+
+    svg {
+      fill: var(--color-neutralBlack);
+    }
+    .route-name {
+      font-style: normal;
+      font-weight: 700;
+      font-size: ${pxToRem(24)};
+      line-height: 140%;
+      letter-spacing: -0.02em;
+      color: var(--color-neutralBlack);
+    }
+  }
+
+  .filters {
+    display: flex;
+    align-items: center;
+    gap: ${pxToRem(12)};
+    overflow-x: auto;
+  }
+
+  @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
+    border-bottom: transparent;
+    border-top: transparent;
+    .route-name,
+    .route-icon {
+      display: none;
+    }
+  }
+  @media only screen and (min-width: ${sizes.tabletLargeWidth}) {
+    display: none;
   }
 `;

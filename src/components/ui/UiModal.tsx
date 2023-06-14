@@ -1,34 +1,140 @@
 import React from 'react';
 import styled from 'styled-components';
-import OutsideClickHandler from 'react-outside-click-handler';
 import sizes from 'utils/sizes';
 import UiIcon from './UiIcon';
+import UiButton from './UiButton';
+import UiOverlay from './UiOverlay';
 
-type Size = 'lg' | 'sm';
+type Size = 'lg' | 'md' | 'sm';
+type Position = 'center' | 'right';
+type BG = 'dark' | 'light';
+
 interface Props {
   children: React.ReactNode;
+  position?: Position;
   size?: Size;
+  title?: string;
+  hideModalClose?: boolean;
+  bgVariant?: BG;
   onClose: () => void;
+  goPrev?: () => void;
+  isVisible: boolean;
 }
-export default function UiModal({ children, size = 'lg', onClose }: Props) {
+export default function UiModal({
+  children,
+  title,
+  position = 'center',
+  size = 'lg',
+  bgVariant = 'light',
+  hideModalClose,
+  onClose,
+  goPrev,
+  isVisible,
+}: Props) {
+  function closeModal() {
+    if (hideModalClose) return;
+
+    onClose();
+  }
   return (
-    <ModalCard size={size}>
-      <OutsideClickHandler onOutsideClick={onClose}>
-        <div className="modal-inner">
-          <div className="close-button-container">
-            <button onClick={onClose}>
-              <UiIcon icon="X" />
-            </button>
+    <UiOverlay onClick={closeModal} isVisible={isVisible}>
+      <Modal>
+        <ModalCard
+          onClick={(event) => {
+            event.stopPropagation();
+          }}
+          position={position}
+          size={size}
+          bgVariant={bgVariant}
+        >
+          <div className="modal-inner">
+            <header className="modal-header">
+              {goPrev && (
+                <UiButton variant="icon-neutral" onClick={goPrev}>
+                  <UiIcon icon="CaretLeft" size="16" />
+                </UiButton>
+              )}
+              <h2>{title}</h2>
+              {!hideModalClose && (
+                <UiButton variant="icon-neutral" onClick={closeModal}>
+                  <UiIcon icon="Close" size="20" />
+                </UiButton>
+              )}
+            </header>
+            {children}
           </div>
-          {children}
-        </div>
-      </OutsideClickHandler>
-    </ModalCard>
+        </ModalCard>
+      </Modal>
+    </UiOverlay>
   );
 }
 
-const ModalCard = styled.div`
-  background: white;
+function positionStyling({ position, size }: CardProps) {
+  if (position === 'right') {
+    return `
+      position: fixed;
+      bottom: 0;
+      top: 0;
+      right: 0;
+      left: initial;
+      border-radius: 0;
+      max-height: 100%;
+      width: 80%;
+
+      .modal-header {
+        border-bottom: ${pxToRem(1)} solid var(--color-gray-20);
+        padding: ${pxToRem(26)} ${pxToRem(24)};
+      }
+     
+      @media only screen and (min-width: ${sizes.tabletLargeWidth}) {
+        width: 60%;
+      }
+      @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
+        width: 50%;
+        max-width: ${pxToRem(1000)};
+      }
+    `;
+  }
+  if (position === 'center') {
+    return `
+    position: static;
+    margin: auto;
+    border-radius: ${pxToRem(16)};
+    
+    .modal-header h2 {
+      text-align: center;
+      flex-grow: 1;
+      margin-left: 40px !important;
+    }
+    `;
+  }
+
+  return `
+    position: static;
+    margin: auto;
+    border-radius: ${pxToRem(16)};
+  `;
+}
+
+function getWidth(size?: Size) {
+  if (size === 'sm') return `width: ${pxToRem(540)};`;
+
+  if (size === 'md') return `width: ${pxToRem(724)};`;
+  return `width: 50%;`;
+}
+interface CardProps {
+  size?: Size;
+  position?: Position;
+  bgVariant?: BG;
+}
+const Modal = styled.div`
+  width: 100%;
+  height: fit-content;
+`;
+
+const ModalCard = styled.div<CardProps>`
+  background: ${({ bgVariant }) =>
+    bgVariant === 'dark' ? 'var(--color-gray-20)' : '#ffffff'};
   border-top-left-radius: ${pxToRem(8)};
   border-top-right-radius: ${pxToRem(8)};
   position: fixed;
@@ -36,37 +142,35 @@ const ModalCard = styled.div`
   left: 0;
   right: 0;
   overflow-y: auto;
-  max-height: 80%;
+  overflow-x: hidden;
+  max-height: 90%;
 
   .modal-inner {
-    padding: ${pxToRem(16)};
-  }
+    padding-bottom: ${pxToRem(28)};
+    height: 87%;
 
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    width: ${({ size }: { size: Size }) =>
-      size === 'lg' ? '40%' : pxToRem(480)};
-    position: static;
-    margin: auto;
-    border-radius: ${pxToRem(8)};
-  }
-  .close-button-container {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    button {
+    .modal-header {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
-      padding: ${pxToRem(8)};
-      width: ${pxToRem(24)};
-      height: ${pxToRem(24)};
-      background: transparent;
-      border: transparent;
-      border-radius: 50%;
+      padding: ${pxToRem(18)} ${pxToRem(24)};
+      border-bottom: ${pxToRem(1)} solid var(--color-gray-20);
 
-      :hover {
-        background: var(--color-gray-100);
+      h2 {
+        color: var(--color-neutralBlack);
+        font-size: ${pxToRem(20)};
+        font-family: 'thiccboi-extrabold';
+        font-weight: 700;
+        margin: 0;
       }
     }
+  }
+
+  @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
+    h2 {
+      font-size: ${pxToRem(24)} !important;
+    }
+    ${({ size }) => getWidth(size)}
+    ${(cardProps) => positionStyling(cardProps)}
   }
 `;

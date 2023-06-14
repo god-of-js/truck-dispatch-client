@@ -2,7 +2,7 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 import Api from 'Api';
 import Chat from 'types/Chat';
 import ChatLog from 'types/ChatLog';
-import ChatLogData from 'types/ChatLogData';
+import ChatLogData from 'types/CreateChatLog';
 import { AppDispatch, AppState, RootState } from '.';
 
 export interface ChatState {
@@ -23,7 +23,7 @@ export const chatSlice = createSlice({
     setChat(state: ChatState, action: { payload: Chat }) {
       state.chats.push(action.payload);
       const logIndex = state.chatLogs.findIndex(
-        (log) => log._id === action.payload.chatId,
+        (log) => log._id === action.payload.chatLog,
       );
       state.chatLogs[logIndex].lastMessage = action.payload;
     },
@@ -53,10 +53,10 @@ function getTime(createdAt: number) {
   return new Date(createdAt).getTime();
 }
 const chats = (state: RootState) => state.chat.chats;
-export const selectChatByChatId = (selectedChatId: string) =>
+export const selectChatBychatLog = (selectedchatLog: string) =>
   createSelector(chats, (chatArr) => {
     return chatArr
-      .filter(({ chatId }) => chatId === selectedChatId)
+      .filter(({ chatLog }) => chatLog === selectedchatLog)
       .sort(
         (a, b) =>
           getTime(a.createdAt as number) - getTime(b.createdAt as number),
@@ -73,7 +73,7 @@ export const selectUnreadChats = createSelector(
       return (
         log.lastMessage &&
         !log.lastMessage.readAt &&
-        log.lastMessage.senderId !== userDetails?._id
+        log.lastMessage.sender !== userDetails?._id
       );
     });
   },
@@ -110,6 +110,14 @@ export const readChat = (chat: Chat) => {
 
 export const createOrFetchChatLog = (data: ChatLogData) => {
   return (dispatch: AppDispatch, state: AppState) => {
+    const chatLog = state().chat.chatLogs.find(
+      (log) =>
+        log.client._id === data.clientId &&
+        log.transporter._id === data.transporterId,
+    );
+    // To avoid unnecessary requests.
+    if (chatLog) return Promise.resolve(chatLog);
+
     return Api.createOrFetchChatLog(data).then((log) => {
       dispatch(setChatLog(log));
       return log;

@@ -41,32 +41,8 @@ const paymentRequests = (state: RootState) => state.payment.paymentRequests;
 
 export const selectPaymentRequestByTripId = (id: string) =>
   createSelector(paymentRequests, (requestArr) =>
-    requestArr.find(({ tripId }) => tripId === id),
+    requestArr.find(({ trip }) => trip._id === id),
   );
-
-export function requestPaymentByTransporter(data: FormData, tripId: string) {
-  return (dispatch: AppDispatch, state: AppState) => {
-    return Api.requestPaymentByTransporter(data, tripId).then(
-      (paymentRequestDetails) => {
-        dispatch(setPaymentRequest(paymentRequestDetails));
-      },
-    );
-  };
-}
-
-export function updatePaymentRequestByTransporter(
-  data: FormData,
-  tripId: string,
-  paymentRequestId: string,
-) {
-  return (dispatch: AppDispatch, state: AppState) => {
-    return Api.updatePaymentRequest(data, tripId, paymentRequestId).then(
-      (paymentRequestDetails) => {
-        dispatch(setPaymentRequest(paymentRequestDetails));
-      },
-    );
-  };
-}
 
 export function getPaymentRequestsOfDriver() {
   return (dispatch: AppDispatch, state: AppState) => {
@@ -74,39 +50,5 @@ export function getPaymentRequestsOfDriver() {
       dispatch(setPaymentRequests(data));
       return data;
     });
-  };
-}
-
-export function getPaymentRequestByTripId(tripId: string) {
-  return (dispatch: AppDispatch) => {
-    return Api.getPaymentRequestByTripId(tripId).then((paymentRequest) => {
-      dispatch(setPaymentRequest(paymentRequest));
-    });
-  };
-}
-
-export function rejectPaymentRequest(
-  tripId: string,
-  paymentRequestId: string,
-  data: { reasonForReject: string },
-) {
-  return (dispatch: AppDispatch) => {
-    return Api.rejectPaymentRequest(tripId, paymentRequestId, data).then(
-      (paymentRequest) => {
-        dispatch(setPaymentRequest(paymentRequest));
-      },
-    );
-  };
-}
-export function approvePaymentRequest(
-  tripId: string,
-  paymentRequestId: string,
-) {
-  return (dispatch: AppDispatch) => {
-    return Api.approvePaymentRequest(tripId, paymentRequestId).then(
-      (paymentRequest) => {
-        dispatch(setPaymentRequest(paymentRequest));
-      },
-    );
   };
 }

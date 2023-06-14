@@ -10,11 +10,16 @@ import { selectTrip } from 'modules/Trips';
 interface Props {
   onClose: () => void;
   payment: PaymentRequest;
+  isVisible: boolean;
 }
-export default function ViewPaymentDetails({ onClose, payment }: Props) {
-  const trip = useSelector(selectTrip(payment.tripId));
+export default function ViewPaymentDetails({
+  onClose,
+  isVisible,
+  payment,
+}: Props) {
+  const trip = useSelector(selectTrip(payment.trip._id));
   return (
-    <UiModal onClose={onClose}>
+    <UiModal isVisible={isVisible} onClose={onClose}>
       <DetailsContainer>
         <h2>Payment Details</h2>
         <Section>
