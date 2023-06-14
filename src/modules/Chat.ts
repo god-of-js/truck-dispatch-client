@@ -128,6 +128,7 @@ export const createOrFetchChatLog = (data: ChatLogData) => {
 export const getChatLogs = () => {
   return (dispatch: AppDispatch) => {
     return Api.getChatLogs().then((data) => {
+      console.log(data);
       dispatch(setChatLogs(data));
     });
   };

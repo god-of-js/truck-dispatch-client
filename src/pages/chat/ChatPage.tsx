@@ -182,16 +182,16 @@ const ChatContainer = styled.div`
   overflow: scroll;
 `;
 
-const ChatBubble = styled.div`
+const ChatBubble = styled.div<{ isMine: boolean }>`
   display: flex;
-  justify-content: ${({ isMine }: { isMine: boolean }) =>
+  justify-content: ${({ isMine }) =>
     isMine ? 'flex-end' : ''};
   .chat-bubble-inner {
     padding: ${pxToRem(8)};
     margin: ${pxToRem(2)} 0;
     border-radius: ${pxToRem(4)};
-    background: ${({ isMine }: { isMine: boolean }) =>
-      isMine ? 'var(--color-primary)' : 'var(--color-gray-500)'};
+    background: ${({ isMine }) =>
+      isMine ? 'var(--color-primary)' : 'var(--color-gray-70)'};
     width: fit-content;
     color: white;
     max-width: 70%;
