@@ -273,13 +273,15 @@ export default function TripDetailsPage() {
               </p>
               <div className="double-items">
                 {userIsClientBasedUser && !trip.TDO && (
-                  <UiButton isFullWidth onClick={() => setUploadTDOIsVisible(true)}>
+                  <UiButton
+                    isFullWidth
+                    onClick={() => setUploadTDOIsVisible(true)}
+                  >
                     Upload TDO
                   </UiButton>
                 )}
                 {!!trip.TDO && (
                   <a href={trip.TDO} target="_blank">
-
                     <UiButton isFullWidth> View TDO</UiButton>
                   </a>
                 )}
@@ -391,7 +393,7 @@ const TripDetailsStyling = styled.div`
   grid-template-columns: 1fr;
   gap: ${pxToRem(20)};
 
-  padding: 0 ${pxToRem(24)};
+  padding: ${pxToRem(12)} ${pxToRem(24)};
 
   .card-title {
     font-style: normal;
@@ -405,8 +407,11 @@ const TripDetailsStyling = styled.div`
 
   .cargo-details {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
     gap: ${pxToRem(12)};
+
+    @media screen and (min-width: ${sizes.mobileSmall}) {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
   .handling-instructions {
     font-style: normal;

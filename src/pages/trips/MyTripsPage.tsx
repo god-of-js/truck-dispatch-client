@@ -452,7 +452,8 @@ export default function MyTripsPage() {
   }, [page, status]);
 
   useEffect(() => {
-   if (serviceBasedUserTypes.includes(user?.userType!)) dispatch(toAnyAction(getTransporterBids()));
+    if (serviceBasedUserTypes.includes(user?.userType!))
+      dispatch(toAnyAction(getTransporterBids()));
   }, []);
 
   return (

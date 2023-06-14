@@ -31,25 +31,26 @@ export default function ChatLayout() {
 
   return (
     <>
-    <DashboardTopNav routeName='Chat' />
-    <ChatLayoutDesign>
-      <div className="card">
-        <div className="chat-heads-container">
-          <ChatHeads />
-        </div>
-        <div className="outlet-container" key={location.pathname}>
-          <Outlet />
-          {location.pathname === '/chat' && (
-            <div className="create-message"></div>
-          )}
-        </div>
-        <div className="mobile-display">
-          {location.pathname === '/chat' && <ChatHeads />}
+      <DashboardTopNav routeName="Chat" />
+      <ChatLayoutDesign>
+        <div className="card">
+          <div className="chat-heads-container">
+            <ChatHeads />
+          </div>
+          <div className="outlet-container" key={location.pathname}>
+            <Outlet />
+            {location.pathname === '/chat' && (
+              <div className="create-message"></div>
+            )}
+          </div>
+          <div className="mobile-display">
+            {location.pathname === '/chat' && <ChatHeads />}
 
-          <Outlet key={location.pathname} />
+            <Outlet key={location.pathname} />
+          </div>
         </div>
-      </div>
-    </ChatLayoutDesign></>
+      </ChatLayoutDesign>
+    </>
   );
 }
 

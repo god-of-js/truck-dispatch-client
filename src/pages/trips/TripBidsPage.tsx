@@ -74,8 +74,10 @@ export default function TripBidsPage() {
   }
 
   function negotiateBid(bidId: string) {
-    const chosenBid = bids.find(({_id}) => _id === bidId)
-    navigate(`/chat?transporterId=${chosenBid?.transporter._id}&clientId=${user?._id}`)
+    const chosenBid = bids.find(({ _id }) => _id === bidId);
+    navigate(
+      `/chat?transporterId=${chosenBid?.transporter._id}&clientId=${user?._id}`,
+    );
   }
 
   function acceptBid(bidId: string) {
@@ -92,9 +94,7 @@ export default function TripBidsPage() {
     }
   }
 
-  function openModal(modalName: '') {
-
-  }
+  function openModal(modalName: '') {}
 
   function assignTripToTransporter(
     paymentMethod: 'paystack' | 'balance',

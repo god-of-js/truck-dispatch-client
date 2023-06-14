@@ -143,7 +143,7 @@ export default function TripDetailPaymentCard({
 
 const PaymentCard = styled.div`
   position: relative;
-  height: 100%;
+  min-height: ${pxToRem(180)};
 
   .price-container {
     display: flex;
