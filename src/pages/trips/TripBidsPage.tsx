@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
-import PaymentGif from 'assets/img/PaymentGif.jpeg'
+import Successgif from 'assets/img/Successgif.jpeg'
 
 import { RootState } from 'modules/index';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
@@ -202,7 +202,7 @@ export default function TripBidsPage() {
             confirmText='Go to trip details'
           >
             <div>
-               <img src={PaymentGif} alt="payment_image"/>
+               <img src={Successgif} alt="payment_image"/>
             </div>
             Payment Successfully Made
           </UiConfirmModal>
