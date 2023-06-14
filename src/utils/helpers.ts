@@ -10,7 +10,7 @@ export function aValueHasBeenChanged<T extends object>(source: T, formData: T) {
   if (!source) return false;
 
   const editedData = removeUneditedFields(source, formData);
-
+  console.log(!!Object.keys(editedData).length)
   return !!Object.keys(editedData).length;
 }
 
@@ -43,7 +43,7 @@ export function abbreviateNumber(
   return num.toLocaleString();
 }
 
-export function priceWithTDPercent(amount: number | string, percent = 7) {
+export function priceWithTDPercent(amount: number | string) {
   const value = parseInt(`${amount}`);
   return value + tdPercentageWithVAT(value);
 }

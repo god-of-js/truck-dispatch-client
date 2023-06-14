@@ -7,6 +7,7 @@ import Trip from 'types/Trip';
 import UiAvatar from 'ui/UiAvatar';
 import UiButton from 'ui/UiButton';
 import UiDataField from 'ui/UiDataField';
+import UserDetails from 'ui/UserDetails';
 import { clientBasedUserTypes } from 'utils/constants';
 import TripPickUpAndDeliverWithDates from './TripPickUpAndDeliverWithDates';
 
@@ -29,20 +30,7 @@ export default function TripDetails({ trip, hideProfile }: Props) {
   return (
     <ComponentStyling>
       {alternateUser && (
-        <div className="user-profile">
-          <div className="user-profile__content">
-            <UiAvatar avatar={alternateUser.avatar} isHalfCurved />
-            <div>
-              <div className="user-name">{`${alternateUser.firstName} ${alternateUser.lastName}`}</div>
-              <div className="user-type">
-                {(trip as Trip).tripOwnerUserType}
-              </div>
-            </div>
-          </div>
-          <UiButton size="s" variant="secondary">
-            View Profile
-          </UiButton>
-        </div>
+        <UserDetails avatar={alternateUser.avatar} userName={`${alternateUser.firstName} ${alternateUser.lastName}`} avatarIsHalfCurved={clientBasedUserTypes.includes(alternateUser.userType)} />
       )}
       <div className="detail-grid">
         <UiDataField title="Job Type" value={trip.jobType} />

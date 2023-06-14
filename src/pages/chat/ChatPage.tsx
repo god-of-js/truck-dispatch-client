@@ -163,10 +163,11 @@ const Header = styled.header`
   padding: ${pxToRem(12)};
   border-bottom: 1px solid var(--color-gray-20);
   background-color: white;
-  position: absolute;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
+  z-index: 1;
 
   .user-details {
     display: flex;
@@ -198,11 +199,13 @@ const ChatBubble = styled.div<{ isMine: boolean }>`
 `;
 
 const InputContainer = styled.div`
-  position: absolute;
+  position: sticky;
   bottom: 0;
   right: 0;
   left: 0;
   padding-bottom: ${pxToRem(16)};
+  z-index: 1;
+
   .input-group {
     width: 90%;
     margin: auto;

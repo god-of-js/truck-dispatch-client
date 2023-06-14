@@ -13,8 +13,9 @@ export default function InformUserOfVerification({
   onClose,
 }: Props) {
   return (
-    <UiModal isVisible={isVisible} onClose={onClose}>
-      <Header>Verification is required for this action</Header>
+    <UiModal isVisible={isVisible} size="sm" title="Verification required" onClose={onClose}>
+      <ModalContent>
+
       <TextContent>
         For security purposes, verification is required before you can gain
         access to the full suite of features we have in store.
@@ -25,17 +26,29 @@ export default function InformUserOfVerification({
         button below to verify your profile and our team would get back to you
         shortly.
       </TextContent>
+      <div className="btn-container">
+
       <Link to="/profile/verification">
         <UiButton>Verify Profile</UiButton>
       </Link>
+      </div>
+      </ModalContent>
     </UiModal>
   );
 }
 
-const Header = styled.h1`
-  font-size: ${pxToRem(20)};
-`;
+const ModalContent = styled.div`
+  padding: ${pxToRem(12)} ${pxToRem(24)};
 
+  .btn-container {
+    display: flex;
+    justify-content: center;
+
+    button {
+      min-width: ${pxToRem(180)}
+    }
+  }
+`
 const TextContent = styled.p`
   padding: 12px;
 `;

@@ -260,6 +260,7 @@ export default function TransporterJobs() {
           />
           <BidForJob
             isVisible={isBidForJobVisible}
+            key={`${isBidForJobVisible}-isBidForJobsVisible`}
             jobId={job._id}
             onClose={closeBidOnJob}
             backToJobDetails={backToJobDetails}

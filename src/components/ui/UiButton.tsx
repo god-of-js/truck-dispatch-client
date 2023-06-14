@@ -177,8 +177,8 @@ const Button = styled.button<Props>`
   }
 
   &.neutral {
-    background-color: var(--color-gray-100);
-    border: 1px solid var(--color-gray-200);
+    background-color: var(--color-gray-20);
+    border: 1px solid var(--color-gray-40);
     color: var(--color-gray-500);
 
     &:hover {

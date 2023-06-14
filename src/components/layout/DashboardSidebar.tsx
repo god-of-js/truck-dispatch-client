@@ -60,7 +60,6 @@ export default function DashboardSidebar() {
 
   return (
     <>
-      {/* <DashboardTopNav routeName=''/> */}
       <Sidebar isExpanded={isExpanded} isMobileExpanded={isMobileExpanded}>
         <div className="sidebar__inner">
           <header className="hide-in-small-screen">
@@ -448,5 +447,6 @@ const Button = styled.button`
     border-color: var(--color-primary);
     background: var(--color-primary-10);
     color: var(--color-primary);
+    svg{}
   }
 `;
