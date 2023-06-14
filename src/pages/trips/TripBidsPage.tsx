@@ -38,7 +38,7 @@ export default function TripBidsPage() {
   const [isBidDetailsVisible, setIsBidDetailsVisible] = useState(false);
   const [isPayWithBalanceVisible, setIsPayWithBalanceVisible] = useState(false);
   const [isMakePaymentVisible, setIsMakePaymentVisible] = useState(true);
-  const [isPaymentSuccessfullVisible, setIsPaymentSuccessfullVisible] = useState(false);
+  const [isPaymentSuccessfulVisible, setIsPaymentSuccessfulVisible] = useState(false);
   const [activeBidId, setActiveBidId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -118,7 +118,9 @@ export default function TripBidsPage() {
     if (payment) paymentData.processorReference = payment.reference;
     dispatch(toAnyAction(assignTrip(paymentData)))
       .then(() => {
-        setIsPaymentSuccessfullVisible(true);
+        setIsPaymentSuccessfulVisible(true);
+        setIsMakePaymentVisible(false);
+        setIsPayWithBalanceVisible(false);
       })
       .finally(() => setAssignLoading(false));
   }
@@ -194,9 +196,9 @@ export default function TripBidsPage() {
             Do you want to proceed?
           </UiConfirmModal>
           <UiConfirmModal
-            isVisible={isPaymentSuccessfullVisible}
+            isVisible={isPaymentSuccessfulVisible}
             onProceed={navigateToTripDetails}
-            onClose={() => setIsPaymentSuccessfullVisible(false)}
+            onClose={() => setIsPaymentSuccessfulVisible(false)}
             title="Payment Successful"
             hideNotYetButton
             confirmText='Go to trip details'

@@ -38,8 +38,9 @@ interface Props {
 }
 export default function MakePayment({
   bid,
-  payWithBalance,
   isVisible,
+  loading,
+  payWithBalance,
   payWithPaystack,
   onClose,
 }: Props) {
@@ -47,7 +48,6 @@ export default function MakePayment({
   const { tripId } = useParams();
   const trip = useSelector(selectTrip(tripId!));
   const user = useSelector((state: RootState) => state.account.user);
-  const [loading, setLoading] = useState(false);
   const paystackConfig = {
     email: user?.email || '',
     firstName: user?.firstName,
