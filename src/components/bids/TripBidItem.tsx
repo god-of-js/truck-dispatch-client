@@ -24,12 +24,12 @@ export default function TripBidItem({
   viewSenderDetails,
 }: Props) {
   const options: DropDownData[] = [
-    {
-      label: 'Transporter Profile',
-      icon: 'User',
-      endIcon: 'CaretRight',
-      func: viewBidDetails,
-    },
+    // {
+    //   label: 'Transporter Profile',
+    //   icon: 'User',
+    //   endIcon: 'CaretRight',
+    //   func: viewBidDetails,
+    // },
     {
       label: 'Bid Details',
       icon: 'InfoCircleOutline',

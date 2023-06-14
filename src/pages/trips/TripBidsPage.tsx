@@ -37,7 +37,7 @@ export default function TripBidsPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [isBidDetailsVisible, setIsBidDetailsVisible] = useState(false);
   const [isPayWithBalanceVisible, setIsPayWithBalanceVisible] = useState(false);
-  const [isMakePaymentVisible, setIsMakePaymentVisible] = useState(true);
+  const [isMakePaymentVisible, setIsMakePaymentVisible] = useState(false);
   const [isPaymentSuccessfulVisible, setIsPaymentSuccessfulVisible] =
     useState(false);
   const [activeBidId, setActiveBidId] = useState<string | null>(null);

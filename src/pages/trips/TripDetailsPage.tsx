@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import {
   approvePaymentRequest,
@@ -32,6 +32,7 @@ import UploadTripTDO from 'components/trips/UploadTripTDO';
 
 export default function TripDetailsPage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.account.user);
   const { tripId } = useParams();
   const trip = useSelector(selectTrip(tripId!));
@@ -106,6 +107,7 @@ export default function TripDetailsPage() {
 
   function redirectToAddAccount() {
     // TODO: implement add account.
+    navigate('/profile/accounts')
   }
 
   function initRejectPayment() {
@@ -115,6 +117,7 @@ export default function TripDetailsPage() {
 
   function initApprovePayment() {
     setApprovePaymentIsVisible(true);
+    setCargoLoadingProofIsVisible(false);
   }
 
   function changeStatus(status: Trip['status']) {
@@ -230,7 +233,7 @@ export default function TripDetailsPage() {
           </UiCard>
           <UiCard>
             <div className="card-title">
-              {userIsServiceBasedUser ? 'Trip Owner' : 'Responsible Shipper'}
+              {userIsServiceBasedUser ? 'Trip Owner' : 'Responsible Transporter'}
             </div>
 
             {userIsServiceBasedUser && (
@@ -312,7 +315,7 @@ export default function TripDetailsPage() {
           <RequestPayment
             key={`${requestPaymentIsVisible}-requestPaymentIsVisible`}
             isVisible={requestPaymentIsVisible}
-            addAccountDetails={() => setAddAccountIsVisible(false)}
+            addAccountDetails={() => setAddAccountIsVisible(true)}
             paymentRequest={trip.paymentRequest}
             tripId={trip._id}
             onClose={() => setRequestPaymentIsVisible(false)}

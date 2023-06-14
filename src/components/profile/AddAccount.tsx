@@ -116,7 +116,7 @@ export default function AddAccount({
   }, [formData]);
 
   return (
-    <UiModal isVisible={isVisible} size="sm" onClose={onClose}>
+    <UiModal isVisible={isVisible} title="Add Payout Account" size="sm" onClose={onClose}>
       <UiForm
         formData={{ ...formData, ...accountDetails }}
         schema={CreateAccountNumberSchema}
@@ -125,7 +125,6 @@ export default function AddAccount({
         {({ errors }) => (
           <AddAcountStyling>
             <header>
-              <h2>Add Account</h2>
               <p>
                 Your account details are required to enable clients make payment
                 to you without hassle or back and forth.
@@ -177,6 +176,7 @@ const AddAcountStyling = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${pxToRem(20)};
+  padding: ${pxToRem(12)} ${pxToRem(24)};
 
   h2 {
     margin-top: 0;

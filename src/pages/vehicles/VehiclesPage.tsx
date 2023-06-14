@@ -30,7 +30,6 @@ export default function VehiclesPage() {
   const [searchQuery, setSearchQuery] = useState('');
 
   const sortedVehicles = useMemo(() => {
-    console.log(vehicles[0]);
     if (!searchQuery) return vehicles;
     return searchObjectsByField(vehicles, searchQuery, [
       'plateNumber',

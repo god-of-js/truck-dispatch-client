@@ -10,7 +10,6 @@ export function aValueHasBeenChanged<T extends object>(source: T, formData: T) {
   if (!source) return false;
 
   const editedData = removeUneditedFields(source, formData);
-  console.log(!!Object.keys(editedData).length)
   return !!Object.keys(editedData).length;
 }
 
