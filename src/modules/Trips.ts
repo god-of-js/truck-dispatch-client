@@ -5,6 +5,7 @@ import Api from 'Api';
 import { replaceEditedItem, toAnyAction } from 'utils/helpers';
 import NewTrip from 'types/NewTrip';
 import AssignTripFormData from 'types/AssignTripFormData';
+import { setUser } from './Account';
 
 export interface TripState {
   trips: Trip[];
@@ -92,6 +93,7 @@ export function assignTrip(trip: AssignTripFormData) {
   return (dispatch: AppDispatch) => {
     return Api.assignTrip(trip).then((data) => {
       dispatch(setTrip(data.trip));
+      dispatch(setUser(data.user))
       return data.trip;
     });
   };
@@ -180,6 +182,7 @@ export function unassignTrip(tripId: string) {
   return (dispatch: AppDispatch) => {
     return Api.unassignTrip(tripId).then((data) => {
       dispatch(setTrip(data.trip));
+      dispatch(setUser(data.user));
       return data;
     });
   };
@@ -189,6 +192,7 @@ export function cancelTripByTripCreator(tripId: string) {
   return (dispatch: AppDispatch) => {
     return Api.cancelTripByTripCreator(tripId).then((data) => {
       dispatch(removeTrip(tripId));
+      dispatch(setUser(data.user));
       return data;
     });
   };

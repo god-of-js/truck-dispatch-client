@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
+import Successgif from 'assets/img/Successgif.jpeg'
 
 import { RootState } from 'modules/index';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
@@ -36,7 +37,8 @@ export default function TripBidsPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [isBidDetailsVisible, setIsBidDetailsVisible] = useState(false);
   const [isPayWithBalanceVisible, setIsPayWithBalanceVisible] = useState(false);
-  const [isMakePaymentVisible, setIsMakePaymentVisible] = useState(false);
+  const [isMakePaymentVisible, setIsMakePaymentVisible] = useState(true);
+  const [isPaymentSuccessfulVisible, setIsPaymentSuccessfulVisible] = useState(false);
   const [activeBidId, setActiveBidId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -94,7 +96,9 @@ export default function TripBidsPage() {
     }
   }
 
-  function openModal(modalName: '') {}
+  function navigateToTripDetails() {
+    navigate(`/my-trips/${tripId}`);
+  }
 
   function assignTripToTransporter(
     paymentMethod: 'paystack' | 'balance',
@@ -119,7 +123,9 @@ export default function TripBidsPage() {
     if (payment) paymentData.processorReference = payment.reference;
     dispatch(toAnyAction(assignTrip(paymentData)))
       .then(() => {
-        navigate(`/my-trips/${tripId}`);
+        setIsPaymentSuccessfulVisible(true);
+        setIsMakePaymentVisible(false);
+        setIsPayWithBalanceVisible(false);
       })
       .finally(() => setAssignLoading(false));
   }
@@ -193,6 +199,19 @@ export default function TripBidsPage() {
             <b>&#8358;{bid.price}</b> will be deducted from your wallet balance.{' '}
             <br />
             Do you want to proceed?
+          </UiConfirmModal>
+          <UiConfirmModal
+            isVisible={isPaymentSuccessfulVisible}
+            onProceed={navigateToTripDetails}
+            onClose={() => setIsPaymentSuccessfulVisible(false)}
+            title="Payment Successful"
+            hideNotYetButton
+            confirmText='Go to trip details'
+          >
+            <div>
+               <img src={Successgif} alt="payment_image"/>
+            </div>
+            Payment Successfully Made
           </UiConfirmModal>
         </>
       )}
