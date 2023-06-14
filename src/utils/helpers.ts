@@ -225,7 +225,6 @@ export function getTime(time: string | number) {
 }
 
 export function saveTokenVerificationInfo(data: TokenVerificationData) {
-  localStorage.setItem('otp-pin-id', data.pinId);
   localStorage.setItem('otp-phone-number', data.to);
 }
 
@@ -323,7 +322,6 @@ function getFieldFromObject(obj: Record<string, any>, fieldPath: string): any {
   }
   return value;
 }
-
 
 export function containsOnlyNumbers(value: string) {
   return /^[0-9]+$/.test(value);

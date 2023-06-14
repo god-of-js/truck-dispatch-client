@@ -21,12 +21,14 @@ import UserDetails from 'ui/UserDetails';
 import UiButton from 'ui/UiButton';
 import UiIcon from 'ui/UiIcon';
 import UiPill from 'ui/UiPill';
+
 import RequestPayment from 'components/payment/RequestPayment';
 import UiConfirmModal from 'ui/UiConfirmModal';
 import CargoLoadingProof from 'components/trips/CargoLoadingProof';
 import RejectPaymentRequest from 'components/trips/RejectPaymentRequest';
 import { toAnyAction } from 'utils/helpers';
 import Trip from 'types/Trip';
+import UploadTripTDO from 'components/trips/UploadTripTDO';
 
 export default function TripDetailsPage() {
   const dispatch = useDispatch();
@@ -45,6 +47,7 @@ export default function TripDetailsPage() {
     useState(false);
   const [changeTripStatusIsLoading, setChangeTripStatusIsLoading] =
     useState(false);
+  const [uploadTDOIsVisible, setUploadTDOIsVisible] = useState(false);
 
   const userIsClientBasedUser = useMemo(
     () => clientBasedUserTypes.includes(user?.userType!),
@@ -234,6 +237,7 @@ export default function TripDetailsPage() {
               <UserDetails
                 userName={`${trip.tripOwner.firstName} ${trip.tripOwner.lastName}`}
                 avatar={trip.tripOwner.avatar}
+                userId={trip.tripOwner._id}
                 avatarIsHalfCurved
                 showMessage
                 showViewProfile
@@ -248,6 +252,7 @@ export default function TripDetailsPage() {
                   <UserDetails
                     userName={`${trip.transporter.firstName} ${trip.transporter.lastName}`}
                     avatar={trip.transporter.avatar}
+                    userId={trip.transporter._id}
                     showMessage
                     showViewProfile
                     profileSubtitle={
@@ -270,10 +275,17 @@ export default function TripDetailsPage() {
               </p>
               <div className="double-items">
                 {userIsClientBasedUser && !trip.TDO && (
-                  <UiButton isFullWidth> Upload TDO</UiButton>
+                  <UiButton
+                    isFullWidth
+                    onClick={() => setUploadTDOIsVisible(true)}
+                  >
+                    Upload TDO
+                  </UiButton>
                 )}
-                {!userIsClientBasedUser && !!trip.TDO && (
-                  <UiButton isFullWidth> Download TDO</UiButton>
+                {!!trip.TDO && (
+                  <a href={trip.TDO} target="_blank">
+                    <UiButton isFullWidth> View TDO</UiButton>
+                  </a>
                 )}
               </div>
             </UiCard>
@@ -366,6 +378,14 @@ export default function TripDetailsPage() {
           </div>
         </TripDetailsStyling>
       )}
+      {trip && (
+        <UploadTripTDO
+          trip={trip}
+          key={`${uploadTDOIsVisible}-uploadTDOIsVisible`}
+          onClose={() => setUploadTDOIsVisible(false)}
+          isVisible={uploadTDOIsVisible}
+        />
+      )}
     </>
   );
 }
@@ -375,7 +395,7 @@ const TripDetailsStyling = styled.div`
   grid-template-columns: 1fr;
   gap: ${pxToRem(20)};
 
-  padding: 0 ${pxToRem(24)};
+  padding: ${pxToRem(12)} ${pxToRem(24)};
 
   .card-title {
     font-style: normal;
@@ -389,8 +409,11 @@ const TripDetailsStyling = styled.div`
 
   .cargo-details {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
     gap: ${pxToRem(12)};
+
+    @media screen and (min-width: ${sizes.mobileSmall}) {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
   .handling-instructions {
     font-style: normal;

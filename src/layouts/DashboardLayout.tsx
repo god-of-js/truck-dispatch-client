@@ -157,6 +157,7 @@ const Body = styled.div`
   position: relative;
   overflow-x: auto;
   width: 100%;
+  padding-bottom: ${pxToRem(100)};
   /* padding: 0 ${pxToRem(24)}; */
   .alert-container {
     padding: ${pxToRem(16)};
@@ -166,6 +167,7 @@ const Body = styled.div`
     border-top: none;
     position: static;
     border-right: ${pxToRem(1)} solid var(--color-gray-200);
+    padding-bottom: 0;
   }
 
   @media only screen and (min-width: ${sizes.laptopSmallWidth}) {

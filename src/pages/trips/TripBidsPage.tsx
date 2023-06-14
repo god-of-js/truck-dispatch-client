@@ -70,11 +70,16 @@ export default function TripBidsPage() {
     setActiveBidId(bidId);
     setIsBidDetailsVisible(true);
   }
+
   function viewSenderDetails(bidId: string) {
     // navigate(`/my-trips/${tripId}/bids/${bidId}`);
   }
+
   function negotiateBid(bidId: string) {
-    setActiveBidId(bidId);
+    const chosenBid = bids.find(({ _id }) => _id === bidId);
+    navigate(
+      `/chat?transporterId=${chosenBid?.transporter._id}&clientId=${user?._id}`,
+    );
   }
 
   function acceptBid(bidId: string) {

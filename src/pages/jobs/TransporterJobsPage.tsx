@@ -27,6 +27,7 @@ import UiFilterTag from 'ui/UiFilterTag';
 import UiConfirmModal from 'ui/UiConfirmModal';
 import { Toast } from 'utils/toast';
 import UiEmptyList from 'ui/UiEmptyList';
+import AddVehicle from 'components/vehicles/AddVehicle';
 
 export default function TransporterJobs() {
   const location = useLocation();
@@ -56,6 +57,7 @@ export default function TransporterJobs() {
   const [selectedBidId, setSelectedBidId] = useState<string | null>(null);
   const [isDeleteBidVisible, setIsDeleteBidVisible] = useState(false);
   const [isDeleteBidLoading, setIsDeleteBidLoading] = useState(false);
+  const [createVehicleIsVisible, setCreateVehicleIsVisible] = useState(false);
 
   const job = useSelector(selectJob(selectedJobId!));
 
@@ -146,6 +148,7 @@ export default function TransporterJobs() {
 
   function closeBidOnJob() {
     setIsBidForJobVisible(false);
+    setSelectedJobId(null);
   }
 
   function openAllBids() {
@@ -260,6 +263,7 @@ export default function TransporterJobs() {
             jobId={job._id}
             onClose={closeBidOnJob}
             backToJobDetails={backToJobDetails}
+            initCreateVehicle={() => setCreateVehicleIsVisible(true)}
           />
         </>
       )}
@@ -283,6 +287,11 @@ export default function TransporterJobs() {
         Are you sure you want to delete this bid? Your candidacy for this role
         would immediately be revoked.
       </UiConfirmModal>
+      <AddVehicle
+        isVisible={createVehicleIsVisible}
+        key={`${createVehicleIsVisible}-AddVehicle`}
+        onClose={() => setCreateVehicleIsVisible(false)}
+      />
       {emptyJobs()}
     </>
   );

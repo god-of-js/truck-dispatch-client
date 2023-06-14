@@ -33,6 +33,7 @@ export default function TripBidFullDetails({
           <UserDetails
             userName={`${bid.transporter.firstName} ${bid.transporter.lastName}`}
             avatar={bid.transporter.avatar}
+            userId={bid.transporter._id}
             profileSubtitle={formatUserType(bid.transporter.userType)}
             size="sm"
             showMessage

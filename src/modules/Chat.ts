@@ -110,6 +110,14 @@ export const readChat = (chat: Chat) => {
 
 export const createOrFetchChatLog = (data: ChatLogData) => {
   return (dispatch: AppDispatch, state: AppState) => {
+    const chatLog = state().chat.chatLogs.find(
+      (log) =>
+        log.client._id === data.clientId &&
+        log.transporter._id === data.transporterId,
+    );
+    // To avoid unnecessary requests.
+    if (chatLog) return Promise.resolve(chatLog);
+
     return Api.createOrFetchChatLog(data).then((log) => {
       dispatch(setChatLog(log));
       return log;
@@ -120,6 +128,7 @@ export const createOrFetchChatLog = (data: ChatLogData) => {
 export const getChatLogs = () => {
   return (dispatch: AppDispatch) => {
     return Api.getChatLogs().then((data) => {
+      console.log(data);
       dispatch(setChatLogs(data));
     });
   };

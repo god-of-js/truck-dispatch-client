@@ -40,6 +40,7 @@ import { searchObjectsByField } from 'utils/helpers';
 import UserDetails from 'ui/UserDetails';
 import UiConfirmModal from 'ui/UiConfirmModal';
 import { Toast } from 'utils/toast';
+import AddVehicle from 'components/vehicles/AddVehicle';
 
 export default function MyTripsPage() {
   const navigate = useNavigate();
@@ -77,6 +78,7 @@ export default function MyTripsPage() {
   const [selectedBidId, setSelectedBidId] = useState<string | null>(null);
   const [isDeleteBidVisible, setIsDeleteBidVisible] = useState(false);
   const [isDeleteBidLoading, setIsDeleteBidLoading] = useState(false);
+  const [createVehicleIsVisible, setCreateVehicleIsVisible] = useState(false);
   const job = useSelector(selectJob(selectedJobId!));
 
   const headers = useMemo(
@@ -383,12 +385,10 @@ export default function MyTripsPage() {
           </UiButton>
         )}
         {serviceBasedUserTypes.includes(user?.userType!) && (
-          <UiFilterTag
-            title="MY BIDS"
-            isActive={true}
-            value={bids.length}
-            onClick={openAllBids}
-          />
+          <UiButton variant="secondary" size="large" onClick={openAllBids}>
+            <span className="text">MY BIDS</span>
+            <span className="count">{bids.length}</span>
+          </UiButton>
         )}
       </EdgeNodeContainer>
     );
@@ -452,7 +452,8 @@ export default function MyTripsPage() {
   }, [page, status]);
 
   useEffect(() => {
-    dispatch(toAnyAction(getTransporterBids()));
+    if (serviceBasedUserTypes.includes(user?.userType!))
+      dispatch(toAnyAction(getTransporterBids()));
   }, []);
 
   return (
@@ -521,6 +522,7 @@ export default function MyTripsPage() {
             jobId={job._id}
             onClose={closeBidOnJob}
             backToJobDetails={backToJobDetails}
+            initCreateVehicle={() => setCreateVehicleIsVisible(true)}
           />
         </>
       )}
@@ -567,6 +569,11 @@ export default function MyTripsPage() {
         Are you sure you want to unassign this trip? This process cannot be
         undone.
       </UiConfirmModal>
+      <AddVehicle
+        isVisible={createVehicleIsVisible}
+        key={`${createVehicleIsVisible}-AddVehicle`}
+        onClose={() => setCreateVehicleIsVisible(false)}
+      />
     </>
   );
 }
@@ -585,7 +592,32 @@ const TypeOfGoods = styled.span`
   color: var(--color-neutralBlack);
   text-transform: capitalize;
 `;
+
 const EdgeNodeContainer = styled.div`
+  button {
+    .text {
+      text-transform: uppercase;
+      font-size: ${pxToRem(14)};
+      line-height: 140%;
+      font-style: normal;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .count {
+      border-radius: ${pxToRem(10)};
+      padding: 0 ${pxToRem(4)};
+      font-size: ${pxToRem(10)};
+      letter-spacing: -0.02em;
+      border-radius: ${pxToRem(2)};
+      height: ${pxToRem(19)};
+      width: ${pxToRem(12)};
+      background: var(--color-primary-20);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
   display: flex;
   gap: ${pxToRem(12)};
   .ui-filter-tag {

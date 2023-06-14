@@ -32,8 +32,12 @@ export default function VehiclesPage() {
   const sortedVehicles = useMemo(() => {
     console.log(vehicles[0]);
     if (!searchQuery) return vehicles;
-    return searchObjectsByField(vehicles, searchQuery, ['plateNumber', 'vehicleType', 'driver.name'])
-  }, [vehicles, searchQuery])
+    return searchObjectsByField(vehicles, searchQuery, [
+      'plateNumber',
+      'vehicleType',
+      'driver.name',
+    ]);
+  }, [vehicles, searchQuery]);
   function closeAddVehicle() {
     setIsAddVehicleVisible(false);
   }
@@ -131,7 +135,11 @@ export default function VehiclesPage() {
         Are you sure you want to delete this vehicle? This process cannot be
         undone.
       </UiConfirmModal>
-      <AddVehicle isVisible={isAddVehicleVisible} onClose={closeAddVehicle} />
+      <AddVehicle
+        isVisible={isAddVehicleVisible}
+        key={`${isAddVehicleVisible}-AddVehicle`}
+        onClose={closeAddVehicle}
+      />
 
       {selectedVehicle && (
         <EditVehicle

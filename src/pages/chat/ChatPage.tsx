@@ -161,7 +161,7 @@ const ChatPageStyling = styled.div`
 
 const Header = styled.header`
   padding: ${pxToRem(12)};
-  border-bottom: 1px solid var(--color-gray-200);
+  border-bottom: 1px solid var(--color-gray-20);
   background-color: white;
   position: absolute;
   top: 0;
@@ -177,21 +177,21 @@ const Header = styled.header`
 
 const ChatContainer = styled.div`
   padding: ${pxToRem(80)} ${pxToRem(32)} ${pxToRem(80)} ${pxToRem(32)};
-  background: var(--color-gray-100);
+  background: var(--color-gray-10);
   height: 80%;
   overflow: scroll;
 `;
 
-const ChatBubble = styled.div`
+const ChatBubble = styled.div<{ isMine: boolean }>`
   display: flex;
-  justify-content: ${({ isMine }: { isMine: boolean }) =>
+  justify-content: ${({ isMine }) =>
     isMine ? 'flex-end' : ''};
   .chat-bubble-inner {
     padding: ${pxToRem(8)};
     margin: ${pxToRem(2)} 0;
     border-radius: ${pxToRem(4)};
-    background: ${({ isMine }: { isMine: boolean }) =>
-      isMine ? 'var(--color-primary)' : 'var(--color-gray-500)'};
+    background: ${({ isMine }) =>
+      isMine ? 'var(--color-primary)' : 'var(--color-gray-70)'};
     width: fit-content;
     color: white;
     max-width: 70%;
