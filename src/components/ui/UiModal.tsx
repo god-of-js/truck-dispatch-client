@@ -14,6 +14,7 @@ interface Props {
   position?: Position;
   size?: Size;
   title?: string;
+  hideModalClose?: boolean;
   bgVariant?: BG;
   onClose: () => void;
   goPrev?: () => void;
@@ -25,12 +26,18 @@ export default function UiModal({
   position = 'center',
   size = 'lg',
   bgVariant = 'light',
+  hideModalClose,
   onClose,
   goPrev,
   isVisible,
 }: Props) {
+  function closeModal() {
+    if (hideModalClose) return;
+
+    onClose();
+  }
   return (
-    <UiOverlay onClick={onClose} isVisible={isVisible}>
+    <UiOverlay onClick={closeModal} isVisible={isVisible}>
       <Modal>
         <ModalCard
           onClick={(event) => {
@@ -48,9 +55,11 @@ export default function UiModal({
                 </UiButton>
               )}
               <h2>{title}</h2>
-              <UiButton variant="icon-neutral" onClick={onClose}>
-                <UiIcon icon="Close" size="20" />
-              </UiButton>
+              {!hideModalClose && (
+                <UiButton variant="icon-neutral" onClick={closeModal}>
+                  <UiIcon icon="Close" size="20" />
+                </UiButton>
+              )}
             </header>
             {children}
           </div>

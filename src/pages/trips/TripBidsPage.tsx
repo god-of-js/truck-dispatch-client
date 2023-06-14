@@ -36,7 +36,7 @@ export default function TripBidsPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [isBidDetailsVisible, setIsBidDetailsVisible] = useState(false);
   const [isPayWithBalanceVisible, setIsPayWithBalanceVisible] = useState(false);
-  const [isMakePaymentVisible, setIsMakePaymentVisible] = useState(true);
+  const [isMakePaymentVisible, setIsMakePaymentVisible] = useState(false);
   const [activeBidId, setActiveBidId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -68,11 +68,16 @@ export default function TripBidsPage() {
     setActiveBidId(bidId);
     setIsBidDetailsVisible(true);
   }
+
   function viewSenderDetails(bidId: string) {
     // navigate(`/my-trips/${tripId}/bids/${bidId}`);
   }
+
   function negotiateBid(bidId: string) {
-    setActiveBidId(bidId);
+    const chosenBid = bids.find(({ _id }) => _id === bidId);
+    navigate(
+      `/chat?transporterId=${chosenBid?.transporter._id}&clientId=${user?._id}`,
+    );
   }
 
   function acceptBid(bidId: string) {
@@ -88,6 +93,8 @@ export default function TripBidsPage() {
       );
     }
   }
+
+  function openModal(modalName: '') {}
 
   function assignTripToTransporter(
     paymentMethod: 'paystack' | 'balance',

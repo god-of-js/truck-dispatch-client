@@ -73,7 +73,7 @@ const ChatHead = styled.li`
   gap: ${pxToRem(12)};
   border-bottom: 1px solid var(--color-gray-200);
   background: ${({ hasBeenRead }: { hasBeenRead: boolean }) =>
-    !hasBeenRead && 'var(--color-gray-100);'};
+    !hasBeenRead && 'var(--color-gray-10);'};
   display: flex;
   align-items: flex-end;
   cursor: pointer;

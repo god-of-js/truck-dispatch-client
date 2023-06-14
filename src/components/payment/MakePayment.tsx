@@ -133,6 +133,7 @@ export default function MakePayment({
                   showViewProfile
                   userName={`${bid.transporter.firstName} ${bid.transporter.lastName}`}
                   avatar={bid.transporter.avatar}
+                  userId={bid.transporter._id}
                   profileSubtitle={formatUserType(bid.transporter.userType)}
                 />
               </UiCard>

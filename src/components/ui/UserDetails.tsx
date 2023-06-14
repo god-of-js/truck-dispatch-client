@@ -1,4 +1,9 @@
+import { RootState } from 'modules/index';
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { serviceBasedUserTypes } from 'utils/constants';
 import UiAvatar from './UiAvatar';
 import UiButton from './UiButton';
 import UiIcon from './UiIcon';
@@ -18,11 +23,22 @@ export default function UserDetails({
   avatar,
   userName,
   profileSubtitle,
+  userId,
   avatarIsHalfCurved,
   size = 'large',
   showMessage,
   showViewProfile,
 }: Props) {
+  const user = useSelector((state: RootState) => state.account.user);
+  const chatLink = useMemo(() => {
+    if (!user) return;
+    if (serviceBasedUserTypes.includes(user.userType!)) {
+      return `/chat?clientId=${userId}&transporterId=${user._id}`;
+    }
+
+    return `/chat?clientId=${user._id}&transporterId=${userId}`;
+  }, [user, userId]);
+  function messageUser() {}
   return (
     <UserDetailsStyling size={size}>
       <div className="user-profile">
@@ -35,15 +51,17 @@ export default function UserDetails({
         </div>
       </div>
       <div className="user-details-actions">
-        {showViewProfile && (
+        {false && (
           <UiButton variant="secondary" size="md">
             View Profile
           </UiButton>
         )}
-        {showMessage && (
-          <UiButton size="md">
-            <UiIcon icon="DoubleChat" />
-          </UiButton>
+        {showMessage && chatLink && (
+          <Link to={chatLink}>
+            <UiButton size="md">
+              <UiIcon icon="DoubleChat" />
+            </UiButton>
+          </Link>
         )}
       </div>
     </UserDetailsStyling>

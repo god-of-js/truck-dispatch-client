@@ -112,8 +112,8 @@ export default function RegistrationPage() {
       <StyledAuthContent>
         {(currentStepTitle === 'Account handler details' ||
           currentStepTitle === 'Personal details') && (
-            <PersonalDetailsForm goToNext={goToNext} />
-          )}
+          <PersonalDetailsForm goToNext={goToNext} />
+        )}
         {currentStepTitle === 'Verify phone number' && (
           <VerifyPhoneForm goToNext={goToNext} />
         )}

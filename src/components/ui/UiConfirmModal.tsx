@@ -9,6 +9,8 @@ interface Props {
   isVisible: boolean;
   confirmText?: string;
   hideNotYetButton?: boolean;
+  hideActions?: boolean;
+  hideModalClose?: boolean;
   declineText?: string;
   variant?: ButtonVariant;
   notYetVariant?: ButtonVariant;
@@ -25,6 +27,8 @@ export default function UiConfirmModal({
   variant = 'primary',
   notYetVariant = 'secondary',
   hideNotYetButton,
+  hideActions,
+  hideModalClose,
   isVisible,
   loading,
   onClose,
@@ -35,27 +39,30 @@ export default function UiConfirmModal({
       isVisible={isVisible}
       title={title}
       onClose={onClose}
+      hideModalClose={hideModalClose}
       size="sm"
       position="center"
     >
       <Modal>
         <div className="modal-content">{children}</div>
 
-        <SubmitButtonContainer>
-          {!hideNotYetButton && (
-            <UiButton size="large" variant={notYetVariant} onClick={onClose}>
-              {declineText}
+        {!hideActions && (
+          <SubmitButtonContainer>
+            {!hideNotYetButton && (
+              <UiButton size="large" variant={notYetVariant} onClick={onClose}>
+                {declineText}
+              </UiButton>
+            )}
+            <UiButton
+              size="large"
+              variant={variant}
+              loading={loading}
+              onClick={onProceed}
+            >
+              {confirmText}
             </UiButton>
-          )}
-          <UiButton
-            size="large"
-            variant={variant}
-            loading={loading}
-            onClick={onProceed}
-          >
-            {confirmText}
-          </UiButton>
-        </SubmitButtonContainer>
+          </SubmitButtonContainer>
+        )}
       </Modal>
     </UiModal>
   );
