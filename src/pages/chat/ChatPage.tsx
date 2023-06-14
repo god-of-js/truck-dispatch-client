@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { RootState } from 'modules/index';
 
 import {
-  selectChatByChatId,
+  selectChatBychatLog,
   createChat,
   readChat,
   selectChatLog,
@@ -24,13 +24,13 @@ import User from 'types/User';
 import uuidv4 from 'utils/uuid';
 
 export default function ChatPage() {
-  const { chatId } = useParams();
+  const { chatLogId } = useParams();
   const dispatch = useDispatch();
   const chatBottomRef = useRef(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const user = useSelector((state: RootState) => state.account.user);
-  const chatLog = useSelector(selectChatLog(chatId!));
-  const chats = useSelector(selectChatByChatId(chatId!));
+  const chatLog = useSelector(selectChatLog(chatLogId!));
+  const chats = useSelector(selectChatBychatLog(chatLogId!));
 
   const defaultFormData = {
     message: '',
@@ -40,7 +40,7 @@ export default function ChatPage() {
 
   const alternateUser = useMemo(() => {
     if (!chatLog || !user) return {} as User;
-    if (chatLog?.clientId === user?._id) {
+    if (chatLog?.client._id === user?._id) {
       return chatLog?.transporter;
     }
 
@@ -55,10 +55,10 @@ export default function ChatPage() {
     const data: Chat = {
       // Temporary ID
       _id: uuidv4(),
-      chatId: chatId!,
+      chatLog: chatLogId!,
       message: formData.message,
-      senderId: user?._id!,
-      receiverId: alternateUser?._id!,
+      sender: user?._id!,
+      receiver: alternateUser?._id!,
       createdAt: Date.now(),
     };
 
@@ -70,7 +70,7 @@ export default function ChatPage() {
     const lastSentChat = chats[chats.length - 1];
     if (
       lastSentChat &&
-      lastSentChat.senderId !== user?._id &&
+      lastSentChat.sender !== user?._id &&
       !lastSentChat.readAt
     ) {
       dispatch(toAnyAction(readChat({ ...lastSentChat, readAt: Date.now() })));
@@ -112,7 +112,7 @@ export default function ChatPage() {
       <ChatContainer>
         <div id="chat-window">
           {chats.map((chat, index) => (
-            <ChatBubble isMine={chat.senderId === user?._id} key={index}>
+            <ChatBubble isMine={chat.sender === user?._id} key={index}>
               <div className="chat-bubble-inner">{chat.message}</div>
             </ChatBubble>
           ))}
@@ -141,7 +141,7 @@ export default function ChatPage() {
                     onChange={updateMessage}
                   />
                   <button type="submit" disabled={!formData.message}>
-                    <UiIcon icon="PaperPlaneTilt" />
+                    {/* <UiIcon icon="PaperPlaneTilt" /> */}
                   </button>
                 </div>
               </div>
@@ -156,11 +156,12 @@ export default function ChatPage() {
 const ChatPageStyling = styled.div`
   position: relative;
   height: 100%;
+  padding: 0 ${pxToRem(24)};
 `;
 
 const Header = styled.header`
   padding: ${pxToRem(12)};
-  border-bottom: 1px solid var(--color-gray-200);
+  border-bottom: 1px solid var(--color-gray-20);
   background-color: white;
   position: sticky;
   top: 0;
@@ -176,22 +177,21 @@ const Header = styled.header`
 `;
 
 const ChatContainer = styled.div`
-  padding: ${pxToRem(32)} ${pxToRem(32)} ${pxToRem(80)} ${pxToRem(32)};
-  background: var(--color-gray-100);
-  height: calc(100% - ${pxToRem(255)});
-  overflow-y: auto;
+  padding: ${pxToRem(80)} ${pxToRem(32)} ${pxToRem(80)} ${pxToRem(32)};
+  background: var(--color-gray-10);
+  height: 80%;
+  overflow: scroll;
 `;
 
-const ChatBubble = styled.div`
+const ChatBubble = styled.div<{ isMine: boolean }>`
   display: flex;
-  justify-content: ${({ isMine }: { isMine: boolean }) =>
-    isMine ? 'flex-end' : ''};
+  justify-content: ${({ isMine }) => (isMine ? 'flex-end' : '')};
   .chat-bubble-inner {
     padding: ${pxToRem(8)};
     margin: ${pxToRem(2)} 0;
     border-radius: ${pxToRem(4)};
-    background: ${({ isMine }: { isMine: boolean }) =>
-      isMine ? 'var(--color-primary)' : 'var(--color-gray-500)'};
+    background: ${({ isMine }) =>
+      isMine ? 'var(--color-primary)' : 'var(--color-gray-70)'};
     width: fit-content;
     color: white;
     max-width: 70%;

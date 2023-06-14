@@ -1,4 +1,6 @@
+import Trip from './Trip';
 import User from './User';
+import Vehicle from './Vehicle';
 
 export default interface Bid {
   _id: string;
@@ -6,10 +8,10 @@ export default interface Bid {
   extraNotes?: string;
   price: number;
   presentLocation?: string;
-  transporterId: string;
-  driverName: string;
-  truckPlateNumber: string;
-  tripId: string;
+  vehicle: Vehicle;
+  trip: Trip;
   status?: 'pending' | 'accepted' | 'rejected';
   transporter: User;
+  createdAt: string;
+  updatedAt: string;
 }

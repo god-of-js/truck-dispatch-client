@@ -9,16 +9,21 @@ import { loadAccountDetails, loadBanks } from '../../api/paystackIntegrations';
 import Loader from 'components/layout/Loader';
 import CreateAccountNumberSchema from 'utils/validations/CreateAccountNumberSchema';
 import { useDispatch, useSelector } from 'react-redux';
-import { toAnyAction } from 'utils/helpers';
-import { addUserBankAccount } from 'modules/Account';
+import { containsOnlyNumbers, toAnyAction } from 'utils/helpers';
+import { createUserBankAccount } from 'modules/Account';
 import BankAccount from 'types/BankDetails';
 import { RootState } from 'modules/index';
 
 interface Props {
   onClose: () => void;
   bankAccountDetails: BankAccount | null;
+  isVisible: boolean;
 }
-export default function AddAccount({ bankAccountDetails, onClose }: Props) {
+export default function AddAccount({
+  bankAccountDetails,
+  onClose,
+  isVisible,
+}: Props) {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.account.user);
   const [formData, setFormData] = useState<{
@@ -58,7 +63,7 @@ export default function AddAccount({ bankAccountDetails, onClose }: Props) {
       bank_code: formData.bankCode,
       bank_name: bank?.label!,
     };
-    dispatch(toAnyAction(addUserBankAccount(data)))
+    dispatch(toAnyAction(createUserBankAccount(data)))
       .then(() => {
         onClose();
       })
@@ -76,22 +81,24 @@ export default function AddAccount({ bankAccountDetails, onClose }: Props) {
   }, []);
 
   const details = useMemo(() => {
+    if (errorMessage)
+      return <div className="error-message">{errorMessage}</div>;
     return accountIsLoading ? (
       <Loader />
-    ) : accountDetails.account_name ? (
+    ) : (
       <div>
         <span className="account-name-title">Account Name:</span>{' '}
         <span className="account-name-value">
           {accountDetails.account_name}
         </span>
       </div>
-    ) : (
-      errorMessage && <div className="error-message">{errorMessage}</div>
     );
   }, [accountDetails.account_name, errorMessage]);
 
   useEffect(() => {
-    if (formData.accountNumber.length > 9 && formData.bankCode) {
+    if (!containsOnlyNumbers(formData.accountNumber)) {
+      setErrorMessage('Invalid account details');
+    } else if (formData.accountNumber.length > 9 && formData.bankCode) {
       setAccountIsLoading(true);
       setAccountDetails(defaultAccountDetails);
       setErrorMessage('');
@@ -109,7 +116,7 @@ export default function AddAccount({ bankAccountDetails, onClose }: Props) {
   }, [formData]);
 
   return (
-    <UiModal size="sm" onClose={onClose}>
+    <UiModal isVisible={isVisible} title="Add Payout Account" size="sm" onClose={onClose}>
       <UiForm
         formData={{ ...formData, ...accountDetails }}
         schema={CreateAccountNumberSchema}
@@ -118,9 +125,8 @@ export default function AddAccount({ bankAccountDetails, onClose }: Props) {
         {({ errors }) => (
           <AddAcountStyling>
             <header>
-              <h2>Add Account</h2>
               <p>
-                Your account details are required to enable agents make payment
+                Your account details are required to enable clients make payment
                 to you without hassle or back and forth.
               </p>
             </header>
@@ -170,6 +176,7 @@ const AddAcountStyling = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${pxToRem(20)};
+  padding: ${pxToRem(12)} ${pxToRem(24)};
 
   h2 {
     margin-top: 0;

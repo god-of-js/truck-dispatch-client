@@ -1,8 +1,8 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import sizes from 'utils/sizes';
 import UidropdownMenu, { DropDownData } from './UiDropdownMenu';
-import UiIcon, { Icons } from './UiIcon';
+import { Icons } from './UiIcon';
+import UiEmptyList from './UiEmptyList';
 
 interface Header {
   title: string;
@@ -25,57 +25,37 @@ interface Props {
   tableTitle: string;
   data: Row[];
   headers: Header[];
-  options?: DropDownData[];
+  options?: DropDownData[] | ((tripStatus: Row) => DropDownData[]);
   onRowClick?: (id: string) => void;
-  noDataHeaderText?: string;
-  noDataImage?: Icons;
-  noDataParagraphText?: string;
-  noDataPlaceHolder?: ReactNode;
+  emptyTableIcon?: Icons;
+  emptyTableText?: string;
+  emptyTableBtnContent?: React.ReactNode;
+  emptyTableAction?: () => void;
 }
 
 export default function UiTable({
-  tableTitle,
   data,
   headers,
   options,
+  emptyTableIcon,
+  emptyTableText,
+  emptyTableBtnContent,
+  emptyTableAction,
   onRowClick,
-  noDataHeaderText,
-  noDataImage = 'FolderNotchOpen',
-  noDataParagraphText = 'You Have No Data',
-  noDataPlaceHolder,
 }: Props) {
   const tableHeaders = options
     ? [...headers, { title: '', query: 'actions' }]
     : headers;
 
-  function emptyTablePlaceholder() {
-    return (
-      <NoDataBox>
-        {noDataPlaceHolder ? (
-          noDataPlaceHolder
-        ) : (
-          <>
-            <h3>{noDataHeaderText}</h3>
-            <div className="icon-container">
-              <UiIcon icon={noDataImage} size="70" />
-            </div>
-            <p className="no-data-text">{noDataParagraphText}</p>
-          </>
-        )}
-      </NoDataBox>
-    );
-  }
-
   return (
     <TableContainer>
-      <TableContainerHeader>
-        <TableTitle>{tableTitle}</TableTitle>
-      </TableContainerHeader>
       <Table>
         <TableHeader>
-          <TableRow>
+          <TableRow isHeader>
             {tableHeaders.map((header, index) => (
-              <TableHeadItem key={index}>{header.title}</TableHeadItem>
+              <TableHeadItem key={index} isMenu={!header.title}>
+                {header.title}
+              </TableHeadItem>
             ))}
           </TableRow>
         </TableHeader>
@@ -89,15 +69,24 @@ export default function UiTable({
                       key={index}
                       onClick={() => onRowClick?.(item._id)}
                     >
-                      <div className="mobile-title">{header.title}</div>
                       <div>{item[header.query]}</div>
                     </TableDataItem>
                   );
                 })}
+
                 {options && (
-                  <td className="menu-container">
-                    <UidropdownMenu options={options} itemId={item._id} />
-                  </td>
+                  <TableDataItem isMenu>
+                    <div className="menu-container">
+                      <UidropdownMenu
+                        options={
+                          typeof options === 'function'
+                            ? options(item)
+                            : options
+                        }
+                        itemId={item._id}
+                      />
+                    </div>
+                  </TableDataItem>
                 )}
               </TableRow>
             );
@@ -105,118 +94,79 @@ export default function UiTable({
         </tbody>
       </Table>
 
-      {!data.length && emptyTablePlaceholder()}
+      {!data.length && (
+        <UiEmptyList
+          emptyBtnContent={emptyTableBtnContent}
+          emptyIcon={emptyTableIcon}
+          emptyText={emptyTableText}
+          onActionButtonClick={emptyTableAction}
+        />
+      )}
     </TableContainer>
   );
 }
 
 const TableContainer = styled.div`
-  border: 1px solid var(--color-gray-200);
-  background: #ffffff;
-`;
-
-const TableContainerHeader = styled.header`
-  border-bottom: 1px solid var(--color-gray-200);
-  display: flex;
-  justify-content: space-between;
-`;
-const TableTitle = styled.h2`
-  padding: 0 ${pxToRem(12)};
-  font-weight: 700;
-  font-size: ${pxToRem(14)};
-  line-height: ${pxToRem(28)};
-  text-transform: uppercase;
-  color: var(--color-gray-900);
+  overflow-x: auto;
+  /* TODO: figure out why  */
+  padding-bottom: ${pxToRem(120)};
+  position: relative;
 `;
 
 const Table = styled.table`
-  position: relative;
   table-layout: fixed;
   width: 100%;
-  border-collapse: collapse;
+  min-width: ${pxToRem(1200)};
+  border-spacing: ${pxToRem(0)} ${pxToRem(8)};
 `;
 
 const TableHeader = styled.thead`
-  display: none;
-
-  @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
-    display: table-header-group;
-    background-color: var(--color-gray-50);
-    width: 100%;
-    border-bottom: ${pxToRem(1)} solid var(--color-gray-200);
-  }
+  width: 100%;
 `;
 
-const TableRow = styled.tr`
-  border-bottom: ${pxToRem(1)} solid var(--color-gray-200);
+const TableRow = styled.tr<{ isHeader?: boolean }>`
   text-align: left;
   cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  position: relative;
+  margin-bottom: ${pxToRem(20)};
+  overflow: hidden;
+  background: ${({ isHeader }) =>
+    isHeader ? 'var(--color-primary-10)' : '#ffffff'};
 
-  .mobile-title {
-    font-size: ${pxToRem(12)};
-  }
+  td,
+  th {
+    &:last-child {
+      border-top-right-radius: ${pxToRem(8)};
+      border-bottom-right-radius: ${pxToRem(8)};
+      height: 100%;
 
-  .menu-container {
-    height: 100%;
-    width: fit-content;
-    position: absolute;
-    display: flex;
-    align-items: flex-start;
-    right: 0;
-    @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
-      align-items: center;
+      .menu-container {
+        width: ${pxToRem(32)};
+        margin-left: auto;
+      }
     }
-  }
-  @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
-    display: table-row;
-    .mobile-title {
-      display: none;
+    &:first-child {
+      border-top-left-radius: ${pxToRem(8)};
+      border-bottom-left-radius: ${pxToRem(8)};
     }
-  }
-  &:last-child {
-    border-bottom: transparent;
   }
 `;
 
-const TableHeadItem = styled.th`
-  padding: ${pxToRem(12)} ${pxToRem(24)};
-  color: var(--color-gray-500);
-  font-size: ${pxToRem(12)};
-`;
-
-const TableDataItem = styled.td`
-  padding: ${pxToRem(12)} ${pxToRem(24)};
-  color: var(--color-gray-500);
-  font-weight: 700;
+const TableHeadItem = styled.th<{ isMenu: boolean }>`
+  height: ${pxToRem(48)};
+  padding: 0 ${pxToRem(24)};
+  color: var(--color-gray-70);
   font-size: ${pxToRem(14)};
-  line-height: ${pxToRem(20)};
+  font-style: normal;
+  font-weight: 600;
+  ${({ isMenu }) => isMenu && `width: ${pxToRem(24)}`};
 `;
 
-const NoDataBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: ${pxToRem(400)};
-  width: 100%;
-  background: var(--color-gray);
-  text-align: center;
-
-  h3,
-  .icon-container {
-    color: var(--color-gray-500);
-  }
-
-  .no-data-text {
-    color: var(--color-gray-500);
-    font-weight: 700;
-    width: 80%;
-    font-size: ${pxToRem(14)};
-    @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
-      width: 40%;
-    }
-  }
+const TableDataItem = styled.td<{ isMenu?: boolean }>`
+  padding: ${pxToRem(26)} ${pxToRem(24)};
+  color: var(--color-neutralBlack);
+  font-size: ${pxToRem(14)};
+  line-height: ${pxToRem(16)};
+  font-style: normal;
+  font-weight: 400;
+  ${({ isMenu }) => (isMenu ? `width: ${pxToRem(24)};` : 'overflow-x: hidden;')}
 `;

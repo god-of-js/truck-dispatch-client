@@ -6,9 +6,9 @@ export default interface User {
   firstName: string;
   lastName: string;
   email: string;
+  balance?: number;
   phone: string;
   avatar?: string;
-  noOfRatingsReceived?: number;
   completedTrips?: number;
   userType: (typeof userTypes)[number];
   status?:
@@ -23,4 +23,5 @@ export default interface User {
   isEmailVerified?: boolean;
   isPhoneVerified?: boolean;
   createdAt?: number;
+  noOfVehicles?: number;
 }
