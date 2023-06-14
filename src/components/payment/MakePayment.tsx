@@ -50,7 +50,6 @@ export default function MakePayment({
   const trip = useSelector(selectTrip(tripId!));
 
   const user = useSelector((state: RootState) => state.account.user);
-
   const paystackConfig = {
     email: user?.email || '',
     firstName: user?.firstName,
