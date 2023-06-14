@@ -13,6 +13,7 @@ const ChatLayout = lazy(() => import('../layouts/ChatLayout'));
 
 // Auth
 const RegistrationPage = lazy(() => import('../pages/auth/RegistrationPage'));
+const VerifyPhonePage = lazy(() => import('../pages/auth/VerifyPhonePage'));
 const SelectUsertypePage = lazy(
   () => import('../pages/auth/SelectUsertypePage'),
 );
@@ -155,6 +156,10 @@ const router = createBrowserRouter([
       {
         path: 'join/:userType',
         element: <RegistrationPage />,
+      },
+      {
+        path: 'verify-phone',
+        element: <VerifyPhonePage />,
       },
       {
         path: 'login',

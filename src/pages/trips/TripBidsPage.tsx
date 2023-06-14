@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
-import Successgif from 'assets/img/Successgif.jpeg'
+import Successgif from 'assets/img/Successgif.jpeg';
 
 import { RootState } from 'modules/index';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
@@ -38,7 +38,8 @@ export default function TripBidsPage() {
   const [isBidDetailsVisible, setIsBidDetailsVisible] = useState(false);
   const [isPayWithBalanceVisible, setIsPayWithBalanceVisible] = useState(false);
   const [isMakePaymentVisible, setIsMakePaymentVisible] = useState(true);
-  const [isPaymentSuccessfulVisible, setIsPaymentSuccessfulVisible] = useState(false);
+  const [isPaymentSuccessfulVisible, setIsPaymentSuccessfulVisible] =
+    useState(false);
   const [activeBidId, setActiveBidId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -206,10 +207,10 @@ export default function TripBidsPage() {
             onClose={() => setIsPaymentSuccessfulVisible(false)}
             title="Payment Successful"
             hideNotYetButton
-            confirmText='Go to trip details'
+            confirmText="Go to trip details"
           >
             <div>
-               <img src={Successgif} alt="payment_image"/>
+              <img src={Successgif} alt="payment_image" />
             </div>
             Payment Successfully Made
           </UiConfirmModal>

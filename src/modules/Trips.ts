@@ -93,7 +93,7 @@ export function assignTrip(trip: AssignTripFormData) {
   return (dispatch: AppDispatch) => {
     return Api.assignTrip(trip).then((data) => {
       dispatch(setTrip(data.trip));
-      dispatch(setUser(data.user))
+      dispatch(setUser(data.user));
       return data.trip;
     });
   };

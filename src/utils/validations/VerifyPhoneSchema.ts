@@ -2,12 +2,12 @@ import * as Yup from 'yup';
 import { isRequiredMessage, isNumberMessage } from './validationVariables';
 
 export default Yup.object({
-  pin: Yup.number()
+  pin: Yup.string()
     .required(isRequiredMessage)
     .test(
       'len',
       'Must be exactly 6 characters',
-      (val) => `${val}`?.length === 6,
+      (val) => `${val}`?.length === 6 && /^[0-9]+$/.test(`${val}`)
     )
     .typeError(isNumberMessage),
 });
