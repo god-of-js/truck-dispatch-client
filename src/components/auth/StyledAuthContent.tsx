@@ -118,6 +118,13 @@ const Styling = styled.div`
       }
     }
   }
+
+  .center-items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
   @media screen and (min-width: ${sizes.tablet}) {
     .form-container {
       margin: inherit;

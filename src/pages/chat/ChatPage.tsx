@@ -184,8 +184,7 @@ const ChatContainer = styled.div`
 
 const ChatBubble = styled.div<{ isMine: boolean }>`
   display: flex;
-  justify-content: ${({ isMine }) =>
-    isMine ? 'flex-end' : ''};
+  justify-content: ${({ isMine }) => (isMine ? 'flex-end' : '')};
   .chat-bubble-inner {
     padding: ${pxToRem(8)};
     margin: ${pxToRem(2)} 0;

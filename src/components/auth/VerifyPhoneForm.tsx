@@ -58,7 +58,8 @@ export default function VerifyPhoneForm({ goToNext }: Props) {
     }
   }
 
-  function requestNewCode() {
+  function requestNewCode(e: any) {
+    e.preventDefault();
     setCanResendCode(false);
     setCount(59);
     const otpPhoneNumber = localStorage.getItem('otp-phone-number');
@@ -94,7 +95,7 @@ export default function VerifyPhoneForm({ goToNext }: Props) {
 
   return (
     <div className="form-container">
-      <header>
+      <header className="center-items">
         <UiIcon icon="CallReceived" size="45" />
         <h1>Verify Phone Number</h1>
         <p>
