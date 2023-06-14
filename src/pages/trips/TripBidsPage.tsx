@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
+import PaymentGif from 'assets/img/PaymentGif.jpeg'
 
 import { RootState } from 'modules/index';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
@@ -37,7 +38,7 @@ export default function TripBidsPage() {
   const [isBidDetailsVisible, setIsBidDetailsVisible] = useState(false);
   const [isPayWithBalanceVisible, setIsPayWithBalanceVisible] = useState(false);
   const [isMakePaymentVisible, setIsMakePaymentVisible] = useState(true);
-  const [isAcceptedBidVisible, setIsAcceptedBidVisible] = useState(false);
+  const [isPaymentSuccessfullVisible, setIsPaymentSuccessfullVisible] = useState(false);
   const [activeBidId, setActiveBidId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -117,7 +118,7 @@ export default function TripBidsPage() {
     if (payment) paymentData.processorReference = payment.reference;
     dispatch(toAnyAction(assignTrip(paymentData)))
       .then(() => {
-        setIsAcceptedBidVisible(true);
+        setIsPaymentSuccessfullVisible(true);
       })
       .finally(() => setAssignLoading(false));
   }
@@ -193,13 +194,17 @@ export default function TripBidsPage() {
             Do you want to proceed?
           </UiConfirmModal>
           <UiConfirmModal
-            isVisible={isAcceptedBidVisible}
+            isVisible={isPaymentSuccessfullVisible}
             onProceed={navigateToTripDetails}
-            onClose={() => setIsAcceptedBidVisible(false)}
-            title="Bid Accepted"
+            onClose={() => setIsPaymentSuccessfullVisible(false)}
+            title="Payment Successful"
             hideNotYetButton
+            confirmText='Go to trip details'
           >
-            The bid has been accepted go to trip details
+            <div>
+               <img src={PaymentGif} alt="payment_image"/>
+            </div>
+            Payment Successfully Made
           </UiConfirmModal>
         </>
       )}
