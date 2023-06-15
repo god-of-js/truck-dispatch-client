@@ -18,7 +18,7 @@ instance.interceptors.response.use(
   (err) => {
     if (!err.response && err.request) {
       Toast.error({
-        msg: "we couldn't reach our servers. Kindly check your connection. However, the team is on the issue.",
+        msg: "Something went wrong. Kindly check your connection. and inform the team if the issue persists.",
       });
     }
 
@@ -30,6 +30,7 @@ instance.interceptors.response.use(
         isRedirecting = true;
         removeUserSessionId();
         window.location.href = '/auth/login';
+        window.location.reload();
       }
     }
     return Promise.reject(err.response.data);

@@ -24,16 +24,16 @@ export default function SelectUsertypePage() {
       type: 'transporter',
     },
     {
-      icons: ['UserSquare'],
-      title: 'Shipper',
-      text: 'Clients / individuals with jobs',
-      type: 'shipper',
-    },
-    {
       icons: ['Car', 'Buildings'],
       title: 'Transport Company',
       text: 'Company with trucks',
       type: 'transportCompany',
+    },
+    {
+      icons: ['UserSquare'],
+      title: 'Shipper',
+      text: 'Clients / individuals with jobs',
+      type: 'shipper',
     },
     {
       icons: ['UserSquare', 'Buildings'],

@@ -21,7 +21,7 @@ const root = createRoot(document.getElementById('root')!);
 root.render(
   <React.StrictMode>
     <Provider store={getStore()}>
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={<Loader isPage />}>
         <RouterProvider router={router} />
       </Suspense>
       <Toaster position="bottom-right" reverseOrder={true} />
