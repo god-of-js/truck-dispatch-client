@@ -24,7 +24,7 @@ root.render(
       <Suspense fallback={<Loader />}>
         <RouterProvider router={router} />
       </Suspense>
-      <Toaster position="bottom-right" reverseOrder={true} />
+      <Toaster position="top-center" reverseOrder={true} />
     </Provider>
   </React.StrictMode>,
 );
