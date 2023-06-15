@@ -14,12 +14,10 @@ import {
 } from 'modules/Account';
 
 import DashboardSidebar from 'components/layout/DashboardSidebar';
-import UiAlert from 'ui/UiAlert';
 import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
 import { getChatLogs, getUserChat, setChat, setChatLog } from 'modules/Chat';
 import { WEB_SOCKET_URL } from 'utils/privateKeys';
-import UiButton from 'ui/UiButton';
 import EmailHasBeenSentModal from 'components/profile/EmailHasBeenSentModal';
 import Loader from 'components/layout/Loader';
 import EmailHasBeenVerifiedModal from 'components/profile/EmailHasBeenVerifiedModal';
@@ -131,7 +129,7 @@ export default function DashboardLayout() {
     <Layout>
       <DashboardSidebar />
       <Body>
-        {loading ? <Loader /> : <Outlet />}
+        {loading ? <Loader isPage /> : <Outlet />}
         <EmailHasBeenSentModal
           isVisible={verificationHasBeenSent}
           onClose={() => setVerificationHasBeenSent(false)}

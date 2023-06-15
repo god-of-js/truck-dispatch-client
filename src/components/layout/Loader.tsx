@@ -4,6 +4,7 @@ import styled from 'styled-components';
 interface Props {
   size?: 'lg' | 's';
   variant?: 'white' | 'primary';
+  isPage?: boolean
 }
 
 type Sizes = 'lg' | 's';
@@ -25,9 +26,9 @@ function sizeVar(size: Sizes) {
   }
 }
 
-export default function Loader({ variant = 'primary', size = 'lg' }: Props) {
+export default function Loader({ variant = 'primary', size = 'lg', isPage }: Props) {
   return (
-    <LoaderContainer>
+    <LoaderContainer isPage={isPage}>
       <LoaderStyle size={size}>
         <div className="loadingSpinner">
           <div className={`spinner ${variant}`}></div>
@@ -37,8 +38,8 @@ export default function Loader({ variant = 'primary', size = 'lg' }: Props) {
   );
 }
 
-const LoaderContainer = styled.div`
-  height: 100%;
+const LoaderContainer = styled.div<{ isPage?: boolean }>`
+  height: ${({ isPage }) => isPage ? '100vh' : '100%'};
   display: flex;
   justify-content: center;
   align-items: center;
