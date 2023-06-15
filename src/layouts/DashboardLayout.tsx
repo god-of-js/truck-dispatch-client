@@ -131,7 +131,7 @@ export default function DashboardLayout() {
     <Layout>
       <DashboardSidebar />
       <Body>
-        {loading ? <Loader /> : <Outlet />}
+        {loading ? <Loader isPage /> : <Outlet />}
         <EmailHasBeenSentModal
           isVisible={verificationHasBeenSent}
           onClose={() => setVerificationHasBeenSent(false)}
