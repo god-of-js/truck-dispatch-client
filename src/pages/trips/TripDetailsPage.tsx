@@ -107,7 +107,7 @@ export default function TripDetailsPage() {
 
   function redirectToAddAccount() {
     // TODO: implement add account.
-    navigate('/profile/accounts')
+    navigate('/profile/accounts');
   }
 
   function initRejectPayment() {
@@ -233,7 +233,9 @@ export default function TripDetailsPage() {
           </UiCard>
           <UiCard>
             <div className="card-title">
-              {userIsServiceBasedUser ? 'Trip Owner' : 'Responsible Transporter'}
+              {userIsServiceBasedUser
+                ? 'Trip Owner'
+                : 'Responsible Transporter'}
             </div>
 
             {userIsServiceBasedUser && (

@@ -116,7 +116,12 @@ export default function AddAccount({
   }, [formData]);
 
   return (
-    <UiModal isVisible={isVisible} title="Add Payout Account" size="sm" onClose={onClose}>
+    <UiModal
+      isVisible={isVisible}
+      title="Add Payout Account"
+      size="sm"
+      onClose={onClose}
+    >
       <UiForm
         formData={{ ...formData, ...accountDetails }}
         schema={CreateAccountNumberSchema}

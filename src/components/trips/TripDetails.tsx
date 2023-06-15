@@ -30,7 +30,13 @@ export default function TripDetails({ trip, hideProfile }: Props) {
   return (
     <ComponentStyling>
       {alternateUser && (
-        <UserDetails avatar={alternateUser.avatar} userName={`${alternateUser.firstName} ${alternateUser.lastName}`} avatarIsHalfCurved={clientBasedUserTypes.includes(alternateUser.userType)} />
+        <UserDetails
+          avatar={alternateUser.avatar}
+          userName={`${alternateUser.firstName} ${alternateUser.lastName}`}
+          avatarIsHalfCurved={clientBasedUserTypes.includes(
+            alternateUser.userType,
+          )}
+        />
       )}
       <div className="detail-grid">
         <UiDataField title="Job Type" value={trip.jobType} />

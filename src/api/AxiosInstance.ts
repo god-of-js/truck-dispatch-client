@@ -18,18 +18,21 @@ instance.interceptors.response.use(
   (err) => {
     if (!err.response && err.request) {
       Toast.error({
-        msg: "we couldn't reach our servers. Kindly check your connection. However, the team is on the issue.",
+        msg: "Something went wrong. Kindly check your connection. and inform the team if the issue persists.",
       });
     }
 
     if (
       err.response.data.message === 'jwt expired' ||
-      err.response.data.message === 'invalid signature'
+      err.response.data.message === 'invalid signature' ||
+      err.response.data.message === 'No JWT was provided' ||
+      err.response.data.message === 'Invalid JWT'
     ) {
       if (!isRedirecting) {
         isRedirecting = true;
         removeUserSessionId();
         window.location.href = '/auth/login';
+        window.location.reload();
       }
     }
     return Promise.reject(err.response.data);

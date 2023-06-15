@@ -54,10 +54,7 @@ export default function CreateTrip({
 
     if (currentStep === 'confirm-details') {
       if (!trip) {
-        sendTripToDrivers().then((data: Trip) => {
-          onCreated?.(data._id);
-          onClose();
-        });
+        sendTripToDrivers().then(() => {});
       } else {
         editTrip();
       }
@@ -69,7 +66,8 @@ export default function CreateTrip({
     return dispatch(toAnyAction(createTrip(tripForm as NewTrip)))
       .then((trip: Trip) => {
         setTripForm(trip);
-        return trip;
+        onCreated?.(trip._id);
+        onClose();
       })
       .finally(() => {
         setLoading(false);
@@ -83,6 +81,7 @@ export default function CreateTrip({
     return dispatch(toAnyAction(updateTrip({ ...data, _id: trip._id })))
       .then((trip: Trip) => {
         setTripForm(trip);
+        onClose();
       })
       .finally(() => {
         setLoading(false);
