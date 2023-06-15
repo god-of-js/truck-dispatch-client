@@ -491,17 +491,18 @@ export default function MyTripsPage() {
       {/* MODALS */}
       <CreateTrip
         isVisible={isCreateTripVisible}
+        key={`${isCreateTripVisible}-isCreateTripVisible`}
         tripId={activeTripId!}
         onClose={() => {
           setIsCreateTripVisible(false);
-          setActiveTripId(null);
         }}
         onCreated={showTripBroadcasted}
       />
+
       {activeTripId && (
         <TripHasBeenBroadcasted
           isVisible={isTripBroadcastedVisible}
-          tripId={activeTripId!}
+          tripId={activeTripId}
           onClose={() => setIsTripBroadcastedVisible(false)}
         />
       )}
