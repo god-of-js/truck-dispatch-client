@@ -419,9 +419,7 @@ export default function MyTripsPage() {
   }
 
   function showTripBroadcasted(tripId: string) {
-    if (!tripId) return;
     setActiveTripId(tripId);
-    setIsCreateTripVisible(false);
     setIsTripBroadcastedVisible(true);
   }
 
@@ -493,19 +491,21 @@ export default function MyTripsPage() {
       {/* MODALS */}
       <CreateTrip
         isVisible={isCreateTripVisible}
+        key={`${isCreateTripVisible}-isCreateTripVisible`}
         tripId={activeTripId!}
         onClose={() => {
           setIsCreateTripVisible(false);
-          setActiveTripId(null);
         }}
         onCreated={showTripBroadcasted}
       />
 
-      <TripHasBeenBroadcasted
-        isVisible={isTripBroadcastedVisible}
-        tripId={activeTripId!}
-        onClose={() => setIsTripBroadcastedVisible(false)}
-      />
+      {activeTripId && (
+        <TripHasBeenBroadcasted
+          isVisible={isTripBroadcastedVisible}
+          tripId={activeTripId}
+          onClose={() => setIsTripBroadcastedVisible(false)}
+        />
+      )}
       <InformUserOfVerification
         isVisible={isInformUserOfVerificationModalVisible}
         onClose={() => setIsInformUserOfVerificationModalVisible(false)}

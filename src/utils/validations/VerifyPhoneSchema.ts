@@ -7,7 +7,7 @@ export default Yup.object({
     .test(
       'len',
       'Must be exactly 6 characters',
-      (val) => `${val}`?.length === 6 && /^[0-9]+$/.test(`${val}`)
+      (val) => `${val}`?.length === 6 && /^[0-9]+$/.test(`${val}`),
     )
     .typeError(isNumberMessage),
 });

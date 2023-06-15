@@ -447,6 +447,7 @@ const Button = styled.button`
     border-color: var(--color-primary);
     background: var(--color-primary-10);
     color: var(--color-primary);
-    svg{}
+    svg {
+    }
   }
 `;
