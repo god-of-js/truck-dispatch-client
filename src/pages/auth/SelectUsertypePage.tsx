@@ -136,7 +136,7 @@ const SelectUserTypeStyling = styled.div`
     margin-bottom: ${pxToRem(30)};
   }
   .bottom-container {
-    padding-bottom:${pxToRem(20)} ;
+    padding-bottom:${pxToRem(20)};
   }
 
   @media (min-width: ${sizes.mobile}) {
