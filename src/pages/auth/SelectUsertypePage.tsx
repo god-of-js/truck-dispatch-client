@@ -133,12 +133,7 @@ const SelectUserTypeStyling = styled.div`
     margin-bottom: ${pxToRem(24)};
   }
   button {
-    margin-bottom: ${pxToRem(80)};
-  }
-  .bottom-container {
-    position: absolute;
-    bottom: 0;
-    left: 0;
+    margin-bottom: ${pxToRem(50)};
   }
 
   @media (min-width: ${sizes.mobile}) {
