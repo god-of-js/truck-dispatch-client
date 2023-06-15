@@ -74,6 +74,7 @@ export default function MyTripsPage() {
   const [isTripBroadcastedVisible, setIsTripBroadcastedVisible] =
     useState(false);
   const [activeTripId, setActiveTripId] = useState<string | null>(null);
+  const [newlyCreatedTripId, setnewlyCreatedTripId] = useState<string | null>(null);
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
   const [selectedBidId, setSelectedBidId] = useState<string | null>(null);
   const [isDeleteBidVisible, setIsDeleteBidVisible] = useState(false);
@@ -419,7 +420,7 @@ export default function MyTripsPage() {
   }
 
   function showTripBroadcasted(tripId: string) {
-    setActiveTripId(tripId);
+    setnewlyCreatedTripId(tripId);
     setIsTripBroadcastedVisible(true);
   }
 
@@ -495,14 +496,15 @@ export default function MyTripsPage() {
         tripId={activeTripId!}
         onClose={() => {
           setIsCreateTripVisible(false);
+          setActiveTripId(null)
         }}
         onCreated={showTripBroadcasted}
       />
 
-      {activeTripId && (
+      {newlyCreatedTripId && (
         <TripHasBeenBroadcasted
           isVisible={isTripBroadcastedVisible}
-          tripId={activeTripId}
+          tripId={newlyCreatedTripId}
           onClose={() => setIsTripBroadcastedVisible(false)}
         />
       )}
