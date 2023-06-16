@@ -92,6 +92,7 @@ export default function DashboardLayout() {
   useEffect(() => {
     const sessionId = getUserSessionId();
     if (!sessionId && action !== 'sign-in' && !token) {
+      console.log('this is getting triggered')
       navigate('/auth/login');
     } else {
       loadDashboardData();
