@@ -145,14 +145,14 @@ export default function CreateTrip({
 }
 
 const CreateTripStyling = styled.div`
-  padding: ${pxToRem(32)} ${pxToRem(24)};
+  padding: 32px 24px;
 `;
 
 const TripDetailsContainer = styled.div`
-  margin: ${pxToRem(32)} 0;
+  margin:32px 0;
 
   .ui-card {
-    padding-bottom: ${pxToRem(54)};
+    padding-bottom:54px;
   }
 `;
 
@@ -160,22 +160,22 @@ const Heading = styled.h2`
   font-family: 'thiccboi-light';
   font-style: normal;
   font-weight: 400;
-  font-size: ${pxToRem(16)};
+  font-size:16px;
   line-height: 140%;
   letter-spacing: 0.05em;
   color: var(--color-gray-70);
   text-transform: uppercase;
   padding: 0;
   margin: 0;
-  margin-bottom: ${pxToRem(20)};
+  margin-bottom:20px;
 `;
 
 const SubmitButtonContainer = styled.div`
   display: flex;
   justify-content: center;
-  padding-top: ${pxToRem(12)};
+  padding-top:12px;
 
   button {
-    min-width: ${pxToRem(329)};
+    min-width:329px;
   }
 `;

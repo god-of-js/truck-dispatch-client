@@ -39,17 +39,17 @@ const Styling = styled.div`
 
   h2 {
     margin: 0;
-    font-size: ${pxToRem(16)};
+    font-size:16px;
   }
   p {
     width: 80%;
-    font-size: ${pxToRem(15)};
+    font-size:15px;
   }
 
   .btn-container {
     display: flex;
     width: 80%;
-    margin-top: ${pxToRem(12)};
-    gap: ${pxToRem(12)};
+    margin-top:12px;
+    gap:12px;
   }
 `;

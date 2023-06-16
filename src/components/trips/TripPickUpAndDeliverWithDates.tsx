@@ -63,25 +63,25 @@ export default function TripPickUpAndDeliverWithDates({
 const ComponentStyling = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${pxToRem(32)};
+  gap:32px;
 
   .schedule {
     display: flex;
     align-items: flex-start;
     width: 100%;
-    gap: ${pxToRem(12)};
+    gap:12px;
 
     .icon-container {
-      border-radius: ${pxToRem(8)};
-      width: ${pxToRem(32)};
-      height: ${pxToRem(32)};
+      border-radius:8px;
+      width:32px;
+      height:32px;
       display: flex;
       align-items: center;
       justify-content: center;
 
       svg {
-        width: ${pxToRem(14)};
-        height: ${pxToRem(17)};
+        width:14px;
+        height:17px;
       }
 
       &.pick-up-icon-container {
@@ -102,13 +102,13 @@ const ComponentStyling = styled.div`
 
     .details {
       display: grid;
-      gap: ${pxToRem(24)};
+      gap:24px;
     }
 
     .detail-title {
       font-style: normal;
       font-weight: 400;
-      font-size: ${pxToRem(10)};
+      font-size:10px;
       line-height: 140%;
       letter-spacing: 0.05em;
       color: var(--color-gray-70);
@@ -117,11 +117,11 @@ const ComponentStyling = styled.div`
     .detail-value {
       font-style: normal;
       font-weight: 600;
-      font-size: ${pxToRem(16)};
+      font-size:16px;
       line-height: 140%;
       letter-spacing: -0.02em;
       color: var(--color-neutralBlack);
-      margin-top: ${pxToRem(8)};
+      margin-top:8px;
     }
   }
 

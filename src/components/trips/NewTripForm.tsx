@@ -181,7 +181,7 @@ export default function NewTripForm({
 const GridContainer = styled.div`
   display: grid;
   grid-template-columns: auto;
-  gap: ${pxToRem(20)};
+  gap:20px;
   @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
     grid-template-columns: auto auto;
   }
@@ -191,32 +191,32 @@ const Heading = styled.h2`
   font-family: 'thiccboi-light';
   font-style: normal;
   font-weight: 400;
-  font-size: ${pxToRem(16)};
+  font-size:16px;
   line-height: 140%;
   letter-spacing: 0.05em;
   color: var(--color-gray-70);
   text-transform: uppercase;
   padding: 0;
   margin: 0;
-  margin-bottom: ${pxToRem(20)};
+  margin-bottom:20px;
 `;
 
 const SubmitButtonContainer = styled.div`
   display: flex;
   justify-content: center;
-  padding-top: ${pxToRem(12)};
+  padding-top:12px;
 
   button {
-    min-width: ${pxToRem(329)};
+    min-width:329px;
   }
 `;
 
 const FormStyling = styled.div`
   display: grid;
-  gap: ${pxToRem(8)};
-  padding-top: ${pxToRem(32)};
+  gap:8px;
+  padding-top:32px;
 
   .text-area-container {
-    padding-top: ${pxToRem(24)};
+    padding-top:24px;
   }
 `;

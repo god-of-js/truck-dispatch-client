@@ -46,18 +46,18 @@ const ComponentLayout = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: ${pxToRem(32)} ${pxToRem(62)};
+  padding:32px 62px;
 
   h4 {
     font-family: 'thiccboi-bold';
     font-style: normal;
     font-weight: 700;
-    font-size: ${pxToRem(24)};
+    font-size:24px;
     line-height: 140%;
     letter-spacing: -0.02em;
     color: var(--color-neutralBlack);
-    margin-top: ${pxToRem(32)};
-    margin-bottom: ${pxToRem(16)};
+    margin-top:32px;
+    margin-bottom:16px;
     padding: 0;
   }
   p {
@@ -71,6 +71,6 @@ const ComponentLayout = styled.div`
   }
 
   .btn-container {
-    margin-top: ${pxToRem(40)};
+    margin-top:40px;
   }
 `;

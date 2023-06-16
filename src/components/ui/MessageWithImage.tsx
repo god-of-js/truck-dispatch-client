@@ -28,13 +28,13 @@ const MessageContainer = styled.div`
   align-items: center;
 
   img {
-    width: ${pxToRem(380)};
+    width:380px;
     margin: auto;
   }
 
   h2 {
     text-align: center;
-    font-size: ${pxToRem(20)};
+    font-size:20px;
     font-family: 'Audiowide';
     margin-bottom: 0;
   }

@@ -22,12 +22,12 @@ const CheckBox = styled.input`
   border: 1px solid var(--color-primary);
   width: 16px;
   height: 16px;
-  border-radius: ${pxToRem(4)};
+  border-radius:4px;
   position: relative;
   margin: 0;
 
   &:checked {
     border-radius: 16px;
-    border-width: ${pxToRem(6)};
+    border-width:6px;
   }
 `;

@@ -94,7 +94,7 @@ export default function RateTransporter({ onClose, isVisible }: Props) {
 }
 
 const RatingsHeader = styled.h2`
-  font-size: ${pxToRem(16)};
+  font-size:16px;
   color: var(--color-gray-700);
 `;
 
@@ -103,7 +103,7 @@ const Paragraph = styled.p``;
 const User = styled.div`
   display: flex;
   align-items: center;
-  gap: ${pxToRem(8)};
-  padding: ${pxToRem(12)} 0;
+  gap:8px;
+  padding:12px 0;
   color: var(--color-grau-500);
 `;

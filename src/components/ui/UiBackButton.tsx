@@ -26,12 +26,12 @@ export default function UiBackButton() {
 const ButtonStyling = styled.div`
   display: flex;
   align-items: center;
-  gap: ${pxToRem(12)};
+  gap:12px;
 
   /* .icon-container {
     background: var(--color-primary);
-    padding: ${pxToRem(2)} ${pxToRem(4)};
-    border-radius: ${pxToRem(4)};
+    padding:2px 4px;
+    border-radius:4px;
 
     svg {
       fill: #fff;

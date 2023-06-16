@@ -68,12 +68,12 @@ export default function UiAvatar({
 function getSizeVariant(size: Size) {
   if (size === 'lg')
     return `
-  width: ${pxToRem(52)};
-  height: ${pxToRem(52)};
+  width:52px;
+  height:52px;
   `;
   return `
-  width: ${pxToRem(40)};
-  height: ${pxToRem(40)};
+  width:40px;
+  height:40px;
   `;
 }
 
@@ -84,7 +84,7 @@ const AvatarContainer = styled.div`
   flex-direction: column;
 
   button {
-    margin-top: ${pxToRem(12)};
+    margin-top:12px;
   }
 `;
 
@@ -100,15 +100,15 @@ const Avatar = styled.div`
   .user-icon {
     width: 100%;
     height: 100%;
-    border: ${pxToRem(1)} solid var(--color-gray-50);
+    border:1px solid var(--color-gray-50);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
 
     svg {
-      width: ${pxToRem(18)};
-      height: ${pxToRem(18)};
+      width:18px;
+      height:18px;
       fill: var(--color-gray-70);
     }
   }
@@ -118,6 +118,6 @@ const Avatar = styled.div`
     height: 100%;
     object-fit: cover;
     border-radius: ${({ isHalfCurved }: AvatarProps) =>
-      isHalfCurved ? pxToRem(8) : '50%'};
+      isHalfCurved ? '8px' : '50%'};
   }
 `;

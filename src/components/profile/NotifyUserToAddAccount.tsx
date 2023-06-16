@@ -32,7 +32,7 @@ export default function NotifyUserToAddAccount({ onClose, isVisible }: Props) {
 }
 
 const Header = styled.h1`
-  font-size: ${pxToRem(20)};
+  font-size:20px;
   text-align: center;
 `;
 

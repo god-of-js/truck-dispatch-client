@@ -143,7 +143,7 @@ export default function TripDetailPaymentCard({
 
 const PaymentCard = styled.div`
   position: relative;
-  min-height: ${pxToRem(180)};
+  min-height: 180px;
 
   .price-container {
     display: flex;
@@ -153,7 +153,7 @@ const PaymentCard = styled.div`
     .amount {
       font-style: normal;
       font-weight: 700;
-      font-size: ${pxToRem(32)};
+      font-size:32px;
       line-height: 140%;
       letter-spacing: -0.02em;
       color: var(--color-neutralBlack);
@@ -162,16 +162,16 @@ const PaymentCard = styled.div`
     .time-with-icon {
       display: flex;
       font-weight: 400;
-      font-size: ${pxToRem(12)};
-      line-height: ${pxToRem(16)};
-      gap: ${pxToRem(16)};
+      font-size:12px;
+      line-height:16px;
+      gap:16px;
       text-align: right;
       color: var(--color-neutralBlack);
 
       .icon-container {
-        width: ${pxToRem(36)};
-        height: ${pxToRem(36)};
-        border-radius: ${pxToRem(36)};
+        width:36px;
+        height:36px;
+        border-radius:36px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -207,7 +207,7 @@ const BottomContainer = styled.div`
   bottom: 0;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: ${pxToRem(8)};
+  gap:8px;
   width: 100%;
 
   button {
@@ -222,12 +222,12 @@ const BottomContainer = styled.div`
 
     .icon-container {
       background: var(--color-danger);
-      min-width: ${pxToRem(46)};
-      height: ${pxToRem(28)};
+      min-width:46px;
+      height:28px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: ${pxToRem(6)};
+      border-radius:6px;
 
       svg {
         fill: white;

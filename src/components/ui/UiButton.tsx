@@ -71,27 +71,27 @@ function sizeVariant(size: Sizes) {
   if (size === 'text') return '';
   if (size === 's')
     return `
-    padding: ${pxToRem(8)} 
-    ${pxToRem(12)}; 
-    height:${pxToRem(32)};
-    font-size: ${pxToRem(12)};
-    line-height: ${pxToRem(12)};
+    padding:8px
+    12px; 
+    height:32px;
+    font-size:12px;
+    line-height:12px;
     `;
 
   if (size === 'md')
     return `
-    padding: ${pxToRem(12)};
-    height:${pxToRem(44)};
-    font-size: ${pxToRem(12)};
-    line-height: ${pxToRem(12)};
+    padding:12px;
+    height:44px;
+    font-size:12px;
+    line-height:12px;
   `;
 
   if (size === 'large')
     return `
-    padding:  ${pxToRem(16)}; 
-    height: ${pxToRem(48)};
-    font-size: ${pxToRem(14)};
-    line-height: ${pxToRem(14)};
+    padding:16px; 
+    height:48px;
+    font-size:14px;
+    line-height:14px;
   `;
 }
 
@@ -107,10 +107,10 @@ const Button = styled.button<Props>`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: ${pxToRem(9.34)};
-  letter-spacing: ${pxToRem(0.32)};
+  gap:9.34px;
+  letter-spacing:0.32px;
   text-align: center;
-  border-radius: ${({ isSquare }) => (isSquare ? '' : pxToRem(8))};
+  border-radius: ${({ isSquare }) => (isSquare ? '' : '8px')};
   font-weight: 500;
   font-family: 'thiccboi-semibold';
   ${({ textCasing }) =>
@@ -123,7 +123,7 @@ const Button = styled.button<Props>`
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 ${pxToRem(32)};
+    padding: 0 32px;
     width: 100%;
     height: 100%;
   }
@@ -169,7 +169,7 @@ const Button = styled.button<Props>`
 
   &.icon-neutral {
     background: var(--color-gray-20);
-    border-radius: ${pxToRem(8)};
+    border-radius:8px;
 
     &:hover {
       background: var(--color-gray-30);

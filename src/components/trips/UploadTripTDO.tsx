@@ -79,9 +79,9 @@ export default function UploadTripTDO({ onClose, isVisible, trip }: Props) {
 }
 
 const UploadTDOStyling = styled.div`
-  padding: ${pxToRem(26)} ${pxToRem(24)};
+  padding:26px 24px;
   display: grid;
-  gap: ${pxToRem(24)};
+  gap: 24px;
   p {
     font-family: 'thiccboi-regular';
     font-style: normal;
