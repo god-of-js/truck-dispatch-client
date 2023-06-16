@@ -28,11 +28,11 @@ export default function ATMCard({ isActive }: Props) {
 const ATMCardStyling = styled.div<{ isActive: boolean }>`
   background-color: var(--color-primary);
   ${({ isActive }) => !isActive && 'opacity: 0.5;'}
-  min-height: ${pxToRem(180)};
+  min-height: 180px;
   overflow: hidden;
   position: relative;
-  height: ${pxToRem(100)};
-  border-radius: ${pxToRem(10)};
+  height: 100px;
+  border-radius:10px;
   background-size: 100%;
   color: #fff;
 
@@ -47,14 +47,14 @@ const ATMCardStyling = styled.div<{ isActive: boolean }>`
       #9747ff 23.09%,
       rgba(151, 71, 255, 0) 89.87%
     );
-    width: ${pxToRem(155)};
-    height: ${pxToRem(155)};
+    width:155px;
+    height:155px;
     border-radius: 50%;
   }
   .bottom-circle {
     background: var(--color-primary-50);
-    width: ${pxToRem(100)};
-    height: ${pxToRem(100)};
+    width: 100px;
+    height: 100px;
     position: absolute;
     z-index: 0;
     border-radius: 50%;
@@ -64,8 +64,8 @@ const ATMCardStyling = styled.div<{ isActive: boolean }>`
     left: -15%;
   }
   .centered-circle {
-    width: ${pxToRem(20)};
-    height: ${pxToRem(20)};
+    width:20px;
+    height:20px;
     background: var(--color-primary-50);
     border-radius: 50%;
     position: absolute;
@@ -74,7 +74,7 @@ const ATMCardStyling = styled.div<{ isActive: boolean }>`
     transform: translate(-68%, -60%);
   }
   .card-content {
-    padding: ${pxToRem(26)} ${pxToRem(13)};
+    padding:26px 13px;
     height: 75%;
     display: flex;
     flex-direction: column;
@@ -85,23 +85,23 @@ const ATMCardStyling = styled.div<{ isActive: boolean }>`
     .balance-value {
       font-style: normal;
       font-weight: 600;
-      font-size: ${pxToRem(32)};
+      font-size:32px;
       color: var(--color-primary-10);
     }
 
     .balance-title {
       font-style: normal;
       font-weight: 600;
-      font-size: ${pxToRem(16)};
-      line-height: ${pxToRem(16)};
+      font-size:16px;
+      line-height:16px;
       color: var(--color-primary-10);
     }
 
     .user-name {
       font-style: normal;
       font-weight: 600;
-      font-size: ${pxToRem(14)};
-      line-height: ${pxToRem(26)};
+      font-size:14px;
+      line-height:26px;
       color: var(--color-primary-10);
       text-transform: capitalize;
     }

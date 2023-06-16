@@ -180,29 +180,29 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
   }
 
   .side-menu-text {
-    margin: ${pxToRem(24)} ${pxToRem(16)};
+    margin: 24px 16px;
     font-family: 'thiccboi-extrabold';
     font-style: normal;
     font-weight: 700;
-    font-size: ${pxToRem(14)};
+    font-size: 14px;
     line-height: 140%;
     letter-spacing: 0.05em;
     color: var(--color-gray-70);
   }
 
   ul {
-    margin: 0 ${pxToRem(16)};
+    margin: 0 16px;
     display: grid;
-    gap: ${pxToRem(12)};
+    gap: 12px;
 
     a {
       text-decoration: none;
     }
 
     li {
-      border-radius: ${pxToRem(8)};
-      padding: ${pxToRem(8)};
-      height: ${pxToRem(36)};
+      border-radius:8px;
+      padding: 8px;
+      height:36px;
       color: var(--color-gray-70);
       display: flex;
       align-items: center;
@@ -212,7 +212,7 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
       .list-item-content {
         display: flex;
         align-items: center;
-        gap: ${pxToRem(8)};
+        gap:8px;
       }
 
       &.active {
@@ -232,9 +232,9 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
     width: 100%;
 
     .profile {
-      border-bottom: ${pxToRem(1)} solid var(--color-gray-30);
-      border-top: ${pxToRem(1)} solid var(--color-gray-30);
-      padding: ${pxToRem(24)};
+      border-bottom:1px solid var(--color-gray-30);
+      border-top:1px solid var(--color-gray-30);
+      padding:24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -242,12 +242,12 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
       .user-details {
         display: flex;
         align-items: center;
-        gap: ${pxToRem(8)};
+        gap:8px;
 
         .user-name {
           font-style: normal;
           font-weight: 600;
-          font-size: ${pxToRem(16)};
+          font-size:16px;
           line-height: 140%;
           letter-spacing: -0.02em;
           color: var(--color-gray-80);
@@ -255,7 +255,7 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
         .user-type {
           font-style: normal;
           font-weight: 400;
-          font-size: ${pxToRem(10)};
+          font-size:10px;
           line-height: 140%;
           letter-spacing: 0.05em;
           color: var(--color-gray-80);
@@ -267,7 +267,7 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: ${pxToRem(24)};
+      padding:24px;
       .logout-content {
         flex-grow: 1;
         cursor: pointer;
@@ -276,7 +276,7 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
       .logout-text {
         font-style: normal;
         font-weight: 600;
-        font-size: ${pxToRem(16)};
+        font-size:16px;
         line-height: 140%;
         letter-spacing: -0.02em;
         color: var(--color-danger);
@@ -288,10 +288,10 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
     display: block;
     width: ${({ isExpanded }) => (isExpanded ? '16%' : '7%')};
     min-width: ${({ isExpanded }) =>
-      isExpanded ? pxToRem(260) : pxToRem(124)};
+      isExpanded ? '260px' : '124px'};
     border-top: none;
     position: static;
-    border-right: ${pxToRem(1)} solid var(--color-gray-200);
+    border-right:1px solid var(--color-gray-200);
 
     .sidebar__inner {
       height: 100%;
@@ -300,9 +300,9 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
     }
 
     header {
-      border-bottom: ${pxToRem(1)} solid var(--color-gray);
-      margin-bottom: ${pxToRem(32)};
-      padding: ${pxToRem(28)} ${pxToRem(24)};
+      border-bottom:1px solid var(--color-gray);
+      margin-bottom:32px;
+      padding:28px 24px;
       display: flex !important;
       align-items: center;
 
@@ -313,21 +313,21 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
         font-style: normal;
         font-family: 'thiccboi-extrabold';
         font-weight: 700;
-        font-size: ${pxToRem(18)};
+        font-size: 18px;
         line-height: 140%;
         letter-spacing: -0.02em;
         color: var(--color-neutralBlack);
         display: flex;
         align-items: center;
-        gap: ${pxToRem(8)};
+        gap:8px;
         justify-content: ${({ isExpanded }) => (isExpanded ? '' : 'center')};
       }
 
       .toggle-btn {
         position: absolute;
         background-color: white;
-        height: ${pxToRem(32)};
-        width: ${pxToRem(32)};
+        height: 32px;
+        width: 32px;
         border-radius: 50%;
         outline: 0;
         border: transparent;
@@ -335,7 +335,7 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
         justify-content: center;
         align-items: center;
         right: 0;
-        margin-right: -${pxToRem(12)};
+        margin-right: -12px;
       }
     }
 
@@ -354,12 +354,12 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
     }
 
     ul {
-      gap: ${pxToRem(20)};
-      margin: 0 ${pxToRem(24)};
+      gap: 20px;
+      margin: 0 24px;
       li {
-        border-left: ${pxToRem(4)} solid transparent;
-        border-top-left-radius: ${pxToRem(0)};
-        border-bottom-left-radius: ${pxToRem(0)};
+        border-left: 4px solid transparent;
+        border-top-left-radius:0px;
+        border-bottom-left-radius:0px;
 
         .list-item-content {
           justify-content: ${({ isExpanded }) =>
@@ -369,7 +369,7 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
         &.active,
         &:hover,
         &:focus {
-          border-left: ${pxToRem(4)} solid var(--color-primary);
+          border-left:4px solid var(--color-primary);
           background: var(--color-primary-10);
           color: var(--color-primary);
           svg {
@@ -381,7 +381,7 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
     .bottom-actions {
       .profile {
         border-bottom: transparent;
-        padding: ${pxToRem(20)} ${pxToRem(24)} ${pxToRem(8)} ${pxToRem(24)};
+        padding:20px 24px 8px 24px;
 
         .user-details {
           flex-grow: 1;
@@ -390,13 +390,13 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
       }
 
       .logout-container {
-        padding: ${pxToRem(8)} ${pxToRem(24)};
-        margin: ${pxToRem(16)} 0;
+        padding:8px 24px;
+        margin:16px 0;
 
         .logout-content {
           display: flex;
           align-items: flex-start;
-          gap: ${pxToRem(8)};
+          gap:8px;
           justify-content: ${({ isExpanded }) => (isExpanded ? '' : 'center')};
         }
       }
@@ -406,16 +406,16 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
 
 const BottomNav = styled.footer`
   background: white;
-  border-radius: ${pxToRem(16)} ${pxToRem(16)} 0 0;
+  border-radius: 16px 16px 0 0;
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: ${pxToRem(20)} ${pxToRem(16)};
+  padding:20px 16px;
   display: flex;
   align-items: center;
   justify-content: space-around;
-  gap: ${pxToRem(10)};
+  gap:10px;
   z-index: 1;
 
   @media screen and (min-width: ${sizes.mobileLargeWidth}) {
@@ -424,11 +424,11 @@ const BottomNav = styled.footer`
 `;
 
 const Button = styled.button`
-  padding: ${pxToRem(12)};
-  gap: ${pxToRem(33)};
-  height: ${pxToRem(44)};
+  padding:12px;
+  gap: 33px;
+  height:44px;
   background: var(--color-gray-20);
-  border-radius: ${pxToRem(8)};
+  border-radius:8px;
   outline: none;
   border: transparent;
   font-family: 'thiccboi-bold';
@@ -436,12 +436,12 @@ const Button = styled.button`
   color: var(--color-gray-70);
   font-style: normal;
   font-weight: 600;
-  font-size: ${pxToRem(16)};
+  font-size:16px;
   line-height: 140%;
   border: 1px solid transparent;
   display: flex;
   align-items: center;
-  gap: ${pxToRem(12)};
+  gap:12px;
 
   &.active {
     border-color: var(--color-primary);

@@ -235,20 +235,20 @@ export default function MakePayment({
 }
 
 const ModalBody = styled.div<{ isBalanceEnough: boolean }>`
-  padding: ${pxToRem(26)} ${pxToRem(24)};
+  padding: 26px 24px;
 
   svg {
     fill: var(--color-danger);
   }
 
   .modal-body__inner {
-    margin-top: ${pxToRem(48)};
+    margin-top: 48px;
     display: grid;
-    gap: ${pxToRem(16)};
+    gap:16px;
 
     .grid-item {
       display: grid;
-      gap: ${pxToRem(16)};
+      gap:16px;
       align-content: flex-start;
     }
     .h-fit-content {
@@ -257,27 +257,27 @@ const ModalBody = styled.div<{ isBalanceEnough: boolean }>`
     .logo-container {
       display: flex;
       align-items: center;
-      gap: ${pxToRem(8)};
+      gap:8px;
       font-style: normal;
       font-weight: 700;
-      font-size: ${pxToRem(16)};
+      font-size:16px;
       line-height: 140%;
       letter-spacing: -0.02em;
       color: var(--color-neutralBlack);
-      margin-bottom: ${pxToRem(22)};
+      margin-bottom:22px;
     }
     .thanks-for-trusting-us {
       h3 {
         font-style: normal;
         font-weight: 700;
-        font-size: ${pxToRem(18)};
+        font-size: 18px;
         line-height: 140%;
         letter-spacing: -0.02em;
         color: var(--color-neutralBlack);
       }
       p {
         font-weight: 400;
-        font-size: ${pxToRem(14)};
+        font-size:14px;
         line-height: 140%;
         letter-spacing: -0.02em;
         color: var(--color-neutralBlack);
@@ -286,7 +286,7 @@ const ModalBody = styled.div<{ isBalanceEnough: boolean }>`
     .card-title {
       font-style: normal;
       font-weight: 700;
-      font-size: ${pxToRem(20)};
+      font-size: 20px;
       line-height: 140%;
       letter-spacing: -0.02em;
       color: var(--color-neutralBlack);
@@ -294,25 +294,25 @@ const ModalBody = styled.div<{ isBalanceEnough: boolean }>`
     }
     .border-bottom {
       border-bottom: 1px solid var(--color-gray-50);
-      padding-bottom: ${pxToRem(16)};
-      margin-bottom: ${pxToRem(24)};
+      padding-bottom:16px;
+      margin-bottom: 24px;
     }
     .price-fields {
       display: grid;
-      gap: ${pxToRem(16)};
+      gap: 16px;
       .price-field {
         display: flex;
         align-items: center;
         justify-content: space-between;
         font-style: normal;
         font-weight: 400;
-        font-size: ${pxToRem(14)};
-        line-height: ${pxToRem(18)};
+        font-size:14px;
+        line-height:18px;
         letter-spacing: -0.02em;
         color: var(--color-gray-80);
 
         .price-value {
-          font-size: ${pxToRem(16)};
+          font-size:16px;
         }
       }
     }
@@ -321,27 +321,27 @@ const ModalBody = styled.div<{ isBalanceEnough: boolean }>`
       align-items: center;
       justify-content: space-between;
       font-weight: 700;
-      font-size: ${pxToRem(16)};
-      line-height: ${pxToRem(18)};
+      font-size:16px;
+      line-height:18px;
       letter-spacing: -0.02em;
       color: var(--color-neutralBlack);
     }
 
     .btn-container {
-      margin-top: ${pxToRem(24)};
+      margin-top: 24px;
     }
 
     .atmCard {
-      margin-bottom: ${pxToRem(10)};
+      margin-bottom:10px;
     }
 
     .alert-warning {
       display: flex;
       flex-direction: column;
       font-style: normal;
-      font-size: ${pxToRem(14)};
-      line-height: ${pxToRem(16)};
-      gap: ${pxToRem(4)};
+      font-size:14px;
+      line-height:16px;
+      gap: 4px;
       .alert-header {
         font-weight: 700;
         color: var(--color-danger);
@@ -350,12 +350,12 @@ const ModalBody = styled.div<{ isBalanceEnough: boolean }>`
       .alert-message {
         font-weight: 300;
         color: var(--color-gray-70);
-        line-height: ${pxToRem(16)};
+        line-height:16px;
       }
     }
 
     .pay-with-balance-header {
-      margin-bottom: ${pxToRem(16)};
+      margin-bottom:16px;
 
       svg {
         fill: ${(props) =>
@@ -372,10 +372,10 @@ const ModalBody = styled.div<{ isBalanceEnough: boolean }>`
       .icon-with-title {
         display: flex;
         align-items: center;
-        gap: ${pxToRem(12)};
+        gap: 12px;
         font-weight: 500;
-        font-size: ${pxToRem(14)};
-        line-height: ${pxToRem(18)};
+        font-size:14px;
+        line-height:18px;
         color: #171520;
       }
     }

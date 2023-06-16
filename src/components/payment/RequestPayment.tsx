@@ -129,28 +129,28 @@ export default function RequestPayment({
 }
 
 const ModalBody = styled.div`
-  padding: ${pxToRem(24)} ${pxToRem(64)};
+  padding:24px 64px;
   text-align: center;
   font-style: normal;
   font-weight: 400;
-  font-size: ${pxToRem(16)};
-  line-height: ${pxToRem(24)};
+  font-size: 16px;
+  line-height: 24px;
   display: grid;
   justify-content: center;
-  gap: ${pxToRem(24)};
+  gap: 24px;
 
   color: var(--color-neutralBlack);
   p {
     margin: auto;
   }
   .drag-and-drop-container {
-    height: ${pxToRem(320)};
+    height:320px;
     width: 100%;
   }
   .btn-container {
     display: flex;
     justify-content: center;
-    gap: ${pxToRem(24)};
+    gap: 24px;
     .ui-field {
       width: 50%;
 

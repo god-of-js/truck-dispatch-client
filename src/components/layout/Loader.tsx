@@ -12,16 +12,16 @@ type Sizes = 'lg' | 's';
 function sizeVar(size: Sizes) {
   if (size === 's') {
     return `
-   width: ${pxToRem(20)};
-   height: ${pxToRem(20)};
-   border: ${pxToRem(3)} solid rgba(0, 0, 0, 0.1);
+   width: 20px;
+   height:20px;
+   border:3px solid rgba(0, 0, 0, 0.1);
    `;
   }
   if (size === 'lg') {
     return `
-   width: ${pxToRem(50)};
-   height: ${pxToRem(50)};
-   border: ${pxToRem(5)} solid rgba(0, 0, 0, 0.1);
+   width: 50px;
+   height: 50px;
+   border: 5px solid rgba(0, 0, 0, 0.1);
    `;
   }
 }

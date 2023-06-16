@@ -138,8 +138,8 @@ const TopNavContainer = styled.div`
 `;
 
 const TopNav = styled.nav`
-  padding: ${pxToRem(12)} ${pxToRem(24)};
-  height: ${pxToRem(72)};
+  padding: 12px 24px;
+  height: 72px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -147,18 +147,18 @@ const TopNav = styled.nav`
   .start-container {
     display: flex;
     align-items: center;
-    gap: ${pxToRem(24)};
+    gap: 24px;
 
     .filters {
       display: none;
       align-items: center;
-      gap: ${pxToRem(12)};
+      gap: 12px;
     }
   }
 
   .route-name {
     color: var(--color-neutralBlack);
-    font-size: ${pxToRem(20)};
+    font-size: 20px;
     font-weight: 700;
     font-family: 'thiccboi-extrabold';
     display: none;
@@ -167,19 +167,19 @@ const TopNav = styled.nav`
   .edge-container {
     display: flex;
     align-items: center;
-    gap: ${pxToRem(12)};
+    gap: 12px;
     .notification-icon {
       width: 44px;
       height: 44px;
       background: white;
-      border-radius: ${pxToRem(8)};
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       svg {
-        width: ${pxToRem(24)};
-        height: ${pxToRem(24)};
+        width: 24px;
+        height: 24px;
         fill: var(--color-gray-80);
       }
     }
@@ -206,7 +206,7 @@ const TopNav = styled.nav`
   @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
     .start-container {
       display: flex;
-      gap: ${pxToRem(8)};
+      gap: 8px;
       .logo {
         display: none;
       }
@@ -241,15 +241,15 @@ const TopNav = styled.nav`
 
 const BottomTopNav = styled.div`
   display: block;
-  padding: ${pxToRem(12)} ${pxToRem(24)};
-  border-bottom: ${pxToRem(1)} solid var(--color-gray-30);
-  border-top: ${pxToRem(1)} solid var(--color-gray-30);
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--color-gray-30);
+  border-top: 1px solid var(--color-gray-30);
 
   .route-name-container {
-    margin-bottom: ${pxToRem(4)};
+    margin-bottom: 4px;
     display: flex;
     align-items: center;
-    gap: ${pxToRem(8)};
+    gap: 8px;
 
     svg {
       fill: var(--color-neutralBlack);
@@ -257,7 +257,7 @@ const BottomTopNav = styled.div`
     .route-name {
       font-style: normal;
       font-weight: 700;
-      font-size: ${pxToRem(24)};
+      font-size: 24px;
       line-height: 140%;
       letter-spacing: -0.02em;
       color: var(--color-neutralBlack);
@@ -267,7 +267,7 @@ const BottomTopNav = styled.div`
   .filters {
     display: flex;
     align-items: center;
-    gap: ${pxToRem(12)};
+    gap: 12px;
     overflow-x: auto;
   }
 

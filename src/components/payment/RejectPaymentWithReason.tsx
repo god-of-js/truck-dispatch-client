@@ -82,7 +82,7 @@ export default function RejectPaymentWithReason({
 
 const ButtonContainer = styled.div`
   display: flex;
-  gap: ${pxToRem(12)};
+  gap: 12px;
   justify-content: flex-end;
-  margin-top: ${pxToRem(16)};
+  margin-top:16px;
 `;

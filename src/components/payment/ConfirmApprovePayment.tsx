@@ -77,7 +77,7 @@ const ApprovePaymentStyling = styled.div`
   .btn-container {
     display: flex;
     width: 80%;
-    margin-top: ${pxToRem(12)};
-    gap: ${pxToRem(12)};
+    margin-top:12px;
+    gap: 12px;
   }
 `;

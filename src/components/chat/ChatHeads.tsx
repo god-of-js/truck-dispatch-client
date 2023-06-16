@@ -69,8 +69,8 @@ const ChatHeadsList = styled.ul`
 `;
 
 const ChatHead = styled.li`
-  padding: ${pxToRem(12)};
-  gap: ${pxToRem(12)};
+  padding:12px;
+  gap: 12px;
   border-bottom: 1px solid var(--color-gray-200);
   background: ${({ hasBeenRead }: { hasBeenRead: boolean }) =>
     !hasBeenRead && 'var(--color-gray-10);'};
@@ -89,12 +89,12 @@ const ChatHead = styled.li`
   }
 
   .name {
-    font-size: ${pxToRem(16)};
+    font-size:16px;
     font-weight: bold;
   }
 
   .last-text {
-    font-size: ${pxToRem(14)};
+    font-size:14px;
     font-weight: 400;
     color: var(--color-gray-500);
     flex: 1;

@@ -39,6 +39,6 @@ const LoaderContainer = styled.div`
   justify-content: center;
 
   button {
-    width: ${pxToRem(182)};
+    width: 182px;
   }
 `;
