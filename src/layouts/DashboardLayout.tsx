@@ -10,6 +10,7 @@ import sizes from '../utils/sizes';
 import {
   getDashboardUser,
   requestEmailVerification,
+  setUser,
   verifyEmail,
 } from 'modules/Account';
 
@@ -93,6 +94,8 @@ export default function DashboardLayout() {
     const sessionId = getUserSessionId();
     if (!sessionId && action !== 'sign-in' && !token) {
       navigate('/auth/login');
+      dispatch(setUser(null));
+      window.location.reload();
     } else {
       loadDashboardData();
     }
