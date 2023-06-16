@@ -149,17 +149,17 @@ export default function VerifyPhoneForm({ goToNext }: Props) {
 const StyledResendCode = styled.div`
   display: flex;
   justify-content: center;
-  gap: ${pxToRem(9)};
+  gap: 9px;
   align-items: center;
-  padding-top: ${pxToRem(26)};
+  padding-top:26px;
   p {
     font-weight: 400;
     color: var(--color-gray-80);
     font-family: 'thiccboi-regular';
-    font-size: ${pxToRem(16)};
-    line-height: ${pxToRem(24)};
+    font-size:16px;
+    line-height:24px;
   }
   button {
-    border-radius: ${pxToRem(16)};
+    border-radius:16px;
   }
 `;

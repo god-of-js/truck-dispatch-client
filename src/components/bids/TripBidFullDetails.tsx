@@ -90,9 +90,9 @@ export default function TripBidFullDetails({
 }
 
 const BidDetailsStyling = styled.div`
-  padding: ${pxToRem(26)} ${pxToRem(24)};
+  padding:26px 24px;
   display: grid;
-  gap: ${pxToRem(32)};
+  gap: 32px;
 
   .transporter-profile {
     width: fit-content;
@@ -100,18 +100,18 @@ const BidDetailsStyling = styled.div`
 
   .content {
     display: grid;
-    gap: ${pxToRem(12)};
+    gap:12px;
   }
   .grid-3 {
     display: grid;
-    gap: ${pxToRem(12)};
+    gap:12px;
     @media screen and (min-width: ${sizes.mobileLargeWidth}) {
       grid-template-columns: repeat(3, 1fr);
     }
   }
   .grid-2 {
     display: grid;
-    gap: ${pxToRem(12)};
+    gap:12px;
 
     @media screen and (min-width: ${sizes.mobileLargeWidth}) {
       grid-template-columns: repeat(2, 1fr);
@@ -125,24 +125,24 @@ const BidDetailsStyling = styled.div`
   .price {
     font-style: normal;
     font-weight: 600;
-    font-size: ${pxToRem(32)};
-    line-height: ${pxToRem(38)};
+    font-size:32px;
+    line-height:38px;
     letter-spacing: -0.02em;
     color: var(--color-neutralBlack);
   }
   .extra-notes {
     .ui-data-field {
-      min-height: ${pxToRem(116)};
+      min-height:116px;
     }
   }
   .action-btns {
     display: flex;
-    gap: ${pxToRem(16)};
+    gap:16px;
     justify-content: center;
-    padding-top: ${pxToRem(8)};
+    padding-top:8px;
 
     button {
-      min-width: ${pxToRem(136)};
+      min-width:136px;
     }
   }
 `;

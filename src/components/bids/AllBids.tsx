@@ -40,11 +40,11 @@ export default function AllBids({
 
 const AllBidsStyling = styled.div`
   background: var(--color-gray-20);
-  padding: ${pxToRem(32)} ${pxToRem(24)};
+  padding:32px 24px;
   height: 100%;
   overflow-y: auto;
 
   .bid-item {
-    margin-bottom: ${pxToRem(24)};
+    margin-bottom:24px;
   }
 `;

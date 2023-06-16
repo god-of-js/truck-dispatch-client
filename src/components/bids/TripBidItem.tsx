@@ -110,26 +110,26 @@ export default function TripBidItem({
 }
 
 const TripBidItemStyling = styled.div`
-  max-width: ${pxToRem(332)};
-  border-radius: ${pxToRem(16)};
+  max-width:332px;
+  border-radius:16px;
   background: #ffffff;
   width: 100%;
   font-weight: 600;
-  font-size: ${pxToRem(16)};
+  font-size:16px;
 
   @media screen and (min-width: ${sizes.mobileSmall}) {
-    min-width: ${pxToRem(320)};
+    min-width:320px;
   }
 
   header {
     background: var(--color-primary-10);
-    padding: ${pxToRem(24)};
+    padding:24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: ${pxToRem(12)};
-    border-top-left-radius: ${pxToRem(16)};
-    border-top-right-radius: ${pxToRem(16)};
+    gap:12px;
+    border-top-left-radius:16px;
+    border-top-right-radius:16px;
 
     .user-details-name {
       color: var(--color-gray-80);
@@ -140,17 +140,17 @@ const TripBidItemStyling = styled.div`
     text-transform: uppercase;
     font-style: normal;
     font-weight: 400;
-    font-size: ${pxToRem(10)};
+    font-size:10px;
     color: var(--color-gray-70);
     line-height: 140%;
     letter-spacing: 0.05em;
-    margin-bottom: ${pxToRem(8)};
+    margin-bottom:8px;
   }
 
   .field-value {
     font-style: normal;
     font-weight: 600;
-    font-size: ${pxToRem(14)};
+    font-size:14px;
     line-height: 140%;
     letter-spacing: -0.02em;
     color: var(--color-neutralBlack);
@@ -158,8 +158,8 @@ const TripBidItemStyling = styled.div`
 
   .field-item,
   .double-field-item {
-    border-bottom: ${pxToRem(1)} solid var(--color-gray);
-    padding: ${pxToRem(0)} 0 ${pxToRem(16)} 0;
+    border-bottom:1px solid var(--color-gray);
+    padding:0px 0 16px 0;
   }
 
   .double-field-item {
@@ -171,19 +171,19 @@ const TripBidItemStyling = styled.div`
   .fields {
     display: flex;
     flex-direction: column;
-    gap: ${pxToRem(16)};
-    padding: ${pxToRem(16)} ${pxToRem(24)} ${pxToRem(24)} ${pxToRem(24)};
+    gap:16px;
+    padding:16px 24px 24px 24px;
   }
   .field-item--without-border {
     display: flex;
     flex-direction: column;
-    gap: ${pxToRem(20)};
+    gap:20px;
   }
   .price {
     font-style: normal;
     font-weight: 600;
-    font-size: ${pxToRem(28)};
-    line-height: ${pxToRem(32)};
+    font-size:28px;
+    line-height:32px;
     letter-spacing: -0.02em;
     color: var(--color-neutralBlack);
   }
@@ -191,7 +191,7 @@ const TripBidItemStyling = styled.div`
   .vehicle-location {
     display: flex;
     align-items: flex-start;
-    gap: ${pxToRem(8)};
+    gap:8px;
     svg {
       fill: var(--color-primary);
     }
@@ -201,5 +201,5 @@ const TripBidItemStyling = styled.div`
 const SubmitButtonContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: ${pxToRem(12)};
+  gap: 12px;
 `;

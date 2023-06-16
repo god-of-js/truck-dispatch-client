@@ -15,26 +15,26 @@ const Styling = styled.div`
     margin: 0;
   }
   height: 100%;
-  padding-bottom: ${pxToRem(30)};
+  padding-bottom:30px;
   header {
     ${({ inverted }: { inverted?: boolean }) =>
       !inverted && `text-align: center;`};
-    margin-bottom: ${pxToRem(40)};
+    margin-bottom:40px;
     span {
       fill: var(--color-neutralBlack);
     }
     h1 {
       color: var(--color-neutralBlack);
-      font-size: ${pxToRem(24)};
-      margin-top: ${pxToRem(20)};
-      margin-bottom: ${pxToRem(12)};
+      font-size:24px;
+      margin-top:20px;
+      margin-bottom:12px;
     }
     p {
       font-weight: 400;
       color: var(--color-gray-80);
       font-family: 'thiccboi-regular';
-      font-size: ${pxToRem(16)};
-      line-height: ${pxToRem(24)};
+      font-size: 16px;
+      line-height:24px;
     }
   }
   .form-container {
@@ -44,9 +44,9 @@ const Styling = styled.div`
     position: relative;
     ${({ inverted }: { inverted?: boolean }) =>
       inverted ? '' : 'margin: 0 auto'};
-    max-width: ${pxToRem(400)};
+    max-width:400px;
     button {
-      margin-top: ${pxToRem(24)};
+      margin-top:24px;
     }
     .no-btn-margin-top {
       button {
@@ -56,36 +56,36 @@ const Styling = styled.div`
     .select-with-optional-alert-container {
       display: flex;
       flex-direction: column;
-      gap: ${pxToRem(8)};
+      gap:8px;
     }
     &__inner {
       display: flex;
       flex-direction: column;
-      gap: ${pxToRem(24)};
+      gap:24px;
     }
 
     .duo-button-container {
       display: flex;
       flex-direction: column;
-      margin-top: ${pxToRem(24)};
-      gap: ${pxToRem(12)};
+      margin-top:24px;
+      gap:12px;
     }
     .bottom-actions {
       position: absolute;
       display: flex;
       flex-direction: column;
-      gap: ${pxToRem(12)};
+      gap:12px;
 
       width: 100%;
       bottom: 0;
       left: 0;
 
       p {
-        height: ${pxToRem(46)};
+        height:46px;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: ${pxToRem(4)};
+        gap:4px;
       }
     }
 
@@ -141,12 +141,12 @@ const Styling = styled.div`
     margin-left: ${({ inverted }: { inverted?: boolean }) =>
       inverted ? '' : 'auto'};
     header {
-      margin-bottom: ${pxToRem(48)};
+      margin-bottom: 48px;
 
       h1 {
-        font-size: ${pxToRem(32)};
-        margin-top: ${pxToRem(19)};
-        margin-bottom: ${pxToRem(16)};
+        font-size:32px;
+        margin-top: 19px;
+        margin-bottom:16px;
       }
     }
     .form-container {
@@ -156,7 +156,7 @@ const Styling = styled.div`
     }
   }
   @media (min-width: ${sizes.tabletLargeWidth}) {
-    padding-bottom: ${pxToRem(50)};
+    padding-bottom:50px;
     .form-container {
       width: ${({ inverted }: { inverted?: boolean }) =>
         inverted ? '100%' : '50%'};
