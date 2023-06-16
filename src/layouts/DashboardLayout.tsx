@@ -10,6 +10,7 @@ import sizes from '../utils/sizes';
 import {
   getDashboardUser,
   requestEmailVerification,
+  setUser,
   verifyEmail,
 } from 'modules/Account';
 
@@ -92,8 +93,9 @@ export default function DashboardLayout() {
   useEffect(() => {
     const sessionId = getUserSessionId();
     if (!sessionId && action !== 'sign-in' && !token) {
-      console.log('this is getting triggered')
       navigate('/auth/login');
+      dispatch(setUser(null));
+      window.location.reload();
     } else {
       loadDashboardData();
     }
