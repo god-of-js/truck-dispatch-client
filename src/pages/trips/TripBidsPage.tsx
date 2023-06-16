@@ -168,7 +168,7 @@ export default function TripBidsPage() {
         totalPages={totalPages}
         page={page}
       />
-      
+
       {bid && (
         <>
           <TripBidFullDetails
