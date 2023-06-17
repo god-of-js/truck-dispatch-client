@@ -120,32 +120,32 @@ const ComponentStyling = styled.div`
   .grid-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: ${pxToRem(20)};
-    margin-top: ${pxToRem(32)};
+    gap:20px;
+    margin-top:32px;
   }
 
   label {
     font-weight: 700;
-    font-size: ${pxToRem(16)};
+    font-size:16px;
     font-family: 'thiccboi-medium';
     color: var(--color-neutralBlack);
   }
   .driver-photo-container {
     .file-upload-widget {
-      height: ${pxToRem(376)};
+      height:376px;
     }
   }
   .form-details {
     display: grid;
     grid-template-columns: auto;
-    gap: ${pxToRem(24)};
+    gap:24px;
   }
   .btn-container {
     display: flex;
     justify-content: center;
-    margin-top: ${pxToRem(32)};
+    margin-top:32px;
     button {
-      width: ${pxToRem(182)};
+      width:182px;
     }
   }
 `;

@@ -80,31 +80,31 @@ export default function VehicleComponent({
 }
 
 const VehicleStyling = styled.div`
-  padding: ${pxToRem(24)};
+  padding:24px;
   background: white;
-  border-radius: ${pxToRem(16)};
+  border-radius:16px;
   display: grid;
-  gap: ${pxToRem(24)};
-  max-width: ${pxToRem(372)};
+  gap:24px;
+  max-width:372px;
 
   @media screen and (min-width: ${sizes.mobileSmall}) {
-    min-width: ${pxToRem(360)};
+    min-width:360px;
   }
 
   .driver-avatar-container {
     display: flex;
-    gap: ${pxToRem(12)};
+    gap:12px;
 
     img {
-      border-radius: ${pxToRem(8)};
-      width: ${pxToRem(100)};
-      height: ${pxToRem(100)};
+      border-radius:8px;
+      width:100px;
+      height:100px;
       object-fit: cover;
     }
 
     .vehicle-type {
       background: var(--color-gray-20);
-      border-radius: ${pxToRem(8)};
+      border-radius:8px;
       width: calc(100% - 100px);
       display: flex;
       flex-direction: column;
@@ -115,11 +115,11 @@ const VehicleStyling = styled.div`
       font-size: 12px;
       line-height: 24px;
       text-transform: capitalize;
-      height: ${pxToRem(100)};
+      height:100px;
 
       svg {
-        height: ${pxToRem(40)};
-        width: ${pxToRem(80)};
+        height:40px;
+        width:80px;
       }
     }
   }
@@ -129,16 +129,16 @@ const VehicleStyling = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: ${pxToRem(16)} ${pxToRem(24)};
+    padding: 16px 24px;
     background: var(--color-gray-20);
-    border-radius: ${pxToRem(8)};
+    border-radius:8px;
 
     &__value {
       letter-spacing: -0.02em;
       color: var(--color-neutralBlack);
       font-style: normal;
       font-weight: 600;
-      font-size: ${pxToRem(20)};
+      font-size:20px;
     }
   }
 
@@ -146,15 +146,15 @@ const VehicleStyling = styled.div`
     font-style: normal;
     font-weight: 400;
     font-family: 'thiccboi-light';
-    font-size: ${pxToRem(10)};
+    font-size:10px;
     color: var(--color-gray-70);
-    margin-bottom: ${pxToRem(12)};
+    margin-bottom:12px;
     text-transform: uppercase;
   }
 
   .fields {
     display: grid;
-    gap: ${pxToRem(20)};
+    gap: 20px;
 
     .text-value {
       font-style: normal;
@@ -172,12 +172,12 @@ const VehicleStyling = styled.div`
     .content {
       display: grid;
       grid-template-columns: auto auto;
-      gap: ${pxToRem(12)};
+      gap:12px;
 
       .image {
         position: relative;
         width: 100%;
-        height: ${pxToRem(84)};
+        height:84px;
         img {
           object-fit: cover;
         }
@@ -200,7 +200,7 @@ const VehicleStyling = styled.div`
               rgba(21, 19, 27, 0.75),
               rgba(21, 19, 27, 0.75)
             );
-            border-radius: ${pxToRem(8)};
+            border-radius:8px;
             color: white;
             font-style: normal;
             font-weight: 600;
@@ -211,7 +211,7 @@ const VehicleStyling = styled.div`
       img {
         width: 100%;
         height: 100%;
-        border-radius: ${pxToRem(8)};
+        border-radius:8px;
       }
     }
   }
@@ -219,13 +219,13 @@ const VehicleStyling = styled.div`
   .btn-container {
     display: flex;
     align-items: center;
-    gap: ${pxToRem(12)};
+    gap:12px;
     button {
       &:first-child {
         width: 90%;
       }
       &:last-child {
-        width: ${pxToRem(56)};
+        width:56px;
       }
     }
   }

@@ -90,38 +90,38 @@ export default function UploadVehicleImages({ vehicle, goToNext }: Props) {
 const ComponentStyling = styled.div`
   label {
     font-weight: 700;
-    font-size: ${pxToRem(16)};
+    font-size:16px;
     font-family: 'thiccboi-medium';
     color: var(--color-neutralBlack);
   }
   .btn-container {
     display: flex;
     justify-content: center;
-    margin-top: ${pxToRem(16)};
+    margin-top:16px;
     button {
-      width: ${pxToRem(182)};
+      width:182px;
     }
   }
   .img-grid {
     display: grid;
     grid-template-columns: auto;
-    grid-auto-rows: ${pxToRem(220)};
-    gap: ${pxToRem(12)};
-    margin: ${pxToRem(24)} 0;
+    grid-auto-rows:220px;
+    gap:12px;
+    margin:24px 0;
 
     .img-upload {
       text-align: center;
       .title {
-        font-size: ${pxToRem(14)};
+        font-size:14px;
         color: var(--color-neutralBlack);
         font-weight: 700;
-        margin-top: ${pxToRem(12)};
+        margin-top:12px;
       }
     }
     .file-upload-widget {
-      height: ${pxToRem(180)};
+      height:180px;
       width: 100%;
-      max-height: ${pxToRem(376)};
+      max-height:376px;
     }
 
     @media screen and (min-width: ${sizes.tabletMidWidth}) {

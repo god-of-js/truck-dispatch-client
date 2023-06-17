@@ -57,7 +57,7 @@ export default function SelectTruckType({ vehicle, goToNext }: Props) {
 const ComponentStyling = styled.div`
   label {
     font-weight: 700;
-    font-size: ${pxToRem(16)};
+    font-size:16px;
     font-family: 'thiccboi-medium';
     color: var(--color-neutralBlack);
   }
@@ -65,14 +65,14 @@ const ComponentStyling = styled.div`
     display: flex;
     justify-content: center;
     button {
-      width: ${pxToRem(182)};
+      width:182px;
     }
   }
   .vehicle-grid {
     display: grid;
     grid-template-columns: auto;
-    gap: ${pxToRem(12)};
-    margin: ${pxToRem(24)} 0;
+    gap:12px;
+    margin:24px 0;
 
     @media screen and (min-width: ${sizes.tabletMidWidth}) {
       grid-template-columns: auto auto auto;
@@ -81,35 +81,35 @@ const ComponentStyling = styled.div`
 `;
 
 const Vehicle = styled.button`
-  padding: ${pxToRem(1)};
+  padding:1px;
   background: ${({ isActive }: { isActive: boolean }) =>
     isActive ? 'var(--color-primary)' : 'transparent'};
   border: transparent;
   outline: none;
-  border-radius: ${pxToRem(8)};
+  border-radius:8px;
   .vehicle-inner {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: ${pxToRem(8)};
+    gap:8px;
     cursor: pointer;
-    border: ${pxToRem(1)} solid
+    border:1px solid
       ${({ isActive }: { isActive: boolean }) =>
         isActive ? 'var(--color-primary)' : 'var(--color-gray)'};
     background: ${({ isActive }: { isActive: boolean }) =>
       isActive ? 'var(--color-primary-10)' : 'var(--color-gray-20)'};
-    border-radius: ${pxToRem(8)};
-    padding: ${pxToRem(20)} ${pxToRem(24)};
+    border-radius:8px;
+    padding:20px 24px;
     color: var(--color-neutralBlack);
-    font-size: ${pxToRem(14)};
+    font-size:14px;
     font-weight: 700;
     font-family: 'thiccboi-extrabold';
   }
 
   svg {
-    height: ${pxToRem(64)};
-    width: ${pxToRem(128)};
+    height:64px;
+    width:128px;
   }
 
   &:hover {
