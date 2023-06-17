@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import UiButton from 'ui/UiButton';
-import UiModal from 'ui/UiModal';
+
+const UiModal = lazy(() => import('ui/UiModal'));
+const UiButton = lazy(() => import('ui/UiButton'));
 
 interface Props {
   onClose: () => void;
+  isVisible: boolean;
 }
-export default function NotifyUserToAddAccount({ onClose }: Props) {
+export default function NotifyUserToAddAccount({ onClose, isVisible }: Props) {
   return (
-    <UiModal onClose={onClose}>
+    <UiModal isVisible={isVisible} onClose={onClose}>
       <Header>Add Payout Account</Header>
       <TextContent>
         In order to receive payment for a trip, you need to add your account to
@@ -22,7 +24,7 @@ export default function NotifyUserToAddAccount({ onClose }: Props) {
       </TextContent>
 
       <ButtonContainer>
-        <Link to="/dashboard/profile/accounts">
+        <Link to="/profile/accounts">
           <UiButton size="s">Add Account</UiButton>
         </Link>
       </ButtonContainer>

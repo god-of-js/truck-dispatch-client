@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import UiButton from './UiButton';
-import UiIcon from './UiIcon';
 
+const UiButton = lazy(() => import('./UiButton'));
+const UiIcon = lazy(() => import('./UiIcon'));
 export default function UiBackButton() {
   const navigate = useNavigate();
 
@@ -12,9 +12,12 @@ export default function UiBackButton() {
   }
 
   return (
-    <UiButton variant="primary-text" onClick={goBack}>
+    <UiButton variant="secondary" onClick={goBack}>
       <ButtonStyling>
-        <UiIcon icon="ArrowLeft" /> <span>Go Back </span>
+        <div className="icon-container">
+          <UiIcon icon="ArrowLeft" size="12" />
+        </div>
+        <span>Go Back </span>
       </ButtonStyling>
     </UiButton>
   );
@@ -22,5 +25,6 @@ export default function UiBackButton() {
 
 const ButtonStyling = styled.div`
   display: flex;
+  align-items: center;
   gap: ${pxToRem(12)};
 `;

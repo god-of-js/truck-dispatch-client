@@ -1,43 +1,45 @@
-import { createOrUpdateUser, selectDashboardUser } from 'modules/Account';
-import React, { useState } from 'react';
+import { RootState } from 'modules/index';
+import React, { lazy, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { updateUser } from 'modules/Account';
 import User from 'types/User';
-import UiAvatar from 'ui/UiAvatar';
-import UiButton from 'ui/UiButton';
-import UiForm from 'ui/UiForm';
-import UiIcon from 'ui/UiIcon';
-import UiInput from 'ui/UiInput';
-import { toAnyAction } from 'utils/helpers';
+import {
+  deepRootedToFormData,
+  removeUneditedFields,
+  toAnyAction,
+} from 'utils/helpers';
 import sizes from 'utils/sizes';
-import { Toast } from 'utils/toast';
 import EditProfileSchema from 'utils/validations/EditProfileSchema';
-import { uploadItem } from '../../api/Cloudinary';
+
+const UiCard = lazy(() => import('ui/UiCard'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiForm = lazy(() => import('ui/UiForm'));
+const UiInput = lazy(() => import('ui/UiInput'));
+const UiAvatar = lazy(() => import('ui/UiAvatar'));
 
 export default function ProfileDetailsPage() {
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState(user || ({} as User));
   const [isEditable, setIsEditable] = useState(false);
   const [loading, setLoading] = useState(false);
 
   async function editProfile() {
-    setLoading(true);
-
-    const data = formData;
-    if (data.avatar instanceof File) {
-      const avatar = await uploadItem(formData.avatar as File);
-      data.avatar = avatar;
+    try {
+      setLoading(true);
+      const editedData = removeUneditedFields<User>(user!, formData);
+      const data = deepRootedToFormData(editedData);
+      dispatch(toAnyAction(updateUser(data)))
+        .then(() => {
+          setIsEditable(false);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } catch {
+      setLoading(false);
     }
-
-    dispatch(toAnyAction(createOrUpdateUser(data)))
-      .then(() => {
-        Toast.success({ msg: 'Profile has been updated' });
-        setIsEditable(false);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
   }
 
   function onChange(event: {
@@ -57,99 +59,97 @@ export default function ProfileDetailsPage() {
 
   return (
     <CardContainer>
-      <header>
-        <h2>{isEditable && 'Edit'} Profile Details</h2>
-        {!isEditable && (
-          <div className="edit-btn">
-            <UiButton
-              size="s"
-              variant="neutral"
-              onClick={() => setIsEditable(true)}
-            >
-              Edit Profile
-              <UiIcon icon="PencilSimple" size="20" />
-            </UiButton>
-          </div>
-        )}
-      </header>
-
-      <UiForm
-        formData={formData}
-        schema={EditProfileSchema}
-        onSubmit={editProfile}
-      >
-        {({ errors }) => (
-          <>
-            <div className="avatar-container">
-              <UiAvatar
-                size="lg"
-                isEdit={isEditable}
-                name="avatar"
-                avatar={formData.avatar}
-                onChange={onChange}
-              />
+      <UiCard>
+        <header>
+          <h2>{isEditable && 'Edit'} Profile Details</h2>
+          {!isEditable && (
+            <div className="edit-btn">
+              <UiButton
+                size="s"
+                variant="neutral"
+                onClick={() => setIsEditable(true)}
+              >
+                Edit Profile
+                {/* <UiIcon icon="PencilSimple" size="20" /> */}
+              </UiButton>
             </div>
-            <GridSpacer>
-              <UiInput
-                label="First Name"
-                value={formData.firstName}
-                name="firstName"
-                disabled={!isEditable}
-                error={errors.firstName}
-                onChange={onChange}
-              />
-              <UiInput
-                label="Last Name"
-                value={formData.lastName}
-                name="lastName"
-                error={errors.lastName}
-                disabled={!isEditable}
-                onChange={onChange}
-              />
-              <UiInput
-                label="Email"
-                value={formData.email}
-                name="email"
-                error={errors.email}
-                disabled
-                onChange={onChange}
-              />
-              <UiInput
-                label="Phone Number"
-                value={formData.phone}
-                name="phone"
-                error={errors.phone}
-                disabled={!isEditable}
-                onChange={onChange}
-              />
-            </GridSpacer>
-            {isEditable && (
-              <div className="button-container">
-                <UiButton loading={loading}>Update Profile</UiButton>
-                <UiButton
-                  variant="secondary"
-                  type="button"
-                  onClick={cancelEdit}
-                >
-                  Cancel
-                </UiButton>
+          )}
+        </header>
+
+        <UiForm
+          formData={formData}
+          schema={EditProfileSchema}
+          onSubmit={editProfile}
+        >
+          {({ errors }) => (
+            <>
+              <div className="avatar-container">
+                <UiAvatar
+                  size="lg"
+                  isEdit={isEditable}
+                  name="avatar"
+                  avatar={formData.avatar}
+                  onChange={onChange}
+                />
               </div>
-            )}
-          </>
-        )}
-      </UiForm>
+              <GridSpacer>
+                <UiInput
+                  label="First Name"
+                  value={formData.firstName}
+                  name="firstName"
+                  disabled={!isEditable}
+                  error={errors.firstName}
+                  onChange={onChange}
+                />
+                <UiInput
+                  label="Last Name"
+                  value={formData.lastName}
+                  name="lastName"
+                  error={errors.lastName}
+                  disabled={!isEditable}
+                  onChange={onChange}
+                />
+                <UiInput
+                  label="Email"
+                  value={formData.email}
+                  name="email"
+                  error={errors.email}
+                  disabled
+                  onChange={onChange}
+                />
+                <UiInput
+                  label="Phone Number"
+                  value={formData.phone}
+                  name="phone"
+                  error={errors.phone}
+                  disabled
+                  onChange={onChange}
+                />
+              </GridSpacer>
+              {isEditable && (
+                <div className="button-container">
+                  <UiButton loading={loading}>Update Profile</UiButton>
+                  <UiButton
+                    variant="secondary"
+                    type="button"
+                    onClick={cancelEdit}
+                  >
+                    Cancel
+                  </UiButton>
+                </div>
+              )}
+            </>
+          )}
+        </UiForm>
+      </UiCard>
     </CardContainer>
   );
 }
 
 const CardContainer = styled.div`
-  background: #ffffff;
   width: 90%;
   margin: auto;
-  border: 1px solid var(--color-gray-200);
-  border-radius: ${pxToRem(8)};
   color: var(--color-gray-600);
-  padding: ${pxToRem(24)};
 
   header {
     display: flex;

@@ -1,0 +1,74 @@
+import React, { lazy, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import styled from 'styled-components';
+import { requestEmailVerification } from 'modules/Account';
+import { toAnyAction } from 'utils/helpers';
+
+const UiModal = lazy(() => import('ui/UiModal'));
+const UiButton = lazy(() => import('ui/UiButton'));
+
+interface Props {
+  onClose: () => void;
+  isVisible: boolean;
+}
+export default function EmailHasBeenSentModal({ onClose, isVisible }: Props) {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+
+  async function requestNewVerificationLink() {
+    setLoading(true);
+    dispatch(toAnyAction(requestEmailVerification())).finally(() => {
+      setLoading(false);
+    });
+  }
+
+  return (
+    <UiModal isVisible={isVisible} size="sm" onClose={onClose}>
+      <Styling>
+        <h2>Email Verification has been sent</h2>
+        <p>
+          Your email verification has been sent. Kindly check your mailbox for a
+          verification link.
+          <br />
+          Note: The verification link expires in 10 minutes
+        </p>
+        <div className="btn-container">
+          <UiButton variant="neutral" isFullWidth onClick={() => onClose()}>
+            Close
+          </UiButton>
+          <UiButton
+            isFullWidth
+            loading={loading}
+            onClick={requestNewVerificationLink}
+          >
+            Request new verification
+          </UiButton>
+        </div>
+      </Styling>
+    </UiModal>
+  );
+}
+
+const Styling = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  h2 {
+    margin: 0;
+    font-size: ${pxToRem(16)};
+  }
+  p {
+    width: 80%;
+    font-size: ${pxToRem(15)};
+  }
+
+  .btn-container {
+    display: flex;
+    width: 80%;
+    margin-top: ${pxToRem(12)};
+    gap: ${pxToRem(12)};
+  }
+`;

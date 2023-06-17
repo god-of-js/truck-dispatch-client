@@ -2,25 +2,30 @@ import { toast } from 'react-hot-toast';
 
 export interface ToastProps {
   msg: string;
-  position?: 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right';
+  position?:
+    | 'bottom-left'
+    | 'bottom-right'
+    | 'top-left'
+    | 'top-right'
+    | 'top-center';
 }
 
 const toastStyle = {
   style: {
     fontSize: '14px',
-    borderRadius: '0px',
+    borderRadius: '5px',
   },
 };
 export const Toast = {
-  success: ({ msg, position = 'bottom-left' }: ToastProps) =>
+  success: ({ msg, position = 'top-center' }: ToastProps) =>
     toast.success(msg, {
       position,
       ...toastStyle,
     }),
 
-  error: ({ msg, position = 'bottom-left' }: ToastProps) =>
+  error: ({ msg, position = 'top-center' }: ToastProps) =>
     toast.error(msg, { position, ...toastStyle }),
-  warn: ({ msg, position = 'bottom-left' }: ToastProps) =>
+  warn: ({ msg, position = 'top-center' }: ToastProps) =>
     toast.custom(msg, {
       position,
       ...toastStyle,

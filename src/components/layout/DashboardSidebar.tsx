@@ -1,69 +1,41 @@
-import React, { useMemo, useState } from 'react';
+import React, { lazy, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import sizes from 'utils/sizes';
+import { ReactComponent as AppLogo } from '../../assets/logo.svg';
 
-import { selectDashboardUser } from 'modules/Account';
-import { selectChatHeads } from 'modules/Chat';
+import { RootState } from 'modules/index';
+import { removeUserSessionId } from 'utils/localStorageMethods';
+import { selectUnreadChats } from 'modules/Chat';
+import { shipperRoutes, transporterRoutes } from './routes';
+import { setUser } from 'modules/Account';
 
-import TruckDispatchLogo from '../../assets/img/truck-dispatch-logo.svg';
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiAvatar = lazy(() => import('ui/UiAvatar'));
+const UiIcon = lazy(() => import('ui/UiIcon'));
 
-import UiIcon, { Icons } from '../ui/UiIcon';
-
-interface Route {
-  iconName: Icons;
-  path: string;
-  name: string;
-}
 export default function DashboardSidebar() {
-  const user = useSelector(selectDashboardUser);
-  const chatHeads = useSelector(selectChatHeads);
+  const user = useSelector((state: RootState) => state.account.user);
+  const unreadChat = useSelector(selectUnreadChats);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const appLocation = useLocation();
-  const [isChatAvailable] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isMobileExpanded, setIsMobileExpanded] = useState(false);
 
-  const logOutUser = () => {
-    localStorage.removeItem('uid');
-    navigate('/auth/login');
-    location.reload();
-  };
+  const userType = useMemo(() => {
+    if (user?.userType === 'transporter') return 'transporter';
+    if (user?.userType === 'shipper') return 'shipper';
+    if (user?.userType === 'transportCompany') return 'Transport Company';
 
-  const transporterRoutes: Route[] = [
-    {
-      path: '/dashboard/available-jobs',
-      name: 'Available Jobs',
-      iconName: 'Suitcase',
-    },
-    {
-      path: '/dashboard/my-trips',
-      name: 'My Trips',
-      iconName: 'Truck',
-    },
-    {
-      path: '/dashboard/payments',
-      name: 'Payments',
-      iconName: 'Money',
-    },
-  ];
-
-  const agentRoutes: Route[] = [
-    {
-      path: '/dashboard/my-trips',
-      name: 'My Trips',
-      iconName: 'Truck',
-    },
-  ];
-  const unreadChatHeads = useMemo(() => {
-    return chatHeads.filter(
-      (chat) => !chat.readAt && chat.senderId !== user?.id,
-    ).length;
-  }, [chatHeads]);
+    return 'company';
+  }, [user]);
 
   const routes = useMemo(() => {
     if (!user) return [];
 
-    return user?.userType === 'transporter' ? transporterRoutes : agentRoutes;
+    return user?.userType === 'transporter' ? transporterRoutes : shipperRoutes;
   }, [user]);
 
   function isRouteActive(route: string) {
@@ -72,167 +44,411 @@ export default function DashboardSidebar() {
     return appLocation.pathname.includes(route);
   }
 
-  return (
-    <Sidebar>
-      <div className="sidebar__inner">
-        <Link to="/dashboard/my-trips">
-          <LogoContainer>
-            <TDLogo src={TruckDispatchLogo} alt="truck-dispatch" />
-          </LogoContainer>
-        </Link>
-        <TabList>
-          {routes.map((route, index) => (
-            <Link to={route.path} key={index}>
-              <Tab isActive={isRouteActive(route.path)}>
-                <UiIcon icon={route.iconName} size="24" />
-              </Tab>
-            </Link>
-          ))}
-          {isChatAvailable && (
-            <Link to="/dashboard/chat">
-              <Tab isActive={isRouteActive('/dashboard/chat')}>
-                <div className="chat-icon-container">
-                  <UiIcon icon="Chats" size="24" />
-                  {unreadChatHeads !== 0 && (
-                    <MessageCount>{unreadChatHeads}</MessageCount>
-                  )}
-                </div>
-              </Tab>
-            </Link>
-          )}
-        </TabList>
+  function logOutUser() {
+    removeUserSessionId();
+    navigate('/auth/login');
+    dispatch(setUser(null));
+    window.location.reload();
+  }
 
-        <BottomActions>
-          <LogOutContainer onClick={() => logOutUser()}>
-            <UiIcon icon="SignOut" size="24" />
-          </LogOutContainer>
-        </BottomActions>
-      </div>
-    </Sidebar>
+  function toggleShowNames() {
+    setIsExpanded(!isExpanded);
+  }
+
+  function closeIsMobileExpandedIfOpen() {
+    if (isMobileExpanded) setIsMobileExpanded(false);
+  }
+
+  return (
+    <>
+      <Sidebar isExpanded={isExpanded} isMobileExpanded={isMobileExpanded}>
+        <div className="sidebar__inner">
+          <header className="hide-in-small-screen">
+            <Link to="/my-trips" onClick={closeIsMobileExpandedIfOpen}>
+              <AppLogo />
+              <span className="app-name hide-in-unexpanded-large-screen">
+                TruckDispatch
+              </span>
+            </Link>
+            <button className="toggle-btn" onClick={toggleShowNames}>
+              <UiIcon
+                icon={isExpanded ? 'ArrowCircleLeft' : 'ArrowCircleRight'}
+                size="20"
+              />
+            </button>
+          </header>
+          <div className="side-menu-text hide-in-large-screen">SIDE MENU</div>
+
+          <ul>
+            {routes.map((route, index) => (
+              <Link
+                to={route.path}
+                key={index}
+                onClick={closeIsMobileExpandedIfOpen}
+              >
+                <li className={isRouteActive(route.path) ? 'active' : ''}>
+                  <div className="list-item-content">
+                    <UiIcon icon={route.iconName} size="24" />{' '}
+                    <span className="hide-in-unexpanded-large-screen">
+                      {route.name}
+                    </span>
+                  </div>
+                  <div className="hide-in-large-screen">
+                    {isRouteActive(route.path) && <UiIcon icon="Tick" />}
+                  </div>
+                </li>
+              </Link>
+            ))}
+            <Link to="/chat" onClick={closeIsMobileExpandedIfOpen}>
+              <li className={isRouteActive('/chat') ? 'active' : ''}>
+                <div className="list-item-content">
+                  <UiIcon icon="Chat" size="24" />{' '}
+                  <span className="hide-in-unexpanded-large-screen">Chat</span>
+                </div>
+                {isRouteActive('/chat') && (
+                  <div className="hide-in-large-screen">
+                    <UiIcon icon="Tick" />
+                  </div>
+                )}
+              </li>
+            </Link>
+          </ul>
+
+          <div className="bottom-actions">
+            <Link to="/profile" onClick={closeIsMobileExpandedIfOpen}>
+              <div className="profile">
+                <div className="user-details">
+                  <UiAvatar avatar={user?.avatar} />
+                  <div className="hide-in-unexpanded-large-screen">
+                    <div className="user-name">{`${user?.firstName} ${user?.lastName}`}</div>
+                    <div className="user-type">{userType}</div>
+                  </div>
+                </div>
+                <div className="hide-in-large-screen">
+                  <UiButton variant="secondary">View profile</UiButton>
+                </div>
+              </div>
+            </Link>
+            <div className="logout-container">
+              <div className="logout-content" onClick={logOutUser}>
+                <span className="hide-in-small-screen">
+                  <UiIcon icon="Logout" size="24" />
+                </span>
+                <span className="logout-text hide-in-unexpanded-large-screen">
+                  Logout
+                </span>
+              </div>
+              <Button
+                className="hide-in-large-screen"
+                onClick={closeIsMobileExpandedIfOpen}
+              >
+                <span>Close</span> <UiIcon icon="CloseThick" size="15" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Sidebar>
+      <BottomNav>
+        {routes.slice(0, 3).map((route) => (
+          <Link to={route.path} key={route.path}>
+            <Button className={isRouteActive(route.path) ? 'active' : ''}>
+              {route.name}
+            </Button>
+          </Link>
+        ))}
+        <Button onClick={() => setIsMobileExpanded(true)}>
+          <UiIcon icon="Menu" size="24" />
+        </Button>
+      </BottomNav>
+    </>
   );
 }
 
-const Sidebar = styled.nav`
-  background: #ffffff;
-  border-top: 1px solid var(--color-gray-200);
-  position: fixed;
-  z-index: 2;
+const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
+  display: ${({ isMobileExpanded }) => (isMobileExpanded ? 'block' : 'none')};
+  position: absolute;
   bottom: 0;
-  right: 0;
   left: 0;
+  right: 0;
+  background: white;
+  z-index: 2;
+  /* TODO: calc the height of 100% - nav bar height */
+  height: ${({ isMobileExpanded }) =>
+    isMobileExpanded ? 'calc(100% - 72px)' : 'none'};
 
-  .sidebar__inner {
-    position: relative;
-    height: 100%;
-    width: 100%;
+  .hide-in-small-screen {
+    display: none;
   }
 
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    width: 7%;
+  .side-menu-text {
+    margin: ${pxToRem(24)} ${pxToRem(16)};
+    font-family: 'thiccboi-extrabold';
+    font-style: normal;
+    font-weight: 700;
+    font-size: ${pxToRem(14)};
+    line-height: 140%;
+    letter-spacing: 0.05em;
+    color: var(--color-gray-70);
+  }
+
+  ul {
+    margin: 0 ${pxToRem(16)};
+    display: grid;
+    gap: ${pxToRem(12)};
+
+    a {
+      text-decoration: none;
+    }
+
+    li {
+      border-radius: ${pxToRem(8)};
+      padding: ${pxToRem(8)};
+      height: ${pxToRem(36)};
+      color: var(--color-gray-70);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+
+      .list-item-content {
+        display: flex;
+        align-items: center;
+        gap: ${pxToRem(8)};
+      }
+
+      &.active {
+        background: var(--color-primary-10);
+        color: var(--color-primary);
+
+        svg {
+          fill: var(--color-primary);
+        }
+      }
+    }
+  }
+
+  .bottom-actions {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+
+    .profile {
+      border-bottom: ${pxToRem(1)} solid var(--color-gray-30);
+      border-top: ${pxToRem(1)} solid var(--color-gray-30);
+      padding: ${pxToRem(24)};
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .user-details {
+        display: flex;
+        align-items: center;
+        gap: ${pxToRem(8)};
+
+        .user-name {
+          font-style: normal;
+          font-weight: 600;
+          font-size: ${pxToRem(16)};
+          line-height: 140%;
+          letter-spacing: -0.02em;
+          color: var(--color-gray-80);
+        }
+        .user-type {
+          font-style: normal;
+          font-weight: 400;
+          font-size: ${pxToRem(10)};
+          line-height: 140%;
+          letter-spacing: 0.05em;
+          color: var(--color-gray-80);
+          text-transform: uppercase;
+        }
+      }
+    }
+    .logout-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: ${pxToRem(24)};
+      .logout-content {
+        flex-grow: 1;
+        cursor: pointer;
+      }
+
+      .logout-text {
+        font-style: normal;
+        font-weight: 600;
+        font-size: ${pxToRem(16)};
+        line-height: 140%;
+        letter-spacing: -0.02em;
+        color: var(--color-danger);
+      }
+    }
+  }
+
+  @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
+    display: block;
+    width: ${({ isExpanded }) => (isExpanded ? '16%' : '7%')};
+    min-width: ${({ isExpanded }) =>
+      isExpanded ? pxToRem(260) : pxToRem(124)};
     border-top: none;
     position: static;
     border-right: ${pxToRem(1)} solid var(--color-gray-200);
-  }
-  @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
-    width: 5%;
+
+    .sidebar__inner {
+      height: 100%;
+      width: 100%;
+      position: relative;
+    }
+
+    header {
+      border-bottom: ${pxToRem(1)} solid var(--color-gray);
+      margin-bottom: ${pxToRem(32)};
+      padding: ${pxToRem(28)} ${pxToRem(24)};
+      display: flex !important;
+      align-items: center;
+
+      a {
+        width: 100%;
+        height: 100%;
+        text-decoration: none;
+        font-style: normal;
+        font-family: 'thiccboi-extrabold';
+        font-weight: 700;
+        font-size: ${pxToRem(18)};
+        line-height: 140%;
+        letter-spacing: -0.02em;
+        color: var(--color-neutralBlack);
+        display: flex;
+        align-items: center;
+        gap: ${pxToRem(8)};
+        justify-content: ${({ isExpanded }) => (isExpanded ? '' : 'center')};
+      }
+
+      .toggle-btn {
+        position: absolute;
+        background-color: white;
+        height: ${pxToRem(32)};
+        width: ${pxToRem(32)};
+        border-radius: 50%;
+        outline: 0;
+        border: transparent;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        right: 0;
+        margin-right: -${pxToRem(12)};
+      }
+    }
+
+    .hide-in-unexpanded-large-screen {
+      display: ${({ isExpanded }) => (isExpanded ? '' : 'none')};
+    }
+
+    .side-menu-text {
+      display: none;
+    }
+    .hide-in-large-screen {
+      display: none;
+    }
+    .hide-in-small-screen {
+      display: block;
+    }
+
+    ul {
+      gap: ${pxToRem(20)};
+      margin: 0 ${pxToRem(24)};
+      li {
+        border-left: ${pxToRem(4)} solid transparent;
+        border-top-left-radius: ${pxToRem(0)};
+        border-bottom-left-radius: ${pxToRem(0)};
+
+        .list-item-content {
+          justify-content: ${({ isExpanded }) =>
+            isExpanded ? 'flex-start' : 'center'};
+          flex-grow: 1;
+        }
+        &.active,
+        &:hover,
+        &:focus {
+          border-left: ${pxToRem(4)} solid var(--color-primary);
+          background: var(--color-primary-10);
+          color: var(--color-primary);
+          svg {
+            fill: var(--color-primary);
+          }
+        }
+      }
+    }
+    .bottom-actions {
+      .profile {
+        border-bottom: transparent;
+        padding: ${pxToRem(20)} ${pxToRem(24)} ${pxToRem(8)} ${pxToRem(24)};
+
+        .user-details {
+          flex-grow: 1;
+          justify-content: ${({ isExpanded }) => (isExpanded ? '' : 'center')};
+        }
+      }
+
+      .logout-container {
+        padding: ${pxToRem(8)} ${pxToRem(24)};
+        margin: ${pxToRem(16)} 0;
+
+        .logout-content {
+          display: flex;
+          align-items: flex-start;
+          gap: ${pxToRem(8)};
+          justify-content: ${({ isExpanded }) => (isExpanded ? '' : 'center')};
+        }
+      }
+    }
   }
 `;
 
-const LogoContainer = styled.div`
-  display: none;
-  justify-content: center;
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    display: flex;
-  }
-`;
-
-const TDLogo = styled.img`
-  width: ${pxToRem(100)};
-  margin: auto;
-  margin: 0 ${pxToRem(-12)};
-`;
-
-const TabList = styled.ul`
-  padding: 0px;
-  margin: 0;
-  display: flex;
-  justify-content: space-around;
-
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    display: block;
-  }
-`;
-
-const LogOutContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--color-gray-500);
-  width: 100%;
-  font-weight: 600;
-
-  &:hover {
-    color: var(--color-danger);
-  }
-`;
-
-const Tab = styled.li`
-  list-style-type: none;
-  padding: ${pxToRem(12)} ${pxToRem(20)};
-  font-size: ${pxToRem(14)};
-  color: ${({ isActive }: { isActive: boolean }) =>
-    isActive ? 'var(--color-primary)' : 'var(--color-gray-500)'};
-  font-weight: 600;
-  opacity: 0.6;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  .chat-icon-container {
-    position: relative;
-    width: fit-content;
-  }
-
-  &:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
-  }
-
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    border-bottom: none;
-    border-left: ${pxToRem(4)} solid
-      ${({ isActive }: { isActive: boolean }) =>
-        isActive ? 'var(--color-primary)' : 'transparent'};
-    margin: ${pxToRem(8)} 0;
-  }
-`;
-
-const BottomActions = styled.div`
-  position: relative;
-  display: none;
-  position: absolute;
+const BottomNav = styled.footer`
+  background: white;
+  border-radius: ${pxToRem(16)} ${pxToRem(16)} 0 0;
+  position: fixed;
   bottom: 0;
-  width: 100%;
-  padding: ${pxToRem(48)} 0;
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    display: block;
+  left: 0;
+  right: 0;
+  padding: ${pxToRem(20)} ${pxToRem(16)};
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: ${pxToRem(10)};
+  z-index: 1;
+
+  @media screen and (min-width: ${sizes.mobileLargeWidth}) {
+    display: none;
   }
 `;
 
-const MessageCount = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 2;
-  background: var(--color-danger-800);
-  color: white;
-  font-size: ${pxToRem(12)};
-  width: ${pxToRem(18)};
-  height: ${pxToRem(18)};
+const Button = styled.button`
+  padding: ${pxToRem(12)};
+  gap: ${pxToRem(33)};
+  height: ${pxToRem(44)};
+  background: var(--color-gray-20);
+  border-radius: ${pxToRem(8)};
+  outline: none;
+  border: transparent;
+  font-family: 'thiccboi-bold';
+  letter-spacing: -0.02em;
+  color: var(--color-gray-70);
+  font-style: normal;
+  font-weight: 600;
+  font-size: ${pxToRem(16)};
+  line-height: 140%;
+  border: 1px solid transparent;
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-top: -${pxToRem(6)};
-  margin-right: -${pxToRem(6)};
-  border-radius: 50%;
+  gap: ${pxToRem(12)};
+
+  &.active {
+    border-color: var(--color-primary);
+    background: var(--color-primary-10);
+    color: var(--color-primary);
+    svg {
+    }
+  }
 `;

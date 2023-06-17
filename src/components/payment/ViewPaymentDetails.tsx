@@ -1,20 +1,26 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import PaymentRequest from 'types/PaymentRequest';
-import UiModal from 'ui/UiModal';
 import { abbreviateNumber } from 'utils/helpers';
 import sizes from 'utils/sizes';
 import { selectTrip } from 'modules/Trips';
 
+const UiModal = lazy(() => import('ui/UiModal'));
+
 interface Props {
   onClose: () => void;
   payment: PaymentRequest;
+  isVisible: boolean;
 }
-export default function ViewPaymentDetails({ onClose, payment }: Props) {
-  const trip = useSelector(selectTrip(payment.tripId));
+export default function ViewPaymentDetails({
+  onClose,
+  isVisible,
+  payment,
+}: Props) {
+  const trip = useSelector(selectTrip(payment.trip._id));
   return (
-    <UiModal onClose={onClose}>
+    <UiModal isVisible={isVisible} onClose={onClose}>
       <DetailsContainer>
         <h2>Payment Details</h2>
         <Section>
@@ -40,7 +46,7 @@ export default function ViewPaymentDetails({ onClose, payment }: Props) {
         {payment.status === 'rejected' && (
           <Section>
             <div className="title">Reason for Reject</div>
-            <div className="value">{payment.agentRemark}</div>
+            <div className="value">{payment.reasonForReject}</div>
           </Section>
         )}
         <Section>

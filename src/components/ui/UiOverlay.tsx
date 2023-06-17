@@ -4,9 +4,10 @@ import styled from 'styled-components';
 interface Props {
   children: React.ReactNode;
   isVisible: boolean;
+  onClick?: () => void;
 }
-export default function UiOverlay({ children, isVisible }: Props) {
-  return <>{isVisible && <Overlay>{children}</Overlay>}</>;
+export default function UiOverlay({ children, isVisible, onClick }: Props) {
+  return <>{isVisible && <Overlay onClick={onClick}>{children}</Overlay>}</>;
 }
 
 const Overlay = styled.div`
@@ -15,7 +16,7 @@ const Overlay = styled.div`
   height: 100%;
   top: 0;
   left: 0;
-  background-color: rgba(50, 50, 50, 0.8);
+  background-color: rgba(220, 218, 228, 0.6);
   z-index: 3;
   display: flex;
   align-items: center;

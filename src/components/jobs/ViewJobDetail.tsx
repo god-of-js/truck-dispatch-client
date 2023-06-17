@@ -1,0 +1,59 @@
+import { lazy } from 'react';
+import styled from 'styled-components';
+import Trip from 'types/Trip';
+import { useSelector } from 'react-redux';
+import { selectBid } from 'modules/Bid';
+
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiModal = lazy(() => import('ui/UiModal'));
+const TripDetails = lazy(() => import('components/trips/TripDetails'));
+
+interface Props {
+  job: Trip;
+  bidOnJob: (jobId: string) => void;
+  onClose: () => void;
+  isVisible: boolean;
+}
+export default function ViewJobDetail({
+  job,
+  onClose,
+  bidOnJob,
+  isVisible,
+}: Props) {
+  const bid = useSelector(selectBid(job._id, 'trip'));
+  function startBid() {
+    bidOnJob(job._id);
+  }
+
+  return (
+    <UiModal
+      isVisible={isVisible}
+      title="Job Details"
+      position="right"
+      onClose={onClose}
+    >
+      <ComponentStyling>
+        <TripDetails trip={job} />
+
+        <div className="bid-button-container">
+          <UiButton size="large" onClick={startBid}>
+            {bid ? 'Update Bid' : 'Bid Now'}
+          </UiButton>
+        </div>
+      </ComponentStyling>
+    </UiModal>
+  );
+}
+
+const ComponentStyling = styled.div`
+  padding: ${pxToRem(32)} ${pxToRem(24)};
+  .bid-button-container {
+    width: 100%;
+    margin-top: ${pxToRem(60)};
+
+    button {
+      margin: auto;
+      width: 50%;
+    }
+  }
+`;

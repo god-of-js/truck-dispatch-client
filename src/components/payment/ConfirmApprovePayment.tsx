@@ -1,87 +1,44 @@
-import { getUserAccountNumber } from 'modules/Account';
-import React, { useState } from 'react';
+import React, { lazy, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import PaymentRequest from 'types/PaymentRequest';
-import UiButton from 'ui/UiButton';
+import { toAnyAction } from 'utils/helpers';
 
-import UiModal from 'ui/UiModal';
-import { nairaToKobo, toAnyAction } from 'utils/helpers';
-import { Toast } from 'utils/toast';
-import { makeTransfer } from '../../api/paystackIntegrations';
+import { approvePaymentRequest } from 'modules/Trips';
+
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiModal = lazy(() => import('ui/UiModal'));
 
 interface Props {
   onClose: () => void;
-  paymentRequest?: PaymentRequest | null;
-  setPaymentRequest: (param: PaymentRequest) => Promise<void>;
+  tripId: string;
+  paymentRequestId: string;
+  isVisible: boolean;
 }
 export default function ConfirmApprovePayment({
-  paymentRequest,
+  tripId,
+  paymentRequestId,
   onClose,
-  setPaymentRequest,
+  isVisible,
 }: Props) {
-  const { tripId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
-  function setStatusOfPaymentToComplete(paymentDetails: PaymentRequest) {
-    return setPaymentRequest({
-      ...paymentDetails,
-      status: 'completed',
-      updatedAt: Date.now(),
-    }).then(() => {
-      Toast.success({
-        msg: 'Payment request has been approved.',
-      });
-      navigate(`/dashboard/my-trips/${tripId}/status`);
-      onClose();
-    });
-  }
-
-  function getTransferData(
-    paymentDetails: PaymentRequest,
-    recipientCode: string,
-  ) {
-    return {
-      source: 'balance',
-      reason: `TruckDispatch trip-${paymentRequest?.tripReference} payment-${paymentRequest?.reference}`,
-      reference: paymentDetails.paymentReference!,
-      recipient: recipientCode,
-      amount: nairaToKobo(paymentDetails.amount!),
-    };
-  }
-
   async function approvePayment() {
-    if (!paymentRequest) throw new Error('Payment request was not provided');
     setLoading(true);
-    const transporterAccountDetails = await dispatch(
-      toAnyAction(getUserAccountNumber(paymentRequest.transporterId)),
-    );
-    const transferData = getTransferData(
-      paymentRequest,
-      transporterAccountDetails.paystackRecipientCode,
-    );
-
-    makeTransfer(transferData)
-      .then(() => setStatusOfPaymentToComplete(paymentRequest))
-      .catch((err) => {
-        if (
-          err.response.data.message ===
-          'Please provide a unique reference. Reference already exists on a transfer'
-        ) {
-          Toast.error({ msg: 'Payment has already been issued.' });
-          return;
-        }
-
-        Toast.error({ msg: err.response.data.message });
+    dispatch(toAnyAction(approvePaymentRequest(tripId, paymentRequestId)))
+      .then(() => {
+        navigate(`/my-trips/${tripId}/status`);
+        onClose();
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   return (
-    <UiModal size="sm" onClose={onClose}>
+    <UiModal isVisible={isVisible} size="sm" onClose={onClose}>
       <ApprovePaymentStyling>
         <h2>Approve Payment</h2>
         <p>

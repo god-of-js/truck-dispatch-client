@@ -1,31 +1,33 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import styled from 'styled-components';
 
+const Loader = lazy(() => import('components/layout/Loader'));
+export type ButtonVariant =
+  | 'primary'
+  | 'secondary'
+  | 'danger-secondary'
+  | 'warning-secondary'
+  | 'success-secondary'
+  | 'tertiary'
+  | 'neutral'
+  | 'icon-neutral'
+  | 'primary-text'
+  | 'danger';
 interface Props {
   children?: React.ReactNode;
   disabled?: boolean;
   loading?: boolean;
-  variant?:
-    | 'primary'
-    | 'secondary'
-    | 'neutral'
-    | 'primary-outlined'
-    | 'secondary-outlined'
-    | 'primary-text'
-    | 'dark'
-    | 'dark-outlined'
-    | 'icon'
-    | 'danger';
+  variant?: ButtonVariant;
   size?: Sizes;
   type?: 'submit' | 'button';
-  textCasing?: 'uppercase' | 'lowercase' | 'capitalize';
+  textCasing?: 'uppercase' | 'lowercase' | 'capitalize' | 'normal';
   isSquare?: boolean;
   /** This prop decides if we want the button to fit the content or be full width */
   isFullWidth?: boolean;
-  onClick?: () => void;
+  onClick?: (e?: any) => void;
 }
 
-type Sizes = 'large' | 'md' | 's';
+type Sizes = 'large' | 'md' | 's' | 'text';
 
 export default function UiButton({
   children,
@@ -40,7 +42,7 @@ export default function UiButton({
   isFullWidth = false,
 }: Props) {
   return (
-    <ButtonContainer
+    <Button
       className={`btn ${variant}`}
       onClick={onClick}
       disabled={disabled || loading}
@@ -50,58 +52,103 @@ export default function UiButton({
       isFullWidth={isFullWidth}
       isSquare={isSquare}
     >
-      {loading ? <span>Loading...</span> : children}
-    </ButtonContainer>
+      {loading ? (
+        <div className="loader-wrapper">
+          <Loader variant="white" size="s" />
+        </div>
+      ) : (
+        children
+      )}
+    </Button>
   );
 }
 
 function sizeVariant(size: Sizes) {
-  if (size === 's') return `padding: 0 ${pxToRem(16)}; height: ${pxToRem(36)};`;
+  if (size === 'text') return '';
+  if (size === 's')
+    return `
+    padding: 8px
+    12px; 
+    height: 32px;
+    font-size: 12px;
+    line-height:  12px;
+    `;
+
   if (size === 'md')
     return `
-  padding: 0 ${pxToRem(16)};
-  height: ${pxToRem(44)};
+    padding: 12px;
+    height: 44px;
+    font-size: 12px;
+    line-height: 12px;
   `;
+
   if (size === 'large')
     return `
-  padding: 0 ${pxToRem(16)};
-  height: ${pxToRem(52)};
+    padding:  16px; 
+    height: 48px;
+    font-size: 14px;
+    line-height: 14px;
   `;
 }
 
-const ButtonContainer = styled.button<Props>`
+function getColor(condition: boolean, color: string) {
+  if (condition) return `background: ${color};`;
+  return '';
+}
+
+const Button = styled.button<Props>`
   ${({ size }) => sizeVariant(size!)}
   border: none;
   cursor: ${({ disabled }) => (disabled ? '' : 'pointer')};
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
-  letter-spacing: 0.4px;
-  line-height: 1.45;
+  gap: 10px;
+  letter-spacing: 0.32px;
   text-align: center;
-  text-transform: uppercase;
-  border-radius: ${({ isSquare }) => (isSquare ? '' : pxToRem(4))};
-  font-weight: 900;
-  text-transform: ${({ textCasing }) => textCasing};
+  border-radius: ${({ isSquare }) => (isSquare ? '' : '8px')};
+  font-weight: 500;
+  font-family: 'thiccboi-semibold';
+  ${({ textCasing }) =>
+    textCasing !== 'normal' && `text-transform: ${textCasing}`};
   width: ${({ isFullWidth }) => (isFullWidth ? '100%' : 'fit-content')};
   white-space: nowrap;
-  opacity: ${({ disabled }) => (disabled ? '0.6' : '1')};
+  transition: all 0.2s ease-in-out;
+
+  .loader-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 32px;
+    width: 100%;
+    height: 100%;
+  }
 
   &.primary {
     background-color: var(--color-primary);
+    ${({ disabled, loading }) =>
+      getColor(disabled! && !loading, 'var(--color-primary-20)')};
+    ${({ loading }) => getColor(loading!, 'var(--color-primary-50)')};
     color: white;
 
+    ${({ disabled }) =>
+      !disabled &&
+      `
     &:hover {
-      background-color: var(--color-primary-600);
+      background-color: var(--color-primary-50);
+      box-shadow: var(--box-shadow-primary);
+    }`}
+
+    svg {
+      fill: white;
     }
   }
   &.danger {
-    background-color: var(--color-danger-600);
+    background-color: var(--color-danger);
     color: white;
 
     &:hover {
-      background-color: var(--color-danger-700);
+      background-color: var(--color-danger-40);
     }
   }
 
@@ -111,21 +158,18 @@ const ButtonContainer = styled.button<Props>`
     color: var(--color-primary);
   }
 
-  &.icon {
-    background: transparent;
-    border-radius: 50%;
-    width: ${pxToRem(32)};
-    height: ${pxToRem(32)};
-    padding: ${pxToRem(12)};
+  &.icon-neutral {
+    background: var(--color-gray-20);
+    border-radius: 8px;
 
     &:hover {
-      background-color: var(--color-gray-100);
+      background: var(--color-gray-30);
     }
   }
 
   &.neutral {
-    background-color: var(--color-gray-100);
-    border: 1px solid var(--color-gray-200);
+    background-color: var(--color-gray-20);
+    border: 1px solid var(--color-gray-40);
     color: var(--color-gray-500);
 
     &:hover {
@@ -133,40 +177,76 @@ const ButtonContainer = styled.button<Props>`
     }
   }
 
-  &.primary-outlined {
-    background: white;
-    color: var(--color-primary);
-    border: 1px solid var(--color-primary);
-  }
-  &.dark-outlined {
-    color: var(--color-gray-900);
-    background: transparent;
-    border: 1px solid var(--color-gray-900);
-    &:hover {
-      background-color: var(--color-gray-100);
-    }
-  }
-
   &.secondary {
-    background-color: var(--color-gray-100);
-    color: var(--color-gray-700);
-    &:hover {
-      background: var(--color-gray-200);
+    background-color: var(--color-primary-10);
+    color: var(--color-primary);
+    svg {
+      fill: ${({ disabled }) =>
+        disabled ? 'var(--color-primary-30)' : 'var(--color-primary)'};
     }
+    ${({ disabled }) => getColor(disabled!, `var(--color-primary-10)`)};
+    ${({ disabled }) => disabled && `color: var(--color-primary-30);`}
+
+    ${({ disabled }) =>
+      !disabled &&
+      `
+    &:hover {
+      background: var(--color-primary-20);
+      box-shadow: var(--box-shadow-primary);
+    }`}
   }
 
-  &.dark {
-    background: var(--color-gray-900);
-    color: white;
+  &.tertiary {
+    background-color: #ffff;
+    color: var(--color-primary);
 
+    ${({ disabled }) =>
+      !disabled &&
+      `
     &:hover {
-      background: var(--color-gray-700);
-    }
+      color: var(--color-primary-50);
+    }`}
   }
 
-  &.secondary-outlined {
-    background-color: white;
-    border: 1px solid var(--color-gray-400);
-    color: var(--color-gray-400);
+  &.success-secondary {
+    background: var(--color-success-10);
+    color: var(--color-success);
+
+    svg {
+      fill: var(--color-success);
+    }
+    ${({ disabled }) =>
+      !disabled &&
+      `
+      
+    &:hover {
+      background: var(--color-success-20);
+      box-shadow: var(--box-shadow-primary);
+    }
+    `}
+  }
+  &.danger-secondary {
+    background: var(--color-danger-10);
+    color: var(--color-danger);
+
+    svg {
+      fill: var(--color-danger);
+    }
+    &:hover {
+      background: var(--color-danger-20);
+      box-shadow: var(--box-shadow-primary);
+    }
+  }
+  &.warning-secondary {
+    background: var(--color-warning-10);
+    color: var(--color-warning);
+
+    svg {
+      fill: var(--color-warning);
+    }
+
+    ${({ disabled }) =>
+      !disabled &&
+      '&:hover {background: var(--color-warning-20); box-shadow: var(--box-shadow-primary); }'}
   }
 `;

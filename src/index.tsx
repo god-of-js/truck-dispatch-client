@@ -7,45 +7,23 @@ import { Toaster } from 'react-hot-toast';
 import router from './routes/index';
 import './index.scss';
 import './variables.css';
-import reportWebVitals from './reportWebVitals';
 import getStore from './modules';
 import Loader from 'components/layout/Loader';
-import User from 'types/User';
-import Api from 'Api';
+import loadServices from 'utils/loadServices';
 
 // @ts-ignore
 window.pxToRem = (px: number, baseSize = 16) => `${px / baseSize}rem`;
-// @ts-ignore
-window.Intercom('update');
 
-const userId = localStorage.getItem('uid');
+window.onload = loadServices;
 
-if (userId) {
-  Api.getUser(userId).then((user: User) => {
-    // @ts-ignore
-    window.Intercom('boot', {
-      api_base: 'https://api-iam.intercom.io',
-      app_id: 'rglp4uhl',
-      name: `${user?.firstName} ${user?.lastName}`,
-      email: user.email,
-      created_at: user.createdAt,
-      userType: user.userType,
-    });
-  });
-}
 const root = createRoot(document.getElementById('root')!);
 root.render(
   <React.StrictMode>
     <Provider store={getStore()}>
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={<Loader isPage />}>
         <RouterProvider router={router} />
       </Suspense>
-      <Toaster position="bottom-right" reverseOrder={true} />
+      <Toaster position="top-center" reverseOrder={true} />
     </Provider>
   </React.StrictMode>,
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals(() => {});

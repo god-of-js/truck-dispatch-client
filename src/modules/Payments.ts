@@ -41,41 +41,14 @@ const paymentRequests = (state: RootState) => state.payment.paymentRequests;
 
 export const selectPaymentRequestByTripId = (id: string) =>
   createSelector(paymentRequests, (requestArr) =>
-    requestArr.find(({ tripId }) => tripId === id),
+    requestArr.find(({ trip }) => trip._id === id),
   );
-
-export function createOrUpdatePayment(data: Payment) {
-  return () => {
-    if (!data.userId) throw new Error('400: user id been sent');
-    return Api.createOrUpdatePayment(data).catch((err) => console.log(err));
-  };
-}
-
-export function requestPaymentByTransporter(data: PaymentRequest) {
-  return (dispatch: AppDispatch, state: AppState) => {
-    return Api.requestPaymentByTransporter(data).then(() => {
-      dispatch(setPaymentRequests([...state().payment.paymentRequests, data]));
-    });
-  };
-}
 
 export function getPaymentRequestsOfDriver() {
   return (dispatch: AppDispatch, state: AppState) => {
-    const uid = localStorage.getItem('uid');
-    if (!uid) throw new Error('400: user is not authenticated');
-    return Api.getPaymentRequestsOfDriver(uid).then((data) => {
+    return Api.getPaymentRequestsOfDriver().then((data) => {
       dispatch(setPaymentRequests(data));
       return data;
-    });
-  };
-}
-
-export function getPaymentRequestByTripId(tripId?: string) {
-  return (dispatch: AppDispatch) => {
-    if (!tripId) throw new Error('400: Trip ID was not sent.');
-
-    return Api.getPaymentRequestByTripId(tripId).then((paymentRequest) => {
-      dispatch(setPaymentRequest(paymentRequest));
     });
   };
 }

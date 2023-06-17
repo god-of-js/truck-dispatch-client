@@ -1,45 +1,57 @@
-import React from 'react';
+import React, { lazy, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { RootState } from 'modules/index';
-import { selectDashboardUser } from 'modules/Account';
-import { selectChatHeads } from 'modules/Chat';
-import UiAvatar from 'ui/UiAvatar';
-import Chat from 'types/Chat';
+import ChatLog from 'types/ChatLog';
+
+const UiAvatar = lazy(() => import('ui/UiAvatar'));
 
 export default function ChatHeads() {
   const navigate = useNavigate();
-  const users = useSelector((state: RootState) => state.account.users);
-  const user = useSelector(selectDashboardUser);
-  const chatHeads = useSelector(selectChatHeads);
+  const user = useSelector((state: RootState) => state.account.user);
+  const chatLogs = useSelector((state: RootState) => state.chat.chatLogs);
 
-  function alternateUser(chat: Chat) {
-    const alternateUserId =
-      user?.id === chat.agentId ? chat.transporterId : chat.agentId;
-    const foundUser = users.find(({ id }) => id === alternateUserId);
-    if (!foundUser) throw new Error('user does not exist');
-    return foundUser;
+  function getTime(createdAt: number) {
+    return new Date(createdAt).getTime();
+  }
+  const chatLogsWithContent = useMemo(() => {
+    return chatLogs
+      .filter((log) => !!log.lastMessage)
+      .sort(
+        (a, b) =>
+          getTime(b.lastMessage.createdAt!) - getTime(a.lastMessage.createdAt!),
+      );
+  }, [chatLogs]);
+
+  function alternateUser(log: ChatLog) {
+    return user?._id === log.transporter._id ? log.client : log.transporter;
   }
 
-  function navigateToChat(agentId: string, transporterId: string) {
-    navigate(`/dashboard/chat/${agentId}/${transporterId}`);
+  function navigateToChat(chatLog: string) {
+    navigate(`/chat/${chatLog}`);
   }
 
   return (
     <ChatHeadsList>
-      {chatHeads.map((val, index) => (
+      {chatLogsWithContent.map((log, index) => (
         <ChatHead
           key={index}
-          hasBeenRead={!!val.readAt || val.senderId === user?.id}
-          onClick={() => navigateToChat(val.agentId, val.transporterId)}
+          hasBeenRead={
+            !!log.lastMessage?.readAt || log.lastMessage?.sender === user?._id
+          }
+          onClick={() => navigateToChat(log._id)}
         >
-          <UiAvatar avatar={alternateUser(val).avatar} />
+          <UiAvatar avatar={alternateUser(log)?.avatar} />
           <div className="content-container">
-            <div className="name">{`${alternateUser(val).firstName} ${
-              alternateUser(val).lastName
-            }`}</div>
-            <div className="last-text">{val.message}</div>
+            <div className="name">
+              {alternateUser(log)
+                ? `${alternateUser(log).firstName} ${
+                    alternateUser(log).lastName
+                  }`
+                : 'Truckdispatch User'}
+            </div>
+            <div className="last-text">{log.lastMessage?.message}</div>
           </div>
         </ChatHead>
       ))}
@@ -62,7 +74,7 @@ const ChatHead = styled.li`
   gap: ${pxToRem(12)};
   border-bottom: 1px solid var(--color-gray-200);
   background: ${({ hasBeenRead }: { hasBeenRead: boolean }) =>
-    !hasBeenRead && 'var(--color-gray-100);'};
+    !hasBeenRead && 'var(--color-gray-10);'};
   display: flex;
   align-items: flex-end;
   cursor: pointer;

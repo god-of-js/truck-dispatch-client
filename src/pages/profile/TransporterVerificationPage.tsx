@@ -1,30 +1,25 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { lazy, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'modules/index';
 
-import {
-  createOrUpdateUser,
-  getUsers,
-  getUserVerification,
-  selectDashboardUser,
-} from '../../modules/Account';
-
-import User from 'types/User';
+import { getUserVerification } from '../../modules/Verification';
 
 import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
 
-import VerificationForm from 'components/profile/VerificationForm';
-import MessageWithImage from 'ui/MessageWithImage';
-import { RootState } from 'modules/index';
+const VerificationForm = lazy(
+  () => import('components/profile/VerificationForm'),
+);
+const MessageWithImage = lazy(() => import('ui/MessageWithImage'));
 
 export default function TransporterVerificationPage() {
   const dispatch = useDispatch();
   const [isVerified, setIsVerified] = useState(false);
   const [loading, setLoading] = useState(false);
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
   const userVerification = useSelector(
-    (state: RootState) => state.account.verification,
+    (state: RootState) => state.verification.verification,
   );
   const userHasBeenVerified = <MessageWithImage />;
 
@@ -70,30 +65,22 @@ export default function TransporterVerificationPage() {
 
   function setVerificationStatus() {
     setIsVerified(true);
-    if (!user) return;
-    const verificationPendingUser: User = {
-      ...user,
-      status: 'pending_verification',
-    };
-    dispatch(toAnyAction(createOrUpdateUser(verificationPendingUser))).then(
-      () => {
-        dispatch(toAnyAction(getUsers()));
-      },
-    );
   }
 
   return (
-    <VerificationPageStyling>
-      <TransportVerificationCard>
-        {componentBasedOnVerificationStatus}
-      </TransportVerificationCard>
-      {user?.status === 'rejected' && (
-        <FeedbackCard>
-          <h2>Admin Remark</h2>
-          <p>{userVerification?.adminMessage}</p>
-        </FeedbackCard>
-      )}
-    </VerificationPageStyling>
+    <>
+      <VerificationPageStyling>
+        <TransportVerificationCard>
+          {componentBasedOnVerificationStatus}
+        </TransportVerificationCard>
+        {user?.status === 'rejected' && (
+          <FeedbackCard>
+            <h2>Admin Remark</h2>
+            <p>{userVerification?.adminMessage}</p>
+          </FeedbackCard>
+        )}
+      </VerificationPageStyling>
+    </>
   );
 }
 

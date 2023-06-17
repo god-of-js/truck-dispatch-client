@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
+import React, { lazy, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { loginUser } from '../../modules/Account';
 
-import { Toast } from '../../utils/toast';
-import UiInput from 'ui/UiInput';
-import UiButton from 'ui/UiButton';
-import UiForm from 'ui/UiForm';
 import { toAnyAction } from 'utils/helpers';
 import loginSchema from 'utils/validations/loginSchema';
+
+const UiForm = lazy(() => import('ui/UiForm'));
+const UiInput = lazy(() => import('ui/UiInput'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const AuthLayoutStyling = lazy(
+  () => import('components/layout/AuthLayoutStyling'),
+);
+const StyledAuthContent = lazy(
+  () => import('components/auth/StyledAuthContent'),
+);
 
 export default function LoginPage() {
   const dispatch = useDispatch();
@@ -21,7 +26,10 @@ export default function LoginPage() {
       password: '',
     },
   );
+
   const [loading, setLoading] = useState(false);
+  const [isNotifyUsertoResetVisible, setIsNotifyUserToResetVisible] =
+    useState(false);
 
   function handleChange(event: { name: string; value: string | null }) {
     setFormData({
@@ -34,20 +42,16 @@ export default function LoginPage() {
     setLoading(true);
     dispatch(toAnyAction(loginUser(formData)))
       .then(() => {
-        navigate('/dashboard/my-trips');
+        navigate('/my-trips');
       })
-      .catch((err: { message: string }) => {
+      .catch((err: Error) => {
         let msg = err.message;
-
-        if (msg === 'Firebase: Error (auth/wrong-password).') {
-          msg = 'Email and password do not match';
+        if (msg === 'Phone has not been verified') {
+          navigate('/auth/verify-phone');
         }
-
-        if (msg === 'Firebase: Error (auth/user-not-found).') {
-          msg = 'A user with this email does not exist';
+        if (msg === 'Login directions have been sent to your email') {
+          setIsNotifyUserToResetVisible(true);
         }
-
-        Toast.error({ msg });
       })
       .finally(() => {
         setLoading(false);
@@ -55,74 +59,73 @@ export default function LoginPage() {
   }
 
   return (
-    <UiForm schema={loginSchema} formData={formData} onSubmit={handleSubmit}>
-      {({ errors }) => (
-        <>
-          <Heading>Sign in</Heading>
-          <Margin>
-            <UiInput
-              label="Email*"
-              value={formData.email}
-              name="email"
-              error={errors.email}
-              onChange={handleChange}
-            />
-          </Margin>
-          <Margin>
-            <UiInput
-              type="password"
-              label="Password*"
-              name="password"
-              value={formData.password!}
-              error={errors.password}
-              onChange={handleChange}
-            />
-          </Margin>
-          <PrivacyPolicyParagraph>
-            By clicking on the following button, you are willing to become
-            TruckDispatch's partner, and agree to our{' '}
-            <Link to="/">privacy policy</Link>
-          </PrivacyPolicyParagraph>
-          <UiButton isFullWidth loading={loading}>
-            Sign In
-          </UiButton>
-          {/* <ForgotPassword>
-            Can't login? try{' '}
-            <Link to="/auth/join/transporter">forgot password</Link>
-          </ForgotPassword> */}
-          <LinkToRegisteration>
-            Don't have an account?{' '}
-            <Link to="/auth/join/agent">register with us</Link>
-          </LinkToRegisteration>
-        </>
-      )}
-    </UiForm>
+    <AuthLayoutStyling img invert isInvertedForm>
+      <StyledAuthContent inverted>
+        <div className="form-container">
+          <header>
+            <h1>Welcome back,</h1>
+            <p className="info-text">Sign in to continue to your account</p>
+          </header>
+          <UiForm
+            schema={loginSchema}
+            formData={formData}
+            onSubmit={handleSubmit}
+          >
+            {({ errors }) => (
+              <div className="form-container__inner">
+                <UiInput
+                  label="Email Adress*"
+                  placeholder="Enter your email adress"
+                  value={formData.email}
+                  name="email"
+                  error={errors.email}
+                  onChange={handleChange}
+                />
+                <UiInput
+                  type="password"
+                  placeholder="Enter your password"
+                  label="Password*"
+                  name="password"
+                  value={formData.password!}
+                  error={errors.password}
+                  onChange={handleChange}
+                />
+                <p>
+                  Forgot Password?{' '}
+                  <Link to="/auth/forgot-password">Reset Password</Link>{' '}
+                </p>
+                <div className="hidden-in-mobile">
+                  <UiButton
+                    isFullWidth
+                    loading={loading}
+                    size="large"
+                    variant="primary"
+                  >
+                    Sign In
+                  </UiButton>
+                </div>
+
+                <div className="bottom-actions">
+                  <div className="visible-in-mobile">
+                    <UiButton
+                      isFullWidth
+                      loading={loading}
+                      size="large"
+                      variant="primary"
+                    >
+                      Sign In
+                    </UiButton>
+                  </div>
+                  <p>
+                    <span>New to TruckDispatch?</span>{' '}
+                    <Link to="/auth/join">Sign Up</Link>
+                  </p>
+                </div>
+              </div>
+            )}
+          </UiForm>
+        </div>
+      </StyledAuthContent>
+    </AuthLayoutStyling>
   );
 }
-
-const Heading = styled.h3`
-  color: var(--color-primary);
-  font-family: 'Audiowide';
-  font-size: ${pxToRem(24)};
-`;
-const Margin = styled.div`
-  margin-bottom: ${pxToRem(12)};
-`;
-
-const PrivacyPolicyParagraph = styled.p`
-  color: var(--color-gray-500);
-  font-size: ${pxToRem(14)};
-  margin-bottom: ${pxToRem(16)};
-`;
-
-const ForgotPassword = styled.p`
-  text-align: center;
-  font-size: ${pxToRem(14)};
-  color: var(--color-gray-400);
-`;
-
-const LinkToRegisteration = styled.p`
-  text-align: center;
-  font-size: ${pxToRem(14)};
-  color: var(--color-gray-400);
-`;

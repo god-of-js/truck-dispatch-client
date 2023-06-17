@@ -5,35 +5,29 @@ const PageError = lazy(() => import('../components/errors/PageError'));
 
 // LAYOUTS
 const AuthLayout = lazy(() => import('../layouts/AuthLayout'));
-const MarketingLayout = lazy(() => import('../layouts/MarketingLayout'));
 const DashboardLayout = lazy(() => import('../layouts/DashboardLayout'));
 const ProfileLayout = lazy(() => import('../layouts/ProfileLayout'));
-const ViewTripLayout = lazy(() => import('../layouts/ViewTripLayout'));
-const ViewTripBidsLayout = lazy(() => import('../layouts/ViewTripBidsLayout'));
+const TripLayout = lazy(() => import('../layouts/TripLayout'));
 const TripsLayout = lazy(() => import('../layouts/TripsLayout'));
 const ChatLayout = lazy(() => import('../layouts/ChatLayout'));
 
-const ComponentsView = lazy(() => import('../pages/Components'));
-
-// MARKETING
-const MarketingLandingPage = lazy(
-  () => import('../pages/marketing/MarketingLandingPage'),
-);
-const FAQsPage = lazy(() => import('../pages/marketing/FAQsPage'));
-const PrivacyPolicyPage = lazy(
-  () => import('../pages/marketing/PrivacyPolicyPage'),
-);
-const AgentsTermsAndConditions = lazy(
-  () => import('../pages/marketing/AgentsTermsAndConditions'),
-);
-
 // Auth
 const RegistrationPage = lazy(() => import('../pages/auth/RegistrationPage'));
+const VerifyPhonePage = lazy(() => import('../pages/auth/VerifyPhonePage'));
+const SelectUsertypePage = lazy(
+  () => import('../pages/auth/SelectUsertypePage'),
+);
 const LoginPage = lazy(() => import('../pages/auth/LoginPage'));
+const ForgotPasswordPage = lazy(
+  () => import('../pages/auth/ForgotPasswordPage'),
+);
 
 // Profile
 const ProfileDetailsPage = lazy(
   () => import('../pages/profile/ProfileDetailsPage'),
+);
+const ManagePasswordPage = lazy(
+  () => import('../pages/profile/ManagePasswordPage'),
 );
 const TransporterVerificationPage = lazy(
   () => import('../pages/profile/TransporterVerificationPage'),
@@ -44,69 +38,30 @@ const TransporterAccountsPage = lazy(
 
 // DASHBOARD
 const MyTripsPage = lazy(() => import('../pages/trips/MyTripsPage'));
-const NewTripPage = lazy(() => import('../pages/trips/NewTripPage'));
-const ViewTripPage = lazy(() => import('../pages/trips/ViewTripPage'));
-const ViewTripStatusPage = lazy(
-  () => import('../pages/trips/ViewTripStatusPage'),
-);
-const ViewTripRequestPaymentPage = lazy(
-  () => import('../pages/trips/ViewTripRequestPaymentPage'),
-);
-const ViewTripTDOPage = lazy(() => import('../pages/trips/ViewTripTDOPage'));
-const ViewRequestForPayment = lazy(
-  () => import('../pages/trips/ViewRequestForPayment'),
-);
-const ViewTripBidsPage = lazy(() => import('../pages/bids/ViewTripBidsPage'));
-const ViewTripBidPage = lazy(() => import('../pages/bids/ViewTripBidPage'));
-const BidCheckoutPage = lazy(() => import('../pages/bids/BidCheckoutPage'));
+const TripDetailsPage = lazy(() => import('../pages/trips/TripDetailsPage'));
+const TripBidsPage = lazy(() => import('../pages/trips/TripBidsPage'));
 
 const TransporterJobsPage = lazy(
-  () => import('../pages/trips/TransporterJobsPage'),
+  () => import('../pages/jobs/TransporterJobsPage'),
 );
-const ViewTransporterJobDetailsPage = lazy(
-  () => import('../pages/trips/ViewTransporterJobDetailsPage'),
-);
-const BidOnJobPage = lazy(() => import('../pages/bids/BidOnJobPage'));
-
 const ChatPage = lazy(() => import('../pages/chat/ChatPage'));
 
-//Transactions
+// VEHICLES
+const VehiclesPage = lazy(() => import('../pages/vehicles/VehiclesPage'));
 
-const ViewPaymentsPage = lazy(
-  () => import('../pages/payments/ViewPaymentsPage'),
-);
+// Transactions
+
+const PaymentsPage = lazy(() => import('../pages/payments/PaymentsPage'));
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <MarketingLayout />,
-    children: [
-      {
-        path: '',
-        element: <MarketingLandingPage />,
-      },
-      {
-        path: '/faqs',
-        element: <FAQsPage />,
-      },
-      {
-        path: '/privacy-policy',
-        element: <PrivacyPolicyPage />,
-      },
-      {
-        path: '/terms-and-conditions',
-        element: <AgentsTermsAndConditions />,
-      },
-    ],
-  },
-  {
-    path: '/dashboard',
     id: 'Dashboard',
     element: <DashboardLayout />,
     errorElement: <PageError />,
     children: [
       {
-        path: '/dashboard/profile',
+        path: '/profile',
         id: 'Profile',
         element: <ProfileLayout />,
         children: [
@@ -116,31 +71,36 @@ const router = createBrowserRouter([
             element: <ProfileDetailsPage />,
           },
           {
-            path: '/dashboard/profile/verification',
+            path: '/profile/manage-password',
+            id: 'Manage Password',
+            element: <ManagePasswordPage />,
+          },
+          {
+            path: '/profile/verification',
             id: 'Verification Page',
             element: <TransporterVerificationPage />,
           },
           {
-            path: '/dashboard/profile/accounts',
+            path: '/profile/accounts',
             id: 'Accounts',
             element: <TransporterAccountsPage />,
           },
         ],
       },
       {
-        path: '/dashboard/chat',
+        path: '/chat',
         id: 'Chat',
         element: <ChatLayout />,
         children: [
           {
-            path: '/dashboard/chat/:agentId/:transporterId',
+            path: '/chat/:chatLogId',
             id: 'Message',
             element: <ChatPage />,
           },
         ],
       },
       {
-        path: '/dashboard/my-trips',
+        path: '/my-trips',
         id: 'My Trips Layout',
         element: <TripsLayout />,
         children: [
@@ -150,108 +110,64 @@ const router = createBrowserRouter([
             element: <MyTripsPage />,
           },
           {
-            path: '/dashboard/my-trips/new',
-            id: 'New Trip',
-            element: <NewTripPage />,
-          },
-          {
-            path: '/dashboard/my-trips/:tripId/edit',
-            id: 'Edit Trip',
-            element: <NewTripPage />,
-          },
-          {
-            path: '/dashboard/my-trips/:tripId',
-            id: 'View Trip Layout',
-            element: <ViewTripLayout />,
+            path: '/my-trips/:tripId',
+            id: 'Trip Layout',
+            element: <TripLayout />,
             children: [
               {
-                path: '/dashboard/my-trips/:tripId',
-                id: 'View Trip',
-                element: <ViewTripPage />,
+                path: '/my-trips/:tripId',
+                id: 'TripDetails',
+                element: <TripDetailsPage />,
               },
               {
-                path: '/dashboard/my-trips/:tripId/status',
-                id: 'View Trip Status',
-                element: <ViewTripStatusPage />,
-              },
-              {
-                path: '/dashboard/my-trips/:tripId/terminal-delivery-order',
-                id: 'View Trip TDO',
-                element: <ViewTripTDOPage />,
-              },
-              {
-                path: '/dashboard/my-trips/:tripId/request-payment-for-trip',
-                id: 'Request payment for trip',
-                element: <ViewTripRequestPaymentPage />,
-              },
-              {
-                path: '/dashboard/my-trips/:tripId/view-payment-request',
-                id: 'View Request payment for trip',
-                element: <ViewRequestForPayment />,
-              },
-              {
-                path: '/dashboard/my-trips/:tripId/bids',
-                id: 'View Trip Bids Layout',
-                element: <ViewTripBidsLayout />,
-                children: [
-                  {
-                    path: '',
-                    id: 'View Trip Bids',
-                    element: <ViewTripBidsPage />,
-                  },
-                  {
-                    path: '/dashboard/my-trips/:tripId/bids/:bidId',
-                    id: 'View Trip Bid',
-                    element: <ViewTripBidPage />,
-                  },
-                  {
-                    path: '/dashboard/my-trips/:tripId/bids/:bidId/checkout',
-                    id: 'Checkout Trip Bid',
-                    element: <BidCheckoutPage />,
-                  },
-                ],
+                path: '/my-trips/:tripId/bids',
+                id: 'TripBidsLayout',
+                element: <TripBidsPage />,
               },
             ],
           },
         ],
       },
       {
-        path: '/dashboard/available-jobs',
+        path: '/available-jobs',
         id: 'Jobs',
         element: <TransporterJobsPage />,
       },
       {
-        path: '/dashboard/available-jobs/:tripId',
-        id: 'Job Detail',
-        element: <ViewTransporterJobDetailsPage />,
+        path: '/vehicles',
+        id: 'Vehicles',
+        element: <VehiclesPage />,
       },
       {
-        path: '/dashboard/available-jobs/:tripId/bid',
-        id: 'Bid on Job',
-        element: <BidOnJobPage />,
-      },
-      {
-        path: '/dashboard/payments',
+        path: '/payments',
         id: 'Payments',
-        element: <ViewPaymentsPage />,
+        element: <PaymentsPage />,
       },
     ],
-  },
-  {
-    path: '/dashboard/components',
-    element: <ComponentsView />,
   },
   {
     path: 'auth',
     element: <AuthLayout />,
     children: [
       {
+        path: 'join',
+        element: <SelectUsertypePage />,
+      },
+      {
         path: 'join/:userType',
         element: <RegistrationPage />,
       },
       {
+        path: 'verify-phone',
+        element: <VerifyPhonePage />,
+      },
+      {
         path: 'login',
         element: <LoginPage />,
+      },
+      {
+        path: 'forgot-password',
+        element: <ForgotPasswordPage />,
       },
     ],
   },

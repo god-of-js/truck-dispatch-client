@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import styled from 'styled-components';
-import UiField from './UiField';
 
+const UiField = lazy(() => import('./UiField'));
 interface Props {
   label: string;
   value: string;
@@ -9,6 +9,7 @@ interface Props {
    * formData.confirm_password, the name prop should be confirm_password.
    */
   name: string;
+  placeholder?: string;
   error?: string;
   onChange: (event: { name: string; value: string }) => void;
 }
@@ -17,17 +18,19 @@ export default function UiTextArea({
   name,
   value,
   error,
+  placeholder,
   onChange,
 }: Props) {
   function sendValue(e: { target: { name: string; value: string } }) {
     onChange({ name: e.target.name, value: e.target.value });
   }
   return (
-    <UiField label={label} name={name} error={error}>
+    <UiField label={label} error={error}>
       <TextArea
         value={value || ''}
         name={name}
         hasError={!!error}
+        placeholder={placeholder}
         onChange={sendValue}
       />
     </UiField>
@@ -37,19 +40,20 @@ export default function UiTextArea({
 const TextArea = styled.textarea`
   width: 100%;
   padding: ${pxToRem(16)} ${pxToRem(8)};
-  height: ${pxToRem(144)};
   gap: ${pxToRem(8)};
   width: 100%;
   font-size: ${pxToRem(12)};
   border: ${pxToRem(1)} solid;
   border-color: ${({ hasError }: { hasError: boolean }) =>
-    hasError ? 'var(--color-danger)' : 'var(--color-gray-200)'};
-  background: #ffffff;
+    hasError ? 'var(--color-danger)' : 'var(--color-gray)'};
   outline: none;
   border-radius: ${pxToRem(4)};
   box-sizing: border-box;
   font-family: 'thiccboi-medium', sans-serif;
+  min-height: ${pxToRem(200)};
+  background: transparent;
   &:focus {
-    border-color: var(--color-primary);
+    border: ${pxToRem(2)} solid var(--color-primary);
+    box-shadow: var(--box-shadow-primary);
   }
 `;

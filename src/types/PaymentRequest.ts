@@ -1,19 +1,18 @@
-import Asset from './Asset';
+import Trip from './Trip';
+import Vehicle from './Vehicle';
 
 export default interface PaymentRequest {
-  id: string;
-  driverName: string;
-  driverPhoneNumber: string;
-  containerVideo: File | null | Asset;
+  _id: string;
+  vehicle: Vehicle;
+  proofVideo: string;
   status: 'pending' | 'rejected' | 'completed';
   transporterId: string;
-  tripId: string;
-  truckPlateNumber: string;
+  trip: Trip;
   tripReference: string;
+  paymentReference?: string;
+  reference: string;
+  amount: number;
+  reasonForReject?: string;
   createdAt?: number;
   updatedAt?: number;
-  paymentReference?: string;
-  reference?: string;
-  amount?: number;
-  agentRemark?: string;
 }

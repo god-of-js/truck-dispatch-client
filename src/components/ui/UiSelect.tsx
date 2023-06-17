@@ -1,9 +1,9 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, lazy } from 'react';
 import OutsideClickHandler from 'react-outside-click-handler';
 import styled from 'styled-components';
-import UiField from './UiField';
-import UiIcon from './UiIcon';
 
+const UiField = lazy(() => import('./UiField'));
+const UiIcon = lazy(() => import('./UiIcon'));
 export interface Option {
   value: string;
   label: string;
@@ -44,24 +44,38 @@ export default function UiSelect({
 
   return (
     <OutsideClickHandler onOutsideClick={() => setIsOpen(false)}>
-      <UiField label={label} name={name} error={error}>
+      <UiField label={label} error={error}>
         <StyledSelect onClick={toggleOptions} hasError={!!error}>
-          <div>
-            <span>{selectedOption && selectedOption.label}</span>
+          <div className="select">
+            <span className="selected-option">
+              {selectedOption?.label
+                ? selectedOption.label
+                : 'Choose an option from the dropdown'}
+            </span>
             <span>
               <UiIcon icon={isOpen ? 'CaretUp' : 'CaretDown'} />
             </span>
           </div>
-          <StyledOptions isOpen={isOpen}>
-            {options.map((option) => (
-              <StyledOption
-                key={option.value}
-                onClick={() => handleOptionClick(option)}
-              >
-                {option.label}
-              </StyledOption>
-            ))}
-          </StyledOptions>
+          {isOpen && (
+            <StyledOptions>
+              {options.map((option) => (
+                <StyledOption
+                  key={option.value}
+                  className={
+                    selectedOption?.value === option.value ? 'is-active' : ''
+                  }
+                  onClick={() => handleOptionClick(option)}
+                >
+                  <div className="label">{option.label}</div>
+                  <span
+                    className={`activity-indicator ${
+                      selectedOption?.value === option.value ? 'active' : ''
+                    }`}
+                  />
+                </StyledOption>
+              ))}
+            </StyledOptions>
+          )}
         </StyledSelect>
       </UiField>
     </OutsideClickHandler>
@@ -70,8 +84,8 @@ export default function UiSelect({
 
 const StyledSelect = styled.div`
   position: relative;
-  div {
-    padding: ${pxToRem(16)} ${pxToRem(8)};
+  .select {
+    padding: 0 ${pxToRem(16)};
     height: var(--base-height);
     display: flex;
     align-items: center;
@@ -79,34 +93,85 @@ const StyledSelect = styled.div`
     font-size: ${pxToRem(12)};
     border: ${pxToRem(1)} solid;
     border-color: ${({ hasError }: { hasError: boolean }) =>
-      hasError ? 'var(--color-danger)' : 'var(--color-gray-200)'};
-    background: #ffffff;
+      hasError ? 'var(--color-danger)' : 'var(--color-gray)'};
     outline: none;
-    border-radius: ${pxToRem(4)};
+    border-radius: ${pxToRem(8)};
     box-sizing: border-box;
+    transition: all 0.2s ease-in-out;
+    .selected-option {
+      font-size: ${pxToRem(14)};
+      color: var(--color-gray-80);
+      font-weight: 400;
+      line-height: ${pxToRem(24)};
+    }
   }
 `;
 
 const StyledOptions = styled.ul`
-  list-style: none;
-  margin: 0;
-  padding: 0;
   position: absolute;
-  width: 100%;
+  list-style: none;
+  margin-top: ${pxToRem(8)};
+  padding: ${pxToRem(16)} 0;
+  display: grid;
+  gap: ${pxToRem(12)};
   background: #fff;
-  border: 1px solid var(--color-gray-200);
-  border-radius: ${pxToRem(4)};
+  border: 1px solid var(--color-gray-30);
+  border-radius: ${pxToRem(8)};
+  box-shadow: 0px ${pxToRem(8)} ${pxToRem(16)} rgba(0, 0, 0, 0.08);
   z-index: 1;
-  overflow: auto;
-  max-height: ${pxToRem(200)};
-  display: ${({ isOpen }: { isOpen: boolean }) => (isOpen ? 'block' : 'none')};
+  width: 100%;
+  max-width: 100%;
+  max-height: ${pxToRem(250)};
+  overflow-y: auto;
+  transition: all 0.2s ease-in-out;
 `;
 
 const StyledOption = styled.li`
-  padding: ${pxToRem(10)};
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  justify-content: space-between;
+  align-items: center;
+  height: ${pxToRem(40)};
+  padding: 0 ${pxToRem(12)};
+  margin: 0 ${pxToRem(16)} !important;
+  font-size: ${pxToRem(14)};
+  border-radius: ${pxToRem(4)};
+  color: var(--color-gray-80);
+  gap: ${pxToRem(12)};
   cursor: pointer;
   text-transform: capitalize;
-  &:hover {
-    background: var(--color-gray-50);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 24px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  .label {
+    width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &:hover,
+  &.is-active {
+    background: var(--color-primary-10);
+    color: var(--color-neutralBlack);
+  }
+
+  .activity-indicator {
+    width: ${pxToRem(16)};
+    height: ${pxToRem(16)};
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 ${pxToRem(1)} var(--color-gray);
+    position: absolute;
+    right: 0;
+    margin-right: ${pxToRem(12)};
+
+    &.active {
+      box-shadow: inset 0 0 0 ${pxToRem(6)} var(--color-primary);
+    }
   }
 `;

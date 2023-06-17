@@ -1,17 +1,17 @@
-import React, { useMemo, useState } from 'react';
+import React, { lazy, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import Asset from 'types/Asset';
-import FileUploadWidget from './FileUploadWidget';
-import UiButton from './UiButton';
-import UiIcon from './UiIcon';
+import EmptyAvatar from '../../assets/img/empty-profile-pic.png';
 
+const UiButton = lazy(() => import('./UiButton'));
+const FileUploadWidget = lazy(() => import('./FileUploadWidget'));
 type Size = 'sm' | 'lg';
 
 interface Props {
-  avatar?: Asset | File;
+  avatar?: string | File;
   size?: Size;
   isEdit?: boolean;
   name?: string;
+  isHalfCurved?: boolean;
   onChange?: (event: { name: string; value: File | File[] }) => void;
 }
 
@@ -20,6 +20,7 @@ export default function UiAvatar({
   size = 'sm',
   isEdit,
   name,
+  isHalfCurved,
   onChange = () => {},
 }: Props) {
   const [avatarDataUrl, setAvatarDataUrl] = useState<string | undefined>();
@@ -28,7 +29,7 @@ export default function UiAvatar({
     if (avatar instanceof File) {
       return avatarDataUrl;
     }
-    return avatar?.url as string;
+    return avatar as string;
   }, [avatar, avatarDataUrl]);
 
   const handleAvatarChange = (event: {
@@ -45,14 +46,8 @@ export default function UiAvatar({
 
   return (
     <AvatarContainer>
-      <Avatar size={size}>
-        {avatar ? (
-          <img src={formattedAvatar} alt="" />
-        ) : (
-          <div className="user-icon">
-            <UiIcon icon="User" size="24" />
-          </div>
-        )}
+      <Avatar size={size} isHalfCurved={isHalfCurved}>
+        <img src={avatar ? formattedAvatar : EmptyAvatar} alt="" />
       </Avatar>
       {isEdit && (
         <FileUploadWidget
@@ -76,8 +71,8 @@ function getSizeVariant(size: Size) {
   height: ${pxToRem(52)};
   `;
   return `
-  width: ${pxToRem(36)};
-  height: ${pxToRem(36)};
+  width: ${pxToRem(40)};
+  height: ${pxToRem(40)};
   `;
 }
 
@@ -92,26 +87,36 @@ const AvatarContainer = styled.div`
   }
 `;
 
+interface AvatarProps {
+  size: Size;
+  isHalfCurved?: boolean;
+}
 const Avatar = styled.div`
-  ${({ size }: { size: Size }) => getSizeVariant(size)}
+  ${({ size }: AvatarProps) => getSizeVariant(size)}
   display: flex;
   align-items: flex-start;
 
   .user-icon {
     width: 100%;
     height: 100%;
-    color: var(--color-gray-400);
-    border: ${pxToRem(1)} solid var(--color-gray-200);
+    border: ${pxToRem(1)} solid var(--color-gray-50);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    svg {
+      width: ${pxToRem(18)};
+      height: ${pxToRem(18)};
+      fill: var(--color-gray-70);
+    }
   }
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 50%;
+    border-radius: ${({ isHalfCurved }: AvatarProps) =>
+      isHalfCurved ? pxToRem(8) : '50%'};
   }
 `;

@@ -1,45 +1,44 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { lazy, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { uploadItem } from '../../api/Cloudinary';
 import {
-  getUserVerification,
-  selectDashboardUser,
-  sendVerificationDetailsToAdmin,
-  setVerification,
-} from 'modules/Account';
-import { aValueHasBeenChanged, toAnyAction } from 'utils/helpers';
+  startVerificationProcess,
+  updateVerification,
+} from 'modules/Verification';
+import {
+  aValueHasBeenChanged,
+  deepRootedToFormData,
+  removeUneditedFields,
+  toAnyAction,
+} from 'utils/helpers';
 import TransporterValidationSchema from 'utils/validations/TransporterValidationSchema';
 
-import UiForm from 'ui/UiForm';
-import UiSelect from 'ui/UiSelect';
-import FileUploadWidget from 'ui/FileUploadWidget';
-import UiLocationsInput from 'ui/UiLocationsInput';
-import UiButton from 'ui/UiButton';
 import Verification from 'types/Verification';
-import UiInput from 'ui/UiInput';
 import sizes from 'utils/sizes';
 import { RootState } from 'modules/index';
-import Asset from 'types/Asset';
+import { Toast } from 'utils/toast';
+
+const UiLocationsInput = lazy(() => import('ui/UiLocationsInput'));
+const FileUploadWidget = lazy(() => import('ui/FileUploadWidget'));
+const UiSelect = lazy(() => import('ui/UiSelect'));
+const UiForm = lazy(() => import('ui/UiForm'));
+const UiInput = lazy(() => import('ui/UiInput'));
+const UiButton = lazy(() => import('ui/UiButton'));
 
 interface Props {
-  onVerified: () => void;
   parentLoading?: boolean;
+  onVerified: () => void;
 }
 
-export default function VerificationForm({
-  parentLoading,
-  onVerified = () => {},
-}: Props) {
-  const user = useSelector(selectDashboardUser);
+export default function VerificationForm({ parentLoading, onVerified }: Props) {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState<Verification>({
+    _id: '',
     idType: '',
     idDoc: null,
     homeAddress: '',
     homeUtilityBill: null,
-    userId: '',
     garageAddress: '',
     officeAddress: '',
     guarantor: {
@@ -52,7 +51,7 @@ export default function VerificationForm({
     },
   });
   const verification = useSelector(
-    (state: RootState) => state.account.verification,
+    (state: RootState) => state.verification.verification,
   );
   const [loading, setLoading] = useState(false);
   const idTypeOptions = [
@@ -77,53 +76,46 @@ export default function VerificationForm({
   const disableButton = useMemo(() => {
     return aValueHasBeenChanged<Verification>(verification!, formData);
   }, [verification, formData]);
-  function initUpload(item: File | Asset) {
-    if (item instanceof File) {
-      return uploadItem(item);
-    }
 
-    return item;
-  }
-  async function verifyUser() {
-    setLoading(true);
-    const idDocUrl = await initUpload(formData.idDoc as File);
-    const homeUtilityBill = await initUpload(formData.homeUtilityBill as File);
-    const guarantorIdDoc = await initUpload(formData.guarantor.idDoc as File);
+  async function startUserVerificationProcess() {
+    const data = deepRootedToFormData(formData);
 
-    if (!user?.id) return;
-    dispatch(
-      toAnyAction(
-        sendVerificationDetailsToAdmin({
-          ...formData,
-          idDoc: idDocUrl,
-          userId: user.id,
-          homeUtilityBill,
-          guarantor: {
-            ...formData.guarantor,
-            idDoc: guarantorIdDoc,
-          },
-        }),
-      ),
-    )
+    dispatch(toAnyAction(startVerificationProcess(data)))
       .then(() => {
-        dispatch(
-          setVerification({
-            ...formData,
-            idDoc: idDocUrl,
-            userId: user.id,
-            homeUtilityBill,
-            guarantor: {
-              ...formData.guarantor,
-              idDoc: guarantorIdDoc,
-            },
-          }),
-        );
         onVerified();
       })
       .catch((err: Error) => {
-        console.log(err);
+        Toast.error({ msg: err.message });
       })
       .finally(() => setLoading(false));
+  }
+  async function updateUserVerification() {
+    if (!verification)
+      throw new Error('verification is meant to be available at this point.');
+    const changedData = removeUneditedFields<Verification>(
+      verification,
+      formData,
+    );
+    const data = deepRootedToFormData(changedData);
+
+    dispatch(toAnyAction(updateVerification(data)))
+      .then(() => {
+        onVerified();
+      })
+      .catch((err: Error) => {
+        Toast.error({ msg: err.message });
+      })
+      .finally(() => setLoading(false));
+  }
+
+  async function verifyUser() {
+    setLoading(true);
+    if (!verification) {
+      startUserVerificationProcess();
+      return;
+    }
+
+    updateUserVerification();
   }
 
   function setData(event: {
@@ -148,8 +140,9 @@ export default function VerificationForm({
   }
 
   useEffect(() => {
-    if (!formData.userId && verification) setFormData(verification);
+    if (!formData._id && verification) setFormData(verification);
   }, [verification]);
+
   return (
     <UiForm
       formData={formData}

@@ -1,35 +1,44 @@
-import React, { Suspense } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
 import sizes from '../utils/sizes';
+import { RootState } from 'modules/index';
 
-import Loader from 'components/layout/Loader';
-import UiTabs from 'components/ui/UiTabs';
 import { useSelector } from 'react-redux';
-import { selectDashboardUser } from 'modules/Account';
+import { clientBasedUserTypes } from 'utils/constants';
+
+const Loader = lazy(() => import('components/layout/Loader'));
+const UiTabs = lazy(() => import('ui/UiTabs'));
 
 export default function ProfileLayout() {
-  const user = useSelector(selectDashboardUser);
+  const user = useSelector((state: RootState) => state.account.user);
 
   const routes = [
     {
       label: 'Profile',
-      path: '/dashboard/profile',
+      path: '/profile',
     },
     {
       label: 'Accounts',
-      path: '/dashboard/profile/accounts',
+      path: '/profile/accounts',
     },
     {
       label: 'Verification',
-      path: '/dashboard/profile/verification',
+      path: '/profile/verification',
+    },
+    {
+      label: 'Manage Password',
+      path: '/profile/manage-password',
     },
   ].filter((route) => {
-    if (user?.userType === 'agent') return route.path === '/dashboard/profile';
+    if (clientBasedUserTypes.includes(user?.userType!))
+      return (
+        route.path === '/profile' || route.path === '/profile/manage-password'
+      );
 
     if (user?.status === 'verified')
-      return route.path !== '/dashboard/profile/verification';
+      return route.path !== '/profile/verification';
 
     return true;
   });

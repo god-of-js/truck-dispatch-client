@@ -1,133 +1,153 @@
-import React, { Suspense, useEffect, useLayoutEffect, useState } from 'react';
+import React, { lazy, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { io } from 'socket.io-client';
 
 import { toAnyAction } from 'utils/helpers';
 import sizes from '../utils/sizes';
 
 import {
-  getUserAccountNumber,
-  getUsers,
-  selectDashboardUser,
+  getDashboardUser,
+  requestEmailVerification,
+  setUser,
+  verifyEmail,
 } from 'modules/Account';
 
-import DashboardSidebar from 'components/layout/DashboardSidebar';
-import DashboardTopNav from 'components/layout/DashboardTopNav';
-import Loader from 'components/layout/Loader';
-import UiAlert from 'ui/UiAlert';
-import { setChats } from 'modules/Chat';
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
-import db from '../api/firebase';
-import Chat from 'types/Chat';
 import { RootState } from 'modules/index';
+import { Toast } from 'utils/toast';
+import { getChatLogs, getUserChat, setChat, setChatLog } from 'modules/Chat';
+import { WEB_SOCKET_URL } from 'utils/privateKeys';
+import { getUserSessionId, saveUserSessionId } from 'utils/localStorageMethods';
+
+const DashboardSidebar = lazy(
+  () => import('components/layout/DashboardSidebar'),
+);
+const EmailHasBeenSentModal = lazy(
+  () => import('components/profile/EmailHasBeenSentModal'),
+);
+const Loader = lazy(() => import('components/layout/Loader'));
+const EmailHasBeenVerifiedModal = lazy(
+  () => import('components/profile/EmailHasBeenVerifiedModal'),
+);
 
 export default function DashboardLayout() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const token = new URLSearchParams(location.search).get('token');
+  const action = new URLSearchParams(location.search).get('action');
+  const isPhoneVerified = new URLSearchParams(location.search).get(
+    'isPhoneVerified',
+  );
+
+  const [requestVerificationLoading, setRequestVerificationLoading] =
+    useState(false);
+  const [verificationHasBeenSent, setVerificationHasBeenSent] = useState(false);
+  const [emailHasBeenVerified, setEmailHasBeenVerified] = useState(false);
+  const user = useSelector((state: RootState) => state.account.user);
   const [loading, setLoading] = useState(true);
-  const user = useSelector(selectDashboardUser);
-  const accountDetails = useSelector(
-    (state: RootState) => state.account.bankAccountDetails,
-  );
+
+  function getEmailVerificationLink() {
+    setRequestVerificationLoading(true);
+    dispatch(toAnyAction(requestEmailVerification()))
+      .then(() => {
+        setVerificationHasBeenSent(true);
+      })
+      .finally(() => setRequestVerificationLoading(false));
+  }
+
+  function verifyUserEmail(verificationToken: string) {
+    setLoading(true);
+    dispatch(toAnyAction(verifyEmail(verificationToken)))
+      .then(() => {
+        navigate(location.pathname);
+        setEmailHasBeenVerified(true);
+      })
+      .catch(() => {
+        navigate('/auth/login');
+      })
+      .finally(() => setLoading(false));
+  }
+
+  function loadDashboardData() {
+    dispatch(toAnyAction(getDashboardUser()))
+      .catch((err: Error) => {
+        Toast.error({ msg: err.message });
+      })
+      .then(() => setLoading(false));
+    dispatch(toAnyAction(getUserChat()));
+    dispatch(toAnyAction(getChatLogs()));
+  }
 
   useEffect(() => {
-    const userId = localStorage.getItem('uid');
-    if (!userId) {
-      navigate('/auth/login');
-    } else {
-      dispatch(toAnyAction(getUserAccountNumber()));
-      dispatch(toAnyAction(getUsers()))
-        .catch((err: Error) => {
-          console.log(err.message);
-        })
-        .finally(() => setLoading(false));
+    if (action === 'sign-in' && token) {
+      // Sign in user by saving the session ID
+      saveUserSessionId(token);
+      navigate(
+        `${location.pathname}${
+          isPhoneVerified === 'false'
+            ? '?isPhoneVerified=' + isPhoneVerified
+            : ''
+        }`,
+      );
+    } else if (action === 'verify-email' && token) {
+      verifyUserEmail(token);
     }
-  }, []);
+  }, [action, token, isPhoneVerified]);
+
   useEffect(() => {
-    if (user?.userType === 'transporter')
-      dispatch(toAnyAction(getUserAccountNumber()));
-  }, [user?.userType]);
+    const sessionId = getUserSessionId();
+    if (!sessionId && action !== 'sign-in' && !token) {
+      navigate('/auth/login');
+      dispatch(setUser(null));
+      window.location.reload();
+    } else {
+      loadDashboardData();
+    }
+  }, [action, token, loading]);
 
-  // useLayoutEffect(() => {
-  //   let unsubscribe: () => void;
+  useEffect(() => {
+    if (location.pathname === '/') navigate('/my-trips');
+  }, [location.pathname]);
 
-  //   if (user?.id) {
-  //     const key = user.userType === 'agent' ? 'agentId' : 'transporterId';
-  //     const q = query(collection(db, 'chat'), where(key, '==', user.id));
+  useEffect(() => {
+    // Connect to socket.
+    if (user) {
+      const userId = user?._id;
+      const newSocket = io(WEB_SOCKET_URL);
+      newSocket.on('connect', () => {
+        newSocket.emit('join', { userId });
+      });
 
-  //     unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //       const chats: Chat[] = [];
-  //       querySnapshot.forEach((doc) => {
-  //         chats.push(doc.data() as Chat);
-  //       });
-  //       dispatch(setChats(chats));
-  //     });
-  //   }
+      newSocket.on('message', (message) => {
+        dispatch(setChat(message));
+      });
 
-  //   return () => {
-  //     if (unsubscribe) {
-  //       unsubscribe();
-  //     }
-  //   };
-  // }, [user]);
+      newSocket.on('chat-log', (chatLog) => {
+        dispatch(setChatLog(chatLog));
+      });
 
-  const Component = loading ? (
-    <Loader />
-  ) : (
-    <Suspense fallback={<Loader />}>
-      <Outlet />
-    </Suspense>
-  );
+      return () => {
+        newSocket.disconnect();
+      };
+    }
+  }, [user]);
+
   return (
     <Layout>
       <DashboardSidebar />
       <Body>
-        {!user?.avatar && (
-          <UiAlert variant="warning">
-            Kindly upload a profile image to foster trust between you and other
-            individuals you may work with. To upload a profile picture,{' '}
-            <Link to="/dashboard/profile">Click Here</Link>
-          </UiAlert>
-        )}
-        {!accountDetails && user?.userType === 'transporter' && (
-          <UiAlert variant="warning">
-            Kindly add your bank Account number to be eligible to receive
-            payment from TruckDispatch{' '}
-            <Link to="/dashboard/profile/accounts">Click Here</Link>
-          </UiAlert>
-        )}
-        {location.pathname !== '/dashboard/profile/verification' && (
-          <div>
-            {user?.status === 'unverified' && (
-              <UiAlert variant="warning">
-                Verification is required to access all core features of the
-                application. To complete verification,{' '}
-                <Link to="/dashboard/profile/verification">Click Here</Link>
-              </UiAlert>
-            )}
-            {user?.status === 'pending_verification' && (
-              <UiAlert variant="info">
-                Your verification has been sent to the admin. Expect to get a
-                text about the status of your verification within 3 working
-                days.
-              </UiAlert>
-            )}
-            {user?.status === 'rejected' && (
-              <UiAlert variant="danger">
-                Your verification request was rejected. Kindly proceed back to
-                the{' '}
-                <Link to="/dashboard/profile/verification">
-                  Verification Page
-                </Link>{' '}
-                to view why it was rejected and fix the issue.
-              </UiAlert>
-            )}
-          </div>
-        )}
-        <DashboardTopNav />
-        <div className="body-components-container">{Component}</div>
+        {loading ? <Loader isPage /> : <Outlet />}
+        <EmailHasBeenSentModal
+          isVisible={verificationHasBeenSent}
+          onClose={() => setVerificationHasBeenSent(false)}
+        />
+        <EmailHasBeenVerifiedModal
+          isVisible={emailHasBeenVerified}
+          onClose={() => setEmailHasBeenVerified(false)}
+        />
       </Body>
     </Layout>
   );
@@ -137,7 +157,7 @@ const Layout = styled.div`
   display: flex;
   height: 100vh;
   width: 100%;
-  background-color: var(--color-gray-100);
+  background-color: var(--color-gray-20);
   overflow: hidden;
 `;
 
@@ -145,7 +165,8 @@ const Body = styled.div`
   position: relative;
   overflow-x: auto;
   width: 100%;
-  padding-bottom: ${pxToRem(48)};
+  padding-bottom: ${pxToRem(100)};
+  /* padding: 0 ${pxToRem(24)}; */
   .alert-container {
     padding: ${pxToRem(16)};
   }
@@ -154,7 +175,9 @@ const Body = styled.div`
     border-top: none;
     position: static;
     border-right: ${pxToRem(1)} solid var(--color-gray-200);
+    padding-bottom: 0;
   }
+
   @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
     width: 95%;
   }

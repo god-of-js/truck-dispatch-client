@@ -1,12 +1,10 @@
 export default interface Chat {
-  id: string;
-  chatId: string;
+  _id?: string;
+  chatLog: string;
   message: string;
-  createdAt: number;
-  senderId: string;
-  agentId: string;
-  transporterId: string;
-  status?: 'success' | 'pending' | 'failed';
+  sender: string;
+  receiver: string;
+  temporaryId?: string;
   readAt?: number;
-  stillSending?: boolean;
+  createdAt?: number;
 }

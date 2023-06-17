@@ -1,215 +1,342 @@
-import {
-  collection,
-  getDocs,
-  doc,
-  getDoc,
-  setDoc,
-  query,
-  where,
-  WhereFilterOp,
-} from 'firebase/firestore';
-import 'firebase/firestore';
 import User from '../types/User';
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from 'firebase/auth';
-import db, { auth } from './firebase';
+import axiosInstance from './AxiosInstance';
 import Trip from 'types/Trip';
 import Bid from 'types/Bid';
-import Payment from 'types/Payment';
 import Rating from 'types/Rating';
 import PaymentRequest from 'types/PaymentRequest';
 import Chat from 'types/Chat';
 import Verification from 'types/Verification';
-import BankAccount from 'types/BankAccount';
+import VerifyPhoneData from 'types/VerifyPhoneData';
+import NewTrip from 'types/NewTrip';
+import { Toast } from 'utils/toast';
+import AssignTripFormData from 'types/AssignTripFormData';
+import { Bank } from './paystackIntegrations';
+import AccountDetails from 'types/AccountDetails';
+import BankDetails from 'types/BankDetails';
+import TokenVerificationData from 'types/TokenVerificationData';
+import LoginResponse from 'types/LoginResponse';
+import ChatLogData from 'types/CreateChatLog';
+import ChatLog from 'types/ChatLog';
+import Vehicle from 'types/Vehicle';
+import CreateBid from 'types/CreateBid';
 
 class ApiService {
-  createUserWithEmailAndPassword(email: string, password: string) {
-    return createUserWithEmailAndPassword(auth, email, password).then(
-      ({ user }) => user,
+  createUser(userData: Partial<User>) {
+    return this.post<{ smsData: TokenVerificationData; token: string }>(
+      '/auth/join',
+      userData,
     );
   }
 
-  signInWithEmailAndPassword(email: string, password: string) {
-    return signInWithEmailAndPassword(auth, email, password).then(
-      ({ user }) => user,
+  signInWithEmailAndPassword(data: { email: string; password: string }) {
+    return this.post<LoginResponse>('/auth/login', data);
+  }
+
+  requestResetPasswordLink(data: { email: string }) {
+    return this.post('/auth/request-reset-password', data);
+  }
+
+  requestVerificationCode(data: { phone: string }) {
+    return this.post<TokenVerificationData>('/auth/request-sms', data);
+  }
+
+  requestEmailVerification() {
+    return this.post('/auth/request-email-verification');
+  }
+
+  verifyPhone(data: VerifyPhoneData) {
+    return this.post<{ token: string }>('/auth/verify-phone', data);
+  }
+
+  verifyEmail(data: { token: string }) {
+    return this.post<User>('/auth/verify-email', data);
+  }
+
+  updateUser(data: FormData) {
+    return this.patch<User>('/user', data);
+  }
+
+  createTrip(data: NewTrip): Promise<Trip> {
+    return this.post('/trips', data);
+  }
+
+  updateTrip(data: Partial<Trip>): Promise<Trip> {
+    return this.patch(`/trips/${data._id}`, data);
+  }
+
+  getTrip(tripId: string): Promise<Trip> {
+    return this.get(`/trips/${tripId}`);
+  }
+
+  getJob(jobId: string): Promise<Trip> {
+    return this.get(`/trips/jobs/${jobId}`);
+  }
+
+  updateTripStatus(tripId: string, status: string): Promise<Trip> {
+    return this.patch(`/trips/${tripId}/change-status/${status}`);
+  }
+
+  async getTrips({
+    page,
+    limit,
+    status,
+  }: {
+    page: number;
+    limit: number;
+    status?: string | null;
+  }) {
+    const data = await this.get(
+      `/trips?&page=${page}&limit=${limit}${status ? `&status=${status}` : ''}`,
+    );
+
+    return {
+      data: data.data as Trip[],
+      currentPage: data.currentPage,
+      totalPages: data.totalPages,
+      totalItems: data.totalItems,
+      inProgress: data.inProgress,
+      completed: data.completed,
+      pending: data.pending,
+    };
+  }
+
+  getUser() {
+    return this.get<User>('/user');
+  }
+
+  startVerificationProcess(data: FormData) {
+    return this.post('/verification', data);
+  }
+
+  startCompanyUpgradeVerificationProcess(data: FormData) {
+    return this.post('/verification/company', data);
+  }
+
+  updateVerification(data: FormData) {
+    return this.patch('/verification', data);
+  }
+
+  getVerificationByUserId() {
+    return this.get<Verification>('/verification');
+  }
+
+  assignTrip(data: AssignTripFormData) {
+    return this.post<{ trip: Trip; user: User }>(
+      `/trips/${data.tripId}/assign-trip`,
+      data,
     );
   }
 
-  recordAccountDetails(data: User) {
-    return this.setDoc('user', data.id, data);
+  saveAccountNumber(accountDetails: BankDetails) {
+    return this.post<User>('/user/bank-details', accountDetails);
   }
 
-  getUser(id: string) {
-    return this.getItem<User>('user', id);
+  updatePassword(data: { password: string }) {
+    return this.post<User>('/user/update-password', data);
   }
 
-  getUsers() {
-    return this.getCollection<User>('user');
+  async getJobs({
+    page,
+    limit,
+    senderType,
+  }: {
+    page?: number;
+    limit?: number;
+    senderType?: string;
+  }) {
+    const data = await this.get(
+      `/trips/jobs?page=${page}&limit=${limit}${
+        senderType ? `&senderType=${senderType}` : ''
+      }`,
+    );
+
+    return {
+      data: data.data as Trip[],
+      currentPage: data.currentPage,
+      totalPages: data.totalPages,
+      totalItems: data.totalItems,
+      byCompany: data.byCompany,
+      byShipper: data.byShipper,
+    };
   }
 
-  sendVerificationDetailsToAdmin(userId: string, data: unknown) {
-    return this.setDoc('verification', userId, data);
+  uploadTDO(formData: FormData, tripId: string) {
+    return this.post<Trip>(`/trips/${tripId}/upload-tdo`, formData);
   }
 
-  getVerificationByUserId(userId: string): Promise<Verification> {
-    return this.getItem('verification', userId);
+  unassignTrip(tripId: string) {
+    return this.post<{ trip: Trip; user: User }>(
+      `/trips/${tripId}/unassign-trip`,
+    );
   }
 
-  saveAsset(id: string, url: string) {
-    // In case of future migrations to different asset servers.
-    return this.setDoc('assets', id, { id, url });
+  cancelTripByTripCreator(tripId: string) {
+    return this.delete<{ trip: Trip; user: User }>(
+      `/trips/${tripId}/cancel-trip-by-trip-owner`,
+    );
   }
 
-  saveAccountNumber(accountDetails: BankAccount) {
-    return this.setDoc('bank-account', accountDetails.id, accountDetails);
+  cancelTripByTransporter(tripId: string) {
+    return this.patch<{ trip: Trip; user: User }>(
+      `/trips/${tripId}/cancel-trip-by-transporter`,
+    );
   }
 
-  getAccountNumber(id: string) {
-    return this.getItem<BankAccount>('bank-account', id);
+  createBid(data: CreateBid) {
+    return this.post<Bid>(`/bids/${data.tripId}`, data);
   }
 
-  publishUserRating(data: Rating) {
-    return this.setDoc('rating', data.id, data);
+  updateBid(data: CreateBid): Promise<Bid> {
+    return this.patch<Bid>(`/bids/${data.tripId}`, data);
   }
 
-  createOrUpdateTrip(data: Trip) {
-    return this.setDoc('trip', data.id, data);
+  deleteBid(bidId: string, tripId: string): Promise<Bid> {
+    return this.delete<Bid>(`/bids/${tripId}/${bidId}`);
   }
 
-  getAgentTrips(agentId: string) {
-    return this.query<Trip>({
-      collectionName: 'trip',
-      key: 'agentId',
-      condition: '==',
-      value: agentId,
-    });
+  requestPaymentByTransporter(data: FormData, tripId: string): Promise<Trip> {
+    return this.post(`/payment/request-payment/trip/${tripId}`, data);
   }
 
-  getRatings(
-    value: string,
-    queryKey: 'transporterId' | 'tripId' = 'transporterId',
+  updatePaymentRequest(
+    data: FormData,
+    tripId: string,
+    paymentRequestId: string,
+  ): Promise<Trip> {
+    return this.patch(
+      `/payment/request-payment/trip/${tripId}/update/${paymentRequestId}`,
+      data,
+    );
+  }
+
+  getPaymentRequestsOfDriver() {
+    return this.get<PaymentRequest[]>('/payment/payment-requests');
+  }
+
+  rejectPaymentRequest(
+    tripId: string,
+    paymentRequestId: string,
+    data: { reasonForReject: string },
   ) {
-    return this.query<Rating>({
-      collectionName: 'rating',
-      key: queryKey,
-      condition: '==',
-      value,
-    });
+    return this.post<Trip>(
+      `/payment/payment-request/trip/${tripId}/reject/${paymentRequestId}`,
+      data,
+    );
   }
 
-  getTransporterTrips(transporterId: string) {
-    return this.query<Trip>({
-      collectionName: 'trip',
-      key: 'transporterId',
-      condition: '==',
-      value: transporterId,
-    });
-  }
-
-  getJobs() {
-    // Jobs are trips that haven't been claimed by any transporter and
-    return this.query<Trip>({
-      collectionName: 'trip',
-      key: 'status',
-      condition: '==',
-      value: 'awaiting_bid',
-    });
-  }
-
-  createOrUpdateBid(data: Bid) {
-    return this.setDoc('bid', data.id, data);
-  }
-
-  createOrUpdatePayment(data: Payment) {
-    return this.setDoc('payment', data.id, data);
-  }
-
-  requestPaymentByTransporter(data: PaymentRequest) {
-    return this.setDoc('payment-request', data.id, data);
-  }
-
-  getPaymentRequestsOfDriver(id: string) {
-    return this.query<PaymentRequest>({
-      collectionName: 'payment-request',
-      key: 'transporterId',
-      condition: '==',
-      value: id,
-    });
-  }
-
-  getPaymentRequestByTripId(id: string) {
-    return this.getItem<PaymentRequest>('payment-request', id);
+  approvePaymentRequest(tripId: string, paymentRequestId: string) {
+    return this.post<Trip>(
+      `/payment/payment-request/trip/${tripId}/approve/${paymentRequestId}`,
+    );
   }
 
   getBidsWithTripId(tripId: string) {
-    return this.query<Bid>({
-      collectionName: 'bid',
-      key: 'tripId',
-      condition: '==',
-      value: tripId,
-    });
+    return this.get<Bid[]>(`/bids/${tripId}`);
   }
 
-  createOrUpdateChat(chat: Chat) {
-    return this.setDoc('chat', chat.id, chat);
+  getTransporterBids() {
+    return this.get<Bid[]>(`/bids`);
   }
 
-  private setDoc(
-    collectionName: string,
-    id: string,
-    data: unknown,
-  ): Promise<unknown> {
-    return setDoc(doc(db, collectionName, id), data);
+  createChat(chat: Chat) {
+    return this.post('/chat', chat, true);
   }
 
-  private async getCollection<T>(collectionName: string): Promise<T[]> {
-    const rawObjects = await getDocs(collection(db, collectionName));
-    return rawObjects.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    })) as unknown as T[];
+  createOrFetchChatLog(chat: ChatLogData) {
+    return this.post<ChatLog>('/chat/log', chat, true);
   }
 
-  private async query<T = unknown>({
-    collectionName,
-    key,
-    condition,
-    value,
-  }: {
-    collectionName: string;
-    key: string;
-    condition: WhereFilterOp;
-    value: string;
-  }): Promise<T[]> {
-    const dbRef = collection(db, collectionName);
-    const rawQuery = query(dbRef, where(key, condition, value));
-    const snapShots = await getDocs(rawQuery);
-    const documentList: T[] = [];
-    snapShots.forEach((doc) => {
-      documentList.push(doc.data() as T);
-    });
-    return documentList;
+  publishUserRating(data: Rating) {
+    return this.post(`/rating/${data.tripId}`, data);
   }
 
-  private async getItem<T>(collectionName: string, id: string): Promise<T> {
-    const docRef = doc(db, collectionName, id);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      return docSnap.data() as T;
-    } else {
-      throw new Error('404: Document not found');
-    }
+  getUserChats() {
+    return this.get<Chat[]>(`/chat`);
   }
 
-  private patch(url: string, data: unknown): unknown {
-    return { url, data };
+  getChatLogs() {
+    return this.get<ChatLog[]>(`/chat/logs`);
   }
 
-  private remove(url: string) {
-    return { url };
+  setChatHasBeenRead(chatLog: string) {
+    return this.patch<Chat>(`/chat/read/${chatLog}`, {}, true);
+  }
+
+  getBanks(): Promise<Bank[]> {
+    return this.get('/externals/banks');
+  }
+
+  getRating(tripId: string) {
+    return this.get<Rating>(`/rating/${tripId}`);
+  }
+
+  createVehicle(vehicleData: FormData) {
+    return this.post<Vehicle>(`/vehicle`, vehicleData);
+  }
+
+  updateVehicle(vehicleData: FormData, vehicleId: string) {
+    return this.patch<Vehicle>(`/vehicle/${vehicleId}`, vehicleData);
+  }
+  deleteVehicle(vehicleId: string) {
+    return this.delete(`/vehicle/${vehicleId}`);
+  }
+
+  getVehicles() {
+    return this.get<Vehicle[]>(`/vehicle`);
+  }
+
+  loadAccountDetails(
+    bankCode: string,
+    accountNumber: string,
+  ): Promise<AccountDetails> {
+    return this.get(
+      `/externals/banks/account?account_number=${accountNumber}&bank_code=${bankCode}`,
+    );
+  }
+
+  private get<T = any>(url: string): Promise<T> {
+    return axiosInstance()
+      .get(url)
+      .then(({ data }) => data.data) as Promise<T>;
+  }
+
+  private post<T>(url: string, data?: unknown, silent = false): Promise<T> {
+    return axiosInstance()
+      .post(url, data)
+      .then(({ data }) => {
+        if (!silent) Toast.success({ msg: data.message });
+        return data.data;
+      })
+      .catch((e) => {
+        Toast.error({ msg: e.message });
+        return Promise.reject(e);
+      });
+  }
+
+  private patch<T>(url: string, data?: unknown, silent = false): Promise<T> {
+    return axiosInstance()
+      .patch(url, data)
+      .then(({ data }) => {
+        if (!silent) Toast.success({ msg: data.message });
+        return data.data;
+      })
+      .catch((e) => {
+        Toast.error({ msg: e.message });
+        return Promise.reject(e);
+      });
+  }
+
+  private delete<T>(url: string, silent = false): Promise<T> {
+    return axiosInstance()
+      .delete(url)
+      .then(({ data }) => {
+        if (!silent) Toast.success({ msg: data.message });
+        return data.data;
+      })
+      .catch((e) => {
+        Toast.error({ msg: e.message });
+        return Promise.reject(e);
+      });
   }
 }
 

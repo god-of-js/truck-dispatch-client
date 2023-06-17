@@ -1,13 +1,17 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import Api from 'Api';
 import Chat from 'types/Chat';
+import ChatLog from 'types/ChatLog';
+import ChatLogData from 'types/CreateChatLog';
 import { AppDispatch, AppState, RootState } from '.';
 
 export interface ChatState {
   chats: Chat[];
+  chatLogs: ChatLog[];
 }
 const initialState: ChatState = {
   chats: [],
+  chatLogs: [],
 };
 export const chatSlice = createSlice({
   name: 'chat',
@@ -17,47 +21,114 @@ export const chatSlice = createSlice({
       state.chats = action.payload;
     },
     setChat(state: ChatState, action: { payload: Chat }) {
-      state.chats.push({ ...action.payload, stillSending: true });
+      state.chats.push(action.payload);
+      const logIndex = state.chatLogs.findIndex(
+        (log) => log._id === action.payload.chatLog,
+      );
+      state.chatLogs[logIndex].lastMessage = action.payload;
+    },
+    setChatLogs(state: ChatState, action: { payload: ChatLog[] }) {
+      state.chatLogs = action.payload;
+    },
+    setChatLog(state: ChatState, action: { payload: ChatLog }) {
+      state.chatLogs.push(action.payload);
+    },
+    removeChatById(
+      state: ChatState,
+      action: { payload: { chatToRemoveId: string } },
+    ) {
+      const chatIndex = state.chats.findIndex(
+        ({ temporaryId }) => temporaryId === action.payload.chatToRemoveId,
+      );
+      state.chats.splice(chatIndex, 0);
     },
   },
 });
 
-export const { setChats, setChat } = chatSlice.actions;
+export const { setChats, setChat, setChatLogs, removeChatById, setChatLog } =
+  chatSlice.actions;
 
 export default chatSlice.reducer;
 function getTime(createdAt: number) {
   return new Date(createdAt).getTime();
 }
 const chats = (state: RootState) => state.chat.chats;
-export const selectChatByChatId = (selectedChatId: string) =>
+export const selectChatBychatLog = (selectedchatLog: string) =>
   createSelector(chats, (chatArr) => {
     return chatArr
-      .filter(({ chatId }) => chatId === selectedChatId)
-      .sort((a, b) => getTime(a.createdAt) - getTime(b.createdAt));
+      .filter(({ chatLog }) => chatLog === selectedchatLog)
+      .sort(
+        (a, b) =>
+          getTime(a.createdAt as number) - getTime(b.createdAt as number),
+      );
   });
 
-export const selectChatHeads = createSelector(chats, (chatArr) => {
-  const chatObj: Record<string, Chat[]> = {};
-  chatArr.forEach((chat) => {
-    if (chatObj[chat.chatId]) chatObj[chat.chatId].push(chat);
-    else {
-      chatObj[chat.chatId] = [chat];
-    }
+const user = (state: RootState) => state.account.user;
+const chatLogs = (state: RootState) => state.chat.chatLogs;
+export const selectUnreadChats = createSelector(
+  user,
+  chatLogs,
+  (userDetails, allChatLogs) => {
+    return allChatLogs.filter((log) => {
+      return (
+        log.lastMessage &&
+        !log.lastMessage.readAt &&
+        log.lastMessage.sender !== userDetails?._id
+      );
+    });
+  },
+);
+
+export const selectChatLog = (logId: string) =>
+  createSelector(chatLogs, (arr) => {
+    return arr.find(({ _id }) => _id === logId);
   });
 
-  const refinedChats = Object.values(chatObj)
-    .map(
-      (arr) =>
-        arr.sort((a, b) => getTime(a.createdAt) - getTime(b.createdAt))[
-          arr.length - 1
-        ],
-    )
-    .sort((a, b) => getTime(b.createdAt) - getTime(a.createdAt));
-  return refinedChats;
-});
+export const createChat = (chat: Chat) => {
+  return (dispatch: AppDispatch) => {
+    dispatch(setChat(chat));
+    return Api.createChat(chat).catch(() => {
+      dispatch(removeChatById({ chatToRemoveId: chat._id! }));
+    });
+  };
+};
 
-export const createOrUpdateChat = (chat: Chat) => {
-  return () => {
-    return Api.createOrUpdateChat(chat);
+export const getUserChat = () => {
+  return (dispatch: AppDispatch) => {
+    return Api.getUserChats().then((data) => {
+      dispatch(setChats(data));
+    });
+  };
+};
+
+export const readChat = (chat: Chat) => {
+  return (dispatch: AppDispatch) => {
+    if (!chat._id) return;
+    return Api.setChatHasBeenRead(chat._id);
+  };
+};
+
+export const createOrFetchChatLog = (data: ChatLogData) => {
+  return (dispatch: AppDispatch, state: AppState) => {
+    const chatLog = state().chat.chatLogs.find(
+      (log) =>
+        log.client._id === data.clientId &&
+        log.transporter._id === data.transporterId,
+    );
+    // To avoid unnecessary requests.
+    if (chatLog) return Promise.resolve(chatLog);
+
+    return Api.createOrFetchChatLog(data).then((log) => {
+      dispatch(setChatLog(log));
+      return log;
+    });
+  };
+};
+
+export const getChatLogs = () => {
+  return (dispatch: AppDispatch) => {
+    return Api.getChatLogs().then((data) => {
+      dispatch(setChatLogs(data));
+    });
   };
 };

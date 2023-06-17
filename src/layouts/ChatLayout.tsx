@@ -1,41 +1,81 @@
-import React from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import React, { lazy, useEffect, useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import ChatHeads from 'components/chat/ChatHeads';
 import sizes from 'utils/sizes';
+import { useDispatch } from 'react-redux';
+import { toAnyAction } from 'utils/helpers';
+import { createOrFetchChatLog } from 'modules/Chat';
+
+const Loader = lazy(() => import('components/layout/Loader'));
+const UiConfirmModal = lazy(() => import('ui/UiConfirmModal'));
+const DashboardTopNav = lazy(() => import('components/layout/DashboardTopNav'));
+const ChatHeads = lazy(() => import('components/chat/ChatHeads'));
 
 export default function ChatLayout() {
   const location = useLocation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const clientId = new URLSearchParams(location.search).get('clientId');
+  const transporterId = new URLSearchParams(location.search).get(
+    'transporterId',
+  );
+  const [chatLogCreationInProgress, setChatLogCreationInProgress] =
+    useState(false);
+  async function createCallLog() {
+    if (clientId && transporterId && !chatLogCreationInProgress) {
+      setChatLogCreationInProgress(true);
+      const log = await dispatch(
+        toAnyAction(createOrFetchChatLog({ clientId, transporterId })),
+      );
+
+      if (log) navigate(`/chat/${log._id}`);
+      setChatLogCreationInProgress(false);
+    }
+  }
+  useEffect(() => {
+    createCallLog();
+  }, [clientId, transporterId, chatLogCreationInProgress]);
 
   return (
-    <ChatLayoutDesign>
-      <div className="card">
-        <div className="chat-heads-container">
-          <ChatHeads />
-        </div>
-        <div className="outlet-container" key={location.pathname}>
-          <Outlet />
-          {location.pathname === '/dashboard/chat' && (
-            <div className="create-message"></div>
-          )}
-        </div>
-        <div className="mobile-display">
-          {location.pathname === '/dashboard/chat' && <ChatHeads />}
+    <>
+      <DashboardTopNav routeName="Chat" />
+      <ChatLayoutDesign>
+        <div className="card">
+          <div className="chat-heads-container">
+            <ChatHeads />
+          </div>
+          <div className="outlet-container" key={location.pathname}>
+            <Outlet />
+            {location.pathname === '/chat' && (
+              <div className="create-message"></div>
+            )}
+          </div>
+          <div className="mobile-display">
+            {location.pathname === '/chat' && <ChatHeads />}
 
-          <Outlet key={location.pathname} />
+            <Outlet key={location.pathname} />
+          </div>
         </div>
-      </div>
-    </ChatLayoutDesign>
+      </ChatLayoutDesign>
+      <UiConfirmModal
+        title="Chat Loading"
+        isVisible={chatLogCreationInProgress}
+        hideActions
+        hideModalClose
+        onClose={() => setChatLogCreationInProgress(false)}
+      >
+        Chat log creation in progress <Loader />
+      </UiConfirmModal>
+    </>
   );
 }
 
 const ChatLayoutDesign = styled.div`
-  padding-top: ${pxToRem(24)};
+  padding: ${pxToRem(12)} ${pxToRem(24)};
   height: 85vh;
 
   .card {
-    background: var(--color-gray-100);
-    width: 90%;
+    background: var(--color-gray-10);
     height: 100%;
     margin: auto;
     border: 1px solid var(--color-gray-200);

@@ -1,31 +1,33 @@
-import { useEffect, useMemo, useState } from 'react';
+import { lazy, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import UiForm from 'ui/UiForm';
-import UiInput from 'components/ui/UiInput';
-import UiSelect, { Option } from 'components/ui/UiSelect';
-import UiModal from 'components/ui/UiModal';
-import UiButton from 'components/ui/UiButton';
-import {
-  createTransferRecipient,
-  deleteTransferRecipient,
-  loadAccountDetails,
-  loadBanks,
-} from '../../api/paystackIntegrations';
-import Loader from 'components/layout/Loader';
+import { loadAccountDetails, loadBanks } from '../../api/paystackIntegrations';
 import CreateAccountNumberSchema from 'utils/validations/CreateAccountNumberSchema';
-import { useDispatch } from 'react-redux';
-import { toAnyAction } from 'utils/helpers';
-import { saveUserAccount } from 'modules/Account';
-import { Toast } from 'utils/toast';
-import BankAccount from 'types/BankAccount';
-import TransferRecipient from 'types/TransferRecipient';
+import { useDispatch, useSelector } from 'react-redux';
+import { containsOnlyNumbers, toAnyAction } from 'utils/helpers';
+import { createUserBankAccount } from 'modules/Account';
+import BankAccount from 'types/BankDetails';
+import { RootState } from 'modules/index';
+import { Option } from 'components/ui/UiSelect';
+
+const UiForm = lazy(() => import('ui/UiForm'));
+const UiInput = lazy(() => import('ui/UiInput'));
+const UiSelect = lazy(() => import('ui/UiSelect'));
+const Loader = lazy(() => import('components/layout/Loader'));
+const UiModal = lazy(() => import('ui/UiModal'));
+const UiButton = lazy(() => import('ui/UiButton'));
 
 interface Props {
   onClose: () => void;
   bankAccountDetails: BankAccount | null;
+  isVisible: boolean;
 }
-export default function AddAccount({ bankAccountDetails, onClose }: Props) {
+export default function AddAccount({
+  bankAccountDetails,
+  onClose,
+  isVisible,
+}: Props) {
   const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.account.user);
   const [formData, setFormData] = useState<{
     accountNumber: string;
     bankCode: string;
@@ -37,7 +39,7 @@ export default function AddAccount({ bankAccountDetails, onClose }: Props) {
   const defaultAccountDetails = {
     account_name: '',
     account_number: '',
-    bank_id: '',
+    bank_id: NaN,
   };
 
   const [accountDetails, setAccountDetails] = useState(defaultAccountDetails);
@@ -53,46 +55,19 @@ export default function AddAccount({ bankAccountDetails, onClose }: Props) {
     });
   }
 
-  function saveTransferRecipient(data: TransferRecipient) {
-    if (bankAccountDetails) {
-      return deleteTransferRecipient(
-        bankAccountDetails.paystackRecipientId,
-      ).then(() => createTransferRecipient(data));
-    }
-    return createTransferRecipient(data);
-  }
-
-  async function createAccount() {
-    const uid = localStorage.getItem('uid');
-
-    if (!uid) throw new Error('400: User id not found');
-
+  async function saveBankAccount() {
     setLoading(true);
     const bank = banks.find(({ value }) => value === formData.bankCode);
 
     const data = {
-      type: 'nuban',
       name: accountDetails.account_name,
       account_number: accountDetails.account_number,
       bank_code: formData.bankCode,
       bank_name: bank?.label!,
-      currency: 'NGN',
     };
-
-    const recipient = await saveTransferRecipient(data);
-
-    const bankAccount: BankAccount = {
-      ...data,
-      userId: uid,
-      id: uid,
-      paystackRecipientId:  recipient.id,
-      paystackRecipientCode: recipient.recipient_code,
-    };
-
-    dispatch(toAnyAction(saveUserAccount(bankAccount)))
+    dispatch(toAnyAction(createUserBankAccount(data)))
       .then(() => {
         onClose();
-        Toast.success({ msg: 'Account Number has been updated.' });
       })
       .finally(() => setLoading(false));
   }
@@ -108,22 +83,24 @@ export default function AddAccount({ bankAccountDetails, onClose }: Props) {
   }, []);
 
   const details = useMemo(() => {
+    if (errorMessage)
+      return <div className="error-message">{errorMessage}</div>;
     return accountIsLoading ? (
       <Loader />
-    ) : accountDetails.account_name ? (
+    ) : (
       <div>
         <span className="account-name-title">Account Name:</span>{' '}
         <span className="account-name-value">
           {accountDetails.account_name}
         </span>
       </div>
-    ) : (
-      errorMessage && <div className="error-message">{errorMessage}</div>
     );
   }, [accountDetails.account_name, errorMessage]);
 
   useEffect(() => {
-    if (formData.accountNumber.length > 9 && formData.bankCode) {
+    if (!containsOnlyNumbers(formData.accountNumber)) {
+      setErrorMessage('Invalid account details');
+    } else if (formData.accountNumber.length > 9 && formData.bankCode) {
       setAccountIsLoading(true);
       setAccountDetails(defaultAccountDetails);
       setErrorMessage('');
@@ -141,18 +118,22 @@ export default function AddAccount({ bankAccountDetails, onClose }: Props) {
   }, [formData]);
 
   return (
-    <UiModal size="sm" onClose={onClose}>
+    <UiModal
+      isVisible={isVisible}
+      title="Add Payout Account"
+      size="sm"
+      onClose={onClose}
+    >
       <UiForm
         formData={{ ...formData, ...accountDetails }}
         schema={CreateAccountNumberSchema}
-        onSubmit={createAccount}
+        onSubmit={saveBankAccount}
       >
         {({ errors }) => (
           <AddAcountStyling>
             <header>
-              <h2>Add Account</h2>
               <p>
-                Your account details are required to enable agents make payment
+                Your account details are required to enable clients make payment
                 to you without hassle or back and forth.
               </p>
             </header>
@@ -202,6 +183,7 @@ const AddAcountStyling = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${pxToRem(20)};
+  padding: ${pxToRem(12)} ${pxToRem(24)};
 
   h2 {
     margin-top: 0;

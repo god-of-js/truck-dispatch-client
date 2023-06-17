@@ -1,0 +1,102 @@
+import React, { lazy, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+
+import { requestForgotPasswordLink } from '../../modules/Account';
+
+import { toAnyAction } from 'utils/helpers';
+import ForgotPasswordSchema from 'utils/validations/ForgotPasswordSchema';
+
+const UiForm = lazy(() => import('ui/UiForm'));
+const UiInput = lazy(() => import('ui/UiInput'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiIcon = lazy(() => import('ui/UiIcon'));
+const AuthLayoutStyling = lazy(
+  () => import('components/layout/AuthLayoutStyling'),
+);
+const StyledAuthContent = lazy(
+  () => import('components/auth/StyledAuthContent'),
+);
+
+export default function ForgotPasswordPage() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: '',
+  });
+  const [loading, setLoading] = useState(false);
+
+  function handleChange(event: { name: string; value: string | null }) {
+    setFormData({
+      ...formData,
+      [event.name]: event.value,
+    });
+  }
+
+  function requestRecoveryLink() {
+    setLoading(true);
+    dispatch(toAnyAction(requestForgotPasswordLink(formData)))
+      .then(() => {
+        navigate('/auth/login');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+
+  const actionButtons = (
+    <div className="duo-button-container no-btn-margin-top">
+      <Link to="/auth/login">
+        <UiButton size="large" variant="secondary" isFullWidth>
+          <UiIcon icon="CaretLeft" />
+          Back to sign in
+        </UiButton>
+      </Link>
+      <UiButton size="large" isFullWidth loading={loading}>
+        Send recovery link
+      </UiButton>
+    </div>
+  );
+
+  return (
+    <AuthLayoutStyling img invert isInvertedForm>
+      <StyledAuthContent inverted>
+        <div className="form-container">
+          <header>
+            <h1>Forgot password?</h1>
+            <p className="info-text">
+              No worries, we’ll send you reset instructions
+            </p>
+          </header>
+          <UiForm
+            schema={ForgotPasswordSchema}
+            formData={formData}
+            onSubmit={requestRecoveryLink}
+          >
+            {({ errors }) => (
+              <div className="form-container__inner">
+                <UiInput
+                  label="Email Adress*"
+                  placeholder="Enter your email adress"
+                  value={formData.email}
+                  name="email"
+                  error={errors.email}
+                  onChange={handleChange}
+                />
+                <div className="hidden-in-mobile">{actionButtons}</div>
+
+                <div className="bottom-actions">
+                  <div className="visible-in-mobile">{actionButtons}</div>
+                  <p id="hidden-in-mobile">
+                    <span>New to TruckDispatch?</span>{' '}
+                    <Link to="/auth/join">Sign Up</Link>
+                  </p>
+                </div>
+              </div>
+            )}
+          </UiForm>
+        </div>
+      </StyledAuthContent>
+    </AuthLayoutStyling>
+  );
+}

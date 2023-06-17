@@ -1,17 +1,16 @@
-import React, { useMemo, useState } from 'react';
+import React, { lazy, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import UiButton from 'components/ui/UiButton';
-import UiOverlay from 'components/ui/UiOverlay';
-import AddAccount from 'components/profile/AddAccount';
 import { useSelector } from 'react-redux';
 import sizes from 'utils/sizes';
-import UiCard from 'ui/UiCard';
 import { RootState } from 'modules/index';
-import Loader from 'components/layout/Loader';
+
+const UiCard = lazy(() => import('ui/UiCard'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const AddAccount = lazy(() => import('components/profile/AddAccount'));
 
 export default function AccountDetailsPage() {
   const accountDetails = useSelector(
-    (state: RootState) => state.account.bankAccountDetails,
+    (state: RootState) => state.account.user?.bankDetails,
   );
   const [changeBankModal, setChangeBankModal] = useState(false);
 
@@ -72,12 +71,11 @@ export default function AccountDetailsPage() {
           {bankDetails}
         </UiCard>
       </AccountPageStyling>
-      <UiOverlay isVisible={changeBankModal}>
-        <AddAccount
-          bankAccountDetails={accountDetails}
-          onClose={() => setChangeBankModal(false)}
-        />
-      </UiOverlay>
+      <AddAccount
+        isVisible={changeBankModal}
+        bankAccountDetails={accountDetails || null}
+        onClose={() => setChangeBankModal(false)}
+      />
     </>
   );
 }
