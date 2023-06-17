@@ -65,9 +65,6 @@ export default function DashboardLayout() {
         navigate(location.pathname);
         setEmailHasBeenVerified(true);
       })
-      .catch(() => {
-        navigate('/auth/login');
-      })
       .finally(() => setLoading(false));
   }
 
@@ -98,19 +95,10 @@ export default function DashboardLayout() {
   }, [action, token, isPhoneVerified]);
 
   useEffect(() => {
-    const sessionId = getUserSessionId();
-    if (!sessionId && action !== 'sign-in' && !token) {
-      navigate('/auth/login');
-      dispatch(setUser(null));
-    } else {
+    if (action !== 'sign-in' && !token) {
       loadDashboardData();
     }
   }, [action, token, loading]);
-
-  useEffect(() => {
-    const sessionId = getUserSessionId();
-    if (location.pathname === '/' && sessionId) navigate('/my-trips');
-  }, [location.pathname]);
 
   useEffect(() => {
     // Connect to socket.
@@ -165,16 +153,16 @@ const Body = styled.div`
   position: relative;
   overflow-x: auto;
   width: 100%;
-  padding-bottom: ${pxToRem(100)};
-  /* padding: 0 ${pxToRem(24)}; */
+  padding-bottom: 100px;
+
   .alert-container {
-    padding: ${pxToRem(16)};
+    padding: 16px;
   }
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     width: 97%;
     border-top: none;
     position: static;
-    border-right: ${pxToRem(1)} solid var(--color-gray-200);
+    border-right: 1px solid var(--color-gray-200);
     padding-bottom: 0;
   }
 
