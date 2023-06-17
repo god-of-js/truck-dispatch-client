@@ -4,7 +4,6 @@ interface PrivateRouteProps {
   allowNavigation?: boolean;
   children?: React.ReactNode;
   reRouteUrl: string;
-  reRouteCheck?: (search: string) => boolean;
 }
 export function ProtectedRoute({
   allowNavigation,
