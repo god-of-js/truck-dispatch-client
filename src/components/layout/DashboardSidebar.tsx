@@ -46,7 +46,6 @@ export default function DashboardSidebar() {
 
   function logOutUser() {
     removeUserSessionId();
-    navigate('/auth/login');
     dispatch(setUser(null));
     window.location.reload();
   }

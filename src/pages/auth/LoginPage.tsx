@@ -42,7 +42,7 @@ export default function LoginPage() {
     setLoading(true);
     dispatch(toAnyAction(loginUser(formData)))
       .then(() => {
-        navigate('/my-trips');
+        window.location.reload();
       })
       .catch((err: Error) => {
         let msg = err.message;
