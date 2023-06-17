@@ -211,16 +211,16 @@ export default function PaymentsPage() {
 }
 
 const PageStyling = styled.div`
-  padding: ${pxToRem(24)};
+  padding:24px;
 `;
 
 const UserDetails = styled.div`
   display: flex;
-  gap: ${pxToRem(8)};
+  gap:8px;
   align-items: center;
   .transporter-name {
     font-weight: 400;
-    font-size: ${pxToRem(14)};
+    font-size: 14px;
     font-style: normal;
     font-weight: 700;
     line-height: 140%;
@@ -233,5 +233,5 @@ const UserDetails = styled.div`
 
 const AmountText = styled.span`
   font-weight: 700;
-  font-size: ${pxToRem(20)};
+  font-size: 20px;
 `;

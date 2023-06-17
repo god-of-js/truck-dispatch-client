@@ -398,23 +398,23 @@ export default function TripDetailsPage() {
 const TripDetailsStyling = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  gap: ${pxToRem(20)};
+  gap:20px;
 
-  padding: ${pxToRem(12)} ${pxToRem(24)};
+  padding:12px 24px;
 
   .card-title {
     font-style: normal;
     font-weight: 600;
-    font-size: ${pxToRem(14)};
+    font-size:14px;
     line-height: 140%;
     letter-spacing: -0.02em;
     color: var(--color-neutralBlack);
-    margin-bottom: ${pxToRem(24)};
+    margin-bottom: 24px;
   }
 
   .cargo-details {
     display: grid;
-    gap: ${pxToRem(12)};
+    gap:12px;
 
     @media screen and (min-width: ${sizes.mobileSmall}) {
       grid-template-columns: repeat(3, 1fr);
@@ -423,7 +423,7 @@ const TripDetailsStyling = styled.div`
   .handling-instructions {
     font-style: normal;
     font-weight: 400;
-    font-size: ${pxToRem(16)};
+    font-size: 16px;
     line-height: 140%;
     letter-spacing: -0.02em;
     color: var(--color-gray-80);
@@ -431,7 +431,7 @@ const TripDetailsStyling = styled.div`
   .description-text {
     font-style: normal;
     font-weight: 400;
-    font-size: ${pxToRem(16)};
+    font-size: 16px;
     line-height: 140%;
     letter-spacing: -0.02em;
     color: var(--color-gray-60);
@@ -444,26 +444,26 @@ const TripDetailsStyling = styled.div`
       &__title {
         font-style: normal;
         font-weight: 400;
-        font-size: ${pxToRem(12)};
+        font-size:12px;
         line-height: 140%;
         letter-spacing: 0.05em;
         color: var(--color-gray-70);
         text-transform: uppercase;
-        margin-bottom: ${pxToRem(12)};
+        margin-bottom:12px;
       }
     }
   }
   .vehicle-details {
     &__type {
       font-weight: 600;
-      font-size: ${pxToRem(16)};
+      font-size:16px;
       line-height: 140%;
       letter-spacing: -0.02em;
       color: var(--color-neutralBlack);
     }
     &__plate-number {
       font-weight: 400;
-      font-size: ${pxToRem(14)};
+      font-size: 14px;
       line-height: 140%;
       letter-spacing: -0.02em;
       color: var(--color-gray-80);
@@ -472,7 +472,7 @@ const TripDetailsStyling = styled.div`
   .double-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: ${pxToRem(20)};
+    gap:20px;
   }
 
   .reason-for-reject {
@@ -492,24 +492,24 @@ const TripDetailsStyling = styled.div`
 
 const StatusIndicator = styled.div`
   display: flex;
-  gap: ${pxToRem(12)};
+  gap:12px;
   align-items: center;
   .trip-status-text {
     font-weight: 600;
-    font-size: ${pxToRem(14)};
+    font-size:14px;
     line-height: 140%;
     letter-spacing: -0.02em;
     color: var(--color-neutralBlack);
   }
   .pill-container {
     background: #fff;
-    border-radius: ${pxToRem(20)};
-    padding: ${pxToRem(4)};
+    border-radius:20px;
+    padding:4px;
 
     .ui-pill {
-      border-radius: ${pxToRem(16)};
-      padding: ${pxToRem(8)};
-      height: ${pxToRem(20)};
+      border-radius:16px;
+      padding:8px;
+      height:20px;
     }
   }
 `;
@@ -517,9 +517,9 @@ const StatusIndicator = styled.div`
 const EdgeNode = styled.div`
   display: flex;
   align-items: center;
-  gap: ${pxToRem(12)};
+  gap:12px;
 
   button {
-    min-width: ${pxToRem(133)};
+    min-width:133px;
   }
 `;

@@ -84,21 +84,21 @@ const AccountPageStyling = styled.div`
   width: 90%;
 
   header {
-    margin-bottom: ${pxToRem(40)};
+    margin-bottom:40px;
     h2 {
-      font-size: ${pxToRem(16)};
+      font-size:16px;
       color: var(--color-gray-500);
       margin-top: 0;
     }
     p {
-      font-size: ${pxToRem(16)};
+      font-size:16px;
       color: var(--color-gray-400);
     }
   }
 
   .currency {
     font-weight: bold;
-    font-size: ${pxToRem(14)};
+    font-size:14px;
     color: var(--color-gray-400);
   }
   .bank-details {
@@ -106,11 +106,11 @@ const AccountPageStyling = styled.div`
     align-items: flex-start;
     flex-direction: column;
     justify-content: space-between;
-    gap: ${pxToRem(20)};
+    gap:20px;
 
     .name {
       text-transform: uppercase;
-      font-size: ${pxToRem(16)};
+      font-size:16px;
       color: var(--color-gray-500);
       font-weight: bold;
     }
@@ -118,21 +118,21 @@ const AccountPageStyling = styled.div`
     .account-details {
       display: flex;
       align-items: center;
-      gap: ${pxToRem(12)};
-      margin-top: ${pxToRem(12)};
-      font-size: ${pxToRem(14)};
+      gap:12px;
+      margin-top:12px;
+      font-size:14px;
       color: var(--color-gray-400);
 
       .detail-divider {
-        width: ${pxToRem(2)};
-        height: ${pxToRem(2)};
+        width:2px;
+        height:2px;
         background: var(--color-gray-400);
       }
     }
 
     @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
       flex-direction: row;
-      gap: ${pxToRem(8)};
+      gap:8px;
     }
   }
   @media only screen and (min-width: ${sizes.tabletMidWidth}) {

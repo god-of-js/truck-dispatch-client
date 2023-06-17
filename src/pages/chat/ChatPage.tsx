@@ -156,11 +156,11 @@ export default function ChatPage() {
 const ChatPageStyling = styled.div`
   position: relative;
   height: 100%;
-  padding: 0 ${pxToRem(24)};
+  padding: 0 24px;
 `;
 
 const Header = styled.header`
-  padding: ${pxToRem(12)};
+  padding:12px;
   border-bottom: 1px solid var(--color-gray-20);
   background-color: white;
   position: sticky;
@@ -172,12 +172,12 @@ const Header = styled.header`
   .user-details {
     display: flex;
     align-items: center;
-    gap: ${pxToRem(12)};
+    gap:12px;
   }
 `;
 
 const ChatContainer = styled.div`
-  padding: ${pxToRem(80)} ${pxToRem(32)} ${pxToRem(80)} ${pxToRem(32)};
+  padding:80px 32px 80px 32px;
   background: var(--color-gray-10);
   height: 80%;
   overflow: scroll;
@@ -187,9 +187,9 @@ const ChatBubble = styled.div<{ isMine: boolean }>`
   display: flex;
   justify-content: ${({ isMine }) => (isMine ? 'flex-end' : '')};
   .chat-bubble-inner {
-    padding: ${pxToRem(8)};
-    margin: ${pxToRem(2)} 0;
-    border-radius: ${pxToRem(4)};
+    padding:8px;
+    margin:2px 0;
+    border-radius:4px;
     background: ${({ isMine }) =>
       isMine ? 'var(--color-primary)' : 'var(--color-gray-70)'};
     width: fit-content;
@@ -203,7 +203,7 @@ const InputContainer = styled.div`
   bottom: 0;
   right: 0;
   left: 0;
-  padding-bottom: ${pxToRem(16)};
+  padding-bottom:16px;
   z-index: 1;
 
   .input-group {
@@ -211,23 +211,23 @@ const InputContainer = styled.div`
     margin: auto;
   }
   .error-message-container {
-    font-size: ${pxToRem(14)};
+    font-size:14px;
     color: var(--color-danger);
-    padding: ${pxToRem(4)};
+    padding:4px;
     background: white;
-    border-top-left-radius: ${pxToRem(4)};
-    border-top-right-radius: ${pxToRem(4)};
+    border-top-left-radius:4px;
+    border-top-right-radius:4px;
     border: 1px solid var(--color-gray-200);
     border-bottom: transparent;
   }
   .inner {
-    padding: ${pxToRem(12)};
+    padding:12px;
     display: flex;
     box-shadow: var(--box-shadow);
     background: white;
-    margin-bottom: ${pxToRem(12)};
+    margin-bottom:12px;
     border: 1px solid var(--color-gray-200);
-    border-radius: ${pxToRem(4)};
+    border-radius:4px;
     input {
       width: 100%;
       border: transparent;
@@ -240,11 +240,11 @@ const InputContainer = styled.div`
       border: transparent;
       outline: none;
       cursor: pointer;
-      padding: ${pxToRem(4)};
+      padding:4px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: ${pxToRem(4)};
+      border-radius:4px;
 
       :hover {
         background: var(--color-gray-200);

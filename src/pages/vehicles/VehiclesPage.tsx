@@ -154,25 +154,25 @@ export default function VehiclesPage() {
 const GappedContainerWith12PX = styled.div`
   display: flex;
   align-items: center;
-  gap: ${pxToRem(12)};
+  gap:12px;
 `;
 
 const EmptyVehicleContainer = styled.div`
-  padding: 0 ${pxToRem(24)};
+  padding: 0 24px;
   height: 70vh;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   color: var(--color-gray-80);
-  font-size: ${pxToRem(20)};
-  max-width: ${pxToRem(492)};
+  font-size:20px;
+  max-width:492px;
   margin: auto;
   p {
     text-align: center;
   }
   button {
-    padding: 0 ${pxToRem(28)};
+    padding: 0 28px;
   }
 
   svg {
@@ -183,9 +183,9 @@ const EmptyVehicleContainer = styled.div`
 
 const Vehicles = styled.div`
   display: grid;
-  gap: ${pxToRem(22)};
-  padding: 0 ${pxToRem(24)};
-  padding-top: ${pxToRem(32)};
+  gap:22px;
+  padding: 0 24px;
+  padding-top:32px;
 
   @media screen and (min-width: ${sizes.mobileSmall}) {
     display: flex;

@@ -155,10 +155,10 @@ const CardContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: ${pxToRem(24)} 0;
+    padding:24px 0;
   }
   h2 {
-    font-size: ${pxToRem(20)};
+    font-size:20px;
     padding: 0;
     margin: 0;
   }
@@ -168,12 +168,12 @@ const CardContainer = styled.div`
   }
   .button-container {
     display: flex;
-    gap: ${pxToRem(8)};
+    gap:8px;
   }
   .edit-btn {
     button {
       display: flex;
-      gap: ${pxToRem(8)};
+      gap:8px;
     }
   }
 
@@ -188,8 +188,8 @@ const CardContainer = styled.div`
 const GridSpacer = styled.div`
   display: grid;
   grid-template-columns: auto;
-  gap: ${pxToRem(12)};
-  margin: ${pxToRem(20)} 0;
+  gap: 12px;
+  margin:20px 0;
 
   @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
     grid-template-columns: auto auto;

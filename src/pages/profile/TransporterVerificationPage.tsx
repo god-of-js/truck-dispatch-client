@@ -86,7 +86,7 @@ const VerificationPageStyling = styled.div`
   display: flex;
   flex-direction: column-reverse;
   align-items: flex-start;
-  gap: ${pxToRem(24)};
+  gap:24px;
   justify-content: center;
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     flex-direction: row;
@@ -96,17 +96,17 @@ const TransportVerificationCard = styled.div`
   background: #ffff;
   width: 90%;
   border: 1px solid var(--color-gray-200);
-  padding: ${pxToRem(20)};
-  border-radius: ${pxToRem(8)};
+  padding:20px;
+  border-radius:8px;
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     width: 60%;
     border-top: none;
     position: static;
-    border-right: ${pxToRem(1)} solid var(--color-gray-200);
+    border-right:1px solid var(--color-gray-200);
     h2 {
       text-align: center;
-      font-size: ${pxToRem(24)};
+      font-size:24px;
     }
   }
   @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
@@ -118,14 +118,14 @@ const FeedbackCard = styled.div`
   background: #ffffff;
   width: 90%;
   border: 1px solid var(--color-gray-200);
-  padding: ${pxToRem(20)};
-  border-radius: ${pxToRem(8)};
+  padding:20px;
+  border-radius:8px;
 
   h2 {
-    font-size: ${pxToRem(20)};
+    font-size:20px;
   }
   p {
-    font-size: ${pxToRem(16)};
+    font-size:16px;
   }
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     width: 30%;

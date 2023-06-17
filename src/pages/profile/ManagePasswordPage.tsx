@@ -119,18 +119,18 @@ const CardContainer = styled.div`
   color: var(--color-gray-600);
 
   header {
-    padding: ${pxToRem(24)} 0;
+    padding:24px 0;
   }
   h2 {
-    font-size: ${pxToRem(20)};
+    font-size:20px;
     padding: 0;
     margin: 0;
   }
   .form-inner {
     display: flex;
     flex-direction: column;
-    row-gap: ${pxToRem(16)};
-    padding-bottom: ${pxToRem(20)};
+    row-gap:16px;
+    padding-bottom:20px;
   }
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     width: 80%;

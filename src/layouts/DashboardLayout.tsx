@@ -158,16 +158,16 @@ const Body = styled.div`
   position: relative;
   overflow-x: auto;
   width: 100%;
-  padding-bottom: ${pxToRem(100)};
-  /* padding: 0 ${pxToRem(24)}; */
+  padding-bottom:100px;
+  /* padding: 0 24px; */
   .alert-container {
-    padding: ${pxToRem(16)};
+    padding:16px;
   }
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     width: 97%;
     border-top: none;
     position: static;
-    border-right: ${pxToRem(1)} solid var(--color-gray-200);
+    border-right:1px solid var(--color-gray-200);
     padding-bottom: 0;
   }
 

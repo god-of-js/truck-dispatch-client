@@ -582,14 +582,14 @@ export default function MyTripsPage() {
 }
 
 const MyTripsPageStyle = styled.div`
-  padding: ${pxToRem(24)};
+  padding:24px;
 `;
 
 const TypeOfGoods = styled.span`
   font-family: 'thiccboi-bold';
   font-style: normal;
   font-weight: 600;
-  font-size: ${pxToRem(14)};
+  font-size:14px;
   line-height: 140%;
   letter-spacing: -0.02em;
   color: var(--color-neutralBlack);
@@ -600,7 +600,7 @@ const EdgeNodeContainer = styled.div`
   button {
     .text {
       text-transform: uppercase;
-      font-size: ${pxToRem(14)};
+      font-size:14px;
       line-height: 140%;
       font-style: normal;
       font-weight: 600;
@@ -608,13 +608,13 @@ const EdgeNodeContainer = styled.div`
     }
 
     .count {
-      border-radius: ${pxToRem(10)};
-      padding: 0 ${pxToRem(4)};
-      font-size: ${pxToRem(10)};
+      border-radius:10px;
+      padding: 0 4px;
+      font-size:10px;
       letter-spacing: -0.02em;
-      border-radius: ${pxToRem(2)};
-      height: ${pxToRem(19)};
-      width: ${pxToRem(12)};
+      border-radius:2px;
+      height:19px;
+      width:12px;
       background: var(--color-primary-20);
       display: flex;
       align-items: center;
@@ -622,7 +622,7 @@ const EdgeNodeContainer = styled.div`
     }
   }
   display: flex;
-  gap: ${pxToRem(12)};
+  gap: 12px;
   .ui-filter-tag {
     cursor: pointer;
   }

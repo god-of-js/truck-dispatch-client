@@ -221,9 +221,9 @@ export default function TripBidsPage() {
 }
 
 const PageStyling = styled.div`
-  margin: ${pxToRem(32)} 0;
-  padding: 0 ${pxToRem(24)};
+  margin:32px 0;
+  padding: 0 24px;
   display: flex;
   flex-wrap: wrap;
-  gap: ${pxToRem(20)};
+  gap:20px;
 `;
