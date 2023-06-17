@@ -1,9 +1,10 @@
-import React, { ReactNode, useState } from 'react';
+import React, { lazy, useState } from 'react';
 import styled from 'styled-components';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input/input';
-import UiIcon, { Icons } from './UiIcon';
-import UiField from './UiField';
+import { Icons } from './UiIcon';
+const UiField = lazy(() => import('./UiField'));
+const UiIcon = lazy(() => import('./UiIcon'));
 
 export type InputType = 'text' | 'password' | 'number' | 'phone' | 'date';
 type Sizes = 'large' | 'md' | 's' | 'text';

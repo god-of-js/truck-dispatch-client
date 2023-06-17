@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { lazy, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -6,17 +6,17 @@ import styled from 'styled-components';
 import { selectTrip } from 'modules/Trips';
 import { toAnyAction } from 'utils/helpers';
 
-import UiAvatar from 'ui/UiAvatar';
-import UiModal from 'ui/UiModal';
-import UiTextArea from 'ui/UiTextArea';
-import Ratings from './Ratings';
-import UiButton from 'ui/UiButton';
-import UiField from 'ui/UiField';
 import Rating from 'types/Rating';
 import { RootState } from 'modules/index';
 import { clientBasedUserTypes } from 'utils/constants';
 import { publishUserRating } from 'modules/Ratings';
 
+const UiModal = lazy(() => import('ui/UiModal'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const Ratings = lazy(() => import('./Ratings'));
+const UiField = lazy(() => import('ui/UiField'));
+const UiAvatar = lazy(() => import('ui/UiAvatar'));
+const UiTextArea = lazy(() => import('ui/UiTextArea'));
 interface Props {
   onClose: () => void;
   isVisible: boolean;

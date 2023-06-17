@@ -1,31 +1,27 @@
 import { createBid, selectBid, updateBid } from 'modules/Bid';
 import { RootState } from 'modules/index';
 import { getVehicles } from 'modules/Vehicle';
-import { useEffect, useMemo, useState } from 'react';
+import { lazy, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Bid from 'types/Bid';
 import CreateBid from 'types/CreateBid';
-import UiButton from 'ui/UiButton';
-import UiDataField from 'ui/UiDataField';
-import UiForm from 'ui/UiForm';
-import UiIcon from 'ui/UiIcon';
-import UiInput from 'ui/UiInput';
-import UiLocationsInput from 'ui/UiLocationsInput';
-import UiModal from 'ui/UiModal';
-import UiSelect from 'ui/UiSelect';
-import UiTextArea from 'ui/UiTextArea';
-import {
-  aValueHasBeenChanged,
-  removeUneditedFields,
-  toAnyAction,
-} from 'utils/helpers';
+import { removeUneditedFields, toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
 import { Toast } from 'utils/toast';
 import BidForJobSchema from 'utils/validations/BidForJobSchema';
 import Vehicle from 'types/Vehicle';
 import InformUserOfVerification from 'components/verification/InformUserOfVerification';
 
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiDataField = lazy(() => import('ui/UiDataField'));
+const UiForm = lazy(() => import('ui/UiForm'));
+const UiIcon = lazy(() => import('ui/UiIcon'));
+const UiInput = lazy(() => import('ui/UiInput'));
+const UiLocationsInput = lazy(() => import('ui/UiLocationsInput'));
+const UiModal = lazy(() => import('ui/UiModal'));
+const UiSelect = lazy(() => import('ui/UiSelect'));
+const UiTextArea = lazy(() => import('ui/UiTextArea'));
 interface Props {
   jobId: string;
   onClose: () => void;

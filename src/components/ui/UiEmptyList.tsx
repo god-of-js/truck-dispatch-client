@@ -1,6 +1,9 @@
+import { lazy } from 'react';
 import styled from 'styled-components';
-import UiIcon, { Icons } from './UiIcon';
-import UiButton from './UiButton';
+import { Icons } from './UiIcon';
+
+const UiIcon = lazy(() => import('./UiIcon'));
+const UiButton = lazy(() => import('./UiButton'));
 
 interface Props {
   emptyIcon?: Icons;

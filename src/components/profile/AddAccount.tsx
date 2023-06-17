@@ -1,18 +1,20 @@
-import { useEffect, useMemo, useState } from 'react';
+import { lazy, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import UiForm from 'ui/UiForm';
-import UiInput from 'components/ui/UiInput';
-import UiSelect, { Option } from 'components/ui/UiSelect';
-import UiModal from 'components/ui/UiModal';
-import UiButton from 'components/ui/UiButton';
 import { loadAccountDetails, loadBanks } from '../../api/paystackIntegrations';
-import Loader from 'components/layout/Loader';
 import CreateAccountNumberSchema from 'utils/validations/CreateAccountNumberSchema';
 import { useDispatch, useSelector } from 'react-redux';
 import { containsOnlyNumbers, toAnyAction } from 'utils/helpers';
 import { createUserBankAccount } from 'modules/Account';
 import BankAccount from 'types/BankDetails';
 import { RootState } from 'modules/index';
+import { Option } from 'components/ui/UiSelect';
+
+const UiForm = lazy(() => import('ui/UiForm'));
+const UiInput = lazy(() => import('ui/UiInput'));
+const UiSelect = lazy(() => import('ui/UiSelect'));
+const Loader = lazy(() => import('components/layout/Loader'));
+const UiModal = lazy(() => import('ui/UiModal'));
+const UiButton = lazy(() => import('ui/UiButton'));
 
 interface Props {
   onClose: () => void;

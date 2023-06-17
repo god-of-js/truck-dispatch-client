@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { lazy, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
@@ -8,27 +8,36 @@ import {
   updateTripStatus,
 } from 'modules/Trips';
 import styled from 'styled-components';
-import DashboardTopNav from 'components/layout/DashboardTopNav';
-import UiBackButton from 'ui/UiBackButton';
 import sizes from 'utils/sizes';
-import UiCard from 'ui/UiCard';
-import UiDataField from 'ui/UiDataField';
-import TripPickUpAndDeliverWithDates from 'components/trips/TripPickUpAndDeliverWithDates';
 import { RootState } from 'modules/index';
 import { clientBasedUserTypes, serviceBasedUserTypes } from 'utils/constants';
-import TripDetailPaymentCard from 'components/trips/TripDetailPaymentCard';
-import UserDetails from 'ui/UserDetails';
-import UiButton from 'ui/UiButton';
-import UiIcon from 'ui/UiIcon';
-import UiPill from 'ui/UiPill';
 
-import RequestPayment from 'components/payment/RequestPayment';
-import UiConfirmModal from 'ui/UiConfirmModal';
-import CargoLoadingProof from 'components/trips/CargoLoadingProof';
-import RejectPaymentRequest from 'components/trips/RejectPaymentRequest';
 import { toAnyAction } from 'utils/helpers';
 import Trip from 'types/Trip';
-import UploadTripTDO from 'components/trips/UploadTripTDO';
+
+const TripDetailPaymentCard = lazy(
+  () => import('components/trips/TripDetailPaymentCard'),
+);
+const UserDetails = lazy(() => import('ui/UserDetails'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiIcon = lazy(() => import('ui/UiIcon'));
+const UiPill = lazy(() => import('ui/UiPill'));
+const DashboardTopNav = lazy(() => import('components/layout/DashboardTopNav'));
+const UiBackButton = lazy(() => import('ui/UiBackButton'));
+const UiCard = lazy(() => import('ui/UiCard'));
+const UiDataField = lazy(() => import('ui/UiDataField'));
+const TripPickUpAndDeliverWithDates = lazy(
+  () => import('components/trips/TripPickUpAndDeliverWithDates'),
+);
+const RequestPayment = lazy(() => import('components/payment/RequestPayment'));
+const UiConfirmModal = lazy(() => import('ui/UiConfirmModal'));
+const CargoLoadingProof = lazy(
+  () => import('components/trips/CargoLoadingProof'),
+);
+const RejectPaymentRequest = lazy(
+  () => import('components/trips/RejectPaymentRequest'),
+);
+const UploadTripTDO = lazy(() => import('components/trips/UploadTripTDO'));
 
 export default function TripDetailsPage() {
   const dispatch = useDispatch();

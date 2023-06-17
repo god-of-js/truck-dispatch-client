@@ -1,11 +1,11 @@
-import { requestEmailVerification } from 'modules/Account';
-import React, { useState } from 'react';
+import React, { lazy, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import UiButton from 'ui/UiButton';
-
-import UiModal from 'ui/UiModal';
+import { requestEmailVerification } from 'modules/Account';
 import { toAnyAction } from 'utils/helpers';
+
+const UiModal = lazy(() => import('ui/UiModal'));
+const UiButton = lazy(() => import('ui/UiButton'));
 
 interface Props {
   onClose: () => void;

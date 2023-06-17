@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { lazy, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -14,15 +14,22 @@ import {
   verifyEmail,
 } from 'modules/Account';
 
-import DashboardSidebar from 'components/layout/DashboardSidebar';
 import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
 import { getChatLogs, getUserChat, setChat, setChatLog } from 'modules/Chat';
 import { WEB_SOCKET_URL } from 'utils/privateKeys';
-import EmailHasBeenSentModal from 'components/profile/EmailHasBeenSentModal';
-import Loader from 'components/layout/Loader';
-import EmailHasBeenVerifiedModal from 'components/profile/EmailHasBeenVerifiedModal';
 import { getUserSessionId, saveUserSessionId } from 'utils/localStorageMethods';
+
+const DashboardSidebar = lazy(
+  () => import('components/layout/DashboardSidebar'),
+);
+const EmailHasBeenSentModal = lazy(
+  () => import('components/profile/EmailHasBeenSentModal'),
+);
+const Loader = lazy(() => import('components/layout/Loader'));
+const EmailHasBeenVerifiedModal = lazy(
+  () => import('components/profile/EmailHasBeenVerifiedModal'),
+);
 
 export default function DashboardLayout() {
   const dispatch = useDispatch();
@@ -58,9 +65,6 @@ export default function DashboardLayout() {
         navigate(location.pathname);
         setEmailHasBeenVerified(true);
       })
-      .catch(() => {
-        navigate('/auth/login');
-      })
       .finally(() => setLoading(false));
   }
 
@@ -91,19 +95,10 @@ export default function DashboardLayout() {
   }, [action, token, isPhoneVerified]);
 
   useEffect(() => {
-    const sessionId = getUserSessionId();
-    if (!sessionId && action !== 'sign-in' && !token) {
-      navigate('/auth/login');
-      dispatch(setUser(null));
-      window.location.reload();
-    } else {
+    if (action !== 'sign-in' && !token) {
       loadDashboardData();
     }
   }, [action, token, loading]);
-
-  useEffect(() => {
-    if (location.pathname === '/') navigate('/my-trips');
-  }, [location.pathname]);
 
   useEffect(() => {
     // Connect to socket.
@@ -158,16 +153,16 @@ const Body = styled.div`
   position: relative;
   overflow-x: auto;
   width: 100%;
-  padding-bottom:100px;
-  /* padding: 0 24px; */
+  padding-bottom: 100px;
+
   .alert-container {
-    padding:16px;
+    padding: 16px;
   }
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     width: 97%;
     border-top: none;
     position: static;
-    border-right:1px solid var(--color-gray-200);
+    border-right: 1px solid var(--color-gray-200);
     padding-bottom: 0;
   }
 

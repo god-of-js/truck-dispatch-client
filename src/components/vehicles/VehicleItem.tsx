@@ -1,11 +1,13 @@
-import { useMemo } from 'react';
+import { lazy, useMemo } from 'react';
 
 import styled from 'styled-components';
 import Vehicle from 'types/Vehicle';
-import UiButton from 'ui/UiButton';
-import UiIcon, { Icons } from 'ui/UiIcon';
+import { Icons } from 'ui/UiIcon';
 import { vehicleTypes } from 'utils/constants';
 import sizes from 'utils/sizes';
+
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiIcon = lazy(() => import('ui/UiIcon'));
 
 interface Props {
   vehicle: Vehicle;

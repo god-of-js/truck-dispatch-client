@@ -1,9 +1,10 @@
-import { useMemo, useState } from 'react';
+import { lazy, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import CreateVehicleData from 'types/CreateVehicleData';
-import FileUploadWidget from 'ui/FileUploadWidget';
-import UiButton from 'ui/UiButton';
 import sizes from 'utils/sizes';
+
+const UiButton = lazy(() => import('ui/UiButton'));
+const FileUploadWidget = lazy(() => import('ui/FileUploadWidget'));
 
 interface Props {
   goToNext: (vehicleData: CreateVehicleData) => void;

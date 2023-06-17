@@ -1,10 +1,9 @@
-import React, { useMemo, useState } from 'react';
+import React, { lazy, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import FileUploadWidget from './FileUploadWidget';
-import UiButton from './UiButton';
-import UiIcon from './UiIcon';
 import EmptyAvatar from '../../assets/img/empty-profile-pic.png';
 
+const UiButton = lazy(() => import('./UiButton'));
+const FileUploadWidget = lazy(() => import('./FileUploadWidget'));
 type Size = 'sm' | 'lg';
 
 interface Props {

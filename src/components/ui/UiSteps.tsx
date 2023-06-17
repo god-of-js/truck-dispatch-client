@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import styled from 'styled-components';
-import UiIcon from './UiIcon';
 import sizes from 'utils/sizes';
 
+const UiIcon = lazy(() => import('./UiIcon'));
 export interface Step {
   title: string;
   detail?: string;

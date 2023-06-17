@@ -1,8 +1,9 @@
-import { RootState } from 'modules/index';
+import { lazy } from 'react';
 import { useSelector } from 'react-redux';
+import { RootState } from 'modules/index';
 import styled from 'styled-components';
-import UiModal from 'ui/UiModal';
-import BidItem from './BidItem';
+const UiModal = lazy(() => import('ui/UiModal'));
+const BidItem = lazy(() => import('./BidItem'));
 
 interface Props {
   onClose: () => void;

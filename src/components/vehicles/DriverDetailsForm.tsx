@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { lazy, useState } from 'react';
 import styled from 'styled-components';
 import CreateVehicleData from 'types/CreateVehicleData';
-import FileUploadWidget from 'ui/FileUploadWidget';
-import UiButton from 'ui/UiButton';
-import UiForm from 'ui/UiForm';
-import UiInput from 'ui/UiInput';
 import DriverDetailsSchema from 'utils/validations/DriverDetailsSchema';
+
+const FileUploadWidget = lazy(() => import('ui/FileUploadWidget'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiForm = lazy(() => import('ui/UiForm'));
+const UiInput = lazy(() => import('ui/UiInput'));
 
 interface Props {
   finish: (vehicleData: CreateVehicleData) => void;

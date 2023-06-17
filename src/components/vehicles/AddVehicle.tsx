@@ -1,15 +1,15 @@
 import { createVehicle } from 'modules/Vehicle';
-import { Suspense, useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import CreateVehicleData from 'types/CreateVehicleData';
-import UiModal from 'ui/UiModal';
-import UiSteps from 'ui/UiSteps';
 import { deepRootedToFormData, toAnyAction } from 'utils/helpers';
-import DriverDetailsForm from './DriverDetailsForm';
-import SelectTruckType from './SelectTruckType';
-import UploadVehicleImages from './UploadVehicleImages';
 
+const UiModal = lazy(() => import('ui/UiModal'));
+const UiSteps = lazy(() => import('ui/UiSteps'));
+const DriverDetailsForm = lazy(() => import('./DriverDetailsForm'));
+const SelectTruckType = lazy(() => import('./SelectTruckType'));
+const UploadVehicleImages = lazy(() => import('./UploadVehicleImages'));
 interface Props {
   onClose: () => void;
   isVisible: boolean;

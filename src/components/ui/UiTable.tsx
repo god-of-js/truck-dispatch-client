@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import styled from 'styled-components';
 import UidropdownMenu, { DropDownData } from './UiDropdownMenu';
 import { Icons } from './UiIcon';
-import UiEmptyList from './UiEmptyList';
 
+const UiEmptyList = lazy(() => import('./UiEmptyList'));
 interface Header {
   title: string;
   /** This field would be used to query the data object for how the data should be displayed.

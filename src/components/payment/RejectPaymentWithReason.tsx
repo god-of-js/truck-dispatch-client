@@ -1,14 +1,15 @@
 import { rejectPaymentRequest } from 'modules/Trips';
-import React, { useState } from 'react';
+import React, { lazy, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import PaymentRequest from 'types/PaymentRequest';
-import UiButton from 'ui/UiButton';
-import UiForm from 'ui/UiForm';
-import UiModal from 'ui/UiModal';
-import UiTextArea from 'ui/UiTextArea';
 import { toAnyAction } from 'utils/helpers';
 import RejectPaymentSchema from 'utils/validations/RejectPaymentSchema';
+
+const UiModal = lazy(() => import('ui/UiModal'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiTextArea = lazy(() => import('ui/UiTextArea'));
+const UiForm = lazy(() => import('ui/UiForm'));
 
 interface Props {
   onClose: () => void;

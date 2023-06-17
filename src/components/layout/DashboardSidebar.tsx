@@ -1,18 +1,19 @@
-import React, { useMemo, useState } from 'react';
+import React, { lazy, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import sizes from 'utils/sizes';
 import { ReactComponent as AppLogo } from '../../assets/logo.svg';
 
-import UiIcon from '../ui/UiIcon';
 import { RootState } from 'modules/index';
 import { removeUserSessionId } from 'utils/localStorageMethods';
 import { selectUnreadChats } from 'modules/Chat';
-import UiAvatar from 'ui/UiAvatar';
-import UiButton from 'ui/UiButton';
 import { shipperRoutes, transporterRoutes } from './routes';
 import { setUser } from 'modules/Account';
+
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiAvatar = lazy(() => import('ui/UiAvatar'));
+const UiIcon = lazy(() => import('ui/UiIcon'));
 
 export default function DashboardSidebar() {
   const user = useSelector((state: RootState) => state.account.user);
@@ -45,7 +46,6 @@ export default function DashboardSidebar() {
 
   function logOutUser() {
     removeUserSessionId();
-    navigate('/auth/login');
     dispatch(setUser(null));
     window.location.reload();
   }

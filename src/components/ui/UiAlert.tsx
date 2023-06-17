@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { lazy, useState } from 'react';
 import styled from 'styled-components';
-import UiIcon from './UiIcon';
 
 type Variant = 'warning' | 'success' | 'danger' | 'neutral' | 'info' | 'gray';
 interface Props {

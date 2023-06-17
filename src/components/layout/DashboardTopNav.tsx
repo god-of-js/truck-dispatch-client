@@ -1,15 +1,18 @@
-import React, { useMemo, useState } from 'react';
+import React, { lazy, useMemo, useState } from 'react';
 import OutsideClickHandler from 'react-outside-click-handler';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import UiButton from 'ui/UiButton';
-import UiFilterTag from 'ui/UiFilterTag';
-import UiIcon from 'ui/UiIcon';
-import UiInput, { OnChangeParams } from 'ui/UiInput';
 import sizes from 'utils/sizes';
 
 import { ReactComponent as AppLogo } from '../../assets/logo.svg';
 import routes from './routes';
+
+import { OnChangeParams } from 'ui/UiInput';
+
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiFilterTag = lazy(() => import('ui/UiFilterTag'));
+const UiIcon = lazy(() => import('ui/UiIcon'));
+const UiInput = lazy(() => import('ui/UiInput'));
 
 interface Filter {
   title: string;

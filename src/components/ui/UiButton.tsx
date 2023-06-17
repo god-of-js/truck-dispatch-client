@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import styled from 'styled-components';
-import Loader from 'components/layout/Loader';
+
+const Loader = lazy(() => import('components/layout/Loader'));
 export type ButtonVariant =
   | 'primary'
   | 'secondary'
@@ -10,12 +11,7 @@ export type ButtonVariant =
   | 'tertiary'
   | 'neutral'
   | 'icon-neutral'
-  | 'primary-outlined'
-  | 'secondary-outlined'
   | 'primary-text'
-  | 'warning-text'
-  | 'dark'
-  | 'dark-outlined'
   | 'danger';
 interface Props {
   children?: React.ReactNode;
@@ -71,27 +67,27 @@ function sizeVariant(size: Sizes) {
   if (size === 'text') return '';
   if (size === 's')
     return `
-    padding:8px
+    padding: 8px
     12px; 
-    height:32px;
-    font-size:12px;
-    line-height:12px;
+    height: 32px;
+    font-size: 12px;
+    line-height:  12px;
     `;
 
   if (size === 'md')
     return `
-    padding:12px;
-    height:44px;
-    font-size:12px;
-    line-height:12px;
+    padding: 12px;
+    height: 44px;
+    font-size: 12px;
+    line-height: 12px;
   `;
 
   if (size === 'large')
     return `
-    padding:16px; 
-    height:48px;
-    font-size:14px;
-    line-height:14px;
+    padding:  16px; 
+    height: 48px;
+    font-size: 14px;
+    line-height: 14px;
   `;
 }
 
@@ -107,8 +103,8 @@ const Button = styled.button<Props>`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap:9.34px;
-  letter-spacing:0.32px;
+  gap: 10px;
+  letter-spacing: 0.32px;
   text-align: center;
   border-radius: ${({ isSquare }) => (isSquare ? '' : '8px')};
   font-weight: 500;
@@ -161,15 +157,10 @@ const Button = styled.button<Props>`
     border-color: transparent;
     color: var(--color-primary);
   }
-  &.warning-text {
-    background: transparent;
-    border-color: transparent;
-    color: var(--color-warning-600);
-  }
 
   &.icon-neutral {
     background: var(--color-gray-20);
-    border-radius:8px;
+    border-radius: 8px;
 
     &:hover {
       background: var(--color-gray-30);
@@ -183,20 +174,6 @@ const Button = styled.button<Props>`
 
     &:hover {
       background-color: var(--color-gray-200);
-    }
-  }
-
-  &.primary-outlined {
-    background: white;
-    color: var(--color-primary);
-    border: 1px solid var(--color-primary);
-  }
-  &.dark-outlined {
-    color: var(--color-gray-900);
-    background: transparent;
-    border: 1px solid var(--color-gray-900);
-    &:hover {
-      background-color: var(--color-gray-100);
     }
   }
 
@@ -271,20 +248,5 @@ const Button = styled.button<Props>`
     ${({ disabled }) =>
       !disabled &&
       '&:hover {background: var(--color-warning-20); box-shadow: var(--box-shadow-primary); }'}
-  }
-
-  &.dark {
-    background: var(--color-gray-900);
-    color: white;
-
-    &:hover {
-      background: var(--color-gray-700);
-    }
-  }
-
-  &.secondary-outlined {
-    background-color: white;
-    border: 1px solid var(--color-gray-400);
-    color: var(--color-gray-400);
   }
 `;

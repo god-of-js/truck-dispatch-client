@@ -1,7 +1,9 @@
+import { lazy } from 'react';
 import styled from 'styled-components';
 import SignUpImage from '../../assets/img/sign-up-image.png';
-import UiLogo from 'ui/UiLogo';
 import sizes from 'utils/sizes';
+
+const UiLogo = lazy(() => import('ui/UiLogo'));
 
 interface Props {
   children: React.ReactNode;

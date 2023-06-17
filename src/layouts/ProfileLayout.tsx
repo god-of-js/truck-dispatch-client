@@ -1,14 +1,15 @@
-import React, { Suspense } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
 import sizes from '../utils/sizes';
 import { RootState } from 'modules/index';
 
-import Loader from 'components/layout/Loader';
-import UiTabs from 'components/ui/UiTabs';
 import { useSelector } from 'react-redux';
 import { clientBasedUserTypes } from 'utils/constants';
+
+const Loader = lazy(() => import('components/layout/Loader'));
+const UiTabs = lazy(() => import('ui/UiTabs'));
 
 export default function ProfileLayout() {
   const user = useSelector((state: RootState) => state.account.user);

@@ -1,11 +1,12 @@
-import React, { useMemo, useState } from 'react';
+import React, { lazy, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import UiButton from 'components/ui/UiButton';
-import AddAccount from 'components/profile/AddAccount';
 import { useSelector } from 'react-redux';
 import sizes from 'utils/sizes';
-import UiCard from 'ui/UiCard';
 import { RootState } from 'modules/index';
+
+const UiCard = lazy(() => import('ui/UiCard'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const AddAccount = lazy(() => import('components/profile/AddAccount'));
 
 export default function AccountDetailsPage() {
   const accountDetails = useSelector(

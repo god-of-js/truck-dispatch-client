@@ -1,12 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { lazy, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { RootState } from 'modules/index';
 import { Icons } from 'ui/UiIcon';
 import { clientBasedUserTypes, serviceBasedUserTypes } from 'utils/constants';
-import UiButton from 'ui/UiButton';
-import UiIcon from 'ui/UiIcon';
-import DashboardTopNav from 'components/layout/DashboardTopNav';
 import {
   convertToFullDate,
   filterByFieldInObject,
@@ -20,27 +18,34 @@ import {
   unassignTrip,
 } from 'modules/Trips';
 import TripsPaginatedResponse from 'types/TripsPaginatedResponse';
-import { useLocation, useNavigate } from 'react-router-dom';
-import UiTable from 'ui/UiTable';
 import Trip from 'types/Trip';
 import { DropDownData } from 'ui/UiDropdownMenu';
-import UiPill from 'ui/UiPill';
 import User from 'types/User';
-import UiFilterTag from 'ui/UiFilterTag';
-import UiInput from 'ui/UiInput';
 import { deleteBid, getTransporterBids } from 'modules/Bid';
-import PaginationLoader from 'components/layout/PaginationLoader';
-import InformUserOfVerification from 'components/verification/InformUserOfVerification';
-import ViewJobDetail from 'components/jobs/ViewJobDetail';
-import BidForJob from 'components/jobs/BidForJob';
-import AllBids from 'components/bids/AllBids';
-import CreateTrip from 'components/trips/CreateTrip';
-import TripHasBeenBroadcasted from 'components/trips/TripHasBeenBroadcasted';
 import { searchObjectsByField } from 'utils/helpers';
-import UserDetails from 'ui/UserDetails';
-import UiConfirmModal from 'ui/UiConfirmModal';
 import { Toast } from 'utils/toast';
-import AddVehicle from 'components/vehicles/AddVehicle';
+
+const PaginationLoader = lazy(
+  () => import('components/layout/PaginationLoader'),
+);
+const InformUserOfVerification = lazy(
+  () => import('components/verification/InformUserOfVerification'),
+);
+const UiPill = lazy(() => import('ui/UiPill'));
+const UiTable = lazy(() => import('ui/UiTable'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiIcon = lazy(() => import('ui/UiIcon'));
+const DashboardTopNav = lazy(() => import('components/layout/DashboardTopNav'));
+const ViewJobDetail = lazy(() => import('components/jobs/ViewJobDetail'));
+const BidForJob = lazy(() => import('components/jobs/BidForJob'));
+const AllBids = lazy(() => import('components/bids/AllBids'));
+const CreateTrip = lazy(() => import('components/trips/CreateTrip'));
+const TripHasBeenBroadcasted = lazy(
+  () => import('components/trips/TripHasBeenBroadcasted'),
+);
+const UserDetails = lazy(() => import('ui/UserDetails'));
+const UiConfirmModal = lazy(() => import('ui/UiConfirmModal'));
+const AddVehicle = lazy(() => import('components/vehicles/AddVehicle'));
 
 export default function MyTripsPage() {
   const navigate = useNavigate();
@@ -74,7 +79,9 @@ export default function MyTripsPage() {
   const [isTripBroadcastedVisible, setIsTripBroadcastedVisible] =
     useState(false);
   const [activeTripId, setActiveTripId] = useState<string | null>(null);
-  const [newlyCreatedTripId, setnewlyCreatedTripId] = useState<string | null>(null);
+  const [newlyCreatedTripId, setnewlyCreatedTripId] = useState<string | null>(
+    null,
+  );
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
   const [selectedBidId, setSelectedBidId] = useState<string | null>(null);
   const [isDeleteBidVisible, setIsDeleteBidVisible] = useState(false);
@@ -496,7 +503,7 @@ export default function MyTripsPage() {
         tripId={activeTripId!}
         onClose={() => {
           setIsCreateTripVisible(false);
-          setActiveTripId(null)
+          setActiveTripId(null);
         }}
         onCreated={showTripBroadcasted}
       />

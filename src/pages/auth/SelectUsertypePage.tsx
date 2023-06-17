@@ -1,10 +1,14 @@
-import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
 import styled from 'styled-components';
-import UiIcon, { Icons } from 'ui/UiIcon';
-import UiButton from 'ui/UiButton';
+import { Icons } from 'ui/UiIcon';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { lazy, useState } from 'react';
 import sizes from 'utils/sizes';
+
+const UiIcon = lazy(() => import('ui/UiIcon'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const AuthLayoutStyling = lazy(
+  () => import('components/layout/AuthLayoutStyling'),
+);
 
 export default function SelectUsertypePage() {
   const [userTypeRoute, setUserTypeRoute] = useState('');
@@ -117,26 +121,26 @@ const SelectUserTypeStyling = styled.div`
   p {
     color: var(--color-gray-80);
     font-family: 'thiccboi-regular';
-    font-size:16px;
+    font-size: 16px;
   }
   h1 {
     font-weight: 600;
-    font-size:32px;
-    letter-spacing:-0.32px;
-    line-height:36px;
+    font-size: 32px;
+    letter-spacing: -0.32px;
+    line-height: 36px;
     color: var(--color-neutralBlack);
-    margin-top:26px;
-    margin-bottom:32px;
+    margin-top: 26px;
+    margin-bottom: 32px;
   }
   .info-text {
     font-weight: 400;
-    margin-bottom:24px;
+    margin-bottom: 24px;
   }
   button {
-    margin-bottom:30px;
+    margin-bottom: 30px;
   }
   .bottom-container {
-    padding-bottom:20px;
+    padding-bottom: 20px;
   }
 
   @media (min-width: ${sizes.mobile}) {
@@ -157,17 +161,17 @@ const SelectUserTypeStyling = styled.div`
   @media (min-width: ${sizes.laptopWidth}) {
     width: 65%;
     h1 {
-      font-size:42px;
-      line-height:52px;
-      margin-bottom:28px;
+      font-size: 42px;
+      line-height: 52px;
+      margin-bottom: 28px;
       width: 90%;
     }
 
     .info-text {
-      font-size:20px;
-      line-height:28px;
+      font-size: 20px;
+      line-height: 28px;
       width: 80%;
-      margin-bottom:32px;
+      margin-bottom: 32px;
     }
     button {
       width: 35%;
@@ -185,13 +189,13 @@ const WelcomeMessageTag = styled.span`
   @media (min-width: ${sizes.tablet}) {
     display: flex;
     align-items: center;
-    gap:16px;
+    gap: 16px;
     background-color: var(--color-primary-10);
-    height:30px;
-    padding:4px 12px;
-    border-radius:18px;
+    height: 30px;
+    padding: 4px 12px;
+    border-radius: 18px;
     p {
-      font-size:14px;
+      font-size: 14px;
       font-weight: 400;
       font-family: 'thiccboi-regular';
       color: var(--color-gray-90);
@@ -214,22 +218,22 @@ const cardActiveState = `
 
 const StyledUserTypeGrid = styled.div`
   display: grid;
-  gap:12px;
-  margin-bottom:60px;
+  gap: 12px;
+  margin-bottom: 60px;
   .user-card-container {
-    padding:1px;
+    padding: 1px;
     height: fit-content;
-    border-radius:8px;
+    border-radius: 8px;
     .user-card {
       border: 1px solid var(--color-gray);
-      border-radius:8px;
-      padding:12px;
+      border-radius: 8px;
+      padding: 12px;
       cursor: pointer;
 
       .icons-container {
         display: flex;
-        gap:5px;
-        margin-bottom:12px;
+        gap: 5px;
+        margin-bottom: 12px;
         svg {
           fill: var(--color-neutralBlack);
         }
@@ -237,14 +241,14 @@ const StyledUserTypeGrid = styled.div`
 
       h2 {
         color: var(--color-neutralBlack);
-        font-size:16px;
+        font-size: 16px;
         font-family: 'thiccboi-regular';
         font-weight: 600;
-        margin-bottom:8px;
+        margin-bottom: 8px;
       }
       p {
         color: var(--color-gray-80);
-        font-size:14px;
+        font-size: 14px;
       }
     }
     &:hover {
@@ -264,10 +268,10 @@ const StyledUserTypeGrid = styled.div`
   @media (min-width: 800px) {
     gap: 16px;
     .user-card {
-      padding:16px;
+      padding: 16px;
       h2 {
-        font-size:18px;
-        margin-bottom:12px;
+        font-size: 18px;
+        margin-bottom: 12px;
       }
     }
   }
@@ -276,13 +280,13 @@ const StyledUserTypeGrid = styled.div`
     grid-template-rows: repeat(2, 1fr);
   }
   @media (min-width: 1330px) {
-    margin-bottom:48px;
+    margin-bottom: 48px;
     .user-card {
       h2 {
-        font-size:18px;
+        font-size: 18px;
       }
       p {
-        font-size:14px;
+        font-size: 14px;
       }
     }
   }

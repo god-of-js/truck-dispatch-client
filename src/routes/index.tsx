@@ -1,11 +1,13 @@
 import React, { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
+import { ProtectedRoute } from './ProtectedRoute';
 
 const PageError = lazy(() => import('../components/errors/PageError'));
 
 // LAYOUTS
+import DashboardLayout from '../layouts/DashboardLayout';
+import { getUserSessionId } from 'utils/localStorageMethods';
 const AuthLayout = lazy(() => import('../layouts/AuthLayout'));
-const DashboardLayout = lazy(() => import('../layouts/DashboardLayout'));
 const ProfileLayout = lazy(() => import('../layouts/ProfileLayout'));
 const TripLayout = lazy(() => import('../layouts/TripLayout'));
 const TripsLayout = lazy(() => import('../layouts/TripsLayout'));
@@ -50,14 +52,20 @@ const ChatPage = lazy(() => import('../pages/chat/ChatPage'));
 const VehiclesPage = lazy(() => import('../pages/vehicles/VehiclesPage'));
 
 // Transactions
-
 const PaymentsPage = lazy(() => import('../pages/payments/PaymentsPage'));
-
+const sessionId = getUserSessionId();
 const router = createBrowserRouter([
   {
     path: '/',
     id: 'Dashboard',
-    element: <DashboardLayout />,
+    element: (
+      <ProtectedRoute
+        allowNavigation={!!sessionId}
+        reRouteUrl="/auth/login"
+      >
+        <DashboardLayout />
+      </ProtectedRoute>
+    ),
     errorElement: <PageError />,
     children: [
       {
@@ -147,7 +155,11 @@ const router = createBrowserRouter([
   },
   {
     path: 'auth',
-    element: <AuthLayout />,
+    element: (
+      <ProtectedRoute allowNavigation={!sessionId} reRouteUrl="/my-trips">
+        <AuthLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: 'join',

@@ -1,9 +1,10 @@
-import { Divide } from 'phosphor-react';
+import { lazy } from 'react';
 import styled from 'styled-components';
 import PaymentRequest from 'types/PaymentRequest';
-import UiButton from 'ui/UiButton';
-import UiModal from 'ui/UiModal';
-import UiVideoPlayer from 'ui/UiVideoPlayer';
+
+const UiModal = lazy(() => import('ui/UiModal'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiVideoPlayer = lazy(() => import('ui/UiVideoPlayer'));
 
 interface Props {
   isVisible: boolean;

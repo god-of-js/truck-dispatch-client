@@ -3,17 +3,18 @@ import {
   requestPaymentByTransporter,
   updatePaymentRequestByTransporter,
 } from 'modules/Trips';
-import { useMemo, useState } from 'react';
+import { lazy, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import PaymentRequest from 'types/PaymentRequest';
-import FileUploadWidget from 'ui/FileUploadWidget';
-import UiButton from 'ui/UiButton';
-import UiForm from 'ui/UiForm';
-import UiModal from 'ui/UiModal';
-import UiVideoPlayer from 'ui/UiVideoPlayer';
 import { deepRootedToFormData, toAnyAction } from 'utils/helpers';
 import RequestPaymentSchema from 'utils/validations/RequestPaymentSchema';
+
+const UiModal = lazy(() => import('ui/UiModal'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const FileUploadWidget = lazy(() => import('ui/FileUploadWidget'));
+const UiVideoPlayer = lazy(() => import('ui/UiVideoPlayer'));
+const UiForm = lazy(() => import('ui/UiForm'));
 
 interface Props {
   isVisible: boolean;

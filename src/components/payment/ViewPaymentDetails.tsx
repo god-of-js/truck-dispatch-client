@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import PaymentRequest from 'types/PaymentRequest';
-import UiModal from 'ui/UiModal';
 import { abbreviateNumber } from 'utils/helpers';
 import sizes from 'utils/sizes';
 import { selectTrip } from 'modules/Trips';
+
+const UiModal = lazy(() => import('ui/UiModal'));
 
 interface Props {
   onClose: () => void;

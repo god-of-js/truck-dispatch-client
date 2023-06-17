@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { lazy, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import Trip from 'types/Trip';
 import { deepRootedToFormData, toAnyAction } from 'utils/helpers';
 import { uploadTDO } from 'modules/Trips';
-import FileUploadWidget from 'ui/FileUploadWidget';
-import UiButton from 'ui/UiButton';
-import UiForm from 'ui/UiForm';
-import UiModal from 'ui/UiModal';
 import UploadTDOSchema from 'utils/validations/UploadTDOSchema';
+
+const UiModal = lazy(() => import('ui/UiModal'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const FileUploadWidget = lazy(() => import('ui/FileUploadWidget'));
+const UiForm = lazy(() => import('ui/UiForm'));
 
 interface Props {
   onClose: () => void;

@@ -1,10 +1,12 @@
-import { useMemo } from 'react';
+import { lazy, useMemo } from 'react';
 import styled from 'styled-components';
 import PaymentRequest from 'types/PaymentRequest';
-import UiButton from 'ui/UiButton';
-import UiCard from 'ui/UiCard';
-import UiIcon, { Icons } from 'ui/UiIcon';
+import { Icons } from 'ui/UiIcon';
 import { abbreviateNumber, convertToFullDate, getTime } from 'utils/helpers';
+
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiCard = lazy(() => import('ui/UiCard'));
+const UiIcon = lazy(() => import('ui/UiIcon'));
 
 interface Props {
   isClient: boolean;

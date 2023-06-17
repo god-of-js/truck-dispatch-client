@@ -1,11 +1,13 @@
+import { lazy } from 'react';
 import styled from 'styled-components';
-import Bid from 'types/Bid';
-import UiAvatar from 'ui/UiAvatar';
-import UiButton from 'ui/UiButton';
-import UiDataField from 'ui/UiDataField';
-import UiIcon from 'ui/UiIcon';
-import UiPill from 'ui/UiPill';
 import { abbreviateNumber, convertToFullDate } from 'utils/helpers';
+import Bid from 'types/Bid';
+
+const UiPill = lazy(() => import('ui/UiPill'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiDataField = lazy(() => import('ui/UiDataField'));
+const UiAvatar = lazy(() => import('ui/UiAvatar'));
+const UiIcon = lazy(() => import('ui/UiIcon'));
 
 interface Props {
   bid: Bid;

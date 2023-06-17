@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import styled from 'styled-components';
-import UiIcon, { Icons } from './UiIcon';
+import { Icons } from './UiIcon';
+
+const UiIcon = lazy(() => import('./UiIcon'));
 
 type Variant = 'text-area' | 'field';
 type Sizes = 's' | 'l';

@@ -18,7 +18,7 @@ instance.interceptors.response.use(
   (err) => {
     if (!err.response && err.request) {
       Toast.error({
-        msg: "Something went wrong. Kindly check your connection. and inform the team if the issue persists.",
+        msg: 'Something went wrong. Kindly check your connection. and inform the team if the issue persists.',
       });
     }
 

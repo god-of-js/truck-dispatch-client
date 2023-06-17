@@ -1,10 +1,12 @@
+import { lazy } from 'react';
 import styled from 'styled-components';
 import Trip from 'types/Trip';
-import UiButton from 'ui/UiButton';
-import UiModal from 'ui/UiModal';
 import { useSelector } from 'react-redux';
 import { selectBid } from 'modules/Bid';
-import TripDetails from 'components/trips/TripDetails';
+
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiModal = lazy(() => import('ui/UiModal'));
+const TripDetails = lazy(() => import('components/trips/TripDetails'));
 
 interface Props {
   job: Trip;

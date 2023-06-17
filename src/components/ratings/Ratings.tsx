@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { lazy, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import UiIcon from 'ui/UiIcon';
 
+const UiIcon = lazy(() => import('ui/UiIcon'));
 interface Props {
   isActive?: boolean;
   rating: number;

@@ -1,28 +1,33 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { lazy, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-import ViewPaymentDetails from 'components/payment/ViewPaymentDetails';
 import { RootState } from 'modules/index';
 import { getPaymentRequestsOfDriver } from 'modules/Payments';
 import PaymentRequest from 'types/PaymentRequest';
 import { DropDownData } from 'ui/UiDropdownMenu';
-import UiPill from 'ui/UiPill';
-import UiTable from 'ui/UiTable';
+
 import {
   abbreviateNumber,
   convertToFullDate,
   convertToFullDateWithTime,
   toAnyAction,
+  filterByFieldInObject,
 } from 'utils/helpers';
-import DashboardTopNav from 'components/layout/DashboardTopNav';
+
 import { serviceBasedUserTypes } from 'utils/constants';
-import UiIcon from 'ui/UiIcon';
-import UiAvatar from 'ui/UiAvatar';
 import User from 'types/User';
-import UiButton from 'ui/UiButton';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { filterByFieldInObject } from 'utils/helpers';
+
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiPill = lazy(() => import('ui/UiPill'));
+const UiIcon = lazy(() => import('ui/UiIcon'));
+const UiAvatar = lazy(() => import('ui/UiAvatar'));
+const UiTable = lazy(() => import('ui/UiTable'));
+const DashboardTopNav = lazy(() => import('components/layout/DashboardTopNav'));
+const ViewPaymentDetails = lazy(
+  () => import('components/payment/ViewPaymentDetails'),
+);
 
 export default function PaymentsPage() {
   const dispatch = useDispatch();

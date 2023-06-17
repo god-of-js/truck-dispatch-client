@@ -1,15 +1,16 @@
 import { useParams } from 'react-router-dom';
-import React, { useState } from 'react';
-import UiIcon from 'ui/UiIcon';
-import UiInput from 'ui/UiInput';
-import UiButton from 'ui/UiButton';
-import UiSelect from 'ui/UiSelect';
-import UiForm from 'ui/UiForm';
+import React, { lazy, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toAnyAction } from 'utils/helpers';
 import { registerUser } from 'modules/Account';
 import User from 'types/User';
 import PersonalDetailsFormSchema from 'utils/validations/PersonalDetailsFormSchema';
+
+const UiSelect = lazy(() => import('ui/UiSelect'));
+const UiIcon = lazy(() => import('ui/UiIcon'));
+const UiInput = lazy(() => import('ui/UiInput'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiForm = lazy(() => import('ui/UiForm'));
 
 interface Props {
   goToNext: () => void;

@@ -1,14 +1,16 @@
 import React, {
   ChangeEvent,
+  lazy,
   useEffect,
   useMemo,
   useRef,
   useState,
 } from 'react';
 import styled from 'styled-components';
-import UiButton from './UiButton';
-import UiField from './UiField';
-import UiIcon from './UiIcon';
+
+const UiIcon = lazy(() => import('ui/UiIcon'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiField = lazy(() => import('ui/UiField'));
 
 interface Props {
   name: string;

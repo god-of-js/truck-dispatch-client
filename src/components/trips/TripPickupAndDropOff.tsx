@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import styled from 'styled-components';
 import Trip from 'types/Trip';
-import UiIcon from 'ui/UiIcon';
 
+const UiIcon = lazy(() => import('ui/UiIcon'));
 interface Props {
   pickup: string;
   dropOff: string;

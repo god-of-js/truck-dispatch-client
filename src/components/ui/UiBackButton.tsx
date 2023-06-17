@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import UiButton from './UiButton';
-import UiIcon from './UiIcon';
 
+const UiButton = lazy(() => import('./UiButton'));
+const UiIcon = lazy(() => import('./UiIcon'));
 export default function UiBackButton() {
   const navigate = useNavigate();
 
@@ -27,14 +27,4 @@ const ButtonStyling = styled.div`
   display: flex;
   align-items: center;
   gap:12px;
-
-  /* .icon-container {
-    background: var(--color-primary);
-    padding:2px 4px;
-    border-radius:4px;
-
-    svg {
-      fill: #fff;
-    }
-  } */
 `;

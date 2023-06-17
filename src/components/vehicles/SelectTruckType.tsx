@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { lazy, useState } from 'react';
 import styled from 'styled-components';
 import sizes from 'utils/sizes';
-import UiButton from 'ui/UiButton';
 import CreateVehicleData from 'types/CreateVehicleData';
-import UiIcon from 'ui/UiIcon';
 import { vehicleTypes } from 'utils/constants';
 
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiIcon = lazy(() => import('ui/UiIcon'));
 interface Props {
   vehicle: CreateVehicleData;
   goToNext: (vehicleData: Partial<CreateVehicleData>) => void;

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { lazy, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
@@ -14,16 +14,17 @@ import {
 } from 'utils/helpers';
 import TransporterValidationSchema from 'utils/validations/TransporterValidationSchema';
 
-import UiForm from 'ui/UiForm';
-import UiSelect from 'ui/UiSelect';
-import FileUploadWidget from 'ui/FileUploadWidget';
-import UiLocationsInput from 'ui/UiLocationsInput';
-import UiButton from 'ui/UiButton';
 import Verification from 'types/Verification';
-import UiInput from 'ui/UiInput';
 import sizes from 'utils/sizes';
 import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
+
+const UiLocationsInput = lazy(() => import('ui/UiLocationsInput'));
+const FileUploadWidget = lazy(() => import('ui/FileUploadWidget'));
+const UiSelect = lazy(() => import('ui/UiSelect'));
+const UiForm = lazy(() => import('ui/UiForm'));
+const UiInput = lazy(() => import('ui/UiInput'));
+const UiButton = lazy(() => import('ui/UiButton'));
 
 interface Props {
   parentLoading?: boolean;

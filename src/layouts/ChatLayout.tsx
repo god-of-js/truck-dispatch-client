@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { lazy, useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import ChatHeads from 'components/chat/ChatHeads';
 import sizes from 'utils/sizes';
 import { useDispatch } from 'react-redux';
 import { toAnyAction } from 'utils/helpers';
 import { createOrFetchChatLog } from 'modules/Chat';
-import DashboardTopNav from 'components/layout/DashboardTopNav';
-import UiConfirmModal from 'ui/UiConfirmModal';
-import Loader from 'components/layout/Loader';
+
+const Loader = lazy(() => import('components/layout/Loader'));
+const UiConfirmModal = lazy(() => import('ui/UiConfirmModal'));
+const DashboardTopNav = lazy(() => import('components/layout/DashboardTopNav'));
+const ChatHeads = lazy(() => import('components/chat/ChatHeads'));
 
 export default function ChatLayout() {
   const location = useLocation();

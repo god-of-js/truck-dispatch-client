@@ -1,9 +1,7 @@
-import { useState } from 'react';
+import { lazy, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 
-import UiModal from 'ui/UiModal';
-import DriverDetailsForm from './DriverDetailsForm';
 import Vehicle from 'types/Vehicle';
 import CreateVehicleData from 'types/CreateVehicleData';
 import {
@@ -12,6 +10,9 @@ import {
   toAnyAction,
 } from 'utils/helpers';
 import { updateVehicle } from 'modules/Vehicle';
+
+const UiModal = lazy(() => import('ui/UiModal'));
+const DriverDetailsForm = lazy(() => import('./DriverDetailsForm'));
 interface Props {
   onClose: () => void;
   vehicle: Vehicle;

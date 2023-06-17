@@ -1,10 +1,11 @@
-import React, { useMemo } from 'react';
+import React, { lazy, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { RootState } from 'modules/index';
-import UiAvatar from 'ui/UiAvatar';
 import ChatLog from 'types/ChatLog';
+
+const UiAvatar = lazy(() => import('ui/UiAvatar'));
 
 export default function ChatHeads() {
   const navigate = useNavigate();

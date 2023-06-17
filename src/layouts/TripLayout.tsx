@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { lazy, useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getTrip, selectTrip } from 'modules/Trips';
 
-import Loader from 'components/layout/Loader';
-import RateTransporter from 'components/ratings/RateUser';
 import { toAnyAction } from 'utils/helpers';
 import { getTripRating } from 'modules/Ratings';
 import Rating from 'types/Rating';
 import { RootState } from 'modules/index';
 import { clientBasedUserTypes } from 'utils/constants';
+
+const Loader = lazy(() => import('components/layout/Loader'));
+const RateTransporter = lazy(() => import('components/ratings/RateUser'));
 
 export default function TripLayout() {
   const { tripId } = useParams();
