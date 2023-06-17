@@ -79,9 +79,9 @@ const MenuButtonStyling = styled(MenuButton)`
   justify-content: center;
   background: var(--color-gray-50);
   border: transparent;
-  border-radius:8px;
+  border-radius: 8px;
   position: relative;
-  padding:8px 8px 5px;
+  padding: 8px 8px 5px;
   cursor: pointer;
   width: fit-content;
 
@@ -91,7 +91,7 @@ const MenuButtonStyling = styled(MenuButton)`
 `;
 const MenuMainStyled = styled(Menu)`
   ul {
-    padding:8px;
+    padding: 8px;
     border-radius: 16px;
     box-shadow: 0px 10px 16px rgba(21, 19, 27, 0.1);
     top: 12px !important;
@@ -100,17 +100,17 @@ const MenuMainStyled = styled(Menu)`
 `;
 
 const MenuItemStyling = styled(MenuItem)<ThemeProps>`
-  font-size:14px;
+  font-size: 14px;
   font-weight: normal;
   font-weight: 600;
-  line-height:24px;
+  line-height: 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap:32px;
-  min-height:28px;
-  border-radius:8px;
-  padding:4px 8px !important;
+  gap: 32px;
+  min-height: 28px;
+  border-radius: 8px;
+  padding: 4px 8px !important;
   font-style: normal;
   color: ${({ isdanger }) =>
     isdanger === 'true' ? 'var(--color-danger)' : 'var(--color-gray-80)'};
@@ -123,7 +123,7 @@ const MenuItemStyling = styled(MenuItem)<ThemeProps>`
   a {
     width: 100%;
     height: 100%;
-    font-size:14px;
+    font-size: 14px;
     color: var(--color-gray-500);
     font-weight: 'thiccboi-semibold';
   }
@@ -133,7 +133,7 @@ const MenuItemStyling = styled(MenuItem)<ThemeProps>`
     gap: 8px;
 
     &__text {
-      margin-bottom:2px;
+      margin-bottom: 2px;
     }
   }
 `;

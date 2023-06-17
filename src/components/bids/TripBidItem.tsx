@@ -112,26 +112,26 @@ export default function TripBidItem({
 }
 
 const TripBidItemStyling = styled.div`
-  max-width:332px;
-  border-radius:16px;
+  max-width: 332px;
+  border-radius: 16px;
   background: #ffffff;
   width: 100%;
   font-weight: 600;
-  font-size:16px;
+  font-size: 16px;
 
   @media screen and (min-width: ${sizes.mobileSmall}) {
-    min-width:320px;
+    min-width: 320px;
   }
 
   header {
     background: var(--color-primary-10);
-    padding:24px;
+    padding: 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap:12px;
-    border-top-left-radius:16px;
-    border-top-right-radius:16px;
+    gap: 12px;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
 
     .user-details-name {
       color: var(--color-gray-80);
@@ -142,17 +142,17 @@ const TripBidItemStyling = styled.div`
     text-transform: uppercase;
     font-style: normal;
     font-weight: 400;
-    font-size:10px;
+    font-size: 10px;
     color: var(--color-gray-70);
     line-height: 140%;
     letter-spacing: 0.05em;
-    margin-bottom:8px;
+    margin-bottom: 8px;
   }
 
   .field-value {
     font-style: normal;
     font-weight: 600;
-    font-size:14px;
+    font-size: 14px;
     line-height: 140%;
     letter-spacing: -0.02em;
     color: var(--color-neutralBlack);
@@ -160,8 +160,8 @@ const TripBidItemStyling = styled.div`
 
   .field-item,
   .double-field-item {
-    border-bottom:1px solid var(--color-gray);
-    padding:0px 0 16px 0;
+    border-bottom: 1px solid var(--color-gray);
+    padding: 0px 0 16px 0;
   }
 
   .double-field-item {
@@ -173,19 +173,19 @@ const TripBidItemStyling = styled.div`
   .fields {
     display: flex;
     flex-direction: column;
-    gap:16px;
-    padding:16px 24px 24px 24px;
+    gap: 16px;
+    padding: 16px 24px 24px 24px;
   }
   .field-item--without-border {
     display: flex;
     flex-direction: column;
-    gap:20px;
+    gap: 20px;
   }
   .price {
     font-style: normal;
     font-weight: 600;
-    font-size:28px;
-    line-height:32px;
+    font-size: 28px;
+    line-height: 32px;
     letter-spacing: -0.02em;
     color: var(--color-neutralBlack);
   }
@@ -193,7 +193,7 @@ const TripBidItemStyling = styled.div`
   .vehicle-location {
     display: flex;
     align-items: flex-start;
-    gap:8px;
+    gap: 8px;
     svg {
       fill: var(--color-primary);
     }

@@ -42,7 +42,7 @@ export default function TripPickupAndDropOff({
 
 const TripPickupAndDropOffStyle = styled.div`
   display: flex;
-  gap:12px;
+  gap: 12px;
 
   &.light-primary {
     .indicator {
@@ -57,7 +57,7 @@ const TripPickupAndDropOffStyle = styled.div`
   .title {
     text-transform: uppercase;
     font-weight: 400;
-    font-size:10px;
+    font-size: 10px;
     line-height: 1.5;
     letter-spacing: 0.05em;
     color: var(--color-gray-70);
@@ -70,7 +70,7 @@ const TripPickupAndDropOffStyle = styled.div`
     line-height: 140%;
     letter-spacing: -0.02em;
 
-    height:45px;
+    height: 45px;
     color: var(--color-neutralBlack);
     overflow: hidden;
     display: -webkit-box;
@@ -85,14 +85,14 @@ const TripPickupAndDropOffStyle = styled.div`
     height: 90px;
     flex-direction: column;
     align-items: center;
-    gap:4px;
-    border-radius:20px;
-    padding:4px;
+    gap: 4px;
+    border-radius: 20px;
+    padding: 4px;
 
     .to-indicator {
-      width:4px;
-      height:4px;
-      border:3px solid var(--color-gray-400);
+      width: 4px;
+      height: 4px;
+      border: 3px solid var(--color-gray-400);
       border-radius: 50%;
     }
 
@@ -117,6 +117,6 @@ const TripPickupAndDropOffStyle = styled.div`
   .location-content {
     display: flex;
     flex-direction: column;
-    gap:24px;
+    gap: 24px;
   }
 `;

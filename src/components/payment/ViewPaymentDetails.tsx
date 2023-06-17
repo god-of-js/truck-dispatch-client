@@ -73,10 +73,10 @@ export default function ViewPaymentDetails({
 const DetailsContainer = styled.div`
   h2 {
     margin: 0;
-    margin-bottom:24px;
+    margin-bottom: 24px;
     padding: 0;
     color: var(--color-gray-500);
-    font-size:20px;
+    font-size: 20px;
   }
 `;
 
@@ -85,8 +85,8 @@ const Section = styled.section`
   align-items: flex-start;
   flex-direction: column;
   gap: 8px;
-  font-size:16px;
-  margin-bottom:24px;
+  font-size: 16px;
+  margin-bottom: 24px;
 
   .title {
     color: var(--color-gray-400);

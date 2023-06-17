@@ -32,17 +32,17 @@ export default function UiTabs({ tabs }: Props) {
 const Tabs = styled.ul`
   list-style: none;
   display: flex;
-  gap:16px;
+  gap: 16px;
   overflow: auto;
   padding: 0;
   margin: 0;
 `;
 
 const Tab = styled.li`
-  font-size:14px;
-  padding-bottom:24px;
+  font-size: 14px;
+  padding-bottom: 24px;
   /* TODO: make border rounded */
-  border-bottom:2px solid
+  border-bottom: 2px solid
     ${({ isActive }: { isActive: boolean }) =>
       isActive ? 'var(--color-primary)' : 'transparent'};
 

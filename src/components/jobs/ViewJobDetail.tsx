@@ -46,10 +46,10 @@ export default function ViewJobDetail({
 }
 
 const ComponentStyling = styled.div`
-  padding:32px 24px;
+  padding: 32px 24px;
   .bid-button-container {
     width: 100%;
-    margin-top:60px;
+    margin-top: 60px;
 
     button {
       margin: auto;

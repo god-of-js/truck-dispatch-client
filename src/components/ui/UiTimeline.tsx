@@ -51,7 +51,7 @@ const TimeLineContainer = styled.ul`
   list-style-type: none;
   padding: 0;
   margin: 0;
-  gap:4px;
+  gap: 4px;
   overflow: auto;
 `;
 
@@ -65,8 +65,8 @@ const TimeLineItem = styled.li`
     isActive ? 'var(--color-primary)' : 'var(--color-gray-400)'};
 
   .step-thread {
-    width:20px;
-    height:1px;
+    width: 20px;
+    height: 1px;
     background: ${({ isActive }: { isActive: boolean }) =>
       isActive ? 'var(--color-primary)' : 'var(--color-gray-400)'};
   }
@@ -78,10 +78,10 @@ const TimeLineItem = styled.li`
   }
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     padding: 0 8px;
-    gap:8px;
-    font-size:14px;
+    gap: 8px;
+    font-size: 14px;
     .step-thread {
-      width:32px;
+      width: 32px;
     }
   }
 `;

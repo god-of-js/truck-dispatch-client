@@ -72,27 +72,27 @@ export default function RejectPaymentRequest({
 }
 
 const ModalBody = styled.div`
-  padding:24px 64px;
+  padding: 24px 64px;
   padding-bottom: 0;
   font-style: normal;
   font-weight: 400;
-  font-size:16px;
-  line-height:24px;
+  font-size: 16px;
+  line-height: 24px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap:24px;
+  gap: 24px;
 
   textarea {
-    height:400px;
+    height: 400px;
   }
   .button-container {
     display: flex;
-    gap:8px;
+    gap: 8px;
     justify-content: center;
 
     button {
-      min-width:180px;
+      min-width: 180px;
     }
   }
 `;

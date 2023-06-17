@@ -81,30 +81,30 @@ export default function JobItem({ job, bidForJob, viewJobDetail }: Props) {
 }
 
 const JobItemStyling = styled.div`
-  max-width:332px;
-  border-radius:16px;
+  max-width: 332px;
+  border-radius: 16px;
   overflow: hidden;
   background: #ffffff;
   width: 100%;
   font-weight: 600;
-  font-size:16px;
+  font-size: 16px;
 
   @media screen and (min-width: ${sizes.mobileSmall}) {
-    min-width:320px;
+    min-width: 320px;
   }
 
   header {
     background: var(--color-primary-10);
-    padding:24px;
+    padding: 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap:12px;
+    gap: 12px;
 
     .user-profile {
       display: flex;
       align-items: center;
-      gap:8px;
+      gap: 8px;
 
       .user-name {
         font-style: normal;
@@ -122,7 +122,7 @@ const JobItemStyling = styled.div`
     text-transform: uppercase;
     font-style: normal;
     font-weight: 400;
-    font-size:10px;
+    font-size: 10px;
     color: var(--color-gray-70);
     line-height: 140%;
     letter-spacing: 0.05em;
@@ -138,20 +138,20 @@ const JobItemStyling = styled.div`
   }
 
   .type-of-goods-value {
-    font-size:16px;
+    font-size: 16px;
     text-transform: capitalize;
   }
 
   .field-item {
-    border-bottom:1px solid var(--color-gray);
-    padding:0px 0 16px 0;
+    border-bottom: 1px solid var(--color-gray);
+    padding: 0px 0 16px 0;
   }
 
   .job-body {
     display: flex;
     flex-direction: column;
-    gap:16px;
-    padding:16px 24px 24px 24px;
+    gap: 16px;
+    padding: 16px 24px 24px 24px;
   }
 
   .date-container {
@@ -164,7 +164,7 @@ const JobItemStyling = styled.div`
 const SubmitButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  gap:16px;
+  gap: 16px;
 
   & button:last-child {
     flex-grow: 1;

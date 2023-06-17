@@ -191,20 +191,20 @@ const FileUploadWidgetStyle = styled.div`
 `;
 
 const FieldUploadStyle = styled.div`
-  border:1px solid var(--color-gray);
+  border: 1px solid var(--color-gray);
   position: relative;
-  font-size:14px;
+  font-size: 14px;
   font-family: 'thiccboi-medium';
   height: var(--base-height);
   padding: 0 16px;
   color: var(--color-gray-80);
-  border-radius:8px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   cursor: pointer;
   color: var(--color-neutralBlack);
-  font-size:14px;
-  line-height:24px;
+  font-size: 14px;
+  line-height: 24px;
 
   .file-name {
     white-space: nowrap;
@@ -222,7 +222,7 @@ const FieldUploadStyle = styled.div`
     align-items: center;
     justify-content: center;
     border-radius: 0px 8px 8px 0px;
-    padding:16px;
+    padding: 16px;
     border-left: none;
     background-color: var(--color-primary-10);
 
@@ -239,7 +239,7 @@ const WithDragAndDropStyle = styled.div<WithDragAndDropProps>`
   position: relative;
   background-color: var(--color-gray-20);
   box-sizing: border-box;
-  border-radius:8px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -275,7 +275,7 @@ const WithDragAndDropStyle = styled.div<WithDragAndDropProps>`
         rgba(21, 19, 27, 0.5),
         rgba(21, 19, 27, 0.5)
       );
-      border-radius:8px;
+      border-radius: 8px;
 
       svg {
         fill: #fff;
@@ -286,7 +286,7 @@ const WithDragAndDropStyle = styled.div<WithDragAndDropProps>`
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius:8px;
+    border-radius: 8px;
   }
 
   .content {
@@ -295,13 +295,13 @@ const WithDragAndDropStyle = styled.div<WithDragAndDropProps>`
     justify-content: center;
     flex-direction: column;
     width: 30%;
-    gap:8px;
+    gap: 8px;
     height: 320px;
   }
 
   .drag-and-drop-text {
     color: var(--color-neutralBlack);
-    font-size:14px;
+    font-size: 14px;
     font-weight: 400;
     font-family: 'thiccboi-regular';
     text-align: center;
@@ -310,17 +310,17 @@ const WithDragAndDropStyle = styled.div<WithDragAndDropProps>`
     display: flex;
     align-items: center;
     justify-content: center;
-    gap:4px;
+    gap: 4px;
 
     .dash {
-      width:16px;
+      width: 16px;
       display: block;
-      border-top:1px solid var(--color-gray-80);
-      padding-top:0.5px;
+      border-top: 1px solid var(--color-gray-80);
+      padding-top: 0.5px;
     }
 
     span {
-      font-size:12px;
+      font-size: 12px;
       color: var(--color-gray-80);
       font-weight: 400;
       font-family: 'thiccboi-regular';

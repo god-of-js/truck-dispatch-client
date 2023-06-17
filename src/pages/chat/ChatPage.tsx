@@ -160,7 +160,7 @@ const ChatPageStyling = styled.div`
 `;
 
 const Header = styled.header`
-  padding:12px;
+  padding: 12px;
   border-bottom: 1px solid var(--color-gray-20);
   background-color: white;
   position: sticky;
@@ -172,12 +172,12 @@ const Header = styled.header`
   .user-details {
     display: flex;
     align-items: center;
-    gap:12px;
+    gap: 12px;
   }
 `;
 
 const ChatContainer = styled.div`
-  padding:80px 32px 80px 32px;
+  padding: 80px 32px 80px 32px;
   background: var(--color-gray-10);
   height: 80%;
   overflow: scroll;
@@ -187,9 +187,9 @@ const ChatBubble = styled.div<{ isMine: boolean }>`
   display: flex;
   justify-content: ${({ isMine }) => (isMine ? 'flex-end' : '')};
   .chat-bubble-inner {
-    padding:8px;
-    margin:2px 0;
-    border-radius:4px;
+    padding: 8px;
+    margin: 2px 0;
+    border-radius: 4px;
     background: ${({ isMine }) =>
       isMine ? 'var(--color-primary)' : 'var(--color-gray-70)'};
     width: fit-content;
@@ -203,7 +203,7 @@ const InputContainer = styled.div`
   bottom: 0;
   right: 0;
   left: 0;
-  padding-bottom:16px;
+  padding-bottom: 16px;
   z-index: 1;
 
   .input-group {
@@ -211,23 +211,23 @@ const InputContainer = styled.div`
     margin: auto;
   }
   .error-message-container {
-    font-size:14px;
+    font-size: 14px;
     color: var(--color-danger);
-    padding:4px;
+    padding: 4px;
     background: white;
-    border-top-left-radius:4px;
-    border-top-right-radius:4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
     border: 1px solid var(--color-gray-200);
     border-bottom: transparent;
   }
   .inner {
-    padding:12px;
+    padding: 12px;
     display: flex;
     box-shadow: var(--box-shadow);
     background: white;
-    margin-bottom:12px;
+    margin-bottom: 12px;
     border: 1px solid var(--color-gray-200);
-    border-radius:4px;
+    border-radius: 4px;
     input {
       width: 100%;
       border: transparent;
@@ -240,11 +240,11 @@ const InputContainer = styled.div`
       border: transparent;
       outline: none;
       cursor: pointer;
-      padding:4px;
+      padding: 4px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius:4px;
+      border-radius: 4px;
 
       :hover {
         background: var(--color-gray-200);

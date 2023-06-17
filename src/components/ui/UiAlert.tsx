@@ -55,13 +55,13 @@ function generateSchemeBasedOnVariant(variant: Variant): string {
 }
 
 const Alert = styled.div`
-  font-size:14px;
-  padding:16px;
-  border-radius:8px;
+  font-size: 14px;
+  padding: 16px;
+  border-radius: 8px;
   display: flex;
   justify-content: space-between;
-  gap:9.4px;
-  line-height:24px;
+  gap: 9.4px;
+  line-height: 24px;
   ${({ variant }: { variant: Variant }) =>
     generateSchemeBasedOnVariant(variant)}
   a {

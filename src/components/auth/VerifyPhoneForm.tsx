@@ -152,15 +152,15 @@ const StyledResendCode = styled.div`
   justify-content: center;
   gap: 9px;
   align-items: center;
-  padding-top:26px;
+  padding-top: 26px;
   p {
     font-weight: 400;
     color: var(--color-gray-80);
     font-family: 'thiccboi-regular';
-    font-size:16px;
-    line-height:24px;
+    font-size: 16px;
+    line-height: 24px;
   }
   button {
-    border-radius:16px;
+    border-radius: 16px;
   }
 `;

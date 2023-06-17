@@ -64,7 +64,7 @@ interface StyleProps {
 const LayoutStyling = styled.div`
   display: flex;
   flex-direction: column;
-  gap:40px;
+  gap: 40px;
   height: 100%;
 
   .logo {
@@ -111,12 +111,12 @@ const LayoutStyling = styled.div`
   }
 
   @media screen and (min-width: ${sizes.tablet}) {
-    gap:40px;
+    gap: 40px;
     ${({ invert }: StyleProps) => invert && 'flex-direction: row-reverse;'}
 
     .logo {
       display: block;
-      padding:32px 0;
+      padding: 32px 0;
       position: absolute;
       top: 0;
     }
@@ -128,8 +128,7 @@ const LayoutStyling = styled.div`
         width: ${({ invert }: StyleProps) => (invert ? '60%' : '100%')};
         justify-content: ${({ invert }: StyleProps) =>
           invert ? '' : 'flex-end'};
-        padding-top: ${({ invert }: StyleProps) =>
-          invert ? '5%' : '105px'};
+        padding-top: ${({ invert }: StyleProps) => (invert ? '5%' : '105px')};
         height: 100%;
 
         &__inner {
@@ -168,8 +167,7 @@ const LayoutStyling = styled.div`
       display: block;
       height: 100vh;
       position: fixed;
-      ${({ hasImage }: StyleProps) =>
-        !hasImage && `padding-top: 160px;`}
+      ${({ hasImage }: StyleProps) => !hasImage && `padding-top: 160px;`}
       &__inner {
         height: 100%;
         ${({ hasImage }: StyleProps) =>

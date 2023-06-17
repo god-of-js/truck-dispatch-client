@@ -111,8 +111,7 @@ const List = styled.ul`
 
 const ListItem = styled.li`
   width: 100%;
-  ${({ hasNoDetail }: ListItemProps) =>
-    hasNoDetail && 'max-width:150px;'}
+  ${({ hasNoDetail }: ListItemProps) => hasNoDetail && 'max-width:150px;'}
 
   .indicator {
     display: flex;
@@ -120,8 +119,8 @@ const ListItem = styled.li`
     justify-content: space-between;
 
     &__circle {
-      min-width:16px;
-      min-height:16px;
+      min-width: 16px;
+      min-height: 16px;
       border-radius: 50%;
       color: white;
       display: flex;
@@ -133,14 +132,14 @@ const ListItem = styled.li`
         `2px solid ${getStyling(listItemProps).borderColor}`};
 
       svg {
-        width:12px;
-        height:12px;
+        width: 12px;
+        height: 12px;
         fill: white;
       }
     }
 
     &__line {
-      width:90px;
+      width: 90px;
       width: 100%;
       border: ${(listItemProps: ListItemProps) =>
         `1px ${getStyling(listItemProps).lineStyle} ${
@@ -153,7 +152,7 @@ const ListItem = styled.li`
   }
 
   &:last-child {
-    max-width:8px;
+    max-width: 8px;
     .indicator {
       flex-direction: row-reverse;
       &__line {

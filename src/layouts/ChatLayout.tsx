@@ -71,7 +71,7 @@ export default function ChatLayout() {
 }
 
 const ChatLayoutDesign = styled.div`
-  padding:12px 24px;
+  padding: 12px 24px;
   height: 85vh;
 
   .card {
@@ -79,7 +79,7 @@ const ChatLayoutDesign = styled.div`
     height: 100%;
     margin: auto;
     border: 1px solid var(--color-gray-200);
-    border-radius:8px;
+    border-radius: 8px;
     color: var(--color-gray-600);
     display: flex;
     overflow: hidden;

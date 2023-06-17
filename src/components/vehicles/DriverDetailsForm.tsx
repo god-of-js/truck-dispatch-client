@@ -121,32 +121,32 @@ const ComponentStyling = styled.div`
   .grid-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap:20px;
-    margin-top:32px;
+    gap: 20px;
+    margin-top: 32px;
   }
 
   label {
     font-weight: 700;
-    font-size:16px;
+    font-size: 16px;
     font-family: 'thiccboi-medium';
     color: var(--color-neutralBlack);
   }
   .driver-photo-container {
     .file-upload-widget {
-      height:376px;
+      height: 376px;
     }
   }
   .form-details {
     display: grid;
     grid-template-columns: auto;
-    gap:24px;
+    gap: 24px;
   }
   .btn-container {
     display: flex;
     justify-content: center;
-    margin-top:32px;
+    margin-top: 32px;
     button {
-      width:182px;
+      width: 182px;
     }
   }
 `;

@@ -155,7 +155,7 @@ const PaymentCard = styled.div`
     .amount {
       font-style: normal;
       font-weight: 700;
-      font-size:32px;
+      font-size: 32px;
       line-height: 140%;
       letter-spacing: -0.02em;
       color: var(--color-neutralBlack);
@@ -164,16 +164,16 @@ const PaymentCard = styled.div`
     .time-with-icon {
       display: flex;
       font-weight: 400;
-      font-size:12px;
-      line-height:16px;
-      gap:16px;
+      font-size: 12px;
+      line-height: 16px;
+      gap: 16px;
       text-align: right;
       color: var(--color-neutralBlack);
 
       .icon-container {
-        width:36px;
-        height:36px;
-        border-radius:36px;
+        width: 36px;
+        height: 36px;
+        border-radius: 36px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -209,7 +209,7 @@ const BottomContainer = styled.div`
   bottom: 0;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap:8px;
+  gap: 8px;
   width: 100%;
 
   button {
@@ -224,12 +224,12 @@ const BottomContainer = styled.div`
 
     .icon-container {
       background: var(--color-danger);
-      min-width:46px;
-      height:28px;
+      min-width: 46px;
+      height: 28px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius:6px;
+      border-radius: 6px;
 
       svg {
         fill: white;

@@ -59,19 +59,19 @@ export default function ProfileLayout() {
 
 const TabContainer = styled.div`
   background-color: #ffffff;
-  padding:20px 20px 0 20px;
-  border-bottom:1px solid var(--color-gray-200);
+  padding: 20px 20px 0 20px;
+  border-bottom: 1px solid var(--color-gray-200);
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    padding-top:24px;
+    padding-top: 24px;
   }
 `;
 
 const OutletContainer = styled.div`
-  padding:24px 0;
+  padding: 24px 0;
   min-height: 70%;
 
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    padding:48px 0;
+    padding: 48px 0;
   }
 `;

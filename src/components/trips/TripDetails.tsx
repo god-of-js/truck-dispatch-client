@@ -72,17 +72,17 @@ const ComponentStyling = styled.div`
   .user-profile {
     display: flex;
     align-items: center;
-    gap:24px;
+    gap: 24px;
 
     &__content {
       display: flex;
       align-items: center;
-      gap:8px;
+      gap: 8px;
 
       .user-name {
         font-style: normal;
         font-weight: 600;
-        font-size:16px;
+        font-size: 16px;
         line-height: 140%;
         letter-spacing: -0.02em;
         color: var(--color-gray-80);
@@ -91,7 +91,7 @@ const ComponentStyling = styled.div`
       .user-type {
         font-style: normal;
         font-weight: 400;
-        font-size:10px;
+        font-size: 10px;
         line-height: 140%;
 
         letter-spacing: 0.05em;
@@ -104,12 +104,12 @@ const ComponentStyling = styled.div`
   .detail-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap:12px;
+    gap: 12px;
   }
 
   .bid-button-container {
     width: 100%;
-    margin-top:60px;
+    margin-top: 60px;
 
     button {
       margin: auto;

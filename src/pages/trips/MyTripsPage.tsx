@@ -589,14 +589,14 @@ export default function MyTripsPage() {
 }
 
 const MyTripsPageStyle = styled.div`
-  padding:24px;
+  padding: 24px;
 `;
 
 const TypeOfGoods = styled.span`
   font-family: 'thiccboi-bold';
   font-style: normal;
   font-weight: 600;
-  font-size:14px;
+  font-size: 14px;
   line-height: 140%;
   letter-spacing: -0.02em;
   color: var(--color-neutralBlack);
@@ -607,7 +607,7 @@ const EdgeNodeContainer = styled.div`
   button {
     .text {
       text-transform: uppercase;
-      font-size:14px;
+      font-size: 14px;
       line-height: 140%;
       font-style: normal;
       font-weight: 600;
@@ -615,13 +615,13 @@ const EdgeNodeContainer = styled.div`
     }
 
     .count {
-      border-radius:10px;
+      border-radius: 10px;
       padding: 0 4px;
-      font-size:10px;
+      font-size: 10px;
       letter-spacing: -0.02em;
-      border-radius:2px;
-      height:19px;
-      width:12px;
+      border-radius: 2px;
+      height: 19px;
+      width: 12px;
       background: var(--color-primary-20);
       display: flex;
       align-items: center;

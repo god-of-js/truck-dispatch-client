@@ -44,19 +44,18 @@ interface StylingProps {
   isBordered?: boolean;
 }
 const FieldStyling = styled.div<StylingProps>`
-  padding: ${({ size }) => size === 's' ? '12px' : '16px'} 16px;
+  padding: ${({ size }) => (size === 's' ? '12px' : '16px')} 16px;
   background: var(--color-gray-20);
-  border-radius:8px;
+  border-radius: 8px;
   display: flex;
-  gap:12px;
-  ${({ isBordered }) =>
-    isBordered && `border:1px solid var(--color-gray-30);`}
+  gap: 12px;
+  ${({ isBordered }) => isBordered && `border:1px solid var(--color-gray-30);`}
   ${({ variant }) => variant === 'text-area' && 'min-height: 100px'};
 
   .field-title {
     font-style: normal;
     font-weight: ${({ variant }) => (variant === 'text-area' ? 600 : 400)};
-    font-size:10px;
+    font-size: 10px;
     line-height: 140%;
     letter-spacing: 0.05em;
     color: ${({ variant }) =>
@@ -68,11 +67,11 @@ const FieldStyling = styled.div<StylingProps>`
   .field-value {
     font-style: normal;
     font-weight: ${({ variant }) => (variant === 'text-area' ? 400 : 600)};
-    font-size: ${({ size }) => size === 's' ? '14px' : '16px'};
+    font-size: ${({ size }) => (size === 's' ? '14px' : '16px')};
     line-height: 140%;
     letter-spacing: -0.02em;
     color: var(--color-neutralBlack);
-    margin-top:4px;
+    margin-top: 4px;
   }
 
   button {

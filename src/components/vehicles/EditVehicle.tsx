@@ -60,5 +60,5 @@ export default function EditVehicle({ isVisible, onClose, vehicle }: Props) {
 }
 
 const Body = styled.div`
-  padding:24px;
+  padding: 24px;
 `;

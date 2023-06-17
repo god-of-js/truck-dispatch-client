@@ -15,26 +15,26 @@ const Styling = styled.div`
     margin: 0;
   }
   height: 100%;
-  padding-bottom:30px;
+  padding-bottom: 30px;
   header {
     ${({ inverted }: { inverted?: boolean }) =>
       !inverted && `text-align: center;`};
-    margin-bottom:40px;
+    margin-bottom: 40px;
     span {
       fill: var(--color-neutralBlack);
     }
     h1 {
       color: var(--color-neutralBlack);
-      font-size:24px;
-      margin-top:20px;
-      margin-bottom:12px;
+      font-size: 24px;
+      margin-top: 20px;
+      margin-bottom: 12px;
     }
     p {
       font-weight: 400;
       color: var(--color-gray-80);
       font-family: 'thiccboi-regular';
       font-size: 16px;
-      line-height:24px;
+      line-height: 24px;
     }
   }
   .form-container {
@@ -44,9 +44,9 @@ const Styling = styled.div`
     position: relative;
     ${({ inverted }: { inverted?: boolean }) =>
       inverted ? '' : 'margin: 0 auto'};
-    max-width:400px;
+    max-width: 400px;
     button {
-      margin-top:24px;
+      margin-top: 24px;
     }
     .no-btn-margin-top {
       button {
@@ -56,36 +56,36 @@ const Styling = styled.div`
     .select-with-optional-alert-container {
       display: flex;
       flex-direction: column;
-      gap:8px;
+      gap: 8px;
     }
     &__inner {
       display: flex;
       flex-direction: column;
-      gap:24px;
+      gap: 24px;
     }
 
     .duo-button-container {
       display: flex;
       flex-direction: column;
-      margin-top:24px;
-      gap:12px;
+      margin-top: 24px;
+      gap: 12px;
     }
     .bottom-actions {
       position: absolute;
       display: flex;
       flex-direction: column;
-      gap:12px;
+      gap: 12px;
 
       width: 100%;
       bottom: 0;
       left: 0;
 
       p {
-        height:46px;
+        height: 46px;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap:4px;
+        gap: 4px;
       }
     }
 
@@ -144,9 +144,9 @@ const Styling = styled.div`
       margin-bottom: 48px;
 
       h1 {
-        font-size:32px;
+        font-size: 32px;
         margin-top: 19px;
-        margin-bottom:16px;
+        margin-bottom: 16px;
       }
     }
     .form-container {
@@ -156,7 +156,7 @@ const Styling = styled.div`
     }
   }
   @media (min-width: ${sizes.tabletLargeWidth}) {
-    padding-bottom:50px;
+    padding-bottom: 50px;
     .form-container {
       width: ${({ inverted }: { inverted?: boolean }) =>
         inverted ? '100%' : '50%'};

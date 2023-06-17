@@ -182,23 +182,23 @@ export default function AddAccount({
 const AddAcountStyling = styled.div`
   display: flex;
   flex-direction: column;
-  gap:20px;
-  padding:12px 24px;
+  gap: 20px;
+  padding: 12px 24px;
 
   h2 {
     margin-top: 0;
-    margin-bottom:8px;
-    font-size:20px;
+    margin-bottom: 8px;
+    font-size: 20px;
     color: var(--color-gray-500);
   }
   p {
-    font-size:16px;
+    font-size: 16px;
     color: var(--color-gray-600);
   }
 
   .account-name-title,
   .account-name-value {
-    font-size:12px;
+    font-size: 12px;
     color: var(--color-gray-600);
   }
   .account-name-value {
@@ -206,12 +206,12 @@ const AddAcountStyling = styled.div`
   }
 
   .error-message {
-    font-size:12px;
+    font-size: 12px;
     color: var(--color-danger);
   }
 `;
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-  gap:8px;
+  gap: 8px;
 `;

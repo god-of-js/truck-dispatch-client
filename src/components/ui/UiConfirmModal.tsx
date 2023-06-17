@@ -72,14 +72,14 @@ export default function UiConfirmModal({
 
 const Modal = styled.div`
   display: grid;
-  gap:40px;
+  gap: 40px;
   padding: 0 24px;
-  padding-top:44px;
+  padding-top: 44px;
 
   .modal-content {
     font-weight: 400;
-    font-size:20px;
-    line-height:28px;
+    font-size: 20px;
+    line-height: 28px;
     font-style: normal;
     text-align: center;
     color: var(--color-neutralBlack);
@@ -95,7 +95,7 @@ const Modal = styled.div`
 const SubmitButtonContainer = styled.div`
   display: flex;
   justify-content: center;
-  gap:16px;
+  gap: 16px;
   margin-top: 0;
 
   button {

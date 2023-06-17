@@ -42,14 +42,14 @@ export default function InformUserOfVerification({
 }
 
 const ModalContent = styled.div`
-  padding:12px 24px;
+  padding: 12px 24px;
 
   .btn-container {
     display: flex;
     justify-content: center;
 
     button {
-      min-width:180px;
+      min-width: 180px;
     }
   }
 `;

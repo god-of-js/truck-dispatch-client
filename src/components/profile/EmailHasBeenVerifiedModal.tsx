@@ -39,17 +39,17 @@ const Styling = styled.div`
 
   h2 {
     margin: 0;
-    font-size:16px;
+    font-size: 16px;
   }
   p {
     width: 80%;
-    font-size:15px;
+    font-size: 15px;
   }
 
   .btn-container {
     display: flex;
     width: 80%;
-    margin-top:12px;
-    gap:12px;
+    margin-top: 12px;
+    gap: 12px;
   }
 `;

@@ -257,24 +257,24 @@ export default function BidForJob({
 }
 
 const ComponentStyling = styled.div`
-  padding:32px 24px;
+  padding: 32px 24px;
   height: 100%;
   overflow-y: auto;
 
   .form-group {
     display: grid;
     grid-template-columns: auto;
-    gap:24px;
-    margin-top:64px;
+    gap: 24px;
+    margin-top: 64px;
 
     .base-details {
       display: grid;
-      gap:24px;
+      gap: 24px;
       height: 100%;
 
       .vehicle-details {
         display: grid;
-        gap:8px;
+        gap: 8px;
       }
     }
     .text-area-container {
@@ -297,7 +297,7 @@ const ComponentStyling = styled.div`
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-top:100px;
+    margin-top: 100px;
     background: white;
     button {
       width: 100%;

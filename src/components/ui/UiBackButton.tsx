@@ -26,5 +26,5 @@ export default function UiBackButton() {
 const ButtonStyling = styled.div`
   display: flex;
   align-items: center;
-  gap:12px;
+  gap: 12px;
 `;

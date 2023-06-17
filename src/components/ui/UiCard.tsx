@@ -11,8 +11,8 @@ export default function UiCard({ children, variant = 'light' }: Props) {
 
 const Card = styled.div`
   border: 1px solid var(--color-gray-200);
-  padding:20px;
-  border-radius:8px;
+  padding: 20px;
+  border-radius: 8px;
   position: relative;
 
   &.light {
@@ -32,6 +32,6 @@ const Card = styled.div`
     position: absolute;
     width: 100%;
     bottom: 0;
-    padding-bottom:20px;
+    padding-bottom: 20px;
   }
 `;

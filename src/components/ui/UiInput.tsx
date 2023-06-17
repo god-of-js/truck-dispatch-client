@@ -127,9 +127,9 @@ const PhoneInputContainer = styled.div`
     align-items: center;
     justify-content: center;
     background-color: var(--color-gray);
-    font-size:14px;
-    border-radius:8px 0px 0px 8px;
-    padding:16px;
+    font-size: 14px;
+    border-radius: 8px 0px 0px 8px;
+    padding: 16px;
   }
 `;
 
@@ -139,30 +139,30 @@ interface InputProps {
 }
 // TODO: replace any with InputProps.
 const Input = styled.input<any>`
-  padding:16px;
+  padding: 16px;
   height: ${({ size }) =>
     `var(--base-height${['large', 'text'].includes(size) ? '' : `-${size}`})`};
-  gap:8px;
+  gap: 8px;
   width: 100%;
-  font-size:14px;
+  font-size: 14px;
   font-family: 'thiccboi-medium';
-  border:1px solid;
+  border: 1px solid;
   border-color: ${({ hasError }) =>
     hasError ? 'var(--color-danger)' : 'var(--color-gray)'};
   background: transparent;
   outline: none;
-  border-radius:8px;
+  border-radius: 8px;
   box-sizing: border-box;
   transition: all 0.2s ease-in-out;
   &:focus {
-    border:2px solid var(--color-primary);
+    border: 2px solid var(--color-primary);
     box-shadow: var(--box-shadow-primary);
   }
   ::placeholder {
-    font-size:14px;
+    font-size: 14px;
     color: var(--color-gray-80);
     font-weight: 400;
-    line-height:24px;
+    line-height: 24px;
   }
 `;
 
@@ -178,7 +178,7 @@ const IconButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  right:14px;
+  right: 14px;
   top: 0;
   cursor: pointer;
 `;

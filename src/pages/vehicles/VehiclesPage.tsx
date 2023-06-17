@@ -155,7 +155,7 @@ export default function VehiclesPage() {
 const GappedContainerWith12PX = styled.div`
   display: flex;
   align-items: center;
-  gap:12px;
+  gap: 12px;
 `;
 
 const EmptyVehicleContainer = styled.div`
@@ -166,8 +166,8 @@ const EmptyVehicleContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   color: var(--color-gray-80);
-  font-size:20px;
-  max-width:492px;
+  font-size: 20px;
+  max-width: 492px;
   margin: auto;
   p {
     text-align: center;
@@ -184,9 +184,9 @@ const EmptyVehicleContainer = styled.div`
 
 const Vehicles = styled.div`
   display: grid;
-  gap:22px;
+  gap: 22px;
   padding: 0 24px;
-  padding-top:32px;
+  padding-top: 32px;
 
   @media screen and (min-width: ${sizes.mobileSmall}) {
     display: flex;

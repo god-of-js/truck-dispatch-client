@@ -116,8 +116,8 @@ const TableContainer = styled.div`
 const Table = styled.table`
   table-layout: fixed;
   width: 100%;
-  min-width:1200px;
-  border-spacing:0px 8px;
+  min-width: 1200px;
+  border-spacing: 0px 8px;
 `;
 
 const TableHeader = styled.thead`
@@ -127,7 +127,7 @@ const TableHeader = styled.thead`
 const TableRow = styled.tr<{ isHeader?: boolean }>`
   text-align: left;
   cursor: pointer;
-  margin-bottom:20px;
+  margin-bottom: 20px;
   overflow: hidden;
   background: ${({ isHeader }) =>
     isHeader ? 'var(--color-primary-10)' : '#ffffff'};
@@ -135,18 +135,18 @@ const TableRow = styled.tr<{ isHeader?: boolean }>`
   td,
   th {
     &:last-child {
-      border-top-right-radius:8px;
-      border-bottom-right-radius:8px;
+      border-top-right-radius: 8px;
+      border-bottom-right-radius: 8px;
       height: 100%;
 
       .menu-container {
-        width:32px;
+        width: 32px;
         margin-left: auto;
       }
     }
     &:first-child {
-      border-top-left-radius:8px;
-      border-bottom-left-radius:8px;
+      border-top-left-radius: 8px;
+      border-bottom-left-radius: 8px;
     }
   }
 `;
@@ -162,7 +162,7 @@ const TableHeadItem = styled.th<{ isMenu: boolean }>`
 `;
 
 const TableDataItem = styled.td<{ isMenu?: boolean }>`
-  padding:26px 24px;
+  padding: 26px 24px;
   color: var(--color-neutralBlack);
   font-size: 14px;
   line-height: 16px;

@@ -407,14 +407,14 @@ export default function TripDetailsPage() {
 const TripDetailsStyling = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  gap:20px;
+  gap: 20px;
 
-  padding:12px 24px;
+  padding: 12px 24px;
 
   .card-title {
     font-style: normal;
     font-weight: 600;
-    font-size:14px;
+    font-size: 14px;
     line-height: 140%;
     letter-spacing: -0.02em;
     color: var(--color-neutralBlack);
@@ -423,7 +423,7 @@ const TripDetailsStyling = styled.div`
 
   .cargo-details {
     display: grid;
-    gap:12px;
+    gap: 12px;
 
     @media screen and (min-width: ${sizes.mobileSmall}) {
       grid-template-columns: repeat(3, 1fr);
@@ -453,19 +453,19 @@ const TripDetailsStyling = styled.div`
       &__title {
         font-style: normal;
         font-weight: 400;
-        font-size:12px;
+        font-size: 12px;
         line-height: 140%;
         letter-spacing: 0.05em;
         color: var(--color-gray-70);
         text-transform: uppercase;
-        margin-bottom:12px;
+        margin-bottom: 12px;
       }
     }
   }
   .vehicle-details {
     &__type {
       font-weight: 600;
-      font-size:16px;
+      font-size: 16px;
       line-height: 140%;
       letter-spacing: -0.02em;
       color: var(--color-neutralBlack);
@@ -481,7 +481,7 @@ const TripDetailsStyling = styled.div`
   .double-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap:20px;
+    gap: 20px;
   }
 
   .reason-for-reject {
@@ -501,24 +501,24 @@ const TripDetailsStyling = styled.div`
 
 const StatusIndicator = styled.div`
   display: flex;
-  gap:12px;
+  gap: 12px;
   align-items: center;
   .trip-status-text {
     font-weight: 600;
-    font-size:14px;
+    font-size: 14px;
     line-height: 140%;
     letter-spacing: -0.02em;
     color: var(--color-neutralBlack);
   }
   .pill-container {
     background: #fff;
-    border-radius:20px;
-    padding:4px;
+    border-radius: 20px;
+    padding: 4px;
 
     .ui-pill {
-      border-radius:16px;
-      padding:8px;
-      height:20px;
+      border-radius: 16px;
+      padding: 8px;
+      height: 20px;
     }
   }
 `;
@@ -526,9 +526,9 @@ const StatusIndicator = styled.div`
 const EdgeNode = styled.div`
   display: flex;
   align-items: center;
-  gap:12px;
+  gap: 12px;
 
   button {
-    min-width:133px;
+    min-width: 133px;
   }
 `;

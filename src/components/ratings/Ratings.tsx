@@ -41,7 +41,7 @@ export default function Ratings({ isActive = false, rating, onRate }: Props) {
 }
 const RatingsContainer = styled.div`
   display: flex;
-  gap:6px;
+  gap: 6px;
 `;
 const RatingButton = styled.button`
   border: transparent;

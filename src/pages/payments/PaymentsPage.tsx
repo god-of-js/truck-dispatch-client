@@ -216,12 +216,12 @@ export default function PaymentsPage() {
 }
 
 const PageStyling = styled.div`
-  padding:24px;
+  padding: 24px;
 `;
 
 const UserDetails = styled.div`
   display: flex;
-  gap:8px;
+  gap: 8px;
   align-items: center;
   .transporter-name {
     font-weight: 400;

@@ -91,7 +91,7 @@ const StyledSelect = styled.div`
     align-items: center;
     justify-content: space-between;
     font-size: 12px;
-    border:1px solid;
+    border: 1px solid;
     border-color: ${({ hasError }: { hasError: boolean }) =>
       hasError ? 'var(--color-danger)' : 'var(--color-gray)'};
     outline: none;
@@ -99,10 +99,10 @@ const StyledSelect = styled.div`
     box-sizing: border-box;
     transition: all 0.2s ease-in-out;
     .selected-option {
-      font-size:14px;
+      font-size: 14px;
       color: var(--color-gray-80);
       font-weight: 400;
-      line-height:24px;
+      line-height: 24px;
     }
   }
 `;
@@ -111,12 +111,12 @@ const StyledOptions = styled.ul`
   position: absolute;
   list-style: none;
   margin-top: 8px;
-  padding:16px 0;
+  padding: 16px 0;
   display: grid;
-  gap:12px;
+  gap: 12px;
   background: #fff;
   border: 1px solid var(--color-gray-30);
-  border-radius:8px;
+  border-radius: 8px;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.08);
   z-index: 1;
   width: 100%;
@@ -136,7 +136,7 @@ const StyledOption = styled.li`
   padding: 0 12px;
   margin: 0 16px !important;
   font-size: 14px;
-  border-radius:4px;
+  border-radius: 4px;
   color: var(--color-gray-80);
   gap: 12px;
   cursor: pointer;
@@ -162,13 +162,13 @@ const StyledOption = styled.li`
   }
 
   .activity-indicator {
-    width:16px;
-    height:16px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
     box-shadow: inset 0 0 0 1px var(--color-gray);
     position: absolute;
     right: 0;
-    margin-right:12px;
+    margin-right: 12px;
 
     &.active {
       box-shadow: inset 0 0 0 6px var(--color-primary);

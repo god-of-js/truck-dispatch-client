@@ -93,7 +93,7 @@ export default function UiLocationsInput({
 }
 
 const UiInputContainer = styled.div`
-  margin-top:8px;
+  margin-top: 8px;
 `;
 
 const ButtonContainer = styled.div`

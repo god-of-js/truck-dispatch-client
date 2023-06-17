@@ -85,5 +85,5 @@ const ButtonContainer = styled.div`
   display: flex;
   gap: 12px;
   justify-content: flex-end;
-  margin-top:16px;
+  margin-top: 16px;
 `;

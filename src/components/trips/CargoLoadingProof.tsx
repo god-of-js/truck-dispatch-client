@@ -71,27 +71,27 @@ export default function CargoLoadingProof({
 }
 
 const ModalBody = styled.div`
-  padding:24px 64px;
+  padding: 24px 64px;
   text-align: center;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
-  line-height:24px;
+  line-height: 24px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap:24px;
+  gap: 24px;
 
   video {
     margin: auto;
   }
   .button-container {
     display: flex;
-    gap:8px;
+    gap: 8px;
     justify-content: center;
 
     button {
-      min-width:180px;
+      min-width: 180px;
     }
   }
 `;

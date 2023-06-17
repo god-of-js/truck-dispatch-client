@@ -302,18 +302,18 @@ export default function TransporterJobs() {
 }
 
 const MyJobsPageStyle = styled.div`
-  margin:32px 0;
+  margin: 32px 0;
   padding: 0 24px;
   display: flex;
   flex-wrap: wrap;
-  gap:20px;
+  gap: 20px;
 `;
 
 const EdgeNode = styled.div`
   button {
     .text {
       text-transform: uppercase;
-      font-size:14px;
+      font-size: 14px;
       line-height: 140%;
       font-style: normal;
       font-weight: 600;
@@ -321,13 +321,13 @@ const EdgeNode = styled.div`
     }
 
     .count {
-      border-radius:10px;
+      border-radius: 10px;
       padding: 0 4px;
-      font-size:10px;
+      font-size: 10px;
       letter-spacing: -0.02em;
-      border-radius:2px;
-      height:19px;
-      width:12px;
+      border-radius: 2px;
+      height: 19px;
+      width: 12px;
       background: var(--color-primary-20);
       display: flex;
       align-items: center;
@@ -335,7 +335,7 @@ const EdgeNode = styled.div`
     }
   }
   display: flex;
-  gap:12px;
+  gap: 12px;
   .ui-filter-tag {
     cursor: pointer;
   }

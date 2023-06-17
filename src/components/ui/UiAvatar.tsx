@@ -83,7 +83,7 @@ const AvatarContainer = styled.div`
   flex-direction: column;
 
   button {
-    margin-top:12px;
+    margin-top: 12px;
   }
 `;
 
@@ -99,15 +99,15 @@ const Avatar = styled.div`
   .user-icon {
     width: 100%;
     height: 100%;
-    border:1px solid var(--color-gray-50);
+    border: 1px solid var(--color-gray-50);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
 
     svg {
-      width:18px;
-      height:18px;
+      width: 18px;
+      height: 18px;
       fill: var(--color-gray-70);
     }
   }

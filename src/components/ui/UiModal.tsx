@@ -146,19 +146,19 @@ const ModalCard = styled.div<CardProps>`
   max-height: 90%;
 
   .modal-inner {
-    padding-bottom:28px;
+    padding-bottom: 28px;
     height: 87%;
 
     .modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding:18px 24px;
-      border-bottom:1px solid var(--color-gray-20);
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--color-gray-20);
 
       h2 {
         color: var(--color-neutralBlack);
-        font-size:20px;
+        font-size: 20px;
         font-family: 'thiccboi-extrabold';
         font-weight: 700;
         margin: 0;
@@ -168,7 +168,7 @@ const ModalCard = styled.div<CardProps>`
 
   @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
     h2 {
-      font-size:24px !important;
+      font-size: 24px !important;
     }
     ${({ size }) => getWidth(size)}
     ${(cardProps) => positionStyling(cardProps)}

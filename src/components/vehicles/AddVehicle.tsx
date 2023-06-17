@@ -110,5 +110,5 @@ export default function AddVehicle({ isVisible, onClose }: Props) {
 }
 
 const Body = styled.div`
-  padding:24px;
+  padding: 24px;
 `;

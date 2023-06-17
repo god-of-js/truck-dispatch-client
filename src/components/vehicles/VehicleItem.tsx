@@ -82,31 +82,31 @@ export default function VehicleComponent({
 }
 
 const VehicleStyling = styled.div`
-  padding:24px;
+  padding: 24px;
   background: white;
-  border-radius:16px;
+  border-radius: 16px;
   display: grid;
-  gap:24px;
-  max-width:372px;
+  gap: 24px;
+  max-width: 372px;
 
   @media screen and (min-width: ${sizes.mobileSmall}) {
-    min-width:360px;
+    min-width: 360px;
   }
 
   .driver-avatar-container {
     display: flex;
-    gap:12px;
+    gap: 12px;
 
     img {
-      border-radius:8px;
-      width:100px;
-      height:100px;
+      border-radius: 8px;
+      width: 100px;
+      height: 100px;
       object-fit: cover;
     }
 
     .vehicle-type {
       background: var(--color-gray-20);
-      border-radius:8px;
+      border-radius: 8px;
       width: calc(100% - 100px);
       display: flex;
       flex-direction: column;
@@ -117,11 +117,11 @@ const VehicleStyling = styled.div`
       font-size: 12px;
       line-height: 24px;
       text-transform: capitalize;
-      height:100px;
+      height: 100px;
 
       svg {
-        height:40px;
-        width:80px;
+        height: 40px;
+        width: 80px;
       }
     }
   }
@@ -133,14 +133,14 @@ const VehicleStyling = styled.div`
     align-items: center;
     padding: 16px 24px;
     background: var(--color-gray-20);
-    border-radius:8px;
+    border-radius: 8px;
 
     &__value {
       letter-spacing: -0.02em;
       color: var(--color-neutralBlack);
       font-style: normal;
       font-weight: 600;
-      font-size:20px;
+      font-size: 20px;
     }
   }
 
@@ -148,9 +148,9 @@ const VehicleStyling = styled.div`
     font-style: normal;
     font-weight: 400;
     font-family: 'thiccboi-light';
-    font-size:10px;
+    font-size: 10px;
     color: var(--color-gray-70);
-    margin-bottom:12px;
+    margin-bottom: 12px;
     text-transform: uppercase;
   }
 
@@ -174,12 +174,12 @@ const VehicleStyling = styled.div`
     .content {
       display: grid;
       grid-template-columns: auto auto;
-      gap:12px;
+      gap: 12px;
 
       .image {
         position: relative;
         width: 100%;
-        height:84px;
+        height: 84px;
         img {
           object-fit: cover;
         }
@@ -202,7 +202,7 @@ const VehicleStyling = styled.div`
               rgba(21, 19, 27, 0.75),
               rgba(21, 19, 27, 0.75)
             );
-            border-radius:8px;
+            border-radius: 8px;
             color: white;
             font-style: normal;
             font-weight: 600;
@@ -213,7 +213,7 @@ const VehicleStyling = styled.div`
       img {
         width: 100%;
         height: 100%;
-        border-radius:8px;
+        border-radius: 8px;
       }
     }
   }
@@ -221,13 +221,13 @@ const VehicleStyling = styled.div`
   .btn-container {
     display: flex;
     align-items: center;
-    gap:12px;
+    gap: 12px;
     button {
       &:first-child {
         width: 90%;
       }
       &:last-child {
-        width:56px;
+        width: 56px;
       }
     }
   }

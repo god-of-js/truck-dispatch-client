@@ -93,7 +93,7 @@ export default function TripBidFullDetails({
 }
 
 const BidDetailsStyling = styled.div`
-  padding:26px 24px;
+  padding: 26px 24px;
   display: grid;
   gap: 32px;
 
@@ -103,18 +103,18 @@ const BidDetailsStyling = styled.div`
 
   .content {
     display: grid;
-    gap:12px;
+    gap: 12px;
   }
   .grid-3 {
     display: grid;
-    gap:12px;
+    gap: 12px;
     @media screen and (min-width: ${sizes.mobileLargeWidth}) {
       grid-template-columns: repeat(3, 1fr);
     }
   }
   .grid-2 {
     display: grid;
-    gap:12px;
+    gap: 12px;
 
     @media screen and (min-width: ${sizes.mobileLargeWidth}) {
       grid-template-columns: repeat(2, 1fr);
@@ -128,24 +128,24 @@ const BidDetailsStyling = styled.div`
   .price {
     font-style: normal;
     font-weight: 600;
-    font-size:32px;
-    line-height:38px;
+    font-size: 32px;
+    line-height: 38px;
     letter-spacing: -0.02em;
     color: var(--color-neutralBlack);
   }
   .extra-notes {
     .ui-data-field {
-      min-height:116px;
+      min-height: 116px;
     }
   }
   .action-btns {
     display: flex;
-    gap:16px;
+    gap: 16px;
     justify-content: center;
-    padding-top:8px;
+    padding-top: 8px;
 
     button {
-      min-width:136px;
+      min-width: 136px;
     }
   }
 `;

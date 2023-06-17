@@ -247,11 +247,11 @@ const ModalBody = styled.div<{ isBalanceEnough: boolean }>`
   .modal-body__inner {
     margin-top: 48px;
     display: grid;
-    gap:16px;
+    gap: 16px;
 
     .grid-item {
       display: grid;
-      gap:16px;
+      gap: 16px;
       align-content: flex-start;
     }
     .h-fit-content {
@@ -260,14 +260,14 @@ const ModalBody = styled.div<{ isBalanceEnough: boolean }>`
     .logo-container {
       display: flex;
       align-items: center;
-      gap:8px;
+      gap: 8px;
       font-style: normal;
       font-weight: 700;
-      font-size:16px;
+      font-size: 16px;
       line-height: 140%;
       letter-spacing: -0.02em;
       color: var(--color-neutralBlack);
-      margin-bottom:22px;
+      margin-bottom: 22px;
     }
     .thanks-for-trusting-us {
       h3 {
@@ -280,7 +280,7 @@ const ModalBody = styled.div<{ isBalanceEnough: boolean }>`
       }
       p {
         font-weight: 400;
-        font-size:14px;
+        font-size: 14px;
         line-height: 140%;
         letter-spacing: -0.02em;
         color: var(--color-neutralBlack);
@@ -297,7 +297,7 @@ const ModalBody = styled.div<{ isBalanceEnough: boolean }>`
     }
     .border-bottom {
       border-bottom: 1px solid var(--color-gray-50);
-      padding-bottom:16px;
+      padding-bottom: 16px;
       margin-bottom: 24px;
     }
     .price-fields {
@@ -309,13 +309,13 @@ const ModalBody = styled.div<{ isBalanceEnough: boolean }>`
         justify-content: space-between;
         font-style: normal;
         font-weight: 400;
-        font-size:14px;
-        line-height:18px;
+        font-size: 14px;
+        line-height: 18px;
         letter-spacing: -0.02em;
         color: var(--color-gray-80);
 
         .price-value {
-          font-size:16px;
+          font-size: 16px;
         }
       }
     }
@@ -324,8 +324,8 @@ const ModalBody = styled.div<{ isBalanceEnough: boolean }>`
       align-items: center;
       justify-content: space-between;
       font-weight: 700;
-      font-size:16px;
-      line-height:18px;
+      font-size: 16px;
+      line-height: 18px;
       letter-spacing: -0.02em;
       color: var(--color-neutralBlack);
     }
@@ -335,15 +335,15 @@ const ModalBody = styled.div<{ isBalanceEnough: boolean }>`
     }
 
     .atmCard {
-      margin-bottom:10px;
+      margin-bottom: 10px;
     }
 
     .alert-warning {
       display: flex;
       flex-direction: column;
       font-style: normal;
-      font-size:14px;
-      line-height:16px;
+      font-size: 14px;
+      line-height: 16px;
       gap: 4px;
       .alert-header {
         font-weight: 700;
@@ -353,12 +353,12 @@ const ModalBody = styled.div<{ isBalanceEnough: boolean }>`
       .alert-message {
         font-weight: 300;
         color: var(--color-gray-70);
-        line-height:16px;
+        line-height: 16px;
       }
     }
 
     .pay-with-balance-header {
-      margin-bottom:16px;
+      margin-bottom: 16px;
 
       svg {
         fill: ${(props) =>
@@ -377,8 +377,8 @@ const ModalBody = styled.div<{ isBalanceEnough: boolean }>`
         align-items: center;
         gap: 12px;
         font-weight: 500;
-        font-size:14px;
-        line-height:18px;
+        font-size: 14px;
+        line-height: 18px;
         color: #171520;
       }
     }

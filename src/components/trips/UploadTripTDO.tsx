@@ -80,7 +80,7 @@ export default function UploadTripTDO({ onClose, isVisible, trip }: Props) {
 }
 
 const UploadTDOStyling = styled.div`
-  padding:26px 24px;
+  padding: 26px 24px;
   display: grid;
   gap: 24px;
   p {

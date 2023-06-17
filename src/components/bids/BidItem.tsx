@@ -99,7 +99,7 @@ const BidItemStyling = styled.div`
 
   .bid-header {
     background: var(--color-primary-10);
-    padding:18px 24px;
+    padding: 18px 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -107,12 +107,12 @@ const BidItemStyling = styled.div`
     .user-profile {
       display: flex;
       align-items: center;
-      gap:8px;
+      gap: 8px;
 
       .name {
         font-style: normal;
         font-weight: 700;
-        font-size:14px;
+        font-size: 14px;
         line-height: 140%;
         letter-spacing: -0.02em;
         color: var(--color-neutralBlack);
@@ -120,7 +120,7 @@ const BidItemStyling = styled.div`
       .user-type {
         font-style: normal;
         font-weight: 400;
-        font-size:10px;
+        font-size: 10px;
         line-height: 140%;
         letter-spacing: 0.05em;
         text-transform: uppercase;
@@ -130,7 +130,7 @@ const BidItemStyling = styled.div`
     .time-of-creation {
       font-style: normal;
       font-weight: 500;
-      font-size:12px;
+      font-size: 12px;
       line-height: 140%;
       text-align: right;
       letter-spacing: -0.02em;
@@ -138,17 +138,17 @@ const BidItemStyling = styled.div`
     }
   }
   .bid-body {
-    padding:32px 24px;
+    padding: 32px 24px;
     display: grid;
     gap: 32px;
     .field {
       display: grid;
-      gap:12px;
+      gap: 12px;
 
       &-title {
         font-style: normal;
         font-weight: 400;
-        font-size:10px;
+        font-size: 10px;
         line-height: 140%;
         letter-spacing: 0.05em;
         color: var(--color-gray-80);
@@ -157,14 +157,14 @@ const BidItemStyling = styled.div`
 
       &-value {
         font-weight: 700;
-        font-size:14px;
+        font-size: 14px;
         line-height: 140%;
         letter-spacing: -0.02em;
         color: var(--color-neutralBlack);
       }
       &-sub-value {
         font-weight: 400;
-        font-size:14px;
+        font-size: 14px;
         line-height: 140%;
         letter-spacing: -0.02em;
         color: var(--color-gray-80);
@@ -179,21 +179,21 @@ const BidItemStyling = styled.div`
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-bottom:20px;
-      border-bottom:1px solid var(--color-gray-30);
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--color-gray-30);
 
       .proposed-trip-cost {
         display: flex;
         align-items: flex-end;
-        gap:2px;
+        gap: 2px;
         font-style: normal;
         font-weight: 600;
-        font-size:24px;
+        font-size: 24px;
         line-height: 140%;
         letter-spacing: -0.02em;
         color: var(--color-neutralBlack);
         &__currency {
-          font-size:14px;
+          font-size: 14px;
         }
       }
     }
@@ -201,22 +201,22 @@ const BidItemStyling = styled.div`
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      gap:24px;
+      gap: 24px;
 
       .driver-details {
         display: flex;
         align-items: center;
-        gap:8px;
+        gap: 8px;
       }
     }
 
     .btn-container {
       display: flex;
-      gap:12px;
+      gap: 12px;
 
       button {
         &:first-child {
-          width:180px;
+          width: 180px;
         }
       }
     }

@@ -268,13 +268,13 @@ export default function VerificationForm({ parentLoading, onVerified }: Props) {
 const Gap = styled.div`
   display: flex;
   flex-direction: column;
-  gap:16px;
+  gap: 16px;
 `;
 
 const GapGrid = styled.div`
   display: grid;
   grid-template-columns: auto;
-  gap:12px;
+  gap: 12px;
 
   @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
     grid-template-columns: auto auto;
@@ -283,11 +283,11 @@ const GapGrid = styled.div`
 const Heading = styled.h3`
   margin: 0;
   padding: 0;
-  font-size:16px;
+  font-size: 16px;
 `;
 
 const Paragraph = styled.p`
   margin: 0;
   padding: 0;
-  font-size:14px;
+  font-size: 14px;
 `;

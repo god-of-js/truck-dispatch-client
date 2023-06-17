@@ -45,7 +45,7 @@ export default function UserDetails({
       <div className="user-profile">
         <UiAvatar avatar={avatar} isHalfCurved={avatarIsHalfCurved} />
         <div>
-          <div className="user-details-name">{userName}</div> 
+          <div className="user-details-name">{userName}</div>
           <div className="profile-subtitle">
             {profileSubtitle || '********************'}
           </div>
@@ -77,7 +77,7 @@ const UserDetailsStyling = styled.div<{ size: Sizes }>`
 
   .user-profile {
     display: flex;
-    gap:8px;
+    gap: 8px;
     align-items: center;
   }
 

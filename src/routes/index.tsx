@@ -59,10 +59,7 @@ const router = createBrowserRouter([
     path: '/',
     id: 'Dashboard',
     element: (
-      <ProtectedRoute
-        allowNavigation={!!sessionId}
-        reRouteUrl="/auth/login"
-      >
+      <ProtectedRoute allowNavigation={!!sessionId} reRouteUrl="/auth/login">
         <DashboardLayout />
       </ProtectedRoute>
     ),

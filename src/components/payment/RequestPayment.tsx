@@ -130,7 +130,7 @@ export default function RequestPayment({
 }
 
 const ModalBody = styled.div`
-  padding:24px 64px;
+  padding: 24px 64px;
   text-align: center;
   font-style: normal;
   font-weight: 400;
@@ -145,7 +145,7 @@ const ModalBody = styled.div`
     margin: auto;
   }
   .drag-and-drop-container {
-    height:320px;
+    height: 320px;
     width: 100%;
   }
   .btn-container {
