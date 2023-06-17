@@ -1,13 +1,10 @@
-import { useMemo, useState } from 'react';
+import { lazy, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { usePaystackPayment } from 'react-paystack';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from 'modules/index';
 import Bid from 'types/Bid';
-import UiButton from 'ui/UiButton';
-import UiAlert from 'ui/UiAlert';
-import UiModal from 'ui/UiModal';
 import {
   abbreviateNumber,
   formatUserType,
@@ -23,11 +20,17 @@ import sizes from 'utils/sizes';
 import UiCard from 'ui/UiCard';
 import { ReactComponent as AppLogo } from '../../assets/logo.svg';
 import { ReactComponent as PaystackLogo } from '../../assets/img/paystack.svg';
-import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
-import UserDetails from 'ui/UserDetails';
-import ATMCard from './ATMCard';
-import UiCheckbox from 'ui/UiCheckbox';
 import PaymentMethods from 'types/PaymentMethods';
+
+const UiModal = lazy(() => import('ui/UiModal'));
+const UiAlert = lazy(() => import('ui/UiAlert'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const ATMCard = lazy(() => import('./ATMCard'));
+const UserDetails = lazy(() => import('ui/UserDetails'));
+const UiCheckbox = lazy(() => import('ui/UiCheckbox'));
+const TripPickupAndDropOff = lazy(
+  () => import('components/trips/TripPickupAndDropOff'),
+);
 
 interface Props {
   bid: Bid;

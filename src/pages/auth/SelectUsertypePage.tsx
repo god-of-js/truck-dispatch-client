@@ -1,10 +1,14 @@
-import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
 import styled from 'styled-components';
-import UiIcon, { Icons } from 'ui/UiIcon';
-import UiButton from 'ui/UiButton';
+import { Icons } from 'ui/UiIcon';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { lazy, useState } from 'react';
 import sizes from 'utils/sizes';
+
+const UiIcon = lazy(() => import('ui/UiIcon'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const AuthLayoutStyling = lazy(
+  () => import('components/layout/AuthLayoutStyling'),
+);
 
 export default function SelectUsertypePage() {
   const [userTypeRoute, setUserTypeRoute] = useState('');

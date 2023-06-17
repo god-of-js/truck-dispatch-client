@@ -1,13 +1,15 @@
-import Ratings from 'components/ratings/Ratings';
-import { useMemo } from 'react';
+import { lazy, useMemo } from 'react';
 import styled from 'styled-components';
 import Bid from 'types/Bid';
-import UiButton from 'ui/UiButton';
-import UiDropDownMenu, { DropDownData } from 'ui/UiDropdownMenu';
-import UiIcon from 'ui/UiIcon';
-import UserDetails from 'ui/UserDetails';
 import { abbreviateNumber, priceWithTDPercent } from 'utils/helpers';
 import sizes from 'utils/sizes';
+import { DropDownData } from 'ui/UiDropdownMenu';
+
+const Ratings = lazy(() => import('components/ratings/Ratings'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const UserDetails = lazy(() => import('ui/UserDetails'));
+const UiDropDownMenu = lazy(() => import('ui/UiDropdownMenu'));
+const UiIcon = lazy(() => import('ui/UiIcon'));
 
 interface Props {
   bid: Bid;

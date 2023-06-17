@@ -1,14 +1,13 @@
-import { approvePaymentRequest } from 'modules/Trips';
-import React, { useState } from 'react';
+import React, { lazy, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import PaymentRequest from 'types/PaymentRequest';
-import UiButton from 'ui/UiButton';
+import { toAnyAction } from 'utils/helpers';
 
-import UiModal from 'ui/UiModal';
-import { nairaToKobo, toAnyAction } from 'utils/helpers';
-import { Toast } from 'utils/toast';
+import { approvePaymentRequest } from 'modules/Trips';
+
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiModal = lazy(() => import('ui/UiModal'));
 
 interface Props {
   onClose: () => void;

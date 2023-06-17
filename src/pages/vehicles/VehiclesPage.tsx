@@ -1,20 +1,21 @@
-import { useEffect, useMemo, useState } from 'react';
+import { lazy, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import UiButton from 'ui/UiButton';
-import DashboardTopNav from 'components/layout/DashboardTopNav';
-import AddVehicle from 'components/vehicles/AddVehicle';
 import { searchObjectsByField, toAnyAction } from 'utils/helpers';
 import { getVehicles, deleteVehicle } from 'modules/Vehicle';
 import { RootState } from 'modules/index';
-import VehicleItem from 'components/vehicles/VehicleItem';
 import sizes from 'utils/sizes';
-import EditVehicle from 'components/vehicles/EditVehicle';
 import Vehicle from 'types/Vehicle';
-import UiIcon from 'ui/UiIcon';
-import UiConfirmModal from 'ui/UiConfirmModal';
 import { Toast } from 'utils/toast';
+
+const VehicleItem = lazy(() => import('components/vehicles/VehicleItem'));
+const EditVehicle = lazy(() => import('components/vehicles/EditVehicle'));
+const UiIcon = lazy(() => import('ui/UiIcon'));
+const UiConfirmModal = lazy(() => import('ui/UiConfirmModal'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const DashboardTopNav = lazy(() => import('components/layout/DashboardTopNav'));
+const AddVehicle = lazy(() => import('components/vehicles/AddVehicle'));
 
 export default function VehiclesPage() {
   const dispatch = useDispatch();

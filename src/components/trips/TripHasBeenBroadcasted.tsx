@@ -1,8 +1,10 @@
+import { lazy } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import UiButton from 'ui/UiButton';
-import UiModal from 'ui/UiModal';
 import { ReactComponent as BroadCasted } from '../../assets/img/broadcast.svg';
+
+const UiModal = lazy(() => import('ui/UiModal'));
+const UiButton = lazy(() => import('ui/UiButton'));
 
 interface Props {
   onClose: () => void;

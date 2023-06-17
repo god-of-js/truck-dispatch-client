@@ -1,7 +1,9 @@
+import { lazy } from 'react';
 import styled from 'styled-components';
-import UiButton from 'ui/UiButton';
-import UiIcon from 'ui/UiIcon';
 import sizes from 'utils/sizes';
+
+const UiIcon = lazy(() => import('ui/UiIcon'));
+const UiButton = lazy(() => import('ui/UiButton'));
 
 interface Props {
   pickUpAddress: string;

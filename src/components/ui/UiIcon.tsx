@@ -1,138 +1,323 @@
 import styled from 'styled-components';
-
-import { ReactComponent as ArrowCircleLeft } from './icons/arrow-circle-left.svg';
-import { ReactComponent as ArrowCircleRight } from './icons/arrow-circle-right.svg';
-import { ReactComponent as ArrowRight } from './icons/arrow-right.svg';
-import { ReactComponent as ArrowLeft } from './icons/arrow-left.svg';
-import { ReactComponent as Card } from './icons/card.svg';
-import { ReactComponent as CaretDown } from './icons/caret-down.svg';
-import { ReactComponent as CaretDownBold } from './icons/caret-down-bold.svg';
-import { ReactComponent as CaretUp } from './icons/caret-up.svg';
-import { ReactComponent as CaretLeft } from './icons/caret-left.svg';
-import { ReactComponent as CaretRight } from './icons/caret-right.svg';
-
-import { ReactComponent as Close } from './icons/close.svg';
-import { ReactComponent as CloseThick } from './icons/close-thick.svg';
-import { ReactComponent as Chat } from './icons/chat.svg';
-import { ReactComponent as CallReceived } from './icons/call-received.svg';
-import { ReactComponent as Car } from './icons/car.svg';
-import { ReactComponent as ChartSquare } from './icons/chart-square.svg';
-import { ReactComponent as Check } from './icons/check.svg';
-import { ReactComponent as Menu } from './icons/menu.svg';
-import { ReactComponent as Chiller } from './icons/chiller.svg';
-import { ReactComponent as Company } from './icons/company.svg';
-import { ReactComponent as DocumentUpload } from './icons/document-upload.svg';
-import { ReactComponent as DoubleChat } from './icons/double-chat.svg';
-import { ReactComponent as DuoTrucks } from './icons/duo-trucks.svg';
-import { ReactComponent as Eye } from './icons/eye.svg';
-import { ReactComponent as EyeSlash } from './icons/eye-slash.svg';
-import { ReactComponent as FlatBed } from './icons/flatbed.svg';
-import { ReactComponent as GoldStar } from './icons/gold-star.svg';
-import { ReactComponent as Information } from './icons/information.svg';
-import { ReactComponent as Jobs } from './icons/jobs.svg';
-import { ReactComponent as InfoCircle } from './icons/info-circle.svg';
-import { ReactComponent as InfoCircleOutline } from './icons/info-circle-outline.svg';
-import { ReactComponent as Location } from './icons/location.svg';
-import { ReactComponent as LocationTick } from './icons/location-tick.svg';
-import { ReactComponent as Logout } from './icons/log-out.svg';
-import { ReactComponent as MagicStar } from './icons/magic-star.svg';
-import { ReactComponent as MiniVan } from './icons/mini-van.svg';
-import { ReactComponent as Moneys } from './icons/moneys.svg';
-import { ReactComponent as Notification } from './icons/notification.svg';
-import { ReactComponent as PasswordCheck } from './icons/password-check.svg';
-import { ReactComponent as PickUpVan } from './icons/pick-up-van.svg';
-import { ReactComponent as PlayCircle } from './icons/play-circle.svg';
-import { ReactComponent as ReceiptEdit } from './icons/receipt-edit.svg';
-import { ReactComponent as Refresh } from './icons/refresh.svg';
-import { ReactComponent as Search } from './icons/search.svg';
-import { ReactComponent as SemiTrailer } from './icons/semi-trailer.svg';
-import { ReactComponent as Settings } from './icons/settings.svg';
-import { ReactComponent as Star } from './icons/star.svg';
-import { ReactComponent as Tick } from './icons/tick.svg';
-import { ReactComponent as Tanker } from './icons/tanker.svg';
-import { ReactComponent as Truck } from './icons/truck.svg';
-import { ReactComponent as TruckBold } from './icons/truck-bold.svg';
-import { ReactComponent as TwentyFTTruck } from './icons/20-ft-truck.svg';
-import { ReactComponent as TruckRemove } from './icons/truck-remove.svg';
-import { ReactComponent as Trash } from './icons/trash.svg';
-import { ReactComponent as TruckTick } from './icons/ticked-truck.svg';
-import { ReactComponent as Trailer } from './icons/trailer.svg';
-import { ReactComponent as User } from './icons/user.svg';
-import { ReactComponent as UserOctagon } from './icons/user-octagon.svg';
-import { ReactComponent as UserSquare } from './icons/user-square.svg';
-
-import { ReactComponent as CheckCircle } from './icons/check-circle.svg';
-import { ReactComponent as CloseCircle } from './icons/close-circle.svg';
-
-import { ReactComponent as Van } from './icons/van.svg';
-import { ReactComponent as VerticalDots } from './icons/vertical-dots.svg';
+import { lazy } from 'react';
 
 // These icons should be arranged alphabetically for easy sorting
 const icons = {
-  ArrowCircleLeft: <ArrowCircleLeft />,
-  ArrowCircleRight: <ArrowCircleRight />,
-  ArrowLeft: <ArrowLeft />,
-  Card: <Card />,
-  CaretDown: <CaretDown />,
-  CaretDownBold: <CaretDownBold />,
-  CaretUp: <CaretUp />,
-  CaretLeft: <CaretLeft />,
-  CaretRight: <CaretRight />,
-  ArrowRight: <ArrowRight />,
-  Buildings: <Company />,
-  CallReceived: <CallReceived />,
-  Car: <Car />,
-  Chat: <Chat />,
-  ChartSquare: <ChartSquare />,
-  Close: <Close />,
-  CloseThick: <CloseThick />,
-  Check: <Check />,
-  CheckCircle: <CheckCircle />,
-  Chiller: <Chiller />,
-  CloseCircle: <CloseCircle />,
-  DocumentUpload: <DocumentUpload />,
-  DoubleChat: <DoubleChat />,
-  DuoTrucks: <DuoTrucks />,
-  Eye: <Eye />,
-  EyeSlash: <EyeSlash />,
-  FlatBed: <FlatBed />,
-  GoldStar: <GoldStar />,
-  Information: <Information />,
-  InfoCircle: <InfoCircle />,
-  InfoCircleOutline: <InfoCircleOutline />,
-  Jobs: <Jobs />,
-  Location: <Location />,
-  LocationTick: <LocationTick />,
-  Logout: <Logout />,
-  MagicStar: <MagicStar />,
-  Menu: <Menu />,
-  MiniVan: <MiniVan />,
-  Moneys: <Moneys />,
-  Notification: <Notification />,
-  PasswordCheck: <PasswordCheck />,
-  PickUpVan: <PickUpVan />,
-  PlayCircle: <PlayCircle />,
-  ReceiptEdit: <ReceiptEdit />,
-  Refresh: <Refresh />,
-  Search: <Search />,
-  SemiTrailer: <SemiTrailer />,
-  Settings: <Settings />,
-  Star: <Star />,
-  Tick: <Tick />,
-  Tanker: <Tanker />,
-  TruckTick: <TruckTick />,
-  Trailer: <Trailer />,
-  Trash: <Trash />,
-  Truck: <Truck />,
-  TruckBold: <TruckBold />,
-  TruckRemove: <TruckRemove />,
-
-  User: <User />,
-  UserOctagon: <UserOctagon />,
-  UserSquare: <UserSquare />,
-  Van: <Van />,
-  VerticalDots: <VerticalDots />,
-  TwentyFTTruck: <TwentyFTTruck />,
+  ArrowCircleLeft: lazy(() =>
+    import('./icons/arrow-circle-left.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  ArrowCircleRight: lazy(() =>
+    import('./icons/arrow-circle-right.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  ArrowLeft: lazy(() =>
+    import('./icons/arrow-left.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Card: lazy(() =>
+    import('./icons/card.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  CaretDown: lazy(() =>
+    import('./icons/caret-down.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  CaretDownBold: lazy(() =>
+    import('./icons/caret-down-bold.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  CaretUp: lazy(() =>
+    import('./icons/caret-up.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  CaretLeft: lazy(() =>
+    import('./icons/caret-left.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  CaretRight: lazy(() =>
+    import('./icons/caret-right.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  ArrowRight: lazy(() =>
+    import('./icons/arrow-right.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Buildings: lazy(() =>
+    import('./icons/company.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  CallReceived: lazy(() =>
+    import('./icons/call-received.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Car: lazy(() =>
+    import('./icons/car.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Chat: lazy(() =>
+    import('./icons/chat.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  ChartSquare: lazy(() =>
+    import('./icons/chart-square.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Close: lazy(() =>
+    import('./icons/close.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  CloseThick: lazy(() =>
+    import('./icons/close-thick.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Check: lazy(() =>
+    import('./icons/check.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  CheckCircle: lazy(() =>
+    import('./icons/check-circle.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Chiller: lazy(() =>
+    import('./icons/chiller.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  CloseCircle: lazy(() =>
+    import('./icons/close-circle.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  DocumentUpload: lazy(() =>
+    import('./icons/document-upload.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  DoubleChat: lazy(() =>
+    import('./icons/double-chat.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  DuoTrucks: lazy(() =>
+    import('./icons/duo-trucks.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Eye: lazy(() =>
+    import('./icons/eye.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  EyeSlash: lazy(() =>
+    import('./icons/eye-slash.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  FlatBed: lazy(() =>
+    import('./icons/flatbed.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  GoldStar: lazy(() =>
+    import('./icons/gold-star.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Information: lazy(() =>
+    import('./icons/information.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  InfoCircle: lazy(() =>
+    import('./icons/info-circle.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  InfoCircleOutline: lazy(() =>
+    import('./icons/info-circle-outline.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Jobs: lazy(() =>
+    import('./icons/jobs.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Location: lazy(() =>
+    import('./icons/location.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  LocationTick: lazy(() =>
+    import('./icons/location-tick.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Logout: lazy(() =>
+    import('./icons/log-out.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  MagicStar: lazy(() =>
+    import('./icons/magic-star.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Menu: lazy(() =>
+    import('./icons/menu.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  MiniVan: lazy(() =>
+    import('./icons/mini-van.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Moneys: lazy(() =>
+    import('./icons/moneys.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Notification: lazy(() =>
+    import('./icons/notification.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  PasswordCheck: lazy(() =>
+    import('./icons/password-check.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  PickUpVan: lazy(() =>
+    import('./icons/pick-up-van.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  PlayCircle: lazy(() =>
+    import('./icons/play-circle.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  ReceiptEdit: lazy(() =>
+    import('./icons/receipt-edit.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Refresh: lazy(() =>
+    import('./icons/refresh.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Search: lazy(() =>
+    import('./icons/search.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  SemiTrailer: lazy(() =>
+    import('./icons/semi-trailer.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Settings: lazy(() =>
+    import('./icons/settings.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Star: lazy(() =>
+    import('./icons/star.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Tick: lazy(() =>
+    import('./icons/tick.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Tanker: lazy(() =>
+    import('./icons/tanker.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  TruckTick: lazy(() =>
+    import('./icons/ticked-truck.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Trailer: lazy(() =>
+    import('./icons/trailer.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Trash: lazy(() =>
+    import('./icons/trash.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Truck: lazy(() =>
+    import('./icons/truck.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  TruckBold: lazy(() =>
+    import('./icons/truck-bold.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  TruckRemove: lazy(() =>
+    import('./icons/truck-remove.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  User: lazy(() =>
+    import('./icons/user.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  UserOctagon: lazy(() =>
+    import('./icons/user-octagon.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  UserSquare: lazy(() =>
+    import('./icons/user-square.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Van: lazy(() =>
+    import('./icons/van.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  VerticalDots: lazy(() =>
+    import('./icons/vertical-dots.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  TwentyFTTruck: lazy(() =>
+    import('./icons/20-ft-truck.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
 };
 
 export type Icons = keyof typeof icons;
@@ -142,9 +327,10 @@ interface Props {
   size?: string;
 }
 export default function UiIcon({ icon, size = '16' }: Props) {
+  const LazyLoadedIcon = icons[icon];
   return (
     <IconStyle size={size} className="icon">
-      {icons[icon]}
+      {LazyLoadedIcon && <LazyLoadedIcon />}
     </IconStyle>
   );
 }

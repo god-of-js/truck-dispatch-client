@@ -1,11 +1,12 @@
-import UiModal from 'ui/UiModal';
+import { lazy } from 'react';
 import styled from 'styled-components';
+
+const UiModal = lazy(() => import('ui/UiModal'));
 
 interface Props {
   onClose: () => void;
   isVisible: boolean;
 }
-
 export default function NotifyUsersFromFirebase({ onClose, isVisible }: Props) {
   return (
     <UiModal isVisible={isVisible} onClose={onClose}>

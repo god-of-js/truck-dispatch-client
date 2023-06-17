@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { lazy, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import UiButton from './UiButton';
-import UiField from './UiField';
-import UiInput from './UiInput';
 
+const UiInput = lazy(() => import('./UiInput'));
+const UiField = lazy(() => import('./UiField'));
+const UiButton = lazy(() => import('./UiButton'));
 interface Props {
   label?: string;
   name: string;

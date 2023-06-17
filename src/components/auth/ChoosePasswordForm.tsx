@@ -1,9 +1,5 @@
-import React, { useState } from 'react';
+import React, { lazy, useState } from 'react';
 
-import UiIcon from 'ui/UiIcon';
-import UiInput from 'ui/UiInput';
-import UiButton from 'ui/UiButton';
-import UiForm from 'ui/UiForm';
 import { useDispatch } from 'react-redux';
 import { toAnyAction } from 'utils/helpers';
 import { updatePassword } from 'modules/Account';
@@ -13,6 +9,11 @@ import {
   removeAuthSessionId,
   removePresentAuthStage,
 } from 'utils/localStorageMethods';
+
+const UiIcon = lazy(() => import('ui/UiIcon'));
+const UiInput = lazy(() => import('ui/UiInput'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiForm = lazy(() => import('ui/UiForm'));
 
 interface Props {
   goToNext: () => void;

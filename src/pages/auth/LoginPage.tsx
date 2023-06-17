@@ -1,17 +1,21 @@
-import React, { useState } from 'react';
+import React, { lazy, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { loginUser } from '../../modules/Account';
 
-import { Toast } from '../../utils/toast';
-import UiInput from 'ui/UiInput';
-import UiButton from 'ui/UiButton';
-import UiForm from 'ui/UiForm';
 import { toAnyAction } from 'utils/helpers';
 import loginSchema from 'utils/validations/loginSchema';
-import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
-import StyledAuthContent from 'components/auth/StyledAuthContent';
+
+const UiForm = lazy(() => import('ui/UiForm'));
+const UiInput = lazy(() => import('ui/UiInput'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const AuthLayoutStyling = lazy(
+  () => import('components/layout/AuthLayoutStyling'),
+);
+const StyledAuthContent = lazy(
+  () => import('components/auth/StyledAuthContent'),
+);
 
 export default function LoginPage() {
   const dispatch = useDispatch();

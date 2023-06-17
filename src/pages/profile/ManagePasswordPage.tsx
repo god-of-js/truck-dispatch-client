@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React, { lazy, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { sendOTP, updatePassword } from 'modules/Account';
-import UiButton from 'ui/UiButton';
-import UiForm from 'ui/UiForm';
-import UiInput from 'ui/UiInput';
 import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
 import ChangePasswordSchema from 'utils/validations/ChangePasswordSchema';
-import UiCard from 'ui/UiCard';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { removeUserSessionId } from 'utils/localStorageMethods';
 import { RootState } from 'modules/index';
 
+const UiCard = lazy(() => import('ui/UiCard'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiForm = lazy(() => import('ui/UiForm'));
+const UiInput = lazy(() => import('ui/UiInput'));
 export default function ManagePasswordPage() {
   const location = useLocation();
   const navigate = useNavigate();
