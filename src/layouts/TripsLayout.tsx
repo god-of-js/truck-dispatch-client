@@ -1,7 +1,7 @@
-import React, { Suspense } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import Loader from 'components/layout/Loader';
+const Loader = lazy(() => import('components/layout/Loader'));
 
 export default function DashboardLayout() {
   return (

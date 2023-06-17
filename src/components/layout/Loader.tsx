@@ -4,7 +4,7 @@ import styled from 'styled-components';
 interface Props {
   size?: 'lg' | 's';
   variant?: 'white' | 'primary';
-  isPage?: boolean
+  isPage?: boolean;
 }
 
 type Sizes = 'lg' | 's';
@@ -26,7 +26,11 @@ function sizeVar(size: Sizes) {
   }
 }
 
-export default function Loader({ variant = 'primary', size = 'lg', isPage }: Props) {
+export default function Loader({
+  variant = 'primary',
+  size = 'lg',
+  isPage,
+}: Props) {
   return (
     <LoaderContainer isPage={isPage}>
       <LoaderStyle size={size}>
@@ -39,7 +43,7 @@ export default function Loader({ variant = 'primary', size = 'lg', isPage }: Pro
 }
 
 const LoaderContainer = styled.div<{ isPage?: boolean }>`
-  height: ${({ isPage }) => isPage ? '100vh' : '100%'};
+  height: ${({ isPage }) => (isPage ? '100vh' : '100%')};
   display: flex;
   justify-content: center;
   align-items: center;

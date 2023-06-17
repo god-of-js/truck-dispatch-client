@@ -1,16 +1,16 @@
 import { RootState } from 'modules/index';
-import React, { useMemo } from 'react';
+import React, { lazy, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import NewTrip from 'types/NewTrip';
 import Trip from 'types/Trip';
-import UiAvatar from 'ui/UiAvatar';
-import UiButton from 'ui/UiButton';
-import UiDataField from 'ui/UiDataField';
-import UserDetails from 'ui/UserDetails';
 import { clientBasedUserTypes } from 'utils/constants';
-import TripPickUpAndDeliverWithDates from './TripPickUpAndDeliverWithDates';
 
+const UiDataField = lazy(() => import('ui/UiDataField'));
+const UserDetails = lazy(() => import('ui/UserDetails'));
+const TripPickUpAndDeliverWithDates = lazy(
+  () => import('./TripPickUpAndDeliverWithDates'),
+);
 interface Props {
   trip: Trip | NewTrip;
   hideProfile?: boolean;

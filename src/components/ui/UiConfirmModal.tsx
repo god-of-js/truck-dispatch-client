@@ -1,8 +1,10 @@
+import { lazy } from 'react';
 import styled from 'styled-components';
 import sizes from 'utils/sizes';
-import UiButton, { ButtonVariant } from './UiButton';
-import UiModal from './UiModal';
+import { ButtonVariant } from './UiButton';
 
+const UiButton = lazy(() => import('./UiButton'));
+const UiModal = lazy(() => import('./UiModal'));
 interface Props {
   children: React.ReactNode;
   title: string;

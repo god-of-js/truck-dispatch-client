@@ -1,16 +1,19 @@
-import Ratings from 'components/ratings/Ratings';
+import { lazy } from 'react';
 import styled from 'styled-components';
-import Bid from 'types/Bid';
-import UiButton from 'ui/UiButton';
-import UiDataField from 'ui/UiDataField';
-import UiModal from 'ui/UiModal';
-import UserDetails from 'ui/UserDetails';
+
 import {
   abbreviateNumber,
   formatUserType,
   priceWithTDPercent,
 } from 'utils/helpers';
+import Bid from 'types/Bid';
 import sizes from 'utils/sizes';
+
+const Ratings = lazy(() => import('components/ratings/Ratings'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiDataField = lazy(() => import('ui/UiDataField'));
+const UiModal = lazy(() => import('ui/UiModal'));
+const UserDetails = lazy(() => import('ui/UserDetails'));
 
 interface Props {
   bid: Bid;

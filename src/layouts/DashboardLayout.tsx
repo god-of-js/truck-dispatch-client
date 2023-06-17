@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { lazy, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -14,15 +14,22 @@ import {
   verifyEmail,
 } from 'modules/Account';
 
-import DashboardSidebar from 'components/layout/DashboardSidebar';
 import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
 import { getChatLogs, getUserChat, setChat, setChatLog } from 'modules/Chat';
 import { WEB_SOCKET_URL } from 'utils/privateKeys';
-import EmailHasBeenSentModal from 'components/profile/EmailHasBeenSentModal';
-import Loader from 'components/layout/Loader';
-import EmailHasBeenVerifiedModal from 'components/profile/EmailHasBeenVerifiedModal';
 import { getUserSessionId, saveUserSessionId } from 'utils/localStorageMethods';
+
+const DashboardSidebar = lazy(
+  () => import('components/layout/DashboardSidebar'),
+);
+const EmailHasBeenSentModal = lazy(
+  () => import('components/profile/EmailHasBeenSentModal'),
+);
+const Loader = lazy(() => import('components/layout/Loader'));
+const EmailHasBeenVerifiedModal = lazy(
+  () => import('components/profile/EmailHasBeenVerifiedModal'),
+);
 
 export default function DashboardLayout() {
   const dispatch = useDispatch();

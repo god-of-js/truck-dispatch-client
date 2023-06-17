@@ -1,17 +1,17 @@
-import { createTrip, getTrip, selectTrip, updateTrip } from 'modules/Trips';
-import { useEffect, useState } from 'react';
+import { lazy, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { createTrip, getTrip, selectTrip, updateTrip } from 'modules/Trips';
 import NewTrip from 'types/NewTrip';
 import Trip from 'types/Trip';
-import UiButton from 'ui/UiButton';
-import UiCard from 'ui/UiCard';
-import UiIcon from 'ui/UiIcon';
-import UiModal from 'ui/UiModal';
 import { removeUneditedFields, toAnyAction } from 'utils/helpers';
-import NewTripForm from './NewTripForm';
-import TripDetails from './TripDetails';
+
+const UiModal = lazy(() => import('ui/UiModal'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const NewTripForm = lazy(() => import('./NewTripForm'));
+const TripDetails = lazy(() => import('./TripDetails'));
+const UiCard = lazy(() => import('ui/UiCard'));
+const UiIcon = lazy(() => import('ui/UiIcon'));
 
 interface Props {
   tripId?: string;

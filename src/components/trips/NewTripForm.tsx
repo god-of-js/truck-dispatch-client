@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy } from 'react';
 import styled from 'styled-components';
 import Trip from 'types/Trip';
 
@@ -10,17 +10,18 @@ import {
 } from 'utils/constants';
 import NewTripFormSchema from 'utils/validations/NewTripFormSchema';
 
-import UiForm from 'ui/UiForm';
-import UiInput from 'ui/UiInput';
-import UiLocationsInput from 'ui/UiLocationsInput';
-import UiSelect from 'ui/UiSelect';
 import sizes from 'utils/sizes';
-import UiTextArea from 'ui/UiTextArea';
-import UiButton from 'ui/UiButton';
 import { useSelector } from 'react-redux';
 import { selectTrip } from 'modules/Trips';
 import NewTrip from 'types/NewTrip';
-import UiCard from 'ui/UiCard';
+
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiCard = lazy(() => import('ui/UiCard'));
+const UiSelect = lazy(() => import('ui/UiSelect'));
+const UiInput = lazy(() => import('ui/UiInput'));
+const UiForm = lazy(() => import('ui/UiForm'));
+const UiLocationsInput = lazy(() => import('ui/UiLocationsInput'));
+const UiTextArea = lazy(() => import('ui/UiTextArea'));
 
 interface Props {
   tripFormData: Trip | NewTrip;
