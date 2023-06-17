@@ -102,14 +102,14 @@ export default function DashboardLayout() {
     if (!sessionId && action !== 'sign-in' && !token) {
       navigate('/auth/login');
       dispatch(setUser(null));
-      window.location.reload();
     } else {
       loadDashboardData();
     }
   }, [action, token, loading]);
 
   useEffect(() => {
-    if (location.pathname === '/') navigate('/my-trips');
+    const sessionId = getUserSessionId();
+    if (location.pathname === '/' && sessionId) navigate('/my-trips');
   }, [location.pathname]);
 
   useEffect(() => {
