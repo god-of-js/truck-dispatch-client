@@ -35,7 +35,6 @@ const MessageContainer = styled.div`
   h2 {
     text-align: center;
     font-size: ${pxToRem(20)};
-    font-family: 'Audiowide';
     margin-bottom: 0;
   }
 
