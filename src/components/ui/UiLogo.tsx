@@ -10,7 +10,7 @@ export default function UiLogo() {
 const StyledLogo = styled.div`
   a {
     color: var(--color-neutralBlack);
-    font-size: ${pxToRem(20)};
+    font-size:20px;
     font-weight: 700;
   }
 `;

@@ -109,15 +109,15 @@ export default function UiTable({
 const TableContainer = styled.div`
   overflow-x: auto;
   /* TODO: figure out why  */
-  padding-bottom: ${pxToRem(120)};
+  padding-bottom: 120px;
   position: relative;
 `;
 
 const Table = styled.table`
   table-layout: fixed;
   width: 100%;
-  min-width: ${pxToRem(1200)};
-  border-spacing: ${pxToRem(0)} ${pxToRem(8)};
+  min-width:1200px;
+  border-spacing:0px 8px;
 `;
 
 const TableHeader = styled.thead`
@@ -127,7 +127,7 @@ const TableHeader = styled.thead`
 const TableRow = styled.tr<{ isHeader?: boolean }>`
   text-align: left;
   cursor: pointer;
-  margin-bottom: ${pxToRem(20)};
+  margin-bottom:20px;
   overflow: hidden;
   background: ${({ isHeader }) =>
     isHeader ? 'var(--color-primary-10)' : '#ffffff'};
@@ -135,38 +135,38 @@ const TableRow = styled.tr<{ isHeader?: boolean }>`
   td,
   th {
     &:last-child {
-      border-top-right-radius: ${pxToRem(8)};
-      border-bottom-right-radius: ${pxToRem(8)};
+      border-top-right-radius:8px;
+      border-bottom-right-radius:8px;
       height: 100%;
 
       .menu-container {
-        width: ${pxToRem(32)};
+        width:32px;
         margin-left: auto;
       }
     }
     &:first-child {
-      border-top-left-radius: ${pxToRem(8)};
-      border-bottom-left-radius: ${pxToRem(8)};
+      border-top-left-radius:8px;
+      border-bottom-left-radius:8px;
     }
   }
 `;
 
 const TableHeadItem = styled.th<{ isMenu: boolean }>`
-  height: ${pxToRem(48)};
-  padding: 0 ${pxToRem(24)};
+  height: 48px;
+  padding: 0 24px;
   color: var(--color-gray-70);
-  font-size: ${pxToRem(14)};
+  font-size: 14px;
   font-style: normal;
   font-weight: 600;
-  ${({ isMenu }) => isMenu && `width: ${pxToRem(24)}`};
+  ${({ isMenu }) => isMenu && 'width:24px'};
 `;
 
 const TableDataItem = styled.td<{ isMenu?: boolean }>`
-  padding: ${pxToRem(26)} ${pxToRem(24)};
+  padding:26px 24px;
   color: var(--color-neutralBlack);
-  font-size: ${pxToRem(14)};
-  line-height: ${pxToRem(16)};
+  font-size: 14px;
+  line-height: 16px;
   font-style: normal;
   font-weight: 400;
-  ${({ isMenu }) => (isMenu ? `width: ${pxToRem(24)};` : 'overflow-x: hidden;')}
+  ${({ isMenu }) => (isMenu ? 'width:24px;' : 'overflow-x: hidden;')}
 `;

@@ -106,12 +106,12 @@ function iconVariant(icon: boolean) {
     .input-wrapper{
       position: relative;
       input {
-        padding-left: ${pxToRem(44)};
+        padding-left:44px;
       }
       svg {
         position: absolute;
         height: 100%;
-        left: ${pxToRem(14)};
+        left:14px;
         top: 0;
       }
     }
@@ -126,9 +126,9 @@ const PhoneInputContainer = styled.div`
     align-items: center;
     justify-content: center;
     background-color: var(--color-gray);
-    font-size: ${pxToRem(14)};
-    border-radius: ${pxToRem(8)} 0px 0px ${pxToRem(8)};
-    padding: ${pxToRem(16)};
+    font-size:14px;
+    border-radius:8px 0px 0px 8px;
+    padding:16px;
   }
 `;
 
@@ -138,30 +138,30 @@ interface InputProps {
 }
 // TODO: replace any with InputProps.
 const Input = styled.input<any>`
-  padding: ${pxToRem(16)};
+  padding:16px;
   height: ${({ size }) =>
     `var(--base-height${['large', 'text'].includes(size) ? '' : `-${size}`})`};
-  gap: ${pxToRem(8)};
+  gap:8px;
   width: 100%;
-  font-size: ${pxToRem(14)};
+  font-size:14px;
   font-family: 'thiccboi-medium';
-  border: ${pxToRem(1)} solid;
+  border:1px solid;
   border-color: ${({ hasError }) =>
     hasError ? 'var(--color-danger)' : 'var(--color-gray)'};
   background: transparent;
   outline: none;
-  border-radius: ${pxToRem(8)};
+  border-radius:8px;
   box-sizing: border-box;
   transition: all 0.2s ease-in-out;
   &:focus {
-    border: ${pxToRem(2)} solid var(--color-primary);
+    border:2px solid var(--color-primary);
     box-shadow: var(--box-shadow-primary);
   }
   ::placeholder {
-    font-size: ${pxToRem(14)};
+    font-size:14px;
     color: var(--color-gray-80);
     font-weight: 400;
-    line-height: ${pxToRem(24)};
+    line-height:24px;
   }
 `;
 
@@ -172,12 +172,12 @@ const InputContainer = styled.div<InputContainerProps>`
 
 const IconButton = styled.div`
   position: absolute;
-  padding: 0 ${pxToRem(8)};
+  padding: 0 8px;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  right: ${pxToRem(14)};
+  right:14px;
   top: 0;
   cursor: pointer;
 `;

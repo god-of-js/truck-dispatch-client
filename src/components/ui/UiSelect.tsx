@@ -85,24 +85,24 @@ export default function UiSelect({
 const StyledSelect = styled.div`
   position: relative;
   .select {
-    padding: 0 ${pxToRem(16)};
+    padding: 0 16px;
     height: var(--base-height);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: ${pxToRem(12)};
-    border: ${pxToRem(1)} solid;
+    font-size: 12px;
+    border:1px solid;
     border-color: ${({ hasError }: { hasError: boolean }) =>
       hasError ? 'var(--color-danger)' : 'var(--color-gray)'};
     outline: none;
-    border-radius: ${pxToRem(8)};
+    border-radius: 8px;
     box-sizing: border-box;
     transition: all 0.2s ease-in-out;
     .selected-option {
-      font-size: ${pxToRem(14)};
+      font-size:14px;
       color: var(--color-gray-80);
       font-weight: 400;
-      line-height: ${pxToRem(24)};
+      line-height:24px;
     }
   }
 `;
@@ -110,18 +110,18 @@ const StyledSelect = styled.div`
 const StyledOptions = styled.ul`
   position: absolute;
   list-style: none;
-  margin-top: ${pxToRem(8)};
-  padding: ${pxToRem(16)} 0;
+  margin-top: 8px;
+  padding:16px 0;
   display: grid;
-  gap: ${pxToRem(12)};
+  gap:12px;
   background: #fff;
   border: 1px solid var(--color-gray-30);
-  border-radius: ${pxToRem(8)};
-  box-shadow: 0px ${pxToRem(8)} ${pxToRem(16)} rgba(0, 0, 0, 0.08);
+  border-radius:8px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.08);
   z-index: 1;
   width: 100%;
   max-width: 100%;
-  max-height: ${pxToRem(250)};
+  max-height: 250px;
   overflow-y: auto;
   transition: all 0.2s ease-in-out;
 `;
@@ -132,13 +132,13 @@ const StyledOption = styled.li`
   position: relative;
   justify-content: space-between;
   align-items: center;
-  height: ${pxToRem(40)};
-  padding: 0 ${pxToRem(12)};
-  margin: 0 ${pxToRem(16)} !important;
-  font-size: ${pxToRem(14)};
-  border-radius: ${pxToRem(4)};
+  height: 40px;
+  padding: 0 12px;
+  margin: 0 16px !important;
+  font-size: 14px;
+  border-radius:4px;
   color: var(--color-gray-80);
-  gap: ${pxToRem(12)};
+  gap: 12px;
   cursor: pointer;
   text-transform: capitalize;
   font-weight: 600;
@@ -162,16 +162,16 @@ const StyledOption = styled.li`
   }
 
   .activity-indicator {
-    width: ${pxToRem(16)};
-    height: ${pxToRem(16)};
+    width:16px;
+    height:16px;
     border-radius: 50%;
-    box-shadow: inset 0 0 0 ${pxToRem(1)} var(--color-gray);
+    box-shadow: inset 0 0 0 1px var(--color-gray);
     position: absolute;
     right: 0;
-    margin-right: ${pxToRem(12)};
+    margin-right:12px;
 
     &.active {
-      box-shadow: inset 0 0 0 ${pxToRem(6)} var(--color-primary);
+      box-shadow: inset 0 0 0 6px var(--color-primary);
     }
   }
 `;

@@ -28,16 +28,16 @@ export default function UiFilterTag({
 }
 
 const Tag = styled.span<{ isActive?: boolean; customWidth?: number }>`
-  padding: ${pxToRem(8)};
-  border-radius: ${pxToRem(8)};
-  gap: ${pxToRem(8)};
+  padding:8px;
+  border-radius:8px;
+  gap:8px;
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
   width: ${({ customWidth }) =>
     customWidth ? `${customWidth}px` : 'fit-content'};
   white-space: nowrap;
-  font-size: ${pxToRem(14)};
+  font-size:14px;
   line-height: 140%;
   font-style: normal;
   font-weight: 600;
@@ -59,11 +59,11 @@ const Tag = styled.span<{ isActive?: boolean; customWidth?: number }>`
     `}
 
   .count {
-    border-radius: ${pxToRem(10)};
-    padding: 0 ${pxToRem(4)};
-    font-size: ${pxToRem(10)};
+    border-radius:10px;
+    padding: 0 4px;
+    font-size:10px;
     letter-spacing: -0.02em;
-    border-radius: ${pxToRem(2)};
-    height: ${pxToRem(19)};
+    border-radius:2px;
+    height:19px;
   }
 `;

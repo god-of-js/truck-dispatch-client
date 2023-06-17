@@ -44,7 +44,7 @@ export default function UserDetails({
       <div className="user-profile">
         <UiAvatar avatar={avatar} isHalfCurved={avatarIsHalfCurved} />
         <div>
-          <div className="user-details-name">{userName}</div>
+          <div className="user-details-name">{userName}</div> 
           <div className="profile-subtitle">
             {profileSubtitle || '********************'}
           </div>
@@ -72,18 +72,18 @@ const UserDetailsStyling = styled.div<{ size: Sizes }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: ${pxToRem(16)};
+  gap: 16px;
 
   .user-profile {
     display: flex;
-    gap: ${pxToRem(8)};
+    gap:8px;
     align-items: center;
   }
 
   .user-details-name {
     font-style: normal;
     font-weight: 600;
-    font-size: ${({ size }) => (size === 'sm' ? pxToRem(14) : pxToRem(16))};
+    font-size: ${({ size }) => (size === 'sm' ? '14px' : '16px')};
     line-height: 140%;
     letter-spacing: -0.02em;
     color: var(--color-neutralBlack);
@@ -93,7 +93,7 @@ const UserDetailsStyling = styled.div<{ size: Sizes }>`
   .profile-subtitle {
     font-style: normal;
     font-weight: 400;
-    font-size: ${({ size }) => (size === 'sm' ? pxToRem(10) : pxToRem(14))};
+    font-size: ${({ size }) => (size === 'sm' ? '10px' : '14px')};
     line-height: 140%;
     letter-spacing: -0.02em;
     color: var(--color-gray-80);
@@ -103,6 +103,6 @@ const UserDetailsStyling = styled.div<{ size: Sizes }>`
   .user-details-actions {
     display: flex;
     align-items: center;
-    gap: ${pxToRem(8)};
+    gap: 8px;
   }
 `;

@@ -48,9 +48,9 @@ const EmptyField = styled.div`
     justify-content: center;
 
     .icon-container {
-      padding: ${pxToRem(32)};
-      width: ${pxToRem(192)};
-      height: ${pxToRem(192)};
+      padding:32px;
+      width: 192px;
+      height:192px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -58,9 +58,9 @@ const EmptyField = styled.div`
       border-radius: 50%;
 
       &__inner {
-        padding: ${pxToRem(32)};
-        width: ${pxToRem(128)};
-        height: ${pxToRem(128)};
+        padding:32px;
+        width: 128px;
+        height:128px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -71,12 +71,12 @@ const EmptyField = styled.div`
     p {
       font-style: normal;
       font-weight: 400;
-      font-size: ${pxToRem(24)};
+      font-size:24px;
       line-height: 140%;
       text-align: center;
       letter-spacing: -0.02em;
       color: var(--color-gray-80);
-      max-width: ${pxToRem(360)};
+      max-width:360px;
     }
   }
 `;

@@ -39,21 +39,21 @@ export default function UiTextArea({
 
 const TextArea = styled.textarea`
   width: 100%;
-  padding: ${pxToRem(16)} ${pxToRem(8)};
-  gap: ${pxToRem(8)};
+  padding:16px 8px;
+  gap: 8px;
   width: 100%;
-  font-size: ${pxToRem(12)};
-  border: ${pxToRem(1)} solid;
+  font-size:12px;
+  border: 1px solid;
   border-color: ${({ hasError }: { hasError: boolean }) =>
     hasError ? 'var(--color-danger)' : 'var(--color-gray)'};
   outline: none;
-  border-radius: ${pxToRem(4)};
+  border-radius:4px;
   box-sizing: border-box;
   font-family: 'thiccboi-medium', sans-serif;
-  min-height: ${pxToRem(200)};
+  min-height:200px;
   background: transparent;
   &:focus {
-    border: ${pxToRem(2)} solid var(--color-primary);
+    border:2px solid var(--color-primary);
     box-shadow: var(--box-shadow-primary);
   }
 `;

@@ -151,13 +151,16 @@ export default function UiIcon({ icon, size = '16' }: Props) {
 
 const IconStyle = styled.span`
   font-size: ${({ size }: { size?: Props['size'] }) =>
-    pxToRem((size && parseInt(size)) || 16)};
+    `${(size && parseInt(size))}px` || '16px'
+    };
 
   svg {
     width: ${({ size }: { size?: Props['size'] }) =>
-      pxToRem((size && parseInt(size)) || 16)};
+      `${(size && parseInt(size))}px` || '16px'
+      };
     height: ${({ size }: { size?: Props['size'] }) =>
-      pxToRem((size && parseInt(size)) || 16)};
+      `${(size && parseInt(size))}px` || '16px'
+      };
     fill: var(--color-gray-80);
   }
 `;

@@ -51,22 +51,22 @@ const TimeLineContainer = styled.ul`
   list-style-type: none;
   padding: 0;
   margin: 0;
-  gap: ${pxToRem(4)};
+  gap:4px;
   overflow: auto;
 `;
 
 const TimeLineItem = styled.li`
-  padding: 0 ${pxToRem(4)};
+  padding: 0 4px;
   display: flex;
   align-items: center;
-  gap: ${pxToRem(4)};
-  font-size: ${pxToRem(12)};
+  gap: 4px;
+  font-size: 12px;
   color: ${({ isActive }: { isActive: boolean }) =>
     isActive ? 'var(--color-primary)' : 'var(--color-gray-400)'};
 
   .step-thread {
-    width: ${pxToRem(20)};
-    height: ${pxToRem(1)};
+    width:20px;
+    height:1px;
     background: ${({ isActive }: { isActive: boolean }) =>
       isActive ? 'var(--color-primary)' : 'var(--color-gray-400)'};
   }
@@ -77,11 +77,11 @@ const TimeLineItem = styled.li`
     }
   }
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    padding: 0 ${pxToRem(8)};
-    gap: ${pxToRem(8)};
-    font-size: ${pxToRem(14)};
+    padding: 0 8px;
+    gap:8px;
+    font-size:14px;
     .step-thread {
-      width: ${pxToRem(32)};
+      width:32px;
     }
   }
 `;

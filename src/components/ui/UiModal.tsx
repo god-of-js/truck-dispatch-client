@@ -82,8 +82,8 @@ function positionStyling({ position, size }: CardProps) {
       width: 80%;
 
       .modal-header {
-        border-bottom: ${pxToRem(1)} solid var(--color-gray-20);
-        padding: ${pxToRem(26)} ${pxToRem(24)};
+        border-bottom:1px solid var(--color-gray-20);
+        padding:26px 24px;
       }
      
       @media only screen and (min-width: ${sizes.tabletLargeWidth}) {
@@ -91,7 +91,7 @@ function positionStyling({ position, size }: CardProps) {
       }
       @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
         width: 50%;
-        max-width: ${pxToRem(1000)};
+        max-width: 1000px;
       }
     `;
   }
@@ -99,7 +99,7 @@ function positionStyling({ position, size }: CardProps) {
     return `
     position: static;
     margin: auto;
-    border-radius: ${pxToRem(16)};
+    border-radius:16px;
     
     .modal-header h2 {
       text-align: center;
@@ -112,14 +112,14 @@ function positionStyling({ position, size }: CardProps) {
   return `
     position: static;
     margin: auto;
-    border-radius: ${pxToRem(16)};
+    border-radius:16px;
   `;
 }
 
 function getWidth(size?: Size) {
-  if (size === 'sm') return `width: ${pxToRem(540)};`;
+  if (size === 'sm') return `width: 540px;`;
 
-  if (size === 'md') return `width: ${pxToRem(724)};`;
+  if (size === 'md') return `width: 724px;`;
   return `width: 50%;`;
 }
 interface CardProps {
@@ -135,8 +135,8 @@ const Modal = styled.div`
 const ModalCard = styled.div<CardProps>`
   background: ${({ bgVariant }) =>
     bgVariant === 'dark' ? 'var(--color-gray-20)' : '#ffffff'};
-  border-top-left-radius: ${pxToRem(8)};
-  border-top-right-radius: ${pxToRem(8)};
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -146,19 +146,19 @@ const ModalCard = styled.div<CardProps>`
   max-height: 90%;
 
   .modal-inner {
-    padding-bottom: ${pxToRem(28)};
+    padding-bottom:28px;
     height: 87%;
 
     .modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: ${pxToRem(18)} ${pxToRem(24)};
-      border-bottom: ${pxToRem(1)} solid var(--color-gray-20);
+      padding:18px 24px;
+      border-bottom:1px solid var(--color-gray-20);
 
       h2 {
         color: var(--color-neutralBlack);
-        font-size: ${pxToRem(20)};
+        font-size:20px;
         font-family: 'thiccboi-extrabold';
         font-weight: 700;
         margin: 0;
@@ -168,7 +168,7 @@ const ModalCard = styled.div<CardProps>`
 
   @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
     h2 {
-      font-size: ${pxToRem(24)} !important;
+      font-size:24px !important;
     }
     ${({ size }) => getWidth(size)}
     ${(cardProps) => positionStyling(cardProps)}

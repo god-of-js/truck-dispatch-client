@@ -104,7 +104,7 @@ const List = styled.ul`
   `
       : `
     background: var(--color-primary-10);
-    padding: ${pxToRem(10)};
+    padding: 10px;
     justify-content: center;
   `}
 `;
@@ -112,7 +112,7 @@ const List = styled.ul`
 const ListItem = styled.li`
   width: 100%;
   ${({ hasNoDetail }: ListItemProps) =>
-    hasNoDetail && `max-width: ${pxToRem(150)};`}
+    hasNoDetail && 'max-width:150px;'}
 
   .indicator {
     display: flex;
@@ -120,8 +120,8 @@ const ListItem = styled.li`
     justify-content: space-between;
 
     &__circle {
-      min-width: ${pxToRem(16)};
-      min-height: ${pxToRem(16)};
+      min-width:16px;
+      min-height:16px;
       border-radius: 50%;
       color: white;
       display: flex;
@@ -133,17 +133,17 @@ const ListItem = styled.li`
         `2px solid ${getStyling(listItemProps).borderColor}`};
 
       svg {
-        width: ${pxToRem(12)};
-        height: ${pxToRem(12)};
+        width:12px;
+        height:12px;
         fill: white;
       }
     }
 
     &__line {
-      width: ${pxToRem(90)};
+      width:90px;
       width: 100%;
       border: ${(listItemProps: ListItemProps) =>
-        `${pxToRem(1)} ${getStyling(listItemProps).lineStyle} ${
+        `1px ${getStyling(listItemProps).lineStyle} ${
           getStyling(listItemProps).borderColor
         }`};
     }
@@ -153,7 +153,7 @@ const ListItem = styled.li`
   }
 
   &:last-child {
-    max-width: ${pxToRem(8)};
+    max-width:8px;
     .indicator {
       flex-direction: row-reverse;
       &__line {
@@ -166,25 +166,25 @@ const ListItem = styled.li`
     `
   @media (min-width: ${sizes.tablet}) {
     display: flex;
-    gap: ${pxToRem(20)};
+    gap:20px;
     .indicator {
       flex-direction: column;
       &__line {
-        height: ${pxToRem(90)};
+        height:90px;
         width: 0;
       }
     }
 
     .content {
-      max-width: ${pxToRem(280)};
+      max-width:280px;
       display: block;
       .title {
         font-family: 'thiccboi-semibold';
         font-style: normal;
         font-weight: 600;
-        font-size: ${pxToRem(18)};
-        line-height: ${pxToRem(16)};
-        margin-bottom: ${pxToRem(4)};
+        font-size:18px;
+        line-height:16px;
+        margin-bottom:4px;
         color: ${(listItemProps: ListItemProps) =>
           getStyling(listItemProps).titleColor};
       }
@@ -192,8 +192,8 @@ const ListItem = styled.li`
         font-style: normal;
         font-family: 'thiccboi-regular';
         font-weight: 400;
-        font-size: ${pxToRem(16)};
-        line-height: ${pxToRem(24)};
+        font-size: 16px;
+        line-height:24px;
         color: ${(listItemProps: ListItemProps) =>
           getStyling(listItemProps).textColor};
       }

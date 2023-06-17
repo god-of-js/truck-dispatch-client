@@ -28,7 +28,7 @@ const VideoPlayer = styled.div`
   display: flex;
   justify-content: center;
   video {
-    border-radius: ${pxToRem(9)};
+    border-radius:9px;
     background: rgba(21, 19, 27, 0.5);
     width: 100%;
   }

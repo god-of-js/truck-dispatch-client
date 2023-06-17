@@ -78,9 +78,9 @@ const MenuButtonStyling = styled(MenuButton)`
   justify-content: center;
   background: var(--color-gray-50);
   border: transparent;
-  border-radius: ${pxToRem(8)};
+  border-radius:8px;
   position: relative;
-  padding: ${pxToRem(8)} ${pxToRem(8)} ${pxToRem(5)};
+  padding:8px 8px 5px;
   cursor: pointer;
   width: fit-content;
 
@@ -90,26 +90,26 @@ const MenuButtonStyling = styled(MenuButton)`
 `;
 const MenuMainStyled = styled(Menu)`
   ul {
-    padding: ${pxToRem(8)};
-    border-radius: ${pxToRem(16)};
+    padding:8px;
+    border-radius: 16px;
     box-shadow: 0px 10px 16px rgba(21, 19, 27, 0.1);
-    top: ${pxToRem(12)} !important;
-    left: -${pxToRem(132)} !important;
+    top: 12px !important;
+    left: -132px !important;
   }
 `;
 
 const MenuItemStyling = styled(MenuItem)<ThemeProps>`
-  font-size: ${pxToRem(14)};
+  font-size:14px;
   font-weight: normal;
   font-weight: 600;
-  line-height: ${pxToRem(24)};
+  line-height:24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: ${pxToRem(32)};
-  min-height: ${pxToRem(28)};
-  border-radius: ${pxToRem(8)};
-  padding: ${pxToRem(4)} ${pxToRem(8)} !important;
+  gap:32px;
+  min-height:28px;
+  border-radius:8px;
+  padding:4px 8px !important;
   font-style: normal;
   color: ${({ isdanger }) =>
     isdanger === 'true' ? 'var(--color-danger)' : 'var(--color-gray-80)'};
@@ -122,17 +122,17 @@ const MenuItemStyling = styled(MenuItem)<ThemeProps>`
   a {
     width: 100%;
     height: 100%;
-    font-size: ${pxToRem(14)};
+    font-size:14px;
     color: var(--color-gray-500);
     font-weight: 'thiccboi-semibold';
   }
   .content {
     display: flex;
     align-items: center;
-    gap: ${pxToRem(8)};
+    gap: 8px;
 
     &__text {
-      margin-bottom: ${pxToRem(2)};
+      margin-bottom:2px;
     }
   }
 `;

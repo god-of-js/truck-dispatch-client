@@ -36,20 +36,20 @@ export default function Pill({ children, variant, hasIcon }: Props) {
 const StyledPill = styled.div<{ hasIcon?: boolean }>`
   display: flex;
   align-items: center;
-  gap: ${pxToRem(4)};
+  gap:4px;
   width: fit-content;
-  border-radius: ${pxToRem(20)};
-  padding: ${pxToRem(10)};
+  border-radius:20px;
+  padding:10px;
   text-transform: capitalize;
   font-style: normal;
   font-weight: 700;
-  font-size: ${pxToRem(14)};
+  font-size:14px;
   line-height: 140%;
   letter-spacing: -0.02em;
 
   .circle {
-    width: ${pxToRem(8)};
-    height: ${pxToRem(8)};
+    width:8px;
+    height:8px;
     border-radius: 50%;
     display: ${(props) => (props.hasIcon ? 'none' : 'block')};
   }
