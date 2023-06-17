@@ -1,13 +1,18 @@
-import styled from 'styled-components';
-import TripPickupAndDropOff from 'components/trips/TripPickupAndDropOff';
-import Trip from 'types/Trip';
-import UiAvatar from 'ui/UiAvatar';
-import UiButton from 'ui/UiButton';
-import UiIcon from 'ui/UiIcon';
-import { convertToDdMmmYYYYDateFormat } from 'utils/helpers';
-import sizes from 'utils/sizes';
 import { useSelector } from 'react-redux';
 import { selectBid } from 'modules/Bid';
+import styled from 'styled-components';
+import { convertToDdMmmYYYYDateFormat } from 'utils/helpers';
+import sizes from 'utils/sizes';
+import Trip from 'types/Trip';
+
+import { lazy } from 'react';
+
+const UiIcon = lazy(() => import('ui/UiIcon'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiAvatar = lazy(() => import('ui/UiAvatar'));
+const TripPickupAndDropOff = lazy(
+  () => import('components/trips/TripPickupAndDropOff'),
+);
 
 interface Props {
   job: Trip;

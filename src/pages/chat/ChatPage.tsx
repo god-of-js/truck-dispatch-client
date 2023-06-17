@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { lazy, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -16,12 +16,12 @@ import { toAnyAction } from 'utils/helpers';
 
 import Chat from 'types/Chat';
 
-import UiAvatar from 'ui/UiAvatar';
-import UiIcon from 'ui/UiIcon';
-import UiForm from 'ui/UiForm';
 import ChatSchema from 'utils/validations/ChatSchema';
 import User from 'types/User';
 import uuidv4 from 'utils/uuid';
+
+const UiForm = lazy(() => import('ui/UiForm'));
+const UiAvatar = lazy(() => import('ui/UiAvatar'));
 
 export default function ChatPage() {
   const { chatLogId } = useParams();

@@ -1,12 +1,13 @@
 import { RootState } from 'modules/index';
-import { useMemo } from 'react';
+import { lazy, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { serviceBasedUserTypes } from 'utils/constants';
-import UiAvatar from './UiAvatar';
-import UiButton from './UiButton';
-import UiIcon from './UiIcon';
+
+const UiIcon = lazy(() => import('ui/UiIcon'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiAvatar = lazy(() => import('ui/UiAvatar'));
 
 type Sizes = 'large' | 'sm' | 'md';
 interface Props {

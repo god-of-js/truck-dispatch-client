@@ -1,14 +1,9 @@
 import { RootState } from 'modules/index';
-import React, { useState } from 'react';
+import React, { lazy, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { updateUser } from 'modules/Account';
 import User from 'types/User';
-import UiAvatar from 'ui/UiAvatar';
-import UiButton from 'ui/UiButton';
-import UiForm from 'ui/UiForm';
-import UiIcon from 'ui/UiIcon';
-import UiInput from 'ui/UiInput';
 import {
   deepRootedToFormData,
   removeUneditedFields,
@@ -16,7 +11,12 @@ import {
 } from 'utils/helpers';
 import sizes from 'utils/sizes';
 import EditProfileSchema from 'utils/validations/EditProfileSchema';
-import UiCard from 'ui/UiCard';
+
+const UiCard = lazy(() => import('ui/UiCard'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiForm = lazy(() => import('ui/UiForm'));
+const UiInput = lazy(() => import('ui/UiInput'));
+const UiAvatar = lazy(() => import('ui/UiAvatar'));
 
 export default function ProfileDetailsPage() {
   const user = useSelector((state: RootState) => state.account.user);

@@ -1,17 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, lazy } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
-import UiIcon from 'ui/UiIcon';
-import UiInput from 'ui/UiInput';
-import UiButton from 'ui/UiButton';
-import UiForm from 'ui/UiForm';
+
 import { toAnyAction } from 'utils/helpers';
 import { sendOTP, verifyOtp } from 'modules/Account';
 import { Toast } from 'utils/toast';
 import VerifyPhoneSchema from 'utils/validations/VerifyPhoneSchema';
 
+const UiIcon = lazy(() => import('ui/UiIcon'));
+const UiInput = lazy(() => import('ui/UiInput'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiForm = lazy(() => import('ui/UiForm'));
 interface Props {
   goToNext: () => void;
 }

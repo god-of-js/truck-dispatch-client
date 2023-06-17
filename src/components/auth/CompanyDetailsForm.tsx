@@ -1,18 +1,20 @@
+import React, { lazy, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import React, { useState } from 'react';
 
-import UiIcon from 'ui/UiIcon';
-import UiInput from 'ui/UiInput';
-import UiSelect from 'ui/UiSelect';
-import UiButton from 'ui/UiButton';
-import UiForm from 'ui/UiForm';
-import UiAlert from 'ui/UiAlert';
-import FileUploadWidget from 'ui/FileUploadWidget';
-import CompanyVerificationSchema from 'utils/validations/CompanyVerificationSchema';
-import { deepRootedToFormData, toAnyAction } from 'utils/helpers';
 import { useDispatch } from 'react-redux';
 import { sendCompanyUpgradeVerification } from 'modules/Verification';
-import UiLocationsInput from 'ui/UiLocationsInput';
+
+import { deepRootedToFormData, toAnyAction } from 'utils/helpers';
+import CompanyVerificationSchema from 'utils/validations/CompanyVerificationSchema';
+
+const UiIcon = lazy(() => import('ui/UiIcon'));
+const UiInput = lazy(() => import('ui/UiInput'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiForm = lazy(() => import('ui/UiForm'));
+const UiSelect = lazy(() => import('ui/UiSelect'));
+const UiAlert = lazy(() => import('ui/UiAlert'));
+const UiLocationsInput = lazy(() => import('ui/UiLocationsInput'));
+const FileUploadWidget = lazy(() => import('ui/FileUploadWidget'));
 
 interface Props {
   goToNext: (isSkipped?: boolean) => void;

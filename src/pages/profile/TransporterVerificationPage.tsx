@@ -1,15 +1,17 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { lazy, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'modules/index';
 
 import { getUserVerification } from '../../modules/Verification';
 
 import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
 
-import VerificationForm from 'components/profile/VerificationForm';
-import MessageWithImage from 'ui/MessageWithImage';
-import { RootState } from 'modules/index';
+const VerificationForm = lazy(
+  () => import('components/profile/VerificationForm'),
+);
+const MessageWithImage = lazy(() => import('ui/MessageWithImage'));
 
 export default function TransporterVerificationPage() {
   const dispatch = useDispatch();

@@ -1,28 +1,34 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { lazy, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import Successgif from 'assets/img/Successgif.jpeg';
 
 import { RootState } from 'modules/index';
-import DashboardTopNav from 'components/layout/DashboardTopNav';
-import UiBackButton from 'ui/UiBackButton';
-import TripBidItem from 'components/bids/TripBidItem';
-import PaginationLoader from 'components/layout/PaginationLoader';
 import {
   priceWithTDPercent,
   searchObjectsByField,
   toAnyAction,
 } from 'utils/helpers';
 import { getBidsWithTripId } from 'modules/Bid';
-import TripBidFullDetails from 'components/bids/TripBidFullDetails';
-import UiEmptyField from 'ui/UiEmptyList';
-import MakePayment from 'components/payment/MakePayment';
 import { assignTrip, selectTrip } from 'modules/Trips';
 import AssignTripFormData from 'types/AssignTripFormData';
 import { Toast } from 'utils/toast';
 import Payment from 'types/Payment';
-import UiConfirmModal from 'ui/UiConfirmModal';
+
+const DashboardTopNav = lazy(() => import('components/layout/DashboardTopNav'));
+
+const UiBackButton = lazy(() => import('ui/UiBackButton'));
+const TripBidItem = lazy(() => import('components/bids/TripBidItem'));
+const PaginationLoader = lazy(
+  () => import('components/layout/PaginationLoader'),
+);
+const TripBidFullDetails = lazy(
+  () => import('components/bids/TripBidFullDetails'),
+);
+const UiEmptyList = lazy(() => import('ui/UiEmptyList'));
+const MakePayment = lazy(() => import('components/payment/MakePayment'));
+const UiConfirmModal = lazy(() => import('ui/UiConfirmModal'));
 
 export default function TripBidsPage() {
   const navigate = useNavigate();
@@ -157,7 +163,7 @@ export default function TripBidsPage() {
         ))}
       </PageStyling>
       {!bids.length && (
-        <UiEmptyField
+        <UiEmptyList
           emptyIcon="Jobs"
           emptyText="Nothing here yet. Your trip has been broadcasted to our network. Watch this page for bids"
         />
