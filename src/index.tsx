@@ -12,9 +12,6 @@ import getStore from './modules';
 import Loader from 'components/layout/Loader';
 import loadServices from 'utils/loadServices';
 
-// @ts-ignore
-window.pxToRem = (px: number, baseSize = 16) => `${px / baseSize}rem`;
-
 window.onload = loadServices;
 
 const root = createRoot(document.getElementById('root')!);

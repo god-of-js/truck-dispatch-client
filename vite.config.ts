@@ -25,15 +25,6 @@ export default defineConfig({
   },
   css: {
     preprocessorOptions: {
-      scss: {
-        additionalData: `
-          @use 'sass:math';
-
-          @function pxToRem($px, $base-size: 16px) {
-            @return math.div($px * 1px, $base-size) * 1rem; 
-          }          
-          `,
-      },
     },
   },
   plugins: [react(), viteTsconfigPaths(), svgrPlugin()],
