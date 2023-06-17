@@ -1,4 +1,4 @@
-@import './assets/style/helpers.scss';
+
 @font-face {
   font-family: 'Inter', sans-serif;
   src: url(https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap);
@@ -55,26 +55,26 @@ a {
   display: flex;
   align-items: center;
   justify-content: stretch;
-  padding: px(16);
-  gap: px(8);
+  padding: 16px;
+  gap: 8px;
   width: 100%;
   height: var(--base-height);
-  font-size: px(12);
+  font-size: 12px;
   border: 1px solid var(--color-gray);
   outline: none;
-  border-radius: 0px  px(8) px(8) 0px;
+  border-radius: 0px  8px 8px 0px;
   box-sizing: border-box;
   transition: all .2s ease-in-out;
   background: transparent;
 
   &.full-radius {
-    border-radius: px(8) px(8) px(8) px(8);
+    border-radius: 8px;
   }
 }
 
 .global-input:focus {
   border: px(2) solid  var(--color-primary);
-  box-shadow: 0px 0px 0px px(4) rgba(16, 24, 40, 0.05);
+  box-shadow: 0px 0px 0px 4px rgba(16, 24, 40, 0.05);
 }
 
 ul {
