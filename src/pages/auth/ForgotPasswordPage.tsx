@@ -48,7 +48,7 @@ export default function ForgotPasswordPage() {
     <div className="duo-button-container no-btn-margin-top">
       <Link to="/auth/login">
         <UiButton size="large" variant="secondary" isFullWidth>
-          <UiIcon icon="CaretLeft" />
+          <UiIcon icon="ArrowLeft" />
           Back to sign in
         </UiButton>
       </Link>
