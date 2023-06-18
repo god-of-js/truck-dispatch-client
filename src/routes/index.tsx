@@ -2,7 +2,7 @@ import React, { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
 
-const PageError = lazy(() => import('../components/errors/NotFound'));
+const PageError = lazy(() => import('../components/errors/NotFoundErrorPage'));
 
 // LAYOUTS
 import DashboardLayout from '../layouts/DashboardLayout';

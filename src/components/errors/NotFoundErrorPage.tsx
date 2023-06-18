@@ -7,7 +7,7 @@ interface Props {
   children?: React.ReactNode;
 }
 
-export default function NotFound({ children }: Props) {
+export default function NotFoundErrorPage({ children }: Props) {
   return (
     <ErrorStyling id="error-page">
       <div>

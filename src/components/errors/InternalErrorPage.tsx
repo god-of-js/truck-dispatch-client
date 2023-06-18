@@ -7,7 +7,7 @@ interface Props {
   children?: React.ReactNode;
 }
 
-export default function ServerError({ children }: Props) {
+export default function InternalErrorPage({ children }: Props) {
   return (
     <ErrorStyling id="server-error-page">
       <div>
