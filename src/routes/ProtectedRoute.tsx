@@ -1,16 +1,28 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 
 interface PrivateRouteProps {
   allowNavigation?: boolean;
   children?: React.ReactNode;
   reRouteUrl: string;
+  /**The reRoute function is used for handling situations like tokens. */
+  allowNavigationFunc?: (searchUrl: string) => boolean;
 }
 export function ProtectedRoute({
-  allowNavigation,
+  allowNavigation = true,
   children,
   reRouteUrl,
+  allowNavigationFunc,
 }: PrivateRouteProps) {
-  if (!allowNavigation) return <Navigate to={reRouteUrl} />;
+  const next = <>{children}</>;
+  const reRoute = <Navigate to={reRouteUrl} />;
   
-  return <>{children}</>;
+  if (allowNavigationFunc) {
+    const location = useLocation();
+    if (allowNavigationFunc(location.search)) return next;
+
+    return reRoute;
+  }
+  if (!allowNavigation) return reRoute;
+
+  return next;
 }
