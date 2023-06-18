@@ -66,7 +66,7 @@ const router = createBrowserRouter([
         <DashboardLayout />
       </ProtectedRoute>
     ),
-    errorElement: <NotFoundErrorPage/>,
+    errorElement: <NotFoundErrorPage />,
     children: [
       {
         path: '/profile',

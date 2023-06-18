@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const ErrorStyling  = styled.div`
+export const ErrorStyling = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -17,4 +17,10 @@ export const ErrorStyling  = styled.div`
     font-size: ${pxToRem(24)};
     line-height: ${pxToRem(28)};
   }
-`
+
+  .button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
