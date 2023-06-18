@@ -1,8 +1,9 @@
 import React, { lazy } from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
 
-const PageError = lazy(() => import('../components/errors/PageError'));
+const NotFoundError = lazy(() => import('../components/errors/NotFoundError'));
+const InternalError = lazy(() => import('../components/errors/InternalError'));
 
 // LAYOUTS
 import DashboardLayout from '../layouts/DashboardLayout';
@@ -65,8 +66,12 @@ const router = createBrowserRouter([
         <DashboardLayout />
       </ProtectedRoute>
     ),
-    errorElement: <PageError />,
+    errorElement: <InternalError />,
     children: [
+      {
+        path: '/',
+        element: <Navigate to="/my-trips" replace />
+      },
       {
         path: '/profile',
         id: 'Profile',
@@ -192,6 +197,10 @@ const router = createBrowserRouter([
         ),
       },
     ],
+  },
+  {
+    path: '*',
+    element: <NotFoundError />
   },
 ]);
 
