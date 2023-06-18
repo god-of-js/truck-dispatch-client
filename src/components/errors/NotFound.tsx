@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import NotFoundImage from 'assets/img/not-found.svg'
+import { ErrorStyling } from './ErrorsStyling'
 
 interface Props {
   children?: React.ReactNode;
@@ -8,7 +9,7 @@ interface Props {
 
 export default function NotFound({ children }: Props) {
   return (
-    <NotfoundContainer id="error-page">
+    <ErrorStyling id="error-page">
       <div>
         <h1>404</h1>
         <p>Page not found</p>
@@ -17,25 +18,7 @@ export default function NotFound({ children }: Props) {
         </div>
         <div>{children}</div>
       </div>
-    </NotfoundContainer>
+    </ErrorStyling>
   );
 }
 
-const NotfoundContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-
-  h1 {
-    font-weight: 900;
-    font-size: ${pxToRem(32)};
-    line-height: ${pxToRem(37)};
-  }
-
-  p{
-    font-weight: 700;
-    font-size: ${pxToRem(24)};
-    line-height: ${pxToRem(28)};
-  }
-`;
