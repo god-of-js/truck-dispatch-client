@@ -8,10 +8,12 @@ const UiButton = lazy(() => import('ui/UiButton'));
 interface Props {
   title?: string;
   subtitle?: string;
+  goToRoute?: string
 }
 export default function InternalError({
   title = 'Oops!',
   subtitle = 'Something went wrong',
+  goToRoute = '/'
 }: Props) {
   const navigate = useNavigate();
 
@@ -23,7 +25,7 @@ export default function InternalError({
         <img src={ServerErrorImage} alt="notfound" />
       </div>
       <div className="button-container">
-        <UiButton variant="secondary" onClick={() => navigate('/')}>
+        <UiButton variant="secondary" onClick={() => navigate(goToRoute)}>
           Go to Dashboard
         </UiButton>
       </div>
