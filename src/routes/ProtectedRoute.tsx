@@ -11,6 +11,6 @@ export function ProtectedRoute({
   reRouteUrl,
 }: PrivateRouteProps) {
   if (!allowNavigation) return <Navigate to={reRouteUrl} />;
-
+  
   return <>{children}</>;
 }

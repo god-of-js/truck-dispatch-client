@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const ErrorStyling = styled.div`
-  display: flex;
+  display: grid;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -22,5 +22,10 @@ export const ErrorStyling = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: ${pxToRem(48)};
+
+    button {
+      min-width: ${pxToRem(182)};
+    }
   }
 `;
