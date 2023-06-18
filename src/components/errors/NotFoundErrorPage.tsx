@@ -1,13 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 import NotFoundImage from 'assets/img/not-found.svg'
 import { ErrorStyling } from './ErrorsStyling'
 
-interface Props {
-  children?: React.ReactNode;
-}
 
-export default function NotFoundErrorPage({ children }: Props) {
+export default function NotFoundErrorPage() {
   return (
     <ErrorStyling id="error-page">
       <div>
@@ -16,7 +12,6 @@ export default function NotFoundErrorPage({ children }: Props) {
         <div>
           <img src={NotFoundImage} alt="notfound" height="350" width="350"/>
         </div>
-        <div>{children}</div>
       </div>
     </ErrorStyling>
   );

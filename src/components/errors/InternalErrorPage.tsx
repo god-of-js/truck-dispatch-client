@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import ServerErrorImage from 'assets/img/server-error.svg';
 import { ErrorStyling } from './ErrorsStyling'
 
