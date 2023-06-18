@@ -127,7 +127,7 @@ const router = createBrowserRouter([
             element: <TripLayout />,
             children: [
               {
-                path: '/my-trips/:tripId',
+                path: '',
                 id: 'TripDetails',
                 element: <TripDetailsPage />,
               },
