@@ -2,7 +2,7 @@ import React, { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
 
-const PageError = lazy(() => import('../components/errors/NotFoundErrorPage'));
+const NotFoundErrorPage = lazy(() => import('../components/errors/NotFoundErrorPage'));
 
 // LAYOUTS
 import DashboardLayout from '../layouts/DashboardLayout';
@@ -66,7 +66,7 @@ const router = createBrowserRouter([
         <DashboardLayout />
       </ProtectedRoute>
     ),
-    errorElement: <PageError />,
+    errorElement: <NotFoundErrorPage/>,
     children: [
       {
         path: '/profile',
