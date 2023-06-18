@@ -203,6 +203,11 @@ const icons = {
       default: module.ReactComponent,
     })),
   ),
+  NotFound: lazy(() =>
+    import('./icons/not-found.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
   PasswordCheck: lazy(() =>
     import('./icons/password-check.svg').then((module) => ({
       default: module.ReactComponent,
@@ -245,6 +250,11 @@ const icons = {
   ),
   Star: lazy(() =>
     import('./icons/star.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  ServerError: lazy(() =>
+    import('./icons/server-error.svg').then((module) => ({
       default: module.ReactComponent,
     })),
   ),
