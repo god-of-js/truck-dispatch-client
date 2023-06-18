@@ -6,9 +6,9 @@ interface Props {
   children?: React.ReactNode;
 }
 
-export default function ErrorPage({ children }: Props) {
+export default function NotFound({ children }: Props) {
   return (
-    <ErrorPageContainer id="error-page">
+    <NotfoundContainer id="error-page">
       <div>
         <h1>404</h1>
         <p className="error-text-p">Page not found</p>
@@ -18,11 +18,11 @@ export default function ErrorPage({ children }: Props) {
         </div>
         <div>{children}</div>
       </div>
-    </ErrorPageContainer>
+    </NotfoundContainer>
   );
 }
 
-const ErrorPageContainer = styled.div`
+const NotfoundContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -30,19 +30,19 @@ const ErrorPageContainer = styled.div`
 
   h1 {
     font-weight: 900;
-    font-size: 32px;
-    line-height: 37px;
+    font-size: ${pxToRem(32)};
+    line-height: ${pxToRem(37)};
   }
 
   .error-text-p {
     font-weight: 700;
-    font-size: 24px;
-    line-height: 28px;
+    font-size: ${pxToRem(24)};
+    line-height: ${pxToRem(28)};
   }
 
   .error-text-w {
     font-weight: 600;
-    font-size: 18px;
-    line-height: 21px;
+    font-size: ${pxToRem(18)};
+    line-height: ${pxToRem(21)};
   }
 `;
