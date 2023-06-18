@@ -7,6 +7,7 @@ const PageError = lazy(() => import('../components/errors/PageError'));
 // LAYOUTS
 import DashboardLayout from '../layouts/DashboardLayout';
 import { getUserSessionId } from 'utils/localStorageMethods';
+import { resetPasswordAccessChecks } from './allowNavigationFunctions';
 const AuthLayout = lazy(() => import('../layouts/AuthLayout'));
 const ProfileLayout = lazy(() => import('../layouts/ProfileLayout'));
 const TripLayout = lazy(() => import('../layouts/TripLayout'));
@@ -23,6 +24,7 @@ const LoginPage = lazy(() => import('../pages/auth/LoginPage'));
 const ForgotPasswordPage = lazy(
   () => import('../pages/auth/ForgotPasswordPage'),
 );
+const ResetPasswordPage = lazy(() => import('../pages/auth/ResetPasswordPage'));
 
 // Profile
 const ProfileDetailsPage = lazy(
@@ -59,10 +61,7 @@ const router = createBrowserRouter([
     path: '/',
     id: 'Dashboard',
     element: (
-      <ProtectedRoute
-        allowNavigation={!!sessionId}
-        reRouteUrl="/auth/login"
-      >
+      <ProtectedRoute allowNavigation={!!sessionId} reRouteUrl="/auth/login">
         <DashboardLayout />
       </ProtectedRoute>
     ),
@@ -180,6 +179,17 @@ const router = createBrowserRouter([
       {
         path: 'forgot-password',
         element: <ForgotPasswordPage />,
+      },
+      {
+        path: 'reset-password',
+        element: (
+          <ProtectedRoute
+            reRouteUrl="/auth/login"
+            allowNavigationFunc={resetPasswordAccessChecks}
+          >
+            <ResetPasswordPage />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

@@ -114,6 +114,14 @@ export function requestForgotPasswordLink(AuthUser: { email: string }) {
     return Api.requestResetPasswordLink(AuthUser);
   };
 }
+export function resetUserPassword(passwordDetails: {
+  password: string;
+  token: string;
+}) {
+  return () => {
+    return Api.resetUserPassword(passwordDetails);
+  };
+}
 
 export function getDashboardUser() {
   return (dispatch: AppDispatch) => {
