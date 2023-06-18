@@ -1,4 +1,5 @@
 import { AnyAction } from 'redux';
+import jwtDecode from 'jwt-decode';
 import TokenVerificationData from 'types/TokenVerificationData';
 import { userTypes } from './constants';
 
@@ -334,4 +335,22 @@ export function formatUserType(userType: (typeof userTypes)[number]) {
   if (userType === 'transportCompany') return 'transport company';
 
   return 'company';
+}
+
+export function decodeToken(token: string): { exp: number } | void {
+  try {
+    return jwtDecode(token);
+  } catch (err) {
+    return;
+  }
+}
+export function isTokenValid(token: string) {
+  const decodedToken = decodeToken(token);
+  if (!decodedToken) return true;
+
+  const tokenExpiration = decodedToken.exp;
+
+  const currentTime = Math.floor(Date.now() / 1000);
+
+  return tokenExpiration > currentTime;
 }
