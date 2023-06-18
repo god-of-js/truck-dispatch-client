@@ -19,6 +19,7 @@ import ChatLogData from 'types/CreateChatLog';
 import ChatLog from 'types/ChatLog';
 import Vehicle from 'types/Vehicle';
 import CreateBid from 'types/CreateBid';
+import ResetUserPassword from 'types/ResetUserPassword';
 
 class ApiService {
   createUser(userData: Partial<User>) {
@@ -34,6 +35,9 @@ class ApiService {
 
   requestResetPasswordLink(data: { email: string }) {
     return this.post('/auth/request-reset-password', data);
+  }
+  resetUserPassword(data: ResetUserPassword) {
+    return this.post('/auth/reset-password', data);
   }
 
   requestVerificationCode(data: { phone: string }) {
