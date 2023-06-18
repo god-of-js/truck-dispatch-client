@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import UiIcon from 'ui/UiIcon';
+import NotFoundImage from 'assets/img/not-found.svg'
 
 interface Props {
   children?: React.ReactNode;
@@ -11,10 +11,9 @@ export default function NotFound({ children }: Props) {
     <NotfoundContainer id="error-page">
       <div>
         <h1>404</h1>
-        <p className="error-text-p">Page not found</p>
-        <p className="error-text-w">We are working on it!!!</p>
+        <p>Page not found</p>
         <div>
-          <UiIcon icon="NotFound" size="350" />
+          <img src={NotFoundImage} alt="notfound" height="350" width="350"/>
         </div>
         <div>{children}</div>
       </div>
@@ -34,15 +33,9 @@ const NotfoundContainer = styled.div`
     line-height: ${pxToRem(37)};
   }
 
-  .error-text-p {
+  p{
     font-weight: 700;
     font-size: ${pxToRem(24)};
     line-height: ${pxToRem(28)};
-  }
-
-  .error-text-w {
-    font-weight: 600;
-    font-size: ${pxToRem(18)};
-    line-height: ${pxToRem(21)};
   }
 `;

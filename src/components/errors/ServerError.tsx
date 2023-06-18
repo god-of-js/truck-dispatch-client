@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import UiIcon from 'ui/UiIcon';
+import ServerErrorImage from 'assets/img/server-error.svg';
 
 interface Props {
   children?: React.ReactNode;
@@ -13,7 +13,7 @@ export default function ServerError({ children }: Props) {
         <h1>Oops!</h1>
         <p>Something went wrong</p>
         <div>
-          <UiIcon icon="ServerError" size="350" />
+          <img src={ServerErrorImage} alt="notfound" height="350" width="350" />
         </div>
         <div>{children}</div>
       </div>
