@@ -12,7 +12,7 @@ interface Props {
 }
 export default function InternalError({
   title = 'Oops!',
-  subtitle = 'Something went wrong',
+  subtitle = 'Something went wrong! Kindly reach out to the team for additional assistance.',
   goToRoute = '/'
 }: Props) {
   const navigate = useNavigate();
