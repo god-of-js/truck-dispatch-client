@@ -10,7 +10,6 @@ import sizes from '../utils/sizes';
 import {
   getDashboardUser,
   requestEmailVerification,
-  setUser,
   verifyEmail,
 } from 'modules/Account';
 
@@ -18,7 +17,7 @@ import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
 import { getChatLogs, getUserChat, setChat, setChatLog } from 'modules/Chat';
 import { WEB_SOCKET_URL } from 'utils/privateKeys';
-import { getUserSessionId, saveUserSessionId } from 'utils/localStorageMethods';
+import { saveUserSessionId } from 'utils/localStorageMethods';
 
 const DashboardSidebar = lazy(
   () => import('components/layout/DashboardSidebar'),
