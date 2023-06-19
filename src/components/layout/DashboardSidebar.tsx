@@ -148,6 +148,9 @@ export default function DashboardSidebar() {
         </div>
       </Sidebar>
       <BottomNav>
+        <Button onClick={() => setIsMobileExpanded(true)}>
+          <UiIcon icon="Menu" size="24" />
+        </Button>
         {routes.slice(0, 3).map((route) => (
           <Link to={route.path} key={route.path}>
             <Button className={isRouteActive(route.path) ? 'active' : ''}>
@@ -155,9 +158,6 @@ export default function DashboardSidebar() {
             </Button>
           </Link>
         ))}
-        <Button onClick={() => setIsMobileExpanded(true)}>
-          <UiIcon icon="Menu" size="24" />
-        </Button>
       </BottomNav>
     </>
   );
