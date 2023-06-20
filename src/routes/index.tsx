@@ -70,7 +70,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Navigate to="/my-trips" replace />
+        element: <Navigate to="/my-trips" replace />,
       },
       {
         path: '/profile',
@@ -200,7 +200,7 @@ const router = createBrowserRouter([
   },
   {
     path: '*',
-    element: <NotFoundError />
+    element: <NotFoundError />,
   },
 ]);
 

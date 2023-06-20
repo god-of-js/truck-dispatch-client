@@ -15,7 +15,7 @@ export function ProtectedRoute({
 }: PrivateRouteProps) {
   const next = <>{children}</>;
   const reRoute = <Navigate to={reRouteUrl} />;
-  
+
   if (allowNavigationFunc) {
     const location = useLocation();
     if (allowNavigationFunc(location.search)) return next;

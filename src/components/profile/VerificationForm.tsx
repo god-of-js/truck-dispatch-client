@@ -74,7 +74,7 @@ export default function VerificationForm({ parentLoading, onVerified }: Props) {
   ];
 
   const disableButton = useMemo(() => {
-    return aValueHasBeenChanged<Verification>(verification!, formData);
+    return false;
   }, [verification, formData]);
 
   async function startUserVerificationProcess() {

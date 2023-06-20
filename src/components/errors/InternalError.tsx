@@ -8,12 +8,12 @@ const UiButton = lazy(() => import('ui/UiButton'));
 interface Props {
   title?: string;
   subtitle?: string;
-  goToRoute?: string
+  goToRoute?: string;
 }
 export default function InternalError({
   title = 'Oops!',
   subtitle = 'Something went wrong! Kindly reach out to the team for additional assistance.',
-  goToRoute = '/'
+  goToRoute = '/',
 }: Props) {
   const navigate = useNavigate();
 

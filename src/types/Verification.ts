@@ -1,3 +1,5 @@
+import User from './User';
+
 export default interface Verification {
   _id: string;
   idType: string;
@@ -15,4 +17,5 @@ export default interface Verification {
     idDoc: File | null | string;
   };
   adminMessage?: string;
+  user?: User;
 }

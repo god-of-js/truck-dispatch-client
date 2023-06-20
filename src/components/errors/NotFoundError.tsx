@@ -6,16 +6,20 @@ import { useNavigate } from 'react-router-dom';
 
 interface Props {
   title?: string;
-  subtitle?: string
+  subtitle?: string;
   goToRoute?: string;
 }
-export default function NotFoundErrorPage({ title = '404', subtitle = 'Page not found', goToRoute = '/'}: Props) {
-  const navigate = useNavigate()
+export default function NotFoundErrorPage({
+  title = '404',
+  subtitle = 'Page not found',
+  goToRoute = '/',
+}: Props) {
+  const navigate = useNavigate();
   return (
     <ErrorStyling>
       <h1>{title}</h1>
       <p>{subtitle}</p>
-        <img src={NotFoundImage} alt="notfound" />
+      <img src={NotFoundImage} alt="notfound" />
       <div className="button-container">
         <UiButton variant="secondary" onClick={() => navigate(goToRoute)}>
           Go to Dashboard
