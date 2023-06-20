@@ -59,7 +59,7 @@ export default function LoginPage() {
       <StyledAuthContent inverted>
         <div className="form-container">
           <header>
-            <h1>Welcome back,</h1>
+            <h1>Welcome back</h1>
             <p className="info-text">Sign in to continue to your account</p>
           </header>
           <UiForm
