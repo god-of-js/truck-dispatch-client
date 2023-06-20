@@ -75,13 +75,22 @@ export function nairaToKobo(amount: string | number) {
   return value * 100;
 }
 
+function getEditedFieldsFromObject(source: Record<string, any>, formObj: Record<string, any>,) {
+  const obj: Record<string, unknown> = {}
+  return Object.keys(formObj).filter((key) => {
+    return formObj[key] !== source[key];
+  }).forEach(key => {
+    obj[key] = formObj[key];
+  })
+}
+
 export function removeUneditedFields<T = Record<string, unknown>>(
   sourceObj: Record<string, any>,
   derivedObj: Record<string, any>,
 ): T {
-  const editedFields = Object.keys(derivedObj).filter(
-    (field: string) => derivedObj[field] !== sourceObj[field],
-  );
+  const editedFields = Object.keys(derivedObj).filter((field: string) => {
+    return derivedObj[field] !== sourceObj[field];
+  });
   const newDerivedObj: Record<string, any> = {};
   editedFields.forEach((field) => (newDerivedObj[field] = derivedObj[field]));
   return newDerivedObj as T;

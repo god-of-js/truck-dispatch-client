@@ -26,6 +26,7 @@ instance.interceptors.response.use(
       err.response.data.message === 'jwt expired' ||
       err.response.data.message === 'invalid signature' ||
       err.response.data.message === 'No JWT was provided' ||
+      err.response.data.message === 'User does not exist' ||
       err.response.data.message === 'Invalid JWT'
     ) {
       if (!isRedirecting) {
