@@ -64,7 +64,7 @@ export default function LoginPage() {
         <div className="form-container">
           <header>
             <h1>Welcome back,</h1>
-            <p className="info-text">Sign in to continue to your account</p>
+            <p className="info-text">Sign in to continue to your account ppp</p>
           </header>
           <UiForm
             schema={loginSchema}
