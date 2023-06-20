@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import styled from 'styled-components';
-import UiField from './UiField';
 
+const UiField = lazy(() => import('./UiField'));
 interface Props {
   label: string;
   value: string;

@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
-import StyledAuthContent from 'components/auth/StyledAuthContent';
-import VerifyPhoneForm from 'components/auth/VerifyPhoneForm';
+const AuthLayoutStyling = lazy(
+  () => import('components/layout/AuthLayoutStyling'),
+);
+const VerifyPhoneForm = lazy(() => import('components/auth/VerifyPhoneForm'));
+const StyledAuthContent = lazy(
+  () => import('components/auth/StyledAuthContent'),
+);
 
 export default function VerifyPhonePage() {
   const navigate = useNavigate();

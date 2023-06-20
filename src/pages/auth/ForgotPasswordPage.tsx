@@ -1,17 +1,22 @@
-import React, { useState } from 'react';
+import React, { lazy, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import UiForm from 'ui/UiForm';
-import UiInput from 'ui/UiInput';
-import UiButton from 'ui/UiButton';
-import UiIcon from 'ui/UiIcon';
-import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
 
 import { requestForgotPasswordLink } from '../../modules/Account';
 
 import { toAnyAction } from 'utils/helpers';
 import ForgotPasswordSchema from 'utils/validations/ForgotPasswordSchema';
-import StyledAuthContent from 'components/auth/StyledAuthContent';
+
+const UiForm = lazy(() => import('ui/UiForm'));
+const UiInput = lazy(() => import('ui/UiInput'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiIcon = lazy(() => import('ui/UiIcon'));
+const AuthLayoutStyling = lazy(
+  () => import('components/layout/AuthLayoutStyling'),
+);
+const StyledAuthContent = lazy(
+  () => import('components/auth/StyledAuthContent'),
+);
 
 export default function ForgotPasswordPage() {
   const dispatch = useDispatch();
@@ -43,7 +48,7 @@ export default function ForgotPasswordPage() {
     <div className="duo-button-container no-btn-margin-top">
       <Link to="/auth/login">
         <UiButton size="large" variant="secondary" isFullWidth>
-          <UiIcon icon="CaretLeft" />
+          <UiIcon icon="ArrowLeft" />
           Back to sign in
         </UiButton>
       </Link>

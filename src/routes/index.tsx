@@ -1,11 +1,15 @@
 import React, { lazy } from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { ProtectedRoute } from './ProtectedRoute';
 
-const PageError = lazy(() => import('../components/errors/PageError'));
+const NotFoundError = lazy(() => import('../components/errors/NotFoundError'));
+const InternalError = lazy(() => import('../components/errors/InternalError'));
 
 // LAYOUTS
+import DashboardLayout from '../layouts/DashboardLayout';
+import { getUserSessionId } from 'utils/localStorageMethods';
+import { resetPasswordAccessChecks } from './allowNavigationFunctions';
 const AuthLayout = lazy(() => import('../layouts/AuthLayout'));
-const DashboardLayout = lazy(() => import('../layouts/DashboardLayout'));
 const ProfileLayout = lazy(() => import('../layouts/ProfileLayout'));
 const TripLayout = lazy(() => import('../layouts/TripLayout'));
 const TripsLayout = lazy(() => import('../layouts/TripsLayout'));
@@ -21,6 +25,7 @@ const LoginPage = lazy(() => import('../pages/auth/LoginPage'));
 const ForgotPasswordPage = lazy(
   () => import('../pages/auth/ForgotPasswordPage'),
 );
+const ResetPasswordPage = lazy(() => import('../pages/auth/ResetPasswordPage'));
 
 // Profile
 const ProfileDetailsPage = lazy(
@@ -50,16 +55,23 @@ const ChatPage = lazy(() => import('../pages/chat/ChatPage'));
 const VehiclesPage = lazy(() => import('../pages/vehicles/VehiclesPage'));
 
 // Transactions
-
 const PaymentsPage = lazy(() => import('../pages/payments/PaymentsPage'));
-
+const sessionId = getUserSessionId();
 const router = createBrowserRouter([
   {
     path: '/',
     id: 'Dashboard',
-    element: <DashboardLayout />,
-    errorElement: <PageError />,
+    element: (
+      <ProtectedRoute allowNavigation={!!sessionId} reRouteUrl="/auth/login">
+        <DashboardLayout />
+      </ProtectedRoute>
+    ),
+    errorElement: <InternalError />,
     children: [
+      {
+        path: '/',
+        element: <Navigate to="/my-trips" replace />
+      },
       {
         path: '/profile',
         id: 'Profile',
@@ -115,7 +127,7 @@ const router = createBrowserRouter([
             element: <TripLayout />,
             children: [
               {
-                path: '/my-trips/:tripId',
+                path: '',
                 id: 'TripDetails',
                 element: <TripDetailsPage />,
               },
@@ -147,7 +159,11 @@ const router = createBrowserRouter([
   },
   {
     path: 'auth',
-    element: <AuthLayout />,
+    element: (
+      <ProtectedRoute allowNavigation={!sessionId} reRouteUrl="/my-trips">
+        <AuthLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: 'join',
@@ -169,7 +185,22 @@ const router = createBrowserRouter([
         path: 'forgot-password',
         element: <ForgotPasswordPage />,
       },
+      {
+        path: 'reset-password',
+        element: (
+          <ProtectedRoute
+            reRouteUrl="/auth/login"
+            allowNavigationFunc={resetPasswordAccessChecks}
+          >
+            <ResetPasswordPage />
+          </ProtectedRoute>
+        ),
+      },
     ],
+  },
+  {
+    path: '*',
+    element: <NotFoundError />
   },
 ]);
 

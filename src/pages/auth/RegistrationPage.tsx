@@ -1,12 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { lazy, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import UiSteps, { Step } from 'ui/UiSteps';
-import AuthLayoutStyling from 'components/layout/AuthLayoutStyling';
-import CompanyDetailsForm from 'components/auth/CompanyDetailsForm';
-import PersonalDetailsForm from 'components/auth/PersonalDetailsForm';
-import VerifyPhoneForm from '../../components/auth/VerifyPhoneForm';
-import ChoosePasswordForm from 'components/auth/ChoosePasswordForm';
+import { Step } from 'ui/UiSteps';
 import { userTypes } from 'utils/constants';
 import styled from 'styled-components';
 import sizes from 'utils/sizes';
@@ -15,7 +10,24 @@ import {
   getPresentAuthStage,
   savePresentAuthStage,
 } from 'utils/localStorageMethods';
-import StyledAuthContent from 'components/auth/StyledAuthContent';
+
+const VerifyPhoneForm = lazy(() => import('components/auth/VerifyPhoneForm'));
+const PersonalDetailsForm = lazy(
+  () => import('components/auth/PersonalDetailsForm'),
+);
+const ChoosePasswordForm = lazy(
+  () => import('components/auth/ChoosePasswordForm'),
+);
+const CompanyDetailsForm = lazy(
+  () => import('components/auth/CompanyDetailsForm'),
+);
+const UiSteps = lazy(() => import('ui/UiSteps'));
+const AuthLayoutStyling = lazy(
+  () => import('components/layout/AuthLayoutStyling'),
+);
+const StyledAuthContent = lazy(
+  () => import('components/auth/StyledAuthContent'),
+);
 
 export default function RegistrationPage() {
   const { userType } = useParams();

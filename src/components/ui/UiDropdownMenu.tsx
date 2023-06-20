@@ -1,11 +1,12 @@
-import React from 'react';
-import UiIcon, { Icons } from './UiIcon';
+import React, { lazy } from 'react';
+import { Icons } from './UiIcon';
 import { Menu, MenuItem, MenuButton } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/slide.css';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+const UiIcon = lazy(() => import('./UiIcon'));
 export interface DropDownData {
   hasDivider?: boolean;
   label?: string;

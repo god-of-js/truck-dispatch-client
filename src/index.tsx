@@ -10,6 +10,18 @@ import './variables.css';
 import getStore from './modules';
 import Loader from 'components/layout/Loader';
 import loadServices from 'utils/loadServices';
+import { registerSW } from 'virtual:pwa-register';
+
+const updateSW = registerSW({
+  onNeedRefresh() {
+    const refreshConfirmed = confirm(
+      'A new version of the website is available. Would you like to refresh?',
+    );
+    if (refreshConfirmed) {
+      updateSW();
+    }
+  },
+});
 
 // @ts-ignore
 window.pxToRem = (px: number, baseSize = 16) => `${px / baseSize}rem`;

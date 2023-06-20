@@ -1,7 +1,9 @@
+import { lazy } from 'react';
 import styled from 'styled-components';
-import UiButton from 'ui/UiButton';
-import UiIcon from 'ui/UiIcon';
-import Loader from './Loader';
+
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiIcon = lazy(() => import('ui/UiIcon'));
+const Loader = lazy(() => import('./Loader'));
 
 interface Props {
   loading: boolean;

@@ -1,14 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { lazy, useEffect, useMemo, useState } from 'react';
 
-import JobItem from 'components/jobs/JobItem';
-import DashboardTopNav from 'components/layout/DashboardTopNav';
-import InformUserOfVerification from 'components/verification/InformUserOfVerification';
 import { RootState } from 'modules/index';
 import { getJobs, selectJob } from 'modules/Trips';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import UiOverlay from 'ui/UiOverlay';
 import {
   filterByFieldInObject,
   searchObjectsByField,
@@ -17,17 +13,24 @@ import {
 import Trip from 'types/Trip';
 import { clientBasedUserTypes } from 'utils/constants';
 import JobsResponse from 'types/JobsResponse';
-import ViewJobDetail from 'components/jobs/ViewJobDetail';
-import BidForJob from 'components/jobs/BidForJob';
-import { deleteBid, getTransporterBids } from 'modules/Bid';
-import AllBids from 'components/bids/AllBids';
-import PaginationLoader from 'components/layout/PaginationLoader';
-import UiButton from 'ui/UiButton';
-import UiFilterTag from 'ui/UiFilterTag';
-import UiConfirmModal from 'ui/UiConfirmModal';
 import { Toast } from 'utils/toast';
-import UiEmptyList from 'ui/UiEmptyList';
-import AddVehicle from 'components/vehicles/AddVehicle';
+import { deleteBid, getTransporterBids } from 'modules/Bid';
+
+const AllBids = lazy(() => import('components/bids/AllBids'));
+const PaginationLoader = lazy(
+  () => import('components/layout/PaginationLoader'),
+);
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiConfirmModal = lazy(() => import('ui/UiConfirmModal'));
+const UiEmptyList = lazy(() => import('ui/UiEmptyList'));
+const AddVehicle = lazy(() => import('components/vehicles/AddVehicle'));
+const JobItem = lazy(() => import('components/jobs/JobItem'));
+const DashboardTopNav = lazy(() => import('components/layout/DashboardTopNav'));
+const InformUserOfVerification = lazy(
+  () => import('components/verification/InformUserOfVerification'),
+);
+const ViewJobDetail = lazy(() => import('components/jobs/ViewJobDetail'));
+const BidForJob = lazy(() => import('components/jobs/BidForJob'));
 
 export default function TransporterJobs() {
   const location = useLocation();

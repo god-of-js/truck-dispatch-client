@@ -1,9 +1,9 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, lazy } from 'react';
 import OutsideClickHandler from 'react-outside-click-handler';
 import styled from 'styled-components';
-import UiField from './UiField';
-import UiIcon from './UiIcon';
 
+const UiField = lazy(() => import('./UiField'));
+const UiIcon = lazy(() => import('./UiIcon'));
 export interface Option {
   value: string;
   label: string;
