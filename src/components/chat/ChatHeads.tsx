@@ -48,25 +48,25 @@ export default function ChatHeads() {
   }
   function setFilter() {}
 
-function formatTime(timestamp: number) {
-  const currentTime = moment();
-  const messageTime = moment(timestamp);
-  const diffInDays = currentTime.diff(messageTime, 'days');
+  function formatTime(timestamp: number) {
+    const currentTime = moment();
+    const messageTime = moment(timestamp);
+    const diffInDays = currentTime.diff(messageTime, 'days');
 
-  if (diffInDays === 0) {
-    // Same day
-    return messageTime.format('h:mm A');
-  } else if (diffInDays === 1) {
-    // Yesterday
-    return 'Yesterday';
-  } else if (diffInDays < 7) {
-    // Same week but not yesterday
-    return messageTime.format('dddd');
-  } else {
-    // More than a week ago
-    return messageTime.format('DD/MM/YYYY');
+    if (diffInDays === 0) {
+      // Same day
+      return messageTime.format('h:mm A');
+    } else if (diffInDays === 1) {
+      // Yesterday
+      return 'Yesterday';
+    } else if (diffInDays < 7) {
+      // Same week but not yesterday
+      return messageTime.format('dddd');
+    } else {
+      // More than a week ago
+      return messageTime.format('DD/MM/YYYY');
+    }
   }
-}
   return (
     <ChatHeadsContainer>
       <header className="chat-heads-header">
@@ -136,9 +136,9 @@ const ChatHeadsContainer = styled.div`
   height: 100%;
   .chat-heads-header {
     height: ${pxToRem(64)};
+    box-sizing: border-box;
     border-bottom: ${pxToRem(1)} solid var(--color-gray-30);
     padding: ${pxToRem(16)};
-    box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: space-between;

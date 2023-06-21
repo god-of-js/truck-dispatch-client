@@ -208,6 +208,11 @@ const icons = {
       default: module.ReactComponent,
     })),
   ),
+  PaperPlaneTilt: lazy(() =>
+    import('./icons/paper-plane-tilt.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
   PasswordCheck: lazy(() =>
     import('./icons/password-check.svg').then((module) => ({
       default: module.ReactComponent,

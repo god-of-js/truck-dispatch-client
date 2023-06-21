@@ -2,6 +2,7 @@ import React, { lazy, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import moment from 'moment';
 
 import { RootState } from 'modules/index';
 
@@ -21,7 +22,9 @@ import User from 'types/User';
 import uuidv4 from 'utils/uuid';
 
 const UiForm = lazy(() => import('ui/UiForm'));
-const UiAvatar = lazy(() => import('ui/UiAvatar'));
+const UiIcon = lazy(() => import('ui/UiIcon'));
+const UserDetails = lazy(() => import('ui/UserDetails'));
+const UiButton = lazy(() => import('ui/UiButton'));
 
 export default function ChatPage() {
   const { chatLogId } = useParams();
@@ -77,6 +80,10 @@ export default function ChatPage() {
     }
   }
 
+  function getTime(timestamp: number) {
+    return moment(timestamp).format('hh:mmA');
+  }
+
   useEffect(() => {
     const element = chatBottomRef.current;
     if (element) {
@@ -100,20 +107,29 @@ export default function ChatPage() {
   return (
     <ChatPageStyling>
       <Header>
-        <div className="user-details">
-          {/* TODO: Add Loaders to the avatar */}
-          <UiAvatar avatar={alternateUser?.avatar} />
-          <div>{`${alternateUser?.firstName || ''} ${
-            alternateUser?.lastName || ''
-          }`}</div>
-        </div>
+        <UserDetails
+          avatar={alternateUser.avatar}
+          userName={`${alternateUser.firstName} ${alternateUser.lastName}`}
+          showViewProfile
+        />
       </Header>
 
       <ChatContainer>
-        <div id="chat-window">
+        <div id="chat-window" className="chat-window">
+          <div className="beginning-of-chat-msg">
+            This is the beginning of your chat with{' '}
+            <UiButton
+              variant="secondary"
+              size="s"
+              textCasing="capitalize"
+            >{`${alternateUser.firstName} ${alternateUser.lastName}`}</UiButton>
+          </div>
           {chats.map((chat, index) => (
             <ChatBubble isMine={chat.sender === user?._id} key={index}>
               <div className="chat-bubble-inner">{chat.message}</div>
+              <div className="time-sent">
+                {chat.createdAt && getTime(chat.createdAt!)}
+              </div>
             </ChatBubble>
           ))}
         </div>
@@ -134,15 +150,23 @@ export default function ChatPage() {
                   </div>
                 )}
                 <div className="inner">
-                  <input
-                    ref={inputRef}
-                    placeholder="Enter Message"
-                    value={formData.message}
-                    onChange={updateMessage}
-                  />
-                  <button type="submit" disabled={!formData.message}>
-                    {/* <UiIcon icon="PaperPlaneTilt" /> */}
-                  </button>
+                  <div className="input-container">
+                    <input
+                      ref={inputRef}
+                      placeholder="Start typing your message"
+                      value={formData.message}
+                      onChange={updateMessage}
+                    />
+                  </div>
+                  <div className="btn-container">
+                    <button
+                      type="submit"
+                      className="send-btn"
+                      disabled={!formData.message}
+                    >
+                      <UiIcon icon="PaperPlaneTilt" size="20" />
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
@@ -160,40 +184,67 @@ const ChatPageStyling = styled.div`
 
 const Header = styled.header`
   padding: ${pxToRem(12)};
-  border-bottom: 1px solid var(--color-gray-20);
+  height: ${pxToRem(64)};
+  box-sizing: border-box;
+  border-top-right-radius: ${pxToRem(8)};
+  border-bottom: ${pxToRem(1)} solid var(--color-gray-30);
   background-color: white;
   position: sticky;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1;
-
-  .user-details {
-    display: flex;
-    align-items: center;
-    gap: ${pxToRem(12)};
-  }
 `;
 
 const ChatContainer = styled.div`
-  padding: ${pxToRem(80)} ${pxToRem(32)} ${pxToRem(80)} ${pxToRem(32)};
-  background: var(--color-gray-10);
+  padding: ${pxToRem(18)};
   height: 80%;
-  overflow: scroll;
+  overflow: auto;
+
+  .chat-window {
+    background: var(--color-gray-20);
+    min-height: 100%;
+    border-radius: ${pxToRem(8)};
+    padding: ${pxToRem(12)};
+
+    .beginning-of-chat-msg {
+      width: fit-content;
+      display: flex;
+      margin: ${pxToRem(8)} auto;
+      align-items: center;
+      background: white;
+      padding: ${pxToRem(4)} ${pxToRem(8)};
+      border-radius: ${pxToRem(8)};
+      gap: ${pxToRem(6)};
+      font-weight: 400;
+      font-size: ${pxToRem(12)};
+      line-height: ${pxToRem(20)};
+      color: var(--color-gray-100);
+    }
+  }
 `;
 
 const ChatBubble = styled.div<{ isMine: boolean }>`
   display: flex;
-  justify-content: ${({ isMine }) => (isMine ? 'flex-end' : '')};
+  flex-direction: column;
+  align-items: ${({ isMine }) => (isMine ? 'flex-end' : '')};
   .chat-bubble-inner {
     padding: ${pxToRem(8)};
     margin: ${pxToRem(2)} 0;
-    border-radius: ${pxToRem(4)};
-    background: ${({ isMine }) =>
-      isMine ? 'var(--color-primary)' : 'var(--color-gray-70)'};
+    border-radius: ${pxToRem(8)};
+    background: white;
     width: fit-content;
-    color: white;
-    max-width: 70%;
+    color: var(--color-neutralBlack);
+    max-width: 60%;
+    font-weight: 400;
+    font-size: ${pxToRem(14)};
+    line-height: ${pxToRem(20)};
+  }
+  .time-sent {
+    font-weight: 600;
+    font-size: ${pxToRem(10)};
+    line-height: ${pxToRem(20)};
+    color: var(--color-gray-70);
   }
 `;
 
@@ -202,13 +253,9 @@ const InputContainer = styled.div`
   bottom: 0;
   right: 0;
   left: 0;
-  padding-bottom: ${pxToRem(16)};
+  padding: 0 ${pxToRem(18)} ${pxToRem(18)} ${pxToRem(18)};
   z-index: 1;
 
-  .input-group {
-    width: 90%;
-    margin: auto;
-  }
   .error-message-container {
     font-size: ${pxToRem(14)};
     color: var(--color-danger);
@@ -220,33 +267,50 @@ const InputContainer = styled.div`
     border-bottom: transparent;
   }
   .inner {
-    padding: ${pxToRem(12)};
     display: flex;
-    box-shadow: var(--box-shadow);
+    height: ${pxToRem(60)};
+    overflow: hidden;
     background: white;
     margin-bottom: ${pxToRem(12)};
-    border: 1px solid var(--color-gray-200);
-    border-radius: ${pxToRem(4)};
-    input {
+    border: 1px solid var(--color-gray-30);
+    border-radius: ${pxToRem(50)};
+    .input-container {
       width: 100%;
-      border: transparent;
-      background: transparent;
-      outline: transparent;
+      padding: ${pxToRem(12)};
+      display: flex;
+      align-items: center;
+      input {
+        width: 100%;
+        border: transparent;
+        background: transparent;
+        outline: transparent;
+        font-size: ${pxToRem(14)};
+      }
     }
-
-    button {
-      background: transparent;
-      border: transparent;
-      outline: none;
-      cursor: pointer;
-      padding: ${pxToRem(4)};
+    .btn-container {
+      border-left: ${pxToRem(1)} solid var(--color-gray-30);
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: ${pxToRem(4)};
+      padding: 0 ${pxToRem(10)};
+      box-sizing: border-box;
+      .send-btn {
+        background: var(--color-primary);
+        border: transparent;
+        outline: none;
+        cursor: pointer;
+        padding: ${pxToRem(4)};
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        width: ${pxToRem(44)};
+        height: ${pxToRem(44)};
 
-      :hover {
-        background: var(--color-gray-200);
+        &:hover {
+          box-shadow: var(--box-shadow-primary);
+        }
       }
     }
   }

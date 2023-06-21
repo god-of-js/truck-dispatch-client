@@ -56,7 +56,7 @@ export default function UserDetails({
         </div>
       </div>
       <div className="user-details-actions">
-        {false && (
+        {showViewProfile && (
           <UiButton variant="secondary" size="md">
             View Profile
           </UiButton>
