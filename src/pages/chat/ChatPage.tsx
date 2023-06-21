@@ -156,7 +156,6 @@ export default function ChatPage() {
 const ChatPageStyling = styled.div`
   position: relative;
   height: 100%;
-  padding: 0 ${pxToRem(24)};
 `;
 
 const Header = styled.header`
