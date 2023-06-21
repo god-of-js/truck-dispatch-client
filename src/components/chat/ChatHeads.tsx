@@ -2,6 +2,7 @@ import React, { lazy, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import moment from 'moment';
 import { RootState } from 'modules/index';
 import ChatLog from 'types/ChatLog';
 
@@ -30,10 +31,12 @@ export default function ChatHeads() {
     return new Date(createdAt).getTime();
   }
   const chatLogsWithContent = useMemo(() => {
-    return chatLogs.filter((log) => !!log.lastMessage).sort(
-      (a, b) =>
-        getTime(b.lastMessage.createdAt!) - getTime(a.lastMessage.createdAt!),
-    );
+    return chatLogs
+      .filter((log) => !!log.lastMessage)
+      .sort(
+        (a, b) =>
+          getTime(b.lastMessage.createdAt!) - getTime(a.lastMessage.createdAt!),
+      );
   }, [chatLogs]);
 
   function alternateUser(log: ChatLog) {
@@ -44,6 +47,26 @@ export default function ChatHeads() {
     navigate(`/chat/${chatLog}`);
   }
   function setFilter() {}
+
+function formatTime(timestamp: number) {
+  const currentTime = moment();
+  const messageTime = moment(timestamp);
+  const diffInDays = currentTime.diff(messageTime, 'days');
+
+  if (diffInDays === 0) {
+    // Same day
+    return messageTime.format('h:mm A');
+  } else if (diffInDays === 1) {
+    // Yesterday
+    return 'Yesterday';
+  } else if (diffInDays < 7) {
+    // Same week but not yesterday
+    return messageTime.format('dddd');
+  } else {
+    // More than a week ago
+    return messageTime.format('DD/MM/YYYY');
+  }
+}
   return (
     <ChatHeadsContainer>
       <header className="chat-heads-header">
@@ -96,7 +119,10 @@ export default function ChatHeads() {
               <p>{log.lastMessage.message}</p>
             </div>
             <div className="extra-info">
-              
+              <div className="time">
+                {formatTime(log.lastMessage.createdAt!)}
+              </div>
+              <UiIcon icon="DoubleTick" size="20" />
             </div>
           </ChatHead>
         ))}
@@ -183,7 +209,7 @@ const ChatHead = styled.li`
   background: ${({ hasBeenRead }: { hasBeenRead: boolean }) =>
     !hasBeenRead && 'var(--color-primary-10);'};
   display: flex;
-  align-items: flex-end;
+  justify-content: space-between;
   cursor: pointer;
   &:last-child {
     border-bottom: transparent;
@@ -203,6 +229,22 @@ const ChatHead = styled.li`
     max-height: 2.8em;
     margin: 0;
     padding: ${pxToRem(8)} 0 0 0;
+  }
+
+  .extra-info {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-end;
+
+    .time {
+      font-weight: 600;
+      font-size: ${pxToRem(10)};
+      line-height: 140%;
+      letter-spacing: -0.02em;
+      color: var(--color-neutralBlack);
+      white-space: nowrap;
+    }
   }
   :hover {
     background: var(--color-primary-10);
