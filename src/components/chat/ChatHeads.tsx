@@ -22,10 +22,11 @@ export default function ChatHeads() {
       value: 'latest',
       label: 'Latest',
     },
-    {
-      value: 'unread',
-      label: 'Unread',
-    },
+    // TODO: implement filter;
+    // {
+    //   value: 'unread',
+    //   label: 'Unread',
+    // },
   ];
   function getTime(createdAt: number) {
     return new Date(createdAt).getTime();
@@ -92,7 +93,7 @@ export default function ChatHeads() {
             Your messages would show up here when you get one, or you can start
             one
           </p>
-          <UiButton>Start Chat</UiButton>
+          {false && <UiButton>Start Chat</UiButton>}
         </div>
       )}
       <ChatHeadsList>
@@ -122,7 +123,7 @@ export default function ChatHeads() {
               <div className="time">
                 {formatTime(log.lastMessage.createdAt!)}
               </div>
-              <UiIcon icon="DoubleTick" size="20" />
+              {/* <UiIcon icon="DoubleTick" size="20" /> */}
             </div>
           </ChatHead>
         ))}
@@ -209,6 +210,8 @@ const ChatHead = styled.li`
   background: ${({ hasBeenRead }: { hasBeenRead: boolean }) =>
     !hasBeenRead && 'var(--color-primary-10);'};
   display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
   justify-content: space-between;
   cursor: pointer;
   &:last-child {

@@ -42,17 +42,19 @@ export default function ChatLayout() {
       <DashboardTopNav routeName="Chat" />
       <ChatLayoutDesign>
         <UiCard>
-          <div className="chat-heads-container">
-            <ChatHeads />
+          <div className="large-screen-view">
+            <div className="chat-heads-container">
+              <ChatHeads />
+            </div>
+            <div className="outlet-container" key={location.pathname}>
+              <Outlet />
+            </div>
           </div>
-          <div className="outlet-container" key={location.pathname}>
-            <Outlet />
-          </div>
-          {/* <div className="mobile-display">
+          <div className="mobile-view">
             {location.pathname === '/chat' && <ChatHeads />}
 
             <Outlet key={location.pathname} />
-          </div> */}
+          </div>
         </UiCard>
       </ChatLayoutDesign>
       <UiConfirmModal
@@ -71,19 +73,36 @@ export default function ChatLayout() {
 const ChatLayoutDesign = styled.div`
   padding: 0 ${pxToRem(24)};
   .ui-card {
-    display: flex !important;
     padding: 0;
 
-    .chat-heads-container {
-      width: 30%;
+    .large-screen-view {
+      display: none;
+      .chat-heads-container {
+        width: 30%;
+        height: 85vh;
+        overflow: hidden;
+        min-width: ${pxToRem(333)};
+      }
+
+      .outlet-container {
+        height: 85vh;
+        width: 70%;
+        overflow: hidden;
+      }
+    }
+    .mobile-view {
+      display: block;
       height: 85vh;
-      overflow: hidden;
     }
 
-    .outlet-container {
-      height: 85vh;
-      width: 70%;
-      overflow: hidden;
+    @media screen and (min-width: ${sizes.tabletMidWidth}) {
+      .large-screen-view {
+        display: flex;
+      }
+
+      .mobile-view {
+        display: none;
+      }
     }
   }
 `;

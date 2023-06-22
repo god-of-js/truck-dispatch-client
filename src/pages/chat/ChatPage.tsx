@@ -1,6 +1,6 @@
 import React, { lazy, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import moment from 'moment';
 
@@ -20,6 +20,7 @@ import Chat from 'types/Chat';
 import ChatSchema from 'utils/validations/ChatSchema';
 import User from 'types/User';
 import uuidv4 from 'utils/uuid';
+import sizes from 'utils/sizes';
 
 const UiForm = lazy(() => import('ui/UiForm'));
 const UiIcon = lazy(() => import('ui/UiIcon'));
@@ -107,6 +108,11 @@ export default function ChatPage() {
   return (
     <ChatPageStyling>
       <Header>
+        <Link to="/chat" className="go-back-link">
+          <UiButton variant="icon-neutral" size="s">
+            <UiIcon icon="CaretLeft" /> <span>Chats</span>
+          </UiButton>
+        </Link>
         <UserDetails
           avatar={alternateUser.avatar}
           userName={`${alternateUser.firstName} ${alternateUser.lastName}`}
@@ -186,6 +192,9 @@ const Header = styled.header`
   padding: ${pxToRem(12)};
   height: ${pxToRem(64)};
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: ${pxToRem(8)};
   border-top-right-radius: ${pxToRem(8)};
   border-bottom: ${pxToRem(1)} solid var(--color-gray-30);
   background-color: white;
@@ -194,6 +203,12 @@ const Header = styled.header`
   left: 0;
   right: 0;
   z-index: 1;
+
+  @media screen and (min-width: ${sizes.tabletMidWidth}) {
+    .go-back-link {
+      display: none;
+    }
+  }
 `;
 
 const ChatContainer = styled.div`
@@ -210,6 +225,7 @@ const ChatContainer = styled.div`
     .beginning-of-chat-msg {
       width: fit-content;
       display: flex;
+      flex-direction: column;
       margin: ${pxToRem(8)} auto;
       align-items: center;
       background: white;
@@ -220,6 +236,14 @@ const ChatContainer = styled.div`
       font-size: ${pxToRem(12)};
       line-height: ${pxToRem(20)};
       color: var(--color-gray-100);
+    }
+  }
+
+  @media screen and (min-width: ${sizes.mobileSmall}) {
+    .chat-window {
+      .beginning-of-chat-msg {
+        flex-direction: row;
+      }
     }
   }
 `;
@@ -235,7 +259,7 @@ const ChatBubble = styled.div<{ isMine: boolean }>`
     background: white;
     width: fit-content;
     color: var(--color-neutralBlack);
-    max-width: 60%;
+    max-width: 70%;
     font-weight: 400;
     font-size: ${pxToRem(14)};
     line-height: ${pxToRem(20)};
@@ -249,10 +273,7 @@ const ChatBubble = styled.div<{ isMine: boolean }>`
 `;
 
 const InputContainer = styled.div`
-  position: sticky;
-  bottom: 0;
-  right: 0;
-  left: 0;
+  background: white;
   padding: 0 ${pxToRem(18)} ${pxToRem(18)} ${pxToRem(18)};
   z-index: 1;
 
