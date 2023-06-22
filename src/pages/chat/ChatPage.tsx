@@ -329,6 +329,10 @@ const InputContainer = styled.div`
         width: ${pxToRem(44)};
         height: ${pxToRem(44)};
 
+        svg {
+          fill: white;
+        }
+
         &:hover {
           box-shadow: var(--box-shadow-primary);
         }
