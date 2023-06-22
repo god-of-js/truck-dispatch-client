@@ -77,7 +77,6 @@ export function verifyEmail(token: string) {
         setUser(data);
       })
       .catch((err) => {
-        console.log(err);
         return Promise.reject(err);
       });
   };
