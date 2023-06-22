@@ -158,6 +158,11 @@ export default function DashboardSidebar() {
             </Button>
           </Link>
         ))}
+        <Link to="/chat">
+          <Button className={isRouteActive('/chat') ? 'active' : ''}>
+            Chat
+          </Button>
+        </Link>
       </BottomNav>
     </>
   );

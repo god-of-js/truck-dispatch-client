@@ -118,6 +118,11 @@ const icons = {
       default: module.ReactComponent,
     })),
   ),
+  DoubleTick: lazy(() =>
+    import('./icons/double-tick.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
   DuoTrucks: lazy(() =>
     import('./icons/duo-trucks.svg').then((module) => ({
       default: module.ReactComponent,
@@ -200,6 +205,11 @@ const icons = {
   ),
   Notification: lazy(() =>
     import('./icons/notification.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  PaperPlaneTilt: lazy(() =>
+    import('./icons/paper-plane-tilt.svg').then((module) => ({
       default: module.ReactComponent,
     })),
   ),

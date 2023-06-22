@@ -101,9 +101,13 @@ export default function BidForJob({
           vehicle,
         }),
       ),
-    ).finally(() => {
-      setLoading(false);
-    });
+    )
+      .then(() => {
+        onClose();
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   function updateJobBid() {
@@ -120,9 +124,13 @@ export default function BidForJob({
           vehicleId: '',
         } as CreateBid),
       ),
-    ).finally(() => {
-      setLoading(false);
-    });
+    )
+      .then(() => {
+        onClose();
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   function onSubmit() {

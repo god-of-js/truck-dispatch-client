@@ -16,6 +16,7 @@ interface Props {
   userName: string;
   size?: Sizes;
   profileSubtitle?: string;
+  hideProfileSubtitle?: boolean;
   showViewProfile?: boolean;
   showMessage?: boolean;
   avatarIsHalfCurved?: boolean;
@@ -28,6 +29,7 @@ export default function UserDetails({
   avatarIsHalfCurved,
   size = 'large',
   showMessage,
+  hideProfileSubtitle,
   showViewProfile,
 }: Props) {
   const user = useSelector((state: RootState) => state.account.user);
@@ -46,9 +48,11 @@ export default function UserDetails({
         <UiAvatar avatar={avatar} isHalfCurved={avatarIsHalfCurved} />
         <div>
           <div className="user-details-name">{userName}</div>
-          <div className="profile-subtitle">
-            {profileSubtitle || '********************'}
-          </div>
+          {!hideProfileSubtitle && (
+            <div className="profile-subtitle">
+              {profileSubtitle || '********************'}
+            </div>
+          )}
         </div>
       </div>
       <div className="user-details-actions">
@@ -74,7 +78,6 @@ const UserDetailsStyling = styled.div<{ size: Sizes }>`
   align-items: center;
   justify-content: space-between;
   gap: ${pxToRem(16)};
-
   .user-profile {
     display: flex;
     gap: ${pxToRem(8)};
