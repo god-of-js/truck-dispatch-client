@@ -1,6 +1,6 @@
 import { createBid, selectBid, updateBid } from 'modules/Bid';
 import { RootState } from 'modules/index';
-import { getVehicles } from 'modules/Vehicle';
+import { getVehicle, getVehicles } from 'modules/Vehicle';
 import { lazy, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -133,7 +133,7 @@ export default function BidForJob({
     bid ? updateJobBid() : bidOnJob();
   }
   useEffect(() => {
-    dispatch(toAnyAction(getVehicles()));
+    dispatch(toAnyAction(getVehicle()));
   }, []);
 
   useEffect(() => {
