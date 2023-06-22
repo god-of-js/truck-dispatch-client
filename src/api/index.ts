@@ -285,8 +285,19 @@ class ApiService {
     return this.delete(`/vehicle/${vehicleId}`);
   }
 
-  getVehicles() {
+  getVehicle() {
     return this.get<Vehicle[]>(`/vehicle`);
+  }
+
+  async getVehicles({ page, limit }: { page: number; limit: number }) {
+    const data = await this.get(`/vehicle&page=${page}&limit=${limit}`);
+
+    return {
+      data: data.data as Vehicle[],
+      currentPage: data.currentPage,
+      totalPages: data.totalPages,
+      totalItems: data.totalItems,
+    };
   }
 
   loadAccountDetails(
