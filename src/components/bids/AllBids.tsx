@@ -11,6 +11,7 @@ interface Props {
   deleteBid: (bidId: string, jobId: string) => void;
   isVisible: boolean;
 }
+
 export default function AllBids({
   onClose,
   editBid,
