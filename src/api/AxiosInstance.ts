@@ -18,23 +18,27 @@ instance.interceptors.response.use(
   (err) => {
     if (!err.response && err.request) {
       Toast.error({
-        msg: 'Something went wrong. Kindly check your connection. and inform the team if the issue persists.',
+        msg: 'Something went wrong. Kindly check your connection and inform the team if the issue persists.',
       });
     }
 
-    if (
-      err.response.data.message === 'jwt expired' ||
-      err.response.data.message === 'invalid signature' ||
-      err.response.data.message === 'No JWT was provided' ||
-      err.response.data.message === 'User does not exist' ||
-      err.response.data.message === 'Invalid JWT'
-    ) {
-      if (!isRedirecting) {
+    const errorData = err.response && err.response.data;
+    if (errorData) {
+      const errorMessage = errorData.message;
+      if (
+        (errorMessage === 'jwt expired' ||
+          errorMessage === 'invalid signature' ||
+          errorMessage === 'No JWT was provided' ||
+          errorMessage === 'User does not exist' ||
+          errorMessage === 'Invalid JWT') &&
+        !isRedirecting
+      ) {
         isRedirecting = true;
         removeUserSessionId();
         window.location.href = '/auth/login';
         window.location.reload();
       }
+      return Promise.reject(err);
     }
     return Promise.reject(err.response.data);
   },
