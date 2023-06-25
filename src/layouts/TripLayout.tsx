@@ -1,4 +1,4 @@
-import React, { ReactNode, lazy, useEffect, useState } from 'react';
+import React, { lazy, useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
