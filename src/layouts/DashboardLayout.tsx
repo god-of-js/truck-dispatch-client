@@ -10,7 +10,6 @@ import sizes from '../utils/sizes';
 import {
   getDashboardUser,
   requestEmailVerification,
-  setUser,
   verifyEmail,
 } from 'modules/Account';
 
@@ -18,7 +17,7 @@ import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
 import { getChatLogs, getUserChat, setChat, setChatLog } from 'modules/Chat';
 import { WEB_SOCKET_URL } from 'utils/privateKeys';
-import { getUserSessionId, saveUserSessionId } from 'utils/localStorageMethods';
+import { saveUserSessionId } from 'utils/localStorageMethods';
 
 const DashboardSidebar = lazy(
   () => import('components/layout/DashboardSidebar'),
@@ -65,9 +64,6 @@ export default function DashboardLayout() {
         navigate(location.pathname);
         setEmailHasBeenVerified(true);
       })
-      .catch(() => {
-        navigate('/auth/login');
-      })
       .finally(() => setLoading(false));
   }
 
@@ -98,19 +94,10 @@ export default function DashboardLayout() {
   }, [action, token, isPhoneVerified]);
 
   useEffect(() => {
-    const sessionId = getUserSessionId();
-    if (!sessionId && action !== 'sign-in' && !token) {
-      navigate('/auth/login');
-      dispatch(setUser(null));
-      window.location.reload();
-    } else {
+    if (action !== 'sign-in' && !token) {
       loadDashboardData();
     }
   }, [action, token, loading]);
-
-  useEffect(() => {
-    if (location.pathname === '/') navigate('/my-trips');
-  }, [location.pathname]);
 
   useEffect(() => {
     // Connect to socket.
@@ -165,16 +152,16 @@ const Body = styled.div`
   position: relative;
   overflow-x: auto;
   width: 100%;
-  padding-bottom: ${pxToRem(100)};
-  /* padding: 0 ${pxToRem(24)}; */
+  padding-bottom: 100px;
+
   .alert-container {
-    padding: ${pxToRem(16)};
+    padding: 16px;
   }
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     width: 97%;
     border-top: none;
     position: static;
-    border-right: ${pxToRem(1)} solid var(--color-gray-200);
+    border-right: 1px solid var(--color-gray-200);
     padding-bottom: 0;
   }
 

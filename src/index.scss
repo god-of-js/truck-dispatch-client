@@ -1,39 +1,38 @@
 @import './assets/style/helpers.scss';
+
 @font-face {
   font-family: 'Inter', sans-serif;
   src: url(https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap);
 }
-@font-face {
-  font-family: 'Audiowide';
-  src: url('./assets/fonts/Audiowide/Audiowide-Regular.ttf');
-}
 
 @font-face {
   font-family: 'thiccboi-extrabold';
-  src: url('./assets/fonts/thicccboi/TTF/THICCCBOI-ExtraBold.ttf');
+  src: url('./assets/fonts/thicccboi/Webfont/THICCCBOI-ExtraBold.woff2') format('woff2');
 }
+
 @font-face {
   font-family: 'thiccboi-bold';
-  src: url('./assets/fonts/thicccboi/TTF/THICCCBOI-Bold.ttf');
+  src: url('./assets/fonts/thicccboi/Webfont/THICCCBOI-Bold.woff2') format('woff2');
 }
+
 @font-face {
   font-family: 'thiccboi-semibold';
-  src: url('./assets/fonts/thicccboi/TTF/THICCCBOI-SemiBold.ttf');
+  src: url('./assets/fonts/thicccboi/Webfont/THICCCBOI-SemiBold.woff2') format('woff2');
 }
 
 @font-face { 
   font-family: 'thiccboi-medium';
-  src: url('./assets/fonts/thicccboi/TTF/THICCCBOI-Medium.ttf');
+  src: url('./assets/fonts/thicccboi/Webfont/THICCCBOI-Medium.woff2');
 }
 
 @font-face { 
   font-family: 'thiccboi-regular';
-  src: url('./assets/fonts/thicccboi/TTF/THICCCBOI-Regular.ttf');
+  src: url('./assets/fonts/thicccboi/Webfont/THICCCBOI-Regular.woff2') format('woff2');
 }
 
 @font-face { 
   font-family: 'thiccboi-light';
-  src: url('./assets/fonts/thicccboi/TTF/THICCCBOI-Light.ttf');
+  src: url('./assets/fonts/thicccboi/Webfont/THICCCBOI-Light.woff2') format('woff2');
 }
 
 body {

@@ -77,7 +77,6 @@ export function verifyEmail(token: string) {
         setUser(data);
       })
       .catch((err) => {
-        console.log(err);
         return Promise.reject(err);
       });
   };
@@ -112,6 +111,14 @@ export function loginUser(AuthUser: { email: string; password: string }) {
 export function requestForgotPasswordLink(AuthUser: { email: string }) {
   return () => {
     return Api.requestResetPasswordLink(AuthUser);
+  };
+}
+export function resetUserPassword(passwordDetails: {
+  password: string;
+  token: string;
+}) {
+  return () => {
+    return Api.resetUserPassword(passwordDetails);
   };
 }
 

@@ -42,7 +42,7 @@ export default function LoginPage() {
     setLoading(true);
     dispatch(toAnyAction(loginUser(formData)))
       .then(() => {
-        navigate('/my-trips');
+        window.location.reload();
       })
       .catch((err: Error) => {
         let msg = err.message;
@@ -63,7 +63,7 @@ export default function LoginPage() {
       <StyledAuthContent inverted>
         <div className="form-container">
           <header>
-            <h1>Welcome back,</h1>
+            <h1>Welcome back</h1>
             <p className="info-text">Sign in to continue to your account</p>
           </header>
           <UiForm

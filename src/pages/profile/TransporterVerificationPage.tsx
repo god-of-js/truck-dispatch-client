@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'modules/index';
 
-import { getUserVerification } from '../../modules/Verification';
+import { getUserVerification } from 'modules/Verification';
 
 import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';

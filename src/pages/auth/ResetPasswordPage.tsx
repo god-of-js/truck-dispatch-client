@@ -1,16 +1,16 @@
 import React, { lazy, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { requestForgotPasswordLink } from '../../modules/Account';
+import { resetUserPassword } from '../../modules/Account';
 
 import { toAnyAction } from 'utils/helpers';
-import ForgotPasswordSchema from 'utils/validations/ForgotPasswordSchema';
+import ChangePasswordSchema from 'utils/validations/ChangePasswordSchema';
+import { Toast } from 'utils/toast';
 
 const UiForm = lazy(() => import('ui/UiForm'));
 const UiInput = lazy(() => import('ui/UiInput'));
 const UiButton = lazy(() => import('ui/UiButton'));
-const UiIcon = lazy(() => import('ui/UiIcon'));
 const AuthLayoutStyling = lazy(
   () => import('components/layout/AuthLayoutStyling'),
 );
@@ -18,11 +18,13 @@ const StyledAuthContent = lazy(
   () => import('components/auth/StyledAuthContent'),
 );
 
-export default function ForgotPasswordPage() {
+export default function ResetPasswordPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
-    email: '',
+    password: '',
+    cPassword: '',
   });
   const [loading, setLoading] = useState(false);
 
@@ -33,9 +35,19 @@ export default function ForgotPasswordPage() {
     });
   }
 
-  function requestRecoveryLink() {
+  function resetPassword() {
     setLoading(true);
-    dispatch(toAnyAction(requestForgotPasswordLink(formData)))
+    const searchUrl = new URLSearchParams(location.search);
+    const token = searchUrl.get('token');
+    if (!token) {
+      Toast.error({ msg: 'No token was provided' });
+      return;
+    }
+    dispatch(
+      toAnyAction(
+        resetUserPassword({ password: formData.password, token: token }),
+      ),
+    )
       .then(() => {
         navigate('/auth/login');
       })
@@ -45,15 +57,9 @@ export default function ForgotPasswordPage() {
   }
 
   const actionButtons = (
-    <div className="duo-button-container no-btn-margin-top">
-      <Link to="/auth/login">
-        <UiButton size="large" variant="secondary" isFullWidth>
-          <UiIcon icon="ArrowLeft" />
-          Back to sign in
-        </UiButton>
-      </Link>
+    <div className="">
       <UiButton size="large" isFullWidth loading={loading}>
-        Send recovery link
+        Reset Password
       </UiButton>
     </div>
   );
@@ -63,24 +69,30 @@ export default function ForgotPasswordPage() {
       <StyledAuthContent inverted>
         <div className="form-container">
           <header>
-            <h1>Forgot password?</h1>
-            <p className="info-text">
-              No worries, we’ll send you reset instructions
-            </p>
+            <h1>Reset Password</h1>
+            <p className="info-text">Must be at least 8 characters</p>
           </header>
           <UiForm
-            schema={ForgotPasswordSchema}
+            schema={ChangePasswordSchema}
             formData={formData}
-            onSubmit={requestRecoveryLink}
+            onSubmit={resetPassword}
           >
             {({ errors }) => (
               <div className="form-container__inner">
                 <UiInput
-                  label="Email Adress*"
-                  placeholder="Enter your email adress"
-                  value={formData.email}
-                  name="email"
-                  error={errors.email}
+                  label="New Password*"
+                  placeholder="Enter your new password"
+                  value={formData.password}
+                  name="password"
+                  error={errors.password}
+                  onChange={handleChange}
+                />
+                <UiInput
+                  label="Confirm Password*"
+                  placeholder="Confirm your new password"
+                  value={formData.cPassword}
+                  name="cPassword"
+                  error={errors.cPassword}
                   onChange={handleChange}
                 />
                 <div className="hidden-in-mobile">{actionButtons}</div>

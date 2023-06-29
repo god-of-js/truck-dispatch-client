@@ -1,4 +1,5 @@
 import { AnyAction } from 'redux';
+import jwtDecode from 'jwt-decode';
 import TokenVerificationData from 'types/TokenVerificationData';
 import { userTypes } from './constants';
 
@@ -74,13 +75,27 @@ export function nairaToKobo(amount: string | number) {
   return value * 100;
 }
 
+function getEditedFieldsFromObject(
+  source: Record<string, any>,
+  formObj: Record<string, any>,
+) {
+  const obj: Record<string, unknown> = {};
+  return Object.keys(formObj)
+    .filter((key) => {
+      return formObj[key] !== source[key];
+    })
+    .forEach((key) => {
+      obj[key] = formObj[key];
+    });
+}
+
 export function removeUneditedFields<T = Record<string, unknown>>(
   sourceObj: Record<string, any>,
   derivedObj: Record<string, any>,
 ): T {
-  const editedFields = Object.keys(derivedObj).filter(
-    (field: string) => derivedObj[field] !== sourceObj[field],
-  );
+  const editedFields = Object.keys(derivedObj).filter((field: string) => {
+    return derivedObj[field] !== sourceObj[field];
+  });
   const newDerivedObj: Record<string, any> = {};
   editedFields.forEach((field) => (newDerivedObj[field] = derivedObj[field]));
   return newDerivedObj as T;
@@ -334,4 +349,22 @@ export function formatUserType(userType: (typeof userTypes)[number]) {
   if (userType === 'transportCompany') return 'transport company';
 
   return 'company';
+}
+
+export function decodeToken(token: string): { exp: number } | void {
+  try {
+    return jwtDecode(token);
+  } catch (err) {
+    return;
+  }
+}
+export function isTokenValid(token: string) {
+  const decodedToken = decodeToken(token);
+  if (!decodedToken) return true;
+
+  const tokenExpiration = decodedToken.exp;
+
+  const currentTime = Math.floor(Date.now() / 1000);
+
+  return tokenExpiration > currentTime;
 }
