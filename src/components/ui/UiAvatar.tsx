@@ -1,10 +1,11 @@
 import React, { lazy, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import EmptyAvatar from '../../assets/img/empty-profile-pic.png';
+import UiIcon from './UiIcon';
 
 const UiButton = lazy(() => import('./UiButton'));
 const FileUploadWidget = lazy(() => import('./FileUploadWidget'));
-type Size = 'sm' | 'lg';
+type Size = 'sm' | 'lg'| 'xl';
 
 interface Props {
   avatar?: string | File;
@@ -55,8 +56,10 @@ export default function UiAvatar({
           value={avatar!}
           onChange={handleAvatarChange}
         >
+
           <UiButton size="s" variant="secondary" type="button">
-            <span>Edit Avatar</span>
+              <UiIcon icon="Camera" size="20" />
+            <span>change picture</span>
           </UiButton>
         </FileUploadWidget>
       )}
@@ -70,6 +73,11 @@ function getSizeVariant(size: Size) {
   width: ${pxToRem(52)};
   height: ${pxToRem(52)};
   `;
+  if (size === 'xl')
+    return `
+  width: ${pxToRem(149)};
+  height: ${pxToRem(149)};
+  `;
   return `
   width: ${pxToRem(40)};
   height: ${pxToRem(40)};
@@ -81,9 +89,11 @@ const AvatarContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  
+ 
 
   button {
-    margin-top: ${pxToRem(12)};
+    margin-top: ${pxToRem(4)};
   }
 `;
 
@@ -95,6 +105,8 @@ const Avatar = styled.div`
   ${({ size }: AvatarProps) => getSizeVariant(size)}
   display: flex;
   align-items: flex-start;
+
+
 
   .user-icon {
     width: 100%;

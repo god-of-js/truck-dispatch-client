@@ -11,6 +11,9 @@ import {
 } from 'utils/helpers';
 import sizes from 'utils/sizes';
 import EditProfileSchema from 'utils/validations/EditProfileSchema';
+import DashboardTopNav from 'components/layout/DashboardTopNav';
+import UiIcon from 'ui/UiIcon';
+import UiDataField from 'ui/UiDataField';
 
 const UiCard = lazy(() => import('ui/UiCard'));
 const UiButton = lazy(() => import('ui/UiButton'));
@@ -58,91 +61,108 @@ export default function ProfileDetailsPage() {
   }
 
   return (
-    <CardContainer>
-      <UiCard>
-        <header>
-          <h2>{isEditable && 'Edit'} Profile Details</h2>
-          {!isEditable && (
-            <div className="edit-btn">
-              <UiButton
-                size="s"
-                variant="neutral"
-                onClick={() => setIsEditable(true)}
-              >
-                Edit Profile
-                {/* <UiIcon icon="PencilSimple" size="20" /> */}
-              </UiButton>
-            </div>
-          )}
-        </header>
+    <>
+      <CardContainer>
+        <UiCard>
+          <UiForm
+            formData={formData}
+            schema={EditProfileSchema}
+            onSubmit={editProfile}
+          >
+            {({ errors }) => (
+              <>
+                <div className="details-page">
+                  <div className="details-page-head">
+                    <div className="avatar-container">
+                      <UiAvatar
+                        size="xl"
+                        isEdit={isEditable}
+                        name="avatar"
+                        avatar={formData.avatar}
+                        onChange={onChange}
+                      />
+                    </div>
 
-        <UiForm
-          formData={formData}
-          schema={EditProfileSchema}
-          onSubmit={editProfile}
-        >
-          {({ errors }) => (
-            <>
-              <div className="avatar-container">
-                <UiAvatar
-                  size="lg"
-                  isEdit={isEditable}
-                  name="avatar"
-                  avatar={formData.avatar}
-                  onChange={onChange}
-                />
-              </div>
-              <GridSpacer>
-                <UiInput
-                  label="First Name"
-                  value={formData.firstName}
-                  name="firstName"
-                  disabled={!isEditable}
-                  error={errors.firstName}
-                  onChange={onChange}
-                />
-                <UiInput
-                  label="Last Name"
-                  value={formData.lastName}
-                  name="lastName"
-                  error={errors.lastName}
-                  disabled={!isEditable}
-                  onChange={onChange}
-                />
-                <UiInput
-                  label="Email"
-                  value={formData.email}
-                  name="email"
-                  error={errors.email}
-                  disabled
-                  onChange={onChange}
-                />
-                <UiInput
-                  label="Phone Number"
-                  value={formData.phone}
-                  name="phone"
-                  error={errors.phone}
-                  disabled
-                  onChange={onChange}
-                />
-              </GridSpacer>
-              {isEditable && (
-                <div className="button-container">
-                  <UiButton loading={loading}>Update Profile</UiButton>
-                  <UiButton
-                    variant="secondary"
-                    type="button"
-                    onClick={cancelEdit}
-                  >
-                    Cancel
-                  </UiButton>
+                    <div className="user-name">
+                      <span>{user?.firstName}</span>
+                      <span>{user?.lastName}</span>
+                    </div>
+                  </div>
+
+                  <div className="user-details">
+                    <UiDataField
+                      title="Phone"
+                      value={`${user?.phone}`}
+                      variant="field"
+                      // editButton
+                      editText="edit"
+                    />
+
+                    <UiDataField
+                      title="Email"
+                      value={`${user?.email}`}
+                      // editButton
+                      variant="field"
+                      editText="edit"
+                    />
+                  </div>
+
+                  <GridSpacer>
+                    <UiDataField
+                      title="Trips Completed"
+                      value={`${user?.completedTrips}`}
+                      variant="field"
+                      isCentered
+                      size="s"
+                    />
+                    <UiDataField
+                      title="Avg Rating"
+                      value={`${user?.rating}`}
+                      variant="field"
+                      isCentered
+                      size="s"
+                    />
+                    <UiDataField
+                      title="No Of Reviews"
+                      // to be changed to user.reviews
+                      value={`${user?.rating}`}
+                      variant="field"
+                      isCentered
+                      size="s"
+                    />
+                  </GridSpacer>
+
+                  {!isEditable && (
+                    <div className="button-container">
+                      <UiButton
+                        variant="primary"
+                        size="large"
+                        onClick={() => setIsEditable(true)}
+                      >
+                        Edit My Profile
+                      </UiButton>
+                    </div>
+                  )}
+
+                  {isEditable && (
+                    <div className="button-container">
+                      <UiButton loading={loading}>Save Changes</UiButton>
+                      <UiButton
+                        variant="secondary"
+                        type="button"
+                        onClick={cancelEdit}
+                      >
+                        Cancel
+                      </UiButton>
+                    </div>
+                  )}
                 </div>
-              )}
-            </>
-          )}
-        </UiForm>
-      </UiCard>
-    </CardContainer>
+              </>
+            )}
+          </UiForm>
+        </UiCard>
+      </CardContainer>
+    </>
   );
 }
 
@@ -162,18 +182,55 @@ const CardContainer = styled.div`
     padding: 0;
     margin: 0;
   }
-  .avatar-container {
+
+  .details-page {
+    gap: ${pxToRem(24)};
     display: flex;
-    justify-content: center;
-  }
-  .button-container {
-    display: flex;
-    gap: ${pxToRem(8)};
-  }
-  .edit-btn {
-    button {
+    flex-direction: column;
+
+    .details-page-head {
       display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: ${pxToRem(24)};
+
+      .avatar-container {
+        display: flex;
+        justify-content: center;
+      }
+
+      .user-name {
+        gap: ${pxToRem(4)};
+        display: flex;
+        flex-direction: row;
+        color: var(--neutral-black);
+        leading-trim: both;
+        text-edge: cap;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 140%;
+        letter-spacing: -0.48px;
+      }
+    }
+
+    .user-details {
+      display: flex;
+      flex-direction: column;
       gap: ${pxToRem(8)};
+    }
+  }
+
+  .button-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: ${pxToRem(24)};
+    margin-top: ${pxToRem(40)};
+    button {
+      margin: auto;
+      width: 50%;
     }
   }
 
@@ -188,10 +245,12 @@ const CardContainer = styled.div`
 const GridSpacer = styled.div`
   display: grid;
   grid-template-columns: auto;
+  grid-template-rows: auto auto auto;
   gap: ${pxToRem(12)};
   margin: ${pxToRem(20)} 0;
 
   @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
-    grid-template-columns: auto auto;
+    grid-template-columns: auto auto auto;
+    grid-template-rows: auto auto auto;
   }
 `;
