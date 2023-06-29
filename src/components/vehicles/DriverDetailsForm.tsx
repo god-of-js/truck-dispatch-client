@@ -1,6 +1,7 @@
 import { lazy, useState } from 'react';
 import styled from 'styled-components';
 import CreateVehicleData from 'types/CreateVehicleData';
+import sizes from 'utils/sizes';
 import DriverDetailsSchema from 'utils/validations/DriverDetailsSchema';
 
 const FileUploadWidget = lazy(() => import('ui/FileUploadWidget'));
@@ -120,9 +121,11 @@ export default function DriverDetailsForm({
 const ComponentStyling = styled.div`
   .grid-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
     gap: ${pxToRem(20)};
     margin-top: ${pxToRem(32)};
+    @media only screen and (min-width: ${sizes.tabletLargeWidth}) {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   label {

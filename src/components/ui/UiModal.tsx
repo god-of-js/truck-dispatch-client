@@ -97,14 +97,22 @@ function positionStyling({ position, size }: CardProps) {
   }
   if (position === 'center') {
     return `
-    position: static;
+    position: fixed;
     margin: auto;
+    width: 80%;
     border-radius: ${pxToRem(16)};
     
     .modal-header h2 {
       text-align: center;
       flex-grow: 1;
       margin-left: 40px !important;
+    }
+    @media only screen and (min-width: ${sizes.tabletLargeWidth}) {
+      position: static;
+      width: 70%;
+    }
+    @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
+      width: 50%;
     }
     `;
   }
