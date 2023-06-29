@@ -136,25 +136,24 @@ export default function PersonDetailsForm({ goToNext }: Props) {
               />
             )}
             <ActionsContainer>
-            <UiButton
-              loading={loading}
-              isFullWidth
-              size="large"
-              variant="primary"
-            >
-              Continue
-            </UiButton>
-            <Link to="/auth/join">
-
-            <UiButton
-              loading={loading}
-              isFullWidth
-              size="large"
-              variant="tertiary"
-            >
-              Select another user type
-            </UiButton>
-            </Link>
+              <UiButton
+                loading={loading}
+                isFullWidth
+                size="large"
+                variant="primary"
+              >
+                Continue
+              </UiButton>
+              <Link to="/auth/join">
+                <UiButton
+                  loading={loading}
+                  isFullWidth
+                  size="large"
+                  variant="tertiary"
+                >
+                  Select another user type
+                </UiButton>
+              </Link>
             </ActionsContainer>
           </div>
         )}

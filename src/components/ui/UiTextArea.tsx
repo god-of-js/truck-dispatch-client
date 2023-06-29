@@ -38,6 +38,8 @@ export default function UiTextArea({
 }
 
 const TextArea = styled.textarea`
+  resize: none;
+
   width: 100%;
   padding: ${pxToRem(16)} ${pxToRem(8)};
   gap: ${pxToRem(8)};
