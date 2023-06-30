@@ -25,9 +25,6 @@ const UiIcon = lazy(() => import('ui/UiIcon'));
 const UiAvatar = lazy(() => import('ui/UiAvatar'));
 const UiTable = lazy(() => import('ui/UiTable'));
 const DashboardTopNav = lazy(() => import('components/layout/DashboardTopNav'));
-const ViewPaymentDetails = lazy(
-  () => import('components/payment/ViewPaymentDetails'),
-);
 const CargoLoadingProof = lazy(
   () => import('components/trips/CargoLoadingProof'),
 );
