@@ -124,6 +124,9 @@ const ComponentStyling = styled.div`
       width: 100%;
       max-height: ${pxToRem(376)};
     }
+    @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
+      grid-template-columns: auto auto;
+    }
 
     @media screen and (min-width: ${sizes.tabletMidWidth}) {
       grid-template-columns: repeat(3, 1fr);

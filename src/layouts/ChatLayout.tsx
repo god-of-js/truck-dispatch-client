@@ -8,6 +8,7 @@ import { createOrFetchChatLog } from 'modules/Chat';
 
 const Loader = lazy(() => import('components/layout/Loader'));
 const UiConfirmModal = lazy(() => import('ui/UiConfirmModal'));
+const UiCard = lazy(() => import('ui/UiCard'));
 const DashboardTopNav = lazy(() => import('components/layout/DashboardTopNav'));
 const ChatHeads = lazy(() => import('components/chat/ChatHeads'));
 
@@ -40,22 +41,21 @@ export default function ChatLayout() {
     <>
       <DashboardTopNav routeName="Chat" />
       <ChatLayoutDesign>
-        <div className="card">
-          <div className="chat-heads-container">
-            <ChatHeads />
+        <UiCard>
+          <div className="large-screen-view">
+            <div className="chat-heads-container">
+              <ChatHeads />
+            </div>
+            <div className="outlet-container" key={location.pathname}>
+              <Outlet />
+            </div>
           </div>
-          <div className="outlet-container" key={location.pathname}>
-            <Outlet />
-            {location.pathname === '/chat' && (
-              <div className="create-message"></div>
-            )}
-          </div>
-          <div className="mobile-display">
+          <div className="mobile-view">
             {location.pathname === '/chat' && <ChatHeads />}
 
             <Outlet key={location.pathname} />
           </div>
-        </div>
+        </UiCard>
       </ChatLayoutDesign>
       <UiConfirmModal
         title="Chat Loading"
@@ -71,43 +71,38 @@ export default function ChatLayout() {
 }
 
 const ChatLayoutDesign = styled.div`
-  padding: ${pxToRem(12)} ${pxToRem(24)};
-  height: 85vh;
+  padding: 0 ${pxToRem(24)};
+  .ui-card {
+    padding: 0;
 
-  .card {
-    background: var(--color-gray-10);
-    height: 100%;
-    margin: auto;
-    border: 1px solid var(--color-gray-200);
-    border-radius: ${pxToRem(8)};
-    color: var(--color-gray-600);
-    display: flex;
-    overflow: hidden;
-
-    .chat-heads-container {
+    .large-screen-view {
       display: none;
-      width: 30%;
-      border-right: 1px solid var(--color-gray-200);
-      @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-        display: block;
+      .chat-heads-container {
+        width: 30%;
+        height: 85vh;
+        overflow: hidden;
+        min-width: ${pxToRem(333)};
+      }
+
+      .outlet-container {
+        height: 85vh;
+        width: 70%;
+        overflow: hidden;
       }
     }
-
-    .mobile-display {
+    .mobile-view {
       display: block;
-      width: 100%;
+      height: 85vh;
+    }
 
-      @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
+    @media screen and (min-width: ${sizes.tabletMidWidth}) {
+      .large-screen-view {
+        display: flex;
+      }
+
+      .mobile-view {
         display: none;
       }
-    }
-  }
-
-  .outlet-container {
-    display: none;
-    width: 70%;
-    @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-      display: block;
     }
   }
 `;

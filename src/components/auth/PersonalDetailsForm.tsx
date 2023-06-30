@@ -1,10 +1,11 @@
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import React, { lazy, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toAnyAction } from 'utils/helpers';
 import { registerUser } from 'modules/Account';
 import User from 'types/User';
 import PersonalDetailsFormSchema from 'utils/validations/PersonalDetailsFormSchema';
+import styled from 'styled-components';
 
 const UiSelect = lazy(() => import('ui/UiSelect'));
 const UiIcon = lazy(() => import('ui/UiIcon'));
@@ -134,18 +135,34 @@ export default function PersonDetailsForm({ goToNext }: Props) {
                 onChange={handleChange}
               />
             )}
-
-            <UiButton
-              loading={loading}
-              isFullWidth
-              size="large"
-              variant="primary"
-            >
-              Continue
-            </UiButton>
+            <ActionsContainer>
+              <UiButton
+                loading={loading}
+                isFullWidth
+                size="large"
+                variant="primary"
+              >
+                Continue
+              </UiButton>
+              <Link to="/auth/join">
+                <UiButton
+                  loading={loading}
+                  isFullWidth
+                  size="large"
+                  variant="tertiary"
+                >
+                  Select another user type
+                </UiButton>
+              </Link>
+            </ActionsContainer>
           </div>
         )}
       </UiForm>
     </div>
   );
 }
+
+const ActionsContainer = styled.div`
+  /* display: grid; */
+  /* gap: ${pxToRem(12)}; */
+`;

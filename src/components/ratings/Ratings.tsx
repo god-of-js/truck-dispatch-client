@@ -33,9 +33,13 @@ export default function Ratings({ isActive = false, rating, onRate }: Props) {
           disabled={!isActive}
           onClick={() => onRate?.(i)}
         >
-          <UiIcon icon={activeStar >= i ? 'GoldStar' : 'Star'} size="20" />
+          <UiIcon
+            icon={activeStar >= i || rating >= i ? 'GoldStar' : 'Star'}
+            size="20"
+          />
         </RatingButton>
       ))}
+      {rating}
     </RatingsContainer>
   );
 }

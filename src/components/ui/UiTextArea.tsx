@@ -38,10 +38,13 @@ export default function UiTextArea({
 }
 
 const TextArea = styled.textarea`
+  resize: none;
+
   width: 100%;
   padding: ${pxToRem(16)} ${pxToRem(8)};
   gap: ${pxToRem(8)};
   width: 100%;
+  resize: none;
   font-size: ${pxToRem(12)};
   border: ${pxToRem(1)} solid;
   border-color: ${({ hasError }: { hasError: boolean }) =>
