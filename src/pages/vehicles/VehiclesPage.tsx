@@ -3,14 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { searchObjectsByField, toAnyAction } from 'utils/helpers';
-import { getVehicle, deleteVehicle, getVehicles } from 'modules/Vehicle';
+import { deleteVehicle, getVehicles } from 'modules/Vehicle';
 import { RootState } from 'modules/index';
 import sizes from 'utils/sizes';
 import Vehicle from 'types/Vehicle';
 import { Toast } from 'utils/toast';
 import VehiclePaginatedResponse from 'types/VehiclesPaginatedResponse';
-import PaginationLoader from 'components/layout/PaginationLoader';
 
+const PaginationLoader = lazy(
+  () => import('components/layout/PaginationLoader'),
+);
 const VehicleItem = lazy(() => import('components/vehicles/VehicleItem'));
 const EditVehicle = lazy(() => import('components/vehicles/EditVehicle'));
 const UiIcon = lazy(() => import('ui/UiIcon'));
@@ -111,10 +113,6 @@ export default function VehiclesPage() {
       )}
     </GappedContainerWith12PX>
   );
-
-  useEffect(() => {
-    dispatch(toAnyAction(getVehicle()));
-  }, []);
 
   return (
     <>
