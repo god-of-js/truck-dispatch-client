@@ -11,7 +11,7 @@ export interface Option {
 }
 
 interface Props {
-  label: string;
+  label?: string;
   options: Option[];
   loading?: boolean;
   currentPage?: number;
