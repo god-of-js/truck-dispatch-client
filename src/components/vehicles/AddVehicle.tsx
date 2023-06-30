@@ -86,6 +86,7 @@ export default function AddVehicle({ isVisible, onClose }: Props) {
       title="Add Vehicle"
       onClose={onClose}
       goPrev={goPrev}
+      position="center"
     >
       <UiSteps steps={steps} currentStepTitle={currentStepTitle} noDetail />
       <Body>

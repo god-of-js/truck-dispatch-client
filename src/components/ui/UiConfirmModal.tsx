@@ -43,7 +43,6 @@ export default function UiConfirmModal({
       onClose={onClose}
       hideModalClose={hideModalClose}
       size="sm"
-      position="center"
     >
       <Modal>
         <div className="modal-content">{children}</div>

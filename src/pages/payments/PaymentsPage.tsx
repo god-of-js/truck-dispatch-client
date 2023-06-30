@@ -25,8 +25,8 @@ const UiIcon = lazy(() => import('ui/UiIcon'));
 const UiAvatar = lazy(() => import('ui/UiAvatar'));
 const UiTable = lazy(() => import('ui/UiTable'));
 const DashboardTopNav = lazy(() => import('components/layout/DashboardTopNav'));
-const ViewPaymentDetails = lazy(
-  () => import('components/payment/ViewPaymentDetails'),
+const CargoLoadingProof = lazy(
+  () => import('components/trips/CargoLoadingProof'),
 );
 
 export default function PaymentsPage() {
@@ -38,8 +38,9 @@ export default function PaymentsPage() {
   );
   const searchParams = new URLSearchParams(location.search);
   const user = useSelector((state: RootState) => state.account.user);
-  const [selectedPayment, setSelectedPayment] = useState<PaymentRequest>();
-  const [isViewPaymentVisible, setIsViewPaymentVisible] = useState(false);
+  const [selectedPaymentId, setSelectedPaymentId] = useState('');
+  const [isViewLoadingProofVisible, setIsViewLoadingProofVisible] =
+    useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [totalPayments, setTotalPayments] = useState(0);
   const [totalPendingPayments, setTotalPendingPayments] = useState(0);
@@ -78,6 +79,10 @@ export default function PaymentsPage() {
       func: goToTripDetails,
     },
   ];
+
+  const selectedPayment = useMemo(() => {
+    return paymentRequests.find(({ _id }) => _id === selectedPaymentId);
+  }, [selectedPaymentId, paymentRequests]);
 
   function goToTripDetails(paymentId: string) {
     const payment = paymentRequests.find(({ _id }) => _id === paymentId);
@@ -125,7 +130,14 @@ export default function PaymentsPage() {
       ),
       amount: <AmountText>NGN {abbreviateNumber(item.amount!)}</AmountText>,
       proofVideo: (
-        <UiButton variant="secondary">
+        <UiButton
+          variant="secondary"
+          onClick={(e) => {
+            e.stopPropagation();
+            setSelectedPaymentId(item._id);
+            setIsViewLoadingProofVisible(true);
+          }}
+        >
           <UiIcon icon="PlayCircle" />
           <span>Proof Video</span>
         </UiButton>
@@ -181,6 +193,11 @@ export default function PaymentsPage() {
   function emptyTableAction() {
     navigate('/available-jobs');
   }
+  function updatePaymentRequest() {
+    navigate(
+      `/my-trips/${selectedPayment?.trip._id}?action=update-payment-request`,
+    );
+  }
 
   return (
     <>
@@ -203,12 +220,14 @@ export default function PaymentsPage() {
           emptyTableAction={emptyTableAction}
         />
         {selectedPayment && (
-          <ViewPaymentDetails
-            isVisible={isViewPaymentVisible}
-            onClose={() => setIsViewPaymentVisible(false)}
-            payment={selectedPayment}
-            key={selectedPayment._id}
-          />
+          <>
+            <CargoLoadingProof
+              paymentRequest={selectedPayment}
+              isVisible={isViewLoadingProofVisible}
+              onClose={() => setIsViewLoadingProofVisible(false)}
+              updatePaymentRequest={updatePaymentRequest}
+            />
+          </>
         )}
       </PageStyling>
     </>
