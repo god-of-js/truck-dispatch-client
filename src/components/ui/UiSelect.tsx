@@ -4,8 +4,7 @@ import styled from 'styled-components';
 
 const UiField = lazy(() => import('./UiField'));
 const UiIcon = lazy(() => import('./UiIcon'));
-
-type Size = 's' | 'md' | 'large';
+const PaginationLoader = lazy(() => import('../layout/PaginationLoader'));
 export interface Option {
   value: string;
   label: string;
@@ -14,11 +13,14 @@ export interface Option {
 interface Props {
   label?: string;
   options: Option[];
+  loading?: boolean;
+  currentPage?: number;
+  totalPages?: number;
   value: string | null;
   name: string;
   error?: string;
-  size?: Size;
   onChange: (event: { name: string; value: string }) => void;
+  loadNextPage?: () => void;
 }
 
 export default function UiSelect({
@@ -26,8 +28,11 @@ export default function UiSelect({
   options,
   value,
   name,
+  loading,
   error,
-  size,
+  currentPage,
+  totalPages,
+  loadNextPage,
   onChange,
 }: Props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,12 +54,7 @@ export default function UiSelect({
   return (
     <OutsideClickHandler onOutsideClick={() => setIsOpen(false)}>
       <UiField label={label} error={error}>
-        <StyledSelect
-          className="ui-select"
-          size={size}
-          onClick={toggleOptions}
-          hasError={!!error}
-        >
+        <StyledSelect onClick={toggleOptions} hasError={!!error}>
           <div className="select">
             <span className="selected-option">
               {selectedOption?.label
@@ -62,7 +62,7 @@ export default function UiSelect({
                 : 'Choose an option from the dropdown'}
             </span>
             <span>
-              <UiIcon icon={isOpen ? 'CaretUp' : 'CaretDown'} size="12" />
+              <UiIcon icon={isOpen ? 'CaretUp' : 'CaretDown'} />
             </span>
           </div>
           {isOpen && (
@@ -83,6 +83,17 @@ export default function UiSelect({
                   />
                 </StyledOption>
               ))}
+              {loadNextPage && (
+                <PaginationLoader
+                  removePadding
+                  btnSize="s"
+                  loaderSize="s"
+                  loading={!!loading}
+                  nextPage={() => loadNextPage()}
+                  page={currentPage || 0}
+                  totalPages={totalPages || 0}
+                />
+              )}
             </StyledOptions>
           )}
         </StyledSelect>
@@ -91,18 +102,17 @@ export default function UiSelect({
   );
 }
 
-const StyledSelect = styled.div<{ hasError: boolean; size?: Size }>`
+const StyledSelect = styled.div`
   position: relative;
   .select {
     padding: 0 ${pxToRem(16)};
-    height: ${({ size }) =>
-      size ? `var(--base-height-${size})` : `var(--base-height)`};
+    height: var(--base-height);
     display: flex;
     align-items: center;
     justify-content: space-between;
     font-size: ${pxToRem(12)};
     border: ${pxToRem(1)} solid;
-    border-color: ${({ hasError }) =>
+    border-color: ${({ hasError }: { hasError: boolean }) =>
       hasError ? 'var(--color-danger)' : 'var(--color-gray)'};
     outline: none;
     border-radius: ${pxToRem(8)};

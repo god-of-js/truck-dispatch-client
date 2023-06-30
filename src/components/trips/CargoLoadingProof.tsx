@@ -32,9 +32,11 @@ export default function CargoLoadingProof({
     >
       <ModalBody>
         <p>
-          {isClient ? `Please carefully review the video before making any payments, as it
+          {isClient
+            ? `Please carefully review the video before making any payments, as it
           serves as evidence of cargo being loaded onto the truck. It's
-          important to note that once payment is made, it cannot be reversed.` : ''}
+          important to note that once payment is made, it cannot be reversed.`
+            : ''}
         </p>
         <UiVideoPlayer video={paymentRequest.proofVideo} />
         {paymentRequest.status !== 'completed' && (

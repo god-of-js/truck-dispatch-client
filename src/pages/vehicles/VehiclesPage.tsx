@@ -3,12 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { searchObjectsByField, toAnyAction } from 'utils/helpers';
-import { getVehicles, deleteVehicle } from 'modules/Vehicle';
+import { deleteVehicle, getVehicles } from 'modules/Vehicle';
 import { RootState } from 'modules/index';
 import sizes from 'utils/sizes';
 import Vehicle from 'types/Vehicle';
 import { Toast } from 'utils/toast';
+import VehiclePaginatedResponse from 'types/VehiclesPaginatedResponse';
 
+const PaginationLoader = lazy(
+  () => import('components/layout/PaginationLoader'),
+);
 const VehicleItem = lazy(() => import('components/vehicles/VehicleItem'));
 const EditVehicle = lazy(() => import('components/vehicles/EditVehicle'));
 const UiIcon = lazy(() => import('ui/UiIcon'));
@@ -28,6 +32,10 @@ export default function VehiclesPage() {
   const [selectedVehicleId, setSelectedVehicleId] = useState<string | null>(
     null,
   );
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalVehicles, setTotalVehicles] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
 
   const sortedVehicles = useMemo(() => {
@@ -75,6 +83,22 @@ export default function VehiclesPage() {
       });
   }
 
+  function loadVehicles() {
+    setLoading(true);
+    dispatch(toAnyAction(getVehicles({ page, limit: 20 })))
+      .then((response: VehiclePaginatedResponse) => {
+        setTotalPages(response.totalPages);
+        setTotalVehicles(response.totalItems);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+
+  useEffect(() => {
+    loadVehicles();
+  }, [page]);
+
   function handleChange({ value }: { name: string; value: string | null }) {
     setSearchQuery(value!!);
   }
@@ -89,10 +113,6 @@ export default function VehiclesPage() {
       )}
     </GappedContainerWith12PX>
   );
-
-  useEffect(() => {
-    dispatch(toAnyAction(getVehicles()));
-  }, []);
 
   return (
     <>
@@ -112,6 +132,15 @@ export default function VehiclesPage() {
           />
         ))}
       </Vehicles>
+
+      {!!vehicles.length && (
+        <PaginationLoader
+          loading={loading}
+          page={page}
+          totalPages={totalPages}
+          nextPage={() => setPage(page + 1)}
+        />
+      )}
 
       {!vehicles.length && (
         <EmptyVehicleContainer>

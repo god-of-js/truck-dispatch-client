@@ -16,6 +16,9 @@ export const vehicleSlice = createSlice({
     setVehicles(state: VehicleState, action: { payload: Vehicle[] }) {
       state.vehicles = action.payload;
     },
+    appendVehicles: (state: VehicleState, action: { payload: Vehicle[] }) => {
+      state.vehicles.push(...action.payload);
+    },
     setVehicle(state: VehicleState, action: { payload: Vehicle }) {
       const vehicleIndex = state.vehicles.findIndex(
         ({ _id }) => _id === action.payload._id,
@@ -35,7 +38,8 @@ export const vehicleSlice = createSlice({
   },
 });
 
-export const { setVehicles, setVehicle, removeVehicle } = vehicleSlice.actions;
+export const { setVehicles, appendVehicles, setVehicle, removeVehicle } =
+  vehicleSlice.actions;
 
 export default vehicleSlice.reducer;
 
@@ -47,13 +51,16 @@ export const createVehicle = (vehicle: FormData) => {
   };
 };
 
-export const getVehicles = () => {
+export function getVehicles(params: { page: number; limit: number }) {
   return (dispatch: AppDispatch) => {
-    return Api.getVehicles().then((data) => {
-      dispatch(setVehicles(data));
+    return Api.getVehicles(params).then((data) => {
+      if (data.currentPage === 1) dispatch(setVehicles(data.data));
+      else dispatch(appendVehicles(data.data));
+
+      return data;
     });
   };
-};
+}
 
 export const updateVehicle = (vehicleData: FormData, vehicleId: string) => {
   return (dispatch: AppDispatch) => {
