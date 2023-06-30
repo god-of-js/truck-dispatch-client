@@ -152,7 +152,7 @@ export function getJobs(params: {
   };
 }
 
-export function getTrip(tripId: string) {
+export function getTrip(tripId: string)  {
   return async (dispatch: AppDispatch) => {
     return Api.getTrip(tripId).then((trip) => {
       dispatch(setTrip(trip));
