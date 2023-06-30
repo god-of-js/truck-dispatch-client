@@ -49,10 +49,7 @@ export default function TripLayout() {
   useEffect(() => {
     if (!trip) loadTrip();
 
-    if (
-      clientBasedUserTypes.includes(user?.userType!) &&
-      trip?.status === 'completed'
-    ) {
+    if (trip?.status === 'completed') {
       dispatch(toAnyAction(getTripRating(tripId!))).then((data: Rating) => {
         if (!data) setIsRatingsModalVisible(true);
       });

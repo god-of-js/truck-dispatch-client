@@ -50,7 +50,7 @@ export default function UserDetails({
           <div className="user-details-name">{userName}</div>
           {!hideProfileSubtitle && (
             <div className="profile-subtitle">
-              {profileSubtitle || '********************'}
+              {profileSubtitle || '**************'}
             </div>
           )}
         </div>
@@ -92,6 +92,7 @@ const UserDetailsStyling = styled.div<{ size: Sizes }>`
     letter-spacing: -0.02em;
     color: var(--color-neutralBlack);
     text-transform: capitalize;
+    white-space: nowrap;
   }
 
   .profile-subtitle {

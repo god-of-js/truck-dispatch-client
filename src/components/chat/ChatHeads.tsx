@@ -75,7 +75,6 @@ export default function ChatHeads() {
           <span>Filter: </span>
           <div className="select-container">
             <UiSelect
-              size="s"
               value={filterCategory}
               name="filterCategory"
               options={filterOptions}

@@ -73,6 +73,9 @@ const ComponentStyling = styled.div`
     grid-template-columns: auto;
     gap: ${pxToRem(12)};
     margin: ${pxToRem(24)} 0;
+    @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
+      grid-template-columns: auto auto;
+    }
 
     @media screen and (min-width: ${sizes.tabletMidWidth}) {
       grid-template-columns: auto auto auto;

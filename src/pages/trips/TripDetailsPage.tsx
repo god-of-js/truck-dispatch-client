@@ -1,6 +1,6 @@
-import React, { lazy, useMemo, useState } from 'react';
+import React, { lazy, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import {
   approvePaymentRequest,
@@ -42,6 +42,8 @@ const UploadTripTDO = lazy(() => import('components/trips/UploadTripTDO'));
 export default function TripDetailsPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const action = new URLSearchParams(location.search).get('action');
   const user = useSelector((state: RootState) => state.account.user);
   const { tripId } = useParams();
   const trip = useSelector(selectTrip(tripId!));
@@ -155,6 +157,17 @@ export default function TripDetailsPage() {
   function viewReasonForReject() {
     setReasonForRejectIsVisible(true);
   }
+
+  useEffect(() => {
+    if (
+      trip?.paymentRequest &&
+      trip?.paymentRequest.status !== 'completed' &&
+      action === 'update-payment-request'
+    ) {
+      setRequestPaymentIsVisible(true);
+    }
+    navigate(`/my-trips/${tripId}`);
+  }, [action, trip?.paymentRequest]);
 
   return (
     <>

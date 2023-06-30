@@ -22,11 +22,11 @@ import User from 'types/User';
 const UiButton = lazy(() => import('ui/UiButton'));
 const UiPill = lazy(() => import('ui/UiPill'));
 const UiIcon = lazy(() => import('ui/UiIcon'));
-const UiAvatar = lazy(() => import('ui/UiAvatar'));
+const UserDetails = lazy(() => import('ui/UserDetails'));
 const UiTable = lazy(() => import('ui/UiTable'));
 const DashboardTopNav = lazy(() => import('components/layout/DashboardTopNav'));
-const ViewPaymentDetails = lazy(
-  () => import('components/payment/ViewPaymentDetails'),
+const CargoLoadingProof = lazy(
+  () => import('components/trips/CargoLoadingProof'),
 );
 
 export default function PaymentsPage() {
@@ -38,8 +38,9 @@ export default function PaymentsPage() {
   );
   const searchParams = new URLSearchParams(location.search);
   const user = useSelector((state: RootState) => state.account.user);
-  const [selectedPayment, setSelectedPayment] = useState<PaymentRequest>();
-  const [isViewPaymentVisible, setIsViewPaymentVisible] = useState(false);
+  const [selectedPaymentId, setSelectedPaymentId] = useState('');
+  const [isViewLoadingProofVisible, setIsViewLoadingProofVisible] =
+    useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [totalPayments, setTotalPayments] = useState(0);
   const [totalPendingPayments, setTotalPendingPayments] = useState(0);
@@ -79,6 +80,10 @@ export default function PaymentsPage() {
     },
   ];
 
+  const selectedPayment = useMemo(() => {
+    return paymentRequests.find(({ _id }) => _id === selectedPaymentId);
+  }, [selectedPaymentId, paymentRequests]);
+
   function goToTripDetails(paymentId: string) {
     const payment = paymentRequests.find(({ _id }) => _id === paymentId);
 
@@ -86,16 +91,15 @@ export default function PaymentsPage() {
   }
 
   function userDetails(tripUser?: User) {
-    if (!tripUser) return 'Not yet assigned';
-
     return (
-      <UserDetails>
-        <UiAvatar avatar={tripUser.avatar} />
-        <div>
-          <div className="transporter-name">{`${tripUser.firstName} ${tripUser.lastName}`}</div>
-          <div>{tripUser.phone}</div>
-        </div>
-      </UserDetails>
+      <UserDetails
+        userName={
+          tripUser
+            ? `${tripUser.firstName} ${tripUser.lastName}`
+            : 'Truckdispatch User'
+        }
+        avatar={tripUser?.avatar}
+      />
     );
   }
 
@@ -125,7 +129,14 @@ export default function PaymentsPage() {
       ),
       amount: <AmountText>NGN {abbreviateNumber(item.amount!)}</AmountText>,
       proofVideo: (
-        <UiButton variant="secondary">
+        <UiButton
+          variant="secondary"
+          onClick={(e) => {
+            e.stopPropagation();
+            setSelectedPaymentId(item._id);
+            setIsViewLoadingProofVisible(true);
+          }}
+        >
           <UiIcon icon="PlayCircle" />
           <span>Proof Video</span>
         </UiButton>
@@ -181,6 +192,11 @@ export default function PaymentsPage() {
   function emptyTableAction() {
     navigate('/available-jobs');
   }
+  function updatePaymentRequest() {
+    navigate(
+      `/my-trips/${selectedPayment?.trip._id}?action=update-payment-request`,
+    );
+  }
 
   return (
     <>
@@ -203,12 +219,14 @@ export default function PaymentsPage() {
           emptyTableAction={emptyTableAction}
         />
         {selectedPayment && (
-          <ViewPaymentDetails
-            isVisible={isViewPaymentVisible}
-            onClose={() => setIsViewPaymentVisible(false)}
-            payment={selectedPayment}
-            key={selectedPayment._id}
-          />
+          <>
+            <CargoLoadingProof
+              paymentRequest={selectedPayment}
+              isVisible={isViewLoadingProofVisible}
+              onClose={() => setIsViewLoadingProofVisible(false)}
+              updatePaymentRequest={updatePaymentRequest}
+            />
+          </>
         )}
       </PageStyling>
     </>
@@ -217,23 +235,6 @@ export default function PaymentsPage() {
 
 const PageStyling = styled.div`
   padding: ${pxToRem(24)};
-`;
-
-const UserDetails = styled.div`
-  display: flex;
-  gap: ${pxToRem(8)};
-  align-items: center;
-  .transporter-name {
-    font-weight: 400;
-    font-size: ${pxToRem(14)};
-    font-style: normal;
-    font-weight: 700;
-    line-height: 140%;
-    color: var(--color-neutralBlack);
-    letter-spacing: -0.02em;
-    text-transform: capitalize;
-    font-family: 'thiccboi-extrabold';
-  }
 `;
 
 const AmountText = styled.span`
