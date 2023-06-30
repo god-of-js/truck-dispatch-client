@@ -1,6 +1,6 @@
 import { createBid, selectBid, updateBid } from 'modules/Bid';
 import { RootState } from 'modules/index';
-import { getVehicle, getVehicles } from 'modules/Vehicle';
+import { getVehicles } from 'modules/Vehicle';
 import { lazy, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -12,6 +12,7 @@ import { Toast } from 'utils/toast';
 import BidForJobSchema from 'utils/validations/BidForJobSchema';
 import Vehicle from 'types/Vehicle';
 import InformUserOfVerification from 'components/verification/InformUserOfVerification';
+import VehiclePaginatedResponse from 'types/VehiclesPaginatedResponse';
 
 const UiButton = lazy(() => import('ui/UiButton'));
 const UiDataField = lazy(() => import('ui/UiDataField'));
@@ -50,6 +51,10 @@ export default function BidForJob({
     vehicle: {} as Vehicle,
   });
   const [loading, setLoading] = useState(false);
+  const [vehiclePage, setVehiclePage] = useState(1);
+  const [vehicleListIsLoading, setVehicleListIsLoading] = useState(false);
+  const [vehicleListCurrentPage, setVehicleListCurrentPage] = useState(1);
+  const [vehicleListTotalPages, setVehicleListTotalPages] = useState(1);
   const [
     isInformUserOfVerificationModalVisible,
     setIsInformUserOfVerificationModalVisible,
@@ -140,8 +145,26 @@ export default function BidForJob({
     }
     bid ? updateJobBid() : bidOnJob();
   }
+
+  function loadVehicles() {
+    setVehicleListIsLoading(true);
+    dispatch(
+      toAnyAction(getVehicles({ page: vehicleListCurrentPage, limit: 10 })),
+    )
+      .then((response: VehiclePaginatedResponse) => {
+        setVehicleListTotalPages(response.totalPages);
+      })
+      .finally(() => {
+        setVehicleListIsLoading(false);
+      });
+  }
+
   useEffect(() => {
-    dispatch(toAnyAction(getVehicle()));
+    loadVehicles();
+  }, [vehicleListCurrentPage]);
+
+  useEffect(() => {
+    loadVehicles();
   }, []);
 
   useEffect(() => {
@@ -193,6 +216,12 @@ export default function BidForJob({
                       label="Select Vehicle/Truck"
                       error={errors.vehicleId}
                       onChange={fillForm}
+                      loadNextPage={() =>
+                        setVehicleListCurrentPage(vehicleListCurrentPage + 1)
+                      }
+                      loading={vehicleListIsLoading}
+                      currentPage={vehicleListCurrentPage}
+                      totalPages={vehicleListTotalPages}
                       options={vehicleData}
                     />
                     <ButtonContainer>

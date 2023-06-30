@@ -62,14 +62,6 @@ export function getVehicles(params: { page: number; limit: number }) {
   };
 }
 
-export const getVehicle = () => {
-  return (dispatch: AppDispatch) => {
-    return Api.getVehicle().then((data) => {
-      dispatch(setVehicles(data));
-    });
-  };
-};
-
 export const updateVehicle = (vehicleData: FormData, vehicleId: string) => {
   return (dispatch: AppDispatch) => {
     return Api.updateVehicle(vehicleData, vehicleId).then((data) => {

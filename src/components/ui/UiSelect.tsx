@@ -4,8 +4,7 @@ import styled from 'styled-components';
 
 const UiField = lazy(() => import('./UiField'));
 const UiIcon = lazy(() => import('./UiIcon'));
-
-type Size = 's' | 'md' | 'large';
+const PaginationLoader = lazy(() => import('../layout/PaginationLoader'));
 export interface Option {
   value: string;
   label: string;
@@ -14,11 +13,15 @@ export interface Option {
 interface Props {
   label?: string;
   options: Option[];
+  loading?: boolean;
+  currentPage?: number;
+  totalPages?: number;
   value: string | null;
   name: string;
   error?: string;
   size?: Size;
   onChange: (event: { name: string; value: string }) => void;
+  loadNextPage?: () => void;
 }
 
 export default function UiSelect({
@@ -26,8 +29,11 @@ export default function UiSelect({
   options,
   value,
   name,
+  loading,
   error,
-  size,
+  currentPage,
+  totalPages,
+  loadNextPage,
   onChange,
 }: Props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -83,6 +89,17 @@ export default function UiSelect({
                   />
                 </StyledOption>
               ))}
+              {loadNextPage && (
+                <PaginationLoader
+                  removePadding
+                  btnSize="s"
+                  loaderSize="s"
+                  loading={!!loading}
+                  nextPage={() => loadNextPage()}
+                  page={currentPage || 0}
+                  totalPages={totalPages || 0}
+                />
+              )}
             </StyledOptions>
           )}
         </StyledSelect>
