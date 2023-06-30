@@ -22,7 +22,7 @@ import User from 'types/User';
 const UiButton = lazy(() => import('ui/UiButton'));
 const UiPill = lazy(() => import('ui/UiPill'));
 const UiIcon = lazy(() => import('ui/UiIcon'));
-const UiAvatar = lazy(() => import('ui/UiAvatar'));
+const UserDetails = lazy(() => import('ui/UserDetails'));
 const UiTable = lazy(() => import('ui/UiTable'));
 const DashboardTopNav = lazy(() => import('components/layout/DashboardTopNav'));
 const CargoLoadingProof = lazy(
@@ -91,16 +91,15 @@ export default function PaymentsPage() {
   }
 
   function userDetails(tripUser?: User) {
-    if (!tripUser) return 'Not yet assigned';
-
     return (
-      <UserDetails>
-        <UiAvatar avatar={tripUser.avatar} />
-        <div>
-          <div className="transporter-name">{`${tripUser.firstName} ${tripUser.lastName}`}</div>
-          <div>{tripUser.phone}</div>
-        </div>
-      </UserDetails>
+      <UserDetails
+        userName={
+          tripUser
+            ? `${tripUser.firstName} ${tripUser.lastName}`
+            : 'Truckdispatch User'
+        }
+        avatar={tripUser?.avatar}
+      />
     );
   }
 
@@ -236,23 +235,6 @@ export default function PaymentsPage() {
 
 const PageStyling = styled.div`
   padding: ${pxToRem(24)};
-`;
-
-const UserDetails = styled.div`
-  display: flex;
-  gap: ${pxToRem(8)};
-  align-items: center;
-  .transporter-name {
-    font-weight: 400;
-    font-size: ${pxToRem(14)};
-    font-style: normal;
-    font-weight: 700;
-    line-height: 140%;
-    color: var(--color-neutralBlack);
-    letter-spacing: -0.02em;
-    text-transform: capitalize;
-    font-family: 'thiccboi-extrabold';
-  }
 `;
 
 const AmountText = styled.span`
