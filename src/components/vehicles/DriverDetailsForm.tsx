@@ -123,7 +123,7 @@ const ComponentStyling = styled.div`
     display: grid;
     gap: ${pxToRem(20)};
     margin-top: ${pxToRem(32)};
-    @media only screen and (min-width: ${sizes.tabletLargeWidth}) {
+    @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
       grid-template-columns: repeat(2, 1fr);
     }
   }
