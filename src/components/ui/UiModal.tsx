@@ -23,7 +23,7 @@ interface Props {
 export default function UiModal({
   children,
   title,
-  position = 'center',
+  position,
   size = 'lg',
   bgVariant = 'light',
   hideModalClose,
@@ -121,6 +121,12 @@ function positionStyling({ position, size }: CardProps) {
     position: static;
     margin: auto;
     border-radius: ${pxToRem(16)};
+
+    .modal-header h2 {
+      text-align: center;
+      flex-grow: 1;
+      margin-left: 40px !important;
+    }
   `;
 }
 

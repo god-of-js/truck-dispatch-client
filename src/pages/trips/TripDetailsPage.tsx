@@ -159,11 +159,16 @@ export default function TripDetailsPage() {
   }
 
   useEffect(() => {
-    if (trip?.paymentRequest &&trip?.paymentRequest.status !== 'completed' && action === 'update-payment-request') {
+    if (
+      trip?.paymentRequest &&
+      trip?.paymentRequest.status !== 'completed' &&
+      action === 'update-payment-request'
+    ) {
       setRequestPaymentIsVisible(true);
     }
     navigate(`/my-trips/${tripId}`);
-  }, [action, trip?.paymentRequest])
+  }, [action, trip?.paymentRequest]);
+
   return (
     <>
       <DashboardTopNav

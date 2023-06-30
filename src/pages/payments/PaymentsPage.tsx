@@ -39,7 +39,8 @@ export default function PaymentsPage() {
   const searchParams = new URLSearchParams(location.search);
   const user = useSelector((state: RootState) => state.account.user);
   const [selectedPaymentId, setSelectedPaymentId] = useState('');
-  const [isViewLoadingProofVisible, setIsViewLoadingProofVisible] = useState(false);
+  const [isViewLoadingProofVisible, setIsViewLoadingProofVisible] =
+    useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [totalPayments, setTotalPayments] = useState(0);
   const [totalPendingPayments, setTotalPendingPayments] = useState(0);
@@ -80,8 +81,9 @@ export default function PaymentsPage() {
   ];
 
   const selectedPayment = useMemo(() => {
-    return paymentRequests.find(({_id}) => _id === selectedPaymentId);
-  }, [selectedPaymentId, paymentRequests])
+    return paymentRequests.find(({ _id }) => _id === selectedPaymentId);
+  }, [selectedPaymentId, paymentRequests]);
+
   function goToTripDetails(paymentId: string) {
     const payment = paymentRequests.find(({ _id }) => _id === paymentId);
 
@@ -128,12 +130,14 @@ export default function PaymentsPage() {
       ),
       amount: <AmountText>NGN {abbreviateNumber(item.amount!)}</AmountText>,
       proofVideo: (
-        <UiButton variant="secondary" onClick={(e) => {
-          e.stopPropagation();
-          setSelectedPaymentId(item._id);
-          setIsViewLoadingProofVisible(true);
-
-        }}>
+        <UiButton
+          variant="secondary"
+          onClick={(e) => {
+            e.stopPropagation();
+            setSelectedPaymentId(item._id);
+            setIsViewLoadingProofVisible(true);
+          }}
+        >
           <UiIcon icon="PlayCircle" />
           <span>Proof Video</span>
         </UiButton>
@@ -190,7 +194,9 @@ export default function PaymentsPage() {
     navigate('/available-jobs');
   }
   function updatePaymentRequest() {
-    navigate(`/my-trips/${selectedPayment?.trip._id}?action=update-payment-request`)
+    navigate(
+      `/my-trips/${selectedPayment?.trip._id}?action=update-payment-request`,
+    );
   }
 
   return (
@@ -215,12 +221,12 @@ export default function PaymentsPage() {
         />
         {selectedPayment && (
           <>
-          <CargoLoadingProof
-            paymentRequest={selectedPayment}
-            isVisible={isViewLoadingProofVisible}
-            onClose={() => setIsViewLoadingProofVisible(false)}
-            updatePaymentRequest={updatePaymentRequest}
-          />
+            <CargoLoadingProof
+              paymentRequest={selectedPayment}
+              isVisible={isViewLoadingProofVisible}
+              onClose={() => setIsViewLoadingProofVisible(false)}
+              updatePaymentRequest={updatePaymentRequest}
+            />
           </>
         )}
       </PageStyling>
