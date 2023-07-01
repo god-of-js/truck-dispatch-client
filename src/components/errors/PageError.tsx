@@ -76,6 +76,8 @@ const ErrorStyling = styled.div`
     font-weight: 700;
     font-size: ${pxToRem(24)};
     line-height: ${pxToRem(28)};
+    max-width: ${pxToRem(400)};
+    margin: auto;
   }
 
   .button-container {
