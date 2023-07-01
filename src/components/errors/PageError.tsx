@@ -2,13 +2,13 @@ import React, { lazy, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 const UiButton = lazy(() => import('ui/UiButton'));
-const Disconnect = lazy(() => import('../../assets/img/disconnect.svg').then((module) => ({
+const Disconnect = lazy(() => import('./disconnect.svg').then((module) => ({
   default: module.ReactComponent,
 })))
-const NotFoundImage = lazy(() =>import('../../assets/img/not-found.svg').then((module) => ({
+const NotFoundImage = lazy(() =>import('./not-found.svg').then((module) => ({
   default: module.ReactComponent,
 })))
-const Unauthorized = lazy(() => import('../../assets/img/unauthorized.svg').then((module) => ({
+const Unauthorized = lazy(() => import('./unauthorized.svg').then((module) => ({
   default: module.ReactComponent,
 })))
 
