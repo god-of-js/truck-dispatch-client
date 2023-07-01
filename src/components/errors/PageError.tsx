@@ -1,9 +1,9 @@
 import React, { lazy, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Disconnect from 'assets/img/disconnect.svg';
-import NotFoundImage from 'assets/img/not-found.svg';
-import Unauthorized from 'assets/img/unauthorized.svg';
-import { ErrorStyling } from './ErrorsStyling';
+import styled from 'styled-components';
+import Disconnect from '../../assets/img/disconnect.svg';
+import NotFoundImage from '../../assets/img/not-found.svg';
+import Unauthorized from '../../assets/img/unauthorized.svg';
 
 const UiButton = lazy(() => import('ui/UiButton'));
 
@@ -14,7 +14,7 @@ export interface Props {
   goToRoute?: string;
   buttonText?: string;
 }
-export default function InternalError({
+export default function PageError({
   errorCode,
   subtitle = 'Something went wrong! Kindly reach out to the team for additional assistance.',
   goToRoute = '/',
@@ -58,3 +58,34 @@ export default function InternalError({
     </ErrorStyling>
   );
 }
+
+
+const ErrorStyling = styled.div`
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  h1 {
+    font-weight: 900;
+    font-size: ${pxToRem(32)};
+    line-height: ${pxToRem(37)};
+  }
+
+  p {
+    font-weight: 700;
+    font-size: ${pxToRem(24)};
+    line-height: ${pxToRem(28)};
+  }
+
+  .button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: ${pxToRem(48)};
+
+    button {
+      min-width: ${pxToRem(182)};
+    }
+  }
+`;
