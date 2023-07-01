@@ -7,18 +7,17 @@ import { getTrip, selectTrip } from 'modules/Trips';
 import { toAnyAction } from 'utils/helpers';
 import { getTripRating } from 'modules/Ratings';
 import Rating from 'types/Rating';
-import { RootState } from 'modules/index';
-import { clientBasedUserTypes } from 'utils/constants';
 
 const Loader = lazy(() => import('components/layout/Loader'));
 const RateTransporter = lazy(() => import('components/ratings/RateUser'));
+const PageError = lazy(() => import('components/errors/PageError'));
 
 export default function TripLayout() {
   const { tripId } = useParams();
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.account.user);
   const trip = useSelector(selectTrip(tripId!));
   const [isRatingsModalVisible, setIsRatingsModalVisible] = useState(false);
+  const [errorCode, setErrorCode] = useState<null | number>(null);
   const [loading, setLoading] = useState(false);
 
   function closeRateTransporter() {
@@ -27,9 +26,13 @@ export default function TripLayout() {
 
   function loadTrip() {
     setLoading(true);
-    dispatch(toAnyAction(getTrip(tripId!))).finally(() => {
-      setLoading(false);
-    });
+    dispatch(toAnyAction(getTrip(tripId!)))
+      .catch((error: { response: { status: number } }) => {
+        setErrorCode(error.response.status);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   useEffect(() => {
@@ -46,6 +49,13 @@ export default function TripLayout() {
     <>
       {/* TODO: Deprecate this Layout file. */}
       {loading ? <Loader /> : <Outlet />}
+      {!!errorCode && (
+        <PageError
+          errorCode={errorCode}
+          goToRoute="/my-trips"
+          buttonText="My Trips"
+        />
+      )}
       <RateTransporter
         isVisible={isRatingsModalVisible}
         onClose={closeRateTransporter}
