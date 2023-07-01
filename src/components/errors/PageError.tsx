@@ -1,11 +1,16 @@
 import React, { lazy, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import Disconnect from '../../assets/img/disconnect.svg';
-import NotFoundImage from '../../assets/img/not-found.svg';
-import Unauthorized from '../../assets/img/unauthorized.svg';
-
 const UiButton = lazy(() => import('ui/UiButton'));
+const Disconnect = lazy(() => import('../../assets/img/disconnect.svg').then((module) => ({
+  default: module.ReactComponent,
+})))
+const NotFoundImage = lazy(() =>import('../../assets/img/not-found.svg').then((module) => ({
+  default: module.ReactComponent,
+})))
+const Unauthorized = lazy(() => import('../../assets/img/unauthorized.svg').then((module) => ({
+  default: module.ReactComponent,
+})))
 
 export interface Props {
   errorCode?: number;
@@ -25,15 +30,15 @@ export default function PageError({
   const allowedErrorCodes = [500, 404, 401]
 
   const errorDetails = useMemo(() => {
-    let img = Disconnect, errorSubtitle = subtitle;
+    let img = <Disconnect />, errorSubtitle = subtitle;
 
     if (errorCode === 404) {
-      img = NotFoundImage;
+      img = <NotFoundImage />;
       errorSubtitle = 'Not found'
     }
 
     if (errorCode === 401) {
-      img = Unauthorized;
+      img = <Unauthorized />;
       errorSubtitle = 'Unauthorized'
     }
 
@@ -48,7 +53,7 @@ export default function PageError({
       <h1>{allowedErrorCodes.includes(errorCode!)? errorCode : 500}</h1>
       <p>{errorDetails.subtitle}</p>
       <div>
-        <img src={errorDetails.img} alt="Something went wrong image" />
+        {errorDetails.img}
       </div>
       <div className="button-container">
         <UiButton variant="secondary" onClick={() => navigate(goToRoute)}>
