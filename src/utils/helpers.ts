@@ -360,7 +360,7 @@ export function decodeToken(token: string): { exp: number } | void {
 }
 export function isTokenValid(token: string) {
   const decodedToken = decodeToken(token);
-  if (!decodedToken) return true;
+  if (!decodedToken) return false;
 
   const tokenExpiration = decodedToken.exp;
 

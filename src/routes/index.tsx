@@ -174,7 +174,14 @@ const router = createBrowserRouter([
       },
       {
         path: 'verify-phone',
-        element: <VerifyPhonePage />,
+        element: (
+          <ProtectedRoute
+            allowNavigationFunc={resetPasswordAccessChecks}
+            reRouteUrl="/auth/login"
+          >
+            <VerifyPhonePage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'login',

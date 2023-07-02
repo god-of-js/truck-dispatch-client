@@ -2,15 +2,21 @@ import React, { lazy, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 const UiButton = lazy(() => import('ui/UiButton'));
-const Disconnect = lazy(() => import('./disconnect.svg').then((module) => ({
-  default: module.ReactComponent,
-})))
-const NotFoundImage = lazy(() =>import('./not-found.svg').then((module) => ({
-  default: module.ReactComponent,
-})))
-const Unauthorized = lazy(() => import('./unauthorized.svg').then((module) => ({
-  default: module.ReactComponent,
-})))
+const Disconnect = lazy(() =>
+  import('./disconnect.svg').then((module) => ({
+    default: module.ReactComponent,
+  })),
+);
+const NotFoundImage = lazy(() =>
+  import('./not-found.svg').then((module) => ({
+    default: module.ReactComponent,
+  })),
+);
+const Unauthorized = lazy(() =>
+  import('./unauthorized.svg').then((module) => ({
+    default: module.ReactComponent,
+  })),
+);
 
 export interface Props {
   errorCode?: number;
@@ -27,34 +33,33 @@ export default function PageError({
 }: Props) {
   const navigate = useNavigate();
 
-  const allowedErrorCodes = [500, 404, 401]
+  const allowedErrorCodes = [500, 404, 401];
 
   const errorDetails = useMemo(() => {
-    let img = <Disconnect />, errorSubtitle = subtitle;
+    let img = <Disconnect />,
+      errorSubtitle = subtitle;
 
     if (errorCode === 404) {
       img = <NotFoundImage />;
-      errorSubtitle = 'Not found'
+      errorSubtitle = 'Not found';
     }
 
     if (errorCode === 401) {
       img = <Unauthorized />;
-      errorSubtitle = 'Unauthorized'
+      errorSubtitle = 'Unauthorized';
     }
 
     return {
       img,
       subtitle: errorSubtitle,
-    }
-  }, [errorCode])
+    };
+  }, [errorCode]);
 
   return (
     <ErrorStyling>
-      <h1>{allowedErrorCodes.includes(errorCode!)? errorCode : 500}</h1>
+      <h1>{allowedErrorCodes.includes(errorCode!) ? errorCode : 500}</h1>
       <p>{errorDetails.subtitle}</p>
-      <div>
-        {errorDetails.img}
-      </div>
+      <div>{errorDetails.img}</div>
       <div className="button-container">
         <UiButton variant="secondary" onClick={() => navigate(goToRoute)}>
           {buttonText}
@@ -63,7 +68,6 @@ export default function PageError({
     </ErrorStyling>
   );
 }
-
 
 const ErrorStyling = styled.div`
   display: grid;
