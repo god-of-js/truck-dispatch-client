@@ -35,6 +35,7 @@ export default function PaginationLoader({
           disabled={page === totalPages || !totalPages}
           onClick={(e) => {
             e.stopPropagation();
+            e.preventDefault();
             nextPage();
           }}
         >
