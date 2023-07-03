@@ -305,11 +305,11 @@ class ApiService {
     );
   }
 
-  private get<T = any>(url: string, allowErrorCode?: boolean): Promise<T> {
+  private get<T = any>(url: string, allowRawError?: boolean): Promise<T> {
     return axiosInstance()
       .get(url)
       .then(({ data }) => data.data).catch((err) => {
-        if (allowErrorCode) {
+        if (allowRawError) {
           return Promise.reject(err.response);
         }
         return Promise.reject(err.response.data)
