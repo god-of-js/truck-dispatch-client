@@ -38,9 +38,8 @@ instance.interceptors.response.use(
         window.location.href = '/auth/login';
         window.location.reload();
       }
-      return Promise.reject(err);
     }
-    return Promise.reject(err.response.data);
+    return Promise.reject(err);
   },
 );
 

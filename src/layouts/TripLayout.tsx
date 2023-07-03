@@ -27,8 +27,8 @@ export default function TripLayout() {
   function loadTrip() {
     setLoading(true);
     dispatch(toAnyAction(getTrip(tripId!)))
-      .catch((error: { response: { status: number } }) => {
-        setErrorCode(error.response.status);
+      .catch((error: { status: number }) => {
+        setErrorCode(error.status);
       })
       .finally(() => {
         setLoading(false);
