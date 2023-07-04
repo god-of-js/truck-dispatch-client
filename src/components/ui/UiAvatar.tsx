@@ -13,6 +13,7 @@ interface Props {
   isEdit?: boolean;
   name?: string;
   isHalfCurved?: boolean;
+  isBottomFlat?: boolean;
   onChange?: (event: { name: string; value: File | File[] }) => void;
 }
 
@@ -22,6 +23,8 @@ export default function UiAvatar({
   isEdit,
   name,
   isHalfCurved,
+  isBottomFlat,
+
   onChange = () => {},
 }: Props) {
   const [avatarDataUrl, setAvatarDataUrl] = useState<string | undefined>();
@@ -47,7 +50,7 @@ export default function UiAvatar({
 
   return (
     <AvatarContainer>
-      <Avatar size={size} isHalfCurved={isHalfCurved}>
+      <Avatar size={size} isBottomFlat={isBottomFlat} isHalfCurved={isHalfCurved}>
         <img src={avatar ? formattedAvatar : EmptyAvatar} alt="" />
       </Avatar>
       {isEdit && (
@@ -89,8 +92,6 @@ const AvatarContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  
- 
 
   button {
     margin-top: ${pxToRem(4)};
@@ -100,13 +101,12 @@ const AvatarContainer = styled.div`
 interface AvatarProps {
   size: Size;
   isHalfCurved?: boolean;
+  isBottomFlat?: boolean;
 }
 const Avatar = styled.div`
   ${({ size }: AvatarProps) => getSizeVariant(size)}
   display: flex;
   align-items: flex-start;
-
-
 
   .user-icon {
     width: 100%;
@@ -125,10 +125,15 @@ const Avatar = styled.div`
   }
 
   img {
+    
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: ${({ isHalfCurved }: AvatarProps) =>
-      isHalfCurved ? pxToRem(8) : '50%'};
+      isHalfCurved ? pxToRem(8): '50%'};
+
+    border-radius: ${({ isBottomFlat }: AvatarProps) =>
+      isBottomFlat ? "50%" : '50%'};
+
   }
 `;

@@ -11,8 +11,6 @@ import {
 } from 'utils/helpers';
 import sizes from 'utils/sizes';
 import EditProfileSchema from 'utils/validations/EditProfileSchema';
-import DashboardTopNav from 'components/layout/DashboardTopNav';
-import UiIcon from 'ui/UiIcon';
 import UiDataField from 'ui/UiDataField';
 
 const UiCard = lazy(() => import('ui/UiCard'));
@@ -25,7 +23,9 @@ export default function ProfileDetailsPage() {
   const user = useSelector((state: RootState) => state.account.user);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState(user || ({} as User));
-  const [isEditable, setIsEditable] = useState(false);
+
+
+  const [isEditable, setIsEditable] = useState(true);
   const [loading, setLoading] = useState(false);
 
   async function editProfile() {
@@ -49,6 +49,7 @@ export default function ProfileDetailsPage() {
     name: string;
     value: string | File | File[] | null;
   }) {
+    alert("Hello world")
     setFormData({
       ...formData,
       [event.name]: event.value,
@@ -77,8 +78,10 @@ export default function ProfileDetailsPage() {
                       <UiAvatar
                         size="xl"
                         isEdit={isEditable}
+                        
                         name="avatar"
                         avatar={formData.avatar}
+                        isBottomFlat
                         onChange={onChange}
                       />
                     </div>
@@ -94,16 +97,12 @@ export default function ProfileDetailsPage() {
                       title="Phone"
                       value={`${user?.phone}`}
                       variant="field"
-                      // editButton
-                      editText="edit"
                     />
 
                     <UiDataField
                       title="Email"
                       value={`${user?.email}`}
-                      // editButton
                       variant="field"
-                      editText="edit"
                     />
                   </div>
 
@@ -132,27 +131,27 @@ export default function ProfileDetailsPage() {
                     />
                   </GridSpacer>
 
-                  {!isEditable && (
+                  {isEditable && (
                     <div className="button-container">
                       <UiButton
-                        variant="primary"
                         size="large"
-                        onClick={() => setIsEditable(true)}
+                        type="button"
+                        disabled
+                        loading={loading}
                       >
-                        Edit My Profile
+                        Save Changes
                       </UiButton>
                     </div>
                   )}
 
-                  {isEditable && (
+                  {!isEditable && (
                     <div className="button-container">
-                      <UiButton loading={loading}>Save Changes</UiButton>
                       <UiButton
-                        variant="secondary"
+                        size="large"
                         type="button"
-                        onClick={cancelEdit}
+                        loading={loading}
                       >
-                        Cancel
+                        Save Changes
                       </UiButton>
                     </div>
                   )}
