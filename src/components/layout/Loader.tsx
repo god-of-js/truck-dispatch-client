@@ -1,23 +1,29 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Size } from 'types/Size';
 
 interface Props {
-  size?: 'lg' | 's';
+  size?: Size;
   variant?: 'white' | 'primary';
   isPage?: boolean;
 }
 
-type Sizes = 'lg' | 's';
-
-function sizeVar(size: Sizes) {
+function sizeVar(size: Size) {
   if (size === 's') {
+    return `
+   width: ${pxToRem(16)};
+   height: ${pxToRem(16)};
+   border: ${pxToRem(3)} solid rgba(0, 0, 0, 0.1);
+   `;
+  }
+  if (size === 'md') {
     return `
    width: ${pxToRem(20)};
    height: ${pxToRem(20)};
    border: ${pxToRem(3)} solid rgba(0, 0, 0, 0.1);
    `;
   }
-  if (size === 'lg') {
+  if (size === 'large') {
     return `
    width: ${pxToRem(50)};
    height: ${pxToRem(50)};
@@ -28,7 +34,7 @@ function sizeVar(size: Sizes) {
 
 export default function Loader({
   variant = 'primary',
-  size = 'lg',
+  size = 'large',
   isPage,
 }: Props) {
   return (

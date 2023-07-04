@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input/input';
 import { Icons } from './UiIcon';
+import { Size } from 'types/Size';
 const UiField = lazy(() => import('./UiField'));
 const UiIcon = lazy(() => import('./UiIcon'));
 
 export type InputType = 'text' | 'password' | 'number' | 'phone' | 'date';
-type Sizes = 'large' | 'md' | 's' | 'text';
 export type OnChangeParams = { name: string; value: string | null };
 interface Props {
   label?: string;
@@ -19,7 +19,7 @@ interface Props {
    */
   name: string;
   error?: string;
-  size?: Sizes;
+  size?: Size;
   icon?: Icons;
   disabled?: boolean;
   inputRef?: React.RefObject<HTMLInputElement>;
@@ -133,10 +133,6 @@ const PhoneInputContainer = styled.div`
   }
 `;
 
-interface InputProps {
-  hasError: boolean;
-  size: Sizes;
-}
 // TODO: replace any with InputProps.
 const Input = styled.input<any>`
   padding: ${pxToRem(16)};

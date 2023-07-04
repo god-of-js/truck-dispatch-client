@@ -8,11 +8,11 @@ const UiVideoPlayer = lazy(() => import('ui/UiVideoPlayer'));
 
 interface Props {
   isVisible: boolean;
-  isClient: boolean;
+  isClient?: boolean;
   paymentRequest: PaymentRequest;
   onClose: () => void;
-  approvePayment: () => void;
-  rejectPayment: () => void;
+  approvePayment?: () => void;
+  rejectPayment?: () => void;
   updatePaymentRequest: () => void;
 }
 export default function CargoLoadingProof({
@@ -32,9 +32,11 @@ export default function CargoLoadingProof({
     >
       <ModalBody>
         <p>
-          Please carefully review the video before making any payments, as it
+          {isClient
+            ? `Please carefully review the video before making any payments, as it
           serves as evidence of cargo being loaded onto the truck. It's
-          important to note that once payment is made, it cannot be reversed.
+          important to note that once payment is made, it cannot be reversed.`
+            : ''}
         </p>
         <UiVideoPlayer video={paymentRequest.proofVideo} />
         {paymentRequest.status !== 'completed' && (

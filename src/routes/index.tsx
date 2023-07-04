@@ -2,8 +2,7 @@ import React, { lazy } from 'react';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
 
-const NotFoundError = lazy(() => import('../components/errors/NotFoundError'));
-const InternalError = lazy(() => import('../components/errors/InternalError'));
+const PageError = lazy(() => import('../components/errors/PageError'));
 
 // LAYOUTS
 import DashboardLayout from '../layouts/DashboardLayout';
@@ -66,7 +65,7 @@ const router = createBrowserRouter([
         <DashboardLayout />
       </ProtectedRoute>
     ),
-    errorElement: <InternalError />,
+    errorElement: <PageError />,
     children: [
       {
         path: '/',
@@ -175,7 +174,14 @@ const router = createBrowserRouter([
       },
       {
         path: 'verify-phone',
-        element: <VerifyPhonePage />,
+        element: (
+          <ProtectedRoute
+            allowNavigationFunc={resetPasswordAccessChecks}
+            reRouteUrl="/auth/login"
+          >
+            <VerifyPhonePage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'login',
@@ -200,7 +206,7 @@ const router = createBrowserRouter([
   },
   {
     path: '*',
-    element: <NotFoundError />,
+    element: <PageError errorCode={404} />,
   },
 ]);
 

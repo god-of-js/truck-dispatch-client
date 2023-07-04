@@ -69,7 +69,7 @@ class ApiService {
   }
 
   getTrip(tripId: string): Promise<Trip> {
-    return this.get(`/trips/${tripId}`);
+    return this.get(`/trips/${tripId}`, true);
   }
 
   getJob(jobId: string): Promise<Trip> {
@@ -285,8 +285,15 @@ class ApiService {
     return this.delete(`/vehicle/${vehicleId}`);
   }
 
-  getVehicles() {
-    return this.get<Vehicle[]>(`/vehicle`);
+  async getVehicles({ page, limit }: { page: number; limit: number }) {
+    const data = await this.get(`/vehicle?page=${page}&limit=${limit}`);
+
+    return {
+      data: data.data as Vehicle[],
+      currentPage: data.currentPage,
+      totalPages: data.totalPages,
+      totalItems: data.totalItems,
+    };
   }
 
   loadAccountDetails(
@@ -298,10 +305,16 @@ class ApiService {
     );
   }
 
-  private get<T = any>(url: string): Promise<T> {
+  private get<T = any>(url: string, allowRawError?: boolean): Promise<T> {
     return axiosInstance()
       .get(url)
-      .then(({ data }) => data.data) as Promise<T>;
+      .then(({ data }) => data.data)
+      .catch((err) => {
+        if (allowRawError) {
+          return Promise.reject(err.response);
+        }
+        return Promise.reject(err.response.data);
+      });
   }
 
   private post<T>(url: string, data?: unknown, silent = false): Promise<T> {
@@ -311,9 +324,9 @@ class ApiService {
         if (!silent) Toast.success({ msg: data.message });
         return data.data;
       })
-      .catch((e) => {
-        Toast.error({ msg: e.message });
-        return Promise.reject(e);
+      .catch(({ response }) => {
+        Toast.error({ msg: response.data.message });
+        return Promise.reject(response.data.message);
       });
   }
 
@@ -324,9 +337,9 @@ class ApiService {
         if (!silent) Toast.success({ msg: data.message });
         return data.data;
       })
-      .catch((e) => {
-        Toast.error({ msg: e.message });
-        return Promise.reject(e);
+      .catch(({ response }) => {
+        Toast.error({ msg: response.data.message });
+        return Promise.reject(response.data.message);
       });
   }
 
@@ -337,9 +350,9 @@ class ApiService {
         if (!silent) Toast.success({ msg: data.message });
         return data.data;
       })
-      .catch((e) => {
-        Toast.error({ msg: e.message });
-        return Promise.reject(e);
+      .catch(({ response }) => {
+        Toast.error({ msg: response.data.message });
+        return Promise.reject(response.data.message);
       });
   }
 }
