@@ -1,6 +1,7 @@
 import React, { useState, useMemo, lazy } from 'react';
 import OutsideClickHandler from 'react-outside-click-handler';
 import styled from 'styled-components';
+import { Size } from 'types/Size';
 
 const UiField = lazy(() => import('./UiField'));
 const UiIcon = lazy(() => import('./UiIcon'));
@@ -16,6 +17,7 @@ interface Props {
   loading?: boolean;
   currentPage?: number;
   totalPages?: number;
+  size?: Size;
   value: string | null;
   name: string;
   error?: string;
@@ -59,10 +61,10 @@ export default function UiSelect({
             <span className="selected-option">
               {selectedOption?.label
                 ? selectedOption.label
-                : 'Choose an option from the dropdown'}
+                : 'Select an option'}
             </span>
             <span>
-              <UiIcon icon={isOpen ? 'CaretUp' : 'CaretDown'} />
+              <UiIcon icon={isOpen ? 'CaretUp' : 'CaretDown'} size="12" />
             </span>
           </div>
           {isOpen && (
@@ -102,17 +104,17 @@ export default function UiSelect({
   );
 }
 
-const StyledSelect = styled.div`
+const StyledSelect = styled.div<{ hasError: boolean, size?: Size }>`
   position: relative;
   .select {
     padding: 0 ${pxToRem(16)};
-    height: var(--base-height);
+    height: ${({ size }) => size ? `var(--base-height-${size})` : `var(--base-height)`};
     display: flex;
     align-items: center;
     justify-content: space-between;
     font-size: ${pxToRem(12)};
     border: ${pxToRem(1)} solid;
-    border-color: ${({ hasError }: { hasError: boolean }) =>
+    border-color: ${({ hasError }) =>
       hasError ? 'var(--color-danger)' : 'var(--color-gray)'};
     outline: none;
     border-radius: ${pxToRem(8)};

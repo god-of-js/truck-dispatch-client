@@ -135,7 +135,7 @@ export default function PersonDetailsForm({ goToNext }: Props) {
                 onChange={handleChange}
               />
             )}
-            <ActionsContainer>
+            <div>
               <UiButton
                 loading={loading}
                 isFullWidth
@@ -154,15 +154,10 @@ export default function PersonDetailsForm({ goToNext }: Props) {
                   Select another user type
                 </UiButton>
               </Link>
-            </ActionsContainer>
+            </div>
           </div>
         )}
       </UiForm>
     </div>
   );
 }
-
-const ActionsContainer = styled.div`
-  /* display: grid; */
-  /* gap: ${pxToRem(12)}; */
-`;
