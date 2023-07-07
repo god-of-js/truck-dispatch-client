@@ -18,7 +18,7 @@ import {
 
 import { serviceBasedUserTypes } from 'utils/constants';
 import User from 'types/User';
-import PaymnetPaginatedResponse from 'types/PaymentPaginatedResponse';
+import PaymentPaginatedResponse from 'types/PaymentPaginatedResponse';
 import PaginationLoader from 'components/layout/PaginationLoader';
 
 const UiButton = lazy(() => import('ui/UiButton'));
@@ -152,7 +152,7 @@ export default function PaymentsPage() {
   function loadPaymentRequests() {
     setLoading(true);
     dispatch(toAnyAction(getPaymentRequestsOfDriver({ page, limit: 20 })))
-      .then((response: PaymnetPaginatedResponse) => {
+      .then((response: PaymentPaginatedResponse) => {
         setTotalPages(response.totalPages);
         setTotalPayments(response.totalItems);
       })
