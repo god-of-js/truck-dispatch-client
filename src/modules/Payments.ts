@@ -24,6 +24,12 @@ export const paymentsSlice = createSlice({
     ) {
       state.paymentRequests = action.payload;
     },
+    appendPaymentRequests: (
+      state: PaymentsState,
+      action: { payload: PaymentRequest[] },
+    ) => {
+      state.paymentRequests.push(...action.payload);
+    },
     setPaymentRequest(
       state: PaymentsState,
       action: { payload: PaymentRequest },
@@ -33,7 +39,8 @@ export const paymentsSlice = createSlice({
   },
 });
 
-export const { setPaymentRequests, setPaymentRequest } = paymentsSlice.actions;
+export const { setPaymentRequests, appendPaymentRequests, setPaymentRequest } =
+  paymentsSlice.actions;
 
 export default paymentsSlice.reducer;
 
@@ -44,10 +51,14 @@ export const selectPaymentRequestByTripId = (id: string) =>
     requestArr.find(({ trip }) => trip._id === id),
   );
 
-export function getPaymentRequestsOfDriver() {
+export function getPaymentRequestsOfDriver(params: {
+  page: number;
+  limit: number;
+}) {
   return (dispatch: AppDispatch, state: AppState) => {
-    return Api.getPaymentRequestsOfDriver().then((data) => {
-      dispatch(setPaymentRequests(data));
+    return Api.getPaymentRequestsOfDriver(params).then((data) => {
+      if (data.currentPage === 1) dispatch(setPaymentRequests(data.data));
+      else dispatch(appendPaymentRequests(data.data));
       return data;
     });
   };

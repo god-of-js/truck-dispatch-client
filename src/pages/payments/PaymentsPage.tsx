@@ -18,6 +18,8 @@ import {
 
 import { serviceBasedUserTypes } from 'utils/constants';
 import User from 'types/User';
+import PaymnetPaginatedResponse from 'types/PaymentPaginatedResponse';
+import PaginationLoader from 'components/layout/PaginationLoader';
 
 const UiButton = lazy(() => import('ui/UiButton'));
 const UiPill = lazy(() => import('ui/UiPill'));
@@ -42,7 +44,10 @@ export default function PaymentsPage() {
   const [isViewLoadingProofVisible, setIsViewLoadingProofVisible] =
     useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [page, setPage] = useState(1);
   const [totalPayments, setTotalPayments] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [totalPendingPayments, setTotalPendingPayments] = useState(0);
   const [totalCompletedPayments, setTotalCompletedPayments] = useState(0);
   const status = searchParams.get('status');
@@ -144,9 +149,21 @@ export default function PaymentsPage() {
     }));
   }, [paymentRequests, status]);
 
+  function loadPaymentRequests() {
+    setLoading(true);
+    dispatch(toAnyAction(getPaymentRequestsOfDriver({ page, limit: 20 })))
+      .then((response: PaymnetPaginatedResponse) => {
+        setTotalPages(response.totalPages);
+        setTotalPayments(response.totalItems);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+
   useEffect(() => {
-    dispatch(toAnyAction(getPaymentRequestsOfDriver()));
-  }, []);
+    loadPaymentRequests();
+  }, [page]);
 
   const filters = useMemo(
     () => [
@@ -218,6 +235,14 @@ export default function PaymentsPage() {
           emptyTableBtnContent={emptyTableBtnContent()}
           emptyTableAction={emptyTableAction}
         />
+        {!!data.length && (
+          <PaginationLoader
+            loading={loading}
+            page={page}
+            totalPages={totalPages}
+            nextPage={() => setPage(page + 1)}
+          />
+        )}
         {selectedPayment && (
           <>
             <CargoLoadingProof

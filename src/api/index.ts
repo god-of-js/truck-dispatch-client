@@ -213,8 +213,23 @@ class ApiService {
     );
   }
 
-  getPaymentRequestsOfDriver() {
-    return this.get<PaymentRequest[]>('/payment/payment-requests');
+  async getPaymentRequestsOfDriver({
+    page,
+    limit,
+  }: {
+    page: number;
+    limit: number;
+  }) {
+    const data = await this.get(
+      `/payment/payment-requests?page=${page}&limit=${limit}`,
+    );
+
+    return {
+      data: data.data as PaymentRequest[],
+      currentPage: data.currentPage,
+      totalPages: data.totalPages,
+      totalItems: data.totalItems,
+    };
   }
 
   rejectPaymentRequest(
