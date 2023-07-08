@@ -18,10 +18,10 @@ import { selectTrip } from 'modules/Trips';
 import UiIcon from 'ui/UiIcon';
 import sizes from 'utils/sizes';
 import UiCard from 'ui/UiCard';
-import { ReactComponent as AppLogo } from '../../assets/logo.svg';
 import { ReactComponent as PaystackLogo } from '../../assets/img/paystack.svg';
 import PaymentMethods from 'types/PaymentMethods';
 
+const AppLogo = lazy(() => import('ui/AppLogo'));
 const UiModal = lazy(() => import('ui/UiModal'));
 const UiAlert = lazy(() => import('ui/UiAlert'));
 const UiButton = lazy(() => import('ui/UiButton'));

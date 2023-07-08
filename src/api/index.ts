@@ -326,7 +326,7 @@ class ApiService {
       })
       .catch(({ response }) => {
         Toast.error({ msg: response.data.message });
-        return Promise.reject(response.data.message);
+        return Promise.reject(response.data);
       });
   }
 
@@ -339,7 +339,7 @@ class ApiService {
       })
       .catch(({ response }) => {
         Toast.error({ msg: response.data.message });
-        return Promise.reject(response.data.message);
+        return Promise.reject(response.data);
       });
   }
 
@@ -352,7 +352,7 @@ class ApiService {
       })
       .catch(({ response }) => {
         Toast.error({ msg: response.data.message });
-        return Promise.reject(response.data.message);
+        return Promise.reject(response.data);
       });
   }
 }
