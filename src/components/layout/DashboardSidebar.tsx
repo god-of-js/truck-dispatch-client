@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import sizes from 'utils/sizes';
-import { ReactComponent as AppLogo } from '../../assets/logo.svg';
 
 import { RootState } from 'modules/index';
 import { removeUserSessionId } from 'utils/localStorageMethods';
@@ -11,6 +10,7 @@ import { selectUnreadChats } from 'modules/Chat';
 import { shipperRoutes, transporterRoutes } from './routes';
 import { setUser } from 'modules/Account';
 
+const AppLogo = lazy(() => import('ui/AppLogo'));
 const UiButton = lazy(() => import('ui/UiButton'));
 const UiAvatar = lazy(() => import('ui/UiAvatar'));
 const UiIcon = lazy(() => import('ui/UiIcon'));
