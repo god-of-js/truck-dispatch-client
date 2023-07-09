@@ -51,13 +51,13 @@ export default function UiDataField({
         <div className="field-title">{title}</div>
         <div className="field-main">
           <div className="field-value">{value ? value : 'N/A'}</div>
-            {editButton && (
-          <div className="field-button">
+          {editButton && (
+            <div className="field-button">
               <UiButton size="s" type="button" variant={buttonVariant}>
                 {editText}
               </UiButton>
-          </div>
-            )}
+            </div>
+          )}
         </div>
       </div>
     </FieldStyling>
@@ -92,16 +92,14 @@ const FieldStyling = styled.div<StylingProps>`
     flex-direction: column;
     justify-content: center;
     align-items: center;`}
-
   }
   .field-main {
     display: flex;
     flex-direction: row;
-    gap:100%;
+    gap: 100%;
     align-items: center;
   }
 
- 
   .field-title {
     font-style: normal;
     font-weight: ${({ variant }) => (variant === 'text-area' ? 600 : 400)};

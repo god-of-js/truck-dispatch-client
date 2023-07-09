@@ -47,17 +47,13 @@ export default function ProfileLayout() {
 
   const edgeNode = (
     <GappedContainerWith12PX>
-          <UiIcon size='24px' icon="Notification" />
+      <UiIcon size="24px" icon="Notification" />
     </GappedContainerWith12PX>
   );
 
   return (
     <>
-       <DashboardTopNav
-        routeName="Settings"
-        edgeNode={edgeNode}
-
-      />
+      <DashboardTopNav routeName="Settings" edgeNode={edgeNode} />
       <TabContainer>
         <UiTabs tabs={routes} />
       </TabContainer>

@@ -1,5 +1,5 @@
 import { RootState } from 'modules/index';
-import React, { lazy, useState } from 'react';
+import React, { lazy, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { updateUser } from 'modules/Account';
@@ -10,13 +10,11 @@ import {
   toAnyAction,
 } from 'utils/helpers';
 import sizes from 'utils/sizes';
-import EditProfileSchema from 'utils/validations/EditProfileSchema';
 import UiDataField from 'ui/UiDataField';
 
 const UiCard = lazy(() => import('ui/UiCard'));
 const UiButton = lazy(() => import('ui/UiButton'));
 const UiForm = lazy(() => import('ui/UiForm'));
-const UiInput = lazy(() => import('ui/UiInput'));
 const UiAvatar = lazy(() => import('ui/UiAvatar'));
 
 export default function ProfileDetailsPage() {
@@ -24,9 +22,13 @@ export default function ProfileDetailsPage() {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState(user || ({} as User));
 
-
-  const [isEditable, setIsEditable] = useState(true);
   const [loading, setLoading] = useState(false);
+
+  const valuesHasBeenEdited = useMemo(() => {
+    if (!user) return false;
+
+    return user.avatar !== formData.avatar;
+  }, [user, formData]);
 
   async function editProfile() {
     try {
@@ -34,8 +36,8 @@ export default function ProfileDetailsPage() {
       const editedData = removeUneditedFields<User>(user!, formData);
       const data = deepRootedToFormData(editedData);
       dispatch(toAnyAction(updateUser(data)))
-        .then(() => {
-          setIsEditable(false);
+        .then((response: User) => {
+          setFormData(response);
         })
         .finally(() => {
           setLoading(false);
@@ -49,39 +51,26 @@ export default function ProfileDetailsPage() {
     name: string;
     value: string | File | File[] | null;
   }) {
-    alert("Hello world")
     setFormData({
       ...formData,
       [event.name]: event.value,
     });
   }
-
-  function cancelEdit() {
-    setIsEditable(false);
-    if (user) setFormData(user);
-  }
-
   return (
     <>
       <CardContainer>
         <UiCard>
-          <UiForm
-            formData={formData}
-            schema={EditProfileSchema}
-            onSubmit={editProfile}
-          >
-            {({ errors }) => (
+          <UiForm formData={formData} onSubmit={editProfile}>
+            {() => (
               <>
                 <div className="details-page">
                   <div className="details-page-head">
                     <div className="avatar-container">
                       <UiAvatar
                         size="xl"
-                        isEdit={isEditable}
-                        
+                        isEdit
                         name="avatar"
                         avatar={formData.avatar}
-                        isBottomFlat
                         onChange={onChange}
                       />
                     </div>
@@ -131,30 +120,15 @@ export default function ProfileDetailsPage() {
                     />
                   </GridSpacer>
 
-                  {isEditable && (
-                    <div className="button-container">
-                      <UiButton
-                        size="large"
-                        type="button"
-                        disabled
-                        loading={loading}
-                      >
-                        Save Changes
-                      </UiButton>
-                    </div>
-                  )}
-
-                  {!isEditable && (
-                    <div className="button-container">
-                      <UiButton
-                        size="large"
-                        type="button"
-                        loading={loading}
-                      >
-                        Save Changes
-                      </UiButton>
-                    </div>
-                  )}
+                  <div className="button-container">
+                    <UiButton
+                      size="large"
+                      disabled={!valuesHasBeenEdited}
+                      loading={loading}
+                    >
+                      Save Changes
+                    </UiButton>
+                  </div>
                 </div>
               </>
             )}
@@ -204,8 +178,6 @@ const CardContainer = styled.div`
         display: flex;
         flex-direction: row;
         color: var(--neutral-black);
-        leading-trim: both;
-        text-edge: cap;
         font-size: 24px;
         font-style: normal;
         font-weight: 600;
@@ -248,7 +220,7 @@ const GridSpacer = styled.div`
   gap: ${pxToRem(12)};
   margin: ${pxToRem(20)} 0;
 
-  @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
+  @media only screen and (min-width: ${sizes.mobileSmall}) {
     grid-template-columns: auto auto auto;
     grid-template-rows: auto auto auto;
   }

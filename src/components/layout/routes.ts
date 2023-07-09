@@ -45,6 +45,11 @@ export const shipperRoutes: Route[] = [
     name: 'My Trips',
     iconName: 'TruckTick',
   },
+  {
+    path: '/profile',
+    name: 'Settings',
+    iconName: 'Settings',
+  },
 ];
 
 export default [...shipperRoutes, ...transporterRoutes];

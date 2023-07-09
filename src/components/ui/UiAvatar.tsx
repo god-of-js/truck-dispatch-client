@@ -5,7 +5,7 @@ import UiIcon from './UiIcon';
 
 const UiButton = lazy(() => import('./UiButton'));
 const FileUploadWidget = lazy(() => import('./FileUploadWidget'));
-type Size = 'sm' | 'lg'| 'xl';
+type Size = 'sm' | 'lg' | 'xl';
 
 interface Props {
   avatar?: string | File;
@@ -50,7 +50,11 @@ export default function UiAvatar({
 
   return (
     <AvatarContainer>
-      <Avatar size={size} isBottomFlat={isBottomFlat} isHalfCurved={isHalfCurved}>
+      <Avatar
+        size={size}
+        isBottomFlat={isBottomFlat}
+        isHalfCurved={isHalfCurved}
+      >
         <img src={avatar ? formattedAvatar : EmptyAvatar} alt="" />
       </Avatar>
       {isEdit && (
@@ -59,9 +63,8 @@ export default function UiAvatar({
           value={avatar!}
           onChange={handleAvatarChange}
         >
-
           <UiButton size="s" variant="secondary" type="button">
-              <UiIcon icon="Camera" size="20" />
+            <UiIcon icon="Camera" size="20" />
             <span>change picture</span>
           </UiButton>
         </FileUploadWidget>
@@ -94,7 +97,10 @@ const AvatarContainer = styled.div`
   flex-direction: column;
 
   button {
-    margin-top: ${pxToRem(4)};
+    margin-top: -${pxToRem(12)};
+    outline: ${pxToRem(6)} solid #fff;
+    border-radius: ${pxToRem(16)};
+    padding: ${pxToRem(10)};
   }
 `;
 
@@ -125,15 +131,13 @@ const Avatar = styled.div`
   }
 
   img {
-    
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: ${({ isHalfCurved }: AvatarProps) =>
-      isHalfCurved ? pxToRem(8): '50%'};
+      isHalfCurved ? pxToRem(8) : '50%'};
 
     border-radius: ${({ isBottomFlat }: AvatarProps) =>
-      isBottomFlat ? "50%" : '50%'};
-
+      isBottomFlat ? '50%' : '50%'};
   }
 `;
