@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { ReactComponent as AppLogo } from '../../assets/logo.svg';
 import { selectTrip } from 'modules/Trips';
 import { toAnyAction } from 'utils/helpers';
 
@@ -12,6 +11,7 @@ import { RootState } from 'modules/index';
 import { clientBasedUserTypes } from 'utils/constants';
 import { publishUserRating } from 'modules/Ratings';
 
+const AppLogo = lazy(() => import('ui/AppLogo'));
 const UiModal = lazy(() => import('ui/UiModal'));
 const UiButton = lazy(() => import('ui/UiButton'));
 const Ratings = lazy(() => import('./Ratings'));
