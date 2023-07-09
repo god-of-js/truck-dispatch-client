@@ -32,11 +32,11 @@ export const transporterRoutes: Route[] = [
   //   name: 'Analytics',
   //   iconName: 'ChartSquare',
   // },
-  // {
-  //   path: '/',
-  //   name: 'Settings',
-  //   iconName: 'Settings',
-  // },
+  {
+    path: '/profile',
+    name: 'Settings',
+    iconName: 'Settings',
+  },
 ];
 
 export const shipperRoutes: Route[] = [
@@ -44,6 +44,11 @@ export const shipperRoutes: Route[] = [
     path: '/my-trips',
     name: 'My Trips',
     iconName: 'TruckTick',
+  },
+  {
+    path: '/profile',
+    name: 'Settings',
+    iconName: 'Settings',
   },
 ];
 

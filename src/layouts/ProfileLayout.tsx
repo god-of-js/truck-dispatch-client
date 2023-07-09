@@ -7,6 +7,8 @@ import { RootState } from 'modules/index';
 
 import { useSelector } from 'react-redux';
 import { clientBasedUserTypes } from 'utils/constants';
+import DashboardTopNav from 'components/layout/DashboardTopNav';
+import UiIcon from 'ui/UiIcon';
 
 const Loader = lazy(() => import('components/layout/Loader'));
 const UiTabs = lazy(() => import('ui/UiTabs'));
@@ -43,8 +45,15 @@ export default function ProfileLayout() {
     return true;
   });
 
+  const edgeNode = (
+    <GappedContainerWith12PX>
+      <UiIcon size="24px" icon="Notification" />
+    </GappedContainerWith12PX>
+  );
+
   return (
     <>
+      <DashboardTopNav routeName="Settings" edgeNode={edgeNode} />
       <TabContainer>
         <UiTabs tabs={routes} />
       </TabContainer>
@@ -56,6 +65,12 @@ export default function ProfileLayout() {
     </>
   );
 }
+
+const GappedContainerWith12PX = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${pxToRem(12)};
+`;
 
 const TabContainer = styled.div`
   background-color: #ffffff;
