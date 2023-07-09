@@ -1,5 +1,6 @@
 import React, { lazy } from 'react';
 import styled from 'styled-components';
+import { Size } from 'types/Size';
 
 const Loader = lazy(() => import('components/layout/Loader'));
 export type ButtonVariant =
@@ -18,15 +19,13 @@ interface Props {
   disabled?: boolean;
   loading?: boolean;
   variant?: ButtonVariant;
-  size?: Sizes;
+  size?: Size;
   type?: 'submit' | 'button';
   textCasing?: 'uppercase' | 'lowercase' | 'capitalize' | 'normal';
   /** This prop decides if we want the button to fit the content or be full width */
   isFullWidth?: boolean;
   onClick?: (e?: any) => void;
 }
-
-type Sizes = 'large' | 'md' | 's' | 'text';
 
 export default function UiButton({
   children,
@@ -60,7 +59,7 @@ export default function UiButton({
   );
 }
 
-function sizeVariant(size: Sizes) {
+function sizeVariant(size: Size) {
   if (size === 'text') return '';
   if (size === 's')
     return `

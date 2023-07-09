@@ -2,6 +2,7 @@ import { lazy } from 'react';
 import styled from 'styled-components';
 import { abbreviateNumber, convertToFullDate } from 'utils/helpers';
 import Bid from 'types/Bid';
+import sizes from 'utils/sizes';
 
 const UiPill = lazy(() => import('ui/UiPill'));
 const UiButton = lazy(() => import('ui/UiButton'));
@@ -176,9 +177,8 @@ const BidItemStyling = styled.div`
     }
 
     .proposed-trip-cost-and-status-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: grid;
+      gap: ${pxToRem(24)};
       padding-bottom: ${pxToRem(20)};
       border-bottom: ${pxToRem(1)} solid var(--color-gray-30);
 
@@ -196,17 +196,25 @@ const BidItemStyling = styled.div`
           font-size: ${pxToRem(14)};
         }
       }
+      @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
     }
     .vehicle-details {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
+      display: grid;
       gap: ${pxToRem(24)};
 
       .driver-details {
         display: flex;
         align-items: center;
         gap: ${pxToRem(8)};
+      }
+      @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
       }
     }
 

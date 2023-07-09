@@ -4,11 +4,11 @@ import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import sizes from 'utils/sizes';
 
-import { ReactComponent as AppLogo } from '../../assets/logo.svg';
 import routes from './routes';
 
 import { OnChangeParams } from 'ui/UiInput';
 
+const AppLogo = lazy(() => import('ui/AppLogo'));
 const UiButton = lazy(() => import('ui/UiButton'));
 const UiFilterTag = lazy(() => import('ui/UiFilterTag'));
 const UiIcon = lazy(() => import('ui/UiIcon'));
