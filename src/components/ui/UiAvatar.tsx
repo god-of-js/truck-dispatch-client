@@ -1,10 +1,11 @@
 import React, { lazy, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import EmptyAvatar from '../../assets/img/empty-profile-pic.png';
+import UiIcon from './UiIcon';
 
 const UiButton = lazy(() => import('./UiButton'));
 const FileUploadWidget = lazy(() => import('./FileUploadWidget'));
-type Size = 'sm' | 'lg';
+type Size = 'sm' | 'lg' | 'xl';
 
 interface Props {
   avatar?: string | File;
@@ -12,6 +13,7 @@ interface Props {
   isEdit?: boolean;
   name?: string;
   isHalfCurved?: boolean;
+  isBottomFlat?: boolean;
   onChange?: (event: { name: string; value: File | File[] }) => void;
 }
 
@@ -21,6 +23,8 @@ export default function UiAvatar({
   isEdit,
   name,
   isHalfCurved,
+  isBottomFlat,
+
   onChange = () => {},
 }: Props) {
   const [avatarDataUrl, setAvatarDataUrl] = useState<string | undefined>();
@@ -46,7 +50,11 @@ export default function UiAvatar({
 
   return (
     <AvatarContainer>
-      <Avatar size={size} isHalfCurved={isHalfCurved}>
+      <Avatar
+        size={size}
+        isBottomFlat={isBottomFlat}
+        isHalfCurved={isHalfCurved}
+      >
         <img src={avatar ? formattedAvatar : EmptyAvatar} alt="" />
       </Avatar>
       {isEdit && (
@@ -56,7 +64,8 @@ export default function UiAvatar({
           onChange={handleAvatarChange}
         >
           <UiButton size="s" variant="secondary" type="button">
-            <span>Edit Avatar</span>
+            <UiIcon icon="Camera" size="20" />
+            <span>change picture</span>
           </UiButton>
         </FileUploadWidget>
       )}
@@ -69,6 +78,11 @@ function getSizeVariant(size: Size) {
     return `
   width: ${pxToRem(52)};
   height: ${pxToRem(52)};
+  `;
+  if (size === 'xl')
+    return `
+  width: ${pxToRem(149)};
+  height: ${pxToRem(149)};
   `;
   return `
   width: ${pxToRem(40)};
@@ -83,13 +97,17 @@ const AvatarContainer = styled.div`
   flex-direction: column;
 
   button {
-    margin-top: ${pxToRem(12)};
+    margin-top: -${pxToRem(12)};
+    outline: ${pxToRem(6)} solid #fff;
+    border-radius: ${pxToRem(16)};
+    padding: ${pxToRem(10)};
   }
 `;
 
 interface AvatarProps {
   size: Size;
   isHalfCurved?: boolean;
+  isBottomFlat?: boolean;
 }
 const Avatar = styled.div`
   ${({ size }: AvatarProps) => getSizeVariant(size)}
@@ -118,5 +136,8 @@ const Avatar = styled.div`
     object-fit: cover;
     border-radius: ${({ isHalfCurved }: AvatarProps) =>
       isHalfCurved ? pxToRem(8) : '50%'};
+
+    border-radius: ${({ isBottomFlat }: AvatarProps) =>
+      isBottomFlat ? '50%' : '50%'};
   }
 `;

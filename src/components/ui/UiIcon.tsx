@@ -63,6 +63,11 @@ const icons = {
       default: module.ReactComponent,
     })),
   ),
+  Camera: lazy(() =>
+    import('./icons/camera.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
   Car: lazy(() =>
     import('./icons/car.svg').then((module) => ({
       default: module.ReactComponent,
