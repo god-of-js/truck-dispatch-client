@@ -117,7 +117,6 @@ export default function TripDetailsPage() {
   }, [trip, changeTripStatusIsLoading]);
 
   function redirectToAddAccount() {
-    // TODO: implement add account.
     navigate('/profile/accounts');
   }
 
