@@ -84,7 +84,10 @@ export function verifyEmail(token: string) {
 
 export function updateUser(data: FormData) {
   return (dispatch: AppDispatch) => {
-    return Api.updateUser(data).then((user) => dispatch(setUser(user)));
+    return Api.updateUser(data).then((user) => {
+      dispatch(setUser(user));
+      return user;
+    });
   };
 }
 export function updatePassword(data: { password: string }) {

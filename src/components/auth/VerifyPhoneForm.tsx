@@ -28,7 +28,7 @@ export default function VerifyPhoneForm({ goToNext }: Props) {
   const [count, setCount] = useState(59);
   const [loading, setLoading] = useState(false);
   const [sendOTPLoading, setSendOTPLoading] = useState(false);
-  const fornmattedCount = count < 10 ? `0${count}` : `${count}`;
+  const formattedCount = count < 10 ? `0${count}` : `${count}`;
 
   function setPin({ value }: { name: string; value: string | null }) {
     setFormData({ pin: value! });
@@ -129,7 +129,7 @@ export default function VerifyPhoneForm({ goToNext }: Props) {
                 disabled={!canResendCode}
                 onClick={requestNewCode}
               >
-                {canResendCode ? `Resend` : `Resend in 00:${fornmattedCount}`}
+                {canResendCode ? `Resend` : `Resend in 00:${formattedCount}`}
               </UiButton>
             </StyledResendCode>
             <UiButton
@@ -139,6 +139,16 @@ export default function VerifyPhoneForm({ goToNext }: Props) {
               isFullWidth
             >
               Continue
+            </UiButton>
+            <UiButton
+              loading={loading}
+              size="large"
+              variant="tertiary"
+              isFullWidth
+              type="button"
+              onClick={goToNext}
+            >
+              Skip phone verification
             </UiButton>
           </>
         )}

@@ -22,7 +22,6 @@ interface Props {
   size?: Size;
   type?: 'submit' | 'button';
   textCasing?: 'uppercase' | 'lowercase' | 'capitalize' | 'normal';
-  isSquare?: boolean;
   /** This prop decides if we want the button to fit the content or be full width */
   isFullWidth?: boolean;
   onClick?: (e?: any) => void;
@@ -33,7 +32,6 @@ export default function UiButton({
   onClick,
   disabled = false,
   loading = false,
-  isSquare = false,
   variant = 'primary',
   type = 'submit',
   textCasing = 'uppercase',
@@ -49,7 +47,6 @@ export default function UiButton({
       textCasing={textCasing}
       size={size}
       isFullWidth={isFullWidth}
-      isSquare={isSquare}
     >
       {loading ? (
         <div className="loader-wrapper">
@@ -66,7 +63,7 @@ function sizeVariant(size: Size) {
   if (size === 'text') return '';
   if (size === 's')
     return `
-    padding: 8px
+    padding: 8px;
     12px; 
     height: 32px;
     font-size: 12px;
@@ -105,7 +102,7 @@ const Button = styled.button<Props>`
   gap: 10px;
   letter-spacing: 0.32px;
   text-align: center;
-  border-radius: ${({ isSquare }) => (isSquare ? '' : '8px')};
+  border-radius: ${pxToRem(8)};
   font-weight: 500;
   font-family: 'thiccboi-semibold';
   ${({ textCasing }) =>
