@@ -90,6 +90,10 @@ export default function TripBidsPage() {
   }
 
   function acceptBid(bidId: string) {
+    if (trip?.status !== 'awaiting-bid') {
+      navigate(`/my-trips/${tripId}`)
+      return;
+    }
     setActiveBidId(bidId);
     setIsMakePaymentVisible(true);
     setIsBidDetailsVisible(false);
