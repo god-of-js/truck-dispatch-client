@@ -6,6 +6,7 @@ import { loginUser } from '../../modules/Account';
 
 import { toAnyAction } from 'utils/helpers';
 import loginSchema from 'utils/validations/loginSchema';
+import NotifyUsersFromFirebase from 'components/auth/NotifyUsersFromFirebase';
 
 const UiForm = lazy(() => import('ui/UiForm'));
 const UiInput = lazy(() => import('ui/UiInput'));
@@ -56,6 +57,10 @@ export default function LoginPage() {
       .finally(() => {
         setLoading(false);
       });
+  }
+
+  function closeModal() {
+    setIsNotifyUserToResetVisible(false);
   }
 
   return (
@@ -125,6 +130,10 @@ export default function LoginPage() {
             )}
           </UiForm>
         </div>
+        <NotifyUsersFromFirebase
+          onClose={closeModal}
+          isVisible={isNotifyUsertoResetVisible}
+        />
       </StyledAuthContent>
     </AuthLayoutStyling>
   );
