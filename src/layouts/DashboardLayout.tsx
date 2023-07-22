@@ -17,7 +17,6 @@ import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
 import { getChatLogs, getUserChat, setChat, setChatLog } from 'modules/Chat';
 import { WEB_SOCKET_URL } from 'utils/privateKeys';
-import { saveUserSessionId } from 'utils/localStorageMethods';
 
 const DashboardSidebar = lazy(
   () => import('components/layout/DashboardSidebar'),
@@ -39,9 +38,6 @@ export default function DashboardLayout() {
 
   const token = new URLSearchParams(location.search).get('token');
   const action = new URLSearchParams(location.search).get('action');
-  const isPhoneVerified = new URLSearchParams(location.search).get(
-    'isPhoneVerified',
-  );
 
   const [requestVerificationLoading, setRequestVerificationLoading] =
     useState(false);
@@ -80,26 +76,14 @@ export default function DashboardLayout() {
   }
 
   useEffect(() => {
-    if (action === 'sign-in' && token) {
-      // Sign in user by saving the session ID
-      saveUserSessionId(token);
-      navigate(
-        `${location.pathname}${
-          isPhoneVerified === 'false'
-            ? '?isPhoneVerified=' + isPhoneVerified
-            : ''
-        }`,
-      );
-    } else if (action === 'verify-email' && token) {
+    if (action === 'verify-email' && token) {
       verifyUserEmail(token);
     }
-  }, [action, token, isPhoneVerified]);
+  }, [action, token]);
 
   useEffect(() => {
-    if (action !== 'sign-in' && !token) {
-      loadDashboardData();
-    }
-  }, [action, token, loading]);
+    loadDashboardData();
+  }, [loading]);
 
   useEffect(() => {
     // Connect to socket.
@@ -134,16 +118,19 @@ export default function DashboardLayout() {
               <div className="alert-body">
                 <span className="text">
                   Kindly{' '}
-                  {/* <Link to="/transporter-verification">
+                  <Link to="/transporter-verification">
                     complete your verification
-                  </Link>{' '} */}
+                  </Link>{' '}
                   to be able to bid on jobs
                 </span>
-                {/* <Link to="/transporter-verification">
+                <Link
+                  to="/transporter-verification"
+                  className="no-text-decoration"
+                >
                   <UiButton variant="secondary" size="s">
                     Complete Verification
                   </UiButton>
-                </Link> */}
+                </Link>
               </div>
             </UiAlert>
           </div>
@@ -179,13 +166,15 @@ const Body = styled.div`
   padding-bottom: 100px;
 
   .alert-container {
-    padding: 16px;
+    .ui-alert {
+      margin: 16px 16px 0 16px;
+    }
 
     .text {
-      font-size: ${pxToRem(14)};
+      font-size: 14px;
       font-weight: 600;
       line-height: 140%;
-      letter-spacing: ${pxToRem(-0.4)};
+      letter-spacing: -0.4px;
     }
 
     .alert-body {
@@ -193,6 +182,9 @@ const Body = styled.div`
       align-items: center;
       justify-content: space-between;
       width: 100%;
+    }
+    .no-text-decoration {
+      text-decoration: none;
     }
   }
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {

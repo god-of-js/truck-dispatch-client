@@ -22,20 +22,24 @@ export default function UiAlert({
 }: Props) {
   const [isAlertVisible, setIsAlertVisible] = useState(true);
   return (
-    <>
+    <Alert variant={variant} alignCenter={alignCenter}>
       {isAlertVisible && (
-        <Alert variant={variant} alignCenter={alignCenter}>
+        <div className="ui-alert">
           {icon}
 
           <div className="content">{children}</div>
           {isClosable && (
-            <UiButton variant="icon-neutral" size="s">
+            <UiButton
+              variant="icon-neutral"
+              size="s"
+              onClick={() => setIsAlertVisible(false)}
+            >
               <UiIcon icon="Close" />
             </UiButton>
           )}
-        </Alert>
+        </div>
       )}
-    </>
+    </Alert>
   );
 }
 
@@ -45,7 +49,7 @@ function generateSchemeBasedOnVariant(variant: Variant): string {
       background-color: var(--color-${variant}-20);
       color: var(--color-${variant}-80);
       border: ${pxToRem(1)} solid var(--color-${variant}-30);
-      a, button {color: var(--color-${variant}-80);}
+      a {color: var(--color-${variant}-80);}
       span {
         fill: var(--color-${variant}-80);
       }
@@ -55,36 +59,31 @@ function generateSchemeBasedOnVariant(variant: Variant): string {
     background-color: white;
     color: var(--color-gray-80);
     border: ${pxToRem(1)} solid var(--color-gray-30);
-    a, button {color: var(--color-gray-80);}
+    a {color: var(--color-gray-80);}
   `;
 }
 
 const Alert = styled.div<{ variant: Variant; alignCenter?: boolean }>`
-  font-size: ${pxToRem(14)};
-  padding: ${pxToRem(16)};
-  border-radius: ${pxToRem(8)};
-  display: flex;
-  justify-content: space-between;
-  gap: ${pxToRem(9.4)};
-  line-height: ${pxToRem(24)};
-  ${({ variant }) => generateSchemeBasedOnVariant(variant)}
-  ${({ alignCenter }) => alignCenter && `align-items: center;`}
-  a {
-    text-decoration: underline;
-  }
-
-  .content {
-    width: 100%;
-  }
-  button {
-    background-color: transparent;
-    border: transparent;
-    cursor: pointer;
-    margin-top: 0 !important;
-  }
-
-  .children {
+  .ui-alert {
+    font-size: ${pxToRem(14)};
+    padding: ${pxToRem(16)};
+    border-radius: ${pxToRem(8)};
     display: flex;
-    align-items: center;
+    justify-content: space-between;
+    gap: ${pxToRem(9.4)};
+    line-height: ${pxToRem(24)};
+    ${({ variant }) => generateSchemeBasedOnVariant(variant)}
+    ${({ alignCenter }) => alignCenter && `align-items: center;`}
+    a {
+      text-decoration: underline;
+    }
+
+    .content {
+      width: 100%;
+    }
+    .children {
+      display: flex;
+      align-items: center;
+    }
   }
 `;
