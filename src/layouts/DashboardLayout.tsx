@@ -1,6 +1,6 @@
 import React, { lazy, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { io } from 'socket.io-client';
 
@@ -22,6 +22,8 @@ import { saveUserSessionId } from 'utils/localStorageMethods';
 const DashboardSidebar = lazy(
   () => import('components/layout/DashboardSidebar'),
 );
+const UiAlert = lazy(() => import('components/ui/UiAlert'));
+const UiButton = lazy(() => import('components/ui/UiButton'));
 const EmailHasBeenSentModal = lazy(
   () => import('components/profile/EmailHasBeenSentModal'),
 );
@@ -126,6 +128,28 @@ export default function DashboardLayout() {
     <Layout>
       <DashboardSidebar />
       <Body>
+        {!!user?.status && user?.status !== 'verified' ? (
+          <div className="alert-container">
+            <UiAlert variant="warning" alignCenter isClosable>
+              <div className="alert-body">
+                <span className="text">
+                  Kindly{' '}
+                  {/* <Link to="/transporter-verification">
+                    complete your verification
+                  </Link>{' '} */}
+                  to be able to bid on jobs
+                </span>
+                {/* <Link to="/transporter-verification">
+                  <UiButton variant="secondary" size="s">
+                    Complete Verification
+                  </UiButton>
+                </Link> */}
+              </div>
+            </UiAlert>
+          </div>
+        ) : (
+          ''
+        )}
         {loading ? <Loader isPage /> : <Outlet />}
         <EmailHasBeenSentModal
           isVisible={verificationHasBeenSent}
@@ -156,6 +180,20 @@ const Body = styled.div`
 
   .alert-container {
     padding: 16px;
+
+    .text {
+      font-size: ${pxToRem(14)};
+      font-weight: 600;
+      line-height: 140%;
+      letter-spacing: ${pxToRem(-0.4)};
+    }
+
+    .alert-body {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
   }
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     width: 97%;

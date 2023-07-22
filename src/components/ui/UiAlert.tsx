@@ -1,33 +1,38 @@
 import React, { lazy, useState } from 'react';
 import styled from 'styled-components';
+// TODO: refactor if needed in another place and styling gets consistent.
+// Add styling variants or props. e.g: withTitle, withIcon, e.t.c.
+const UiButton = lazy(() => import('./UiButton'));
+const UiIcon = lazy(() => import('./UiIcon'));
 
 type Variant = 'warning' | 'success' | 'danger' | 'neutral' | 'info' | 'gray';
 interface Props {
   variant?: Variant;
   children: React.ReactNode;
   icon?: React.ReactNode;
-  alignTo?: string;
+  alignCenter?: boolean;
+  isClosable?: boolean;
 }
 export default function UiAlert({
   variant = 'neutral',
   children,
   icon,
-  alignTo = 'center',
+  alignCenter,
+  isClosable,
 }: Props) {
   const [isAlertVisible, setIsAlertVisible] = useState(true);
   return (
     <>
       {isAlertVisible && (
-        <Alert variant={variant}>
-          {icon ? (
-            icon
-          ) : (
-            <button onClick={() => setIsAlertVisible(false)}>
-              {/* <UiIcon icon="X" /> */}
-            </button>
-          )}
+        <Alert variant={variant} alignCenter={alignCenter}>
+          {icon}
 
-          <div>{children}</div>
+          <div className="content">{children}</div>
+          {isClosable && (
+            <UiButton variant="icon-neutral" size="s">
+              <UiIcon icon="Close" />
+            </UiButton>
+          )}
         </Alert>
       )}
     </>
@@ -54,7 +59,7 @@ function generateSchemeBasedOnVariant(variant: Variant): string {
   `;
 }
 
-const Alert = styled.div`
+const Alert = styled.div<{ variant: Variant; alignCenter?: boolean }>`
   font-size: ${pxToRem(14)};
   padding: ${pxToRem(16)};
   border-radius: ${pxToRem(8)};
@@ -62,12 +67,15 @@ const Alert = styled.div`
   justify-content: space-between;
   gap: ${pxToRem(9.4)};
   line-height: ${pxToRem(24)};
-  ${({ variant }: { variant: Variant }) =>
-    generateSchemeBasedOnVariant(variant)}
+  ${({ variant }) => generateSchemeBasedOnVariant(variant)}
+  ${({ alignCenter }) => alignCenter && `align-items: center;`}
   a {
     text-decoration: underline;
   }
 
+  .content {
+    width: 100%;
+  }
   button {
     background-color: transparent;
     border: transparent;

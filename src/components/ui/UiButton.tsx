@@ -104,6 +104,7 @@ const Button = styled.button<Props>`
   text-align: center;
   border-radius: ${pxToRem(8)};
   font-weight: 500;
+  text-decoration: none;
   font-family: 'thiccboi-semibold';
   ${({ textCasing }) =>
     textCasing !== 'normal' && `text-transform: ${textCasing}`};
