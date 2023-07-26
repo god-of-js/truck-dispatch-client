@@ -502,7 +502,7 @@ const TripDetailsStyling = styled.div`
       text-align: left;
     }
   }
-  @media screen and (min-width: ${sizes.mobileLargeWidth}) {
+  @media screen and (min-width: ${sizes.tablet}) {
     grid-template-columns: 2fr 1fr;
 
     .double-grid {
