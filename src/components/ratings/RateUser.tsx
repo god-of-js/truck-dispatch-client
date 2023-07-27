@@ -53,14 +53,9 @@ export default function RateTransporter({ onClose, isVisible }: Props) {
   }
   function publishRating() {
     setLoading(true);
-    let userRated: string;
-    if (clientBasedUserTypes.includes(user?.userType!)) {
-      userRated = trip?.transporter?._id!;
-    } else userRated = trip?.tripOwner?._id!;
-
     Promise.all([
       dispatch(
-        toAnyAction(publishUserRating({ ...data, userRated } as Rating)),
+        toAnyAction(publishUserRating({ ...data, userRated: alternateUser?._id } as Rating)),
       ),
     ]).finally(() => {
       onClose();
