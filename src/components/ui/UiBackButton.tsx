@@ -4,10 +4,18 @@ import styled from 'styled-components';
 
 const UiButton = lazy(() => import('./UiButton'));
 const UiIcon = lazy(() => import('./UiIcon'));
-export default function UiBackButton() {
+interface Props {
+  text?: string
+  route?: string
+}
+export default function UiBackButton({ text, route }: Props) {
   const navigate = useNavigate();
 
   function goBack() {
+    if (route) {
+      navigate(route);
+      return;
+    }
     navigate(-1);
   }
 
@@ -17,7 +25,7 @@ export default function UiBackButton() {
         <div className="icon-container">
           <UiIcon icon="ArrowLeft" size="12" />
         </div>
-        <span>Go Back </span>
+        <span>{text || 'Go Back'} </span>
       </ButtonStyling>
     </UiButton>
   );
