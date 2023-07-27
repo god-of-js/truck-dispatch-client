@@ -172,7 +172,7 @@ export default function TripDetailsPage() {
     <>
       <DashboardTopNav
         routeName="Trip Details"
-        startNode={<UiBackButton />}
+        startNode={<UiBackButton text="My Trips" route="/my-trips" />}
         edgeNode={edgeNode}
       />
       {/* Add not found here. */}
