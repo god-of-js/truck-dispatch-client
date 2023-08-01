@@ -133,11 +133,11 @@ const ComponentStyling = styled.div`
 
   @media screen and (min-width: ${sizes.mobileLargeWidth}) {
     flex-direction: row;
-    align-items: center;
     justify-content: space-between;
 
     .arrow-icon-container {
-      display: block;
+      display: flex;
+      align-self: center;
     }
   }
 `;

@@ -46,7 +46,7 @@ export default function PageError({
 
     if (errorCode === 401) {
       img = <Unauthorized />;
-      errorSubtitle = 'Unauthorized';
+      errorSubtitle = 'You are not authorized to view this content.';
     }
 
     return {

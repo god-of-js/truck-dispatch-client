@@ -39,7 +39,6 @@ export default function Ratings({ isActive = false, rating, onRate }: Props) {
           />
         </RatingButton>
       ))}
-      {rating}
     </RatingsContainer>
   );
 }

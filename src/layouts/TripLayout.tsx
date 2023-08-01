@@ -47,7 +47,6 @@ export default function TripLayout() {
 
   return (
     <>
-      {/* TODO: Deprecate this Layout file. */}
       {loading ? <Loader /> : <Outlet />}
       {!!errorCode && (
         <PageError
