@@ -10,17 +10,24 @@ import {
   getPresentAuthStage,
   savePresentAuthStage,
 } from 'utils/localStorageMethods';
+import Verification from 'types/Verification';
+import { useDispatch, useSelector } from 'react-redux';
+import { deepRootedToFormData, toAnyAction } from 'utils/helpers';
+import { startVerificationProcess } from 'modules/Verification';
+import { RootState } from 'modules/index';
+import { Toast } from 'utils/toast';
+import ConfirmUserVerification from 'components/verification/ConfirmUserVerification';
 
-const VerifyPhoneForm = lazy(() => import('components/auth/VerifyPhoneForm'));
-const PersonalDetailsForm = lazy(
-  () => import('components/auth/PersonalDetailsForm'),
+const GuarantorsDetailsForm = lazy(
+  () => import('components/verification/GuarantorDetailsform'),
 );
-const ChoosePasswordForm = lazy(
-  () => import('components/auth/ChoosePasswordForm'),
+
+const IdentificationDetailsForm = lazy(
+  () => import('components/verification/IdentificatiobDetailsForm'),
 );
-const CompanyDetailsForm = lazy(
-  () => import('components/auth/CompanyDetailsForm'),
-);
+
+const AddressForm = lazy(() => import('components/verification/AddressForm'));
+
 const UiSteps = lazy(() => import('ui/UiSteps'));
 const AuthLayoutStyling = lazy(
   () => import('components/layout/AuthLayoutStyling'),
@@ -30,66 +37,63 @@ const StyledAuthContent = lazy(
 );
 
 export default function VerificationPage() {
-  const { userType } = useParams();
-  const formattedUserType = userType?.toLowerCase();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [loading, setLoading] = useState(false);
+  const [isVerified, setisVerified] = useState(false);
+  const [formData, setFormData] = useState<Verification>({
+    _id: '',
+    idType: '',
+    idDoc: null,
+    homeAddress: '',
+    homeUtilityBill: null,
+    garageAddress: '',
+    officeAddress: '',
+    guarantor: {
+      name: '',
+      email: '',
+      phone: '',
+      homeAddress: '',
+      idType: '',
+      idDoc: null,
+    },
+  });
+
+  const verification = useSelector(
+    (state: RootState) => state.verification.verification,
+  );
+
   const currentYear = new Date().getFullYear();
   const steps: Step[] = [
     {
-      title: 'Account handler details',
+      title: 'Identification Details',
+      detail: 'Please provide your ID documents and your recent photos',
+    },
+    {
+      title: 'Address',
+      detail: 'Enter your address and upload documents that confirms that',
+    },
+    {
+      title: 'Guarantor Details',
       detail:
-        'Please provide full name, email and phone number of the account handler',
+        'Provide the guarantor’s name, email address, phone andother details',
     },
-    {
-      title: 'Personal details',
-      detail: 'Please provide your full name, email and phone number',
-    },
-    {
-      title: 'Verify phone number',
-      detail: 'Please provide your full name, email and phone number',
-    },
-    {
-      title: 'Company Details',
-      detail: 'Provide the company name, address and registration details',
-    },
-    {
-      title: 'Choose password',
-      detail: 'Please provide your full name, email and phone number',
-    },
-  ].filter(({ title }) => {
-    if (
-      formattedUserType?.includes('company') &&
-      title === 'Personal details'
-    ) {
-      return false;
-    }
+  ];
 
-    if (
-      !formattedUserType?.includes('company') &&
-      title === 'Company Details'
-    ) {
-      return false;
-    }
-    if (
-      !formattedUserType?.includes('company') &&
-      title === 'Account handler details'
-    ) {
-      return false;
-    }
-
-    return true;
-  });
-
-  // const [currentStepTitle, setCurrentStepTitle] = useState('Company Details');
   const [currentStepTitle, setCurrentStepTitle] = useState(steps[0].title);
 
-  function goToNext() {
-    const indexOfCurrentStage = steps.findIndex(
-      ({ title }) => title === currentStepTitle,
+  function goToNext(data: Partial<Verification>) {
+    setFormData((formData) => ({
+      ...formData,
+      ...data,
+    }));
+
+    const indexOfCurrentStep = steps.findIndex(
+      (step) => step.title === currentStepTitle,
     );
-    const newTitle = steps[indexOfCurrentStage + 1].title;
-    setCurrentStepTitle(newTitle);
-    savePresentAuthStage(newTitle);
+    const nextTitle = steps[indexOfCurrentStep + 1].title;
+    setCurrentStepTitle(nextTitle);
   }
 
   const infoContent = useMemo(
@@ -102,6 +106,56 @@ export default function VerificationPage() {
     [steps],
   );
 
+  // async function startUserVerificationProcess() {
+  //   const data = deepRootedToFormData(formData);
+
+  //   dispatch(toAnyAction(startVerificationProcess(data)))
+  //     .then(() => {
+  //       onVerified();
+  //     })
+  //     .catch((err: Error) => {
+  //       Toast.error({ msg: err.message });
+  //     })
+  //     .finally(() => setLoading(false));
+  // }
+  // async function updateUserVerification() {
+  //   if (!verification)
+  //     throw new Error('verification is meant to be available at this point.');
+  //   const changedData = removeUneditedFields<Verification>(
+  //     verification,
+  //     formData,
+  //   );
+  //   const data = deepRootedToFormData(changedData);
+
+  //   dispatch(toAnyAction(updateVerification(data)))
+  //     .then(() => {
+  //       onVerified();
+  //     })
+  //     .catch((err: Error) => {
+  //       Toast.error({ msg: err.message });
+  //     })
+  //     .finally(() => setLoading(false));
+  // }
+
+  async function verifyUser(formData: Partial<Verification>) {
+    setLoading(true);
+
+    if (!verification) {
+      const data = deepRootedToFormData(formData);
+
+      dispatch(toAnyAction(startVerificationProcess(data)))
+        .then(() => {
+          // onVerified();
+          setisVerified(true);
+        })
+        .catch((err: Error) => {
+          Toast.error({ msg: err.message });
+        })
+        .finally(() => setLoading(false));
+    }
+    return;
+  }
+
   useEffect(() => {
     const presentAuthStage = getPresentAuthStage();
     const token = getAuthSessionId();
@@ -113,23 +167,27 @@ export default function VerificationPage() {
     }
   }, []);
 
+  useEffect(() => {
+    if (!formData._id && verification) setFormData(verification);
+  }, [verification]);
+
   return (
     <AuthLayoutStyling infoContent={infoContent}>
       <StyledAuthContent>
-        {(currentStepTitle === 'Account handler details' ||
-          currentStepTitle === 'Personal details') && (
-          <PersonalDetailsForm goToNext={goToNext} />
+        {currentStepTitle === 'Identification Details' && (
+          <IdentificationDetailsForm
+            verification={formData}
+            goToNext={goToNext}
+          />
         )}
-        {currentStepTitle === 'Verify phone number' && (
-          <VerifyPhoneForm goToNext={goToNext} />
+        {currentStepTitle === 'Address' && (
+          <AddressForm verification={formData} goToNext={goToNext} />
         )}
-        {currentStepTitle === 'Company Details' && (
-          <CompanyDetailsForm goToNext={goToNext} />
-        )}
-        {currentStepTitle === 'Choose password' && (
-          <ChoosePasswordForm goToNext={goToNext} />
+        {currentStepTitle === 'Guarantor Details' && (
+          <GuarantorsDetailsForm finish={verifyUser} verification={formData} />
         )}
       </StyledAuthContent>
+      {/* <ConfirmUserVerification onClose={closeModal} isVisible={isVerified} /> */}
     </AuthLayoutStyling>
   );
 }
