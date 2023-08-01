@@ -175,7 +175,6 @@ export default function TripDetailsPage() {
         startNode={<UiBackButton text="My Trips" route="/my-trips" />}
         edgeNode={edgeNode}
       />
-      {/* Add not found here. */}
       {trip && (
         <TripDetailsStyling>
           <UiCard>
