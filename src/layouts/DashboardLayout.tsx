@@ -18,6 +18,10 @@ import { Toast } from 'utils/toast';
 import { getChatLogs, getUserChat, setChat, setChatLog } from 'modules/Chat';
 import { WEB_SOCKET_URL } from 'utils/privateKeys';
 import { saveUserSessionId } from 'utils/localStorageMethods';
+import Trip from 'types/Trip';
+import { removeTrip, setTrip } from 'modules/Trips';
+import { removeBid, setBid } from 'modules/Bid';
+import Bid from 'types/Bid';
 
 const DashboardSidebar = lazy(
   () => import('components/layout/DashboardSidebar'),
@@ -114,6 +118,23 @@ export default function DashboardLayout() {
 
       newSocket.on('chat-log', (chatLog) => {
         dispatch(setChatLog(chatLog));
+      });
+
+      newSocket.on('trip-details', (trip: Trip) => {
+        dispatch(setTrip(trip));
+      });
+
+      newSocket.on('remove-trip', (tripId: string) => {
+        dispatch(removeTrip(tripId));
+      });
+
+      newSocket.on('bid-details', (bid: Bid) => {
+        console.log(bid);
+        dispatch(setBid(bid));
+      });
+
+      newSocket.on('remove-bid', (tripId: string) => {
+        dispatch(removeBid(tripId));
       });
 
       return () => {
