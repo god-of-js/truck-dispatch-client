@@ -7,6 +7,7 @@ import { loginUser } from '../../modules/Account';
 import { toAnyAction } from 'utils/helpers';
 import loginSchema from 'utils/validations/loginSchema';
 import NotifyUsersFromFirebase from 'components/auth/NotifyUsersFromFirebase';
+import { getPendingRoute } from 'utils/localStorageMethods';
 
 const UiForm = lazy(() => import('ui/UiForm'));
 const UiInput = lazy(() => import('ui/UiInput'));
@@ -43,6 +44,10 @@ export default function LoginPage() {
     setLoading(true);
     dispatch(toAnyAction(loginUser(formData)))
       .then(() => {
+        const pendingRoute = getPendingRoute();
+        if (pendingRoute) {
+          navigate(pendingRoute);
+        }
         window.location.reload();
       })
       .catch((err: Error) => {
