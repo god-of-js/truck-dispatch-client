@@ -1,4 +1,5 @@
 import { Navigate, useLocation } from 'react-router-dom';
+import { setPendingRoute } from 'utils/localStorageMethods';
 
 interface PrivateRouteProps {
   allowNavigation?: boolean;
@@ -14,15 +15,20 @@ export function ProtectedRoute({
   allowNavigationFunc,
 }: PrivateRouteProps) {
   const next = <>{children}</>;
-  const reRoute = <Navigate to={reRouteUrl} />;
+  const location = useLocation();
+  const reRoute = () => {
+    setPendingRoute(location.pathname);
+    return <Navigate to={reRouteUrl} />
+  };
+
+
 
   if (allowNavigationFunc) {
-    const location = useLocation();
     if (allowNavigationFunc(location.search)) return next;
 
-    return reRoute;
+    return reRoute();
   }
-  if (!allowNavigation) return reRoute;
+  if (!allowNavigation) return reRoute();
 
   return next;
 }
