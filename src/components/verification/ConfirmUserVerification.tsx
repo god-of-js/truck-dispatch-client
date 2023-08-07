@@ -1,6 +1,7 @@
 import React, { lazy } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import AppLogo from 'ui/AppLogo';
 
 const UiModal = lazy(() => import('ui/UiModal'));
 const UiButton = lazy(() => import('ui/UiButton'));
@@ -14,23 +15,18 @@ export default function ConfirmUserVerification({ isVisible, onClose }: Props) {
     <UiModal
       isVisible={isVisible}
       size="sm"
-      title="Verification required"
+      title="Account Verification Submitted"
       onClose={onClose}
     >
       <ModalContent>
         <TextContent>
-          For security purposes, verification is required before you can gain
-          access to the full suite of features we have in store.
-        </TextContent>
-        <TextContent>
-          Kindly navigate to the{' '}
-          <Link to="/profile/verification">Verification Page</Link> or click the
-          button below to verify your profile and our team would get back to you
-          shortly.
+          Thank you for submitting your request for account verification. We
+          will review it and respond in a timely manner. Please ensure to
+          regularly check your email inbox for any updates.
         </TextContent>
         <div className="btn-container">
-          <Link to="/profile/verification">
-            <UiButton>Verify Profile</UiButton>
+          <Link to="/available-jobs">
+            <UiButton>okay</UiButton>
           </Link>
         </div>
       </ModalContent>
@@ -39,7 +35,7 @@ export default function ConfirmUserVerification({ isVisible, onClose }: Props) {
 }
 
 const ModalContent = styled.div`
-  padding: ${pxToRem(12)} ${pxToRem(24)};
+  padding: ${pxToRem(10)} ${pxToRem(50)};
 
   .btn-container {
     display: flex;
@@ -51,5 +47,8 @@ const ModalContent = styled.div`
   }
 `;
 const TextContent = styled.p`
-  padding: 12px;
+  text-align: center;
+  font-size: ${pxToRem(20)};
+  font-weight: 400;
+  line-height: ${pxToRem(28)};
 `;
