@@ -60,7 +60,6 @@ export default function IdentificationDetailsForm({
 
   function goToNextStep() {
     goToNext(formData);
-    console.log(formData);
   }
 
   return (

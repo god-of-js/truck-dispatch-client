@@ -2,12 +2,7 @@ import React, { lazy, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import TransporterValidationSchema from 'utils/validations/TransporterValidationSchema';
-
 import Verification from 'types/Verification';
-import sizes from 'utils/sizes';
-import { RootState } from 'modules/index';
-import { Toast } from 'utils/toast';
 import UiIcon from 'ui/UiIcon';
 import UiAlert from 'ui/UiAlert';
 import GuarantorDetailsFormSchema from 'utils/validations/GuarantorDetailsFormSchema';
@@ -21,8 +16,7 @@ const UiButton = lazy(() => import('ui/UiButton'));
 
 interface Props {
   verification: Verification;
-  // finish: (verificationData: Partial<Verification>) => void;
-  finish: () => void;
+  finish: (verificationData: Partial<Verification>) => void;
 }
 
 export default function GuarantorsDetailsForm({ verification, finish }: Props) {
@@ -66,6 +60,10 @@ export default function GuarantorsDetailsForm({ verification, finish }: Props) {
     }
   }
 
+  function gotoNextStep() {
+    finish(formData);
+  }
+
   return (
     <>
       <div className="form-container">
@@ -98,15 +96,13 @@ export default function GuarantorsDetailsForm({ verification, finish }: Props) {
             </UiAlert>
           </GuarantorDetails>
         </header>
-      </div>
-      <UiForm
-        formData={formData}
-        schema={GuarantorDetailsFormSchema}
-        onSubmit={finish}
-      >
-        {({ errors }) => (
-          <GridContainer>
-            <GapGrid>
+        <UiForm
+          formData={formData}
+          schema={GuarantorDetailsFormSchema}
+          onSubmit={gotoNextStep}
+        >
+          {({ errors }) => (
+            <div className="form-container__inner">
               <UiInput
                 label="Guarantor Name"
                 name="guarantor.name"
@@ -151,42 +147,21 @@ export default function GuarantorsDetailsForm({ verification, finish }: Props) {
                 error={errors['guarantor.idDoc']}
                 onChange={setData}
               />
-            </GapGrid>
-            <UiButton
-              loading={loading}
-              isFullWidth
-              size="large"
-              variant="primary"
-            >
-              submit verification details
-            </UiButton>
-          </GridContainer>
-        )}
-      </UiForm>
+              <UiButton
+                loading={loading}
+                isFullWidth
+                size="large"
+                variant="primary"
+              >
+                submit verification details
+              </UiButton>
+            </div>
+          )}
+        </UiForm>
+      </div>
     </>
   );
 }
-
-const GridContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${pxToRem(32)};
-  margin: auto;
-
-  @media only screen and (min-width: ${sizes.tabletLargeWidth}) {
-    width: 80%;
-  }
-`;
-
-const GapGrid = styled.div`
-  display: grid;
-  grid-template-columns: auto;
-  gap: ${pxToRem(24)};
-
-  @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
-    grid-template-columns: auto auto;
-  }
-`;
 
 const GuarantorDetails = styled.div`
   display: grid;

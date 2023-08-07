@@ -22,7 +22,10 @@ import {
 } from 'modules/Verification';
 import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
-import ConfirmUserVerification from 'components/verification/ConfirmUserVerification';
+
+const ConfirmUserVerification = lazy(
+  () => import('components/verification/ConfirmUserVerification'),
+);
 
 const GuarantorsDetailsForm = lazy(
   () => import('components/verification/GuarantorDetailsform'),
@@ -95,7 +98,6 @@ export default function VerificationPage({ onVerified }: Props) {
   const [currentStepTitle, setCurrentStepTitle] = useState(steps[0].title);
 
   function goToNext(data: Partial<Verification>) {
-    console.log(data);
     setFormData((formData) => ({
       ...formData,
       ...data,
@@ -128,7 +130,10 @@ export default function VerificationPage({ onVerified }: Props) {
       .catch((err: Error) => {
         Toast.error({ msg: err.message });
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setisVerified(true);
+        setLoading(false);
+      });
   }
   async function updateUserVerification() {
     if (!verification)
@@ -151,7 +156,6 @@ export default function VerificationPage({ onVerified }: Props) {
 
   async function verifyUser() {
     setLoading(true);
-    setisVerified(true);
     if (!verification) {
       startUserVerificationProcess();
       return;
