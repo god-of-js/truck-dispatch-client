@@ -6,6 +6,7 @@ import TransporterValidationSchema from 'utils/validations/TransporterValidation
 
 import Verification from 'types/Verification';
 import UiIcon from 'ui/UiIcon';
+import AdressFormSchema from 'utils/validations/AdressFormSchema';
 
 const UiLocationsInput = lazy(() => import('ui/UiLocationsInput'));
 const FileUploadWidget = lazy(() => import('ui/FileUploadWidget'));
@@ -52,7 +53,7 @@ export default function IdentificationDetailsForm({
       </header>
       <UiForm
         formData={formData}
-        schema={TransporterValidationSchema}
+        schema={AdressFormSchema}
         onSubmit={goToNextStep}
       >
         {({ errors }) => (
@@ -86,12 +87,7 @@ export default function IdentificationDetailsForm({
               onChange={setData}
             />
             <div>
-              <UiButton
-                onClick={goToNext}
-                isFullWidth
-                size="large"
-                variant="primary"
-              >
+              <UiButton isFullWidth size="large" variant="primary">
                 Continue
               </UiButton>
             </div>

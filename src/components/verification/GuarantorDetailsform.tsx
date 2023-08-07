@@ -10,6 +10,7 @@ import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
 import UiIcon from 'ui/UiIcon';
 import UiAlert from 'ui/UiAlert';
+import GuarantorDetailsFormSchema from 'utils/validations/GuarantorDetailsFormSchema';
 
 const UiLocationsInput = lazy(() => import('ui/UiLocationsInput'));
 const FileUploadWidget = lazy(() => import('ui/FileUploadWidget'));
@@ -20,7 +21,8 @@ const UiButton = lazy(() => import('ui/UiButton'));
 
 interface Props {
   verification: Verification;
-  finish: (verificationData: Partial<Verification>) => void;
+  // finish: (verificationData: Partial<Verification>) => void;
+  finish: () => void;
 }
 
 export default function GuarantorsDetailsForm({ verification, finish }: Props) {
@@ -64,10 +66,6 @@ export default function GuarantorsDetailsForm({ verification, finish }: Props) {
     }
   }
 
-  function goToNextStep() {
-    finish(formData);
-  }
-
   return (
     <>
       <div className="form-container">
@@ -103,8 +101,8 @@ export default function GuarantorsDetailsForm({ verification, finish }: Props) {
       </div>
       <UiForm
         formData={formData}
-        schema={TransporterValidationSchema}
-        onSubmit={goToNextStep}
+        schema={GuarantorDetailsFormSchema}
+        onSubmit={finish}
       >
         {({ errors }) => (
           <GridContainer>
@@ -175,12 +173,8 @@ const GridContainer = styled.div`
   gap: ${pxToRem(32)};
   margin: auto;
 
-  @media only screen and (min-width: ${sizes.laptopWidth}) {
-    width: ${pxToRem(740)};
-  }
-
   @media only screen and (min-width: ${sizes.tabletLargeWidth}) {
-    width: 90%;
+    width: 80%;
   }
 `;
 

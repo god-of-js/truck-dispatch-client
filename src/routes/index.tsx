@@ -26,7 +26,9 @@ const ForgotPasswordPage = lazy(
 );
 const ResetPasswordPage = lazy(() => import('../pages/auth/ResetPasswordPage'));
 
-const VerificationPage = lazy(() => import('../pages/verification/VerificationPage'));
+const VerificationPage = lazy(
+  () => import('../pages/verification/VerificationPage'),
+);
 
 // Profile
 const ProfileDetailsPage = lazy(
@@ -160,7 +162,7 @@ const router = createBrowserRouter([
   },
   {
     path: 'transporter-verification',
-    element: <VerificationPage />
+    element: <TransporterVerificationPage />,
   },
   {
     path: 'auth',

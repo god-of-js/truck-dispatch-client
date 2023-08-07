@@ -2,7 +2,6 @@ import React, { lazy, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { Step } from 'ui/UiSteps';
-import { userTypes } from 'utils/constants';
 import styled from 'styled-components';
 import sizes from 'utils/sizes';
 import {
@@ -12,8 +11,15 @@ import {
 } from 'utils/localStorageMethods';
 import Verification from 'types/Verification';
 import { useDispatch, useSelector } from 'react-redux';
-import { deepRootedToFormData, toAnyAction } from 'utils/helpers';
-import { startVerificationProcess } from 'modules/Verification';
+import {
+  deepRootedToFormData,
+  removeUneditedFields,
+  toAnyAction,
+} from 'utils/helpers';
+import {
+  startVerificationProcess,
+  updateVerification,
+} from 'modules/Verification';
 import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
 import ConfirmUserVerification from 'components/verification/ConfirmUserVerification';
@@ -23,7 +29,7 @@ const GuarantorsDetailsForm = lazy(
 );
 
 const IdentificationDetailsForm = lazy(
-  () => import('components/verification/IdentificatiobDetailsForm'),
+  () => import('components/verification/IdentificationDetailsForm'),
 );
 
 const AddressForm = lazy(() => import('components/verification/AddressForm'));
@@ -36,7 +42,12 @@ const StyledAuthContent = lazy(
   () => import('components/auth/StyledAuthContent'),
 );
 
-export default function VerificationPage() {
+interface Props {
+  parentLoading?: boolean;
+  onVerified: () => void;
+}
+
+export default function VerificationPage({ onVerified }: Props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -84,6 +95,7 @@ export default function VerificationPage() {
   const [currentStepTitle, setCurrentStepTitle] = useState(steps[0].title);
 
   function goToNext(data: Partial<Verification>) {
+    console.log(data);
     setFormData((formData) => ({
       ...formData,
       ...data,
@@ -106,54 +118,51 @@ export default function VerificationPage() {
     [steps],
   );
 
-  // async function startUserVerificationProcess() {
-  //   const data = deepRootedToFormData(formData);
+  async function startUserVerificationProcess() {
+    const data = deepRootedToFormData(formData);
 
-  //   dispatch(toAnyAction(startVerificationProcess(data)))
-  //     .then(() => {
-  //       onVerified();
-  //     })
-  //     .catch((err: Error) => {
-  //       Toast.error({ msg: err.message });
-  //     })
-  //     .finally(() => setLoading(false));
-  // }
-  // async function updateUserVerification() {
-  //   if (!verification)
-  //     throw new Error('verification is meant to be available at this point.');
-  //   const changedData = removeUneditedFields<Verification>(
-  //     verification,
-  //     formData,
-  //   );
-  //   const data = deepRootedToFormData(changedData);
+    dispatch(toAnyAction(startVerificationProcess(data)))
+      .then(() => {
+        onVerified();
+      })
+      .catch((err: Error) => {
+        Toast.error({ msg: err.message });
+      })
+      .finally(() => setLoading(false));
+  }
+  async function updateUserVerification() {
+    if (!verification)
+      throw new Error('verification is meant to be available at this point.');
+    const changedData = removeUneditedFields<Verification>(
+      verification,
+      formData,
+    );
+    const data = deepRootedToFormData(changedData);
 
-  //   dispatch(toAnyAction(updateVerification(data)))
-  //     .then(() => {
-  //       onVerified();
-  //     })
-  //     .catch((err: Error) => {
-  //       Toast.error({ msg: err.message });
-  //     })
-  //     .finally(() => setLoading(false));
-  // }
+    dispatch(toAnyAction(updateVerification(data)))
+      .then(() => {
+        onVerified();
+      })
+      .catch((err: Error) => {
+        Toast.error({ msg: err.message });
+      })
+      .finally(() => setLoading(false));
+  }
 
-  async function verifyUser(formData: Partial<Verification>) {
+  async function verifyUser() {
     setLoading(true);
-
+    setisVerified(true);
     if (!verification) {
-      const data = deepRootedToFormData(formData);
-
-      dispatch(toAnyAction(startVerificationProcess(data)))
-        .then(() => {
-          // onVerified();
-          setisVerified(true);
-        })
-        .catch((err: Error) => {
-          Toast.error({ msg: err.message });
-        })
-        .finally(() => setLoading(false));
+      startUserVerificationProcess();
+      return;
     }
-    return;
+
+    updateUserVerification();
+  }
+
+  function closeModal() {
+    setisVerified(false);
+    navigate('/available-jobs');
   }
 
   useEffect(() => {
@@ -187,7 +196,7 @@ export default function VerificationPage() {
           <GuarantorsDetailsForm finish={verifyUser} verification={formData} />
         )}
       </StyledAuthContent>
-      {/* <ConfirmUserVerification onClose={closeModal} isVisible={isVerified} /> */}
+      <ConfirmUserVerification onClose={closeModal} isVisible={isVerified} />
     </AuthLayoutStyling>
   );
 }

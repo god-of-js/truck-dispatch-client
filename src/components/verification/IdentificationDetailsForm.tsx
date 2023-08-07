@@ -9,6 +9,7 @@ import sizes from 'utils/sizes';
 import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
 import UiIcon from 'ui/UiIcon';
+import IdentificationDetailsFormSchema from 'utils/validations/IdentificationDetailsFormSchema';
 
 const UiLocationsInput = lazy(() => import('ui/UiLocationsInput'));
 const FileUploadWidget = lazy(() => import('ui/FileUploadWidget'));
@@ -59,6 +60,7 @@ export default function IdentificationDetailsForm({
 
   function goToNextStep() {
     goToNext(formData);
+    console.log(formData);
   }
 
   return (
@@ -73,7 +75,7 @@ export default function IdentificationDetailsForm({
       </header>
       <UiForm
         formData={formData}
-        schema={TransporterValidationSchema}
+        schema={IdentificationDetailsFormSchema}
         onSubmit={goToNextStep}
       >
         {({ errors }) => (

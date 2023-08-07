@@ -7,6 +7,7 @@ import { getUserVerification } from 'modules/Verification';
 
 import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
+import VerificationPage from '../verification/VerificationPage';
 
 const VerificationForm = lazy(
   () => import('components/profile/VerificationForm'),
@@ -41,12 +42,7 @@ export default function TransporterVerificationPage() {
       (!isVerified && user?.status === 'unverified') ||
       user?.status === 'rejected'
     ) {
-      return (
-        <VerificationForm
-          onVerified={setVerificationStatus}
-          parentLoading={loading}
-        />
-      );
+      return <VerificationPage onVerified={setVerificationStatus} />;
     }
 
     if (user?.status === 'verified') {
@@ -69,52 +65,16 @@ export default function TransporterVerificationPage() {
 
   return (
     <>
-      <VerificationPageStyling>
-        <TransportVerificationCard>
-          {componentBasedOnVerificationStatus}
-        </TransportVerificationCard>
-        {user?.status === 'rejected' && (
-          <FeedbackCard>
-            <h2>Admin Remark</h2>
-            <p>{userVerification?.adminMessage}</p>
-          </FeedbackCard>
-        )}
-      </VerificationPageStyling>
+      {componentBasedOnVerificationStatus}
+      {user?.status === 'rejected' && (
+        <FeedbackCard>
+          <h2>Admin Remark</h2>
+          <p>{userVerification?.adminMessage}</p>
+        </FeedbackCard>
+      )}
     </>
   );
 }
-
-const VerificationPageStyling = styled.div`
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: flex-start;
-  gap: ${pxToRem(24)};
-  justify-content: center;
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    flex-direction: row;
-  }
-`;
-const TransportVerificationCard = styled.div`
-  background: #ffff;
-  width: 90%;
-  border: 1px solid var(--color-gray-200);
-  padding: ${pxToRem(20)};
-  border-radius: ${pxToRem(8)};
-
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    width: 60%;
-    border-top: none;
-    position: static;
-    border-right: ${pxToRem(1)} solid var(--color-gray-200);
-    h2 {
-      text-align: center;
-      font-size: ${pxToRem(24)};
-    }
-  }
-  @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
-    width: 40%;
-  }
-`;
 
 const FeedbackCard = styled.div`
   background: #ffffff;
