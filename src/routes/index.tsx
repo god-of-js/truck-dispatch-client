@@ -37,9 +37,6 @@ const ProfileDetailsPage = lazy(
 const ManagePasswordPage = lazy(
   () => import('../pages/profile/ManagePasswordPage'),
 );
-const TransporterVerificationPage = lazy(
-  () => import('../pages/profile/TransporterVerificationPage'),
-);
 const TransporterAccountsPage = lazy(
   () => import('../pages/profile/TransporterAccountsPage'),
 );
@@ -89,11 +86,6 @@ const router = createBrowserRouter([
             path: '/profile/manage-password',
             id: 'Manage Password',
             element: <ManagePasswordPage />,
-          },
-          {
-            path: '/profile/verification',
-            id: 'Verification Page',
-            element: <TransporterVerificationPage />,
           },
           {
             path: '/profile/accounts',
