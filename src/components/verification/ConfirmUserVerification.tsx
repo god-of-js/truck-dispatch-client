@@ -24,7 +24,7 @@ export default function ConfirmUserVerification({ isVisible, onClose }: Props) {
           regularly check your email inbox for any updates.
         </TextContent>
         <div className="btn-container">
-          <Link to="/available-jobs">
+          <Link to="/my-trips">
             <UiButton>okay</UiButton>
           </Link>
         </div>

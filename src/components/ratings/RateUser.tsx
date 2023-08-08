@@ -55,7 +55,12 @@ export default function RateTransporter({ onClose, isVisible }: Props) {
     setLoading(true);
     Promise.all([
       dispatch(
-        toAnyAction(publishUserRating({ ...data, userRated: alternateUser?._id } as Rating)),
+        toAnyAction(
+          publishUserRating({
+            ...data,
+            userRated: alternateUser?._id,
+          } as Rating),
+        ),
       ),
     ]).finally(() => {
       onClose();

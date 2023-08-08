@@ -42,58 +42,48 @@ export default function IdentificationDetailsForm({
   }
 
   return (
-    <div className="form-container">
-      <header>
-        <UiIcon icon="UserOctagon" size="45" />
-        <h1>Account Verification</h1>
-        <p>
-          To verify your account, please enter accurate information in the
-          provided input box.
-        </p>
-      </header>
-      <UiForm
-        formData={formData}
-        schema={AdressFormSchema}
-        onSubmit={goToNextStep}
-      >
-        {({ errors }) => (
-          <div className="form-container__inner">
-            <UiLocationsInput
-              label="Home Address"
-              name="homeAddress"
-              value={formData.homeAddress}
-              error={errors.homeAddress}
-              onChange={setData}
-            />
-            <FileUploadWidget
-              label="Utility bill of Home address"
-              name="homeUtilityBill"
-              value={formData.homeUtilityBill as File}
-              error={errors.homeUtilityBill}
-              onChange={setData}
-            />
-            <UiLocationsInput
-              label="Office Address"
-              name="officeAddress"
-              value={formData.officeAddress}
-              error={errors.officeAddress}
-              onChange={setData}
-            />
-            <UiLocationsInput
-              label="Garage Address"
-              name="garageAddress"
-              value={formData.garageAddress}
-              error={errors.garageAddress}
-              onChange={setData}
-            />
-            <div>
-              <UiButton isFullWidth size="large" variant="primary">
-                Continue
-              </UiButton>
-            </div>
+    <UiForm
+      formData={formData}
+      schema={AdressFormSchema}
+      onSubmit={goToNextStep}
+    >
+      {({ errors }) => (
+        <div className="form-container__inner">
+          <UiLocationsInput
+            label="Home Address"
+            name="homeAddress"
+            value={formData.homeAddress}
+            error={errors.homeAddress}
+            onChange={setData}
+          />
+          <FileUploadWidget
+            label="Utility bill of Home address"
+            name="homeUtilityBill"
+            value={formData.homeUtilityBill as File}
+            error={errors.homeUtilityBill}
+            onChange={setData}
+          />
+          <UiLocationsInput
+            label="Office Address"
+            name="officeAddress"
+            value={formData.officeAddress}
+            error={errors.officeAddress}
+            onChange={setData}
+          />
+          <UiLocationsInput
+            label="Garage Address"
+            name="garageAddress"
+            value={formData.garageAddress}
+            error={errors.garageAddress}
+            onChange={setData}
+          />
+          <div>
+            <UiButton isFullWidth size="large" variant="primary">
+              Continue
+            </UiButton>
           </div>
-        )}
-      </UiForm>
-    </div>
+        </div>
+      )}
+    </UiForm>
   );
 }

@@ -5,8 +5,8 @@ import styled from 'styled-components';
 const UiButton = lazy(() => import('./UiButton'));
 const UiIcon = lazy(() => import('./UiIcon'));
 interface Props {
-  text?: string
-  route?: string
+  text?: string;
+  route?: string;
 }
 export default function UiBackButton({ text, route }: Props) {
   const navigate = useNavigate();

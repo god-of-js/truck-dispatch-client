@@ -162,7 +162,7 @@ const router = createBrowserRouter([
   },
   {
     path: 'transporter-verification',
-    element: <TransporterVerificationPage />,
+    element: <VerificationPage />,
   },
   {
     path: 'auth',

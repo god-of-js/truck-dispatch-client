@@ -149,7 +149,9 @@ export default function TripBidsPage() {
     <>
       <DashboardTopNav
         routeName="Transporter Bids"
-        startNode={<UiBackButton text='Trip Details' route={`/my-trips/${tripId}`} />}
+        startNode={
+          <UiBackButton text="Trip Details" route={`/my-trips/${tripId}`} />
+        }
         searchQuery={searchQuery}
         handleQueryChange={handleQueryChange}
       />

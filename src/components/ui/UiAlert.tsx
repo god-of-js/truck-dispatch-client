@@ -5,7 +5,14 @@ import styled from 'styled-components';
 const UiButton = lazy(() => import('./UiButton'));
 const UiIcon = lazy(() => import('./UiIcon'));
 
-type Variant = 'warning' | 'success' | 'danger' | 'neutral' | 'info' | 'gray';
+type Variant =
+  | 'warning'
+  | 'success'
+  | 'primary'
+  | 'danger'
+  | 'neutral'
+  | 'info'
+  | 'gray';
 interface Props {
   variant?: Variant;
   children: React.ReactNode;

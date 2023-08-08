@@ -22,6 +22,7 @@ import {
 } from 'modules/Verification';
 import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
+import UiConfirmModal from 'ui/UiConfirmModal';
 
 const ConfirmUserVerification = lazy(
   () => import('components/verification/ConfirmUserVerification'),
@@ -38,6 +39,8 @@ const IdentificationDetailsForm = lazy(
 const AddressForm = lazy(() => import('components/verification/AddressForm'));
 
 const UiSteps = lazy(() => import('ui/UiSteps'));
+const UiButton = lazy(() => import('ui/UiButton'));
+const UiIcon = lazy(() => import('ui/UiIcon'));
 const AuthLayoutStyling = lazy(
   () => import('components/layout/AuthLayoutStyling'),
 );
@@ -45,17 +48,15 @@ const StyledAuthContent = lazy(
   () => import('components/auth/StyledAuthContent'),
 );
 
-interface Props {
-  parentLoading?: boolean;
-  onVerified: () => void;
-}
-
-export default function VerificationPage({ onVerified }: Props) {
+export default function VerificationPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
-  const [isVerified, setisVerified] = useState(false);
+  const [
+    isConfirmUserVerificationVisible,
+    setIsConfirmUserVerificationVisible,
+  ] = useState(false);
   const [formData, setFormData] = useState<Verification>({
     _id: '',
     idType: '',
@@ -73,6 +74,10 @@ export default function VerificationPage({ onVerified }: Props) {
       idDoc: null,
     },
   });
+  const [
+    isAreYouSureYouWantToCancelVerificationVisible,
+    setIsAreYouSureYouWantToCancelVerificationVisible,
+  ] = useState(false);
 
   const verification = useSelector(
     (state: RootState) => state.verification.verification,
@@ -109,6 +114,13 @@ export default function VerificationPage({ onVerified }: Props) {
     const nextTitle = steps[indexOfCurrentStep + 1].title;
     setCurrentStepTitle(nextTitle);
   }
+  function goToPrev() {
+    const indexOfCurrentStep = steps.findIndex(
+      (step) => step.title === currentStepTitle,
+    );
+    const nextTitle = steps[indexOfCurrentStep - 1].title;
+    setCurrentStepTitle(nextTitle);
+  }
 
   const infoContent = useMemo(
     () => (
@@ -120,33 +132,32 @@ export default function VerificationPage({ onVerified }: Props) {
     [steps],
   );
 
-  async function startUserVerificationProcess() {
-    const data = deepRootedToFormData(formData);
+  async function startUserVerificationProcess(completedForm: Verification) {
+    const data = deepRootedToFormData(completedForm);
 
     dispatch(toAnyAction(startVerificationProcess(data)))
       .then(() => {
-        onVerified();
+        setIsConfirmUserVerificationVisible(true);
       })
       .catch((err: Error) => {
         Toast.error({ msg: err.message });
       })
       .finally(() => {
-        setisVerified(true);
         setLoading(false);
       });
   }
-  async function updateUserVerification() {
+  async function updateUserVerification(completedForm: Verification) {
     if (!verification)
       throw new Error('verification is meant to be available at this point.');
     const changedData = removeUneditedFields<Verification>(
       verification,
-      formData,
+      completedForm,
     );
     const data = deepRootedToFormData(changedData);
 
     dispatch(toAnyAction(updateVerification(data)))
       .then(() => {
-        onVerified();
+        // TODO: handle on verified
       })
       .catch((err: Error) => {
         Toast.error({ msg: err.message });
@@ -154,19 +165,33 @@ export default function VerificationPage({ onVerified }: Props) {
       .finally(() => setLoading(false));
   }
 
-  async function verifyUser() {
+  async function submitForm(completedForm: Verification) {
+    setFormData(completedForm);
     setLoading(true);
     if (!verification) {
-      startUserVerificationProcess();
+      startUserVerificationProcess(completedForm);
       return;
     }
 
-    updateUserVerification();
+    updateUserVerification(completedForm);
   }
 
   function closeModal() {
-    setisVerified(false);
-    navigate('/available-jobs');
+    navigate('/my-trips');
+    setIsConfirmUserVerificationVisible(false);
+  }
+
+  function stopVerification() {
+    navigate('/my-trips');
+  }
+
+  function initStopVerification() {
+    if (currentStepTitle !== 'Identification Details') {
+      setIsAreYouSureYouWantToCancelVerificationVisible(true);
+      return;
+    }
+
+    stopVerification();
   }
 
   useEffect(() => {
@@ -187,24 +212,59 @@ export default function VerificationPage({ onVerified }: Props) {
   return (
     <AuthLayoutStyling infoContent={infoContent}>
       <StyledAuthContent>
-        {currentStepTitle === 'Identification Details' && (
-          <IdentificationDetailsForm
-            verification={formData}
-            goToNext={goToNext}
-          />
-        )}
-        {currentStepTitle === 'Address' && (
-          <AddressForm verification={formData} goToNext={goToNext} />
-        )}
-        {currentStepTitle === 'Guarantor Details' && (
-          <GuarantorsDetailsForm
-            isLoading={loading}
-            finish={verifyUser}
-            verification={formData}
-          />
-        )}
+        <div className="form-container">
+          <header>
+            <UiIcon icon="UserOctagon" size="45" />
+            <h1>Account Verification</h1>
+            <p>
+              To verify your account, please enter accurate information in the
+              provided input box.
+            </p>
+          </header>
+          {currentStepTitle === 'Identification Details' && (
+            <IdentificationDetailsForm
+              verification={formData}
+              goToNext={goToNext}
+            />
+          )}
+          {currentStepTitle === 'Address' && (
+            <AddressForm verification={formData} goToNext={goToNext} />
+          )}
+          {currentStepTitle === 'Guarantor Details' && (
+            <GuarantorsDetailsForm
+              isLoading={loading}
+              finish={submitForm}
+              verification={formData}
+            />
+          )}
+          <div className="sm-btn-margin-top">
+            {currentStepTitle !== 'Identification Details' && (
+              <UiButton isFullWidth variant="secondary" onClick={goToPrev}>
+                <UiIcon icon="CaretLeft" />
+                Prev
+              </UiButton>
+            )}
+            <UiButton isFullWidth variant="danger-secondary" onClick={initStopVerification}>
+              Cancel
+            </UiButton>
+          </div>
+        </div>
       </StyledAuthContent>
-      <ConfirmUserVerification onClose={closeModal} isVisible={isVerified} />
+      <ConfirmUserVerification
+        onClose={closeModal}
+        isVisible={isConfirmUserVerificationVisible}
+      />
+      <UiConfirmModal
+        title="Are you sure?"
+        variant="danger"
+        isVisible={isAreYouSureYouWantToCancelVerificationVisible}
+        onClose={() => setIsAreYouSureYouWantToCancelVerificationVisible(false)}
+        onProceed={stopVerification}
+      >
+        Are you sure you want to cancel this verification process? The present
+        data would be lost. <br /> You can always start this process from
+        beginning
+      </UiConfirmModal>
     </AuthLayoutStyling>
   );
 }

@@ -53,6 +53,11 @@ const Styling = styled.div`
         margin-top: 0;
       }
     }
+    .sm-btn-margin-top {
+      button {
+        margin-top: ${pxToRem(12)};
+      }
+    }
     .select-with-optional-alert-container {
       display: flex;
       flex-direction: column;
