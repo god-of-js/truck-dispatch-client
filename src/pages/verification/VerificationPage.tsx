@@ -197,7 +197,11 @@ export default function VerificationPage({ onVerified }: Props) {
           <AddressForm verification={formData} goToNext={goToNext} />
         )}
         {currentStepTitle === 'Guarantor Details' && (
-          <GuarantorsDetailsForm finish={verifyUser} verification={formData} />
+          <GuarantorsDetailsForm
+            isLoading={loading}
+            finish={verifyUser}
+            verification={formData}
+          />
         )}
       </StyledAuthContent>
       <ConfirmUserVerification onClose={closeModal} isVisible={isVerified} />

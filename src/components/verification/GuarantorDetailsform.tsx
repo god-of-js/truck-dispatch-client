@@ -17,9 +17,14 @@ const UiButton = lazy(() => import('ui/UiButton'));
 interface Props {
   verification: Verification;
   finish: (verificationData: Partial<Verification>) => void;
+  isLoading: boolean;
 }
 
-export default function GuarantorsDetailsForm({ verification, finish }: Props) {
+export default function GuarantorsDetailsForm({
+  verification,
+  finish,
+  isLoading,
+}: Props) {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState(verification);
 
@@ -148,7 +153,7 @@ export default function GuarantorsDetailsForm({ verification, finish }: Props) {
                 onChange={setData}
               />
               <UiButton
-                loading={loading}
+                loading={isLoading}
                 isFullWidth
                 size="large"
                 variant="primary"
