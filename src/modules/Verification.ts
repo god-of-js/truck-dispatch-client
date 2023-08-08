@@ -29,7 +29,9 @@ export default accountSlice.reducer;
 
 export const startVerificationProcess = (verificationData: FormData) => {
   return () => {
-    return Api.startVerificationProcess(verificationData);
+    return Api.startVerificationProcess(verificationData).then((verification) => {
+      setVerification(verification);
+    });
   };
 };
 
@@ -49,6 +51,7 @@ export const getUserVerification = () => {
   return (dispatch: AppDispatch) => {
     return Api.getVerificationByUserId().then((data) => {
       dispatch(setVerification(data));
+      return data;
     });
   };
 };

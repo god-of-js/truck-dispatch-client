@@ -328,6 +328,11 @@ const icons = {
       default: module.ReactComponent,
     })),
   ),
+  Warning: lazy(() =>
+    import('./icons/warning.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
   TwentyFTTruck: lazy(() =>
     import('./icons/20-ft-truck.svg').then((module) => ({
       default: module.ReactComponent,

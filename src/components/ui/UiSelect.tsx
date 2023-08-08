@@ -104,11 +104,12 @@ export default function UiSelect({
   );
 }
 
-const StyledSelect = styled.div<{ hasError: boolean, size?: Size }>`
+const StyledSelect = styled.div<{ hasError: boolean; size?: Size }>`
   position: relative;
   .select {
     padding: 0 ${pxToRem(16)};
-    height: ${({ size }) => size ? `var(--base-height-${size})` : `var(--base-height)`};
+    height: ${({ size }) =>
+      size ? `var(--base-height-${size})` : `var(--base-height)`};
     display: flex;
     align-items: center;
     justify-content: space-between;
