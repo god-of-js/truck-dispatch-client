@@ -84,6 +84,7 @@ export default function ResetPasswordPage() {
                   placeholder="Enter your new password"
                   value={formData.password}
                   name="password"
+                  type="password"
                   error={errors.password}
                   onChange={handleChange}
                 />
@@ -92,6 +93,7 @@ export default function ResetPasswordPage() {
                   placeholder="Confirm your new password"
                   value={formData.cPassword}
                   name="cPassword"
+                  type="password"
                   error={errors.cPassword}
                   onChange={handleChange}
                 />

@@ -109,7 +109,7 @@ class ApiService {
   }
 
   startVerificationProcess(data: FormData) {
-    return this.post('/verification', data);
+    return this.post<Verification>('/verification', data);
   }
 
   startCompanyUpgradeVerificationProcess(data: FormData) {

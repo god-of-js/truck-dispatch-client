@@ -91,7 +91,7 @@ export default function TripBidsPage() {
 
   function acceptBid(bidId: string) {
     if (trip?.status !== 'awaiting-bid') {
-      navigate(`/my-trips/${tripId}`)
+      navigate(`/my-trips/${tripId}`);
       return;
     }
     setActiveBidId(bidId);
@@ -149,7 +149,9 @@ export default function TripBidsPage() {
     <>
       <DashboardTopNav
         routeName="Transporter Bids"
-        startNode={<UiBackButton text='Trip Details' route={`/my-trips/${tripId}`} />}
+        startNode={
+          <UiBackButton text="Trip Details" route={`/my-trips/${tripId}`} />
+        }
         searchQuery={searchQuery}
         handleQueryChange={handleQueryChange}
       />

@@ -1,6 +1,6 @@
 import React, { lazy, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { io } from 'socket.io-client';
 
@@ -26,6 +26,8 @@ import Bid from 'types/Bid';
 const DashboardSidebar = lazy(
   () => import('components/layout/DashboardSidebar'),
 );
+const UiAlert = lazy(() => import('components/ui/UiAlert'));
+const UiButton = lazy(() => import('components/ui/UiButton'));
 const EmailHasBeenSentModal = lazy(
   () => import('components/profile/EmailHasBeenSentModal'),
 );
@@ -41,9 +43,6 @@ export default function DashboardLayout() {
 
   const token = new URLSearchParams(location.search).get('token');
   const action = new URLSearchParams(location.search).get('action');
-  const isPhoneVerified = new URLSearchParams(location.search).get(
-    'isPhoneVerified',
-  );
 
   const [requestVerificationLoading, setRequestVerificationLoading] =
     useState(false);
@@ -82,26 +81,14 @@ export default function DashboardLayout() {
   }
 
   useEffect(() => {
-    if (action === 'sign-in' && token) {
-      // Sign in user by saving the session ID
-      saveUserSessionId(token);
-      navigate(
-        `${location.pathname}${
-          isPhoneVerified === 'false'
-            ? '?isPhoneVerified=' + isPhoneVerified
-            : ''
-        }`,
-      );
-    } else if (action === 'verify-email' && token) {
+    if (action === 'verify-email' && token) {
       verifyUserEmail(token);
     }
-  }, [action, token, isPhoneVerified]);
+  }, [action, token]);
 
   useEffect(() => {
-    if (action !== 'sign-in' && !token) {
-      loadDashboardData();
-    }
-  }, [action, token, loading]);
+    loadDashboardData();
+  }, [loading]);
 
   useEffect(() => {
     // Connect to socket.
@@ -147,6 +134,31 @@ export default function DashboardLayout() {
     <Layout>
       <DashboardSidebar />
       <Body>
+        {!!user?.status && user?.status !== 'verified' ? (
+          <div className="alert-container">
+            <UiAlert variant="warning" alignCenter isClosable>
+              <div className="alert-body">
+                <span className="text">
+                  Kindly{' '}
+                  <Link to="/transporter-verification">
+                    complete your verification
+                  </Link>{' '}
+                  to be able to bid on jobs
+                </span>
+                <Link
+                  to="/transporter-verification"
+                  className="no-text-decoration"
+                >
+                  <UiButton variant="secondary" size="s">
+                    Complete Verification
+                  </UiButton>
+                </Link>
+              </div>
+            </UiAlert>
+          </div>
+        ) : (
+          ''
+        )}
         {loading ? <Loader isPage /> : <Outlet />}
         <EmailHasBeenSentModal
           isVisible={verificationHasBeenSent}
@@ -176,7 +188,26 @@ const Body = styled.div`
   padding-bottom: 100px;
 
   .alert-container {
-    padding: 16px;
+    .ui-alert {
+      margin: 16px 16px 0 16px;
+    }
+
+    .text {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 140%;
+      letter-spacing: -0.4px;
+    }
+
+    .alert-body {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .no-text-decoration {
+      text-decoration: none;
+    }
   }
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     width: 97%;

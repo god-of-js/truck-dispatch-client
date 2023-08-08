@@ -11,23 +11,28 @@ interface Props {
 }
 export default function NotifyUsersFromFirebase({ onClose, isVisible }: Props) {
   return (
-    <UiModal title={'Login Directions'} isVisible={isVisible} onClose={onClose}>
-      <TextContent>
+    <UiModal
+      title={'Login Directions'}
+      size="sm"
+      isVisible={isVisible}
+      onClose={onClose}
+    >
+      <NotificationStyling>
         We recently underwent a database migration. Due to security reasons, you
         need to provide new passwords to access the dashboard. An email has been
         sent to you for the next steps. Kindly reach out to support using the
         chat button below for any clarifications.
-        <div className="bid-button-container">
-          <UiButton size="large" onClick={onClose}>
-            Ok
+        <div className="btn-container">
+          <UiButton size="large" variant="secondary" onClick={onClose}>
+            Back to login
           </UiButton>
         </div>
-      </TextContent>
+      </NotificationStyling>
     </UiModal>
   );
 }
 
-const TextContent = styled.p`
+const NotificationStyling = styled.div`
   text-align: center;
   padding: 0 ${pxToRem(24)};
   font-weight: 400;
@@ -36,7 +41,7 @@ const TextContent = styled.p`
   font-style: normal;
   color: var(--color-neutralBlack);
 
-  .bid-button-container {
+  .btn-container {
     width: 100%;
     margin-top: ${pxToRem(40)};
 
