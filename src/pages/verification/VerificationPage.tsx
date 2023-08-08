@@ -17,6 +17,7 @@ import {
   toAnyAction,
 } from 'utils/helpers';
 import {
+  getUserVerification,
   startVerificationProcess,
   updateVerification,
 } from 'modules/Verification';
@@ -157,7 +158,7 @@ export default function VerificationPage() {
 
     dispatch(toAnyAction(updateVerification(data)))
       .then(() => {
-        // TODO: handle on verified
+        setIsConfirmUserVerificationVisible(true);
       })
       .catch((err: Error) => {
         Toast.error({ msg: err.message });
@@ -195,23 +196,19 @@ export default function VerificationPage() {
   }
 
   useEffect(() => {
-    const presentAuthStage = getPresentAuthStage();
-    const token = getAuthSessionId();
-    if (presentAuthStage && token && currentStepTitle === steps[0].title) {
-      const authStageExists = steps.find(
-        (step) => step.title === presentAuthStage,
-      );
-      if (authStageExists) setCurrentStepTitle(presentAuthStage);
-    }
-  }, []);
-
-  useEffect(() => {
     if (!formData._id && verification) setFormData(verification);
   }, [verification]);
 
+  useEffect(() => {
+    setLoading(true)
+    dispatch(toAnyAction(getUserVerification())).then((data: Verification) => {
+      setFormData(data)
+    }).finally(() => setLoading(false));
+  }, [])
+
   return (
     <AuthLayoutStyling infoContent={infoContent}>
-      <StyledAuthContent>
+      <StyledAuthContent key={formData._id || ''}>
         <div className="form-container">
           <header>
             <UiIcon icon="UserOctagon" size="45" />
@@ -224,6 +221,7 @@ export default function VerificationPage() {
           {currentStepTitle === 'Identification Details' && (
             <IdentificationDetailsForm
               verification={formData}
+              loading={loading}
               goToNext={goToNext}
             />
           )}

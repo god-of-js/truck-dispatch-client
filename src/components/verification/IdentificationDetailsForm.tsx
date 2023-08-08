@@ -9,10 +9,12 @@ const UiButton = lazy(() => import('ui/UiButton'));
 
 interface Props {
   verification: Verification;
+  loading: boolean;
   goToNext: (verificationData: Partial<Verification>) => void;
 }
 export default function IdentificationDetailsForm({
   verification,
+  loading,
   goToNext,
 }: Props) {
   const [formData, setFormData] = useState(verification);
@@ -73,7 +75,7 @@ export default function IdentificationDetailsForm({
             error={errors.idDoc}
             onChange={setData}
           />
-          <UiButton isFullWidth size="large" variant="primary">
+          <UiButton isFullWidth size="large" loading={loading} variant="primary">
             Continue
           </UiButton>
         </div>
