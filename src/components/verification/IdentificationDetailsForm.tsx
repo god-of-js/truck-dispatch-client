@@ -2,6 +2,7 @@ import React, { lazy, useState } from 'react';
 import Verification from 'types/Verification';
 import IdentificationDetailsFormSchema from 'utils/validations/IdentificationDetailsFormSchema';
 
+const WebCamUpload = lazy(() => import('ui/WebCamUpload'));
 const FileUploadWidget = lazy(() => import('ui/FileUploadWidget'));
 const UiSelect = lazy(() => import('ui/UiSelect'));
 const UiForm = lazy(() => import('ui/UiForm'));
@@ -75,7 +76,19 @@ export default function IdentificationDetailsForm({
             error={errors.idDoc}
             onChange={setData}
           />
-          <UiButton isFullWidth size="large" loading={loading} variant="primary">
+          <WebCamUpload
+            label="photos"
+            name="photo"
+            value={formData.idPhoto}
+            error={errors.photo}
+            onChange={setData}
+          />
+          <UiButton
+            isFullWidth
+            size="large"
+            loading={loading}
+            variant="primary"
+          >
             Continue
           </UiButton>
         </div>

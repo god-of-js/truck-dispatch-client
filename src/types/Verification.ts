@@ -4,6 +4,7 @@ export default interface Verification {
   _id: string;
   idType: string;
   idDoc: File | null | string;
+  idPhoto: string;
   homeAddress: string;
   homeUtilityBill: File | null | string;
   garageAddress: string;

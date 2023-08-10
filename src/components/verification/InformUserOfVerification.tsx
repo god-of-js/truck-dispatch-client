@@ -27,12 +27,12 @@ export default function InformUserOfVerification({
         </TextContent>
         <TextContent>
           Kindly navigate to the{' '}
-          <Link to="/profile/verification">Verification Page</Link> or click the
-          button below to verify your profile and our team would get back to you
-          shortly.
+          <Link to="/transporter-verification">Verification Page</Link> or click
+          the button below to verify your profile and our team would get back to
+          you shortly.
         </TextContent>
         <div className="btn-container">
-          <Link to="/profile/verification">
+          <Link to="/transporter-verification">
             <UiButton>Verify Profile</UiButton>
           </Link>
         </div>
