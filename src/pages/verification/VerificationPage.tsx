@@ -57,7 +57,7 @@ export default function VerificationPage() {
     _id: '',
     idType: '',
     idDoc: null,
-    idPhoto: '',
+    facialPicture: null,
     homeAddress: '',
     homeUtilityBill: null,
     garageAddress: '',

@@ -50,6 +50,7 @@ export default function IdentificationDetailsForm({
   }
 
   function goToNextStep() {
+    console.log('it gets here');
     goToNext(formData);
   }
 
@@ -77,10 +78,10 @@ export default function IdentificationDetailsForm({
             onChange={setData}
           />
           <WebCamUpload
-            label="photos"
-            name="photo"
-            value={formData.idPhoto}
-            error={errors.photo}
+            label="Facial Picture"
+            name="facialPicture"
+            value={formData.facialPicture}
+            error={errors.facialPicture}
             onChange={setData}
           />
           <UiButton

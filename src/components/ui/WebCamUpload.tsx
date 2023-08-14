@@ -12,7 +12,7 @@ const UiModal = lazy(() => import('ui/UiModal'));
 interface Props {
   label: string;
   name: string;
-  value: string;
+  value: string | null;
   error?: string;
   onChange: (event: OnChangeParams) => void;
 }
@@ -27,6 +27,7 @@ export default function webCamUpload({
   const [picture, setPicture] = useState(value);
   const webcamRef = useRef<any>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isTakePhotoActive, setIsTakePhotoActive] = useState(!picture);
 
   const videoConstraints = {
     width: 400,
@@ -37,7 +38,7 @@ export default function webCamUpload({
   function capture() {
     const pictureSrc = webcamRef.current.getScreenshot();
     setPicture(pictureSrc);
-    console.log(picture);
+    setIsTakePhotoActive(false);
   }
 
   function sendValue(e: { target: { name: string; value: string | null } }) {
@@ -49,20 +50,23 @@ export default function webCamUpload({
     setIsModalVisible(false);
   }
 
+  function openTakePhotoModal() {
+    setIsModalVisible(true);
+    setIsTakePhotoActive(true);
+  }
+
   return (
     <>
       <UiField label={label} error={error}>
         <PictureBox>
-          {picture ? (
-            <img src={picture} />
+          {value ? (
+            <img src={value} />
           ) : (
             <div className="button-container">
               <UiButton
-                onClick={(e) => {
-                  e.preventDefault();
-                  setIsModalVisible(true);
-                }}
+                onClick={openTakePhotoModal}
                 textCasing="normal"
+                type="button"
                 variant="secondary"
               >
                 Take a picture <UiIcon icon="Camera" size="20" />
@@ -71,20 +75,18 @@ export default function webCamUpload({
           )}
         </PictureBox>
 
-        {picture ? (
+        {value && (
           <ButtonContainer>
             <UiButton
               variant="primary-text"
               textCasing="normal"
               size="text"
               type="button"
-              onClick={() => setIsModalVisible(true)}
+              onClick={openTakePhotoModal}
             >
               Retake Photo?
             </UiButton>
           </ButtonContainer>
-        ) : (
-          ''
         )}
       </UiField>
 
@@ -96,7 +98,7 @@ export default function webCamUpload({
         <ModalBody>
           <p>Please carefully review the Picture</p>
           <div>
-            {picture == '' ? (
+            {isTakePhotoActive || !picture ? (
               <Webcam
                 audio={false}
                 height={400}
@@ -109,35 +111,27 @@ export default function webCamUpload({
               <img src={picture} />
             )}
           </div>
-          <div>
-            {picture != '' ? (
-              <div className="button-container">
-                <UiButton
-                  variant="secondary"
-                  isFullWidth
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setPicture('');
-                  }}
-                >
-                  Retake
-                </UiButton>
-                <UiButton isFullWidth onClick={sendValue}>
-                  continue
-                </UiButton>
-              </div>
-            ) : (
-              <div className="button-container">
-                <UiButton
-                  isFullWidth
-                  onClick={(e) => {
-                    e.preventDefault();
-                    capture();
-                  }}
-                >
-                  Capture
-                </UiButton>
-              </div>
+          <div className="button-container">
+            {!isTakePhotoActive && (
+              <UiButton
+                variant="secondary"
+                type="button"
+                isFullWidth
+                onClick={() => setIsTakePhotoActive(true)}
+              >
+                Retake
+              </UiButton>
+            )}
+            {!isTakePhotoActive && (
+              <UiButton type="button" isFullWidth onClick={sendValue}>
+                continue
+              </UiButton>
+            )}
+
+            {isTakePhotoActive && (
+              <UiButton isFullWidth type="button" onClick={capture}>
+                Capture
+              </UiButton>
             )}
           </div>
         </ModalBody>
@@ -148,7 +142,7 @@ export default function webCamUpload({
 
 const PictureBox = styled.div`
   height: ${pxToRem(110)};
-  display: flex !important;
+  display: flex;
   border-radius: ${pxToRem(8)};
   border: 1px dashed var(--color-gray-80);
   background: var(--color-grey-20);
@@ -187,6 +181,7 @@ const ModalBody = styled.div`
 
 const ButtonContainer = styled.div`
   button {
-    margin-top: 0 !important;
+    margin-top: ${pxToRem(4)} !important;
+    padding: 0;
   }
 `;

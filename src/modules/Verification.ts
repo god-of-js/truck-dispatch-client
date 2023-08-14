@@ -29,15 +29,20 @@ export default accountSlice.reducer;
 
 export const startVerificationProcess = (verificationData: FormData) => {
   return () => {
-    return Api.startVerificationProcess(verificationData).then((verification) => {
-      setVerification(verification);
-    });
+    return Api.startVerificationProcess(verificationData).then(
+      (verification) => {
+        setVerification(verification);
+      },
+    );
   };
 };
 
 export const updateVerification = (verificationData: FormData) => {
   return () => {
-    return Api.updateVerification(verificationData);
+    return Api.updateVerification(verificationData).then((verification) => {
+      console.log(verification);
+      setVerification(verification);
+    });
   };
 };
 
