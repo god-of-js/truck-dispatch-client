@@ -177,6 +177,10 @@ const ModalCard = styled.div<CardProps>`
         font-weight: 700;
         margin: 0;
       }
+
+      button {
+        margin: 0;
+      }
     }
   }
 

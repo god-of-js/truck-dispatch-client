@@ -1,18 +1,12 @@
-import React, { lazy, useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
-
-import TransporterValidationSchema from 'utils/validations/TransporterValidationSchema';
+import React, { lazy, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import Verification from 'types/Verification';
-import UiIcon from 'ui/UiIcon';
 import AdressFormSchema from 'utils/validations/AdressFormSchema';
 
 const UiLocationsInput = lazy(() => import('ui/UiLocationsInput'));
 const FileUploadWidget = lazy(() => import('ui/FileUploadWidget'));
-const UiSelect = lazy(() => import('ui/UiSelect'));
 const UiForm = lazy(() => import('ui/UiForm'));
-const UiInput = lazy(() => import('ui/UiInput'));
 const UiButton = lazy(() => import('ui/UiButton'));
 
 interface Props {

@@ -6,6 +6,7 @@ export default interface Verification {
   idDoc: File | null | string;
   homeAddress: string;
   homeUtilityBill: File | null | string;
+  facialPicture: null | string;
   garageAddress: string;
   officeAddress: string;
   guarantor: {

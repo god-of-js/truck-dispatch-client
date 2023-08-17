@@ -117,7 +117,7 @@ class ApiService {
   }
 
   updateVerification(data: FormData) {
-    return this.patch('/verification', data);
+    return this.patch<Verification>('/verification', data);
   }
 
   getVerificationByUserId() {

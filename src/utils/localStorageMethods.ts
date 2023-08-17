@@ -31,8 +31,8 @@ export function removePresentAuthStage() {
   localStorage.removeItem('auth-token');
 }
 export function setPendingRoute(route: string) {
-  localStorage.setItem('pending-route', route)
+  localStorage.setItem('pending-route', route);
 }
 export function getPendingRoute() {
-  return localStorage.getItem('pending-route')
+  return localStorage.getItem('pending-route');
 }
