@@ -4,11 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Step } from 'ui/UiSteps';
 import styled from 'styled-components';
 import sizes from 'utils/sizes';
-import {
-  getAuthSessionId,
-  getPresentAuthStage,
-  savePresentAuthStage,
-} from 'utils/localStorageMethods';
 import Verification from 'types/Verification';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -62,6 +57,7 @@ export default function VerificationPage() {
     _id: '',
     idType: '',
     idDoc: null,
+    facialPicture: null,
     homeAddress: '',
     homeUtilityBill: null,
     garageAddress: '',
@@ -97,7 +93,7 @@ export default function VerificationPage() {
     {
       title: 'Guarantor Details',
       detail:
-        'Provide the guarantor’s name, email address, phone andother details',
+        'Provide the guarantor’s name, email address, phone and other details',
     },
   ];
 
@@ -200,11 +196,13 @@ export default function VerificationPage() {
   }, [verification]);
 
   useEffect(() => {
-    setLoading(true)
-    dispatch(toAnyAction(getUserVerification())).then((data: Verification) => {
-      setFormData(data)
-    }).finally(() => setLoading(false));
-  }, [])
+    setLoading(true);
+    dispatch(toAnyAction(getUserVerification()))
+      .then((data: Verification) => {
+        setFormData(data);
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <AuthLayoutStyling infoContent={infoContent}>
@@ -242,7 +240,11 @@ export default function VerificationPage() {
                 Prev
               </UiButton>
             )}
-            <UiButton isFullWidth variant="danger-secondary" onClick={initStopVerification}>
+            <UiButton
+              isFullWidth
+              variant="danger-secondary"
+              onClick={initStopVerification}
+            >
               Cancel
             </UiButton>
           </div>

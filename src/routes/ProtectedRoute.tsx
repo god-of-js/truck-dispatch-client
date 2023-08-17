@@ -18,10 +18,8 @@ export function ProtectedRoute({
   const location = useLocation();
   const reRoute = () => {
     setPendingRoute(location.pathname);
-    return <Navigate to={reRouteUrl} />
+    return <Navigate to={reRouteUrl} />;
   };
-
-
 
   if (allowNavigationFunc) {
     if (allowNavigationFunc(location.search)) return next;
