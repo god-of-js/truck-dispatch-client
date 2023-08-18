@@ -223,14 +223,14 @@ const Button = styled.button<Props>`
     `}
   }
   &.danger-secondary {
-    background: var(--color-danger-10);
+    background: var(--color-danger-20);
     color: var(--color-danger);
 
     svg {
       fill: var(--color-danger);
     }
     &:hover {
-      background: var(--color-danger-20);
+      background: var(--color-danger-30);
       box-shadow: var(--box-shadow-primary);
     }
   }

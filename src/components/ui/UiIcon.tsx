@@ -173,6 +173,11 @@ const icons = {
       default: module.ReactComponent,
     })),
   ),
+  Link: lazy(() =>
+    import('./icons/link.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
   Location: lazy(() =>
     import('./icons/location.svg').then((module) => ({
       default: module.ReactComponent,

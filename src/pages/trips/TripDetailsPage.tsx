@@ -176,232 +176,247 @@ export default function TripDetailsPage() {
         edgeNode={edgeNode}
       />
       {trip && (
-        <TripDetailsStyling>
-          <UiCard>
-            <div className="card-title">Cargo Details</div>
-            <div className="cargo-details">
-              <UiDataField title="Type" value={trip?.typeOfGoods} />
-              <UiDataField title="Weight" value={trip?.weight + ' Tonnes'} />
-              <UiDataField
-                title="Shipping Line"
-                value={trip?.shippingLine || 'N/A'}
-              />
-            </div>
-          </UiCard>
-          <UiCard>
-            <div className="card-title">Handling Instructions</div>
-            <p className="handling-instructions">
-              {trip?.instructions || 'N/A'}
-            </p>
-          </UiCard>
-          <UiCard>
-            <div className="card-title">Pickup Address & Date</div>
-            {trip && (
-              <TripPickUpAndDeliverWithDates
-                pickUpAddress={trip.pickUpAddress}
-                pickUpDate={trip.pickUpDate}
-                deliveryAddress={trip.deliveryAddress}
-                deliveryDate={trip.deliveryDate}
-              />
-            )}
-          </UiCard>
-          <TripDetailPaymentCard
-            isClient={userIsClientBasedUser}
-            payment={trip?.paymentRequest}
-            approvePayment={initApprovePayment}
-            viewLoadingProof={viewLoadingProof}
-            showReasonForReject={viewReasonForReject}
-            requestPayment={() => setRequestPaymentIsVisible(true)}
-          />
-          <UiCard>
-            <div className="card-title">Driver & Vehicle details</div>
-
-            {trip.acceptedBid && (
-              <div className="driver-and-vehicle-details">
-                <div className="driver-and-vehicle-details__field">
-                  <div className="driver-and-vehicle-details__field__title">
-                    Responsible Driver
-                  </div>
-                  <UserDetails
-                    userName={trip.acceptedBid.vehicle.driver.name}
-                    avatar={trip.acceptedBid.vehicle.driver.avatar}
-                    profileSubtitle={
-                      trip.status !== 'completed'
-                        ? trip.acceptedBid.vehicle.driver.phone
-                        : ''
-                    }
-                  />
-                </div>
-                <UiButton variant="icon-neutral">
-                  <UiIcon icon="ArrowRight" />
-                </UiButton>
-                <div className="driver-and-vehicle-details__field">
-                  <div className="driver-and-vehicle-details__field__title">
-                    Vehicle Details
-                  </div>
-                  <div className="vehicle-details">
-                    <div className="vehicle-details__type">
-                      {trip.acceptedBid.vehicle.vehicleType}
-                    </div>
-                    <div className="vehicle-details__plate-number">
-                      {trip.acceptedBid.vehicle.plateNumber}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </UiCard>
-          <UiCard>
-            <div className="card-title">
-              {userIsServiceBasedUser
-                ? 'Trip Owner'
-                : 'Responsible Transporter'}
-            </div>
-
-            {userIsServiceBasedUser && (
-              <UserDetails
-                userName={`${trip.tripOwner.firstName} ${trip.tripOwner.lastName}`}
-                avatar={trip.tripOwner.avatar}
-                userId={trip.tripOwner._id}
-                avatarIsHalfCurved
-                showMessage
-                showViewProfile
-                profileSubtitle={
-                  trip.status !== 'completed' ? trip.tripOwner.phone : ''
-                }
-              />
-            )}
-            {userIsClientBasedUser && (
-              <>
-                {!!trip.transporter ? (
-                  <UserDetails
-                    userName={`${trip.transporter.firstName} ${trip.transporter.lastName}`}
-                    avatar={trip.transporter.avatar}
-                    userId={trip.transporter._id}
-                    showMessage
-                    showViewProfile
-                    profileSubtitle={
-                      trip.status !== 'completed' ? trip.transporter.phone : ''
-                    }
-                  />
-                ) : (
-                  <UserDetails userName="Unassigned" />
-                )}
-              </>
-            )}
-          </UiCard>
-          <div className="double-grid">
+        <>
+          <TripDetailsStyling>
             <UiCard>
-              <div className="card-title">Transfer Delivery Order</div>
-              <p className="description-text">
-                This is a document that authorizes the release of cargo from a
-                shipping terminal or port to the authorized transporter for
-                final delivery.
-              </p>
-              <div className="double-items">
-                {userIsClientBasedUser && !trip.TDO && (
-                  <UiButton
-                    isFullWidth
-                    onClick={() => setUploadTDOIsVisible(true)}
-                  >
-                    Upload TDO
-                  </UiButton>
-                )}
-                {!!trip.TDO && (
-                  <a href={trip.TDO} target="_blank">
-                    <UiButton isFullWidth> View TDO</UiButton>
-                  </a>
-                )}
+              <div className="card-title">Cargo Details</div>
+              <div className="cargo-details">
+                <UiDataField title="Type" value={trip?.typeOfGoods} />
+                <UiDataField title="Weight" value={trip?.weight + ' Tonnes'} />
+                <UiDataField
+                  title="Shipping Line"
+                  value={trip?.shippingLine || 'N/A'}
+                />
               </div>
             </UiCard>
-            {userIsClientBasedUser && trip.status === 'awaiting-bid' && (
-              <UiCard>
-                <div className="card-title">Bids</div>
-                <p className="description-text">
-                  Bids are requests transporters send to enable them assist you
-                  in your trip. Accept a bid to officially begin your trip.
-                </p>
-                <div className="bottom">
-                  <div className="double-items">
-                    <Link to={`/my-trips/${trip._id}/bids`}>
-                      <UiButton isFullWidth>
-                        View bids sent for this trip
-                      </UiButton>
-                    </Link>
+            <UiCard>
+              <div className="card-title">Handling Instructions</div>
+              <p className="handling-instructions">
+                {trip?.instructions || 'N/A'}
+              </p>
+            </UiCard>
+            <UiCard>
+              <div className="card-title">Pickup Address & Date</div>
+              {trip && (
+                <TripPickUpAndDeliverWithDates
+                  pickUpAddress={trip.pickUpAddress}
+                  pickUpDate={trip.pickUpDate}
+                  deliveryAddress={trip.deliveryAddress}
+                  deliveryDate={trip.deliveryDate}
+                />
+              )}
+            </UiCard>
+            <TripDetailPaymentCard
+              isClient={userIsClientBasedUser}
+              payment={trip?.paymentRequest}
+              approvePayment={initApprovePayment}
+              viewLoadingProof={viewLoadingProof}
+              showReasonForReject={viewReasonForReject}
+              requestPayment={() => setRequestPaymentIsVisible(true)}
+            />
+            <UiCard>
+              <div className="card-title">Driver & Vehicle details</div>
+
+              {trip.acceptedBid && (
+                <div className="driver-and-vehicle-details">
+                  <div className="driver-and-vehicle-details__field">
+                    <div className="driver-and-vehicle-details__field__title">
+                      Responsible Driver
+                    </div>
+                    <UserDetails
+                      userName={trip.acceptedBid.vehicle.driver.name}
+                      avatar={trip.acceptedBid.vehicle.driver.avatar}
+                      profileSubtitle={
+                        trip.status !== 'completed'
+                          ? trip.acceptedBid.vehicle.driver.phone
+                          : ''
+                      }
+                    />
+                  </div>
+                  <UiButton variant="icon-neutral">
+                    <UiIcon icon="ArrowRight" />
+                  </UiButton>
+                  <div className="driver-and-vehicle-details__field">
+                    <div className="driver-and-vehicle-details__field__title">
+                      Vehicle Details
+                    </div>
+                    <div className="vehicle-details">
+                      <div className="vehicle-details__type">
+                        {trip.acceptedBid.vehicle.vehicleType}
+                      </div>
+                      <div className="vehicle-details__plate-number">
+                        {trip.acceptedBid.vehicle.plateNumber}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </UiCard>
-            )}
-          </div>
+              )}
+            </UiCard>
+            <UiCard>
+              <div className="card-title">
+                {userIsServiceBasedUser
+                  ? 'Trip Owner'
+                  : 'Responsible Transporter'}
+              </div>
 
-          <RequestPayment
-            key={`${requestPaymentIsVisible}-requestPaymentIsVisible`}
-            isVisible={requestPaymentIsVisible}
-            addAccountDetails={() => setAddAccountIsVisible(true)}
-            paymentRequest={trip.paymentRequest}
-            tripId={trip._id}
-            onClose={() => setRequestPaymentIsVisible(false)}
-          />
-          <UiConfirmModal
-            title="Add Payout Account"
-            isVisible={addAccountIsVisible}
-            onClose={() => setAddAccountIsVisible(false)}
-            onProceed={redirectToAddAccount}
-          >
-            You are yet to add your payout account. Kindly add your account to
-            be able to request payment.
-          </UiConfirmModal>
-          <UiConfirmModal
-            title="Approve Payment"
-            isVisible={approvePaymentIsVisible}
-            notYetVariant="danger-secondary"
-            variant="secondary"
-            loading={approvePaymentIsLoading}
-            onClose={() => setApprovePaymentIsVisible(false)}
-            onProceed={approvePayment}
-          >
-            Are you sure you want to approve payment for this trip? This process
-            cannot be undone.
-          </UiConfirmModal>
-          {!!trip.paymentRequest?.proofVideo && (
-            <CargoLoadingProof
-              isVisible={cargoLoadingProofIsVisible}
-              isClient={userIsClientBasedUser}
+              {userIsServiceBasedUser && (
+                <UserDetails
+                  userName={`${trip.tripOwner.firstName} ${trip.tripOwner.lastName}`}
+                  avatar={trip.tripOwner.avatar}
+                  userId={trip.tripOwner._id}
+                  avatarIsHalfCurved
+                  showMessage
+                  showViewProfile
+                  profileSubtitle={
+                    trip.status !== 'completed' ? trip.tripOwner.phone : ''
+                  }
+                />
+              )}
+              {userIsClientBasedUser && (
+                <>
+                  {!!trip.transporter ? (
+                    <UserDetails
+                      userName={`${trip.transporter.firstName} ${trip.transporter.lastName}`}
+                      avatar={trip.transporter.avatar}
+                      userId={trip.transporter._id}
+                      showMessage
+                      showViewProfile
+                      profileSubtitle={
+                        trip.status !== 'completed'
+                          ? trip.transporter.phone
+                          : ''
+                      }
+                    />
+                  ) : (
+                    <UserDetails userName="Unassigned" />
+                  )}
+                </>
+              )}
+            </UiCard>
+            <div className="double-grid">
+              <UiCard>
+                <div className="card-title">Transfer Delivery Order</div>
+                <p className="description-text">
+                  This is a document that authorizes the release of cargo from a
+                  shipping terminal or port to the authorized transporter for
+                  final delivery.
+                </p>
+                <div className="double-items">
+                  {userIsClientBasedUser && !trip.TDO && (
+                    <UiButton
+                      isFullWidth
+                      onClick={() => setUploadTDOIsVisible(true)}
+                    >
+                      Upload TDO
+                    </UiButton>
+                  )}
+                  {!!trip.TDO && (
+                    <a href={trip.TDO} target="_blank">
+                      <UiButton isFullWidth> View TDO</UiButton>
+                    </a>
+                  )}
+                </div>
+              </UiCard>
+              {userIsClientBasedUser && trip.status === 'awaiting-bid' && (
+                <UiCard>
+                  <div className="card-title">Bids</div>
+                  <p className="description-text">
+                    Bids are requests transporters send to enable them assist
+                    you in your trip. Accept a bid to officially begin your
+                    trip.
+                  </p>
+                  <div className="bottom">
+                    <div className="double-items">
+                      <Link to={`/my-trips/${trip._id}/bids`}>
+                        <UiButton isFullWidth>
+                          View bids sent for this trip
+                        </UiButton>
+                      </Link>
+                    </div>
+                  </div>
+                </UiCard>
+              )}
+            </div>
+
+            <RequestPayment
+              key={`${requestPaymentIsVisible}-requestPaymentIsVisible`}
+              isVisible={requestPaymentIsVisible}
+              addAccountDetails={() => setAddAccountIsVisible(true)}
               paymentRequest={trip.paymentRequest}
-              approvePayment={initApprovePayment}
-              rejectPayment={initRejectPayment}
-              updatePaymentRequest={() => {
-                setRequestPaymentIsVisible(true);
-                setCargoLoadingProofIsVisible(false);
-              }}
-              onClose={() => setCargoLoadingProofIsVisible(false)}
-            />
-          )}
-          {!!trip.paymentRequest && (
-            <RejectPaymentRequest
-              key={`${rejectPaymentRequestIsVisible}-rejectPaymentRequestIsVisible`}
-              isVisible={rejectPaymentRequestIsVisible}
               tripId={trip._id}
-              paymentRequestId={trip.paymentRequest?._id!}
-              onClose={() => setRejectPaymentRequestIsVisible(false)}
+              onClose={() => setRequestPaymentIsVisible(false)}
             />
-          )}
-          <div className="reason-for-reject">
             <UiConfirmModal
-              isVisible={reasonForRejectIsVisible}
-              hideNotYetButton
-              title="Reason for request rejection"
-              confirmText="Update payment request"
-              onProceed={() => {
-                setReasonForRejectIsVisible(false);
-                setRequestPaymentIsVisible(true);
-              }}
-              onClose={() => setReasonForRejectIsVisible(false)}
+              title="Add Payout Account"
+              isVisible={addAccountIsVisible}
+              onClose={() => setAddAccountIsVisible(false)}
+              onProceed={redirectToAddAccount}
             >
-              {trip.paymentRequest?.reasonForReject}
+              You are yet to add your payout account. Kindly add your account to
+              be able to request payment.
             </UiConfirmModal>
-          </div>
-        </TripDetailsStyling>
+            <UiConfirmModal
+              title="Approve Payment"
+              isVisible={approvePaymentIsVisible}
+              notYetVariant="danger-secondary"
+              variant="secondary"
+              loading={approvePaymentIsLoading}
+              onClose={() => setApprovePaymentIsVisible(false)}
+              onProceed={approvePayment}
+            >
+              Are you sure you want to approve payment for this trip? This
+              process cannot be undone.
+            </UiConfirmModal>
+            {!!trip.paymentRequest?.proofVideo && (
+              <CargoLoadingProof
+                isVisible={cargoLoadingProofIsVisible}
+                isClient={userIsClientBasedUser}
+                paymentRequest={trip.paymentRequest}
+                approvePayment={initApprovePayment}
+                rejectPayment={initRejectPayment}
+                updatePaymentRequest={() => {
+                  setRequestPaymentIsVisible(true);
+                  setCargoLoadingProofIsVisible(false);
+                }}
+                onClose={() => setCargoLoadingProofIsVisible(false)}
+              />
+            )}
+            {!!trip.paymentRequest && (
+              <RejectPaymentRequest
+                key={`${rejectPaymentRequestIsVisible}-rejectPaymentRequestIsVisible`}
+                isVisible={rejectPaymentRequestIsVisible}
+                tripId={trip._id}
+                paymentRequestId={trip.paymentRequest?._id!}
+                onClose={() => setRejectPaymentRequestIsVisible(false)}
+              />
+            )}
+            <div className="reason-for-reject">
+              <UiConfirmModal
+                isVisible={reasonForRejectIsVisible}
+                hideNotYetButton
+                title="Reason for request rejection"
+                confirmText="Update payment request"
+                onProceed={() => {
+                  setReasonForRejectIsVisible(false);
+                  setRequestPaymentIsVisible(true);
+                }}
+                onClose={() => setReasonForRejectIsVisible(false)}
+              >
+                {trip.paymentRequest?.reasonForReject}
+              </UiConfirmModal>
+            </div>
+          </TripDetailsStyling>
+          <TripActions className="trip-actions">
+            <UiButton variant="danger-secondary">Cancel Trip</UiButton>
+            <UiButton variant="secondary">Unassign Trip</UiButton>
+            <UiButton variant="secondary">Edit Trip</UiButton>
+            <UiButton variant="primary">
+              {' '}
+              <UiIcon icon="Link" />
+              Copy Link
+            </UiButton>
+          </TripActions>
+        </>
       )}
       {trip && (
         <UploadTripTDO
@@ -508,6 +523,14 @@ const TripDetailsStyling = styled.div`
       grid-template-columns: repeat(2, 2fr);
     }
   }
+`;
+
+const TripActions = styled.div`
+  padding: ${pxToRem(8)} ${pxToRem(0)};
+  display: flex;
+  gap: ${pxToRem(12)};
+  align-items: flex-start;
+  justify-content: center;
 `;
 
 const StatusIndicator = styled.div`
