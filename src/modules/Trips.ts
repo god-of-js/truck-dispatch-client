@@ -190,6 +190,7 @@ export function unassignTrip(tripId: string) {
 
 export function cancelTripByTripCreator(tripId: string) {
   return (dispatch: AppDispatch) => {
+    console.log(tripId);
     return Api.cancelTripByTripCreator(tripId).then((data) => {
       dispatch(removeTrip(tripId));
       dispatch(setUser(data.user));

@@ -1,30 +1,23 @@
 import React, { lazy, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-
+import styled from 'styled-components';
+import sizes from 'utils/sizes';
+import { Toast } from 'utils/toast';
+import { RootState } from 'modules/index';
+import { clientBasedUserTypes, serviceBasedUserTypes } from 'utils/constants';
+import { toAnyAction } from 'utils/helpers';
+import Trip from 'types/Trip';
 import {
   approvePaymentRequest,
   selectTrip,
   updateTripStatus,
 } from 'modules/Trips';
-import styled from 'styled-components';
-import sizes from 'utils/sizes';
-import { RootState } from 'modules/index';
-import { clientBasedUserTypes, serviceBasedUserTypes } from 'utils/constants';
-
-import { toAnyAction } from 'utils/helpers';
-
-//my imports
-import { Icons } from 'ui/UiIcon';
-import { Toast } from 'utils/toast';
 import {
   cancelTripByTransporter,
   cancelTripByTripCreator,
   unassignTrip,
 } from 'modules/Trips';
-import Trip from 'types/Trip';
-
-//my imports end here
 
 const TripDetailPaymentCard = lazy(
   () => import('components/trips/TripDetailPaymentCard'),
@@ -51,25 +44,6 @@ const RejectPaymentRequest = lazy(
 const UploadTripTDO = lazy(() => import('components/trips/UploadTripTDO'));
 
 export default function TripDetailsPage() {
-  {
-    /** Pre Functions **/
-  }
-  const trips = useSelector((state: RootState) => state.trips.trips);
-  const bids = useSelector((state: RootState) => state.bid.bids);
-  const [isCancelTripVisible, setIsCancelTripVisible] = useState(false);
-  const [isCancelTripLoading, setIsCancelTripLoading] = useState(false);
-  const [isUnassignTripVisble, setIsUnassignTripVisible] = useState(false);
-  const [isUnassignTripLoading, setIsUnassignTripLoading] = useState(false);
-  const [activeTripId, setActiveTripId] = useState<string | null>(null);
-  const [newlyCreatedTripId, setnewlyCreatedTripId] = useState<string | null>(
-    null,
-  );
-  const [isCreateTripVisible, setIsCreateTripVisible] = useState(false);
-
-  {
-    /** Pre Functions end here **/
-  }
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -77,6 +51,9 @@ export default function TripDetailsPage() {
   const user = useSelector((state: RootState) => state.account.user);
   const { tripId } = useParams();
   const trip = useSelector(selectTrip(tripId!));
+  const [isCancelTripVisible, setIsCancelTripVisible] = useState(false);
+  const [isCancelTripLoading, setIsCancelTripLoading] = useState(false);
+  const [isUnassignTripVisble, setIsUnassignTripVisible] = useState(false);
   const [requestPaymentIsVisible, setRequestPaymentIsVisible] = useState(false);
   const [cargoLoadingProofIsVisible, setCargoLoadingProofIsVisible] =
     useState(false);
@@ -198,50 +175,40 @@ export default function TripDetailsPage() {
     navigate(`/my-trips/${tripId}`);
   }, [action, trip?.paymentRequest]);
 
-  {
-    /** My main functions **/
-  }
-
-  function initUnassignTrip(id: string) {
-    setActiveTripId(id);
+  function initUnassignTrip() {
     setIsUnassignTripVisible(true);
   }
 
   function triggerUnassignTrip() {
-    if (!activeTripId) {
+    if (!tripId) {
       Toast.error({ msg: 'Trip ID was not provided.' });
       return;
     }
-    setIsUnassignTripLoading(true);
-    dispatch(toAnyAction(unassignTrip(activeTripId))).finally(() => {
-      setIsUnassignTripLoading(false);
+    dispatch(toAnyAction(unassignTrip(tripId))).finally(() => {
       setIsUnassignTripVisible(false);
     });
   }
 
-  function initCancelTrip(id: string) {
-    setActiveTripId(id);
+  function initCancelTrip() {
     setIsCancelTripVisible(true);
   }
 
   function cancelTrip() {
-    if (!activeTripId) {
+    if (!tripId) {
       Toast.error({ msg: 'Trip ID was not provided.' });
       return;
     }
     setIsCancelTripLoading(true);
+
     const action = clientBasedUserTypes.includes(user?.userType!)
       ? cancelTripByTripCreator
       : cancelTripByTransporter;
 
-    dispatch(toAnyAction(action(activeTripId))).finally(() => {
+    dispatch(toAnyAction(action(tripId))).finally(() => {
       setIsCancelTripLoading(false);
       setIsCancelTripVisible(false);
+      navigate('/my-trips');
     });
-  }
-
-  {
-    /** My main functions end here **/
   }
 
   return (
@@ -486,9 +453,16 @@ export default function TripDetailsPage() {
             <UiButton onClick={initCancelTrip} variant="danger-secondary">
               Cancel Trip
             </UiButton>
-            <UiButton onClick={initUnassignTrip} variant="secondary">
-              Unassign Trip
-            </UiButton>
+
+            {!!trip.transporter ? (
+              <UiButton onClick={initUnassignTrip} variant="primary">
+                Unassign Trip
+              </UiButton>
+            ) : (
+              <UiButton onClick={initUnassignTrip} disabled variant="primary">
+                Unassign Trip
+              </UiButton>
+            )}
             <UiButton variant="secondary">Edit Trip</UiButton>
             <UiButton variant="primary">
               {' '}
@@ -524,7 +498,7 @@ export default function TripDetailsPage() {
         title="Unassign Trip"
         isVisible={isUnassignTripVisble}
         variant="danger"
-        loading={isUnassignTripLoading}
+        loading={isCancelTripLoading}
         onClose={() => setIsUnassignTripVisible(false)}
         onProceed={triggerUnassignTrip}
       >
