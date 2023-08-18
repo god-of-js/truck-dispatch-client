@@ -13,7 +13,18 @@ import { RootState } from 'modules/index';
 import { clientBasedUserTypes, serviceBasedUserTypes } from 'utils/constants';
 
 import { toAnyAction } from 'utils/helpers';
+
+//my imports
+import { Icons } from 'ui/UiIcon';
+import { Toast } from 'utils/toast';
+import {
+  cancelTripByTransporter,
+  cancelTripByTripCreator,
+  unassignTrip,
+} from 'modules/Trips';
 import Trip from 'types/Trip';
+
+//my imports end here
 
 const TripDetailPaymentCard = lazy(
   () => import('components/trips/TripDetailPaymentCard'),
@@ -40,6 +51,25 @@ const RejectPaymentRequest = lazy(
 const UploadTripTDO = lazy(() => import('components/trips/UploadTripTDO'));
 
 export default function TripDetailsPage() {
+  {
+    /** Pre Functions **/
+  }
+  const trips = useSelector((state: RootState) => state.trips.trips);
+  const bids = useSelector((state: RootState) => state.bid.bids);
+  const [isCancelTripVisible, setIsCancelTripVisible] = useState(false);
+  const [isCancelTripLoading, setIsCancelTripLoading] = useState(false);
+  const [isUnassignTripVisble, setIsUnassignTripVisible] = useState(false);
+  const [isUnassignTripLoading, setIsUnassignTripLoading] = useState(false);
+  const [activeTripId, setActiveTripId] = useState<string | null>(null);
+  const [newlyCreatedTripId, setnewlyCreatedTripId] = useState<string | null>(
+    null,
+  );
+  const [isCreateTripVisible, setIsCreateTripVisible] = useState(false);
+
+  {
+    /** Pre Functions end here **/
+  }
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -167,6 +197,52 @@ export default function TripDetailsPage() {
     }
     navigate(`/my-trips/${tripId}`);
   }, [action, trip?.paymentRequest]);
+
+  {
+    /** My main functions **/
+  }
+
+  function initUnassignTrip(id: string) {
+    setActiveTripId(id);
+    setIsUnassignTripVisible(true);
+  }
+
+  function triggerUnassignTrip() {
+    if (!activeTripId) {
+      Toast.error({ msg: 'Trip ID was not provided.' });
+      return;
+    }
+    setIsUnassignTripLoading(true);
+    dispatch(toAnyAction(unassignTrip(activeTripId))).finally(() => {
+      setIsUnassignTripLoading(false);
+      setIsUnassignTripVisible(false);
+    });
+  }
+
+  function initCancelTrip(id: string) {
+    setActiveTripId(id);
+    setIsCancelTripVisible(true);
+  }
+
+  function cancelTrip() {
+    if (!activeTripId) {
+      Toast.error({ msg: 'Trip ID was not provided.' });
+      return;
+    }
+    setIsCancelTripLoading(true);
+    const action = clientBasedUserTypes.includes(user?.userType!)
+      ? cancelTripByTripCreator
+      : cancelTripByTransporter;
+
+    dispatch(toAnyAction(action(activeTripId))).finally(() => {
+      setIsCancelTripLoading(false);
+      setIsCancelTripVisible(false);
+    });
+  }
+
+  {
+    /** My main functions end here **/
+  }
 
   return (
     <>
@@ -407,8 +483,12 @@ export default function TripDetailsPage() {
             </div>
           </TripDetailsStyling>
           <TripActions className="trip-actions">
-            <UiButton variant="danger-secondary">Cancel Trip</UiButton>
-            <UiButton variant="secondary">Unassign Trip</UiButton>
+            <UiButton onClick={initCancelTrip} variant="danger-secondary">
+              Cancel Trip
+            </UiButton>
+            <UiButton onClick={initUnassignTrip} variant="secondary">
+              Unassign Trip
+            </UiButton>
             <UiButton variant="secondary">Edit Trip</UiButton>
             <UiButton variant="primary">
               {' '}
@@ -426,6 +506,32 @@ export default function TripDetailsPage() {
           isVisible={uploadTDOIsVisible}
         />
       )}
+
+      {/** modals **/}
+      <UiConfirmModal
+        isVisible={isCancelTripVisible}
+        title="Cancel Trip"
+        variant="danger"
+        loading={isCancelTripLoading}
+        onClose={() => setIsCancelTripVisible(false)}
+        onProceed={cancelTrip}
+      >
+        Are you sure you want to cancel this trip? This process cannot be
+        undone.
+      </UiConfirmModal>
+
+      <UiConfirmModal
+        title="Unassign Trip"
+        isVisible={isUnassignTripVisble}
+        variant="danger"
+        loading={isUnassignTripLoading}
+        onClose={() => setIsUnassignTripVisible(false)}
+        onProceed={triggerUnassignTrip}
+      >
+        Are you sure you want to unassign this trip? This process cannot be
+        undone.
+      </UiConfirmModal>
+      {/** modals end here **/}
     </>
   );
 }
