@@ -18,6 +18,8 @@ import {
   cancelTripByTripCreator,
   unassignTrip,
 } from 'modules/Trips';
+import CreateTrip from 'components/trips/CreateTrip';
+import TripHasBeenBroadcasted from 'components/trips/TripHasBeenBroadcasted';
 
 const TripDetailPaymentCard = lazy(
   () => import('components/trips/TripDetailPaymentCard'),
@@ -67,7 +69,12 @@ export default function TripDetailsPage() {
   const [changeTripStatusIsLoading, setChangeTripStatusIsLoading] =
     useState(false);
   const [uploadTDOIsVisible, setUploadTDOIsVisible] = useState(false);
-
+  const [isCreateTripVisible, setIsCreateTripVisible] = useState(false);
+  const [isTripBroadcastedVisible, setIsTripBroadcastedVisible] =
+    useState(false);
+  const [newlyCreatedTripId, setnewlyCreatedTripId] = useState<string | null>(
+    null,
+  );
   const userIsClientBasedUser = useMemo(
     () => clientBasedUserTypes.includes(user?.userType!),
     [user],
@@ -209,6 +216,19 @@ export default function TripDetailsPage() {
       setIsCancelTripVisible(false);
       navigate('/my-trips');
     });
+  }
+
+  function initEditTrip() {
+    if (!tripId) {
+      Toast.error({ msg: 'Trip ID was not provided' });
+      return;
+    }
+    setIsCreateTripVisible(true);
+  }
+
+  function showTripBroadcasted(tripId: string) {
+    setnewlyCreatedTripId(tripId);
+    setIsTripBroadcastedVisible(true);
   }
 
   return (
@@ -463,7 +483,9 @@ export default function TripDetailsPage() {
                 Unassign Trip
               </UiButton>
             )}
-            <UiButton variant="secondary">Edit Trip</UiButton>
+            <UiButton onClick={initEditTrip} variant="secondary">
+              Edit Trip
+            </UiButton>
             <UiButton variant="primary">
               {' '}
               <UiIcon icon="Link" />
@@ -493,6 +515,23 @@ export default function TripDetailsPage() {
         Are you sure you want to cancel this trip? This process cannot be
         undone.
       </UiConfirmModal>
+
+      <CreateTrip
+        isVisible={isCreateTripVisible}
+        key={`${isCreateTripVisible}-isCreateTripVisible`}
+        tripId={tripId}
+        onClose={() => {
+          setIsCreateTripVisible(false);
+        }}
+        onCreated={showTripBroadcasted}
+      />
+      {newlyCreatedTripId && (
+        <TripHasBeenBroadcasted
+          isVisible={isTripBroadcastedVisible}
+          tripId={newlyCreatedTripId}
+          onClose={() => setIsTripBroadcastedVisible(false)}
+        />
+      )}
 
       <UiConfirmModal
         title="Unassign Trip"
