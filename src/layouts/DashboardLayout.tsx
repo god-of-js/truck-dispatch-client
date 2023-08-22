@@ -116,7 +116,6 @@ export default function DashboardLayout() {
       });
 
       newSocket.on('bid-details', (bid: Bid) => {
-        console.log(bid);
         dispatch(setBid(bid));
       });
 

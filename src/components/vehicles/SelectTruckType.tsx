@@ -34,7 +34,6 @@ export default function SelectTruckType({ vehicle, goToNext }: Props) {
             key={vehicle.title}
             onClick={() => {
               selectVehicleType(vehicle.title);
-              console.log(vehicle.title);
             }}
           >
             <div className="vehicle-inner">
