@@ -32,10 +32,13 @@ export default function SelectTruckType({ vehicle, goToNext }: Props) {
           <Vehicle
             isActive={vehicleData.vehicleType === vehicle.title}
             key={vehicle.title}
-            onClick={() => selectVehicleType(vehicle.title)}
+            onClick={() => {
+              selectVehicleType(vehicle.title);
+              console.log(vehicle.title);
+            }}
           >
             <div className="vehicle-inner">
-              <UiIcon icon={vehicle.icon} />
+              <img src={vehicle.truckImg} />
               <div>{vehicle.title}</div>
             </div>
           </Vehicle>
