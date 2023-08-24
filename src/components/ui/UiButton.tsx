@@ -230,7 +230,7 @@ const Button = styled.button<Props>`
       fill: var(--color-danger);
     }
     &:hover {
-      background: var(--color-danger-20);
+      background: var(--color-danger-30);
       box-shadow: var(--box-shadow-primary);
     }
   }

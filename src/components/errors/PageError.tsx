@@ -18,18 +18,23 @@ const Unauthorized = lazy(() =>
   })),
 );
 
+const fallbackSubtitle =
+  'Something went wrong! Kindly reach out to the team for additional assistance.';
+
 export interface Props {
   errorCode?: number;
   title?: string;
   subtitle?: string;
   goToRoute?: string;
   buttonText?: string;
+  onBtnClick?: () => void;
 }
 export default function PageError({
   errorCode,
-  subtitle = 'Something went wrong! Kindly reach out to the team for additional assistance.',
+  subtitle = fallbackSubtitle,
   goToRoute = '/',
   buttonText = 'Go to Dashboard',
+  onBtnClick,
 }: Props) {
   const navigate = useNavigate();
 
@@ -41,12 +46,15 @@ export default function PageError({
 
     if (errorCode === 404) {
       img = <NotFoundImage />;
-      errorSubtitle = 'Not found';
+      errorSubtitle = subtitle === fallbackSubtitle ? 'Not found' : subtitle;
     }
 
     if (errorCode === 401) {
       img = <Unauthorized />;
-      errorSubtitle = 'You are not authorized to view this content.';
+      errorSubtitle =
+        subtitle === fallbackSubtitle
+          ? 'You are not authorized to view this content.'
+          : subtitle;
     }
 
     return {
@@ -55,13 +63,18 @@ export default function PageError({
     };
   }, [errorCode]);
 
+  function navigateToRoute() {
+    navigate(goToRoute);
+    onBtnClick?.();
+  }
+
   return (
     <ErrorStyling>
       <h1>{allowedErrorCodes.includes(errorCode!) ? errorCode : 500}</h1>
       <p>{errorDetails.subtitle}</p>
       <div>{errorDetails.img}</div>
       <div className="button-container">
-        <UiButton variant="secondary" onClick={() => navigate(goToRoute)}>
+        <UiButton variant="secondary" onClick={navigateToRoute}>
           {buttonText}
         </UiButton>
       </div>
@@ -87,6 +100,7 @@ const ErrorStyling = styled.div`
     line-height: ${pxToRem(28)};
     max-width: ${pxToRem(400)};
     margin: auto;
+    margin-bottom: ${pxToRem(16)};
   }
 
   .button-container {
