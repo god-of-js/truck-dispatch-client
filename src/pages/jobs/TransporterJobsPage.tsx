@@ -3,7 +3,7 @@ import React, { lazy, useEffect, useMemo, useState } from 'react';
 import { RootState } from 'modules/index';
 import { getJobs, selectJob } from 'modules/Trips';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   filterByFieldInObject,
@@ -48,6 +48,7 @@ export default function TransporterJobs() {
   const [allJobsByShipper, setAllJobsByShipper] = useState(0);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -147,6 +148,7 @@ export default function TransporterJobs() {
 
   function closeViewDetails() {
     setIsViewJobDetailsVisible(false);
+    navigate('/available-jobs')
   }
 
   function closeBidOnJob() {
