@@ -191,8 +191,10 @@ export default function TripDetailsPage() {
       Toast.error({ msg: 'Trip ID was not provided.' });
       return;
     }
+    setIsCancelTripLoading(true);
     dispatch(toAnyAction(unassignTrip(tripId))).finally(() => {
       setIsUnassignTripVisible(false);
+      setIsCancelTripLoading(false);
     });
   }
 
@@ -216,6 +218,21 @@ export default function TripDetailsPage() {
       setIsCancelTripVisible(false);
       navigate('/my-trips');
     });
+  }
+
+  function copyJobLink() {
+    const host =
+      window.location.protocol +
+      '//' +
+      window.location.hostname +
+      (window.location.port ? ':' + window.location.port : '');
+    navigator.clipboard
+      .writeText(`${host}/available-jobs?job-id=${tripId}`)
+      .then(() => {
+        Toast.success({
+          msg: 'Job link copied successfully. Send link to transporter of choice for a bid.',
+        });
+      });
   }
 
   function initEditTrip() {
@@ -486,10 +503,9 @@ export default function TripDetailsPage() {
             <UiButton onClick={initEditTrip} variant="secondary">
               Edit Trip
             </UiButton>
-            <UiButton variant="primary">
-              {' '}
+            <UiButton variant="primary" disabled={!!trip?.transporter} onClick={copyJobLink}>
               <UiIcon icon="Link" />
-              Copy Link
+              Copy Job Link
             </UiButton>
           </TripActions>
         </>

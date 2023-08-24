@@ -165,6 +165,7 @@ export function getJob(jobId: string) {
   return async (dispatch: AppDispatch) => {
     return Api.getJob(jobId).then((job) => {
       dispatch(setJob(job));
+      return job;
     });
   };
 }

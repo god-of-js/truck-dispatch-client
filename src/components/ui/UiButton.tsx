@@ -223,7 +223,7 @@ const Button = styled.button<Props>`
     `}
   }
   &.danger-secondary {
-    background: var(--color-danger-20);
+    background: var(--color-danger-10);
     color: var(--color-danger);
 
     svg {
