@@ -440,17 +440,6 @@ export default function TripDetailsPage() {
             </div>
           </TripDetailsStyling>
           <TripActions>
-            {tripcanBeCancelled && (
-              <UiButton onClick={initCancelTrip} variant="danger-secondary">
-                Cancel Trip
-              </UiButton>
-            )}
-
-            {tripIsUnassignable && (
-              <UiButton onClick={initUnassignTrip} variant="primary">
-                Unassign Trip
-              </UiButton>
-            )}
             {tripIsEditable && (
               <UiButton onClick={initEditTrip} variant="secondary">
                 Edit Trip
@@ -464,6 +453,17 @@ export default function TripDetailsPage() {
               >
                 <UiIcon icon="Link" />
                 Copy Job Link
+              </UiButton>
+            )}
+
+            {tripIsUnassignable && (
+              <UiButton onClick={initUnassignTrip} variant="primary">
+                Unassign Trip
+              </UiButton>
+            )}
+            {tripcanBeCancelled && (
+              <UiButton onClick={initCancelTrip} variant="danger-secondary">
+                Cancel Trip
               </UiButton>
             )}
           </TripActions>
