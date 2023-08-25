@@ -522,7 +522,7 @@ export default function MyTripsPage() {
       {job && (
         <>
           <ViewJobDetail
-            job={job}
+            jobId={job._id}
             isVisible={isViewJobDetailsVisible}
             bidOnJob={bidForJob}
             onClose={closeViewDetails}

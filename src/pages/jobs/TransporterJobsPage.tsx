@@ -48,7 +48,7 @@ export default function TransporterJobs() {
   const [allJobsByShipper, setAllJobsByShipper] = useState(0);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -148,7 +148,7 @@ export default function TransporterJobs() {
 
   function closeViewDetails() {
     setIsViewJobDetailsVisible(false);
-    navigate('/available-jobs')
+    navigate('/available-jobs');
   }
 
   function closeBidOnJob() {

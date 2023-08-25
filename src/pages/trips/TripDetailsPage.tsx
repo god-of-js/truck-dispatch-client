@@ -101,6 +101,27 @@ export default function TripDetailsPage() {
     return 'success';
   }, [trip]);
 
+  const isClient = useMemo(() => {
+    return clientBasedUserTypes.includes(user?.userType!);
+  }, [user?.userType]);
+
+  const tripIsEditable = useMemo(() => {
+    const editIsNotAllowedStatuses = ['in-progress', 'completed'];
+
+    return isClient && !editIsNotAllowedStatuses.includes(trip?.status!);
+  }, [user, trip]);
+
+  const tripIsUnassignable = useMemo(() => {
+    return (
+      !!trip?.transporter &&
+      isClient &&
+      trip.paymentRequest?.status !== 'completed'
+    );
+  }, [user, trip]);
+  const tripcanBeCancelled = useMemo(() => {
+    return trip?.paymentRequest?.status !== 'completed';
+  }, [user, trip]);
+
   const edgeNode = useMemo(() => {
     return (
       <EdgeNode>
@@ -417,96 +438,34 @@ export default function TripDetailsPage() {
                 </UiCard>
               )}
             </div>
-
-            <RequestPayment
-              key={`${requestPaymentIsVisible}-requestPaymentIsVisible`}
-              isVisible={requestPaymentIsVisible}
-              addAccountDetails={() => setAddAccountIsVisible(true)}
-              paymentRequest={trip.paymentRequest}
-              tripId={trip._id}
-              onClose={() => setRequestPaymentIsVisible(false)}
-            />
-            <UiConfirmModal
-              title="Add Payout Account"
-              isVisible={addAccountIsVisible}
-              onClose={() => setAddAccountIsVisible(false)}
-              onProceed={redirectToAddAccount}
-            >
-              You are yet to add your payout account. Kindly add your account to
-              be able to request payment.
-            </UiConfirmModal>
-            <UiConfirmModal
-              title="Approve Payment"
-              isVisible={approvePaymentIsVisible}
-              notYetVariant="danger-secondary"
-              variant="secondary"
-              loading={approvePaymentIsLoading}
-              onClose={() => setApprovePaymentIsVisible(false)}
-              onProceed={approvePayment}
-            >
-              Are you sure you want to approve payment for this trip? This
-              process cannot be undone.
-            </UiConfirmModal>
-            {!!trip.paymentRequest?.proofVideo && (
-              <CargoLoadingProof
-                isVisible={cargoLoadingProofIsVisible}
-                isClient={userIsClientBasedUser}
-                paymentRequest={trip.paymentRequest}
-                approvePayment={initApprovePayment}
-                rejectPayment={initRejectPayment}
-                updatePaymentRequest={() => {
-                  setRequestPaymentIsVisible(true);
-                  setCargoLoadingProofIsVisible(false);
-                }}
-                onClose={() => setCargoLoadingProofIsVisible(false)}
-              />
-            )}
-            {!!trip.paymentRequest && (
-              <RejectPaymentRequest
-                key={`${rejectPaymentRequestIsVisible}-rejectPaymentRequestIsVisible`}
-                isVisible={rejectPaymentRequestIsVisible}
-                tripId={trip._id}
-                paymentRequestId={trip.paymentRequest?._id!}
-                onClose={() => setRejectPaymentRequestIsVisible(false)}
-              />
-            )}
-            <div className="reason-for-reject">
-              <UiConfirmModal
-                isVisible={reasonForRejectIsVisible}
-                hideNotYetButton
-                title="Reason for request rejection"
-                confirmText="Update payment request"
-                onProceed={() => {
-                  setReasonForRejectIsVisible(false);
-                  setRequestPaymentIsVisible(true);
-                }}
-                onClose={() => setReasonForRejectIsVisible(false)}
-              >
-                {trip.paymentRequest?.reasonForReject}
-              </UiConfirmModal>
-            </div>
           </TripDetailsStyling>
-          <TripActions className="trip-actions">
-            <UiButton onClick={initCancelTrip} variant="danger-secondary">
-              Cancel Trip
-            </UiButton>
+          <TripActions>
+            {tripcanBeCancelled && (
+              <UiButton onClick={initCancelTrip} variant="danger-secondary">
+                Cancel Trip
+              </UiButton>
+            )}
 
-            {!!trip.transporter ? (
+            {tripIsUnassignable && (
               <UiButton onClick={initUnassignTrip} variant="primary">
                 Unassign Trip
               </UiButton>
-            ) : (
-              <UiButton onClick={initUnassignTrip} disabled variant="primary">
-                Unassign Trip
+            )}
+            {tripIsEditable && (
+              <UiButton onClick={initEditTrip} variant="secondary">
+                Edit Trip
               </UiButton>
             )}
-            <UiButton onClick={initEditTrip} variant="secondary">
-              Edit Trip
-            </UiButton>
-            <UiButton variant="primary" disabled={!!trip?.transporter} onClick={copyJobLink}>
-              <UiIcon icon="Link" />
-              Copy Job Link
-            </UiButton>
+            {isClient && !trip.transporter && (
+              <UiButton
+                variant="primary"
+                disabled={!!trip?.transporter}
+                onClick={copyJobLink}
+              >
+                <UiIcon icon="Link" />
+                Copy Job Link
+              </UiButton>
+            )}
           </TripActions>
         </>
       )}
@@ -560,6 +519,77 @@ export default function TripDetailsPage() {
         Are you sure you want to unassign this trip? This process cannot be
         undone.
       </UiConfirmModal>
+      {trip && (
+        <>
+          <RequestPayment
+            key={`${requestPaymentIsVisible}-requestPaymentIsVisible`}
+            isVisible={requestPaymentIsVisible}
+            addAccountDetails={() => setAddAccountIsVisible(true)}
+            paymentRequest={trip.paymentRequest}
+            tripId={trip._id}
+            onClose={() => setRequestPaymentIsVisible(false)}
+          />
+          <UiConfirmModal
+            title="Add Payout Account"
+            isVisible={addAccountIsVisible}
+            onClose={() => setAddAccountIsVisible(false)}
+            onProceed={redirectToAddAccount}
+          >
+            You are yet to add your payout account. Kindly add your account to
+            be able to request payment.
+          </UiConfirmModal>
+          <UiConfirmModal
+            title="Approve Payment"
+            isVisible={approvePaymentIsVisible}
+            notYetVariant="danger-secondary"
+            variant="secondary"
+            loading={approvePaymentIsLoading}
+            onClose={() => setApprovePaymentIsVisible(false)}
+            onProceed={approvePayment}
+          >
+            Are you sure you want to approve payment for this trip? This process
+            cannot be undone.
+          </UiConfirmModal>
+          {!!trip.paymentRequest?.proofVideo && (
+            <CargoLoadingProof
+              isVisible={cargoLoadingProofIsVisible}
+              isClient={userIsClientBasedUser}
+              paymentRequest={trip.paymentRequest}
+              approvePayment={initApprovePayment}
+              rejectPayment={initRejectPayment}
+              updatePaymentRequest={() => {
+                setRequestPaymentIsVisible(true);
+                setCargoLoadingProofIsVisible(false);
+              }}
+              onClose={() => setCargoLoadingProofIsVisible(false)}
+            />
+          )}
+          {!!trip.paymentRequest && (
+            <RejectPaymentRequest
+              key={`${rejectPaymentRequestIsVisible}-rejectPaymentRequestIsVisible`}
+              isVisible={rejectPaymentRequestIsVisible}
+              tripId={trip._id}
+              paymentRequestId={trip.paymentRequest?._id!}
+              onClose={() => setRejectPaymentRequestIsVisible(false)}
+            />
+          )}
+          <div className="reason-for-reject">
+            <UiConfirmModal
+              isVisible={reasonForRejectIsVisible}
+              hideNotYetButton
+              title="Reason for request rejection"
+              confirmText="Update payment request"
+              onProceed={() => {
+                setReasonForRejectIsVisible(false);
+                setRequestPaymentIsVisible(true);
+              }}
+              onClose={() => setReasonForRejectIsVisible(false)}
+            >
+              {trip.paymentRequest?.reasonForReject}
+            </UiConfirmModal>
+          </div>
+        </>
+      )}
       {/** modals end here **/}
     </>
   );
