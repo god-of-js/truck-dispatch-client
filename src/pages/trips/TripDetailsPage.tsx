@@ -1,19 +1,25 @@
 import React, { lazy, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-
+import styled from 'styled-components';
+import sizes from 'utils/sizes';
+import { Toast } from 'utils/toast';
+import { RootState } from 'modules/index';
+import { clientBasedUserTypes, serviceBasedUserTypes } from 'utils/constants';
+import { toAnyAction } from 'utils/helpers';
+import Trip from 'types/Trip';
 import {
   approvePaymentRequest,
   selectTrip,
   updateTripStatus,
 } from 'modules/Trips';
-import styled from 'styled-components';
-import sizes from 'utils/sizes';
-import { RootState } from 'modules/index';
-import { clientBasedUserTypes, serviceBasedUserTypes } from 'utils/constants';
-
-import { toAnyAction } from 'utils/helpers';
-import Trip from 'types/Trip';
+import {
+  cancelTripByTransporter,
+  cancelTripByTripCreator,
+  unassignTrip,
+} from 'modules/Trips';
+import CreateTrip from 'components/trips/CreateTrip';
+import TripHasBeenBroadcasted from 'components/trips/TripHasBeenBroadcasted';
 
 const TripDetailPaymentCard = lazy(
   () => import('components/trips/TripDetailPaymentCard'),
@@ -47,6 +53,9 @@ export default function TripDetailsPage() {
   const user = useSelector((state: RootState) => state.account.user);
   const { tripId } = useParams();
   const trip = useSelector(selectTrip(tripId!));
+  const [isCancelTripVisible, setIsCancelTripVisible] = useState(false);
+  const [isCancelTripLoading, setIsCancelTripLoading] = useState(false);
+  const [isUnassignTripVisble, setIsUnassignTripVisible] = useState(false);
   const [requestPaymentIsVisible, setRequestPaymentIsVisible] = useState(false);
   const [cargoLoadingProofIsVisible, setCargoLoadingProofIsVisible] =
     useState(false);
@@ -60,7 +69,12 @@ export default function TripDetailsPage() {
   const [changeTripStatusIsLoading, setChangeTripStatusIsLoading] =
     useState(false);
   const [uploadTDOIsVisible, setUploadTDOIsVisible] = useState(false);
-
+  const [isCreateTripVisible, setIsCreateTripVisible] = useState(false);
+  const [isTripBroadcastedVisible, setIsTripBroadcastedVisible] =
+    useState(false);
+  const [newlyCreatedTripId, setnewlyCreatedTripId] = useState<string | null>(
+    null,
+  );
   const userIsClientBasedUser = useMemo(
     () => clientBasedUserTypes.includes(user?.userType!),
     [user],
@@ -86,6 +100,27 @@ export default function TripDetailsPage() {
 
     return 'success';
   }, [trip]);
+
+  const isClient = useMemo(() => {
+    return clientBasedUserTypes.includes(user?.userType!);
+  }, [user?.userType]);
+
+  const tripIsEditable = useMemo(() => {
+    const editIsNotAllowedStatuses = ['in-progress', 'completed'];
+
+    return isClient && !editIsNotAllowedStatuses.includes(trip?.status!);
+  }, [user, trip]);
+
+  const tripIsUnassignable = useMemo(() => {
+    return (
+      !!trip?.transporter &&
+      isClient &&
+      trip.paymentRequest?.status !== 'completed'
+    );
+  }, [user, trip]);
+  const tripcanBeCancelled = useMemo(() => {
+    return trip?.paymentRequest?.status !== 'completed';
+  }, [user, trip]);
 
   const edgeNode = useMemo(() => {
     return (
@@ -168,6 +203,72 @@ export default function TripDetailsPage() {
     navigate(`/my-trips/${tripId}`);
   }, [action, trip?.paymentRequest]);
 
+  function initUnassignTrip() {
+    setIsUnassignTripVisible(true);
+  }
+
+  function triggerUnassignTrip() {
+    if (!tripId) {
+      Toast.error({ msg: 'Trip ID was not provided.' });
+      return;
+    }
+    setIsCancelTripLoading(true);
+    dispatch(toAnyAction(unassignTrip(tripId))).finally(() => {
+      setIsUnassignTripVisible(false);
+      setIsCancelTripLoading(false);
+    });
+  }
+
+  function initCancelTrip() {
+    setIsCancelTripVisible(true);
+  }
+
+  function cancelTrip() {
+    if (!tripId) {
+      Toast.error({ msg: 'Trip ID was not provided.' });
+      return;
+    }
+    setIsCancelTripLoading(true);
+
+    const action = clientBasedUserTypes.includes(user?.userType!)
+      ? cancelTripByTripCreator
+      : cancelTripByTransporter;
+
+    dispatch(toAnyAction(action(tripId))).finally(() => {
+      setIsCancelTripLoading(false);
+      setIsCancelTripVisible(false);
+      navigate('/my-trips');
+    });
+  }
+
+  function copyJobLink() {
+    const host =
+      window.location.protocol +
+      '//' +
+      window.location.hostname +
+      (window.location.port ? ':' + window.location.port : '');
+    navigator.clipboard
+      .writeText(`${host}/available-jobs?job-id=${tripId}`)
+      .then(() => {
+        Toast.success({
+          msg: 'Job link copied successfully. Send link to transporter of choice for a bid.',
+        });
+      });
+  }
+
+  function initEditTrip() {
+    if (!tripId) {
+      Toast.error({ msg: 'Trip ID was not provided' });
+      return;
+    }
+    setIsCreateTripVisible(true);
+  }
+
+  function showTripBroadcasted(tripId: string) {
+    setnewlyCreatedTripId(tripId);
+    setIsTripBroadcastedVisible(true);
+  }
+
   return (
     <>
       <DashboardTopNav
@@ -176,164 +277,250 @@ export default function TripDetailsPage() {
         edgeNode={edgeNode}
       />
       {trip && (
-        <TripDetailsStyling>
-          <UiCard>
-            <div className="card-title">Cargo Details</div>
-            <div className="cargo-details">
-              <UiDataField title="Type" value={trip?.typeOfGoods} />
-              <UiDataField title="Weight" value={trip?.weight + ' Tonnes'} />
-              <UiDataField
-                title="Shipping Line"
-                value={trip?.shippingLine || 'N/A'}
-              />
-            </div>
-          </UiCard>
-          <UiCard>
-            <div className="card-title">Handling Instructions</div>
-            <p className="handling-instructions">
-              {trip?.instructions || 'N/A'}
-            </p>
-          </UiCard>
-          <UiCard>
-            <div className="card-title">Pickup Address & Date</div>
-            {trip && (
-              <TripPickUpAndDeliverWithDates
-                pickUpAddress={trip.pickUpAddress}
-                pickUpDate={trip.pickUpDate}
-                deliveryAddress={trip.deliveryAddress}
-                deliveryDate={trip.deliveryDate}
-              />
-            )}
-          </UiCard>
-          <TripDetailPaymentCard
-            isClient={userIsClientBasedUser}
-            payment={trip?.paymentRequest}
-            approvePayment={initApprovePayment}
-            viewLoadingProof={viewLoadingProof}
-            showReasonForReject={viewReasonForReject}
-            requestPayment={() => setRequestPaymentIsVisible(true)}
-          />
-          <UiCard>
-            <div className="card-title">Driver & Vehicle details</div>
-
-            {trip.acceptedBid && (
-              <div className="driver-and-vehicle-details">
-                <div className="driver-and-vehicle-details__field">
-                  <div className="driver-and-vehicle-details__field__title">
-                    Responsible Driver
-                  </div>
-                  <UserDetails
-                    userName={trip.acceptedBid.vehicle.driver.name}
-                    avatar={trip.acceptedBid.vehicle.driver.avatar}
-                    profileSubtitle={
-                      trip.status !== 'completed'
-                        ? trip.acceptedBid.vehicle.driver.phone
-                        : ''
-                    }
-                  />
-                </div>
-                <UiButton variant="icon-neutral">
-                  <UiIcon icon="ArrowRight" />
-                </UiButton>
-                <div className="driver-and-vehicle-details__field">
-                  <div className="driver-and-vehicle-details__field__title">
-                    Vehicle Details
-                  </div>
-                  <div className="vehicle-details">
-                    <div className="vehicle-details__type">
-                      {trip.acceptedBid.vehicle.vehicleType}
-                    </div>
-                    <div className="vehicle-details__plate-number">
-                      {trip.acceptedBid.vehicle.plateNumber}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </UiCard>
-          <UiCard>
-            <div className="card-title">
-              {userIsServiceBasedUser
-                ? 'Trip Owner'
-                : 'Responsible Transporter'}
-            </div>
-
-            {userIsServiceBasedUser && (
-              <UserDetails
-                userName={`${trip.tripOwner.firstName} ${trip.tripOwner.lastName}`}
-                avatar={trip.tripOwner.avatar}
-                userId={trip.tripOwner._id}
-                avatarIsHalfCurved
-                showMessage
-                showViewProfile
-                profileSubtitle={
-                  trip.status !== 'completed' ? trip.tripOwner.phone : ''
-                }
-              />
-            )}
-            {userIsClientBasedUser && (
-              <>
-                {!!trip.transporter ? (
-                  <UserDetails
-                    userName={`${trip.transporter.firstName} ${trip.transporter.lastName}`}
-                    avatar={trip.transporter.avatar}
-                    userId={trip.transporter._id}
-                    showMessage
-                    showViewProfile
-                    profileSubtitle={
-                      trip.status !== 'completed' ? trip.transporter.phone : ''
-                    }
-                  />
-                ) : (
-                  <UserDetails userName="Unassigned" />
-                )}
-              </>
-            )}
-          </UiCard>
-          <div className="double-grid">
+        <>
+          <TripDetailsStyling>
             <UiCard>
-              <div className="card-title">Transfer Delivery Order</div>
-              <p className="description-text">
-                This is a document that authorizes the release of cargo from a
-                shipping terminal or port to the authorized transporter for
-                final delivery.
-              </p>
-              <div className="double-items">
-                {userIsClientBasedUser && !trip.TDO && (
-                  <UiButton
-                    isFullWidth
-                    onClick={() => setUploadTDOIsVisible(true)}
-                  >
-                    Upload TDO
-                  </UiButton>
-                )}
-                {!!trip.TDO && (
-                  <a href={trip.TDO} target="_blank">
-                    <UiButton isFullWidth> View TDO</UiButton>
-                  </a>
-                )}
+              <div className="card-title">Cargo Details</div>
+              <div className="cargo-details">
+                <UiDataField title="Type" value={trip?.typeOfGoods} />
+                <UiDataField title="Weight" value={trip?.weight + ' Tonnes'} />
+                <UiDataField
+                  title="Shipping Line"
+                  value={trip?.shippingLine || 'N/A'}
+                />
               </div>
             </UiCard>
-            {userIsClientBasedUser && trip.status === 'awaiting-bid' && (
-              <UiCard>
-                <div className="card-title">Bids</div>
-                <p className="description-text">
-                  Bids are requests transporters send to enable them assist you
-                  in your trip. Accept a bid to officially begin your trip.
-                </p>
-                <div className="bottom">
-                  <div className="double-items">
-                    <Link to={`/my-trips/${trip._id}/bids`}>
-                      <UiButton isFullWidth>
-                        View bids sent for this trip
-                      </UiButton>
-                    </Link>
+            <UiCard>
+              <div className="card-title">Handling Instructions</div>
+              <p className="handling-instructions">
+                {trip?.instructions || 'N/A'}
+              </p>
+            </UiCard>
+            <UiCard>
+              <div className="card-title">Pickup Address & Date</div>
+              {trip && (
+                <TripPickUpAndDeliverWithDates
+                  pickUpAddress={trip.pickUpAddress}
+                  pickUpDate={trip.pickUpDate}
+                  deliveryAddress={trip.deliveryAddress}
+                  deliveryDate={trip.deliveryDate}
+                />
+              )}
+            </UiCard>
+            <TripDetailPaymentCard
+              isClient={userIsClientBasedUser}
+              payment={trip?.paymentRequest}
+              approvePayment={initApprovePayment}
+              viewLoadingProof={viewLoadingProof}
+              showReasonForReject={viewReasonForReject}
+              requestPayment={() => setRequestPaymentIsVisible(true)}
+            />
+            <UiCard>
+              <div className="card-title">Driver & Vehicle details</div>
+
+              {trip.acceptedBid && (
+                <div className="driver-and-vehicle-details">
+                  <div className="driver-and-vehicle-details__field">
+                    <div className="driver-and-vehicle-details__field__title">
+                      Responsible Driver
+                    </div>
+                    <UserDetails
+                      userName={trip.acceptedBid.vehicle.driver.name}
+                      avatar={trip.acceptedBid.vehicle.driver.avatar}
+                      profileSubtitle={
+                        trip.status !== 'completed'
+                          ? trip.acceptedBid.vehicle.driver.phone
+                          : ''
+                      }
+                    />
+                  </div>
+                  <UiButton variant="icon-neutral">
+                    <UiIcon icon="ArrowRight" />
+                  </UiButton>
+                  <div className="driver-and-vehicle-details__field">
+                    <div className="driver-and-vehicle-details__field__title">
+                      Vehicle Details
+                    </div>
+                    <div className="vehicle-details">
+                      <div className="vehicle-details__type">
+                        {trip.acceptedBid.vehicle.vehicleType}
+                      </div>
+                      <div className="vehicle-details__plate-number">
+                        {trip.acceptedBid.vehicle.plateNumber}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </UiCard>
-            )}
-          </div>
+              )}
+            </UiCard>
+            <UiCard>
+              <div className="card-title">
+                {userIsServiceBasedUser
+                  ? 'Trip Owner'
+                  : 'Responsible Transporter'}
+              </div>
 
+              {userIsServiceBasedUser && (
+                <UserDetails
+                  userName={`${trip.tripOwner.firstName} ${trip.tripOwner.lastName}`}
+                  avatar={trip.tripOwner.avatar}
+                  userId={trip.tripOwner._id}
+                  avatarIsHalfCurved
+                  showMessage
+                  showViewProfile
+                  profileSubtitle={
+                    trip.status !== 'completed' ? trip.tripOwner.phone : ''
+                  }
+                />
+              )}
+              {userIsClientBasedUser && (
+                <>
+                  {!!trip.transporter ? (
+                    <UserDetails
+                      userName={`${trip.transporter.firstName} ${trip.transporter.lastName}`}
+                      avatar={trip.transporter.avatar}
+                      userId={trip.transporter._id}
+                      showMessage
+                      showViewProfile
+                      profileSubtitle={
+                        trip.status !== 'completed'
+                          ? trip.transporter.phone
+                          : ''
+                      }
+                    />
+                  ) : (
+                    <UserDetails userName="Unassigned" />
+                  )}
+                </>
+              )}
+            </UiCard>
+            <div className="double-grid">
+              <UiCard>
+                <div className="card-title">Transfer Delivery Order</div>
+                <p className="description-text">
+                  This is a document that authorizes the release of cargo from a
+                  shipping terminal or port to the authorized transporter for
+                  final delivery.
+                </p>
+                <div className="double-items">
+                  {userIsClientBasedUser && !trip.TDO && (
+                    <UiButton
+                      isFullWidth
+                      onClick={() => setUploadTDOIsVisible(true)}
+                    >
+                      Upload TDO
+                    </UiButton>
+                  )}
+                  {!!trip.TDO && (
+                    <a href={trip.TDO} target="_blank">
+                      <UiButton isFullWidth> View TDO</UiButton>
+                    </a>
+                  )}
+                </div>
+              </UiCard>
+              {userIsClientBasedUser && trip.status === 'awaiting-bid' && (
+                <UiCard>
+                  <div className="card-title">Bids</div>
+                  <p className="description-text">
+                    Bids are requests transporters send to enable them assist
+                    you in your trip. Accept a bid to officially begin your
+                    trip.
+                  </p>
+                  <div className="bottom">
+                    <div className="double-items">
+                      <Link to={`/my-trips/${trip._id}/bids`}>
+                        <UiButton isFullWidth>
+                          View bids sent for this trip
+                        </UiButton>
+                      </Link>
+                    </div>
+                  </div>
+                </UiCard>
+              )}
+            </div>
+          </TripDetailsStyling>
+          <TripActions>
+            {tripIsEditable && (
+              <UiButton onClick={initEditTrip} variant="secondary">
+                Edit Trip
+              </UiButton>
+            )}
+            {isClient && !trip.transporter && (
+              <UiButton
+                variant="primary"
+                disabled={!!trip?.transporter}
+                onClick={copyJobLink}
+              >
+                <UiIcon icon="Link" />
+                Copy Job Link
+              </UiButton>
+            )}
+
+            {tripIsUnassignable && (
+              <UiButton onClick={initUnassignTrip} variant="primary">
+                Unassign Trip
+              </UiButton>
+            )}
+            {tripcanBeCancelled && (
+              <UiButton onClick={initCancelTrip} variant="danger-secondary">
+                Cancel Trip
+              </UiButton>
+            )}
+          </TripActions>
+        </>
+      )}
+      {trip && (
+        <UploadTripTDO
+          trip={trip}
+          key={`${uploadTDOIsVisible}-uploadTDOIsVisible`}
+          onClose={() => setUploadTDOIsVisible(false)}
+          isVisible={uploadTDOIsVisible}
+        />
+      )}
+
+      {/** modals **/}
+      <UiConfirmModal
+        isVisible={isCancelTripVisible}
+        title="Cancel Trip"
+        variant="danger"
+        loading={isCancelTripLoading}
+        onClose={() => setIsCancelTripVisible(false)}
+        onProceed={cancelTrip}
+      >
+        Are you sure you want to cancel this trip? This process cannot be
+        undone.
+      </UiConfirmModal>
+
+      <CreateTrip
+        isVisible={isCreateTripVisible}
+        key={`${isCreateTripVisible}-isCreateTripVisible`}
+        tripId={tripId}
+        onClose={() => {
+          setIsCreateTripVisible(false);
+        }}
+        onCreated={showTripBroadcasted}
+      />
+      {newlyCreatedTripId && (
+        <TripHasBeenBroadcasted
+          isVisible={isTripBroadcastedVisible}
+          tripId={newlyCreatedTripId}
+          onClose={() => setIsTripBroadcastedVisible(false)}
+        />
+      )}
+
+      <UiConfirmModal
+        title="Unassign Trip"
+        isVisible={isUnassignTripVisble}
+        variant="danger"
+        loading={isCancelTripLoading}
+        onClose={() => setIsUnassignTripVisible(false)}
+        onProceed={triggerUnassignTrip}
+      >
+        Are you sure you want to unassign this trip? This process cannot be
+        undone.
+      </UiConfirmModal>
+      {trip && (
+        <>
           <RequestPayment
             key={`${requestPaymentIsVisible}-requestPaymentIsVisible`}
             isVisible={requestPaymentIsVisible}
@@ -401,16 +588,9 @@ export default function TripDetailsPage() {
               {trip.paymentRequest?.reasonForReject}
             </UiConfirmModal>
           </div>
-        </TripDetailsStyling>
+        </>
       )}
-      {trip && (
-        <UploadTripTDO
-          trip={trip}
-          key={`${uploadTDOIsVisible}-uploadTDOIsVisible`}
-          onClose={() => setUploadTDOIsVisible(false)}
-          isVisible={uploadTDOIsVisible}
-        />
-      )}
+      {/** modals end here **/}
     </>
   );
 }
@@ -508,6 +688,14 @@ const TripDetailsStyling = styled.div`
       grid-template-columns: repeat(2, 2fr);
     }
   }
+`;
+
+const TripActions = styled.div`
+  padding: ${pxToRem(8)} ${pxToRem(0)};
+  display: flex;
+  gap: ${pxToRem(12)};
+  align-items: flex-start;
+  justify-content: center;
 `;
 
 const StatusIndicator = styled.div`
