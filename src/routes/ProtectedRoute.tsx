@@ -17,7 +17,7 @@ export function ProtectedRoute({
   const next = <>{children}</>;
   const location = useLocation();
   const reRoute = () => {
-    setPendingRoute(location.pathname);
+    setPendingRoute(`${location.pathname}${location.search}`);
     return <Navigate to={reRouteUrl} />;
   };
 
