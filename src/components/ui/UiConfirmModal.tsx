@@ -17,6 +17,7 @@ interface Props {
   variant?: ButtonVariant;
   notYetVariant?: ButtonVariant;
   loading?: boolean;
+  showGif?: React.ReactNode;
   onClose: () => void;
   onProceed?: () => void;
 }
@@ -35,6 +36,7 @@ export default function UiConfirmModal({
   loading,
   onClose,
   onProceed,
+  showGif,
 }: Props) {
   return (
     <UiModal
@@ -45,6 +47,7 @@ export default function UiConfirmModal({
       size="sm"
     >
       <Modal>
+        <div className="modal-gif">{showGif}</div>
         <div className="modal-content">{children}</div>
 
         {!hideActions && (
@@ -71,16 +74,21 @@ export default function UiConfirmModal({
 
 const Modal = styled.div`
   display: grid;
-  gap: ${pxToRem(40)};
+  gap: ${pxToRem(36)};
   padding: 0 ${pxToRem(24)};
   padding-top: ${pxToRem(44)};
+
+  .modal-gif{
+    display; grid;
+    align-items: center;
+    justify-content: center;
+  }
 
   .modal-content {
     font-weight: 400;
     font-size: ${pxToRem(20)};
     line-height: ${pxToRem(28)};
     font-style: normal;
-    text-align: center;
     color: var(--color-neutralBlack);
     text-align: center;
     margin: auto;
