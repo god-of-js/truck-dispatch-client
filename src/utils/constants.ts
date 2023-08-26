@@ -1,15 +1,14 @@
 import { Icons } from 'ui/UiIcon';
 
-import Chiller from '../components/ui/icons/chiller.svg';
-import TwentyFtTruck from '../components/ui/icons/20-ft-truck.svg';
-import FlatBedImg from '../components/ui/icons/flatbed.svg';
-import MiniVanImg from '../components/ui/icons/mini-van.svg';
-import SemiTrailerImg from '../components/ui/icons/semi-trailer.svg';
-import TrailerImg from '../components/ui/icons/trailer.svg';
-import PickupVanImg from '../components/ui/icons/pick-up-van.svg';
-import TankerImg from '../components/ui/icons/tanker.svg';
-import VanImg from '../components/ui/icons/van.svg';
-
+import Chiller from '../assets/img/chiller.svg';
+import TwentyFtTruck from '../assets/img/20-ft-truck.svg';
+import FlatBedImg from '../assets/img/flatbed.svg';
+import MiniVanImg from '../assets/img/mini-van.svg';
+import SemiTrailerImg from '../assets/img/semi-trailer.svg';
+import TrailerImg from '../assets/img/trailer.svg';
+import PickupVanImg from '../assets/img/pick-up-van.svg';
+import TankerImg from '../assets/img/tanker.svg';
+import VanImg from '../assets/img/van.svg';
 export const shippingLines = [
   'Maersk line',
   'Cosco',
