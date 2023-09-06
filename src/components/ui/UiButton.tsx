@@ -6,6 +6,7 @@ const Loader = lazy(() => import('components/layout/Loader'));
 export type ButtonVariant =
   | 'primary'
   | 'secondary'
+  | 'primary-secondary'
   | 'danger-secondary'
   | 'warning-secondary'
   | 'success-secondary'
@@ -176,6 +177,25 @@ const Button = styled.button<Props>`
 
   &.secondary {
     background-color: var(--color-primary-10);
+    color: var(--color-primary);
+    svg {
+      fill: ${({ disabled }) =>
+        disabled ? 'var(--color-primary-30)' : 'var(--color-primary)'};
+    }
+    ${({ disabled }) => getColor(disabled!, `var(--color-primary-10)`)};
+    ${({ disabled }) => disabled && `color: var(--color-primary-30);`}
+
+    ${({ disabled }) =>
+      !disabled &&
+      `
+    &:hover {
+      background: var(--color-primary-20);
+      box-shadow: var(--box-shadow-primary);
+    }`}
+  }
+
+  &.primary-secondary {
+    background-color: var(--color-primary-20);
     color: var(--color-primary);
     svg {
       fill: ${({ disabled }) =>

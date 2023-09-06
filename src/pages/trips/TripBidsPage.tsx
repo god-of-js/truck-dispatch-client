@@ -79,7 +79,7 @@ export default function TripBidsPage() {
   }
 
   function viewSenderDetails(bidId: string) {
-    // navigate(`/my-trips/${tripId}/bids/${bidId}`);
+    navigate(`/my-trips/${tripId}/bids/${bidId}`);
   }
 
   function negotiateBid(bidId: string) {
