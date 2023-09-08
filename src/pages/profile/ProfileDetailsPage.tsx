@@ -141,8 +141,9 @@ export default function ProfileDetailsPage() {
 
 const CardContainer = styled.div`
   width: 90%;
-  margin: auto;
   color: var(--color-gray-600);
+  margin-top: auto;
+  margin-bottom: auto;
 
   header {
     display: flex;
