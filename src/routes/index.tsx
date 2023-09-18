@@ -8,7 +8,9 @@ const PageError = lazy(() => import('../components/errors/PageError'));
 import DashboardLayout from '../layouts/DashboardLayout';
 import { getUserSessionId } from 'utils/localStorageMethods';
 import { resetPasswordAccessChecks } from './allowNavigationFunctions';
-import TransporterProfilePage from '../pages/trips/TransporterProfilePage';
+const TransporterProfilePage = lazy(
+  () => import('../pages/trips/TransporterProfilePage'),
+);
 const AuthLayout = lazy(() => import('../layouts/AuthLayout'));
 const ProfileLayout = lazy(() => import('../layouts/ProfileLayout'));
 const TripLayout = lazy(() => import('../layouts/TripLayout'));

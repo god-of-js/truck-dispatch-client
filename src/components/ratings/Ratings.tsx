@@ -49,7 +49,8 @@ const RatingsContainer = styled.div`
 const RatingButton = styled.button`
   border: transparent;
   background: transparent;
-  cursor: pointer;
+  /* cursor: ${({ disabled }) => (disabled ? '' : 'pointer')}; */
+  ${({ disabled }) => !disabled && 'cursor: pointer;'}
   padding: 0;
 
   &.highlight,

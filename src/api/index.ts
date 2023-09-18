@@ -108,6 +108,10 @@ class ApiService {
     return this.get<User>('/user');
   }
 
+  getUserDetails(userId: string) {
+    return this.get<User>(`/user/${userId}`);
+  }
+
   startVerificationProcess(data: FormData) {
     return this.post<Verification>('/verification', data);
   }

@@ -90,6 +90,17 @@ export function updateUser(data: FormData) {
     });
   };
 }
+
+export function getUserDetails(userId: string) {
+  return (dispatch: AppDispatch) => {
+    return Api.getUserDetails(userId).then((user) => {
+      dispatch(setUser(user));
+      console.log(user);
+      return user;
+    });
+  };
+}
+
 export function updatePassword(data: { password: string }) {
   return () => {
     return Api.updatePassword(data);
