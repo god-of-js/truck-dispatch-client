@@ -91,11 +91,9 @@ export function updateUser(data: FormData) {
   };
 }
 
-export function getUserDetails(userId: string) {
-  return (dispatch: AppDispatch) => {
-    return Api.getUserDetails(userId).then((user) => {
-      dispatch(setUser(user));
-      console.log(user);
+export function getUserDetailsById(userId: string) {
+  return () => {
+    return Api.getUserDetailsById(userId).then((user) => {
       return user;
     });
   };

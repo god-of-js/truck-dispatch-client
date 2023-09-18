@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import User from 'types/User';
 import Rating from 'types/Rating';
 import Ratings from 'components/ratings/Ratings';
+import UserFullProfile from 'types/UserFullProfile';
 
 const UiAvatar = lazy(() => import('ui/UiAvatar'));
 const UiButton = lazy(() => import('ui/UiButton'));
@@ -14,19 +15,17 @@ const RatingsComponent = lazy(
 );
 
 interface Props {
-  user: User;
-  userId: string;
-  jobId: string;
-  negotiate: (jobid: string) => void;
+  user: UserFullProfile;
+  messageUser: () => void;
 }
 
-export default function TransporterProfile({ jobId, user, negotiate }: Props) {
+export default function TransporterProfile({ user, messageUser }: Props) {
   const vehicles = useMemo(() => {
     return user.vehicles;
   }, [user]);
 
-  const reviews = useMemo<Rating[]>(() => {
-    return user.reviews;
+  const ratings = useMemo<Rating[]>(() => {
+    return user.ratings;
   }, [user]);
 
   function calculateAverageStarRating(ratings: Rating[]): number {
@@ -64,11 +63,7 @@ export default function TransporterProfile({ jobId, user, negotiate }: Props) {
             </div>
           </div>
           <div className="button-container">
-            <UiButton
-              onClick={() => negotiate(jobId)}
-              isFullWidth
-              variant="primary-secondary"
-            >
+            <UiButton onClick={messageUser} isFullWidth variant="primary-secondary">
               <UiIcon icon="DoubleChat" />
               Message
             </UiButton>
@@ -93,7 +88,7 @@ export default function TransporterProfile({ jobId, user, negotiate }: Props) {
               title="no of reviews"
               isCentered
               isBordered
-              value={user.reviews.length}
+              value={user.ratings.length}
             />
             <UiDataField
               title="no of trucks"
@@ -102,33 +97,33 @@ export default function TransporterProfile({ jobId, user, negotiate }: Props) {
               value={user.noOfVehicles}
             />
           </div>
-          <div className="vehicle-field">
+          {vehicles && <div className="vehicle-field">
             <h3>TRUCKS</h3>
             <div className="vehicle-data">
               {vehicles.map((vehicle) => (
                 <VehicleComponent hidden vehicle={vehicle} key={vehicle._id} />
               ))}
             </div>
-          </div>
+          </div>}
           <div className="review-container">
             <h3>Transporter Reviews</h3>
             <div className="review-field">
               <div className="review-data">
                 <div className="review-title">Total Reviews</div>
-                <div className="review-value">{user.reviews.length}</div>
+                <div className="review-value">{user.ratings.length}</div>
               </div>
               <div className="review-data">
                 <div className="review-title">Average Rating</div>
                 <div className="review-value">
-                  <div>{calculateAverageStarRating(reviews)}</div>
+                  <div>{calculateAverageStarRating(ratings)}</div>
                   <Ratings rating={user.rating} />
                 </div>
               </div>
-              <RatingsComponent ratings={reviews} />
+              <RatingsComponent ratings={ratings} />
             </div>
           </div>
-          {reviews.map((review) => (
-            <div className="user-review-container">
+          {ratings.map((review) => (
+            <div  key={review._id} className="user-review-container">
               <div className="user-review">
                 <div className="user-details">
                   <UiAvatar size="lg" />
@@ -137,7 +132,7 @@ export default function TransporterProfile({ jobId, user, negotiate }: Props) {
                     <div>SHIPPER</div>
                     <div>
                       Total Reviews:{' '}
-                      <span className="user-number">{reviews.length}</span>
+                      <span className="user-number">{ratings.length}</span>
                     </div>
                   </div>
                 </div>

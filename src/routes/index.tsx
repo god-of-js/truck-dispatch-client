@@ -8,9 +8,7 @@ const PageError = lazy(() => import('../components/errors/PageError'));
 import DashboardLayout from '../layouts/DashboardLayout';
 import { getUserSessionId } from 'utils/localStorageMethods';
 import { resetPasswordAccessChecks } from './allowNavigationFunctions';
-const TransporterProfilePage = lazy(
-  () => import('../pages/trips/TransporterProfilePage'),
-);
+const UserProfilePage = lazy(() => import('../pages/user/UserProfilePage'));
 const AuthLayout = lazy(() => import('../layouts/AuthLayout'));
 const ProfileLayout = lazy(() => import('../layouts/ProfileLayout'));
 const TripLayout = lazy(() => import('../layouts/TripLayout'));
@@ -134,11 +132,6 @@ const router = createBrowserRouter([
                 id: 'TripBidsLayout',
                 element: <TripBidsPage />,
               },
-              {
-                path: '/my-trips/:tripId/bids/:bidId',
-                id: 'TransporterProfile',
-                element: <TransporterProfilePage />,
-              },
             ],
           },
         ],
@@ -147,6 +140,11 @@ const router = createBrowserRouter([
         path: '/available-jobs',
         id: 'Jobs',
         element: <TransporterJobsPage />,
+      },
+      {
+        path: '/user/:userId',
+        id: 'User detail',
+        element: <UserProfilePage />,
       },
       {
         path: '/vehicles',

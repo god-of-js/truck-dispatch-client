@@ -20,6 +20,7 @@ import ChatLog from 'types/ChatLog';
 import Vehicle from 'types/Vehicle';
 import CreateBid from 'types/CreateBid';
 import ResetUserPassword from 'types/ResetUserPassword';
+import UserFullProfile from 'types/UserFullProfile';
 
 class ApiService {
   createUser(userData: Partial<User>) {
@@ -108,8 +109,8 @@ class ApiService {
     return this.get<User>('/user');
   }
 
-  getUserDetails(userId: string) {
-    return this.get<User>(`/user/${userId}`);
+  getUserDetailsById(userId: string) {
+    return this.get<UserFullProfile>(`/user/${userId}`);
   }
 
   startVerificationProcess(data: FormData) {
