@@ -78,8 +78,8 @@ const Modal = styled.div`
   padding: 0 ${pxToRem(24)};
   padding-top: ${pxToRem(44)};
 
-  .modal-gif{
-    display; grid;
+  .modal-gif {
+    display: flex;
     align-items: center;
     justify-content: center;
   }
