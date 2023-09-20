@@ -47,7 +47,7 @@ export default function UiConfirmModal({
       size="sm"
     >
       <Modal>
-        <div className="modal-gif">{assetNode}</div>
+        {assetNode && <div className="modal-gif">{assetNode}</div>}
         <div className="modal-content">{children}</div>
 
         {!hideActions && (
