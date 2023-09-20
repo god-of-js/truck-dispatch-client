@@ -17,7 +17,7 @@ interface Props {
   variant?: ButtonVariant;
   notYetVariant?: ButtonVariant;
   loading?: boolean;
-  showGif?: React.ReactNode;
+  assetNode?: React.ReactNode;
   onClose: () => void;
   onProceed?: () => void;
 }
@@ -36,7 +36,7 @@ export default function UiConfirmModal({
   loading,
   onClose,
   onProceed,
-  showGif,
+  assetNode,
 }: Props) {
   return (
     <UiModal
@@ -47,7 +47,7 @@ export default function UiConfirmModal({
       size="sm"
     >
       <Modal>
-        <div className="modal-gif">{showGif}</div>
+        <div className="modal-gif">{assetNode}</div>
         <div className="modal-content">{children}</div>
 
         {!hideActions && (
