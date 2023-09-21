@@ -1,20 +1,15 @@
-import React, { lazy, useState, useMemo, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'modules/index';
+import React, { lazy, useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { toAnyAction } from 'utils/helpers';
 import { getUserDetailsById } from 'modules/Account';
-import User from 'types/User';
-import { getBidsWithTripId, selectBid } from 'modules/Bid';
 
 import DashboardTopNav from 'components/layout/DashboardTopNav';
 import UserFullProfile from 'types/UserFullProfile';
 import Loader from 'components/layout/Loader';
 const UiBackButton = lazy(() => import('ui/UiBackButton'));
-const TransporterProfile = lazy(
-  () => import('components/bids/TransporterProfile'),
-);
+const UserProfile = lazy(() => import('components/user/UserProfile'));
 
 export default function TransporterProfilePage() {
   const dispatch = useDispatch();
@@ -30,8 +25,7 @@ export default function TransporterProfilePage() {
     if (userId) {
       dispatch(toAnyAction(getUserDetailsById(userId)))
         .then((data: UserFullProfile) => {
-            setFetchedUser(data)
-            console.log(data)
+          setFetchedUser(data);
         })
         .finally(() => setLoading(false));
     }
@@ -50,7 +44,7 @@ export default function TransporterProfilePage() {
       {loading && <Loader />}
       {fetchedUser && (
         <TransporterProfilePageStyle>
-          <TransporterProfile user={fetchedUser} messageUser={messageUser} />
+          <UserProfile user={fetchedUser} messageUser={messageUser} />
         </TransporterProfilePageStyle>
       )}
     </>

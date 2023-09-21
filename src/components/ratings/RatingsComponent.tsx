@@ -39,13 +39,7 @@ const RatingContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 264px;
-  height: 120px;
-  padding: 20px 16px;
-  align-items: flex-start;
   gap: 4px;
-  border-radius: 8px;
-  background: var(--color-grey-20, #f8f7f9);
 `;
 
 const RatingStyle = styled.div`
@@ -61,7 +55,7 @@ const RatingLabel = styled.div`
   font-size: 10px;
   font-style: normal;
   font-weight: 600;
-  line-height: 100%; /* 10px */
+  line-height: 100%;
   letter-spacing: 0.3px;
 `;
 
