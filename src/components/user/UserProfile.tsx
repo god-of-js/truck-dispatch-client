@@ -1,4 +1,5 @@
 import React, { lazy, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Rating from 'types/Rating';
 import UserFullProfile from 'types/UserFullProfile';
@@ -21,7 +22,8 @@ interface Props {
 
 export default function UserProfile({ user, messageUser }: Props) {
   const vehicles = useMemo(() => {
-    return user.vehicles;
+    if (!user.vehicles) return;
+    return user.vehicles.slice(0, 3);
   }, [user]);
 
   const ratings = useMemo<Rating[]>(() => {
@@ -70,7 +72,7 @@ export default function UserProfile({ user, messageUser }: Props) {
             </div>
           </header>
         </UserHeaderDetail>
-        <div className="container">
+        <div className="p-32">
           <UserDataField>
             <UiDataField
               title="Trips Completed"
@@ -109,6 +111,13 @@ export default function UserProfile({ user, messageUser }: Props) {
                   />
                 ))}
               </div>
+              {user.vehicles?.length! > 3 && (
+                <div className="btn-container">
+                  <Link to={`/user/${user._id}/vehicles`}>
+                    <UiButton variant="secondary">View all Vehicles</UiButton>
+                  </Link>
+                </div>
+              )}
             </Vehicles>
           )}
           <UserReviewField>
@@ -185,8 +194,12 @@ const UserProfileStyle = styled.div`
     letter-spacing: 0.8px;
   }
 
-  .container {
+  .p-32 {
     padding: 0 ${pxToRem(32)};
+  }
+  .btn-container {
+    display: flex;
+    justify-content: center;
   }
 `;
 
@@ -264,7 +277,7 @@ const Vehicles = styled.div`
 
   .vehicle-data {
     display: flex;
-    flex-wrap: wrap;
+    justify-content: space-between;
   }
 `;
 

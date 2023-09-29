@@ -8,7 +8,9 @@ const PageError = lazy(() => import('../components/errors/PageError'));
 import DashboardLayout from '../layouts/DashboardLayout';
 import { getUserSessionId } from 'utils/localStorageMethods';
 import { resetPasswordAccessChecks } from './allowNavigationFunctions';
-const UserProfilePage = lazy(() => import('../pages/user/UserProfilePage'));
+const TransporterProfilePage = lazy(
+  () => import('../pages/user/TransporterProfilePage'),
+);
 const AuthLayout = lazy(() => import('../layouts/AuthLayout'));
 const ProfileLayout = lazy(() => import('../layouts/ProfileLayout'));
 const TripLayout = lazy(() => import('../layouts/TripLayout'));
@@ -144,7 +146,7 @@ const router = createBrowserRouter([
       {
         path: '/user/:userId',
         id: 'User detail',
-        element: <UserProfilePage />,
+        element: <TransporterProfilePage />,
       },
       {
         path: '/vehicles',
