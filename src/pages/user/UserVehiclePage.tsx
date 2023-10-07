@@ -1,16 +1,16 @@
 import { useEffect, useState, lazy } from 'react';
-import DashboardTopNav from 'components/layout/DashboardTopNav';
 import { getUserDetailsById } from 'modules/Account';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import UserFullProfile from 'types/UserFullProfile';
 import Vehicle from 'types/Vehicle';
-import UiBackButton from 'ui/UiBackButton';
 import { toAnyAction } from 'utils/helpers';
+import UserFullProfile from 'types/UserFullProfile';
 import sizes from 'utils/sizes';
-import Loader from 'components/layout/Loader';
 
+const DashboardTopNav = lazy(() => import('components/layout/DashboardTopNav'));
+const UiBackButton = lazy(() => import('ui/UiBackButton'));
+const Loader = lazy(() => import('components/layout/Loader'));
 const VehicleItem = lazy(() => import('components/vehicles/VehicleItem'));
 
 export default function UserVehiclePage() {
