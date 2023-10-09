@@ -39,36 +39,37 @@ const RatingContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 4px;
+  gap: ${pxToRem(4)};
 `;
 
 const RatingStyle = styled.div`
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: ${pxToRem(9)};
 `;
 
 const RatingLabel = styled.div`
   display: flex;
-  gap: 4px;
+  gap: ${pxToRem(4)};
   align-items: center;
-  font-size: 10px;
+  font-size: ${pxToRem(10)};
   font-style: normal;
   font-weight: 600;
   line-height: 100%;
-  letter-spacing: 0.3px;
+  letter-spacing: ${pxToRem(0.3)};
 `;
 
 const RatingBarContainer = styled.div`
-  width: 155px;
+  width: ${pxToRem(155)};
   overflow: hidden;
-  border-radius: 100px;
+  border-radius: ${pxToRem(100)};
   background: var(--color-grey-50, #e3e1e9);
 `;
 
 const RatingBar = styled.div<{ width: string }>`
   width: ${({ width }) => (width ? width : '0')};
-  height: 8px;
+  border-radius: ${pxToRem(100)};
+  height: ${pxToRem(8)};
   background: var(--color-primary-50, #6851cf);
   transition: width 0.5s;
 `;

@@ -142,6 +142,7 @@ export default function UserProfile({ user, messageUser }: Props) {
                 </div>
               </div>
             </div>
+
             {ratings.map((review) => (
               <div key={review._id} className="user-review-container">
                 <div className="user-review">
@@ -396,7 +397,6 @@ const UserReviewField = styled.div`
       flex-wrap: wrap;
 
       .review-data {
-        height: 120px;
         justify-content: center;
         width: 264px !important;
       }

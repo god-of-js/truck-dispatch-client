@@ -9,7 +9,7 @@ import DashboardLayout from '../layouts/DashboardLayout';
 import { getUserSessionId } from 'utils/localStorageMethods';
 import { resetPasswordAccessChecks } from './allowNavigationFunctions';
 
-const UserVehiclepage = lazy(() => import('../pages/user/UservehiclePage'));
+const UserVehiclepage = lazy(() => import('../pages/user/UserVehiclePage'));
 
 const TransporterProfilePage = lazy(
   () => import('../pages/user/TransporterProfilePage'),
