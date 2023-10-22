@@ -220,7 +220,7 @@ export default function TripBidsPage() {
             title="Payment Successful"
             hideNotYetButton
             confirmText="Go to trip details"
-            assetNode={<img src={SuccessGif} alt="payment_image" />}
+            assetNode={<img src={SuccessGif} width="180" alt="payment_image" />}
           >
             Payment Successfully Made
           </UiConfirmModal>
