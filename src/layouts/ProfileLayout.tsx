@@ -78,21 +78,21 @@ export default function ProfileLayout() {
       <DashboardTopNav routeName="Settings" />
       <ProfileLayoutStyling>
         <div className="profile-layout__inner">
-            <ul>
-              {settingsRoutes.map((route, index) => (
-                <li
-                  key={index}
-                  className={isRouteActive(route.path) ? 'active' : ''}
-                >
-                  <Link to={route.path}>
-                    <UiIcon size="24px" icon={route.iconName} />
-                    <span className="hide-in-unexpanded-large-screen">
-                      {route.label}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+          <ul className='profile-tabs'>
+            {settingsRoutes.map((route, index) => (
+              <li
+                key={index}
+                className={isRouteActive(route.path) ? 'active' : ''}
+              >
+                <Link to={route.path}>
+                  <UiIcon size="24px" icon={route.iconName} />
+                  <span className="hide-in-unexpanded-large-screen">
+                    {route.label}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
           <div className="outlet_container">
             <Outlet />
           </div>
@@ -115,7 +115,7 @@ const ProfileLayoutStyling = styled.div`
     gap: ${pxToRem(48)};
     overflow: hidden;
 
-    ul {
+    .profile-tabs {
       display: flex;
       align-items: center;
       gap: ${pxToRem(16)};
@@ -161,7 +161,7 @@ const ProfileLayoutStyling = styled.div`
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     .profile-layout__inner {
       display: flex;
-      ul {
+      .profile-tabs {
         flex-direction: column;
         align-items: flex-start;
         padding-right: ${pxToRem(24)};
