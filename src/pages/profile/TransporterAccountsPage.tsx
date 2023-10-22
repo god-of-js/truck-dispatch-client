@@ -136,10 +136,4 @@ const AccountPageStyling = styled.div`
       gap: ${pxToRem(8)};
     }
   }
-  @media only screen and (min-width: ${sizes.tabletMidWidth}) {
-    width: 70%;
-  }
-  @media only screen and (min-width: ${sizes.laptopWidth}) {
-    width: 40%;
-  }
 `;

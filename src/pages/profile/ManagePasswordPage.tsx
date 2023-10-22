@@ -114,8 +114,6 @@ export default function ManagePasswordPage() {
 }
 
 const CardContainer = styled.div`
-  width: 90%;
-  margin: auto;
   color: var(--color-gray-600);
 
   header {
@@ -131,11 +129,5 @@ const CardContainer = styled.div`
     flex-direction: column;
     row-gap: ${pxToRem(16)};
     padding-bottom: ${pxToRem(20)};
-  }
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    width: 80%;
-  }
-  @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
-    width: 30%;
   }
 `;
