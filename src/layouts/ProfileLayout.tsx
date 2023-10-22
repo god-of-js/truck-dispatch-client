@@ -38,7 +38,7 @@ export default function ProfileLayout() {
       },
       {
         label: 'Verification',
-        path: '/profile/verification',
+        path: '/transporter-verification',
         iconName: 'ReceiptEdit',
       },
       {
