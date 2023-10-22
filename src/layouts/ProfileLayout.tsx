@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -11,18 +11,15 @@ import { Link, useLocation } from 'react-router-dom';
 import { clientBasedUserTypes } from 'utils/constants';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
 
-import UiCard from 'ui/UiCard';
 import { Icons } from 'ui/UiIcon';
 
 const UiIcon = lazy(() => import('ui/UiIcon'));
-const Loader = lazy(() => import('components/layout/Loader'));
 
 interface SettingsOptions {
   label: string;
   path: string;
   iconName: Icons;
 }
-
 export default function ProfileLayout() {
   const appLocation = useLocation();
   const user = useSelector((state: RootState) => state.account.user);
@@ -81,7 +78,6 @@ export default function ProfileLayout() {
       <DashboardTopNav routeName="Settings" />
       <ProfileLayoutStyling>
         <div className="profile-layout__inner">
-          <div>
             <ul>
               {settingsRoutes.map((route, index) => (
                 <li
@@ -97,7 +93,6 @@ export default function ProfileLayout() {
                 </li>
               ))}
             </ul>
-          </div>
           <div className="outlet_container">
             <Outlet />
           </div>
