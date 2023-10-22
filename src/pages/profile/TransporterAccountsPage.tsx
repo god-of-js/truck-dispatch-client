@@ -48,8 +48,8 @@ export default function AccountDetailsPage() {
     <>
       <AccountPageStyling>
         <UiCard>
-          <header>
-            <h2>Payout Account</h2>
+          <header className="account-page-header">
+            <h2 className="page-title">Payout Account</h2>
             <UiDataField
               title="Extra Note"
               value="Payout account is the account where all payments from
@@ -75,16 +75,12 @@ const AccountPageStyling = styled.div`
   margin: auto;
   width: 90%;
 
-  header {
+  .account-page-header {
     margin-bottom: ${pxToRem(40)};
-    h2 {
+    .page-title {
       font-size: ${pxToRem(16)};
       color: var(--color-gray-500);
       margin-top: 0;
-    }
-    p {
-      font-size: ${pxToRem(16)};
-      color: var(--color-gray-400);
     }
   }
 
