@@ -161,13 +161,14 @@ const ProfileLayoutStyling = styled.div`
   @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
     .profile-layout__inner {
       display: flex;
-
       ul {
         flex-direction: column;
         align-items: flex-start;
         padding-right: ${pxToRem(24)};
         gap: ${pxToRem(32)};
         height: 100%;
+        min-width: 0%;
+        min-height: 65vh;
         border-right: ${pxToRem(1)} solid var(--color-gray-50);
       }
     }
