@@ -59,91 +59,86 @@ export default function ProfileDetailsPage() {
   return (
     <>
       <CardContainer>
-        <UiCard>
-          <UiForm formData={formData} onSubmit={editProfile}>
-            {() => (
-              <>
-                <div className="details-page">
-                  <div className="details-page-head">
-                    <div className="avatar-container">
-                      <UiAvatar
-                        size="xl"
-                        isEdit
-                        name="avatar"
-                        avatar={formData.avatar}
-                        onChange={onChange}
-                      />
-                    </div>
-
-                    <div className="user-name">
-                      <span>{user?.firstName}</span>
-                      <span>{user?.lastName}</span>
-                    </div>
-                  </div>
-
-                  <div className="user-details">
-                    <UiDataField
-                      title="Phone"
-                      value={`${user?.phone}`}
-                      variant="field"
-                    />
-
-                    <UiDataField
-                      title="Email"
-                      value={`${user?.email}`}
-                      variant="field"
+        <UiForm formData={formData} onSubmit={editProfile}>
+          {() => (
+            <>
+              <div className="details-page">
+                <div className="details-page-head">
+                  <div className="avatar-container">
+                    <UiAvatar
+                      size="xl"
+                      isEdit
+                      name="avatar"
+                      avatar={formData.avatar}
+                      onChange={onChange}
                     />
                   </div>
 
-                  <GridSpacer>
-                    <UiDataField
-                      title="Trips Completed"
-                      value={`${user?.completedTrips}`}
-                      variant="field"
-                      isCentered
-                      size="s"
-                    />
-                    <UiDataField
-                      title="Avg Rating"
-                      value={`${user?.rating}`}
-                      variant="field"
-                      isCentered
-                      size="s"
-                    />
-                    <UiDataField
-                      title="No Of Reviews"
-                      // to be changed to user.reviews
-                      value={`${user?.rating}`}
-                      variant="field"
-                      isCentered
-                      size="s"
-                    />
-                  </GridSpacer>
-
-                  <div className="button-container">
-                    <UiButton
-                      size="large"
-                      disabled={!valuesHasBeenEdited}
-                      loading={loading}
-                    >
-                      Save Changes
-                    </UiButton>
+                  <div className="user-name">
+                    <span>{user?.firstName}</span>
+                    <span>{user?.lastName}</span>
                   </div>
                 </div>
-              </>
-            )}
-          </UiForm>
-        </UiCard>
+
+                <div className="user-details">
+                  <UiDataField
+                    title="Phone"
+                    value={`${user?.phone}`}
+                    variant="field"
+                  />
+
+                  <UiDataField
+                    title="Email"
+                    value={`${user?.email}`}
+                    variant="field"
+                  />
+                </div>
+
+                <GridSpacer>
+                  <UiDataField
+                    title="Trips Completed"
+                    value={`${user?.completedTrips}`}
+                    variant="field"
+                    isCentered
+                    size="s"
+                  />
+                  <UiDataField
+                    title="Avg Rating"
+                    value={`${user?.rating}`}
+                    variant="field"
+                    isCentered
+                    size="s"
+                  />
+                  <UiDataField
+                    title="No Of Reviews"
+                    // to be changed to user.reviews
+                    value={`${user?.rating}`}
+                    variant="field"
+                    isCentered
+                    size="s"
+                  />
+                </GridSpacer>
+
+                <div className="button-container">
+                  <UiButton
+                    size="large"
+                    disabled={!valuesHasBeenEdited}
+                    loading={loading}
+                  >
+                    Save Changes
+                  </UiButton>
+                </div>
+              </div>
+            </>
+          )}
+        </UiForm>
       </CardContainer>
     </>
   );
 }
 
 const CardContainer = styled.div`
-  width: 90%;
-  margin: auto;
-  color: var(--color-gray-600);
-
+  width: 100%;
   header {
     display: flex;
     align-items: center;
@@ -203,13 +198,6 @@ const CardContainer = styled.div`
       margin: auto;
       width: 50%;
     }
-  }
-
-  @media only screen and (min-width: ${sizes.tabletSmallWidth}) {
-    width: 80%;
-  }
-  @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
-    width: 45%;
   }
 `;
 
