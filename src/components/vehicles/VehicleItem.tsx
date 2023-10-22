@@ -28,7 +28,7 @@ export default function VehicleComponent({
     const typeOfVehicle = vehicleTypes.find(
       ({ title }) => title === vehicle.vehicleType,
     );
-    return typeOfVehicle?.icon as Icons;
+    return typeOfVehicle?.truckImg;
   }, [vehicle.vehicleType]);
 
   return (
@@ -36,7 +36,7 @@ export default function VehicleComponent({
       <div className="driver-avatar-container">
         <img src={vehicle.driver.avatar} width="100" height="100" alt="" />
         <div className="vehicle-type">
-          <UiIcon icon={iconName} />
+          <img src={iconName} />
           <div>{vehicle.vehicleType}</div>
         </div>
       </div>
@@ -119,7 +119,7 @@ const VehicleStyling = styled.div`
       text-transform: capitalize;
       height: ${pxToRem(100)};
 
-      svg {
+      img {
         height: ${pxToRem(40)};
         width: ${pxToRem(80)};
       }

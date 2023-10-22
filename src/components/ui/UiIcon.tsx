@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { lazy } from 'react';
 
 // These icons should be arranged alphabetically for easy sorting
+
 const icons = {
   ArrowCircleLeft: lazy(() =>
     import('./icons/arrow-circle-left.svg').then((module) => ({
@@ -103,11 +104,6 @@ const icons = {
       default: module.ReactComponent,
     })),
   ),
-  Chiller: lazy(() =>
-    import('./icons/chiller.svg').then((module) => ({
-      default: module.ReactComponent,
-    })),
-  ),
   CloseCircle: lazy(() =>
     import('./icons/close-circle.svg').then((module) => ({
       default: module.ReactComponent,
@@ -143,11 +139,6 @@ const icons = {
       default: module.ReactComponent,
     })),
   ),
-  FlatBed: lazy(() =>
-    import('./icons/flatbed.svg').then((module) => ({
-      default: module.ReactComponent,
-    })),
-  ),
   GoldStar: lazy(() =>
     import('./icons/gold-star.svg').then((module) => ({
       default: module.ReactComponent,
@@ -170,6 +161,11 @@ const icons = {
   ),
   Jobs: lazy(() =>
     import('./icons/jobs.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+  Link: lazy(() =>
+    import('./icons/link.svg').then((module) => ({
       default: module.ReactComponent,
     })),
   ),
@@ -198,11 +194,6 @@ const icons = {
       default: module.ReactComponent,
     })),
   ),
-  MiniVan: lazy(() =>
-    import('./icons/mini-van.svg').then((module) => ({
-      default: module.ReactComponent,
-    })),
-  ),
   Moneys: lazy(() =>
     import('./icons/moneys.svg').then((module) => ({
       default: module.ReactComponent,
@@ -223,11 +214,7 @@ const icons = {
       default: module.ReactComponent,
     })),
   ),
-  PickUpVan: lazy(() =>
-    import('./icons/pick-up-van.svg').then((module) => ({
-      default: module.ReactComponent,
-    })),
-  ),
+
   PlayCircle: lazy(() =>
     import('./icons/play-circle.svg').then((module) => ({
       default: module.ReactComponent,
@@ -248,11 +235,7 @@ const icons = {
       default: module.ReactComponent,
     })),
   ),
-  SemiTrailer: lazy(() =>
-    import('./icons/semi-trailer.svg').then((module) => ({
-      default: module.ReactComponent,
-    })),
-  ),
+
   Settings: lazy(() =>
     import('./icons/settings.svg').then((module) => ({
       default: module.ReactComponent,
@@ -273,18 +256,8 @@ const icons = {
       default: module.ReactComponent,
     })),
   ),
-  Tanker: lazy(() =>
-    import('./icons/tanker.svg').then((module) => ({
-      default: module.ReactComponent,
-    })),
-  ),
   TruckTick: lazy(() =>
     import('./icons/ticked-truck.svg').then((module) => ({
-      default: module.ReactComponent,
-    })),
-  ),
-  Trailer: lazy(() =>
-    import('./icons/trailer.svg').then((module) => ({
       default: module.ReactComponent,
     })),
   ),
@@ -323,11 +296,6 @@ const icons = {
       default: module.ReactComponent,
     })),
   ),
-  Van: lazy(() =>
-    import('./icons/van.svg').then((module) => ({
-      default: module.ReactComponent,
-    })),
-  ),
   VerticalDots: lazy(() =>
     import('./icons/vertical-dots.svg').then((module) => ({
       default: module.ReactComponent,
@@ -335,11 +303,6 @@ const icons = {
   ),
   Warning: lazy(() =>
     import('./icons/warning.svg').then((module) => ({
-      default: module.ReactComponent,
-    })),
-  ),
-  TwentyFTTruck: lazy(() =>
-    import('./icons/20-ft-truck.svg').then((module) => ({
       default: module.ReactComponent,
     })),
   ),
