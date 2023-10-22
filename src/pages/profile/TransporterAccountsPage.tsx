@@ -30,8 +30,6 @@ export default function AccountDetailsPage() {
             </div>
           </div>
           <UiButton
-            variant="neutral"
-            size="s"
             onClick={() => setChangeBankModal(true)}
           >
             Change
@@ -44,8 +42,7 @@ export default function AccountDetailsPage() {
       <div className="add-account">
         <div className="currency"></div>
         <UiButton
-          size="s"
-          variant="neutral"
+        size='large'
           onClick={() => setChangeBankModal(true)}
         >
           Add Account
@@ -135,11 +132,5 @@ const AccountPageStyling = styled.div`
       flex-direction: row;
       gap: ${pxToRem(8)};
     }
-  }
-  @media only screen and (min-width: ${sizes.tabletMidWidth}) {
-    width: 70%;
-  }
-  @media only screen and (min-width: ${sizes.laptopWidth}) {
-    width: 40%;
   }
 `;

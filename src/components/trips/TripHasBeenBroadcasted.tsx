@@ -18,7 +18,6 @@ export default function TripHasBeenBroadcasted({
   onClose,
   isVisible,
 }: Props) {
-
   function copyJobLink() {
     const host =
       window.location.protocol +
@@ -55,14 +54,10 @@ export default function TripHasBeenBroadcasted({
           <Link to={`/my-trips/${tripId}/bids`}>
             <UiButton size="large">View Trip Bids</UiButton>
           </Link>
-              <UiButton
-                variant="secondary"
-                size="large"
-                onClick={copyJobLink}
-              >
-                <UiIcon icon="Link" />
-                Copy Job Link
-              </UiButton>
+          <UiButton variant="secondary" size="large" onClick={copyJobLink}>
+            <UiIcon icon="Link" />
+            Copy Job Link
+          </UiButton>
         </div>
       </ComponentLayout>
     </UiModal>
@@ -101,6 +96,6 @@ const ComponentLayout = styled.div`
   .btn-container {
     margin-top: ${pxToRem(40)};
     display: flex;
-    gap: ${pxToRem(8)}
+    gap: ${pxToRem(8)};
   }
 `;

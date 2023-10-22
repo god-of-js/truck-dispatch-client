@@ -246,6 +246,11 @@ const icons = {
       default: module.ReactComponent,
     })),
   ),
+  Security: lazy(() =>
+    import('./icons/security.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
   Tick: lazy(() =>
     import('./icons/tick.svg').then((module) => ({
       default: module.ReactComponent,

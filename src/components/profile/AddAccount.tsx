@@ -159,7 +159,7 @@ export default function AddAccount({
             <ButtonContainer>
               <UiButton
                 isFullWidth
-                variant="neutral"
+                variant="danger-secondary"
                 type="button"
                 onClick={onClose}
               >
