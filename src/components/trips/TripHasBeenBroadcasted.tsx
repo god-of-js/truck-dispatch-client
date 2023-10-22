@@ -1,6 +1,8 @@
 import { lazy } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import UiIcon from 'ui/UiIcon';
+import { Toast } from 'utils/toast';
 import { ReactComponent as BroadCasted } from '../../assets/img/broadcast.svg';
 
 const UiModal = lazy(() => import('ui/UiModal'));
@@ -16,6 +18,22 @@ export default function TripHasBeenBroadcasted({
   onClose,
   isVisible,
 }: Props) {
+
+  function copyJobLink() {
+    const host =
+      window.location.protocol +
+      '//' +
+      window.location.hostname +
+      (window.location.port ? ':' + window.location.port : '');
+    navigator.clipboard
+      .writeText(`${host}/available-jobs?job-id=${tripId}`)
+      .then(() => {
+        Toast.success({
+          msg: 'Job link copied successfully. Send link to transporter of choice for a bid.',
+        });
+      });
+  }
+
   return (
     <UiModal
       isVisible={isVisible}
@@ -37,6 +55,14 @@ export default function TripHasBeenBroadcasted({
           <Link to={`/my-trips/${tripId}/bids`}>
             <UiButton size="large">View Trip Bids</UiButton>
           </Link>
+              <UiButton
+                variant="secondary"
+                size="large"
+                onClick={copyJobLink}
+              >
+                <UiIcon icon="Link" />
+                Copy Job Link
+              </UiButton>
         </div>
       </ComponentLayout>
     </UiModal>
@@ -74,5 +100,7 @@ const ComponentLayout = styled.div`
 
   .btn-container {
     margin-top: ${pxToRem(40)};
+    display: flex;
+    gap: ${pxToRem(8)}
   }
 `;

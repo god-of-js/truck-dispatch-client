@@ -3,7 +3,7 @@ import React, { lazy, useEffect, useMemo, useState } from 'react';
 import { RootState } from 'modules/index';
 import { getJobs, selectJob } from 'modules/Trips';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   filterByFieldInObject,
@@ -15,6 +15,7 @@ import { clientBasedUserTypes } from 'utils/constants';
 import JobsResponse from 'types/JobsResponse';
 import { Toast } from 'utils/toast';
 import { deleteBid, getTransporterBids } from 'modules/Bid';
+import PageError from 'components/errors/PageError';
 
 const AllBids = lazy(() => import('components/bids/AllBids'));
 const PaginationLoader = lazy(
@@ -36,6 +37,7 @@ export default function TransporterJobs() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const senderType = searchParams.get('sender-type');
+  const jobId = searchParams.get('job-id');
   const jobs = useSelector((state: RootState) => state.trips.jobs);
   const user = useSelector((state: RootState) => state.account.user);
   const bids = useSelector((state: RootState) => state.bid.bids);
@@ -46,6 +48,7 @@ export default function TransporterJobs() {
   const [allJobsByShipper, setAllJobsByShipper] = useState(0);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -61,8 +64,6 @@ export default function TransporterJobs() {
   const [isDeleteBidVisible, setIsDeleteBidVisible] = useState(false);
   const [isDeleteBidLoading, setIsDeleteBidLoading] = useState(false);
   const [createVehicleIsVisible, setCreateVehicleIsVisible] = useState(false);
-
-  const job = useSelector(selectJob(selectedJobId!));
 
   const pageFilters = useMemo(
     () => [
@@ -147,6 +148,7 @@ export default function TransporterJobs() {
 
   function closeViewDetails() {
     setIsViewJobDetailsVisible(false);
+    navigate('/available-jobs');
   }
 
   function closeBidOnJob() {
@@ -207,7 +209,22 @@ export default function TransporterJobs() {
     dispatch(toAnyAction(getTransporterBids()));
   }, []);
 
+  useEffect(() => {
+    if (jobId) {
+      setSelectedJobId(jobId);
+      viewJob(jobId);
+    }
+  }, [jobId]);
+
   function emptyJobs() {
+    if (clientBasedUserTypes.includes(user?.userType!)) {
+      return (
+        <PageError
+          errorCode={401}
+          subtitle="This page is only visible to transporters and service based user types"
+        />
+      );
+    }
     if (!loading && !jobs.length) {
       return (
         <UiEmptyList
@@ -253,18 +270,18 @@ export default function TransporterJobs() {
         isVisible={isInformUserOfVerificationModalVisible}
         onClose={() => setIsInformUserOfVerificationModalVisible(false)}
       />
-      {job && (
+      {selectedJobId && (
         <>
           <ViewJobDetail
             isVisible={isViewJobDetailsVisible}
-            job={job}
+            jobId={selectedJobId}
             bidOnJob={bidForJob}
             onClose={closeViewDetails}
           />
           <BidForJob
             isVisible={isBidForJobVisible}
             key={`${isBidForJobVisible}-isBidForJobsVisible`}
-            jobId={job._id}
+            jobId={selectedJobId}
             onClose={closeBidOnJob}
             backToJobDetails={backToJobDetails}
             initCreateVehicle={() => setCreateVehicleIsVisible(true)}

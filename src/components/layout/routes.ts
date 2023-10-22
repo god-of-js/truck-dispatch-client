@@ -1,4 +1,3 @@
-import { useLocation } from 'react-router-dom';
 import { Icons } from 'ui/UiIcon';
 
 interface Route {

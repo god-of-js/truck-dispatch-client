@@ -51,7 +51,6 @@ export default function BidForJob({
     vehicle: {} as Vehicle,
   });
   const [loading, setLoading] = useState(false);
-  const [vehiclePage, setVehiclePage] = useState(1);
   const [vehicleListIsLoading, setVehicleListIsLoading] = useState(false);
   const [vehicleListCurrentPage, setVehicleListCurrentPage] = useState(1);
   const [vehicleListTotalPages, setVehicleListTotalPages] = useState(1);
