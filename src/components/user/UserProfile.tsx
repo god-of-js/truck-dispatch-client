@@ -10,7 +10,8 @@ const UiAvatar = lazy(() => import('ui/UiAvatar'));
 const UiButton = lazy(() => import('ui/UiButton'));
 const UiDataField = lazy(() => import('ui/UiDataField'));
 const UiIcon = lazy(() => import('ui/UiIcon'));
-const VehicleComponent = lazy(() => import('components/vehicles/VehicleItem'));
+const VehicleItem = lazy(() => import('components/vehicles/VehicleItem'));
+const RatingDetails = lazy(() => import('components/ratings/RatingDetails'));
 const RatingsComponent = lazy(
   () => import('components/ratings/RatingsComponent'),
 );
@@ -43,138 +44,97 @@ export default function UserProfile({ user, messageUser }: Props) {
     return average;
   }
 
-  function getDate(timestamp: string) {
-    const dateFromTimestamp = new Date(timestamp);
-
-    const formattedDate = dateFromTimestamp.toISOString().split('T')[0];
-
-    return formattedDate;
-  }
-
   return (
-    <>
-      <UserProfileStyle>
-        <UserHeaderDetail>
-          <header>
-            <div className="user-profile">
-              <UiAvatar size="lg" avatar={user.avatar} isHalfCurved />
-              <div>
-                <div className="user-name">{`${user.lastName} ${user.firstName}`}</div>
-                <div className="user-type">{user.userType}</div>
-              </div>
-            </div>
-            <div className="button-container">
-              <UiButton onClick={messageUser} variant="primary-secondary">
-                <UiIcon icon="DoubleChat" />
-                <span className="hidden">Message</span>
-              </UiButton>
-              <UiButton>Add to Contacts</UiButton>
-            </div>
-          </header>
-        </UserHeaderDetail>
-        <div className="p-32">
-          <UserDataField>
-            <UiDataField
-              title="Trips Completed"
-              isCentered
-              isBordered
-              value={user.completedTrips}
-            />
-            <UiDataField
-              title="avg rating"
-              isCentered
-              isBordered
-              value={user.rating}
-            />
-            <UiDataField
-              title="no of reviews"
-              isCentered
-              isBordered
-              value={user.ratings.length}
-            />
-            <UiDataField
-              title="no of trucks"
-              isCentered
-              isBordered
-              value={user.noOfVehicles}
-            />
-          </UserDataField>
-          {vehicles && (
-            <Vehicles>
-              <h3>TRUCKS</h3>
-              <div className="vehicle-data">
-                {vehicles.map((vehicle) => (
-                  <VehicleComponent
-                    hidden
-                    vehicle={vehicle}
-                    key={vehicle._id}
-                  />
-                ))}
-              </div>
-              {user.vehicles?.length! > 3 && (
-                <div className="btn-container">
-                  <Link to={`/user/${user._id}/vehicles`}>
-                    <UiButton variant="secondary">View all Vehicles</UiButton>
-                  </Link>
-                </div>
-              )}
-            </Vehicles>
-          )}
-          <UserReviewField>
-            <div className="review-container">
-              <h3>Transporter Reviews</h3>
-              <div className="review-field">
-                <div className="review-data-container">
-                  <div className="review-data">
-                    <div className="review-title">Total Reviews</div>
-                    <div className="review-value">{user.ratings.length}</div>
-                  </div>
-                  <div className="review-data">
-                    <div className="review-title">Average Rating</div>
-                    <div className="review-value">
-                      <div>{calculateAverageStarRating(ratings)}</div>
-                      <Ratings rating={user.rating} />
-                    </div>
-                  </div>
-                </div>
-                <div className="review-data bottom-div">
-                  <RatingsComponent ratings={ratings} />
-                </div>
-              </div>
-            </div>
-
-            {ratings.map((review) => (
-              <div key={review._id} className="user-review-container">
-                <div className="user-review">
-                  <div className="user-details-container">
-                    <div className="user-details">
-                      <UiAvatar size="lg" />
-                      <div className="user-data">
-                        <div className="user-anon">Anonymous</div>
-                        <div>SHIPPER</div>
-                        <div>
-                          Total Reviews:{' '}
-                          <span className="user-number">{ratings.length}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="comment-container">
-                    <div className="user-date">
-                      <Ratings rating={review.starRating} />
-                      <div className="comment-date">
-                        {getDate(review.createdAt)}
-                      </div>
-                    </div>
-                    <div className="user-comment">{review.comment}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </UserReviewField>
+    <UserProfileStyle>
+      <UserProfileHeader>
+        <div className="user-profile">
+          <UiAvatar size="lg" avatar={user.avatar} isHalfCurved />
+          <div>
+            <div className="user-name">{`${user.lastName} ${user.firstName}`}</div>
+            <div className="user-type">{user.userType}</div>
+          </div>
         </div>
-      </UserProfileStyle>
-    </>
+        <div className="button-container">
+          <UiButton onClick={messageUser} variant="primary-secondary">
+            <UiIcon icon="DoubleChat" />
+            <span className="hidden-in-mobile">Message</span>
+          </UiButton>
+          <UiButton>Add to Contacts</UiButton>
+        </div>
+      </UserProfileHeader>
+      <div className="p-32">
+        <UserDataFields>
+          <UiDataField
+            title="Trips Completed"
+            isCentered
+            isBordered
+            value={user.completedTrips}
+          />
+          <UiDataField
+            title="avg rating"
+            isCentered
+            isBordered
+            value={user.rating}
+          />
+          <UiDataField
+            title="no of reviews"
+            isCentered
+            isBordered
+            value={user.ratings.length}
+          />
+          <UiDataField
+            title="no of trucks"
+            isCentered
+            isBordered
+            value={user.noOfVehicles}
+          />
+        </UserDataFields>
+        {vehicles && (
+          <Vehicles>
+            <h3>TRUCKS</h3>
+            <div className="vehicle-data">
+              {vehicles.map((vehicle) => (
+                <VehicleItem vehicle={vehicle} key={vehicle._id} />
+              ))}
+            </div>
+            {user.vehicles?.length! > 3 && (
+              <div className="btn-container">
+                <Link to={`/user/${user._id}/vehicles`}>
+                  <UiButton variant="secondary">View all Vehicles</UiButton>
+                </Link>
+              </div>
+            )}
+          </Vehicles>
+        )}
+        <UserReviewField>
+          <div className="review-container">
+            <h3>Transporter Reviews</h3>
+            <div className="review-field">
+              <div className="review-data-container">
+                <div className="review-data">
+                  <div className="review-title">Total Reviews</div>
+                  <div className="review-value">{user.ratings.length}</div>
+                </div>
+                <div className="review-data">
+                  <div className="review-title">Average Rating</div>
+                  <div className="review-value">
+                    <div>{calculateAverageStarRating(ratings)}</div>
+                    <Ratings rating={user.rating} />
+                  </div>
+                </div>
+              </div>
+              <div className="review-data bottom-div">
+                <RatingsComponent ratings={ratings} />
+              </div>
+            </div>
+          </div>
+
+          {ratings.map((rating) => (
+            <RatingDetails rating={rating} key={rating._id} />
+          ))}
+        </UserReviewField>
+      </div>
+    </UserProfileStyle>
   );
 }
 
@@ -204,40 +164,38 @@ const UserProfileStyle = styled.div`
   }
 `;
 
-const UserHeaderDetail = styled.div`
-  header {
-    background: var(--color-primary-10);
+const UserProfileHeader = styled.header`
+  background: var(--color-primary-10);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: ${pxToRem(36)} ${pxToRem(32)} ${pxToRem(21)} ${pxToRem(32)};
+  margin-bottom: ${pxToRem(20)};
+
+  .hidden-in-mobile {
+    display: none;
+  }
+
+  .user-profile {
     display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding: ${pxToRem(36)} ${pxToRem(32)} ${pxToRem(21)} ${pxToRem(32)};
-    margin-bottom: ${pxToRem(20)};
+    align-items: center;
+    gap: ${pxToRem(16)};
 
-    .hidden {
-      display: none;
+    .user-name {
+      color: var(--neutralBlack, #15131b);
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 600;
+      letter-spacing: 0.48px;
     }
-
-    .user-profile {
-      display: flex;
-      align-items: center;
-      gap: ${pxToRem(16)};
-
-      .user-name {
-        color: var(--neutralBlack, #15131b);
-        font-size: 24px;
-        font-style: normal;
-        font-weight: 600;
-        letter-spacing: 0.48px;
-      }
-      .user-type {
-        text-transform: uppercase;
-        color: var(--color-grey-70, #848288);
-        font-size: ${pxToRem(12)};
-        font-style: normal;
-        font-weight: 400;
-        line-height: 140%;
-        letter-spacing: ${pxToRem(0.6)};
-      }
+    .user-type {
+      text-transform: uppercase;
+      color: var(--color-grey-70, #848288);
+      font-size: ${pxToRem(12)};
+      font-style: normal;
+      font-weight: 400;
+      line-height: 140%;
+      letter-spacing: ${pxToRem(0.6)};
     }
   }
 
@@ -248,27 +206,28 @@ const UserHeaderDetail = styled.div`
   }
 
   @media screen and (min-width: ${sizes.tabletSmallWidth}) {
-    header {
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 
-      .hidden {
-        display: block;
-      }
+    .hidden-in-mobile {
+      display: block;
     }
   }
 `;
 
-const UserDataField = styled.div`
+const UserDataFields = styled.div`
   border-bottom: 1px solid var(--color-gray-50);
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: ${pxToRem(12)};
   padding-bottom: 32px;
 
+  @media screen and (min-width: ${sizes.mobileSmall}) {
+    grid-template-columns: repeat(2, 1fr);
+  }
   @media screen and (min-width: ${sizes.tabletSmallWidth}) {
-    grid-template-columns: repeat(4, 1fr) !important;
+    grid-template-columns: repeat(4, 1fr);
   }
 `;
 
@@ -278,7 +237,7 @@ const Vehicles = styled.div`
 
   .vehicle-data {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
   }
 `;
 
@@ -393,21 +352,21 @@ const UserReviewField = styled.div`
   @media screen and (min-width: ${sizes.tabletSmallWidth}) {
     .review-field {
       display: flex;
-      flex-direction: row !important;
+      flex-direction: row;
       flex-wrap: wrap;
 
       .review-data {
         justify-content: center;
-        width: 264px !important;
+        width: 264px;
       }
 
       .review-value {
-        flex-direction: row !important;
+        flex-direction: row;
       }
     }
 
     .user-review {
-      flex-direction: row !important;
+      flex-direction: row;
     }
   }
 `;

@@ -11,13 +11,11 @@ const UiIcon = lazy(() => import('ui/UiIcon'));
 
 interface Props {
   vehicle: Vehicle;
-  hidden?: boolean;
   openEditVehicle?: (vehicle: Vehicle) => void;
   openDeleteVehicle?: (vehicleId: string) => void;
 }
 export default function VehicleComponent({
   vehicle,
-  hidden,
   openEditVehicle,
   openDeleteVehicle,
 }: Props) {
@@ -34,7 +32,7 @@ export default function VehicleComponent({
   }, [vehicle.vehicleType]);
 
   return (
-    <VehicleStyling hidden={hidden}>
+    <VehicleStyling>
       <div className="driver-avatar-container">
         <div className="driver-avatar-image">
           <img src={vehicle.driver.avatar} width="100" height="100" alt="" />
@@ -55,11 +53,7 @@ export default function VehicleComponent({
         </div>
         <div className="field">
           <div className="label">PHONE NUMBER</div>
-          {hidden ? (
-            <div className="text-value">***********</div>
-          ) : (
-            <div className="text-value">{vehicle.driver.phone}</div>
-          )}
+          <div className="text-value">***********</div>
         </div>
       </div>
       <div className="images">
@@ -116,21 +110,10 @@ const VehicleStyling = styled.div`
       object-fit: cover;
     }
 
-    .driver-avatar-image {
-      ${({ hidden }) =>
-        hidden &&
-        ` display: none;
-      `}
-    }
-
     .vehicle-type {
       background: var(--color-gray-20);
       border-radius: ${pxToRem(8)};
       width: calc(100% - 100px);
-      ${({ hidden }) =>
-        hidden &&
-        ` width: 100%;
-      `}
       display: flex;
       flex-direction: column;
       justify-content: center;

@@ -8,6 +8,7 @@ import { getUserDetailsById } from 'modules/Account';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
 import UserFullProfile from 'types/UserFullProfile';
 import Loader from 'components/layout/Loader';
+
 const UiBackButton = lazy(() => import('ui/UiBackButton'));
 const UserProfile = lazy(() => import('components/user/UserProfile'));
 
