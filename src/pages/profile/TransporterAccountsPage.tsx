@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import sizes from 'utils/sizes';
 import { RootState } from 'modules/index';
+import UiDataField from 'ui/UiDataField';
 
 const UiCard = lazy(() => import('ui/UiCard'));
 const UiButton = lazy(() => import('ui/UiButton'));
@@ -31,25 +32,14 @@ export default function AccountDetailsPage() {
               <div>{accountDetails?.bank_name}</div>
             </div>
           </div>
-          <UiButton
-            variant="neutral"
-            size="s"
-            onClick={() => setChangeBankModal(true)}
-          >
-            Change
-          </UiButton>
+          <UiButton onClick={() => setChangeBankModal(true)}>Change</UiButton>
         </div>
       );
     }
 
     return (
       <div className="add-account">
-        <div className="currency"></div>
-        <UiButton
-          size="s"
-          variant="neutral"
-          onClick={() => setChangeBankModal(true)}
-        >
+        <UiButton size="large" onClick={() => setChangeBankModal(true)}>
           Add Account
         </UiButton>
       </div>
@@ -60,15 +50,16 @@ export default function AccountDetailsPage() {
     <>
       <AccountPageStyling>
         <UiCard>
-          <header>
-            <h2>Payout Account</h2>
-            <p>
-              Payout account is the account where all payments from
+          <header className="account-page-header">
+            <h2 className="page-title">Payout Account</h2>
+            <UiDataField
+              title="Extra Note"
+              value="Payout account is the account where all payments from
               TruckDispatch would be tendered to. You can only have one payment
               account at a time. However, you can change your payout account
               whenever you want. It is required that you have a payout account
-              before you can get paid for a trip.
-            </p>
+              before you can get paid for a trip."
+            />
           </header>
           {bankDetails}
         </UiCard>
@@ -86,16 +77,12 @@ const AccountPageStyling = styled.div`
   margin: auto;
   width: 90%;
 
-  header {
+  .account-page-header {
     margin-bottom: ${pxToRem(40)};
-    h2 {
+    .page-title {
       font-size: ${pxToRem(16)};
       color: var(--color-gray-500);
       margin-top: 0;
-    }
-    p {
-      font-size: ${pxToRem(16)};
-      color: var(--color-gray-400);
     }
   }
 
@@ -103,6 +90,12 @@ const AccountPageStyling = styled.div`
     font-weight: bold;
     font-size: ${pxToRem(14)};
     color: var(--color-gray-400);
+  }
+
+  .add-account {
+    button {
+      width: ${pxToRem(220)};
+    }
   }
   .bank-details {
     display: flex;
@@ -137,11 +130,5 @@ const AccountPageStyling = styled.div`
       flex-direction: row;
       gap: ${pxToRem(8)};
     }
-  }
-  @media only screen and (min-width: ${sizes.tabletMidWidth}) {
-    width: 70%;
-  }
-  @media only screen and (min-width: ${sizes.laptopWidth}) {
-    width: 40%;
   }
 `;

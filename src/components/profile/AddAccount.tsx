@@ -132,7 +132,7 @@ export default function AddAccount({
         {({ errors }) => (
           <AddAcountStyling>
             <header>
-              <p>
+              <p className="subtitle">
                 Your account details are required to enable clients make payment
                 to you without hassle or back and forth.
               </p>
@@ -154,12 +154,12 @@ export default function AddAccount({
                 value={formData.accountNumber}
                 onChange={handleChange}
               />
-              {details}
+              <span>{details}</span>
             </div>
             <ButtonContainer>
               <UiButton
                 isFullWidth
-                variant="neutral"
+                variant="danger-secondary"
                 type="button"
                 onClick={onClose}
               >
@@ -180,18 +180,10 @@ export default function AddAccount({
   );
 }
 const AddAcountStyling = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: ${pxToRem(20)};
   padding: ${pxToRem(12)} ${pxToRem(24)};
-
-  h2 {
-    margin-top: 0;
-    margin-bottom: ${pxToRem(8)};
-    font-size: ${pxToRem(20)};
-    color: var(--color-gray-500);
-  }
-  p {
+  .subtitle {
     font-size: ${pxToRem(16)};
     color: var(--color-gray-600);
   }
@@ -210,6 +202,7 @@ const AddAcountStyling = styled.div`
     color: var(--color-danger);
   }
 `;
+
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;

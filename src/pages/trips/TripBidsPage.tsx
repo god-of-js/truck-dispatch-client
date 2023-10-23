@@ -2,7 +2,6 @@ import React, { lazy, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
-import Successgif from 'assets/img/Successgif.jpeg';
 
 import { RootState } from 'modules/index';
 import {
@@ -15,6 +14,7 @@ import { assignTrip, selectTrip } from 'modules/Trips';
 import AssignTripFormData from 'types/AssignTripFormData';
 import { Toast } from 'utils/toast';
 import Payment from 'types/Payment';
+import SuccessGif from '../../assets/img/success.gif';
 
 const DashboardTopNav = lazy(() => import('components/layout/DashboardTopNav'));
 
@@ -226,10 +226,8 @@ export default function TripBidsPage() {
             title="Payment Successful"
             hideNotYetButton
             confirmText="Go to trip details"
+            assetNode={<img src={SuccessGif} width="180" alt="payment_image" />}
           >
-            <div>
-              <img src={Successgif} alt="payment_image" />
-            </div>
             Payment Successfully Made
           </UiConfirmModal>
         </>

@@ -69,9 +69,9 @@ export default function UiSelect({
           </div>
           {isOpen && (
             <StyledOptions>
-              {options.map((option) => (
+              {options.map((option, index) => (
                 <StyledOption
-                  key={option.value}
+                  key={index}
                   className={
                     selectedOption?.value === option.value ? 'is-active' : ''
                   }
