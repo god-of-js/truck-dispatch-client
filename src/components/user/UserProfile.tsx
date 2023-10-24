@@ -1,3 +1,4 @@
+import RatingsStat from 'components/ratings/RatingsStat';
 import React, { lazy, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -30,19 +31,6 @@ export default function UserProfile({ user, messageUser }: Props) {
   const ratings = useMemo<Rating[]>(() => {
     return user.ratings;
   }, [user]);
-
-  function calculateAverageStarRating(ratings: Rating[]): number {
-    if (ratings.length === 0) {
-      return 0;
-    }
-
-    const sum = ratings.reduce((accumulator) => {
-      return accumulator + user.rating;
-    }, 0);
-
-    const average = (sum / (ratings.length * 5)) * 5;
-    return average;
-  }
 
   return (
     <UserProfileStyle>
@@ -106,33 +94,12 @@ export default function UserProfile({ user, messageUser }: Props) {
             )}
           </Vehicles>
         )}
-        <UserReviewField>
-          <div className="review-container">
-            <h3>Transporter Reviews</h3>
-            <div className="review-field">
-              <div className="review-data-container">
-                <div className="review-data">
-                  <div className="review-title">Total Reviews</div>
-                  <div className="review-value">{user.ratings.length}</div>
-                </div>
-                <div className="review-data">
-                  <div className="review-title">Average Rating</div>
-                  <div className="review-value">
-                    <div>{calculateAverageStarRating(ratings)}</div>
-                    <Ratings rating={user.rating} />
-                  </div>
-                </div>
-              </div>
-              <div className="review-data bottom-div">
-                <RatingsComponent ratings={ratings} />
-              </div>
-            </div>
-          </div>
-
+        <UserReviews>
+          <RatingsStat ratings={ratings} />
           {ratings.map((rating) => (
             <RatingDetails rating={rating} key={rating._id} />
           ))}
-        </UserReviewField>
+        </UserReviews>
       </div>
     </UserProfileStyle>
   );
@@ -241,132 +208,4 @@ const Vehicles = styled.div`
   }
 `;
 
-const UserReviewField = styled.div`
-  .review-container {
-    padding: 32px 0;
-
-    .review-field {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      padding: 32px 0;
-      border-bottom: 1px solid var(--color-gray-50);
-    }
-
-    .review-data-container {
-      display: flex;
-      gap: 12px;
-    }
-
-    .review-data {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      width: 50%;
-      padding: 20px 16px;
-
-      border-radius: 8px;
-      background: var(--color-grey-20, #f8f7f9);
-
-      &.bottom-div {
-        width: inherit;
-      }
-
-      .review-title {
-        color: var(--color-neutralBlack, #15131b);
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 600;
-        line-height: 24px;
-      }
-
-      .review-value {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-        color: var(--color-neutralBlack, #15131b);
-        font-size: 32px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 24px;
-      }
-    }
-  }
-
-  .user-review-container {
-    margin-bottom: 32px;
-
-    .user-review {
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
-      color: var(--color-grey-80, #57575b);
-      font-size: 14px;
-      font-style: normal;
-      font-weight: 400;
-
-      .user-details {
-        display: flex;
-        align-items: center;
-        width: 244px;
-        gap: 16px;
-      }
-
-      .user-data {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-
-        .user-number {
-          color: var(--color-grey-90, #2b2b2d);
-          font-weight: 700;
-        }
-
-        .user-anon {
-          color: var(----color-neutralBlack, #15131b);
-        }
-      }
-
-      .comment-container {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-
-        .user-date {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-
-          .comment-date {
-            color: var(--color-grey-80, #57575b);
-            font-size: 14px;
-            font-style: normal;
-            font-weight: 600;
-            line-height: 24px;
-          }
-        }
-      }
-    }
-  }
-
-  @media screen and (min-width: ${sizes.tabletSmallWidth}) {
-    .review-field {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-
-      .review-data {
-        justify-content: center;
-        width: 264px;
-      }
-
-      .review-value {
-        flex-direction: row;
-      }
-    }
-
-    .user-review {
-      flex-direction: row;
-    }
-  }
-`;
+const UserReviews = styled.div``;
