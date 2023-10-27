@@ -44,7 +44,7 @@ export default function UserVehiclePage() {
       {vehicle && (
         <Vehicles>
           {vehicle.map((vehicle) => (
-            <VehicleItem hidden vehicle={vehicle} key={vehicle._id} />
+            <VehicleItem vehicle={vehicle} key={vehicle._id} />
           ))}
         </Vehicles>
       )}
