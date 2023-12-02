@@ -153,6 +153,7 @@ const ModalCard = styled.div<CardProps>`
   border-top-right-radius: ${pxToRem(8)};
   position: fixed;
   bottom: 0;
+  z-index: 999;
   left: 0;
   right: 0;
   overflow-y: auto;

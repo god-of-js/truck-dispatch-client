@@ -181,7 +181,10 @@ export default function MakePayment({
                   />
                 </div>
                 <div className="atmCard">
-                  <ATMCard isActive={isBalanceSufficient} />
+                  <ATMCard
+                    isActive={isBalanceSufficient}
+                    value={user?.balance || 0}
+                  />
                 </div>
 
                 {user?.balance! < bid.price && (
