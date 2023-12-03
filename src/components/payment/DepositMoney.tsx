@@ -1,8 +1,20 @@
+import { RootState } from 'modules/index';
 import { lazy, useMemo, useState } from 'react';
+import { usePaystackPayment } from 'react-paystack';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import Payment from 'types/Payment';
 import { OnChangeParams } from 'ui/UiInput';
-import { calculateVAT, priceWithTDPercent, tdPercentage } from 'utils/helpers';
+import {
+  calculateVAT,
+  nairaToKobo,
+  priceWithTDPercent,
+  tdPercentage,
+} from 'utils/helpers';
+import { paystackPublickKey } from 'utils/privateKeys';
 import sizes from 'utils/sizes';
+import { Toast } from 'utils/toast';
+import DepositMoneySchema from 'utils/validations/DepositMoneySchema';
 import PaystackImage from '../../assets/img/paystack.png';
 
 const UiAlert = lazy(() => import('ui/UiAlert'));
@@ -17,11 +29,22 @@ const ATMCard = lazy(() => import('./ATMCard'));
 interface Props {
   isOpen: boolean;
   onClose: () => void;
+  onCompleted: (param?: Payment) => void;
 }
-export default function DepositMoney({ isOpen, onClose }: Props) {
+export default function DepositMoney({ isOpen, onClose, onCompleted }: Props) {
   const [formData, setFormData] = useState({
     amount: null,
   });
+  const user = useSelector((state: RootState) => state.account.user);
+  const paystackConfig = {
+    email: user?.email || '',
+    firstName: user?.firstName,
+    lastName: user?.lastName,
+    phone: user?.phone,
+    amount: Math.round(nairaToKobo(priceWithTDPercent(formData.amount || 0))),
+    publicKey: paystackPublickKey,
+  };
+  const initializePayment = usePaystackPayment(paystackConfig);
 
   const agencyFee = useMemo(
     () => tdPercentage(formData.amount || 0),
@@ -37,7 +60,26 @@ export default function DepositMoney({ isOpen, onClose }: Props) {
     setFormData((data) => ({ ...data, [name]: value }));
   }
 
-  function triggerPaystack() {}
+  function handleCompletedTransaction(param?: Payment) {
+    if (!param) {
+      Toast.error({
+        msg: 'Transaction information was not passed. Kindly reach out to support.',
+      });
+      return;
+    }
+
+    onCompleted({
+      ...param,
+      totalAmountPaid: totalAmount,
+      amount: formData.amount ? Number(formData.amount) : 0,
+    });
+  }
+
+  function triggerPaystack() {
+    if (!formData.amount) return;
+
+    initializePayment(handleCompletedTransaction);
+  }
   return (
     <UiModal isVisible={isOpen} title="Deposit" onClose={onClose}>
       <ModalBody>
@@ -57,14 +99,20 @@ export default function DepositMoney({ isOpen, onClose }: Props) {
           </div>
         </UiAlert>
 
-        <UiForm formData={formData} onSubmit={triggerPaystack}>
-          {({}) => (
+        <UiForm
+          formData={formData}
+          schema={DepositMoneySchema}
+          onSubmit={triggerPaystack}
+        >
+          {({ errors }) => (
             <div className="form-body">
               <div className="duo-grid">
                 <UiInput
                   label="Deposit Amount (in naira)"
                   value={formData.amount}
                   name="amount"
+                  type="number"
+                  error={errors.amount}
                   onChange={handleChange}
                 />
                 <UiInput

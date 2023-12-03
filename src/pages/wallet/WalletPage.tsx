@@ -3,6 +3,7 @@ import { RootState } from 'modules/index';
 import { lazy, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import Payment from 'types/Payment';
 import sizes from 'utils/sizes';
 
 const DepositMoney = lazy(() => import('components/payment/DepositMoney'));
@@ -14,6 +15,10 @@ export default function WalletPage() {
   const user = useSelector((state: RootState) => state.account.user);
 
   const [depositMoneyIsVisible, setDepositMoneyIsVisible] = useState(false);
+
+  function saveTransaction(paymentDetails?: Payment) {
+    console.log(paymentDetails);
+  }
   return (
     <>
       <DashboardTopNav routeName="Wallet" />
@@ -37,6 +42,7 @@ export default function WalletPage() {
       </PageStyling>
       <DepositMoney
         isOpen={depositMoneyIsVisible}
+        onCompleted={saveTransaction}
         onClose={() => setDepositMoneyIsVisible(false)}
       />
     </>
