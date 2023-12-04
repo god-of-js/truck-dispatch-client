@@ -1,9 +1,11 @@
 import DashboardTopNav from 'components/layout/DashboardTopNav';
+import { topupBalance } from 'modules/Account';
 import { RootState } from 'modules/index';
 import { lazy, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Payment from 'types/Payment';
+import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
 
 const DepositMoney = lazy(() => import('components/payment/DepositMoney'));
@@ -13,11 +15,25 @@ const UiIcon = lazy(() => import('ui/UiIcon'));
 
 export default function WalletPage() {
   const user = useSelector((state: RootState) => state.account.user);
+  const dispatch = useDispatch();
 
   const [depositMoneyIsVisible, setDepositMoneyIsVisible] = useState(false);
+  const [depositMoneyIsLoading, setDepositMoneyIsLoading] = useState(false);
 
   function saveTransaction(paymentDetails?: Payment) {
-    console.log(paymentDetails);
+    if (!paymentDetails) {
+      return;
+    }
+
+    setDepositMoneyIsLoading(true);
+
+    dispatch(toAnyAction(topupBalance(paymentDetails)))
+      .then(() => {
+        setDepositMoneyIsVisible(false);
+      })
+      .finally(() => {
+        setDepositMoneyIsLoading(false);
+      });
   }
   return (
     <>
@@ -26,9 +42,20 @@ export default function WalletPage() {
         <Balances>
           <h2>Balances</h2>
           <div className="atm-cards">
-            <ATMCard title="Total Balance" value={user?.balance} />
-            <ATMCard title="Available Balance" value={0} variant="info" />
-            <ATMCard title="Pending Balance" value={0} variant="warning" />
+            <ATMCard
+              title="Total Balance"
+              value={(user?.balance || 0) + (user?.escrowBalance || 0) || 0}
+            />
+            <ATMCard
+              title="Available Balance"
+              value={user?.balance || 0}
+              variant="info"
+            />
+            <ATMCard
+              title="Escrow Balance"
+              value={user?.escrowBalance || 0}
+              variant="warning"
+            />
           </div>
         </Balances>
 
@@ -42,6 +69,8 @@ export default function WalletPage() {
       </PageStyling>
       <DepositMoney
         isOpen={depositMoneyIsVisible}
+        key={`${depositMoneyIsVisible}`}
+        isLoading={depositMoneyIsLoading}
         onCompleted={saveTransaction}
         onClose={() => setDepositMoneyIsVisible(false)}
       />

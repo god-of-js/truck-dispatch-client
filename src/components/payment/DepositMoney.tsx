@@ -28,10 +28,16 @@ const ATMCard = lazy(() => import('./ATMCard'));
 
 interface Props {
   isOpen: boolean;
+  isLoading: boolean;
   onClose: () => void;
   onCompleted: (param?: Payment) => void;
 }
-export default function DepositMoney({ isOpen, onClose, onCompleted }: Props) {
+export default function DepositMoney({
+  isOpen,
+  isLoading,
+  onClose,
+  onCompleted,
+}: Props) {
   const [formData, setFormData] = useState({
     amount: null,
   });
@@ -152,12 +158,15 @@ export default function DepositMoney({ isOpen, onClose, onCompleted }: Props) {
               <div className="action-btns">
                 <UiButton
                   size="large"
+                  type="button"
                   variant="danger-secondary"
                   onClick={onClose}
                 >
                   Cancel
                 </UiButton>
-                <UiButton size="large">Proceed</UiButton>
+                <UiButton size="large" loading={isLoading}>
+                  Proceed
+                </UiButton>
               </div>
             </div>
           )}
