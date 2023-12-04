@@ -1,4 +1,5 @@
 import DashboardTopNav from 'components/layout/DashboardTopNav';
+import AddAccount from 'components/profile/AddAccount';
 import { topupBalance } from 'modules/Account';
 import { RootState } from 'modules/index';
 import { lazy, useState } from 'react';
@@ -8,6 +9,7 @@ import Payment from 'types/Payment';
 import { toAnyAction } from 'utils/helpers';
 import sizes from 'utils/sizes';
 
+const WithdrawMoney = lazy(() => import('components/payment/WithdrawMoney'));
 const DepositMoney = lazy(() => import('components/payment/DepositMoney'));
 const ATMCard = lazy(() => import('components/payment/ATMCard'));
 const UiButton = lazy(() => import('ui/UiButton'));
@@ -18,21 +20,23 @@ export default function WalletPage() {
   const dispatch = useDispatch();
 
   const [depositMoneyIsVisible, setDepositMoneyIsVisible] = useState(false);
-  const [depositMoneyIsLoading, setDepositMoneyIsLoading] = useState(false);
+  const [withdrawMoneyIsVisible, setWithdrawMoneyIsVisible] = useState(false);
+  const [addAccountIsVisible, setAddAccountIsVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   function saveTransaction(paymentDetails?: Payment) {
     if (!paymentDetails) {
       return;
     }
 
-    setDepositMoneyIsLoading(true);
+    setLoading(true);
 
     dispatch(toAnyAction(topupBalance(paymentDetails)))
       .then(() => {
         setDepositMoneyIsVisible(false);
       })
       .finally(() => {
-        setDepositMoneyIsLoading(false);
+        setLoading(false);
       });
   }
   return (
@@ -64,15 +68,32 @@ export default function WalletPage() {
             <UiIcon icon="CardPos" />
             DEPOSIT
           </UiButton>
-          <UiButton variant="secondary">WITHDRAW</UiButton>
+          <UiButton
+            variant="secondary"
+            onClick={() => setWithdrawMoneyIsVisible(true)}
+          >
+            WITHDRAW
+          </UiButton>
         </ActionButtons>
       </PageStyling>
       <DepositMoney
         isOpen={depositMoneyIsVisible}
-        key={`${depositMoneyIsVisible}`}
-        isLoading={depositMoneyIsLoading}
+        isLoading={loading}
         onCompleted={saveTransaction}
         onClose={() => setDepositMoneyIsVisible(false)}
+      />
+      <WithdrawMoney
+        isOpen={withdrawMoneyIsVisible}
+        isLoading={loading}
+        onClose={() => setWithdrawMoneyIsVisible(false)}
+        addAccount={() => setAddAccountIsVisible(true)}
+      />
+      <AddAccount
+        isVisible={addAccountIsVisible}
+        onClose={() => {
+          setAddAccountIsVisible(false);
+        }}
+        bankAccountDetails={user?.bankDetails!}
       />
     </>
   );

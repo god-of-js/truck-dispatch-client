@@ -56,7 +56,7 @@ const VehiclesPage = lazy(() => import('../pages/vehicles/VehiclesPage'));
 
 // Transactions
 const PaymentsPage = lazy(() => import('../pages/payments/PaymentsPage'));
-const WalletPage = lazy(() => import('../pages/wallet/WalletPage'));
+const WalletPage = lazy(() => import('../pages/payments/WalletPage'));
 const sessionId = getUserSessionId();
 const router = createBrowserRouter([
   {

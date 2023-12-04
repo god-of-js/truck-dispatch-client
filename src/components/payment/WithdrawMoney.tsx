@@ -1,21 +1,13 @@
+import { Link } from 'react-router-dom';
 import { RootState } from 'modules/index';
-import { lazy, useMemo, useState } from 'react';
-import { usePaystackPayment } from 'react-paystack';
+import { lazy, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import Payment from 'types/Payment';
 import { OnChangeParams } from 'ui/UiInput';
-import {
-  calculateVAT,
-  nairaToKobo,
-  priceWithTDPercent,
-  tdPercentage,
-} from 'utils/helpers';
-import { paystackPublickKey } from 'utils/privateKeys';
 import sizes from 'utils/sizes';
+import PaystackImage from '../../assets/img/paystack.png';
 import { Toast } from 'utils/toast';
 import AmountSchema from 'utils/validations/AmountSchema';
-import PaystackImage from '../../assets/img/paystack.png';
 
 const UiAlert = lazy(() => import('ui/UiAlert'));
 const UiInput = lazy(() => import('ui/UiInput'));
@@ -30,64 +22,33 @@ interface Props {
   isOpen: boolean;
   isLoading: boolean;
   onClose: () => void;
-  onCompleted: (param?: Payment) => void;
+  addAccount: () => void;
 }
-export default function DepositMoney({
+export default function WithdrawMoney({
   isOpen,
   isLoading,
   onClose,
-  onCompleted,
+  addAccount,
 }: Props) {
   const [formData, setFormData] = useState({
     amount: null,
   });
   const user = useSelector((state: RootState) => state.account.user);
-  const paystackConfig = {
-    email: user?.email || '',
-    firstName: user?.firstName,
-    lastName: user?.lastName,
-    phone: user?.phone,
-    amount: Math.round(nairaToKobo(priceWithTDPercent(formData.amount || 0))),
-    publicKey: paystackPublickKey,
-  };
-  const initializePayment = usePaystackPayment(paystackConfig);
-
-  const agencyFee = useMemo(
-    () => tdPercentage(formData.amount || 0),
-    [formData.amount],
-  );
-  const vat = useMemo(() => calculateVAT(agencyFee), [agencyFee]);
-  const totalAmount = useMemo(
-    () => priceWithTDPercent(formData.amount || 0),
-    [formData.amount],
-  );
 
   function handleChange({ name, value }: OnChangeParams) {
     setFormData((data) => ({ ...data, [name]: value }));
   }
 
-  function handleCompletedTransaction(param?: Payment) {
-    if (!param) {
-      Toast.error({
-        msg: 'Transaction information was not passed. Kindly reach out to support.',
-      });
-      return;
-    }
-
-    onCompleted({
-      ...param,
-      totalAmountPaid: totalAmount,
-      amount: formData.amount ? Number(formData.amount) : 0,
-    });
-  }
-
-  function triggerPaystack() {
+  function withdrawFunds() {
     if (!formData.amount) return;
 
-    initializePayment(handleCompletedTransaction);
+    if (formData.amount > (user?.balance  || 0)) {
+        Toast.error({ msg: "Insufficient Funds"})
+        return;
+    }
   }
   return (
-    <UiModal isVisible={isOpen} title="Deposit" onClose={onClose}>
+    <UiModal isVisible={isOpen} title="Withdraw" onClose={onClose}>
       <ModalBody>
         <div className="atm-cards">
           <ATMCard
@@ -96,7 +57,7 @@ export default function DepositMoney({
             variant="info"
           />
           <ATMCard
-            title="Pending Balance"
+            title="Escrow Balance"
             value={user?.escrowBalance}
             variant="warning"
           />
@@ -106,48 +67,57 @@ export default function DepositMoney({
           <div className="alert-warning">
             <div className="alert-header">Note</div>
             <div className="alert-message">
-              Please take note that a deduction of 7% and VAT charges will be
-              applied to your deposit. However, when you make payments for your
-              trips, no deductions will be made.
+              Please take note that no deduction would be made on your
+              withdrawal. Also, you can only withdraw to your current withdrawal
+              account. To input or change your account, proceed to your{' '}
+              <Link to="/profile/accounts">Accounts Page</Link>
             </div>
           </div>
         </UiAlert>
 
-        <UiForm
-          formData={formData}
-          schema={AmountSchema}
-          onSubmit={triggerPaystack}
-        >
+        <UiForm formData={formData} schema={AmountSchema} onSubmit={withdrawFunds}>
           {({ errors }) => (
             <div className="form-body">
               <div className="duo-grid">
                 <UiInput
-                  label="Deposit Amount (in naira)"
+                  label="Amount To Withdraw (in naira)"
                   value={formData.amount}
                   name="amount"
                   type="number"
                   error={errors.amount}
                   onChange={handleChange}
                 />
+                <div>
+                  <UiInput
+                    disabled
+                    label="Account Number"
+                    name="acc-number"
+                    value={user?.bankDetails?.account_number || ''}
+                    onChange={() => {}}
+                  />
+                  <UiButton
+                    variant="primary-text"
+                    type="button"
+                    size="text"
+                    onClick={addAccount}
+                  >
+                    {user?.bankDetails?.account_number
+                      ? 'Change Payout Account'
+                      : 'Add Payout Account'}
+                  </UiButton>
+                </div>
                 <UiInput
                   disabled
-                  label="Agency Fee (in naira)"
-                  name="agency-fee"
-                  value={agencyFee}
+                  label="Bank Name"
+                  name="acc-name"
+                  value={user?.bankDetails?.bank_name || ''}
                   onChange={() => {}}
                 />
                 <UiInput
                   disabled
-                  label="VAT (in naira)"
-                  name="vat"
-                  value={vat}
-                  onChange={() => {}}
-                />
-                <UiInput
-                  disabled
-                  label="Total Amount (in naira)"
+                  label="Account Name"
                   name="total"
-                  value={totalAmount}
+                  value={user?.bankDetails?.name || ''}
                   onChange={() => {}}
                 />
               </div>

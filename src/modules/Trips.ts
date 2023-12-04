@@ -193,7 +193,7 @@ export function cancelTripByTripCreator(tripId: string) {
   return (dispatch: AppDispatch) => {
     return Api.cancelTripByTripCreator(tripId).then((user) => {
       dispatch(removeTrip(tripId));
-      if(user) dispatch(setUser(user));
+      if (user) dispatch(setUser(user));
       return user;
     });
   };
