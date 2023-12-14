@@ -2,7 +2,6 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 import Trip from 'types/Trip';
 import { AppDispatch, AppState, RootState } from '.';
 import Api from 'Api';
-import { replaceEditedItem, toAnyAction } from 'utils/helpers';
 import NewTrip from 'types/NewTrip';
 import AssignTripFormData from 'types/AssignTripFormData';
 import { setUser } from './Account';
@@ -248,8 +247,9 @@ export function approvePaymentRequest(
   paymentRequestId: string,
 ) {
   return (dispatch: AppDispatch) => {
-    return Api.approvePaymentRequest(tripId, paymentRequestId).then((trip) => {
+    return Api.approvePaymentRequest(tripId, paymentRequestId).then(({trip, user}) => {
       dispatch(setTrip(trip));
+      dispatch(setUser(user))
     });
   };
 }

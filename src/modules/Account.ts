@@ -9,6 +9,7 @@ import {
   saveUserSessionId,
 } from 'utils/localStorageMethods';
 import Payment from 'types/Payment';
+import WithdrawalDetails from 'types/WithdrawalDetails';
 
 export interface AccountState {
   user: User | null;
@@ -153,6 +154,14 @@ export const requestEmailVerification = () => {
 export const topupBalance = (paymentDetails: Payment) => {
   return (dispatch: AppDispatch) => {
     return Api.topupWallet(paymentDetails).then((user) => {
+      dispatch(setUser(user));
+    });
+  };
+};
+
+export const withdrawFromBalance = (withdrawalDetails: WithdrawalDetails) => {
+  return (dispatch: AppDispatch) => {
+    return Api.withdrawFromBalance(withdrawalDetails).then((user) => {
       dispatch(setUser(user));
     });
   };

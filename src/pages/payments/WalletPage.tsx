@@ -22,23 +22,7 @@ export default function WalletPage() {
   const [depositMoneyIsVisible, setDepositMoneyIsVisible] = useState(false);
   const [withdrawMoneyIsVisible, setWithdrawMoneyIsVisible] = useState(false);
   const [addAccountIsVisible, setAddAccountIsVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
 
-  function saveTransaction(paymentDetails?: Payment) {
-    if (!paymentDetails) {
-      return;
-    }
-
-    setLoading(true);
-
-    dispatch(toAnyAction(topupBalance(paymentDetails)))
-      .then(() => {
-        setDepositMoneyIsVisible(false);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }
   return (
     <>
       <DashboardTopNav routeName="Wallet" />
@@ -78,13 +62,12 @@ export default function WalletPage() {
       </PageStyling>
       <DepositMoney
         isOpen={depositMoneyIsVisible}
-        isLoading={loading}
-        onCompleted={saveTransaction}
+        key={`depositMoneyIsVisible-${depositMoneyIsVisible}`}
         onClose={() => setDepositMoneyIsVisible(false)}
       />
       <WithdrawMoney
         isOpen={withdrawMoneyIsVisible}
-        isLoading={loading}
+        key={`withdrawMoneyIsVisible-${withdrawMoneyIsVisible}`}
         onClose={() => setWithdrawMoneyIsVisible(false)}
         addAccount={() => setAddAccountIsVisible(true)}
       />

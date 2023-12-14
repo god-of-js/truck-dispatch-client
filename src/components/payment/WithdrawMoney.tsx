@@ -1,13 +1,16 @@
 import { Link } from 'react-router-dom';
 import { RootState } from 'modules/index';
 import { lazy, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { OnChangeParams } from 'ui/UiInput';
 import sizes from 'utils/sizes';
 import PaystackImage from '../../assets/img/paystack.png';
 import { Toast } from 'utils/toast';
 import AmountSchema from 'utils/validations/AmountSchema';
+import { toAnyAction } from 'utils/helpers';
+import { withdrawFromBalance } from 'modules/Account';
+import WithdrawalDetails from 'types/WithdrawalDetails';
 
 const UiAlert = lazy(() => import('ui/UiAlert'));
 const UiInput = lazy(() => import('ui/UiInput'));
@@ -20,19 +23,15 @@ const ATMCard = lazy(() => import('./ATMCard'));
 
 interface Props {
   isOpen: boolean;
-  isLoading: boolean;
   onClose: () => void;
   addAccount: () => void;
 }
-export default function WithdrawMoney({
-  isOpen,
-  isLoading,
-  onClose,
-  addAccount,
-}: Props) {
+export default function WithdrawMoney({ isOpen, onClose, addAccount }: Props) {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
-    amount: null,
+    amount: NaN,
   });
+  const [loading, setLoading] = useState(false);
   const user = useSelector((state: RootState) => state.account.user);
 
   function handleChange({ name, value }: OnChangeParams) {
@@ -42,11 +41,26 @@ export default function WithdrawMoney({
   function withdrawFunds() {
     if (!formData.amount) return;
 
-    if (formData.amount > (user?.balance  || 0)) {
-        Toast.error({ msg: "Insufficient Funds"})
-        return;
+    if (formData.amount > (user?.balance || 0)) {
+      Toast.error({ msg: 'Insufficient Funds' });
+      return;
     }
+    if (!user?.bankDetails) {
+      Toast.error({
+        msg: 'Payout account is absent. Input a payout account to proceed.',
+      });
+      return;
+    }
+    setLoading(true);
+    dispatch(toAnyAction(withdrawFromBalance(formData as WithdrawalDetails)))
+      .then(() => {
+        onClose();
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
+
   return (
     <UiModal isVisible={isOpen} title="Withdraw" onClose={onClose}>
       <ModalBody>
@@ -59,6 +73,7 @@ export default function WithdrawMoney({
           <ATMCard
             title="Escrow Balance"
             value={user?.escrowBalance}
+            isActive={false}
             variant="warning"
           />
         </div>
@@ -75,7 +90,11 @@ export default function WithdrawMoney({
           </div>
         </UiAlert>
 
-        <UiForm formData={formData} schema={AmountSchema} onSubmit={withdrawFunds}>
+        <UiForm
+          formData={formData}
+          schema={AmountSchema}
+          onSubmit={withdrawFunds}
+        >
           {({ errors }) => (
             <div className="form-body">
               <div className="duo-grid">
@@ -142,7 +161,7 @@ export default function WithdrawMoney({
                 >
                   Cancel
                 </UiButton>
-                <UiButton size="large" loading={isLoading}>
+                <UiButton size="large" loading={loading}>
                   Proceed
                 </UiButton>
               </div>

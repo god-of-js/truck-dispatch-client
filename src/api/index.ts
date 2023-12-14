@@ -21,6 +21,7 @@ import Vehicle from 'types/Vehicle';
 import CreateBid from 'types/CreateBid';
 import ResetUserPassword from 'types/ResetUserPassword';
 import Payment from 'types/Payment';
+import WithdrawalDetails from 'types/WithdrawalDetails';
 
 class ApiService {
   createUser(userData: Partial<User>) {
@@ -230,7 +231,7 @@ class ApiService {
   }
 
   approvePaymentRequest(tripId: string, paymentRequestId: string) {
-    return this.post<Trip>(
+    return this.post<{trip: Trip, user: User}>(
       `/payment/payment-request/trip/${tripId}/approve/${paymentRequestId}`,
     );
   }
@@ -308,6 +309,9 @@ class ApiService {
 
   topupWallet(paymentDetails: Payment): Promise<User> {
     return this.post('/wallet/top-up', paymentDetails);
+  }
+  withdrawFromBalance(paymentDetails: WithdrawalDetails): Promise<User> {
+    return this.post('/wallet/withdraw', paymentDetails);
   }
 
   private get<T = any>(url: string, allowRawError?: boolean): Promise<T> {

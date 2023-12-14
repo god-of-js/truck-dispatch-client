@@ -1,7 +1,8 @@
+import { topupBalance } from 'modules/Account';
 import { RootState } from 'modules/index';
 import { lazy, useMemo, useState } from 'react';
 import { usePaystackPayment } from 'react-paystack';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Payment from 'types/Payment';
 import { OnChangeParams } from 'ui/UiInput';
@@ -10,6 +11,7 @@ import {
   nairaToKobo,
   priceWithTDPercent,
   tdPercentage,
+  toAnyAction,
 } from 'utils/helpers';
 import { paystackPublickKey } from 'utils/privateKeys';
 import sizes from 'utils/sizes';
@@ -28,19 +30,15 @@ const ATMCard = lazy(() => import('./ATMCard'));
 
 interface Props {
   isOpen: boolean;
-  isLoading: boolean;
   onClose: () => void;
-  onCompleted: (param?: Payment) => void;
 }
-export default function DepositMoney({
-  isOpen,
-  isLoading,
-  onClose,
-  onCompleted,
-}: Props) {
+export default function DepositMoney({ isOpen, onClose }: Props) {
   const [formData, setFormData] = useState({
     amount: null,
   });
+
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.account.user);
   const paystackConfig = {
     email: user?.email || '',
@@ -66,7 +64,7 @@ export default function DepositMoney({
     setFormData((data) => ({ ...data, [name]: value }));
   }
 
-  function handleCompletedTransaction(param?: Payment) {
+  function saveTransaction(param?: Payment) {
     if (!param) {
       Toast.error({
         msg: 'Transaction information was not passed. Kindly reach out to support.',
@@ -74,17 +72,29 @@ export default function DepositMoney({
       return;
     }
 
-    onCompleted({
-      ...param,
-      totalAmountPaid: totalAmount,
-      amount: formData.amount ? Number(formData.amount) : 0,
-    });
+    setLoading(true);
+
+    dispatch(
+      toAnyAction(
+        topupBalance({
+          ...param,
+          totalAmountPaid: totalAmount,
+          amount: formData.amount ? Number(formData.amount) : 0,
+        }),
+      ),
+    )
+      .then(() => {
+        onClose();
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   function triggerPaystack() {
     if (!formData.amount) return;
 
-    initializePayment(handleCompletedTransaction);
+    initializePayment(saveTransaction);
   }
   return (
     <UiModal isVisible={isOpen} title="Deposit" onClose={onClose}>
@@ -172,7 +182,7 @@ export default function DepositMoney({
                 >
                   Cancel
                 </UiButton>
-                <UiButton size="large" loading={isLoading}>
+                <UiButton size="large" loading={loading}>
                   Proceed
                 </UiButton>
               </div>
