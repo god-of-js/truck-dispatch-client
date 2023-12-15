@@ -24,6 +24,17 @@ const icons = {
       default: module.ReactComponent,
     })),
   ),
+  Wallet: lazy(() =>
+    import('./icons/wallet.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
+
+  CardPos: lazy(() =>
+    import('./icons/card-pos.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
   CaretDown: lazy(() =>
     import('./icons/caret-down.svg').then((module) => ({
       default: module.ReactComponent,

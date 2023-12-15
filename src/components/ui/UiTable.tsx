@@ -25,6 +25,7 @@ interface Props {
   tableTitle: string;
   data: Row[];
   headers: Header[];
+  /** This prop accepts a function in case there is a need to filter options available for rows based on data available */
   options?: DropDownData[] | ((tripStatus: Row) => DropDownData[]);
   onRowClick?: (id: string) => void;
   emptyTableIcon?: Icons;

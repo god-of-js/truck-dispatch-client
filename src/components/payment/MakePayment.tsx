@@ -18,7 +18,7 @@ import { selectTrip } from 'modules/Trips';
 import UiIcon from 'ui/UiIcon';
 import sizes from 'utils/sizes';
 import UiCard from 'ui/UiCard';
-import { ReactComponent as PaystackLogo } from '../../assets/img/paystack.svg';
+import PaystackLogo from '../../assets/img/paystack.png';
 import PaymentMethods from 'types/PaymentMethods';
 
 const AppLogo = lazy(() => import('ui/AppLogo'));
@@ -82,6 +82,7 @@ export default function MakePayment({
   function proceedAfterPaystack(processorDetails?: Payment) {
     payWithPaystack(processorDetails);
   }
+  const initializePayment = usePaystackPayment(paystackConfig);
 
   function proceedWithPayment() {
     if (paymentMethod === 'balance') {
@@ -90,7 +91,6 @@ export default function MakePayment({
     }
     initializePayment(proceedAfterPaystack);
   }
-  const initializePayment = usePaystackPayment(paystackConfig);
 
   return (
     <UiModal
@@ -181,7 +181,10 @@ export default function MakePayment({
                   />
                 </div>
                 <div className="atmCard">
-                  <ATMCard isActive={isBalanceSufficient} />
+                  <ATMCard
+                    isActive={isBalanceSufficient}
+                    value={user?.balance || 0}
+                  />
                 </div>
 
                 {user?.balance! < bid.price && (
@@ -211,7 +214,11 @@ export default function MakePayment({
               <UiCard variant="primary-light">
                 <div className="payment-method">
                   <div className="icon-with-title">
-                    <PaystackLogo />
+                    <img
+                      src={PaystackLogo}
+                      alt="Truckdispatch Paystack trigger"
+                      width="30"
+                    />
                     <span>Paystack</span>
                   </div>
                   <UiCheckbox

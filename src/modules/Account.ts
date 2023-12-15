@@ -8,6 +8,8 @@ import {
   saveAuthSessionId,
   saveUserSessionId,
 } from 'utils/localStorageMethods';
+import Payment from 'types/Payment';
+import WithdrawalDetails from 'types/WithdrawalDetails';
 
 export interface AccountState {
   user: User | null;
@@ -116,6 +118,7 @@ export function requestForgotPasswordLink(AuthUser: { email: string }) {
     return Api.requestResetPasswordLink(AuthUser);
   };
 }
+
 export function resetUserPassword(passwordDetails: {
   password: string;
   token: string;
@@ -145,5 +148,21 @@ export const createUserBankAccount = (accountDetails: BankAccount) => {
 export const requestEmailVerification = () => {
   return () => {
     return Api.requestEmailVerification();
+  };
+};
+
+export const topupBalance = (paymentDetails: Payment) => {
+  return (dispatch: AppDispatch) => {
+    return Api.topupWallet(paymentDetails).then((user) => {
+      dispatch(setUser(user));
+    });
+  };
+};
+
+export const withdrawFromBalance = (withdrawalDetails: WithdrawalDetails) => {
+  return (dispatch: AppDispatch) => {
+    return Api.withdrawFromBalance(withdrawalDetails).then((user) => {
+      dispatch(setUser(user));
+    });
   };
 };
