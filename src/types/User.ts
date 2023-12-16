@@ -1,5 +1,7 @@
 import { userTypes } from 'utils/constants';
 import TransferRecipient from './TransferRecipient';
+import Vehicle from './Vehicle';
+import Rating from './Rating';
 
 export default interface User {
   _id: string;
@@ -7,6 +9,7 @@ export default interface User {
   lastName: string;
   email: string;
   balance?: number;
+  escrowBalance?: number;
   phone: string;
   avatar?: string;
   completedTrips?: number;

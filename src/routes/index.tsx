@@ -8,6 +8,12 @@ const PageError = lazy(() => import('../components/errors/PageError'));
 import DashboardLayout from '../layouts/DashboardLayout';
 import { getUserSessionId } from 'utils/localStorageMethods';
 import { resetPasswordAccessChecks } from './allowNavigationFunctions';
+
+const UserVehiclepage = lazy(() => import('../pages/user/UserVehiclePage'));
+
+const TransporterProfilePage = lazy(
+  () => import('../pages/user/TransporterProfilePage'),
+);
 const AuthLayout = lazy(() => import('../layouts/AuthLayout'));
 const ProfileLayout = lazy(() => import('../layouts/ProfileLayout'));
 const TripLayout = lazy(() => import('../layouts/TripLayout'));
@@ -56,6 +62,7 @@ const VehiclesPage = lazy(() => import('../pages/vehicles/VehiclesPage'));
 
 // Transactions
 const PaymentsPage = lazy(() => import('../pages/payments/PaymentsPage'));
+const WalletPage = lazy(() => import('../pages/payments/WalletPage'));
 const sessionId = getUserSessionId();
 const router = createBrowserRouter([
   {
@@ -141,6 +148,16 @@ const router = createBrowserRouter([
         element: <TransporterJobsPage />,
       },
       {
+        path: '/user/:userId',
+        id: 'User detail',
+        element: <TransporterProfilePage />,
+      },
+      {
+        path: '/user/:userId/vehicles',
+        id: 'User vehicles',
+        element: <UserVehiclepage />,
+      },
+      {
         path: '/vehicles',
         id: 'Vehicles',
         element: <VehiclesPage />,
@@ -149,6 +166,11 @@ const router = createBrowserRouter([
         path: '/payments',
         id: 'Payments',
         element: <PaymentsPage />,
+      },
+      {
+        path: '/wallet',
+        id: 'WalletPage',
+        element: <WalletPage />,
       },
     ],
   },

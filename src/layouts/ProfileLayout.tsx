@@ -78,7 +78,7 @@ export default function ProfileLayout() {
       <DashboardTopNav routeName="Settings" />
       <ProfileLayoutStyling>
         <div className="profile-layout__inner">
-          <ul className='profile-tabs'>
+          <ul className="profile-tabs">
             {settingsRoutes.map((route, index) => (
               <li
                 key={index}

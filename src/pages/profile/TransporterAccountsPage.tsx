@@ -1,3 +1,5 @@
+// TODO: change name of file to TransporterBankDetailsPage.
+
 import React, { lazy, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';

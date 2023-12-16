@@ -11,8 +11,8 @@ const UiIcon = lazy(() => import('ui/UiIcon'));
 
 interface Props {
   vehicle: Vehicle;
-  openEditVehicle: (vehicle: Vehicle) => void;
-  openDeleteVehicle: (vehicleId: string) => void;
+  openEditVehicle?: (vehicle: Vehicle) => void;
+  openDeleteVehicle?: (vehicleId: string) => void;
 }
 export default function VehicleComponent({
   vehicle,
@@ -22,7 +22,7 @@ export default function VehicleComponent({
   const images = Object.values(vehicle.images).slice(0, 4);
 
   function editVehicle() {
-    openEditVehicle(vehicle);
+    if (openEditVehicle) openEditVehicle(vehicle);
   }
   const iconName = useMemo(() => {
     const typeOfVehicle = vehicleTypes.find(
@@ -34,7 +34,9 @@ export default function VehicleComponent({
   return (
     <VehicleStyling>
       <div className="driver-avatar-container">
-        <img src={vehicle.driver.avatar} width="100" height="100" alt="" />
+        <div className="driver-avatar-image">
+          <img src={vehicle.driver.avatar} width="100" height="100" alt="" />
+        </div>
         <div className="vehicle-type">
           <img src={iconName} />
           <div>{vehicle.vehicleType}</div>
@@ -51,7 +53,7 @@ export default function VehicleComponent({
         </div>
         <div className="field">
           <div className="label">PHONE NUMBER</div>
-          <div className="text-value">{vehicle.driver.phone}</div>
+          <div className="text-value">***********</div>
         </div>
       </div>
       <div className="images">
@@ -66,16 +68,20 @@ export default function VehicleComponent({
         </div>
       </div>
       <div className="btn-container">
-        <UiButton variant="secondary" size="large" onClick={editVehicle}>
-          Edit truck details
-        </UiButton>
-        <UiButton
-          variant="danger-secondary"
-          size="large"
-          onClick={() => openDeleteVehicle(vehicle._id)}
-        >
-          <UiIcon icon="TruckRemove" />
-        </UiButton>
+        {openEditVehicle && (
+          <UiButton variant="secondary" size="large" onClick={editVehicle}>
+            Edit truck details
+          </UiButton>
+        )}
+        {openDeleteVehicle && (
+          <UiButton
+            variant="danger-secondary"
+            size="large"
+            onClick={() => openDeleteVehicle(vehicle._id)}
+          >
+            <UiIcon icon="TruckRemove" />
+          </UiButton>
+        )}
       </div>
     </VehicleStyling>
   );
