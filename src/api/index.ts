@@ -236,7 +236,7 @@ class ApiService {
   }
 
   approvePaymentRequest(tripId: string, paymentRequestId: string) {
-    return this.post<{trip: Trip, user: User}>(
+    return this.post<{ trip: Trip; user: User }>(
       `/payment/payment-request/trip/${tripId}/approve/${paymentRequestId}`,
     );
   }

@@ -1,12 +1,16 @@
 import { useMemo } from 'react';
 import styled from 'styled-components';
 import Rating from 'types/Rating';
-import RatingsComponent from './RatingsComponent';
+import UserFullProfile from 'types/UserFullProfile';
+import sizes from 'utils/sizes';
+import Ratings from './Ratings';
+import RatingsFrequency from './RatingsFrequency';
 
 interface Props {
   ratings: Rating[];
+  user: UserFullProfile;
 }
-export default function RatingsStat({ ratings }: Props) {
+export default function RatingsStatistics({ ratings, user }: Props) {
   const averageStarRating = useMemo(() => {
     if (ratings.length === 0) {
       return 0;
@@ -31,11 +35,12 @@ export default function RatingsStat({ ratings }: Props) {
         <DataCard>
           <div className="card-title">Average Rating</div>
           <div className="card-value">
-            <div>{averageStarRating}</div>
+            <div>{user.rating}</div>
+            <Ratings rating={user.rating} />
           </div>
         </DataCard>
-        <DataCard>
-          <RatingsComponent ratings={ratings} />
+        <DataCard className="rating-frequency">
+          <RatingsFrequency ratings={ratings} />
         </DataCard>
       </div>
     </RatingsStatStyling>
@@ -45,14 +50,22 @@ export default function RatingsStat({ ratings }: Props) {
 const RatingsStatStyling = styled.div`
   padding: ${pxToRem(32)} 0;
   border-bottom: ${pxToRem(1)} solid var(--color-gray-50);
-  h3 {
-    margin-bottom: ${pxToRem(32)};
-  }
 
   .triple-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(1, 1fr);
     gap: ${pxToRem(12)};
+    margin-top: ${pxToRem(32)};
+
+    @media screen and (min-width: ${sizes.mobileLargeWidth}) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media screen and (min-width: ${sizes.tabletMidWidth}) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    @media screen and (min-width: ${sizes.laptopSmallWidth}) {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 `;
 

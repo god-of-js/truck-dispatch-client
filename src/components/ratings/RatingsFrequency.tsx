@@ -7,7 +7,7 @@ interface Props {
   ratings: Rating[];
 }
 
-export default function RatingsComponent({ ratings }: Props) {
+export default function RatingsFrequency({ ratings }: Props) {
   const totalRatings = ratings.length;
 
   return (

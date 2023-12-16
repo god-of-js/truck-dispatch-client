@@ -1,13 +1,20 @@
 import React, { lazy, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { Size } from 'types/Size';
 
 const UiIcon = lazy(() => import('ui/UiIcon'));
 interface Props {
   isActive?: boolean;
   rating: number;
+  size?: Size;
   onRate?: (rating: number) => void;
 }
-export default function Ratings({ isActive = false, rating, onRate }: Props) {
+export default function Ratings({
+  isActive = false,
+  rating,
+  size,
+  onRate,
+}: Props) {
   const [activeStar, setActiveStar] = useState(rating);
   useEffect(() => {
     if (isActive) {
@@ -35,7 +42,7 @@ export default function Ratings({ isActive = false, rating, onRate }: Props) {
         >
           <UiIcon
             icon={activeStar >= i || rating >= i ? 'GoldStar' : 'Star'}
-            size="20"
+            size={size === 's' ? '14' : '20'}
           />
         </RatingButton>
       ))}

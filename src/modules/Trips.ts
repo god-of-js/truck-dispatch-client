@@ -247,9 +247,11 @@ export function approvePaymentRequest(
   paymentRequestId: string,
 ) {
   return (dispatch: AppDispatch) => {
-    return Api.approvePaymentRequest(tripId, paymentRequestId).then(({trip, user}) => {
-      dispatch(setTrip(trip));
-      dispatch(setUser(user))
-    });
+    return Api.approvePaymentRequest(tripId, paymentRequestId).then(
+      ({ trip, user }) => {
+        dispatch(setTrip(trip));
+        dispatch(setUser(user));
+      },
+    );
   };
 }

@@ -1,4 +1,4 @@
-import RatingsStat from 'components/ratings/RatingsStat';
+import RatingsStatistics from 'components/ratings/RatingsStatistics';
 import React, { lazy, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -14,7 +14,7 @@ const UiIcon = lazy(() => import('ui/UiIcon'));
 const VehicleItem = lazy(() => import('components/vehicles/VehicleItem'));
 const RatingDetails = lazy(() => import('components/ratings/RatingDetails'));
 const RatingsComponent = lazy(
-  () => import('components/ratings/RatingsComponent'),
+  () => import('components/ratings/RatingsFrequency'),
 );
 
 interface Props {
@@ -29,7 +29,7 @@ export default function UserProfile({ user, messageUser }: Props) {
   }, [user]);
 
   const ratings = useMemo<Rating[]>(() => {
-    return user.ratings;
+    return user.ratings.filter((rating) => !!rating.comment);
   }, [user]);
 
   return (
@@ -47,7 +47,7 @@ export default function UserProfile({ user, messageUser }: Props) {
             <UiIcon icon="DoubleChat" />
             <span className="hidden-in-mobile">Message</span>
           </UiButton>
-          <UiButton>Add to Contacts</UiButton>
+          {false && <UiButton>Add to Contacts</UiButton>}
         </div>
       </UserProfileHeader>
       <div className="p-32">
@@ -80,7 +80,7 @@ export default function UserProfile({ user, messageUser }: Props) {
         {vehicles && (
           <Vehicles>
             <h3>TRUCKS</h3>
-            <div className="vehicle-data">
+            <div className="vehicles">
               {vehicles.map((vehicle) => (
                 <VehicleItem vehicle={vehicle} key={vehicle._id} />
               ))}
@@ -95,10 +95,12 @@ export default function UserProfile({ user, messageUser }: Props) {
           </Vehicles>
         )}
         <UserReviews>
-          <RatingsStat ratings={ratings} />
-          {ratings.map((rating) => (
-            <RatingDetails rating={rating} key={rating._id} />
-          ))}
+          <RatingsStatistics ratings={ratings} user={user} />
+          <div className="ratings">
+            {ratings.map((rating) => (
+              <RatingDetails rating={rating} key={rating._id} />
+            ))}
+          </div>
         </UserReviews>
       </div>
     </UserProfileStyle>
@@ -114,7 +116,7 @@ const UserProfileStyle = styled.div`
   h3 {
     margin: 0;
     text-transform: uppercase;
-    color: var(--color-grey-70, #848288);
+    color: var(--color-gray-70);
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
@@ -134,11 +136,11 @@ const UserProfileStyle = styled.div`
 const UserProfileHeader = styled.header`
   background: var(--color-primary-10);
   display: flex;
-  flex-direction: column;
   gap: 16px;
   padding: ${pxToRem(36)} ${pxToRem(32)} ${pxToRem(21)} ${pxToRem(32)};
   margin-bottom: ${pxToRem(20)};
-
+  align-items: center;
+  justify-content: space-between;
   .hidden-in-mobile {
     display: none;
   }
@@ -173,10 +175,6 @@ const UserProfileHeader = styled.header`
   }
 
   @media screen and (min-width: ${sizes.tabletSmallWidth}) {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-
     .hidden-in-mobile {
       display: block;
     }
@@ -202,10 +200,17 @@ const Vehicles = styled.div`
   padding: 32px 0;
   border-bottom: 1px solid var(--color-gray-50);
 
-  .vehicle-data {
+  .vehicles {
     display: flex;
     flex-wrap: wrap;
+    gap: ${pxToRem(16)};
   }
 `;
 
-const UserReviews = styled.div``;
+const UserReviews = styled.div`
+  .ratings {
+    padding: ${pxToRem(32)} 0;
+    display: grid;
+    gap: ${pxToRem(32)};
+  }
+`;

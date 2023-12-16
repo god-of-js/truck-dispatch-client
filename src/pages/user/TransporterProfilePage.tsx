@@ -39,7 +39,7 @@ export default function TransporterProfilePage() {
   return (
     <>
       <DashboardTopNav
-        routeName="Transporter Profile"
+        routeName="User Profile"
         startNode={<UiBackButton text="Go back" />}
       />
       {loading && <Loader />}
