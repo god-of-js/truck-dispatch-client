@@ -4,24 +4,20 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Rating from 'types/Rating';
 import UserFullProfile from 'types/UserFullProfile';
+import { serviceBasedUserTypes } from 'utils/constants';
 import sizes from 'utils/sizes';
 
-const Ratings = lazy(() => import('components/ratings/Ratings'));
 const UiAvatar = lazy(() => import('ui/UiAvatar'));
 const UiButton = lazy(() => import('ui/UiButton'));
 const UiDataField = lazy(() => import('ui/UiDataField'));
 const UiIcon = lazy(() => import('ui/UiIcon'));
 const VehicleItem = lazy(() => import('components/vehicles/VehicleItem'));
 const RatingDetails = lazy(() => import('components/ratings/RatingDetails'));
-const RatingsComponent = lazy(
-  () => import('components/ratings/RatingsFrequency'),
-);
 
 interface Props {
   user: UserFullProfile;
   messageUser: () => void;
 }
-
 export default function UserProfile({ user, messageUser }: Props) {
   const vehicles = useMemo(() => {
     if (!user.vehicles) return;
@@ -77,11 +73,11 @@ export default function UserProfile({ user, messageUser }: Props) {
             value={user.noOfVehicles}
           />
         </UserDataFields>
-        {vehicles && (
+        {serviceBasedUserTypes.includes(user.userType) && (
           <Vehicles>
             <h3>TRUCKS</h3>
             <div className="vehicles">
-              {vehicles.map((vehicle) => (
+              {vehicles?.map((vehicle) => (
                 <VehicleItem vehicle={vehicle} key={vehicle._id} />
               ))}
             </div>

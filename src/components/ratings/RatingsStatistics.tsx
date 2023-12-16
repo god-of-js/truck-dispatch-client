@@ -26,7 +26,7 @@ export default function RatingsStatistics({ ratings, user }: Props) {
 
   return (
     <RatingsStatStyling className="review-container">
-      <h3>Transporter Reviews</h3>
+      <h3>Reviews</h3>
       <div className="triple-grid">
         <DataCard>
           <div className="card-title">Total Reviews</div>

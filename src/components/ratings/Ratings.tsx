@@ -1,6 +1,7 @@
 import React, { lazy, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Size } from 'types/Size';
+import { Icons } from 'ui/UiIcon';
 
 const UiIcon = lazy(() => import('ui/UiIcon'));
 interface Props {
@@ -33,19 +34,29 @@ export default function Ratings({
 
   return (
     <RatingsContainer>
-      {Array.from({ length: 5 }, (_, i) => i + 1).map((i) => (
-        <RatingButton
-          className="star"
-          key={i}
-          disabled={!isActive}
-          onClick={() => onRate?.(i)}
-        >
-          <UiIcon
-            icon={activeStar >= i || rating >= i ? 'GoldStar' : 'Star'}
-            size={size === 's' ? '14' : '20'}
-          />
-        </RatingButton>
-      ))}
+      {Array.from({ length: 5 }, (_, i) => i + 1).map((i) => {
+        let iconType: Icons;
+
+        // Check conditions and set iconType accordingly
+        if (activeStar >= i || rating >= i) {
+          iconType = 'GoldStar';
+        } else if (activeStar === i - 0.5 && rating % 1 !== 0) {
+          iconType = 'HalfStar';
+        } else {
+          iconType = 'Star';
+        }
+
+        return (
+          <RatingButton
+            className="star"
+            key={i}
+            disabled={!isActive}
+            onClick={() => onRate?.(i)}
+          >
+            <UiIcon icon={iconType} size={size === 's' ? '14' : '20'} />
+          </RatingButton>
+        );
+      })}
     </RatingsContainer>
   );
 }
@@ -56,7 +67,6 @@ const RatingsContainer = styled.div`
 const RatingButton = styled.button`
   border: transparent;
   background: transparent;
-  /* cursor: ${({ disabled }) => (disabled ? '' : 'pointer')}; */
   ${({ disabled }) => !disabled && 'cursor: pointer;'}
   padding: 0;
 
