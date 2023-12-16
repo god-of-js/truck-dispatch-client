@@ -1,12 +1,11 @@
 import React, { lazy, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import sizes from 'utils/sizes';
 
 import { RootState } from 'modules/index';
 import { removeUserSessionId } from 'utils/localStorageMethods';
-import { selectUnreadChats } from 'modules/Chat';
 import { shipperRoutes, transporterRoutes } from './routes';
 import { setUser } from 'modules/Account';
 
@@ -17,8 +16,6 @@ const UiIcon = lazy(() => import('ui/UiIcon'));
 
 export default function DashboardSidebar() {
   const user = useSelector((state: RootState) => state.account.user);
-  const unreadChat = useSelector(selectUnreadChats);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const appLocation = useLocation();
   const [isExpanded, setIsExpanded] = useState(false);

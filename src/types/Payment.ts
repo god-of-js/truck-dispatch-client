@@ -8,5 +8,6 @@ export default interface Payment {
   transaction: string;
   tripReference: string;
   amountInBid: number;
+  amount: number;
   totalAmountPaid: number;
 }

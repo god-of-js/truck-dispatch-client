@@ -45,7 +45,7 @@ export const selectPaymentRequestByTripId = (id: string) =>
   );
 
 export function getPaymentRequestsOfDriver() {
-  return (dispatch: AppDispatch, state: AppState) => {
+  return (dispatch: AppDispatch) => {
     return Api.getPaymentRequestsOfDriver().then((data) => {
       dispatch(setPaymentRequests(data));
       return data;

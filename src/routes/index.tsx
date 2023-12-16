@@ -62,6 +62,7 @@ const VehiclesPage = lazy(() => import('../pages/vehicles/VehiclesPage'));
 
 // Transactions
 const PaymentsPage = lazy(() => import('../pages/payments/PaymentsPage'));
+const WalletPage = lazy(() => import('../pages/payments/WalletPage'));
 const sessionId = getUserSessionId();
 const router = createBrowserRouter([
   {
@@ -165,6 +166,11 @@ const router = createBrowserRouter([
         path: '/payments',
         id: 'Payments',
         element: <PaymentsPage />,
+      },
+      {
+        path: '/wallet',
+        id: 'WalletPage',
+        element: <WalletPage />,
       },
     ],
   },

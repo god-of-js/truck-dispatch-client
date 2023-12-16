@@ -2,7 +2,6 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 import Trip from 'types/Trip';
 import { AppDispatch, AppState, RootState } from '.';
 import Api from 'Api';
-import { replaceEditedItem, toAnyAction } from 'utils/helpers';
 import NewTrip from 'types/NewTrip';
 import AssignTripFormData from 'types/AssignTripFormData';
 import { setUser } from './Account';
@@ -81,7 +80,7 @@ export const selectJob = (jobId: string) =>
 
 // ASYNC THUNKS
 export function createTrip(trip: NewTrip) {
-  return (dispatch: AppDispatch, state: AppState) => {
+  return (dispatch: AppDispatch) => {
     return Api.createTrip(trip).then((data) => {
       dispatch(setTrip(data));
       return data;
@@ -191,10 +190,10 @@ export function unassignTrip(tripId: string) {
 
 export function cancelTripByTripCreator(tripId: string) {
   return (dispatch: AppDispatch) => {
-    return Api.cancelTripByTripCreator(tripId).then((data) => {
+    return Api.cancelTripByTripCreator(tripId).then((user) => {
       dispatch(removeTrip(tripId));
-      dispatch(setUser(data.user));
-      return data;
+      if (user) dispatch(setUser(user));
+      return user;
     });
   };
 }
@@ -248,8 +247,9 @@ export function approvePaymentRequest(
   paymentRequestId: string,
 ) {
   return (dispatch: AppDispatch) => {
-    return Api.approvePaymentRequest(tripId, paymentRequestId).then((trip) => {
+    return Api.approvePaymentRequest(tripId, paymentRequestId).then(({trip, user}) => {
       dispatch(setTrip(trip));
+      dispatch(setUser(user))
     });
   };
 }

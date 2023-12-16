@@ -21,6 +21,8 @@ import Vehicle from 'types/Vehicle';
 import CreateBid from 'types/CreateBid';
 import ResetUserPassword from 'types/ResetUserPassword';
 import UserFullProfile from 'types/UserFullProfile';
+import Payment from 'types/Payment';
+import WithdrawalDetails from 'types/WithdrawalDetails';
 
 class ApiService {
   createUser(userData: Partial<User>) {
@@ -180,7 +182,7 @@ class ApiService {
   }
 
   cancelTripByTripCreator(tripId: string) {
-    return this.delete<{ trip: Trip; user: User }>(
+    return this.delete<User | undefined>(
       `/trips/${tripId}/cancel-trip-by-trip-owner`,
     );
   }
@@ -234,7 +236,7 @@ class ApiService {
   }
 
   approvePaymentRequest(tripId: string, paymentRequestId: string) {
-    return this.post<Trip>(
+    return this.post<{trip: Trip, user: User}>(
       `/payment/payment-request/trip/${tripId}/approve/${paymentRequestId}`,
     );
   }
@@ -308,6 +310,13 @@ class ApiService {
     return this.get(
       `/externals/banks/account?account_number=${accountNumber}&bank_code=${bankCode}`,
     );
+  }
+
+  topupWallet(paymentDetails: Payment): Promise<User> {
+    return this.post('/wallet/top-up', paymentDetails);
+  }
+  withdrawFromBalance(paymentDetails: WithdrawalDetails): Promise<User> {
+    return this.post('/wallet/withdraw', paymentDetails);
   }
 
   private get<T = any>(url: string, allowRawError?: boolean): Promise<T> {
