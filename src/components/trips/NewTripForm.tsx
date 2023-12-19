@@ -124,14 +124,16 @@ export default function NewTripForm({
                 error={errors.typeOfGoods}
                 onChange={handleChange}
               />
-              <UiSelect
-                label="Shipping Line"
-                name="shippingLine"
-                options={shippingLinesOptions}
-                value={formData.shippingLine || ''}
-                error={errors.shippingLine}
-                onChange={handleChange}
-              />
+              {formData.typeOfGoods !== 'cargo' && (
+                <UiSelect
+                  label="Shipping Line"
+                  name="shippingLine"
+                  options={shippingLinesOptions}
+                  value={formData.shippingLine || ''}
+                  error={errors.shippingLine}
+                  onChange={handleChange}
+                />
+              )}
               <UiSelect
                 label="Job Type"
                 name="jobType"
@@ -140,14 +142,16 @@ export default function NewTripForm({
                 error={errors.jobType}
                 onChange={handleChange}
               />
-              <UiSelect
-                label="Size of Container"
-                name="sizeOfContainer"
-                options={sizeOfContainerOptions}
-                value={formData.sizeOfContainer || ''}
-                error={errors.sizeOfContainer}
-                onChange={handleChange}
-              />
+              {formData.typeOfGoods !== 'cargo' && (
+                <UiSelect
+                  label="Size of Container"
+                  name="sizeOfContainer"
+                  options={sizeOfContainerOptions}
+                  value={formData.sizeOfContainer || ''}
+                  error={errors.sizeOfContainer}
+                  onChange={handleChange}
+                />
+              )}
               <UiInput
                 label="Weight Of Goods(Tonnage)"
                 name="weight"
