@@ -8,6 +8,12 @@ const PageError = lazy(() => import('../components/errors/PageError'));
 import DashboardLayout from '../layouts/DashboardLayout';
 import { getUserSessionId } from 'utils/localStorageMethods';
 import { resetPasswordAccessChecks } from './allowNavigationFunctions';
+
+const UserVehiclepage = lazy(() => import('../pages/user/UserVehiclePage'));
+
+const TransporterProfilePage = lazy(
+  () => import('../pages/user/TransporterProfilePage'),
+);
 const AuthLayout = lazy(() => import('../layouts/AuthLayout'));
 const ProfileLayout = lazy(() => import('../layouts/ProfileLayout'));
 const TripLayout = lazy(() => import('../layouts/TripLayout'));
@@ -140,6 +146,16 @@ const router = createBrowserRouter([
         path: '/available-jobs',
         id: 'Jobs',
         element: <TransporterJobsPage />,
+      },
+      {
+        path: '/user/:userId',
+        id: 'User detail',
+        element: <TransporterProfilePage />,
+      },
+      {
+        path: '/user/:userId/vehicles',
+        id: 'User vehicles',
+        element: <UserVehiclepage />,
       },
       {
         path: '/vehicles',

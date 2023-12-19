@@ -20,6 +20,7 @@ import ChatLog from 'types/ChatLog';
 import Vehicle from 'types/Vehicle';
 import CreateBid from 'types/CreateBid';
 import ResetUserPassword from 'types/ResetUserPassword';
+import UserFullProfile from 'types/UserFullProfile';
 import Payment from 'types/Payment';
 import WithdrawalDetails from 'types/WithdrawalDetails';
 
@@ -108,6 +109,10 @@ class ApiService {
 
   getUser() {
     return this.get<User>('/user');
+  }
+
+  getUserDetailsById(userId: string) {
+    return this.get<UserFullProfile>(`/user/${userId}`);
   }
 
   startVerificationProcess(data: FormData) {
@@ -231,7 +236,7 @@ class ApiService {
   }
 
   approvePaymentRequest(tripId: string, paymentRequestId: string) {
-    return this.post<{trip: Trip, user: User}>(
+    return this.post<{ trip: Trip; user: User }>(
       `/payment/payment-request/trip/${tripId}/approve/${paymentRequestId}`,
     );
   }

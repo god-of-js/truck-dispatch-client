@@ -92,6 +92,15 @@ export function updateUser(data: FormData) {
     });
   };
 }
+
+export function getUserDetailsById(userId: string) {
+  return () => {
+    return Api.getUserDetailsById(userId).then((user) => {
+      return user;
+    });
+  };
+}
+
 export function updatePassword(data: { password: string }) {
   return () => {
     return Api.updatePassword(data);

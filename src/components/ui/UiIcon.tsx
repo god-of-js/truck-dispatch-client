@@ -150,6 +150,11 @@ const icons = {
       default: module.ReactComponent,
     })),
   ),
+  HalfStar: lazy(() =>
+    import('./icons/half-star.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
   GoldStar: lazy(() =>
     import('./icons/gold-star.svg').then((module) => ({
       default: module.ReactComponent,

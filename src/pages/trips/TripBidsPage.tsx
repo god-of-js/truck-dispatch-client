@@ -65,6 +65,7 @@ export default function TripBidsPage() {
       ['fullName'],
     );
   }, [bids, searchQuery]);
+
   function handleQueryChange({
     value,
   }: {
@@ -79,7 +80,12 @@ export default function TripBidsPage() {
   }
 
   function viewSenderDetails(bidId: string) {
-    // navigate(`/my-trips/${tripId}/bids/${bidId}`);
+    const selectedBid = bids.find(({ _id }) => _id === bidId);
+    if (!selectedBid) {
+      Toast.error({ msg: 'No bid matches this ID' });
+      return;
+    }
+    navigate(`/user/${selectedBid.transporter._id}`);
   }
 
   function negotiateBid(bidId: string) {
