@@ -101,8 +101,8 @@ export default function LoginPage() {
                   onChange={handleChange}
                 />
                 <p>
-                  Forgot Password?{' '}
-                  <Link to="/auth/forgot-password">Reset Password</Link>{' '}
+                  Forgot Password?
+                  <Link to="/auth/forgot-password">Reset Password</Link>
                 </p>
                 <div className="hidden-in-mobile">
                   <UiButton
@@ -127,7 +127,7 @@ export default function LoginPage() {
                     </UiButton>
                   </div>
                   <p>
-                    <span>New to TruckDispatch?</span>{' '}
+                    <span>New to TruckDispatch?</span>
                     <Link to="/auth/join">Sign Up</Link>
                   </p>
                 </div>
