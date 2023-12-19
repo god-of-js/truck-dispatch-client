@@ -103,7 +103,7 @@ const Styling = styled.div`
     }
   }
 
-  @media screen and (max-height: 690px) {
+  @media screen and (max-height: ${pxToRem(690)}) {
     .form-container {
       .bottom-actions {
         position: relative;
