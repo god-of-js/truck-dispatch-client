@@ -286,6 +286,25 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
     }
   }
 
+  @media screen and (max-height: ${pxToRem(770)}) {
+    max-width: 100%;
+    .sidebar__inner {
+      overflow-y: auto;
+      scrollbar-width: ${pxToRem(0)};
+      scrollbar-color: transparent transparent;
+    }
+    .sidebar__inner::-webkit-scrollbar {
+      width: ${pxToRem(0)};
+    }
+    .sidebar__inner::-webkit-scrollbar-thumb {
+      background-color: transparent;
+    }
+    .bottom-actions {
+      margin-top: ${pxToRem(20)};
+      position: relative;
+    }
+  }
+
   @media only screen and (min-width: ${sizes.mobileLargeWidth}) {
     display: block;
     width: ${({ isExpanded }) => (isExpanded ? '16%' : '7%')};

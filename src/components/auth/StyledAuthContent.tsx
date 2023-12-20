@@ -80,7 +80,6 @@ const Styling = styled.div`
       display: flex;
       flex-direction: column;
       gap: ${pxToRem(12)};
-
       width: 100%;
       bottom: 0;
       left: 0;
@@ -103,6 +102,15 @@ const Styling = styled.div`
       display: block;
     }
   }
+
+  @media screen and (max-height: ${pxToRem(690)}) {
+    .form-container {
+      .bottom-actions {
+        position: relative;
+      }
+    }
+  }
+
   @media screen and (min-width: ${sizes.mobile}) {
     .form-container {
       width: 90%;

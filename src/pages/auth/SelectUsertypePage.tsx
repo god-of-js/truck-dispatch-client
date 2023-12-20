@@ -226,6 +226,7 @@ const StyledUserTypeGrid = styled.div`
     border-radius: ${pxToRem(8)};
     .user-card {
       border: 1px solid var(--color-gray);
+      height: ${pxToRem(84)};
       border-radius: ${pxToRem(8)};
       padding: ${pxToRem(12)};
       cursor: pointer;
