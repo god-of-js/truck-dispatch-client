@@ -165,7 +165,7 @@ export default function TripDetailsPage() {
   const MAX_DISPLAY_LENGTH = 170;
 
   const truncatedInstructions = useMemo(() => {
-    const instructions = trip?.instructions || '';
+    const instructions = trip?.instructions || 'N/A';
     return instructions.slice(0, MAX_DISPLAY_LENGTH);
   }, [trip?.instructions]);
 
@@ -315,7 +315,7 @@ export default function TripDetailsPage() {
             <UiCard>
               <div className="card-title">Handling Instructions</div>
               <p className="handling-instructions">
-                {truncatedInstructions || 'N/A'}
+                {trip?.instructions ? truncatedInstructions : 'N/A'}
               </p>
               {showReadMoreButton && (
                 <UiButton variant="primary-text" onClick={toggleInstructions}>
