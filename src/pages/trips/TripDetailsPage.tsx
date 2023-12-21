@@ -20,6 +20,7 @@ import {
 } from 'modules/Trips';
 import CreateTrip from 'components/trips/CreateTrip';
 import TripHasBeenBroadcasted from 'components/trips/TripHasBeenBroadcasted';
+import UiModal from 'ui/UiModal';
 
 const TripDetailPaymentCard = lazy(
   () => import('components/trips/TripDetailPaymentCard'),
@@ -68,6 +69,11 @@ export default function TripDetailsPage() {
     useState(false);
   const [changeTripStatusIsLoading, setChangeTripStatusIsLoading] =
     useState(false);
+
+  // instrcutions modal visible
+  const [isInstructionsVisible, setIsInstructionsVisible] = useState(false);
+  // instrcutions modal visible
+
   const [uploadTDOIsVisible, setUploadTDOIsVisible] = useState(false);
   const [isCreateTripVisible, setIsCreateTripVisible] = useState(false);
   const [isTripBroadcastedVisible, setIsTripBroadcastedVisible] =
@@ -150,6 +156,22 @@ export default function TripDetailsPage() {
       </EdgeNode>
     );
   }, [trip, changeTripStatusIsLoading]);
+
+  // instructions modal
+  function toggleInstructions() {
+    setIsInstructionsVisible(!isInstructionsVisible);
+  }
+
+  const MAX_DISPLAY_LENGTH = 170;
+
+  const truncatedInstructions = useMemo(() => {
+    const instructions = trip?.instructions || '';
+    return instructions.slice(0, MAX_DISPLAY_LENGTH);
+  }, [trip?.instructions]);
+
+  const showReadMoreButton =
+    trip?.instructions && trip?.instructions.length > MAX_DISPLAY_LENGTH;
+  // instructions modal
 
   function redirectToAddAccount() {
     navigate('/profile/accounts');
@@ -293,8 +315,13 @@ export default function TripDetailsPage() {
             <UiCard>
               <div className="card-title">Handling Instructions</div>
               <p className="handling-instructions">
-                {trip?.instructions || 'N/A'}
+                {truncatedInstructions || 'N/A'}
               </p>
+              {showReadMoreButton && (
+                <UiButton variant="primary-text" onClick={toggleInstructions}>
+                  {isInstructionsVisible ? 'Read Less' : 'Read More'}
+                </UiButton>
+              )}
             </UiCard>
             <UiCard>
               <div className="card-title">Pickup Address & Date</div>
@@ -479,6 +506,15 @@ export default function TripDetailsPage() {
       )}
 
       {/** modals **/}
+
+      <UiModal
+        onClose={() => setIsInstructionsVisible(false)}
+        isVisible={isInstructionsVisible}
+        title="Handling Instructions"
+      >
+        <InstructionsStyling>{trip?.instructions}</InstructionsStyling>
+      </UiModal>
+
       <UiConfirmModal
         isVisible={isCancelTripVisible}
         title="Cancel Trip"
@@ -507,7 +543,6 @@ export default function TripDetailsPage() {
           onClose={() => setIsTripBroadcastedVisible(false)}
         />
       )}
-
       <UiConfirmModal
         title="Unassign Trip"
         isVisible={isUnassignTripVisble}
@@ -696,6 +731,19 @@ const TripActions = styled.div`
   gap: ${pxToRem(12)};
   align-items: flex-start;
   justify-content: center;
+`;
+
+const InstructionsStyling = styled.div`
+  background: var(--color-white);
+  padding: ${pxToRem(32)} ${pxToRem(24)};
+  height: 100%;
+  overflow-y: auto;
+  font-style: normal;
+  font-weight: 400;
+  font-size: ${pxToRem(16)};
+  line-height: 140%;
+  letter-spacing: -0.02em;
+  color: var(--color-gray-80);
 `;
 
 const StatusIndicator = styled.div`
