@@ -292,9 +292,12 @@ export default function TripDetailsPage() {
             </UiCard>
             <UiCard>
               <div className="card-title">Handling Instructions</div>
-              <p className="handling-instructions">
-                {trip?.instructions || 'N/A'}
-              </p>
+              <p
+                className="handling-instructions"
+                dangerouslySetInnerHTML={{
+                  __html: trip?.instructions ? trip?.instructions : 'N/A',
+                }}
+              />
             </UiCard>
             <UiCard>
               <div className="card-title">Pickup Address & Date</div>
