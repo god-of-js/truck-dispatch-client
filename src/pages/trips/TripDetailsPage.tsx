@@ -70,9 +70,7 @@ export default function TripDetailsPage() {
   const [changeTripStatusIsLoading, setChangeTripStatusIsLoading] =
     useState(false);
 
-  // instrcutions modal visible
   const [isInstructionsVisible, setIsInstructionsVisible] = useState(false);
-  // instrcutions modal visible
 
   const [uploadTDOIsVisible, setUploadTDOIsVisible] = useState(false);
   const [isCreateTripVisible, setIsCreateTripVisible] = useState(false);
@@ -157,7 +155,6 @@ export default function TripDetailsPage() {
     );
   }, [trip, changeTripStatusIsLoading]);
 
-  // instructions modal
   function toggleInstructions() {
     setIsInstructionsVisible(!isInstructionsVisible);
   }
@@ -171,7 +168,6 @@ export default function TripDetailsPage() {
 
   const showReadMoreButton =
     trip?.instructions && trip?.instructions.length > MAX_DISPLAY_LENGTH;
-  // instructions modal
 
   function redirectToAddAccount() {
     navigate('/profile/accounts');
