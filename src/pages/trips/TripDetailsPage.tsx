@@ -310,14 +310,14 @@ export default function TripDetailsPage() {
             </UiCard>
             <UiCard>
               <div className="card-title">Handling Instructions</div>
-              <p className="handling-instructions">
+              <span className="handling-instructions">
                 {trip?.instructions ? truncatedInstructions : 'N/A'}
-              </p>
-              {showReadMoreButton && (
-                <UiButton variant="primary-text" onClick={toggleInstructions}>
-                  {isInstructionsVisible ? 'Read Less' : 'Read More'}
-                </UiButton>
-              )}
+                {showReadMoreButton && (
+                  <span className="read-more" onClick={toggleInstructions}>
+                    {isInstructionsVisible ? 'read less' : '... read more'}
+                  </span>
+                )}
+              </span>
             </UiCard>
             <UiCard>
               <div className="card-title">Pickup Address & Date</div>
@@ -652,6 +652,8 @@ const TripDetailsStyling = styled.div`
     }
   }
   .handling-instructions {
+    display: flex;
+    flex-direction: column;
     font-style: normal;
     font-weight: 400;
     font-size: ${pxToRem(16)};
