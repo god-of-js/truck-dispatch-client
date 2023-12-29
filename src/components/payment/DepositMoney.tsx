@@ -196,7 +196,8 @@ export default function DepositMoney({ isOpen, onClose }: Props) {
 
 const ModalBody = styled.div`
   padding: ${pxToRem(20)} ${pxToRem(20)};
-  overflow: auto;
+  max-height: 70vh;
+  overflow-y: auto;
 
   .atm-cards {
     display: grid;
