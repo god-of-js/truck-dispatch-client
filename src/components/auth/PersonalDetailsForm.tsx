@@ -142,7 +142,7 @@ export default function PersonDetailsForm({ goToNext }: Props) {
                 size="large"
                 variant="primary"
               >
-                Continue
+                Continue as {userType}
               </UiButton>
               <Link to="/auth/join">
                 <UiButton
