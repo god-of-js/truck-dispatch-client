@@ -45,6 +45,7 @@ export default function NewTripForm({
 
   function onSubmit() {
     nextHandler(formData);
+    console.log(formData);
   }
 
   function handleChange(event: { name: string; value: string | null }) {
@@ -160,6 +161,14 @@ export default function NewTripForm({
                 error={errors.weight}
                 onChange={handleChange}
               />
+              <UiInput
+                label="Indicate Offer Price (optional)"
+                name="shipperBidPrice"
+                type="number"
+                value={formData.shipperBidPrice || ''}
+                error={errors.shipperBidPrice}
+                onChange={handleChange}
+              />
             </GridContainer>
             <div className="text-area-container">
               <UiTextArea
@@ -173,7 +182,6 @@ export default function NewTripForm({
           </UiCard>
           <SubmitButtonContainer>
             <UiButton size="large">
-              {' '}
               {editMode ? 'Update' : 'Confirm'} Trip Details
             </UiButton>
           </SubmitButtonContainer>

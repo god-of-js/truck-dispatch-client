@@ -48,7 +48,10 @@ export default function TripDetails({ trip, hideProfile }: Props) {
           value={!!trip.weight ? trip.weight + ' Tonnes' : ''}
         />
         {/* TODO: add truck type */}
-        <UiDataField title="Truck Type" value={'Nil'} />
+        <UiDataField
+          title=" Bid Price"
+          value={`NGN ${trip.shipperBidPrice?.toLocaleString()}`}
+        />
       </div>
       <TripPickUpAndDeliverWithDates
         pickUpAddress={trip.pickUpAddress}
