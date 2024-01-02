@@ -21,7 +21,4 @@ export default Yup.object({
     then: Yup.string().required(isRequiredMessage),
   }),
   weight: Yup.number().required(isRequiredMessage).typeError(isNumberMessage),
-  shipperBidPrice: Yup.number()
-    .required(isRequiredMessage)
-    .typeError(isNumberMessage),
 });

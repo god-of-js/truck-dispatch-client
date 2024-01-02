@@ -42,9 +42,11 @@ export default function JobItem({ job, bidForJob, viewJobDetail }: Props) {
             <div className="type-of-goods-value">{job.typeOfGoods}</div>
           </div>
           <div>
-            <div className="field-name bid">Shipper Bid Price</div>
+            <div className="field-name bid">Proposed Price</div>
             <div className="type-of-goods-value">
-              {job.shipperBidPrice ? job.shipperBidPrice : 'N/A'}
+              {job.proposedPrice
+                ? `NGN ${job.proposedPrice?.toLocaleString()}`
+                : 'N/A'}
             </div>
           </div>
         </div>

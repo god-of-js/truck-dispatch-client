@@ -162,11 +162,12 @@ export default function NewTripForm({
                 onChange={handleChange}
               />
               <UiInput
-                label="Indicate Offer Price (optional)"
-                name="shipperBidPrice"
+                label="Propose a Price Offer (optional)"
+                name="proposedPrice"
                 type="number"
-                value={formData.shipperBidPrice || ''}
-                error={errors.shipperBidPrice}
+                placeholder="NGN"
+                value={formData.proposedPrice || ''}
+                error={errors.proposedPrice}
                 onChange={handleChange}
               />
             </GridContainer>

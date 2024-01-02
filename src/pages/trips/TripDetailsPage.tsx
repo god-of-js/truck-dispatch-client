@@ -284,11 +284,16 @@ export default function TripDetailsPage() {
                 <div>Cargo Details</div>
                 {userIsClientBasedUser ? (
                   <div className="bid-details">
-                    <p>My Bid:</p>
-                    <UiButton
-                      variant="primary-text"
-                      disabled
-                    >{`MY BID NGN ${trip?.shipperBidPrice}`}</UiButton>
+                    <UiPill variant="primary">
+                      <div>Proposed Price:</div>
+                    </UiPill>
+                    <UiPill variant="info">
+                      <div>
+                        {trip.proposedPrice
+                          ? `NGN ${trip.proposedPrice?.toLocaleString()}`
+                          : 'N/A'}
+                      </div>
+                    </UiPill>
                   </div>
                 ) : (
                   ''
@@ -630,6 +635,7 @@ const TripDetailsStyling = styled.div`
 
   .bid-details {
     display: flex;
+    gap: ${pxToRem(4)};
   }
 
   .cargo-details {

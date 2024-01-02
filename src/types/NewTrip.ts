@@ -9,5 +9,5 @@ export default interface NewTrip {
   shippingLine: string;
   weight: number;
   instructions: string;
-  shipperBidPrice: number;
+  proposedPrice: number;
 }
