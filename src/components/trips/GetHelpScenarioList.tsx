@@ -4,11 +4,8 @@ import { GetHelpScenario } from './GetHelp';
 import { useSelector } from 'react-redux';
 import { RootState } from 'modules/index';
 import { clientBasedUserTypes, serviceBasedUserTypes } from 'utils/constants';
-import {
-  GetHelpShipperScenarioData,
-  GetHelpTransporterScenarioData,
-} from 'utils/constants';
-
+import { GetHelpShipperScenarioData, GetHelpTransporterScenarioData } from "utils/constants";
+import sizes from "utils/sizes";
 const UiIcon = lazy(() => import('../ui/UiIcon'));
 
 interface Props {
@@ -52,7 +49,6 @@ export default function GetHelpScenarioList({
 
 const ScenariosContainer = styled.div`
   header {
-    width: 50%;
     margin-bottom: ${pxToRem(33)};
     h2 {
       color: var(--color-neutralBlack);
@@ -63,7 +59,13 @@ const ScenariosContainer = styled.div`
       letter-spacing: -0.48px;
     }
   }
-`;
+
+  @media (min-width: ${sizes.tabletLargeWidth}) {
+    header {
+        width: 50%;
+    }
+  }
+`
 
 const ScenarioList = styled.ul`
   display: flex;

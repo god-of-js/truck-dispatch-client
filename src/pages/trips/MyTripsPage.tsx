@@ -286,12 +286,11 @@ export default function MyTripsPage() {
 
       if (trip.status === 'completed' && !(label === 'See trip details' || label === 'Get Help'))
         return false;
-      // if (
-      //   trip.paymentRequest?.status === 'completed' &&
-      //   (label === 'Cancel trip' || label === 'Unassign trip')
-      // )
-      //   return false;
-
+      if (
+        trip.paymentRequest?.status === 'completed' &&
+        (label === 'Cancel trip' || label === 'Unassign trip')
+      )
+        return false;
       return true;
     });
   }

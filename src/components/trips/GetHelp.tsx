@@ -7,10 +7,8 @@ import { selectTrip } from 'modules/Trips';
 import GetHelpScenarioList from './GetHelpScenarioList';
 import GetHelpScenarioContent from './GetHelpScenarioContent';
 import GetHelpSchema from 'utils/validations/GetHelpSchema';
-import GetHelpData from 'types/GetHelpData';
 import { sendGethelpMessage } from 'modules/Trips';
-import User from 'types/User';
-import { clientBasedUserTypes, serviceBasedUserTypes } from 'utils/constants';
+import { serviceBasedUserTypes } from 'utils/constants';
 import { toAnyAction } from 'utils/helpers';
 
 const UiModal = lazy(() => import('../ui/UiModal'));
@@ -48,7 +46,10 @@ export default function GetHelp({ isVisible, onClose, tripId }: Props) {
   });
   const [selectedScenario, setSelectedScenario] =
     useState<null | GetHelpScenario>(null);
-  const [otherIssuesVisible, setOtherIssuesVisible] = useState(false);
+  const [otherIssuesVisible, setOtherIssuesVisible] = useState(false)
+  const [ loading, setLoading] = useState(false)
+
+  
 
   function handleChange(event: { name: string; value: string | null }) {
     setFormData({
@@ -57,18 +58,18 @@ export default function GetHelp({ isVisible, onClose, tripId }: Props) {
     });
   }
 
-  function onSubmit() {
+  function onSubmit () {
+    setLoading(true)
     const data = {
       ...formData,
       reportedTripId: tripId,
       reporterId: user?._id,
       reportedId: reportedUser?._id,
-    };
-    dispatch(toAnyAction(sendGethelpMessage(data))).then(
-      (helpData: GetHelpData) => {
-        console.log(helpData);
-      },
-    );
+    }
+    dispatch(toAnyAction(sendGethelpMessage(data))).then(()=>{
+      setOtherIssuesVisible(false)
+      setLoading(false)
+    })
   }
 
   function closeScenariosModal() {
@@ -115,29 +116,25 @@ export default function GetHelp({ isVisible, onClose, tripId }: Props) {
           />
         )}
 
-        <UiModal isVisible={otherIssuesVisible} onClose={closeOtherIssuesModal}>
-          <GetHelpStyling>
-            <h2>Other Issues 😐</h2>
-            <UiForm
-              formData={formData}
-              onSubmit={onSubmit}
-              schema={GetHelpSchema}
-            >
-              {({ errors }) => (
-                <div className="form-wrapper">
-                  <UiTextArea
-                    label="Please describe the issue you encountered"
-                    name="issueMessage"
-                    value={formData.issueMessage}
-                    placeholder="Add notes/reason and issues you encountered."
-                    onChange={handleChange}
-                    error={errors.issueMessage}
-                  />
-                  <UiButton>Send</UiButton>
-                </div>
-              )}
-            </UiForm>
-          </GetHelpStyling>
+        <UiModal isVisible={otherIssuesVisible} onClose={closeOtherIssuesModal} >
+           <GetHelpStyling>
+             <h2>Other Issues 😐</h2>
+             <UiForm formData={formData} onSubmit={onSubmit} schema={GetHelpSchema}>
+                {({errors}) => (
+                   <div className='form-wrapper'>
+                      <UiTextArea 
+                        label='Please describe the issue you encountered'
+                        name='issueMessage'
+                        value={formData.issueMessage}
+                        placeholder='Add notes/reason and issues you encountered.'
+                        onChange={handleChange}
+                        error={errors.issueMessage}
+                      />
+                      <UiButton loading={loading}>Send</UiButton>
+                   </div>
+                )}
+             </UiForm>
+           </GetHelpStyling>
         </UiModal>
       </GetHelpStyling>
     </UiModal>
