@@ -5,7 +5,6 @@ import UiIcon from 'ui/UiIcon';
 
 const UiButton = lazy(() => import('../ui/UiButton'));
 
-
 interface Props {
   selectedScenario: GetHelpScenario;
   closeModal: () => void;
@@ -13,30 +12,43 @@ interface Props {
   openOtherIssuesModal: () => void;
 }
 
-export default function GetHelpScenarioContent ({selectedScenario, closeModal, backToScenarios, openOtherIssuesModal}: Props) {
+export default function GetHelpScenarioContent({
+  selectedScenario,
+  closeModal,
+  backToScenarios,
+  openOtherIssuesModal,
+}: Props) {
   return (
     <ScenarioData>
-        <UiButton onClick={backToScenarios}  variant='primary-secondary'>
-          <UiIcon icon='ArrowLeft'/>
-            back
-        </UiButton>
-        <h2>{selectedScenario.Title}</h2>
-        <h3>Reasons why this might happen.</h3>
-        {selectedScenario.reasons.map((reason, index) => (
-          <div>
-            <h4>
-              {index + 1}. {reason.reasonTitle}
-            </h4>
-            <p>{reason.body}</p>
-          </div>
-        ))}
-        <h3>Were you satisfied with the information you got?</h3>
-        <div className="button-flex">
-          <UiButton isFullWidth onClick={closeModal}>Yes</UiButton>
-          <UiButton isFullWidth variant="danger-secondary" onClick={openOtherIssuesModal}>No</UiButton>
+      <UiButton onClick={backToScenarios} variant="primary-secondary">
+        <UiIcon icon="ArrowLeft" />
+        back
+      </UiButton>
+      <h2>{selectedScenario.Title}</h2>
+      <h3>Reasons why this might happen.</h3>
+      {selectedScenario.reasons.map((reason, index) => (
+        <div>
+          <h4>
+            {index + 1}. {reason.reasonTitle}
+          </h4>
+          <p>{reason.body}</p>
         </div>
-      </ScenarioData>
-  )
+      ))}
+      <h3>Were you satisfied with the information you got?</h3>
+      <div className="button-flex">
+        <UiButton isFullWidth onClick={closeModal}>
+          Yes
+        </UiButton>
+        <UiButton
+          isFullWidth
+          variant="danger-secondary"
+          onClick={openOtherIssuesModal}
+        >
+          No
+        </UiButton>
+      </div>
+    </ScenarioData>
+  );
 }
 
 const ScenarioData = styled.section`
@@ -84,7 +96,7 @@ const ScenarioData = styled.section`
     line-height: 16.8px;
   }
 
-  & >  button{
+  & > button {
     width: 96px;
     margin-bottom: ${pxToRem(30)};
   }

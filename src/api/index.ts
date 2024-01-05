@@ -85,7 +85,7 @@ class ApiService {
   }
 
   sendGetHelpessage(data: GetHelpData) {
-    return this.post('/get-help', data )
+    return this.post('/get-help', data);
   }
   async getTrips({
     page,

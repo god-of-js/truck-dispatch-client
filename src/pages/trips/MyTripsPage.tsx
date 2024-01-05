@@ -253,6 +253,10 @@ export default function MyTripsPage() {
         func: editTrip,
       },
       {
+        label: 'Get Help',
+        func: showGetHelpModal,
+      },
+      {
         label: 'Unassign trip',
         func: initUnassignTrip,
         isDanger: true,
@@ -261,10 +265,6 @@ export default function MyTripsPage() {
         label: 'Cancel trip',
         func: initCancelTrip,
         isDanger: true,
-      },
-      {
-        label: 'Get Help',
-        func: showGetHelpModal,
       },
     ].filter(({ label }) => {
       const editIsNotAllowedStatuses = ['in-progress', 'completed'];
@@ -280,19 +280,17 @@ export default function MyTripsPage() {
         (label === 'Edit trip' || label === 'Unassign trip')
       )
         return false;
-      if (
-        !trip.transporter &&
-        (label === 'Unassign trip' || label === 'Get Help')
-      )
-        return false;
 
-      if (trip.status === 'completed' && label !== 'See trip details')
+      if (trip.status === 'awaiting-bid' && label === 'Get Help') return false;
+      if (!trip.transporter && label === 'Unassign trip') return false;
+
+      if (trip.status === 'completed' && !(label === 'See trip details' || label === 'Get Help'))
         return false;
-      if (
-        trip.paymentRequest?.status === 'completed' &&
-        (label === 'Cancel trip' || label === 'Unassign trip')
-      )
-        return false;
+      // if (
+      //   trip.paymentRequest?.status === 'completed' &&
+      //   (label === 'Cancel trip' || label === 'Unassign trip')
+      // )
+      //   return false;
 
       return true;
     });
@@ -305,7 +303,7 @@ export default function MyTripsPage() {
   }
 
   function showGetHelpModal(id: string) {
-    setActiveTripId(id)
+    setActiveTripId(id);
     setIsGetHelpVisible(true);
   }
   function deleteTransporterBid() {
@@ -345,7 +343,7 @@ export default function MyTripsPage() {
     setActiveTripId(id);
     // Also used for editing trip;
     setIsCreateTripVisible(true);
-  }  
+  }
 
   function initUnassignTrip(id: string) {
     setActiveTripId(id);

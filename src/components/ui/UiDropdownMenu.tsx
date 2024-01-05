@@ -36,7 +36,7 @@ export default function UiDropDownMenu({ options, itemId, trigger }: Props) {
       >
         {options.map((option, index) => (
           <MenuItemStyling
-            onClick={() =>  option.func?.(itemId!)}
+            onClick={() => option.func?.(itemId!)}
             key={index}
             isdanger={option.isDanger ? 'true' : 'false'}
             hasdivider={option.hasDivider ? 'true' : 'false'}

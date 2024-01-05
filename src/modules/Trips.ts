@@ -257,8 +257,8 @@ export function approvePaymentRequest(
   };
 }
 
-export function sendGethelpMessage (data: GetHelpData) {
+export function sendGethelpMessage(data: GetHelpData) {
   return () => {
-    return Api.sendGetHelpessage(data)
-  }
+    return Api.sendGetHelpessage(data);
+  };
 }
