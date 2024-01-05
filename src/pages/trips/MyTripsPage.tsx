@@ -46,6 +46,7 @@ const TripHasBeenBroadcasted = lazy(
 const UserDetails = lazy(() => import('ui/UserDetails'));
 const UiConfirmModal = lazy(() => import('ui/UiConfirmModal'));
 const AddVehicle = lazy(() => import('components/vehicles/AddVehicle'));
+const GetHelp = lazy(() => import('components/trips/GetHelp'));
 
 export default function MyTripsPage() {
   const navigate = useNavigate();
@@ -87,6 +88,7 @@ export default function MyTripsPage() {
   const [isDeleteBidVisible, setIsDeleteBidVisible] = useState(false);
   const [isDeleteBidLoading, setIsDeleteBidLoading] = useState(false);
   const [createVehicleIsVisible, setCreateVehicleIsVisible] = useState(false);
+  const [getHelpVisible, setIsGetHelpVisible] = useState(false);
   const job = useSelector(selectJob(selectedJobId!));
 
   const headers = useMemo(
@@ -260,6 +262,10 @@ export default function MyTripsPage() {
         func: initCancelTrip,
         isDanger: true,
       },
+      {
+        label: 'Get Help',
+        func: showGetHelpModal,
+      },
     ].filter(({ label }) => {
       const editIsNotAllowedStatuses = ['in-progress', 'completed'];
       if (
@@ -274,7 +280,11 @@ export default function MyTripsPage() {
         (label === 'Edit trip' || label === 'Unassign trip')
       )
         return false;
-      if (!trip.transporter && label === 'Unassign trip') return false;
+      if (
+        !trip.transporter &&
+        (label === 'Unassign trip' || label === 'Get Help')
+      )
+        return false;
 
       if (trip.status === 'completed' && label !== 'See trip details')
         return false;
@@ -294,6 +304,10 @@ export default function MyTripsPage() {
     setIsDeleteBidVisible(true);
   }
 
+  function showGetHelpModal(id: string) {
+    setActiveTripId(id)
+    setIsGetHelpVisible(true);
+  }
   function deleteTransporterBid() {
     if (!selectedBidId || !selectedJobId) {
       Toast.error({ msg: 'Bid cannot be deleted' });
@@ -331,7 +345,7 @@ export default function MyTripsPage() {
     setActiveTripId(id);
     // Also used for editing trip;
     setIsCreateTripVisible(true);
-  }
+  }  
 
   function initUnassignTrip(id: string) {
     setActiveTripId(id);
@@ -546,6 +560,11 @@ export default function MyTripsPage() {
         deleteBid={showDeleteBidModal}
       />
 
+      <GetHelp
+        isVisible={getHelpVisible}
+        onClose={() => setIsGetHelpVisible(false)}
+        tripId={activeTripId!}
+      />
       <UiConfirmModal
         isVisible={isCancelTripVisible}
         title="Cancel Trip"

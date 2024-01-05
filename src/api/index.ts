@@ -23,6 +23,7 @@ import ResetUserPassword from 'types/ResetUserPassword';
 import UserFullProfile from 'types/UserFullProfile';
 import Payment from 'types/Payment';
 import WithdrawalDetails from 'types/WithdrawalDetails';
+import GetHelpData from 'types/GetHelpData';
 
 class ApiService {
   createUser(userData: Partial<User>) {
@@ -83,6 +84,9 @@ class ApiService {
     return this.patch(`/trips/${tripId}/change-status/${status}`);
   }
 
+  sendGetHelpessage(data: GetHelpData) {
+    return this.post('/get-help', data )
+  }
   async getTrips({
     page,
     limit,

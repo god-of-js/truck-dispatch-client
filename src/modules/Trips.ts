@@ -1,5 +1,6 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import Trip from 'types/Trip';
+import GetHelpData from 'types/GetHelpData';
 import { AppDispatch, AppState, RootState } from '.';
 import Api from 'Api';
 import NewTrip from 'types/NewTrip';
@@ -254,4 +255,10 @@ export function approvePaymentRequest(
       },
     );
   };
+}
+
+export function sendGethelpMessage (data: GetHelpData) {
+  return () => {
+    return Api.sendGetHelpessage(data)
+  }
 }

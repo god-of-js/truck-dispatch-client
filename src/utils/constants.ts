@@ -94,3 +94,101 @@ export const vehicleTypes: VehicleType[] = [
     truckImg: MiniVanImg,
   },
 ];
+
+
+export const GetHelpShipperScenarioData = [
+  {
+    Title: 'Driver took a poor route 🛣',
+    reasons : [
+      {
+        reasonTitle: 'The initial route is under construction',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
+      },
+      {
+        reasonTitle: 'The alternate route taken has less police officers',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
+      }
+    ]
+  },
+  {
+    Title: 'Trip driver was rude 😠',
+    reasons : [
+      {
+        reasonTitle: 'The guy dey actually ment',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
+      },
+      {
+        reasonTitle: 'Driver was not brought up well',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
+      }
+    ]
+  },
+  {
+    Title: 'The TDO didn’t work 😤',
+    reasons : [
+      {
+        reasonTitle: 'Picture quality was bad',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
+      },
+      {
+        reasonTitle: 'some dummy reason',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
+      }
+    ]
+  },
+  {
+    Title: 'Trip did not happen 🙅‍♂️',
+    reasons : [
+      {
+        reasonTitle: 'Our servers might take time tracking trips to rural areas',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
+      },
+      {
+        reasonTitle: 'Driver don run with your goods o ',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
+      }
+    ]
+  },
+  {
+    Title: 'Pricing is high 💰',
+    reasons : [
+      {
+        reasonTitle: 'I am confused, did you not negotiate with the driver',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
+      },
+      {
+        reasonTitle: 'Driver don scam you sha',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
+      }
+    ]
+  },
+  {
+    Title: 'Trip driver was rudee 😠',
+    reasons : [
+      {
+        reasonTitle: 'The guy dey actually ment',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
+      },
+      {
+        reasonTitle: 'Driver was not brought up well',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
+      }
+    ]
+  },
+]
+
+export const GetHelpTransporterScenarioData = [
+  {
+    Title: 'Agent was rude',
+    reasons : [
+      {
+        reasonTitle: 'The initial route is under construction',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
+      },
+      {
+        reasonTitle: 'The alternate route taken has less police officers',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
+      }
+    ]
+  },
+]
