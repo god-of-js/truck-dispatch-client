@@ -7,10 +7,8 @@ import { selectTrip } from 'modules/Trips';
 import GetHelpScenarioList from './GetHelpScenarioList';
 import GetHelpScenarioContent from './GetHelpScenarioContent';
 import GetHelpSchema from 'utils/validations/GetHelpSchema';
-import GetHelpData from 'types/GetHelpData';
 import { sendGethelpMessage } from 'modules/Trips';
-import User from 'types/User';
-import { clientBasedUserTypes, serviceBasedUserTypes } from 'utils/constants';
+import { serviceBasedUserTypes } from 'utils/constants';
 import { toAnyAction } from 'utils/helpers';
 
 const UiModal = lazy(() => import('../ui/UiModal'));
@@ -47,6 +45,7 @@ export default function GetHelp({ isVisible, onClose, tripId }: Props) {
   const [selectedScenario, setSelectedScenario] =
     useState<null | GetHelpScenario>(null);
   const [otherIssuesVisible, setOtherIssuesVisible] = useState(false)
+  const [ loading, setLoading] = useState(false)
 
   
 
@@ -58,15 +57,16 @@ export default function GetHelp({ isVisible, onClose, tripId }: Props) {
   }
 
   function onSubmit () {
+    setLoading(true)
     const data = {
       ...formData,
       reportedTripId: tripId,
       reporterId: user?._id,
       reportedId: reportedUser?._id,
     }
-    dispatch(toAnyAction(sendGethelpMessage(data))).then((helpData: GetHelpData)=>{
-      console.log(helpData);
-      
+    dispatch(toAnyAction(sendGethelpMessage(data))).then(()=>{
+      setOtherIssuesVisible(false)
+      setLoading(false)
     })
   }
 
@@ -121,7 +121,7 @@ export default function GetHelp({ isVisible, onClose, tripId }: Props) {
                         onChange={handleChange}
                         error={errors.issueMessage}
                       />
-                      <UiButton >Send</UiButton>
+                      <UiButton loading={loading}>Send</UiButton>
                    </div>
                 )}
              </UiForm>
