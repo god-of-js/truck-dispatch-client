@@ -88,7 +88,7 @@ export default function MyTripsPage() {
   const [isDeleteBidVisible, setIsDeleteBidVisible] = useState(false);
   const [isDeleteBidLoading, setIsDeleteBidLoading] = useState(false);
   const [createVehicleIsVisible, setCreateVehicleIsVisible] = useState(false);
-  const [getHelpVisible, setIsGetHelpVisible] = useState(false);
+  const [isGetHelpVisible, setIsGetHelpVisible] = useState(false);
   const job = useSelector(selectJob(selectedJobId!));
 
   const headers = useMemo(
@@ -558,7 +558,7 @@ export default function MyTripsPage() {
       />
 
       <GetHelp
-        isVisible={getHelpVisible}
+        isVisible={isGetHelpVisible}
         onClose={() => setIsGetHelpVisible(false)}
         tripId={activeTripId!}
       />
