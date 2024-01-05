@@ -1,23 +1,23 @@
 import { lazy } from "react";
 import styled from "styled-components";
-import { GetHelpScenario } from "./GetHelp";
+import { HelpScenario } from "./GetHelp";
 import { useSelector } from 'react-redux';
 import { RootState } from "modules/index";
-import { clientBasedUserTypes, serviceBasedUserTypes } from 'utils/constants';
+import { clientBasedUserTypes } from 'utils/constants';
 import { GetHelpShipperScenarioData, GetHelpTransporterScenarioData } from "utils/constants";
 import sizes from "utils/sizes";
 const UiIcon = lazy(() => import('../ui/UiIcon'));
 
 
 interface Props {
-  selectScenario: (scenario: GetHelpScenario) => void;
+  selectScenario: (scenario: HelpScenario) => void;
   openOtherIssuesModal: () => void;
 }
 
 export default function GetHelpScenarioList ({ selectScenario, openOtherIssuesModal }: Props) {
     const user = useSelector((state: RootState) => state.account.user);
     
-    const GetHelpData = clientBasedUserTypes.includes(user?.userType!) ? GetHelpShipperScenarioData : GetHelpTransporterScenarioData
+    const getHelpData = clientBasedUserTypes.includes(user?.userType!) ? GetHelpShipperScenarioData : GetHelpTransporterScenarioData
 
   return (
     <ScenariosContainer>
@@ -26,8 +26,8 @@ export default function GetHelpScenarioList ({ selectScenario, openOtherIssuesMo
       <p>Select common trip-related issues and get in touch with our support team</p>
       </header>
       <ScenarioList>
-      {GetHelpData.map((scenario)=>(
-        <li key={scenario.Title} onClick={()=> selectScenario(scenario)}><p>{scenario.Title}</p> <UiIcon icon='CaretRight'/></li>
+      {getHelpData.map((scenario)=>(
+        <li key={scenario.title} onClick={()=> selectScenario(scenario)}><p>{scenario.title}</p> <UiIcon icon='CaretRight'/></li>
       ))}
       <li onClick={openOtherIssuesModal}>
         <p>Other 😐</p>

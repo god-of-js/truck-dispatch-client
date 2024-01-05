@@ -1,13 +1,12 @@
 import { lazy } from 'react';
 import styled from 'styled-components';
-import { GetHelpScenario } from './GetHelp';
+import { HelpScenario } from './GetHelp';
 import UiIcon from 'ui/UiIcon';
 
 const UiButton = lazy(() => import('../ui/UiButton'));
 
-
 interface Props {
-  selectedScenario: GetHelpScenario;
+  selectedScenario: HelpScenario;
   closeModal: () => void;
   backToScenarios: () => void;
   openOtherIssuesModal: () => void;
@@ -20,12 +19,12 @@ export default function GetHelpScenarioContent ({selectedScenario, closeModal, b
           <UiIcon icon='ArrowLeft'/>
             back
         </UiButton>
-        <h2>{selectedScenario.Title}</h2>
+        <h2>{selectedScenario.title}</h2>
         <h3>Reasons why this might happen.</h3>
         {selectedScenario.reasons.map((reason, index) => (
           <div>
             <h4>
-              {index + 1}. {reason.reasonTitle}
+              {index + 1}. {reason.title}
             </h4>
             <p>{reason.body}</p>
           </div>

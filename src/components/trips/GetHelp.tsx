@@ -7,7 +7,7 @@ import { selectTrip } from 'modules/Trips';
 import GetHelpScenarioList from './GetHelpScenarioList';
 import GetHelpScenarioContent from './GetHelpScenarioContent';
 import GetHelpSchema from 'utils/validations/GetHelpSchema';
-import { sendGethelpMessage } from 'modules/Trips';
+import { sendGetHelpComplaint } from 'modules/Trips';
 import { serviceBasedUserTypes } from 'utils/constants';
 import { toAnyAction } from 'utils/helpers';
 
@@ -15,15 +15,16 @@ const UiModal = lazy(() => import('../ui/UiModal'));
 const UiTextArea = lazy(() => import('../ui/UiTextArea'));
 const UiForm = lazy(() => import('../ui/UiForm'));
 const UiButton = lazy(() => import('../ui/UiButton'));
+const OtherIsses = lazy(() => import('./OtherIssues'))
 
 interface Reason {
-  reasonTitle: string;
+  title: string;
   body: string;
 }
 
-export interface GetHelpScenario {
-  Title: string;
-  reasons: Reason[];
+export interface HelpScenario {
+  title: string;
+  reasons: Reason[];  
 }
 
 interface Props {
@@ -33,51 +34,13 @@ interface Props {
 }
 
 export default function GetHelp({ isVisible, onClose, tripId }: Props) {
-  const user = useSelector((state: RootState) => state.account.user);
-  const trip = useSelector(selectTrip(tripId));
-  const dispatch = useDispatch()
-   
-  const reportedUser = serviceBasedUserTypes.includes(user?.userType!) ? trip?.tripOwner : trip?.transporter
-  
-  const [ formData, setFormData ] = useState({
-    issueMessage: '',
-  })
   const [selectedScenario, setSelectedScenario] =
-    useState<null | GetHelpScenario>(null);
+    useState<null | HelpScenario>(null);
   const [otherIssuesVisible, setOtherIssuesVisible] = useState(false)
-  const [ loading, setLoading] = useState(false)
-
   
-
-  function handleChange(event: { name: string; value: string | null }) {
-    setFormData({
-      ...formData,
-      [event.name]: event.value,
-    });
-  }
-
-  function onSubmit () {
-    setLoading(true)
-    const data = {
-      ...formData,
-      reportedTripId: tripId,
-      reporterId: user?._id,
-      reportedId: reportedUser?._id,
-    }
-    dispatch(toAnyAction(sendGethelpMessage(data))).then(()=>{
-      setOtherIssuesVisible(false)
-      setLoading(false)
-    })
-  }
-
-
   function closeScenariosModal() {
     onClose();
     setSelectedScenario(null);
-  }
-
-  function closeOtherIssuesModal () {
-    setOtherIssuesVisible(false)
   }
 
   function openOtherIssuesModal () {
@@ -88,7 +51,7 @@ export default function GetHelp({ isVisible, onClose, tripId }: Props) {
     setSelectedScenario(null);
   }
 
-  function selectScenario(scenario: GetHelpScenario) {
+  function selectScenario(scenario: HelpScenario) {
     setSelectedScenario(scenario);
   }
 
@@ -106,33 +69,13 @@ export default function GetHelp({ isVisible, onClose, tripId }: Props) {
         {selectedScenario && (
           <GetHelpScenarioContent  selectedScenario={selectedScenario} closeModal={closeScenariosModal} backToScenarios={backToScenarios} openOtherIssuesModal={openOtherIssuesModal}/>
         )}
-
-        <UiModal isVisible={otherIssuesVisible} onClose={closeOtherIssuesModal} >
-           <GetHelpStyling>
-             <h2>Other Issues 😐</h2>
-             <UiForm formData={formData} onSubmit={onSubmit} schema={GetHelpSchema}>
-                {({errors}) => (
-                   <div className='form-wrapper'>
-                      <UiTextArea 
-                        label='Please describe the issue you encountered'
-                        name='issueMessage'
-                        value={formData.issueMessage}
-                        placeholder='Add notes/reason and issues you encountered.'
-                        onChange={handleChange}
-                        error={errors.issueMessage}
-                      />
-                      <UiButton loading={loading}>Send</UiButton>
-                   </div>
-                )}
-             </UiForm>
-           </GetHelpStyling>
-        </UiModal>
+        <OtherIsses onClose={() => setOtherIssuesVisible(false)} otherIssuesVisible={otherIssuesVisible} tripId={tripId}/>
       </GetHelpStyling>
     </UiModal>
   );
 }
 
-const GetHelpStyling = styled.section`
+export const GetHelpStyling = styled.section`
   padding: ${pxToRem(26)} ${pxToRem(24)} ${pxToRem(50)} ${pxToRem(24)};
 
   .form-wrapper {
