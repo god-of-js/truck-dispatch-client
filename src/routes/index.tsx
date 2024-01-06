@@ -56,6 +56,7 @@ const TransporterJobsPage = lazy(
   () => import('../pages/jobs/TransporterJobsPage'),
 );
 const ChatPage = lazy(() => import('../pages/chat/ChatPage'));
+const ReferralsPage = lazy(() => import('../pages/referrals/ReferralsPage'));
 
 // VEHICLES
 const VehiclesPage = lazy(() => import('../pages/vehicles/VehiclesPage'));
@@ -161,6 +162,11 @@ const router = createBrowserRouter([
         path: '/vehicles',
         id: 'Vehicles',
         element: <VehiclesPage />,
+      },
+      {
+        path: '/referrals',
+        id: 'Referrals',
+        element: <ReferralsPage />,
       },
       {
         path: '/payments',

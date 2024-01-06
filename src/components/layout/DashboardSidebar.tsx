@@ -74,72 +74,60 @@ export default function DashboardSidebar() {
             </button>
           </header>
           <div className="side-menu-text hide-in-large-screen">SIDE MENU</div>
+          <div className="actions-container">
+            <ul>
+              {routes.map((route, index) => (
+                <Link
+                  to={route.path}
+                  key={index}
+                  onClick={closeIsMobileExpandedIfOpen}
+                >
+                  <li className={isRouteActive(route.path) ? 'active' : ''}>
+                    <div className="list-item-content">
+                      <UiIcon icon={route.iconName} size="24" />{' '}
+                      <span className="hide-in-unexpanded-large-screen">
+                        {route.name}
+                      </span>
+                    </div>
+                    <div className="hide-in-large-screen">
+                      {isRouteActive(route.path) && <UiIcon icon="Tick" />}
+                    </div>
+                  </li>
+                </Link>
+              ))}
+            </ul>
 
-          <ul>
-            {routes.map((route, index) => (
-              <Link
-                to={route.path}
-                key={index}
-                onClick={closeIsMobileExpandedIfOpen}
-              >
-                <li className={isRouteActive(route.path) ? 'active' : ''}>
-                  <div className="list-item-content">
-                    <UiIcon icon={route.iconName} size="24" />{' '}
-                    <span className="hide-in-unexpanded-large-screen">
-                      {route.name}
-                    </span>
+            <div className="bottom-actions">
+              <Link to="/profile" onClick={closeIsMobileExpandedIfOpen}>
+                <div className="profile">
+                  <div className="user-details">
+                    <UiAvatar avatar={user?.avatar} />
+                    <div className="hide-in-unexpanded-large-screen">
+                      <div className="user-name">{`${user?.firstName} ${user?.lastName}`}</div>
+                      <div className="user-type">{userType}</div>
+                    </div>
                   </div>
                   <div className="hide-in-large-screen">
-                    {isRouteActive(route.path) && <UiIcon icon="Tick" />}
+                    <UiButton variant="secondary">View profile</UiButton>
                   </div>
-                </li>
+                </div>
               </Link>
-            ))}
-            <Link to="/chat" onClick={closeIsMobileExpandedIfOpen}>
-              <li className={isRouteActive('/chat') ? 'active' : ''}>
-                <div className="list-item-content">
-                  <UiIcon icon="Chat" size="24" />{' '}
-                  <span className="hide-in-unexpanded-large-screen">Chat</span>
+              <div className="logout-container">
+                <div className="logout-content" onClick={logOutUser}>
+                  <span className="hide-in-small-screen">
+                    <UiIcon icon="Logout" size="24" />
+                  </span>
+                  <span className="logout-text hide-in-unexpanded-large-screen">
+                    Logout
+                  </span>
                 </div>
-                {isRouteActive('/chat') && (
-                  <div className="hide-in-large-screen">
-                    <UiIcon icon="Tick" />
-                  </div>
-                )}
-              </li>
-            </Link>
-          </ul>
-
-          <div className="bottom-actions">
-            <Link to="/profile" onClick={closeIsMobileExpandedIfOpen}>
-              <div className="profile">
-                <div className="user-details">
-                  <UiAvatar avatar={user?.avatar} />
-                  <div className="hide-in-unexpanded-large-screen">
-                    <div className="user-name">{`${user?.firstName} ${user?.lastName}`}</div>
-                    <div className="user-type">{userType}</div>
-                  </div>
-                </div>
-                <div className="hide-in-large-screen">
-                  <UiButton variant="secondary">View profile</UiButton>
-                </div>
+                <Button
+                  className="hide-in-large-screen"
+                  onClick={closeIsMobileExpandedIfOpen}
+                >
+                  <span>Close</span> <UiIcon icon="CloseThick" size="15" />
+                </Button>
               </div>
-            </Link>
-            <div className="logout-container">
-              <div className="logout-content" onClick={logOutUser}>
-                <span className="hide-in-small-screen">
-                  <UiIcon icon="Logout" size="24" />
-                </span>
-                <span className="logout-text hide-in-unexpanded-large-screen">
-                  Logout
-                </span>
-              </div>
-              <Button
-                className="hide-in-large-screen"
-                onClick={closeIsMobileExpandedIfOpen}
-              >
-                <span>Close</span> <UiIcon icon="CloseThick" size="15" />
-              </Button>
             </div>
           </div>
         </div>
@@ -181,6 +169,13 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
     display: none;
   }
 
+  .actions-container {
+    height: 85%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
   .side-menu-text {
     margin: ${pxToRem(24)} ${pxToRem(16)};
     font-family: 'thiccboi-extrabold';
@@ -196,6 +191,7 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
     margin: 0 ${pxToRem(16)};
     display: grid;
     gap: ${pxToRem(12)};
+    height: fit-content;
 
     a {
       text-decoration: none;
@@ -229,8 +225,6 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
   }
 
   .bottom-actions {
-    position: absolute;
-    bottom: 0;
     width: 100%;
 
     .profile {
@@ -290,14 +284,6 @@ const Sidebar = styled.nav<{ isExpanded: boolean; isMobileExpanded: boolean }>`
     max-width: 100%;
     .sidebar__inner {
       overflow-y: auto;
-      scrollbar-width: ${pxToRem(0)};
-      scrollbar-color: transparent transparent;
-    }
-    .sidebar__inner::-webkit-scrollbar {
-      width: ${pxToRem(0)};
-    }
-    .sidebar__inner::-webkit-scrollbar-thumb {
-      background-color: transparent;
     }
     .bottom-actions {
       margin-top: ${pxToRem(20)};

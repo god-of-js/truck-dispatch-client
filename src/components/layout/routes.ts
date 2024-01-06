@@ -31,11 +31,21 @@ export const transporterRoutes: Route[] = [
     name: 'Wallet',
     iconName: 'Wallet',
   },
+  {
+    path: '/referrals',
+    name: 'Referrals',
+    iconName: 'People',
+  },
   // {
   //   path: '/',
   //   name: 'Analytics',
   //   iconName: 'ChartSquare',
   // },
+  {
+    path: '/chat',
+    name: 'Chat',
+    iconName: 'Chat',
+  },
   {
     path: '/profile',
     name: 'Settings',
@@ -53,6 +63,16 @@ export const shipperRoutes: Route[] = [
     path: '/wallet',
     name: 'Wallet',
     iconName: 'Wallet',
+  },
+  {
+    path: '/referrals',
+    name: 'Referrals',
+    iconName: 'People',
+  },
+  {
+    path: '/chat',
+    name: 'Chat',
+    iconName: 'Chat',
   },
   {
     path: '/profile',
