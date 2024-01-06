@@ -61,7 +61,7 @@ export default function UiModal({
                 </UiButton>
               )}
             </header>
-            <div className={position === "center" ? "modal-body" : ""}>
+            <div className={position === 'center' ? 'modal-body' : ''}>
               {children}
             </div>
           </div>

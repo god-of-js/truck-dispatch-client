@@ -311,12 +311,12 @@ export default function TripDetailsPage() {
             <UiCard>
               <div className="card-title">Handling Instructions</div>
               <span className="handling-instructions">
-              <span
-                className="handling-instructions"
-                dangerouslySetInnerHTML={{
-                  __html: trip?.instructions ? truncatedInstructions : 'N/A',
-                }}
-              />
+                <span
+                  className="handling-instructions"
+                  dangerouslySetInnerHTML={{
+                    __html: trip?.instructions ? truncatedInstructions : 'N/A',
+                  }}
+                />
                 {showReadMoreButton && (
                   <button className="read-more" onClick={toggleInstructions}>
                     ... read more
@@ -513,10 +513,11 @@ export default function TripDetailsPage() {
         isVisible={isInstructionsVisible}
         title="Handling Instructions"
       >
-        <InstructionsStyling 
-                dangerouslySetInnerHTML={{
-                  __html: trip?.instructions ? truncatedInstructions : 'N/A',
-                }} />
+        <InstructionsStyling
+          dangerouslySetInnerHTML={{
+            __html: trip?.instructions ? truncatedInstructions : 'N/A',
+          }}
+        />
       </UiModal>
 
       <UiConfirmModal
