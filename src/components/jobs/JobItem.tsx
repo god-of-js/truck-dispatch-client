@@ -36,9 +36,19 @@ export default function JobItem({ job, bidForJob, viewJobDetail }: Props) {
       </header>
 
       <div className="job-body">
-        <div className="field-item">
-          <div className="field-name">Type of Goods</div>
-          <div className="type-of-goods-value">{job.typeOfGoods}</div>
+        <div className="field-item header-container">
+          <div>
+            <div className="field-name">Type of Goods</div>
+            <div className="type-of-goods-value">{job.typeOfGoods}</div>
+          </div>
+          <div>
+            <div className="field-name bid">Proposed Price</div>
+            <div className="type-of-goods-value">
+              {job.proposedPrice
+                ? `NGN ${job.proposedPrice?.toLocaleString()}`
+                : 'N/A'}
+            </div>
+          </div>
         </div>
 
         <div className="field-item">
@@ -155,6 +165,12 @@ const JobItemStyling = styled.div`
   }
 
   .date-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header-container {
     display: flex;
     align-items: center;
     justify-content: space-between;

@@ -298,10 +298,29 @@ export default function TripDetailsPage() {
         <>
           <TripDetailsStyling>
             <UiCard>
-              <div className="card-title">Cargo Details</div>
+              <div className="card-title">
+                <div>Cargo Details</div>
+                {userIsClientBasedUser && !trip.transporter ? (
+                  <div className="bid-details">
+                    <UiPill variant="primary">
+                      <div>Proposed Price:</div>
+                    </UiPill>
+                    <UiPill variant="info">
+                      <div>
+                        {trip.proposedPrice
+                          ? `NGN ${trip.proposedPrice?.toLocaleString()}`
+                          : 'N/A'}
+                      </div>
+                    </UiPill>
+                  </div>
+                ) : (
+                  ''
+                )}
+              </div>
               <div className="cargo-details">
                 <UiDataField title="Type" value={trip?.typeOfGoods} />
                 <UiDataField title="Weight" value={trip?.weight + ' Tonnes'} />
+
                 <UiDataField
                   title="Shipping Line"
                   value={trip?.shippingLine || 'N/A'}
@@ -646,10 +665,17 @@ const TripDetailsStyling = styled.div`
     font-style: normal;
     font-weight: 600;
     font-size: ${pxToRem(14)};
+    display: flex;
+    justify-content: space-between;
     line-height: 140%;
     letter-spacing: -0.02em;
     color: var(--color-neutralBlack);
     margin-bottom: ${pxToRem(24)};
+  }
+
+  .bid-details {
+    display: flex;
+    gap: ${pxToRem(4)};
   }
 
   .cargo-details {

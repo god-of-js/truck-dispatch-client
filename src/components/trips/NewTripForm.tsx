@@ -160,6 +160,15 @@ export default function NewTripForm({
                 error={errors.weight}
                 onChange={handleChange}
               />
+              <UiInput
+                label="Propose a Price Offer (optional)"
+                name="proposedPrice"
+                type="number"
+                placeholder="NGN"
+                value={formData.proposedPrice || ''}
+                error={errors.proposedPrice}
+                onChange={handleChange}
+              />
             </GridContainer>
             <div className="text-area-container">
               <UiRichTextArea
