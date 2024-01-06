@@ -313,9 +313,9 @@ export default function TripDetailsPage() {
               <span className="handling-instructions">
                 {trip?.instructions ? truncatedInstructions : 'N/A'}
                 {showReadMoreButton && (
-                  <span className="read-more" onClick={toggleInstructions}>
-                    {isInstructionsVisible ? 'read less' : '... read more'}
-                  </span>
+                  <button className="read-more" onClick={toggleInstructions}>
+                    ... read more
+                  </button>
                 )}
               </span>
             </UiCard>
@@ -652,8 +652,6 @@ const TripDetailsStyling = styled.div`
     }
   }
   .handling-instructions {
-    display: flex;
-    flex-direction: column;
     font-style: normal;
     font-weight: 400;
     font-size: ${pxToRem(16)};
@@ -713,6 +711,15 @@ const TripDetailsStyling = styled.div`
       width: 90%;
       text-align: left;
     }
+  }
+
+  .read-more {
+    width: fit-content;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-neutralBlack);
+    font-weight: 700;
   }
   @media screen and (min-width: ${sizes.tablet}) {
     grid-template-columns: 2fr 1fr;

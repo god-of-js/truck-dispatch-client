@@ -23,7 +23,7 @@ interface Props {
 export default function UiModal({
   children,
   title,
-  position,
+  position = 'center',
   size = 'lg',
   bgVariant = 'light',
   hideModalClose,
@@ -61,7 +61,9 @@ export default function UiModal({
                 </UiButton>
               )}
             </header>
-            <div className="modal-body">{children}</div>
+            <div className={position === "center" ? "modal-body" : ""}>
+              {children}
+            </div>
           </div>
         </ModalCard>
       </Modal>
