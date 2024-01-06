@@ -45,7 +45,6 @@ export default function NewTripForm({
 
   function onSubmit() {
     nextHandler(formData);
-    console.log(formData);
   }
 
   function handleChange(event: { name: string; value: string | null }) {

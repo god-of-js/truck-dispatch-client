@@ -300,7 +300,7 @@ export default function TripDetailsPage() {
             <UiCard>
               <div className="card-title">
                 <div>Cargo Details</div>
-                {userIsClientBasedUser ? (
+                {userIsClientBasedUser && !trip.transporter ? (
                   <div className="bid-details">
                     <UiPill variant="primary">
                       <div>Proposed Price:</div>
