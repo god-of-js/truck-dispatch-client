@@ -23,7 +23,7 @@ interface Props {
 export default function UiModal({
   children,
   title,
-  position,
+  position = 'center',
   size = 'lg',
   bgVariant = 'light',
   hideModalClose,
@@ -61,7 +61,9 @@ export default function UiModal({
                 </UiButton>
               )}
             </header>
-            {children}
+            <div className={position === "center" ? "modal-body" : ""}>
+              {children}
+            </div>
           </div>
         </ModalCard>
       </Modal>
@@ -101,6 +103,7 @@ function positionStyling({ position, size }: CardProps) {
     margin: auto;
     width: 80%;
     border-radius: ${pxToRem(16)};
+    
     
     .modal-header h2 {
       text-align: center;
@@ -163,6 +166,11 @@ const ModalCard = styled.div<CardProps>`
   .modal-inner {
     padding-bottom: ${pxToRem(28)};
     height: 87%;
+
+    .modal-body {
+      max-height: 70vh;
+      overflow-y: auto;
+    }
 
     .modal-header {
       display: flex;
