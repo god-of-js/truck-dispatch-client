@@ -3,6 +3,7 @@ import 'react-quill/dist/quill.snow.css';
 const UiField = lazy(() => import('./UiField'));
 const LazyLoadedQuill = lazy(() => import('react-quill'));
 import { ReactQuillProps } from 'react-quill';
+import styled from 'styled-components';
 
 interface Props {
   label: string;
@@ -25,36 +26,37 @@ export default function UiRichTextArea({
     onChange({ name, value: content });
   };
 
-  const customStyles: ReactQuillProps['style'] = {
-    // padding: '16px, 24px',
-    gap: '8px',
-    width: '100%',
-    fontSize: '12px',
-    border: '1px solid',
-    borderColor: 'var(--color-gray)',
-    outline: 'none',
-    borderRadius: '4px',
-
-    overflowX: 'scroll',
-    overflowY: 'scroll',
-    overflow: 'hidden',
-
-    fontFamily: 'thiccboi-medium, sans-serif',
-    background: 'transparent',
-    resize: 'none',
-    height: '200px',
-    minHeight: '200px !important',
-  };
-
   return (
     <UiField label={label} error={error}>
-      <LazyLoadedQuill
-        theme="snow"
-        value={value || ''}
-        onChange={handleEditorChange}
-        placeholder={placeholder}
-        style={customStyles}
-      />
+      <EditorContainer>
+        <LazyLoadedQuill
+          theme="snow"
+          value={value || ''}
+          onChange={handleEditorChange}
+          placeholder={placeholder}
+        />
+      </EditorContainer>
     </UiField>
   );
 }
+
+const EditorContainer = styled.div`
+  .ql-editor {
+    min-height: ${pxToRem(250)};
+  }
+
+  .ql-container,
+  .ql-toolbar {
+    &.ql-snow {
+      border: ${pxToRem(1)} solid var(--color-gray);
+    }
+  }
+  .ql-toolbar {
+    border-top-left-radius: ${pxToRem(8)};
+    border-top-right-radius: ${pxToRem(8)};
+  }
+  .ql-container {
+    border-bottom-left-radius: ${pxToRem(8)};
+    border-bottom-right-radius: ${pxToRem(8)};
+  }
+`;

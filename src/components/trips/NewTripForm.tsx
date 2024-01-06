@@ -165,7 +165,7 @@ export default function NewTripForm({
               <UiRichTextArea
                 label="Instructions For Goods(optional)"
                 name="instructions"
-                value={formData.instructions || 'N/A'}
+                value={formData.instructions || ''}
                 error={errors.description}
                 onChange={handleChange}
               />
