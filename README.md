@@ -2,6 +2,19 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## ENVIRONMENT VARIABLES
+
+```
+VITE_PAYSTACK_PUBLIC_KEY=pk_test_0a7a8b8adcd87dea506fae49778b4d4c5b783f41
+VITE_CLOUDINARY_IMAGE_UPLOAD_URL=https://api.cloudinary.com/v1_1/dh8mksait/image/upload
+VITE_CLOUDINARY_VIDEO_UPLOAD_URL=https://api.cloudinary.com/v1_1/dh8mksait/video/upload
+VITE_CLOUDINARY_UPLOAD_PRESET=mib8y8vc
+VITE_GOOGLE_MAPS_KEY=AIzaSyBQxjDeHDJjJgpH3dAEI-UsVODM58A3iEI
+VITE_BACKEND_URL=http://localhost:5000
+VITE_WEB_SOCKET_URL=ws://localhost:5000
+VITE_JWT_SECRET=171d061b27577d9bcdd7152625d8b82ec3eae1126df1d2dba0c14b5ccce9732e
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
