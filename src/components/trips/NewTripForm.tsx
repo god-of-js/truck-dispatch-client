@@ -21,7 +21,7 @@ const UiSelect = lazy(() => import('ui/UiSelect'));
 const UiInput = lazy(() => import('ui/UiInput'));
 const UiForm = lazy(() => import('ui/UiForm'));
 const UiLocationsInput = lazy(() => import('ui/UiLocationsInput'));
-const UiTextArea = lazy(() => import('ui/UiTextArea'));
+const UiRichTextArea = lazy(() => import('ui/UIRichTextArea'));
 
 interface Props {
   tripFormData: Trip | NewTrip;
@@ -162,7 +162,7 @@ export default function NewTripForm({
               />
             </GridContainer>
             <div className="text-area-container">
-              <UiTextArea
+              <UiRichTextArea
                 label="Instructions For Goods(optional)"
                 name="instructions"
                 value={formData.instructions || ''}
@@ -173,7 +173,6 @@ export default function NewTripForm({
           </UiCard>
           <SubmitButtonContainer>
             <UiButton size="large">
-              {' '}
               {editMode ? 'Update' : 'Confirm'} Trip Details
             </UiButton>
           </SubmitButtonContainer>
