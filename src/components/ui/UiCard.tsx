@@ -1,12 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
+import sizes from 'utils/sizes';
 
 interface Props {
   children: React.ReactNode;
   variant?: 'light' | 'primary-light';
 }
 export default function UiCard({ children, variant = 'light' }: Props) {
-  return <Card className={'ui-card ' + variant}>{children}</Card>;
+  return (
+    <Card className={'ui-card ' + variant}>
+      <div className="card-container">{children}</div>
+    </Card>
+  );
 }
 
 const Card = styled.div`
@@ -28,10 +33,24 @@ const Card = styled.div`
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .card-container {
+    position: relative;
+    min-height: ${pxToRem(180)};
+  }
+
+  @media screen and (max-width: ${sizes.mobileLargeWidth}) {
+    .card-container {
+      position: relative;
+      min-height: ${pxToRem(200)};
+    }
+  }
+
   .bottom {
     position: absolute;
-    width: 100%;
     bottom: 0;
-    padding-bottom: ${pxToRem(20)};
+    display: grid;
+    gap: ${pxToRem(8)};
+    padding-top: ${pxToRem(20)};
+    width: 100%;
   }
 `;
