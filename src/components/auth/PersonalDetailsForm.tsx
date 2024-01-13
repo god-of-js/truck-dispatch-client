@@ -5,7 +5,6 @@ import { toAnyAction } from 'utils/helpers';
 import { registerUser } from 'modules/Account';
 import User from 'types/User';
 import PersonalDetailsFormSchema from 'utils/validations/PersonalDetailsFormSchema';
-import styled from 'styled-components';
 
 const UiSelect = lazy(() => import('ui/UiSelect'));
 const UiIcon = lazy(() => import('ui/UiIcon'));
@@ -45,7 +44,7 @@ export default function PersonDetailsForm({ goToNext }: Props) {
     phone: '',
     roleInCompany: '',
     userType: convertedUserType(),
-    referralCode: code || ''
+    referralCode: code || '',
   });
   const [loading, setLoading] = useState(false);
   const selectOptions = [
@@ -145,7 +144,10 @@ export default function PersonDetailsForm({ goToNext }: Props) {
                 size="large"
                 variant="primary"
               >
-                Continue as a {userType}
+                Continue as a{' '}
+                {userType === 'transportCompany'
+                  ? 'Transport Company'
+                  : userType}
               </UiButton>
               <Link to="/auth/join">
                 <UiButton

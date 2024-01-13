@@ -56,9 +56,9 @@ export default function SelectUsertypePage() {
   function navigateToRoute() {
     let nextRoute = `/auth/join/${userTypeRoute}`;
 
-    if (code) nextRoute += `?code=${code}`
+    if (code) nextRoute += `?code=${code}`;
 
-    navigate(nextRoute)
+    navigate(nextRoute);
   }
 
   return (

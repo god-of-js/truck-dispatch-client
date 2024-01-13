@@ -5,13 +5,21 @@ import UiIcon from 'ui/UiIcon';
 import UiInput from 'ui/UiInput';
 import UiTable from 'ui/UiTable';
 import UiPill from 'ui/UiPill';
-import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
+import { toAnyAction } from 'utils/helpers';
+import { getReferrals } from 'modules/Referrals';
+import UserDetails from 'ui/UserDetails';
 
 export default function ReferralsPage() {
-  const user = useSelector((state: RootState) => state.account.user)
+  const user = useSelector((state: RootState) => state.account.user);
+  const referrals = useSelector(
+    (state: RootState) => state.referrals.referrals,
+  );
+  const dispatch = useDispatch();
+
   const headers = [
     {
       title: 'Name',
@@ -35,46 +43,39 @@ export default function ReferralsPage() {
     },
   ];
 
-  const data = [
-    {
-      _id: '1ojnp0032',
-      name: 'Henry Eze',
-      createdAt: '2017-01-01',
-      referralCode: '#PWrYZV',
-      status: <UiPill variant="success">Verified</UiPill>,
-      referralCommission: <span>NGN 5000</span>,
-      paymentStatus: <UiPill variant="success">Completed</UiPill>,
-    },
-    {
-      _id: '1ojnp0032',
-      name: 'Henry Eze',
-      createdAt: '2017-01-01',
-      referralCode: '#PWrYZV',
-      status: <UiPill variant="warning">Pending</UiPill>,
-      referralCommission: '---',
-      paymentStatus: <span>TBD</span>,
-    },
-  ];
+  const data = referrals.map((referral) => ({
+    ...referral,
+    name: (
+      <UserDetails
+        avatar={referral.referred.avatar}
+        userName={`${referral.referred.firstName} ${referral.referred.lastName}`}
+        profileSubtitle={referral.referred.userType}
+      />
+    ),
+  }));
 
   const referralLink = useMemo(() => {
     return (
       window.location.protocol +
       '//' +
       window.location.hostname +
-      (window.location.port ? ':' + window.location.port : '') + `/auth/join?code=${user?.referrerCode}`
+      (window.location.port ? ':' + window.location.port : '') +
+      `/auth/join?code=${user?.referrerCode}`
     );
   }, [user]);
 
   function copyInviteLink() {
-
-    navigator.clipboard
-      .writeText(referralLink)
-      .then(() => {
-        Toast.success({
-          msg: 'Your referral link has been copied to clipboard',
-        });
+    navigator.clipboard.writeText(referralLink).then(() => {
+      Toast.success({
+        msg: 'Your referral link has been copied to clipboard',
       });
+    });
   }
+
+  useEffect(() => {
+    dispatch(toAnyAction(getReferrals()));
+  }, []);
+
   return (
     <div>
       <DashboardTopNav routeName="Referrals" />
@@ -89,14 +90,13 @@ export default function ReferralsPage() {
             </p>
           </div>
           <div className="ref__input-container">
-            <div className='ref__input-container__input'>
-            <UiInput
-              name="ref-code"
-              value={referralLink}
-              size="md"
-              onChange={() => {}}
-            />
-
+            <div className="ref__input-container__input">
+              <UiInput
+                name="ref-code"
+                value={referralLink}
+                size="md"
+                onChange={() => {}}
+              />
             </div>
             <UiButton onClick={copyInviteLink}>
               <UiIcon icon="Link" /> Share
