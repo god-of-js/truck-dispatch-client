@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import React, { lazy, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toAnyAction } from 'utils/helpers';
@@ -19,6 +19,8 @@ interface Props {
 export default function PersonDetailsForm({ goToNext }: Props) {
   const { userType } = useParams();
   const dispatch = useDispatch();
+  const location = useLocation();
+  const code = new URLSearchParams(location.search).get('code');
   const isCompany = userType?.toLowerCase().includes('company');
 
   const header = isCompany ? 'Account Handler Details' : 'Personal Details';
@@ -43,6 +45,7 @@ export default function PersonDetailsForm({ goToNext }: Props) {
     phone: '',
     roleInCompany: '',
     userType: convertedUserType(),
+    referralCode: code || ''
   });
   const [loading, setLoading] = useState(false);
   const selectOptions = [
@@ -142,7 +145,7 @@ export default function PersonDetailsForm({ goToNext }: Props) {
                 size="large"
                 variant="primary"
               >
-                Continue as {userType}
+                Continue as a {userType}
               </UiButton>
               <Link to="/auth/join">
                 <UiButton

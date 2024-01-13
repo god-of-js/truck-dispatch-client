@@ -11,9 +11,7 @@ import { resetPasswordAccessChecks } from './allowNavigationFunctions';
 
 const UserVehiclepage = lazy(() => import('../pages/user/UserVehiclePage'));
 
-const TransporterProfilePage = lazy(
-  () => import('../pages/user/TransporterProfilePage'),
-);
+const UserProfilePage = lazy(() => import('../pages/user/UserProfilePage'));
 const AuthLayout = lazy(() => import('../layouts/AuthLayout'));
 const ProfileLayout = lazy(() => import('../layouts/ProfileLayout'));
 const TripLayout = lazy(() => import('../layouts/TripLayout'));
@@ -151,7 +149,7 @@ const router = createBrowserRouter([
       {
         path: '/user/:userId',
         id: 'User detail',
-        element: <TransporterProfilePage />,
+        element: <UserProfilePage />,
       },
       {
         path: '/user/:userId/vehicles',

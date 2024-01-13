@@ -1,5 +1,7 @@
 import RatingsStatistics from 'components/ratings/RatingsStatistics';
+import { RootState } from 'modules/index';
 import React, { lazy, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Rating from 'types/Rating';
@@ -16,33 +18,46 @@ const RatingDetails = lazy(() => import('components/ratings/RatingDetails'));
 
 interface Props {
   user: UserFullProfile;
-  messageUser: () => void;
 }
-export default function UserProfile({ user, messageUser }: Props) {
+export default function UserProfile({ user: alternateUser }: Props) {
+  const user = useSelector((state: RootState) => state.account.user);
   const vehicles = useMemo(() => {
-    if (!user.vehicles) return;
-    return user.vehicles.slice(0, 3);
+    if (!alternateUser.vehicles) return;
+    return alternateUser.vehicles.slice(0, 3);
   }, [user]);
 
+  const chatLink = useMemo(() => {
+    if (!user) return;
+    if (serviceBasedUserTypes.includes(user.userType!)) {
+      return `/chat?clientId=${alternateUser._id}&transporterId=${user._id}`;
+    }
+
+    return `/chat?clientId=${user._id}&transporterId=${alternateUser._id}`;
+  }, [user, alternateUser]);
+
   const ratings = useMemo<Rating[]>(() => {
-    return user.ratings.filter((rating) => !!rating.comment);
+    return alternateUser.ratings.filter((rating) => !!rating.comment);
   }, [user]);
 
   return (
     <UserProfileStyle>
       <UserProfileHeader>
         <div className="user-profile">
-          <UiAvatar size="lg" avatar={user.avatar} isHalfCurved />
+          <UiAvatar size="lg" avatar={alternateUser.avatar} isHalfCurved />
           <div>
-            <div className="user-name">{`${user.lastName} ${user.firstName}`}</div>
-            <div className="user-type">{user.userType}</div>
+            <div className="user-name">{`${alternateUser.lastName} ${alternateUser.firstName}`}</div>
+            <div className="user-type">{alternateUser.userType}</div>
           </div>
         </div>
         <div className="button-container">
-          <UiButton onClick={messageUser} variant="primary-secondary">
-            <UiIcon icon="DoubleChat" />
-            <span className="hidden-in-mobile">Message</span>
-          </UiButton>
+          {chatLink && (
+            <Link to={chatLink}>
+              <UiButton variant="primary-secondary">
+                <UiIcon icon="DoubleChat" />
+                <span className="hidden-in-mobile">Message</span>
+              </UiButton>
+            </Link>
+          )}
           {false && <UiButton>Add to Contacts</UiButton>}
         </div>
       </UserProfileHeader>
@@ -52,28 +67,28 @@ export default function UserProfile({ user, messageUser }: Props) {
             title="Trips Completed"
             isCentered
             isBordered
-            value={user.completedTrips}
+            value={alternateUser.completedTrips}
           />
           <UiDataField
             title="avg rating"
             isCentered
             isBordered
-            value={user.rating}
+            value={alternateUser.rating}
           />
           <UiDataField
             title="no of reviews"
             isCentered
             isBordered
-            value={user.ratings.length}
+            value={alternateUser.ratings.length}
           />
           <UiDataField
             title="no of trucks"
             isCentered
             isBordered
-            value={user.noOfVehicles}
+            value={alternateUser.noOfVehicles}
           />
         </UserDataFields>
-        {serviceBasedUserTypes.includes(user.userType) && (
+        {serviceBasedUserTypes.includes(alternateUser.userType) && (
           <Vehicles>
             <h3>TRUCKS</h3>
             <div className="vehicles">
@@ -81,9 +96,9 @@ export default function UserProfile({ user, messageUser }: Props) {
                 <VehicleItem vehicle={vehicle} key={vehicle._id} />
               ))}
             </div>
-            {user.vehicles?.length! > 3 && (
+            {alternateUser.vehicles?.length! > 3 && (
               <div className="btn-container">
-                <Link to={`/user/${user._id}/vehicles`}>
+                <Link to={`/user/${alternateUser._id}/vehicles`}>
                   <UiButton variant="secondary">View all Vehicles</UiButton>
                 </Link>
               </div>
@@ -91,7 +106,7 @@ export default function UserProfile({ user, messageUser }: Props) {
           </Vehicles>
         )}
         <UserReviews>
-          <RatingsStatistics ratings={ratings} user={user} />
+          <RatingsStatistics ratings={ratings} user={alternateUser} />
           <div className="ratings">
             {ratings.map((rating) => (
               <RatingDetails rating={rating} key={rating._id} />

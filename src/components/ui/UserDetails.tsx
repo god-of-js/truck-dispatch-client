@@ -41,7 +41,6 @@ export default function UserDetails({
 
     return `/chat?clientId=${user._id}&transporterId=${userId}`;
   }, [user, userId]);
-  function messageUser() {}
   return (
     <UserDetailsStyling size={size}>
       <div className="user-profile">
@@ -56,10 +55,12 @@ export default function UserDetails({
         </div>
       </div>
       <div className="user-details-actions">
-        {false && (
-          <UiButton variant="secondary" size="md">
-            View Profile
-          </UiButton>
+        {showViewProfile && (
+          <Link to={`/user/${userId}`}>
+            <UiButton variant="secondary" size="md">
+              View Profile
+            </UiButton>
+          </Link>
         )}
         {showMessage && chatLink && (
           <Link to={chatLink}>
