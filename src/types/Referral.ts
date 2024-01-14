@@ -6,4 +6,5 @@ export default interface Referral {
   referred: User;
   commission: number;
   status: 'pending' | 'completed';
+  createdAt: string | number;
 }

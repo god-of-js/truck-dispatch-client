@@ -4,14 +4,16 @@ import UiButton from 'ui/UiButton';
 import UiIcon from 'ui/UiIcon';
 import UiInput from 'ui/UiInput';
 import UiTable from 'ui/UiTable';
-import UiPill from 'ui/UiPill';
+import UiPill, { PillType } from 'ui/UiPill';
 import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'modules/index';
 import { Toast } from 'utils/toast';
-import { toAnyAction } from 'utils/helpers';
+import { convertToFullDate, toAnyAction } from 'utils/helpers';
 import { getReferrals } from 'modules/Referrals';
 import UserDetails from 'ui/UserDetails';
+import User from 'types/User';
+import Referral from 'types/Referral';
 
 export default function ReferralsPage() {
   const user = useSelector((state: RootState) => state.account.user);
@@ -31,17 +33,54 @@ export default function ReferralsPage() {
     },
     {
       title: 'Verification Status',
-      query: 'status',
+      query: 'verificationStatus',
     },
     {
       title: 'Referral Commission',
-      query: 'referralCommission',
+      query: 'commission',
     },
     {
       title: 'Payment Status',
       query: 'paymentStatus',
     },
   ];
+
+  function verificationPillDetails(status?: User['status']) {
+    let variant: PillType = 'gray', text = 'Unverified';
+
+    if (status === 'verified') {
+      variant = 'success';
+      text = 'Verified'
+    }
+    if (status === 'rejected') {
+      variant = 'danger';
+      text = 'Rejected Verification';
+    }
+    if (status === 'fraudulent') {
+      variant = 'danger';
+      text = 'Fraudulent';
+    }
+    if (status === 'pending_verification') {
+      variant = 'warning';
+      text = 'Pending Verification';
+    }
+
+    return {
+      text: text,
+      variant,
+    };
+  }
+
+  function paymentPillDetails(status: Referral['status']) {
+    let variant: PillType = 'gray', text = 'Awaiting Trip'
+
+    if (status === 'completed') {
+      variant = 'success'
+      text = 'Payment Made'
+    }
+
+    return { variant, text }
+  }
 
   const data = referrals.map((referral) => ({
     ...referral,
@@ -52,6 +91,22 @@ export default function ReferralsPage() {
         profileSubtitle={referral.referred.userType}
       />
     ),
+    verificationStatus: (
+      <UiPill
+        variant={verificationPillDetails(referral.referred.status).variant}
+      >
+        {verificationPillDetails(referral.referred.status).text}
+      </UiPill>
+    ),
+    createdAt: convertToFullDate(referral.createdAt),
+    commission: <span>NGN {referral.commission}</span>,
+    paymentStatus: (
+      <UiPill
+        variant={paymentPillDetails(referral.status).variant}
+      >
+        {paymentPillDetails(referral.status).text}
+      </UiPill>
+    )
   }));
 
   const referralLink = useMemo(() => {
