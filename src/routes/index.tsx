@@ -11,9 +11,7 @@ import { resetPasswordAccessChecks } from './allowNavigationFunctions';
 
 const UserVehiclepage = lazy(() => import('../pages/user/UserVehiclePage'));
 
-const TransporterProfilePage = lazy(
-  () => import('../pages/user/TransporterProfilePage'),
-);
+const UserProfilePage = lazy(() => import('../pages/user/UserProfilePage'));
 const AuthLayout = lazy(() => import('../layouts/AuthLayout'));
 const ProfileLayout = lazy(() => import('../layouts/ProfileLayout'));
 const TripLayout = lazy(() => import('../layouts/TripLayout'));
@@ -56,6 +54,7 @@ const TransporterJobsPage = lazy(
   () => import('../pages/jobs/TransporterJobsPage'),
 );
 const ChatPage = lazy(() => import('../pages/chat/ChatPage'));
+const ReferralsPage = lazy(() => import('../pages/referrals/ReferralsPage'));
 
 // VEHICLES
 const VehiclesPage = lazy(() => import('../pages/vehicles/VehiclesPage'));
@@ -150,7 +149,7 @@ const router = createBrowserRouter([
       {
         path: '/user/:userId',
         id: 'User detail',
-        element: <TransporterProfilePage />,
+        element: <UserProfilePage />,
       },
       {
         path: '/user/:userId/vehicles',
@@ -161,6 +160,11 @@ const router = createBrowserRouter([
         path: '/vehicles',
         id: 'Vehicles',
         element: <VehiclesPage />,
+      },
+      {
+        path: '/referrals',
+        id: 'Referrals',
+        element: <ReferralsPage />,
       },
       {
         path: '/payments',

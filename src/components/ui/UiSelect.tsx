@@ -2,6 +2,8 @@ import React, { useState, useMemo, lazy } from 'react';
 import OutsideClickHandler from 'react-outside-click-handler';
 import styled from 'styled-components';
 import { Size } from 'types/Size';
+import { filterByFieldInObject, searchObjectsByField } from 'utils/helpers';
+import UiInput from './UiInput';
 
 const UiField = lazy(() => import('./UiField'));
 const UiIcon = lazy(() => import('./UiIcon'));
@@ -38,7 +40,18 @@ export default function UiSelect({
   onChange,
 }: Props) {
   const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
+  const selectedOption = useMemo(() => {
+    if (!value) return null;
+    return options.find((option) => option.value === value) || null;
+  }, [value, options]);
+
+  const sortedOptions = useMemo(() => {
+    if (!searchQuery) return options;
+
+    return searchObjectsByField(options, searchQuery, ['value', 'label']);
+  }, [searchQuery, options]);
   function toggleOptions() {
     setIsOpen(!isOpen);
   }
@@ -47,11 +60,6 @@ export default function UiSelect({
     toggleOptions();
     onChange({ name, value: option.value });
   };
-
-  const selectedOption = useMemo(() => {
-    if (!value) return null;
-    return options.find((option) => option.value === value) || null;
-  }, [value, options]);
 
   return (
     <OutsideClickHandler onOutsideClick={() => setIsOpen(false)}>
@@ -68,8 +76,20 @@ export default function UiSelect({
             </span>
           </div>
           {isOpen && (
-            <StyledOptions>
-              {options.map((option, index) => (
+            <StyledOptions
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <div className="select__input-container">
+                <UiInput
+                  placeholder="Search for an option"
+                  value={searchQuery}
+                  name="searchQuery"
+                  onChange={({ value }) => setSearchQuery(value || '')}
+                />
+              </div>
+              {sortedOptions.map((option, index) => (
                 <StyledOption
                   key={index}
                   className={
@@ -147,6 +167,10 @@ const StyledOptions = styled.ul`
   max-height: ${pxToRem(250)};
   overflow-y: auto;
   transition: all 0.2s ease-in-out;
+
+  .select__input-container {
+    padding: 0 ${pxToRem(16)};
+  }
 `;
 
 const StyledOption = styled.li`
