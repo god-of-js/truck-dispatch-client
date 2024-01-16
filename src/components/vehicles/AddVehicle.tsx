@@ -118,7 +118,7 @@ export default function AddVehicle({ isVisible, onClose }: Props) {
       title="Uploading File"
       onClose={onClose}
     >
-      File Uploads Usually Take 1 - 2 minutes ...
+      File Uploads Usually Take 1 - 2 minutes ..
     </UiConfirmModal>
   );
 }
