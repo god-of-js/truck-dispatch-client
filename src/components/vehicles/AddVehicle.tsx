@@ -3,6 +3,7 @@ import { lazy, Suspense, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import CreateVehicleData from 'types/CreateVehicleData';
+import UiConfirmModal from 'ui/UiConfirmModal';
 import { deepRootedToFormData, toAnyAction } from 'utils/helpers';
 
 const UiModal = lazy(() => import('ui/UiModal'));
@@ -80,7 +81,7 @@ export default function AddVehicle({ isVisible, onClose }: Props) {
       });
   }
 
-  return (
+  return !loading ? (
     <UiModal
       isVisible={isVisible}
       title="Add Vehicle"
@@ -107,6 +108,18 @@ export default function AddVehicle({ isVisible, onClose }: Props) {
         </Suspense>
       </Body>
     </UiModal>
+  ) : (
+    <UiConfirmModal
+      hideModalClose
+      hideActions
+      hideNotYetButton
+      isVisible={loading}
+      variant="primary"
+      title="Uploading File"
+      onClose={onClose}
+    >
+      File Uploads Usually Take 1 - 2 minutes ...
+    </UiConfirmModal>
   );
 }
 
