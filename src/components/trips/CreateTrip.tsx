@@ -43,6 +43,7 @@ export default function CreateTrip({
     shippingLine: '',
     weight: NaN,
     instructions: '',
+    proposedPrice: NaN,
   });
 
   function nextHandler(formData?: NewTrip | Trip) {

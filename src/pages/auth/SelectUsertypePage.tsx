@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Icons } from 'ui/UiIcon';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { lazy, useState } from 'react';
 import sizes from 'utils/sizes';
 
@@ -11,6 +11,8 @@ const AuthLayoutStyling = lazy(
 );
 
 export default function SelectUsertypePage() {
+  const location = useLocation();
+  const code = new URLSearchParams(location.search).get('code');
   const [userTypeRoute, setUserTypeRoute] = useState('');
 
   const navigate = useNavigate();
@@ -49,6 +51,14 @@ export default function SelectUsertypePage() {
 
   function selectUserType(type: string) {
     setUserTypeRoute(type);
+  }
+
+  function navigateToRoute() {
+    let nextRoute = `/auth/join/${userTypeRoute}`;
+
+    if (code) nextRoute += `?code=${code}`;
+
+    navigate(nextRoute);
   }
 
   return (
@@ -99,7 +109,7 @@ export default function SelectUsertypePage() {
           size="large"
           isFullWidth
           disabled={!userTypeRoute}
-          onClick={() => navigate(`/auth/join/${userTypeRoute}`)}
+          onClick={navigateToRoute}
         >
           Get Started
         </UiButton>
@@ -226,6 +236,7 @@ const StyledUserTypeGrid = styled.div`
     border-radius: ${pxToRem(8)};
     .user-card {
       border: 1px solid var(--color-gray);
+      height: ${pxToRem(84)};
       border-radius: ${pxToRem(8)};
       padding: ${pxToRem(12)};
       cursor: pointer;

@@ -23,6 +23,7 @@ import ResetUserPassword from 'types/ResetUserPassword';
 import UserFullProfile from 'types/UserFullProfile';
 import Payment from 'types/Payment';
 import WithdrawalDetails from 'types/WithdrawalDetails';
+import Referral from 'types/Referral';
 
 class ApiService {
   createUser(userData: Partial<User>) {
@@ -109,6 +110,9 @@ class ApiService {
 
   getUser() {
     return this.get<User>('/user');
+  }
+  getReferrals() {
+    return this.get<Referral[]>('/referrals');
   }
 
   getUserDetailsById(userId: string) {

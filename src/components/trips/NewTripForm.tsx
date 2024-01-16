@@ -21,7 +21,7 @@ const UiSelect = lazy(() => import('ui/UiSelect'));
 const UiInput = lazy(() => import('ui/UiInput'));
 const UiForm = lazy(() => import('ui/UiForm'));
 const UiLocationsInput = lazy(() => import('ui/UiLocationsInput'));
-const UiTextArea = lazy(() => import('ui/UiTextArea'));
+const UiRichTextArea = lazy(() => import('ui/UIRichTextArea'));
 
 interface Props {
   tripFormData: Trip | NewTrip;
@@ -124,14 +124,16 @@ export default function NewTripForm({
                 error={errors.typeOfGoods}
                 onChange={handleChange}
               />
-              <UiSelect
-                label="Shipping Line"
-                name="shippingLine"
-                options={shippingLinesOptions}
-                value={formData.shippingLine || ''}
-                error={errors.shippingLine}
-                onChange={handleChange}
-              />
+              {formData.typeOfGoods !== 'cargo' && (
+                <UiSelect
+                  label="Shipping Line"
+                  name="shippingLine"
+                  options={shippingLinesOptions}
+                  value={formData.shippingLine || ''}
+                  error={errors.shippingLine}
+                  onChange={handleChange}
+                />
+              )}
               <UiSelect
                 label="Job Type"
                 name="jobType"
@@ -140,14 +142,16 @@ export default function NewTripForm({
                 error={errors.jobType}
                 onChange={handleChange}
               />
-              <UiSelect
-                label="Size of Container"
-                name="sizeOfContainer"
-                options={sizeOfContainerOptions}
-                value={formData.sizeOfContainer || ''}
-                error={errors.sizeOfContainer}
-                onChange={handleChange}
-              />
+              {formData.typeOfGoods !== 'cargo' && (
+                <UiSelect
+                  label="Size of Container"
+                  name="sizeOfContainer"
+                  options={sizeOfContainerOptions}
+                  value={formData.sizeOfContainer || ''}
+                  error={errors.sizeOfContainer}
+                  onChange={handleChange}
+                />
+              )}
               <UiInput
                 label="Weight Of Goods(Tonnage)"
                 name="weight"
@@ -156,9 +160,18 @@ export default function NewTripForm({
                 error={errors.weight}
                 onChange={handleChange}
               />
+              <UiInput
+                label="Propose a Price Offer (optional)"
+                name="proposedPrice"
+                type="number"
+                placeholder="NGN"
+                value={formData.proposedPrice || ''}
+                error={errors.proposedPrice}
+                onChange={handleChange}
+              />
             </GridContainer>
             <div className="text-area-container">
-              <UiTextArea
+              <UiRichTextArea
                 label="Instructions For Goods(optional)"
                 name="instructions"
                 value={formData.instructions || ''}
@@ -169,7 +182,6 @@ export default function NewTripForm({
           </UiCard>
           <SubmitButtonContainer>
             <UiButton size="large">
-              {' '}
               {editMode ? 'Update' : 'Confirm'} Trip Details
             </UiButton>
           </SubmitButtonContainer>

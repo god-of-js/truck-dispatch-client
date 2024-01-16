@@ -27,4 +27,5 @@ export default interface Trip {
   reference: string;
   status: 'awaiting-bid' | 'assigned' | 'in-progress' | 'completed';
   paymentRequest?: PaymentRequest;
+  proposedPrice?: number;
 }

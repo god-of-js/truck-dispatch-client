@@ -1,11 +1,10 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import React, { lazy, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toAnyAction } from 'utils/helpers';
 import { registerUser } from 'modules/Account';
 import User from 'types/User';
 import PersonalDetailsFormSchema from 'utils/validations/PersonalDetailsFormSchema';
-import styled from 'styled-components';
 
 const UiSelect = lazy(() => import('ui/UiSelect'));
 const UiIcon = lazy(() => import('ui/UiIcon'));
@@ -19,6 +18,8 @@ interface Props {
 export default function PersonDetailsForm({ goToNext }: Props) {
   const { userType } = useParams();
   const dispatch = useDispatch();
+  const location = useLocation();
+  const code = new URLSearchParams(location.search).get('code');
   const isCompany = userType?.toLowerCase().includes('company');
 
   const header = isCompany ? 'Account Handler Details' : 'Personal Details';
@@ -43,6 +44,7 @@ export default function PersonDetailsForm({ goToNext }: Props) {
     phone: '',
     roleInCompany: '',
     userType: convertedUserType(),
+    referralCode: code || '',
   });
   const [loading, setLoading] = useState(false);
   const selectOptions = [
@@ -142,7 +144,10 @@ export default function PersonDetailsForm({ goToNext }: Props) {
                 size="large"
                 variant="primary"
               >
-                Continue
+                Continue as a{' '}
+                {userType === 'transportCompany'
+                  ? 'Transport Company'
+                  : userType}
               </UiButton>
               <Link to="/auth/join">
                 <UiButton

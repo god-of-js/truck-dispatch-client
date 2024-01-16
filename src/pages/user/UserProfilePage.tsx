@@ -19,8 +19,6 @@ export default function TransporterProfilePage() {
   const [fetchedUser, setFetchedUser] = useState<UserFullProfile>();
   const [loading, setLoading] = useState(false);
 
-  function messageUser() {}
-
   function loadUser() {
     setLoading(true);
     if (userId) {
@@ -44,15 +42,15 @@ export default function TransporterProfilePage() {
       />
       {loading && <Loader />}
       {fetchedUser && (
-        <TransporterProfilePageStyle>
-          <UserProfile user={fetchedUser} messageUser={messageUser} />
-        </TransporterProfilePageStyle>
+        <UserProfilePageStyle>
+          <UserProfile user={fetchedUser} />
+        </UserProfilePageStyle>
       )}
     </>
   );
 }
 
-const TransporterProfilePageStyle = styled.div`
+const UserProfilePageStyle = styled.div`
   margin: ${pxToRem(28)} 0;
   padding: 0 ${pxToRem(24)};
 `;

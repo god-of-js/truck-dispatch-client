@@ -102,7 +102,7 @@ export default function LoginPage() {
                 />
                 <p>
                   Forgot Password?{' '}
-                  <Link to="/auth/forgot-password">Reset Password</Link>{' '}
+                  <Link to="/auth/forgot-password">Reset Password</Link>
                 </p>
                 <div className="hidden-in-mobile">
                   <UiButton
