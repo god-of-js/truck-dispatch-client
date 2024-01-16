@@ -1,3 +1,4 @@
+import Loader from 'components/layout/Loader';
 import { createVehicle } from 'modules/Vehicle';
 import { lazy, Suspense, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -115,14 +116,42 @@ export default function AddVehicle({ isVisible, onClose }: Props) {
       hideNotYetButton
       isVisible={loading}
       variant="primary"
-      title="Uploading File"
+      title="Uploading File ..."
       onClose={onClose}
     >
-      File Uploads Usually Take 1 - 2 minutes ..
+      <LoadingContent>
+        <Loader />
+        <Message>
+          <p>Please wait while we update your record</p>
+          <p>Note: File Uploads Could Take 30 - 60 seconds</p>
+        </Message>
+      </LoadingContent>
     </UiConfirmModal>
   );
 }
 
 const Body = styled.div`
   padding: ${pxToRem(24)};
+`;
+
+const LoadingContent = styled.div`
+  padding: 16px;
+  display: flex;
+  gap: 30px;
+  flex-direction: column;
+
+  p {
+    font-weight: 600;
+    font-size: ${pxToRem(14)};
+    line-height: 20%;
+    letter-spacing: -0.02em;
+    color: var(--color-gray-80);
+  }
+`;
+
+const Message = styled.div`
+  text-transform: capitalize;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
 `;
