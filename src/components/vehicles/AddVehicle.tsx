@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import CreateVehicleData from 'types/CreateVehicleData';
 import UiConfirmModal from 'ui/UiConfirmModal';
+import UiUploadingModal from 'ui/UiUploadingModal';
 import { deepRootedToFormData, toAnyAction } from 'utils/helpers';
 
 const UiModal = lazy(() => import('ui/UiModal'));
@@ -110,48 +111,16 @@ export default function AddVehicle({ isVisible, onClose }: Props) {
       </Body>
     </UiModal>
   ) : (
-    <UiConfirmModal
-      hideModalClose
-      hideActions
-      hideNotYetButton
-      isVisible={loading}
-      variant="primary"
+    <UiUploadingModal
       title="Uploading File ..."
+      message1="Please wait while we update your record"
+      message2="Note: File Uploads Could Take 30 - 60 seconds depending on it's size"
+      loading={loading}
       onClose={onClose}
-    >
-      <LoadingContent>
-        <Loader />
-        <Message>
-          <p>Please wait while we update your record</p>
-          <p>Note: File Uploads Could Take 30 - 60 seconds</p>
-        </Message>
-      </LoadingContent>
-    </UiConfirmModal>
+    />
   );
 }
 
 const Body = styled.div`
   padding: ${pxToRem(24)};
-`;
-
-const LoadingContent = styled.div`
-  padding: 16px;
-  display: flex;
-  gap: 30px;
-  flex-direction: column;
-
-  p {
-    font-weight: 600;
-    font-size: ${pxToRem(14)};
-    line-height: 20%;
-    letter-spacing: -0.02em;
-    color: var(--color-gray-80);
-  }
-`;
-
-const Message = styled.div`
-  text-transform: capitalize;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
 `;

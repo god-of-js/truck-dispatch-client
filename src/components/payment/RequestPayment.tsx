@@ -1,3 +1,4 @@
+import Loader from 'components/layout/Loader';
 import { RootState } from 'modules/index';
 import {
   requestPaymentByTransporter,
@@ -7,6 +8,8 @@ import { lazy, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import PaymentRequest from 'types/PaymentRequest';
+import UiConfirmModal from 'ui/UiConfirmModal';
+import UiUploadingModal from 'ui/UiUploadingModal';
 import { deepRootedToFormData, toAnyAction } from 'utils/helpers';
 import RequestPaymentSchema from 'utils/validations/RequestPaymentSchema';
 
@@ -67,7 +70,7 @@ export default function RequestPayment({
         setLoading(false);
       });
   }
-  return (
+  return !loading ? (
     <UiModal title="Request Payment" isVisible={isVisible} onClose={onClose}>
       <UiForm
         formData={formData}
@@ -126,6 +129,14 @@ export default function RequestPayment({
         )}
       </UiForm>
     </UiModal>
+  ) : (
+    <UiUploadingModal
+      title="Uploading Proof Video ..."
+      message1="Please wait while we update your record"
+      message2=" Note: Video Uploads Could Take 1 - 2 minutes depending on it's size"
+      onClose={onClose}
+      loading={loading}
+    />
   );
 }
 
