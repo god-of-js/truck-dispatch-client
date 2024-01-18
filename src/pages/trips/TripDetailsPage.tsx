@@ -396,13 +396,12 @@ export default function TripDetailsPage() {
             </UiCard>
             <div className="double-grid">
               <UiCard>
-                <div className="card-title">Transfer Delivery Order</div>
-                <p className="description-text">
-                  This is a document that authorizes the release of cargo from a
-                  shipping terminal or port to the authorized transporter for
-                  final delivery.
-                </p>
-                <div className="bottom">
+                    <div className="card-title">Transfer Delivery Order</div>
+                    <p className="description-text">
+                      This is a document that authorizes the release of cargo
+                      from a shipping terminal or port to the authorized
+                      transporter for final delivery.
+                    </p>
                   <div className="double-items">
                     {userIsClientBasedUser && !trip.TDO && (
                       <UiButton
@@ -418,7 +417,6 @@ export default function TripDetailsPage() {
                       </a>
                     )}
                   </div>
-                </div>
               </UiCard>
               {userIsClientBasedUser && trip.status === 'awaiting-bid' && (
                 <UiCard>
