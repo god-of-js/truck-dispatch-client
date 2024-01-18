@@ -6,7 +6,7 @@ const UiIcon = lazy(() => import('./UiIcon'));
 const UiButton = lazy(() => import('./UiButton'));
 const UiOverlay = lazy(() => import('./UiOverlay'));
 type Size = 'lg' | 'md' | 'sm';
-type Position = 'center' | 'right';
+type Position = 'center' | 'small-center' | 'right';
 type BG = 'dark' | 'light';
 
 interface Props {
@@ -98,6 +98,43 @@ function positionStyling({ position, size }: CardProps) {
     `;
   }
 
+  if (position === 'center') {
+    return `
+    position: fixed;
+    margin: auto;
+    width: 80%;
+    border-radius: ${pxToRem(16)};
+
+    .modal-header h2 {
+      text-align: center;
+      flex-grow: 1;
+      margin-left: 40px !important;
+    }
+    @media only screen and (min-width: ${sizes.mobile}) {
+      position: static;
+    }
+    @media only screen and (min-width: ${sizes.tabletLargeWidth}) {
+      width: 70%;
+    }
+    @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
+      width: 50%;
+    }
+    `;
+  }
+
+  if (position === 'small-center') {
+    return `
+      position: static;
+    margin: auto;
+    border-radius: ${pxToRem(16)};
+
+    .modal-header h2 {
+      text-align: center;
+      flex-grow: 1;
+      margin-left: 40px !important;
+    }
+    `;
+  }
   return `
     position: static;
     margin: auto;

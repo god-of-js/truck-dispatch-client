@@ -44,6 +44,7 @@ export default function UiConfirmModal({
       title={title}
       onClose={onClose}
       hideModalClose={hideModalClose}
+      position="small-center"
       size="sm"
     >
       <Modal>
