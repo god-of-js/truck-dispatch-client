@@ -6,7 +6,7 @@ const UiIcon = lazy(() => import('./UiIcon'));
 const UiButton = lazy(() => import('./UiButton'));
 const UiOverlay = lazy(() => import('./UiOverlay'));
 type Size = 'lg' | 'md' | 'sm';
-type Position = 'center' | 'small-center' | 'right';
+type Position = 'center' | 'right';
 type BG = 'dark' | 'light';
 
 interface Props {
@@ -98,11 +98,10 @@ function positionStyling({ position, size }: CardProps) {
     `;
   }
 
-  if (position === 'center') {
+  if (size === 'lg') {
     return `
     position: fixed;
     margin: auto;
-    width: 80%;
     border-radius: ${pxToRem(16)};
 
     .modal-header h2 {
@@ -114,7 +113,7 @@ function positionStyling({ position, size }: CardProps) {
       position: static;
     }
     @media only screen and (min-width: ${sizes.tabletLargeWidth}) {
-      width: 70%;
+      width: 80%;
     }
     @media only screen and (min-width: ${sizes.laptopSmallWidth}) {
       width: 50%;
@@ -122,19 +121,6 @@ function positionStyling({ position, size }: CardProps) {
     `;
   }
 
-  if (position === 'small-center') {
-    return `
-      position: static;
-    margin: auto;
-    border-radius: ${pxToRem(16)};
-
-    .modal-header h2 {
-      text-align: center;
-      flex-grow: 1;
-      margin-left: 40px !important;
-    }
-    `;
-  }
   return `
     position: static;
     margin: auto;
@@ -152,7 +138,7 @@ function getWidth(size?: Size) {
   if (size === 'sm') return `width: ${pxToRem(540)};`;
 
   if (size === 'md') return `width: ${pxToRem(724)};`;
-  return `width: 50%;`;
+  return `width: 80%;`;
 }
 interface CardProps {
   size?: Size;
