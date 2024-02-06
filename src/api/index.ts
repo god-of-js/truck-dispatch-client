@@ -84,9 +84,10 @@ class ApiService {
     return this.patch(`/trips/${tripId}/change-status/${status}`);
   }
 
-  sendGetHelpessage(data: GetHelpData) {
-    return this.post('/get-help', data);
+  sendGetHelpComplaint(data: GetHelpData) {
+    return this.post('/get-help', data )
   }
+
   async getTrips({
     page,
     limit,

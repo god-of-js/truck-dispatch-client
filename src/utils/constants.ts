@@ -9,6 +9,7 @@ import TrailerImg from '../assets/img/trailer.svg';
 import PickupVanImg from '../assets/img/pick-up-van.svg';
 import TankerImg from '../assets/img/tanker.svg';
 import VanImg from '../assets/img/van.svg';
+
 export const shippingLines = [
   'Maersk line',
   'Cosco',
@@ -95,100 +96,99 @@ export const vehicleTypes: VehicleType[] = [
   },
 ];
 
-export const GetHelpShipperScenarioData = [
+export const getHelpShipperScenarioData = [
   {
-    Title: 'Driver took a poor route 🛣',
-    reasons: [
+    title: 'Driver took a poor route 🛣',
+    reasons : [
       {
-        reasonTitle: 'The initial route is under construction',
-        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?',
+        title: 'The initial route is under construction',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
       },
       {
-        reasonTitle: 'The alternate route taken has less police officers',
-        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?',
-      },
-    ],
+        title: 'The alternate route taken has less police officers',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
+      }
+    ]
   },
   {
-    Title: 'Trip driver was rude 😠',
-    reasons: [
+    title: 'Trip driver was rude 😠',
+    reasons : [
       {
-        reasonTitle: 'The guy dey actually ment',
-        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?',
+        title: 'The guy dey actually ment',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
       },
       {
-        reasonTitle: 'Driver was not brought up well',
-        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?',
-      },
-    ],
+        title: 'Driver was not brought up well',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
+      }
+    ]
   },
   {
-    Title: 'The TDO didn’t work 😤',
-    reasons: [
+    title: 'The TDO didn’t work 😤',
+    reasons : [
       {
-        reasonTitle: 'Picture quality was bad',
-        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?',
+        title: 'Picture quality was bad',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
       },
       {
-        reasonTitle: 'some dummy reason',
-        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?',
-      },
-    ],
+        title: 'some dummy reason',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
+      }
+    ]
   },
   {
-    Title: 'Trip did not happen 🙅‍♂️',
-    reasons: [
+    title: 'Trip did not happen 🙅‍♂️',
+    reasons : [
       {
-        reasonTitle:
-          'Our servers might take time tracking trips to rural areas',
-        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?',
+        title: 'Our servers might take time tracking trips to rural areas',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
       },
       {
-        reasonTitle: 'Driver don run with your goods o ',
-        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?',
-      },
-    ],
+        title: 'Driver don run with your goods o ',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
+      }
+    ]
   },
   {
-    Title: 'Pricing is high 💰',
-    reasons: [
+    title: 'Pricing is high 💰',
+    reasons : [
       {
-        reasonTitle: 'I am confused, did you not negotiate with the driver',
-        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?',
+        title: 'I am confused, did you not negotiate with the driver',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
       },
       {
-        reasonTitle: 'Driver don scam you sha',
-        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?',
-      },
-    ],
+        title: 'Driver don scam you sha',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
+      }
+    ]
   },
   {
-    Title: 'Trip driver was rudee 😠',
-    reasons: [
+    title: 'Trip driver was rudee 😠',
+    reasons : [
       {
-        reasonTitle: 'The guy dey actually ment',
-        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?',
+        title: 'The guy dey actually ment',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
       },
       {
-        reasonTitle: 'Driver was not brought up well',
-        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?',
-      },
-    ],
+        title: 'Driver was not brought up well',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
+      }
+    ]
   },
 ];
 
-export const GetHelpTransporterScenarioData = [
+export const getHelpTransporterScenarioData = [
   {
-    Title: 'Agent was rude',
-    reasons: [
+    title: 'Agent was rude',
+    reasons : [
       {
-        reasonTitle: 'The initial route is under construction',
-        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?',
+        title: 'The initial route is under construction',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
       },
       {
-        reasonTitle: 'The alternate route taken has less police officers',
-        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?',
-      },
-    ],
+        title: 'The alternate route taken has less police officers',
+        body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem, in praesentium. Soluta optio quibusdam quia! Veritatis obcaecati exercitationem reiciendis rerum?'
+      }
+    ]
   },
 ];
