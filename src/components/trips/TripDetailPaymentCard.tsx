@@ -144,8 +144,10 @@ export default function TripDetailPaymentCard({
 }
 
 const PaymentCard = styled.div`
-  position: relative;
   min-height: ${pxToRem(180)};
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
 
   .price-container {
     display: flex;
@@ -205,11 +207,9 @@ const PaymentCard = styled.div`
 `;
 
 const BottomContainer = styled.div`
-  position: absolute;
-  bottom: 0;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: ${pxToRem(8)};
+  display: flex;
+  gap: ${pxToRem(16)};
+  justify-content: space-between;
   width: 100%;
 
   button {

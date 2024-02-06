@@ -302,6 +302,11 @@ const icons = {
       default: module.ReactComponent,
     })),
   ),
+  People: lazy(() =>
+    import('./icons/people.svg').then((module) => ({
+      default: module.ReactComponent,
+    })),
+  ),
   UserOctagon: lazy(() =>
     import('./icons/user-octagon.svg').then((module) => ({
       default: module.ReactComponent,

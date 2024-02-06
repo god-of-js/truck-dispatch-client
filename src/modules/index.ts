@@ -9,6 +9,7 @@ import Ratings, { RatingsState } from './Ratings';
 import Trips, { TripState } from './Trips';
 import Vehicle, { VehicleState } from './Vehicle';
 import Verification, { VerificationState } from './Verification';
+import Referrals, { ReferralState } from './Referrals';
 
 const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ const store = configureStore({
     trips: Trips,
     vehicle: Vehicle,
     verification: Verification,
+    referrals: Referrals,
   },
   middleware: [thunk],
 });
@@ -35,6 +37,7 @@ export interface RootState {
   trips: TripState;
   vehicle: VehicleState;
   verification: VerificationState;
+  referrals: ReferralState;
 }
 
 export default function getStore() {

@@ -113,11 +113,14 @@ export default function ChatPage() {
             <UiIcon icon="CaretLeft" /> <span>Chats</span>
           </UiButton>
         </Link>
-        <UserDetails
-          avatar={alternateUser.avatar}
-          userName={`${alternateUser.firstName} ${alternateUser.lastName}`}
-          showViewProfile
-        />
+        <div className="main-info">
+          <UserDetails
+            avatar={alternateUser.avatar}
+            userName={`${alternateUser.firstName} ${alternateUser.lastName}`}
+            userId={alternateUser._id}
+            showViewProfile
+          />
+        </div>
       </Header>
 
       <ChatContainer>
@@ -203,6 +206,10 @@ const Header = styled.header`
   left: 0;
   right: 0;
   z-index: 1;
+
+  .main-info {
+    width: 100%;
+  }
 
   @media screen and (min-width: ${sizes.tabletMidWidth}) {
     .go-back-link {

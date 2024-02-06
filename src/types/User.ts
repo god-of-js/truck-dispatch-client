@@ -1,7 +1,5 @@
 import { userTypes } from 'utils/constants';
 import TransferRecipient from './TransferRecipient';
-import Vehicle from './Vehicle';
-import Rating from './Rating';
 
 export default interface User {
   _id: string;
@@ -27,4 +25,6 @@ export default interface User {
   isPhoneVerified?: boolean;
   createdAt?: number;
   noOfVehicles?: number;
+  referralCode?: string;
+  referrerCode: string;
 }

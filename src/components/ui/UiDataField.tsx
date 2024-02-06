@@ -50,7 +50,10 @@ export default function UiDataField({
       <div className="ui-data-field__inner">
         <div className="field-title">{title}</div>
         <div className="field-main">
-          <div className="field-value">{value ? value : 'N/A'}</div>
+          <div
+            className="field-value"
+            dangerouslySetInnerHTML={{ __html: value ? value : 'N/A' }}
+          />
           {editButton && (
             <div className="field-button">
               <UiButton size="s" type="button" variant={buttonVariant}>
