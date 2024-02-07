@@ -46,6 +46,7 @@ const TripHasBeenBroadcasted = lazy(
 const UserDetails = lazy(() => import('ui/UserDetails'));
 const UiConfirmModal = lazy(() => import('ui/UiConfirmModal'));
 const AddVehicle = lazy(() => import('components/vehicles/AddVehicle'));
+const GetHelp = lazy(() => import('components/help/GetHelp'));
 
 export default function MyTripsPage() {
   const navigate = useNavigate();
@@ -87,6 +88,7 @@ export default function MyTripsPage() {
   const [isDeleteBidVisible, setIsDeleteBidVisible] = useState(false);
   const [isDeleteBidLoading, setIsDeleteBidLoading] = useState(false);
   const [createVehicleIsVisible, setCreateVehicleIsVisible] = useState(false);
+  const [isGetHelpVisible, setIsGetHelpVisible] = useState(false);
   const job = useSelector(selectJob(selectedJobId!));
 
   const headers = useMemo(
@@ -251,6 +253,10 @@ export default function MyTripsPage() {
         func: editTrip,
       },
       {
+        label: 'Get Help',
+        func: showGetHelpModal,
+      },
+      {
         label: 'Unassign trip',
         func: initUnassignTrip,
         isDanger: true,
@@ -274,16 +280,20 @@ export default function MyTripsPage() {
         (label === 'Edit trip' || label === 'Unassign trip')
       )
         return false;
+
+      if (trip.status === 'awaiting-bid' && label === 'Get Help') return false;
       if (!trip.transporter && label === 'Unassign trip') return false;
 
-      if (trip.status === 'completed' && label !== 'See trip details')
+      if (
+        trip.status === 'completed' &&
+        !(label === 'See trip details' || label === 'Get Help')
+      )
         return false;
       if (
         trip.paymentRequest?.status === 'completed' &&
         (label === 'Cancel trip' || label === 'Unassign trip')
       )
         return false;
-
       return true;
     });
   }
@@ -294,6 +304,10 @@ export default function MyTripsPage() {
     setIsDeleteBidVisible(true);
   }
 
+  function showGetHelpModal(id: string) {
+    setActiveTripId(id);
+    setIsGetHelpVisible(true);
+  }
   function deleteTransporterBid() {
     if (!selectedBidId || !selectedJobId) {
       Toast.error({ msg: 'Bid cannot be deleted' });
@@ -527,6 +541,7 @@ export default function MyTripsPage() {
             bidOnJob={bidForJob}
             onClose={closeViewDetails}
           />
+
           <BidForJob
             isVisible={isBidForJobVisible}
             jobId={job._id}
@@ -536,6 +551,7 @@ export default function MyTripsPage() {
           />
         </>
       )}
+
       <AllBids
         isVisible={isAllBidsVisible}
         onClose={() => setIsAllBidsVisible(false)}
@@ -545,6 +561,14 @@ export default function MyTripsPage() {
         }}
         deleteBid={showDeleteBidModal}
       />
+
+      {activeTripId && (
+        <GetHelp
+          isVisible={isGetHelpVisible}
+          onClose={() => setIsGetHelpVisible(false)}
+          tripId={activeTripId}
+        />
+      )}
 
       <UiConfirmModal
         isVisible={isCancelTripVisible}
