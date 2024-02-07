@@ -46,11 +46,12 @@ export default function ReferralsPage() {
   ];
 
   function verificationPillDetails(status?: User['status']) {
-    let variant: PillType = 'gray', text = 'Unverified';
+    let variant: PillType = 'gray',
+      text = 'Unverified';
 
     if (status === 'verified') {
       variant = 'success';
-      text = 'Verified'
+      text = 'Verified';
     }
     if (status === 'rejected') {
       variant = 'danger';
@@ -72,14 +73,15 @@ export default function ReferralsPage() {
   }
 
   function paymentPillDetails(status: Referral['status']) {
-    let variant: PillType = 'gray', text = 'Awaiting Trip'
+    let variant: PillType = 'gray',
+      text = 'Awaiting Trip';
 
     if (status === 'completed') {
-      variant = 'success'
-      text = 'Payment Made'
+      variant = 'success';
+      text = 'Payment Made';
     }
 
-    return { variant, text }
+    return { variant, text };
   }
 
   const data = referrals.map((referral) => ({
@@ -101,12 +103,10 @@ export default function ReferralsPage() {
     createdAt: convertToFullDate(referral.createdAt),
     commission: <span>NGN {referral.commission}</span>,
     paymentStatus: (
-      <UiPill
-        variant={paymentPillDetails(referral.status).variant}
-      >
+      <UiPill variant={paymentPillDetails(referral.status).variant}>
         {paymentPillDetails(referral.status).text}
       </UiPill>
-    )
+    ),
   }));
 
   const referralLink = useMemo(() => {

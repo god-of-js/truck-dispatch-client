@@ -1,11 +1,15 @@
-import { lazy } from "react";
-import styled from "styled-components";
-import { HelpScenario } from "./GetHelp";
+import { lazy } from 'react';
+import styled from 'styled-components';
+import { HelpScenario } from './GetHelp';
 import { useSelector } from 'react-redux';
-import { RootState } from "modules/index";
+import { RootState } from 'modules/index';
 import { clientBasedUserTypes } from 'utils/constants';
-import { getHelpShipperScenarioData, getHelpTransporterScenarioData } from "utils/constants";
-import sizes from "utils/sizes";
+import {
+  getHelpShipperScenarioData,
+  getHelpTransporterScenarioData,
+} from 'utils/constants';
+import sizes from 'utils/sizes';
+
 const UiIcon = lazy(() => import('../ui/UiIcon'));
 
 interface Props {
@@ -13,10 +17,15 @@ interface Props {
   openOtherIssuesModal: () => void;
 }
 
-export default function GetHelpScenarioList ({ selectScenario, openOtherIssuesModal }: Props) {
-    const user = useSelector((state: RootState) => state.account.user);
-    
-    const getHelpData = clientBasedUserTypes.includes(user?.userType!) ? getHelpShipperScenarioData : getHelpTransporterScenarioData
+export default function GetHelpScenarioList({
+  selectScenario,
+  openOtherIssuesModal,
+}: Props) {
+  const user = useSelector((state: RootState) => state.account.user);
+
+  const getHelpData = clientBasedUserTypes.includes(user?.userType!)
+    ? getHelpShipperScenarioData
+    : getHelpTransporterScenarioData;
 
   return (
     <ScenariosContainer>
@@ -28,16 +37,18 @@ export default function GetHelpScenarioList ({ selectScenario, openOtherIssuesMo
         </p>
       </header>
       <ScenarioList>
-      {getHelpData.map((scenario)=>(
-        <li key={scenario.title} onClick={()=> selectScenario(scenario)}><p>{scenario.title}</p> <UiIcon icon='CaretRight'/></li>
-      ))}
-      <li onClick={openOtherIssuesModal}>
-        <p>Other 😐</p>
-        <UiIcon icon='CaretRight'/>
-      </li>
-    </ScenarioList>
-  </ScenariosContainer>
-  )
+        {getHelpData.map((scenario) => (
+          <li key={scenario.title} onClick={() => selectScenario(scenario)}>
+            <p>{scenario.title}</p> <UiIcon icon="CaretRight" />
+          </li>
+        ))}
+        <li onClick={openOtherIssuesModal}>
+          <p>Other 😐</p>
+          <UiIcon icon="CaretRight" />
+        </li>
+      </ScenarioList>
+    </ScenariosContainer>
+  );
 }
 
 const ScenariosContainer = styled.div`
@@ -55,10 +66,10 @@ const ScenariosContainer = styled.div`
 
   @media (min-width: ${sizes.tabletLargeWidth}) {
     header {
-        width: 50%;
+      width: 50%;
     }
   }
-`
+`;
 
 const ScenarioList = styled.ul`
   display: flex;

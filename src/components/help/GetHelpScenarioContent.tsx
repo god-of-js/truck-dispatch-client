@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 import styled from 'styled-components';
-import { HelpScenario } from './GetHelp';
+import { HelpScenario } from '../help/GetHelp';
 import UiIcon from 'ui/UiIcon';
 
 const UiButton = lazy(() => import('../ui/UiButton'));
@@ -20,29 +20,24 @@ export default function GetHelpScenarioContent({
 }: Props) {
   return (
     <ScenarioData>
-        <UiButton onClick={backToScenarios}  variant='primary-secondary'>
-          <UiIcon icon='ArrowLeft'/>
-            back
-        </UiButton>
-        <h2>{selectedScenario.title}</h2>
-        <h3>Reasons why this might happen.</h3>
-        {selectedScenario.reasons.map((reason, index) => (
-          <div>
-            <h4>
-              {index + 1}. {reason.title}
-            </h4>
-            <p>{reason.body}</p>
-          </div>
-        ))}
+      <UiButton onClick={backToScenarios} variant="primary-secondary">
+        <UiIcon icon="ArrowLeft" />
+        back
+      </UiButton>
+      <h2>{selectedScenario.title}</h2>
+      <h3>Reasons why this might happen.</h3>
+      {selectedScenario.reasons.map((reason, index) => (
+        <div>
+          <h4>
+            {index + 1}. {reason.title}
+          </h4>
+          <p>{reason.body}</p>
+        </div>
+      ))}
       <h3>Were you satisfied with the information you got?</h3>
       <div className="button-flex">
-        <UiButton onClick={closeModal}>
-          Yes
-        </UiButton>
-        <UiButton
-          variant="danger-secondary"
-          onClick={openOtherIssuesModal}
-        >
+        <UiButton onClick={closeModal}>Yes</UiButton>
+        <UiButton variant="danger-secondary" onClick={openOtherIssuesModal}>
           No
         </UiButton>
       </div>
@@ -100,7 +95,7 @@ const ScenarioData = styled.section`
     gap: ${pxToRem(16)};
 
     button {
-      min-width: ${pxToRem(150)}
+      min-width: ${pxToRem(150)};
     }
   }
 `;

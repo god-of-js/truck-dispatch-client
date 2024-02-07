@@ -1,11 +1,11 @@
-import { lazy } from 'react';
+import { lazy, useState } from 'react';
 import styled from 'styled-components';
-import { useState } from 'react';
+
 import GetHelpScenarioList from './GetHelpScenarioList';
 import GetHelpScenarioContent from './GetHelpScenarioContent';
 
 const UiModal = lazy(() => import('../ui/UiModal'));
-const OtherIssues = lazy(() => import('./OtherIssues'))
+const OtherIssues = lazy(() => import('./OtherIssues'));
 
 interface Reason {
   title: string;
@@ -14,7 +14,7 @@ interface Reason {
 
 export interface HelpScenario {
   title: string;
-  reasons: Reason[];  
+  reasons: Reason[];
 }
 
 interface Props {
@@ -24,17 +24,18 @@ interface Props {
 }
 
 export default function GetHelp({ isVisible, onClose, tripId }: Props) {
-  const [selectedScenario, setSelectedScenario] =
-    useState<null | HelpScenario>(null);
-  const [otherIssuesVisible, setOtherIssuesVisible] = useState(false)
-  
+  const [selectedScenario, setSelectedScenario] = useState<null | HelpScenario>(
+    null,
+  );
+  const [otherIssuesVisible, setOtherIssuesVisible] = useState(false);
+
   function closeScenariosModal() {
     onClose();
     setSelectedScenario(null);
   }
 
-  function openOtherIssuesModal () {
-    setOtherIssuesVisible(true)
+  function openOtherIssuesModal() {
+    setOtherIssuesVisible(true);
   }
 
   function backToScenarios() {
@@ -67,7 +68,11 @@ export default function GetHelp({ isVisible, onClose, tripId }: Props) {
             openOtherIssuesModal={openOtherIssuesModal}
           />
         )}
-        <OtherIssues onClose={() => setOtherIssuesVisible(false)} otherIssuesVisible={otherIssuesVisible} tripId={tripId}/>
+        <OtherIssues
+          onClose={() => setOtherIssuesVisible(false)}
+          otherIssuesVisible={otherIssuesVisible}
+          tripId={tripId}
+        />
       </GetHelpStyling>
     </UiModal>
   );
@@ -75,11 +80,4 @@ export default function GetHelp({ isVisible, onClose, tripId }: Props) {
 
 export const GetHelpStyling = styled.section`
   padding: ${pxToRem(26)} ${pxToRem(24)} ${pxToRem(50)} ${pxToRem(24)};
-
-  .form-wrapper {
-    button {
-      width: 130px;
-      margin: ${pxToRem(20)} auto 0;
-    }
-  }
 `;

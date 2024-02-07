@@ -86,7 +86,7 @@ class ApiService {
   }
 
   sendGetHelpComplaint(data: GetHelpData) {
-    return this.post('/get-help', data )
+    return this.post('/get-help', data);
   }
 
   async getTrips({
@@ -297,6 +297,7 @@ class ApiService {
   updateVehicle(vehicleData: FormData, vehicleId: string) {
     return this.patch<Vehicle>(`/vehicle/${vehicleId}`, vehicleData);
   }
+
   deleteVehicle(vehicleId: string) {
     return this.delete(`/vehicle/${vehicleId}`);
   }
@@ -324,6 +325,7 @@ class ApiService {
   topupWallet(paymentDetails: Payment): Promise<User> {
     return this.post('/wallet/top-up', paymentDetails);
   }
+
   withdrawFromBalance(paymentDetails: WithdrawalDetails): Promise<User> {
     return this.post('/wallet/withdraw', paymentDetails);
   }
