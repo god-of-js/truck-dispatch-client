@@ -16,13 +16,15 @@ const UiTextArea = lazy(() => import('../ui/UiTextArea'));
 interface Props {
   tripId: string;
   onClose: () => void;
+  onDone: () => void;
   otherIssuesVisible: boolean;
 }
 
 export default function OtherIssues({
-  onClose,
   otherIssuesVisible,
   tripId,
+  onClose,
+  onDone,
 }: Props) {
   const user = useSelector((state: RootState) => state.account.user);
   const trip = useSelector(selectTrip(tripId));
@@ -56,6 +58,7 @@ export default function OtherIssues({
 
     dispatch(toAnyAction(sendGetHelpComplaint(data))).then(() => {
       onClose();
+      onDone();
       setLoading(false);
     });
   }
