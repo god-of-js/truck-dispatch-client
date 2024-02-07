@@ -5,6 +5,7 @@ import sizes from 'utils/sizes';
 const UiIcon = lazy(() => import('./UiIcon'));
 const UiButton = lazy(() => import('./UiButton'));
 const UiOverlay = lazy(() => import('./UiOverlay'));
+
 type Size = 'lg' | 'md' | 'sm';
 type Position = 'center' | 'right';
 type BG = 'dark' | 'light';

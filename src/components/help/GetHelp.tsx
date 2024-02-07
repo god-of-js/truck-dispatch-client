@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import GetHelpScenarioList from './GetHelpScenarioList';
 import GetHelpScenarioContent from './GetHelpScenarioContent';
-import UiOverlay from 'ui/UiOverlay';
 
 const UiModal = lazy(() => import('../ui/UiModal'));
 const OtherIssues = lazy(() => import('./OtherIssues'));
@@ -69,6 +68,7 @@ export default function GetHelp({ isVisible, onClose, tripId }: Props) {
             openOtherIssuesModal={openOtherIssuesModal}
           />
         )}
+
         <OtherIssues
           key={`${otherIssuesVisible}-other-issues`}
           otherIssuesVisible={otherIssuesVisible}
