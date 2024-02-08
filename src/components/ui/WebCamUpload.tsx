@@ -181,6 +181,7 @@ const ModalBody = styled.div`
 
 const ButtonContainer = styled.div`
   button {
+    /* TODO: remove important when margin top in StyledAuthContent has been fixed  */
     margin-top: ${pxToRem(4)} !important;
     padding: 0;
   }

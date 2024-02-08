@@ -180,7 +180,11 @@ const router = createBrowserRouter([
   },
   {
     path: 'transporter-verification',
-    element: <VerificationPage />,
+    element: (
+      <ProtectedRoute allowNavigation={!!sessionId} reRouteUrl="/auth/login">
+        <VerificationPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: 'auth',
