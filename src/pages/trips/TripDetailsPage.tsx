@@ -21,6 +21,7 @@ import {
 import CreateTrip from 'components/trips/CreateTrip';
 import TripHasBeenBroadcasted from 'components/trips/TripHasBeenBroadcasted';
 import UiModal from 'ui/UiModal';
+import UiUploadingModal from 'ui/UiUploadingModal';
 
 const TripDetailPaymentCard = lazy(
   () => import('components/trips/TripDetailPaymentCard'),
@@ -60,6 +61,7 @@ export default function TripDetailsPage() {
   const [requestPaymentIsVisible, setRequestPaymentIsVisible] = useState(false);
   const [cargoLoadingProofIsVisible, setCargoLoadingProofIsVisible] =
     useState(false);
+  const [uploadFilesModalIsVisible, setUploadFilesModalIsVisible] = useState(false);
   const [rejectPaymentRequestIsVisible, setRejectPaymentRequestIsVisible] =
     useState(false);
   const [addAccountIsVisible, setAddAccountIsVisible] = useState(false);
@@ -143,6 +145,7 @@ export default function TripDetailsPage() {
             Start Trip
           </UiButton>
         )}
+
         {userIsServiceBasedUser && trip?.status === 'in-progress' && (
           <UiButton
             loading={changeTripStatusIsLoading}
@@ -189,6 +192,7 @@ export default function TripDetailsPage() {
       setChangeTripStatusIsLoading(false);
     });
   }
+
   async function approvePayment() {
     if (!trip || !trip.paymentRequest?._id) return;
     setApprovePaymentIsLoading(true);
@@ -567,6 +571,7 @@ export default function TripDetailsPage() {
           onClose={() => setIsTripBroadcastedVisible(false)}
         />
       )}
+
       <UiConfirmModal
         title="Unassign Trip"
         isVisible={isUnassignTripVisble}
@@ -578,6 +583,7 @@ export default function TripDetailsPage() {
         Are you sure you want to unassign this trip? This process cannot be
         undone.
       </UiConfirmModal>
+
       {trip && (
         <>
           <RequestPayment
@@ -588,15 +594,21 @@ export default function TripDetailsPage() {
             tripId={trip._id}
             onClose={() => setRequestPaymentIsVisible(false)}
           />
+
+          <UiUploadingModal
+            title="Uploading Proof Video ..."
+            isVisible={uploadFilesModalIsVisible}
+            onClose={() => setUploadFilesModalIsVisible(false)}
+          />
+
           <UiConfirmModal
+            children="You are yet to add your payout account. Kindly add your account to be able to request payment."
             title="Add Payout Account"
             isVisible={addAccountIsVisible}
             onClose={() => setAddAccountIsVisible(false)}
             onProceed={redirectToAddAccount}
-          >
-            You are yet to add your payout account. Kindly add your account to
-            be able to request payment.
-          </UiConfirmModal>
+          />
+
           <UiConfirmModal
             title="Approve Payment"
             isVisible={approvePaymentIsVisible}
@@ -609,6 +621,7 @@ export default function TripDetailsPage() {
             Are you sure you want to approve payment for this trip? This process
             cannot be undone.
           </UiConfirmModal>
+
           {!!trip.paymentRequest?.proofVideo && (
             <CargoLoadingProof
               isVisible={cargoLoadingProofIsVisible}
@@ -623,6 +636,7 @@ export default function TripDetailsPage() {
               onClose={() => setCargoLoadingProofIsVisible(false)}
             />
           )}
+
           {!!trip.paymentRequest && (
             <RejectPaymentRequest
               key={`${rejectPaymentRequestIsVisible}-rejectPaymentRequestIsVisible`}
@@ -632,6 +646,7 @@ export default function TripDetailsPage() {
               onClose={() => setRejectPaymentRequestIsVisible(false)}
             />
           )}
+
           <div className="reason-for-reject">
             <UiConfirmModal
               isVisible={reasonForRejectIsVisible}

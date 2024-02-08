@@ -5,25 +5,26 @@ import Loader from 'components/layout/Loader';
 
 interface Props {
   title: string;
-  message1: string;
-  message2: string;
+  paragraphs?: string[];
   onClose: () => void;
-  loading: boolean;
+  isVisible: boolean;
 }
 
 const UiUploadingModal = ({
+  isVisible,
+  paragraphs = [
+    'Please wait while we upload your files.',
+    "Note: File Uploads Could Take 1 - 2 minutes depending on it's size",
+  ],
   title,
-  message1,
-  message2,
   onClose,
-  loading,
 }: Props) => {
   return (
     <UiConfirmModal
       hideModalClose
       hideActions
       hideNotYetButton
-      isVisible={loading}
+      isVisible={isVisible}
       variant="primary"
       title={title}
       onClose={onClose}
@@ -31,8 +32,9 @@ const UiUploadingModal = ({
       <LoadingContent>
         <Loader />
         <Message>
-          <p>{message1}</p>
-          <p>{message2}</p>
+          {paragraphs.map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
         </Message>
       </LoadingContent>
     </UiConfirmModal>
