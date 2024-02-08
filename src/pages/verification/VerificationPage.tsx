@@ -71,6 +71,7 @@ export default function VerificationPage() {
       idDoc: null,
     },
   });
+
   const [
     isAreYouSureYouWantToCancelVerificationVisible,
     setIsAreYouSureYouWantToCancelVerificationVisible,
@@ -216,6 +217,7 @@ export default function VerificationPage() {
               provided input box.
             </p>
           </header>
+
           {currentStepTitle === 'Identification Details' && (
             <IdentificationDetailsForm
               verification={formData}
@@ -223,9 +225,11 @@ export default function VerificationPage() {
               goToNext={goToNext}
             />
           )}
+
           {currentStepTitle === 'Address' && (
             <AddressForm verification={formData} goToNext={goToNext} />
           )}
+
           {currentStepTitle === 'Guarantor Details' && (
             <GuarantorsDetailsForm
               isLoading={loading}
@@ -233,6 +237,7 @@ export default function VerificationPage() {
               verification={formData}
             />
           )}
+
           <div className="sm-btn-margin-top">
             {currentStepTitle !== 'Identification Details' && (
               <UiButton isFullWidth variant="secondary" onClick={goToPrev}>

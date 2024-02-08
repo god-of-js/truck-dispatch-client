@@ -36,6 +36,7 @@ export default function UiModal({
 
     onClose();
   }
+
   return (
     <UiOverlay onClick={closeModal} isVisible={isVisible}>
       <Modal>
