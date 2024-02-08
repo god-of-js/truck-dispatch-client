@@ -1,8 +1,11 @@
+import Loader from 'components/layout/Loader';
 import { createVehicle } from 'modules/Vehicle';
 import { lazy, Suspense, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import CreateVehicleData from 'types/CreateVehicleData';
+import UiConfirmModal from 'ui/UiConfirmModal';
+import UiUploadingModal from 'ui/UiUploadingModal';
 import { deepRootedToFormData, toAnyAction } from 'utils/helpers';
 
 const UiModal = lazy(() => import('ui/UiModal'));
@@ -80,7 +83,7 @@ export default function AddVehicle({ isVisible, onClose }: Props) {
       });
   }
 
-  return (
+  return !loading ? (
     <UiModal
       isVisible={isVisible}
       title="Add Vehicle"
@@ -107,6 +110,14 @@ export default function AddVehicle({ isVisible, onClose }: Props) {
         </Suspense>
       </Body>
     </UiModal>
+  ) : (
+    <UiUploadingModal
+      title="Uploading File ..."
+      message1="Please wait while we update your record"
+      message2="Note: File Uploads Could Take 30 - 60 seconds depending on it's size"
+      loading={loading}
+      onClose={onClose}
+    />
   );
 }
 

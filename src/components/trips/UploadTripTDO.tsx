@@ -5,6 +5,9 @@ import Trip from 'types/Trip';
 import { deepRootedToFormData, toAnyAction } from 'utils/helpers';
 import { uploadTDO } from 'modules/Trips';
 import UploadTDOSchema from 'utils/validations/UploadTDOSchema';
+import Loader from 'components/layout/Loader';
+import UiConfirmModal from 'ui/UiConfirmModal';
+import UiUploadingModal from 'ui/UiUploadingModal';
 
 const UiModal = lazy(() => import('ui/UiModal'));
 const UiButton = lazy(() => import('ui/UiButton'));
@@ -46,7 +49,7 @@ export default function UploadTripTDO({ onClose, isVisible, trip }: Props) {
     onClose();
   }
 
-  return (
+  return !loading ? (
     <UiModal
       title="Terminal Delivery Order"
       isVisible={isVisible}
@@ -76,6 +79,14 @@ export default function UploadTripTDO({ onClose, isVisible, trip }: Props) {
         )}
       </UiForm>
     </UiModal>
+  ) : (
+    <UiUploadingModal
+      title="Uploading TDO ..."
+      message1="Please wait while we update your record"
+      message2=" Note: File Uploads Could Take 30 - 60 seconds depending on it's size"
+      onClose={onClose}
+      loading={loading}
+    />
   );
 }
 
