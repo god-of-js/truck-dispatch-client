@@ -55,17 +55,14 @@ export default function UiInput({
     let parsedValue: string | null;
 
     if (typeof e.target.value === 'string' && type === 'number') {
-      // removing commas and parse the string to a number
       const valueWithoutSeparator = e.target.value.replace(/,/g, '');
       const parsedNumber = parseFloat(valueWithoutSeparator);
-      // now checking if the parsed value is a valid number, if not, set it to null
       parsedValue = !isNaN(parsedNumber) ? parsedNumber.toString() : null;
     } else {
       parsedValue = e.target.value;
     }
 
     onChange({ name: e.target.name, value: parsedValue });
-    console.log(e.target.name, parsedValue);
   }
 
   return (
