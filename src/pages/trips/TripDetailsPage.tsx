@@ -7,6 +7,7 @@ import { Toast } from 'utils/toast';
 import { RootState } from 'modules/index';
 import { clientBasedUserTypes, serviceBasedUserTypes } from 'utils/constants';
 import { toAnyAction } from 'utils/helpers';
+import { NumericFormat } from 'react-number-format';
 import Trip from 'types/Trip';
 import {
   approvePaymentRequest,
@@ -21,6 +22,7 @@ import {
 import CreateTrip from 'components/trips/CreateTrip';
 import TripHasBeenBroadcasted from 'components/trips/TripHasBeenBroadcasted';
 import UiModal from 'ui/UiModal';
+import { FormatNumberProps } from 'types/NumberFormat';
 
 const TripDetailPaymentCard = lazy(
   () => import('components/trips/TripDetailPaymentCard'),
@@ -287,6 +289,10 @@ export default function TripDetailsPage() {
     setIsTripBroadcastedVisible(true);
   }
 
+  function FormatNumber({ value }: FormatNumberProps) {
+    return <NumericFormat displayType="text" thousandSeparator value={value} />;
+  }
+
   return (
     <>
       <DashboardTopNav
@@ -307,9 +313,14 @@ export default function TripDetailsPage() {
                     </UiPill>
                     <UiPill variant="info">
                       <div>
-                        {trip.proposedPrice
-                          ? `NGN ${trip.proposedPrice?.toLocaleString()}`
-                          : 'N/A'}
+                        {trip.proposedPrice ? (
+                          <div>
+                            NGN&nbsp;
+                            <FormatNumber value={trip.proposedPrice} />
+                          </div>
+                        ) : (
+                          <div>N/A</div>
+                        )}
                       </div>
                     </UiPill>
                   </div>
@@ -319,7 +330,15 @@ export default function TripDetailsPage() {
               </div>
               <div className="cargo-details">
                 <UiDataField title="Type" value={trip?.typeOfGoods} />
-                <UiDataField title="Weight" value={trip?.weight + ' Tonnes'} />
+                <UiDataField title="Weight">
+                  {trip?.weight ? (
+                    <div>
+                      <FormatNumber value={trip.weight} /> Tonnes
+                    </div>
+                  ) : (
+                    <div>N/A</div>
+                  )}
+                </UiDataField>
 
                 <UiDataField
                   title="Shipping Line"
@@ -443,27 +462,27 @@ export default function TripDetailsPage() {
             </UiCard>
             <div className="double-grid">
               <UiCard>
-                    <div className="card-title">Transfer Delivery Order</div>
-                    <p className="description-text">
-                      This is a document that authorizes the release of cargo
-                      from a shipping terminal or port to the authorized
-                      transporter for final delivery.
-                    </p>
-                  <div className="double-items">
-                    {userIsClientBasedUser && !trip.TDO && (
-                      <UiButton
-                        isFullWidth
-                        onClick={() => setUploadTDOIsVisible(true)}
-                      >
-                        Upload TDO
-                      </UiButton>
-                    )}
-                    {!!trip.TDO && (
-                      <a href={trip.TDO} target="_blank">
-                        <UiButton isFullWidth> View TDO</UiButton>
-                      </a>
-                    )}
-                  </div>
+                <div className="card-title">Transfer Delivery Order</div>
+                <p className="description-text">
+                  This is a document that authorizes the release of cargo from a
+                  shipping terminal or port to the authorized transporter for
+                  final delivery.
+                </p>
+                <div className="double-items">
+                  {userIsClientBasedUser && !trip.TDO && (
+                    <UiButton
+                      isFullWidth
+                      onClick={() => setUploadTDOIsVisible(true)}
+                    >
+                      Upload TDO
+                    </UiButton>
+                  )}
+                  {!!trip.TDO && (
+                    <a href={trip.TDO} target="_blank">
+                      <UiButton isFullWidth> View TDO</UiButton>
+                    </a>
+                  )}
+                </div>
               </UiCard>
               {userIsClientBasedUser && trip.status === 'awaiting-bid' && (
                 <UiCard>

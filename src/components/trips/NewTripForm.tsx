@@ -156,10 +156,11 @@ export default function NewTripForm({
                 label="Weight Of Goods(Tonnage)"
                 name="weight"
                 type="number"
-                value={formData.weight}
+                value={formData.weight || ''}
                 error={errors.weight}
                 onChange={handleChange}
               />
+
               <UiInput
                 label="Propose a Price Offer (optional)"
                 name="proposedPrice"

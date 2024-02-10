@@ -1,8 +1,10 @@
 import { RootState } from 'modules/index';
 import React, { lazy, useMemo } from 'react';
+import { NumericFormat } from 'react-number-format';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import NewTrip from 'types/NewTrip';
+import { FormatNumberProps } from 'types/NumberFormat';
 import Trip from 'types/Trip';
 import { clientBasedUserTypes } from 'utils/constants';
 
@@ -27,6 +29,10 @@ export default function TripDetails({ trip, hideProfile }: Props) {
     return tripDetail.tripOwner;
   }, [trip, user]);
 
+  function FormatNumber({ value }: FormatNumberProps) {
+    return <NumericFormat displayType="text" thousandSeparator value={value} />;
+  }
+
   return (
     <ComponentStyling>
       {alternateUser && (
@@ -43,19 +49,27 @@ export default function TripDetails({ trip, hideProfile }: Props) {
         <UiDataField title="Type" value={trip.typeOfGoods} />
         <UiDataField title="Shipping Line" value={trip.shippingLine} />
         <UiDataField title="Size Of Shipment" value={trip.sizeOfContainer} />
-        <UiDataField
-          title="Weight"
-          value={!!trip.weight ? trip.weight + ' Tonnes' : ''}
-        />
+        <UiDataField title="Weight">
+          {trip?.weight ? (
+            <div>
+              <FormatNumber value={trip.weight} /> Tonnes
+            </div>
+          ) : (
+            <div>N/A</div>
+          )}
+        </UiDataField>
+
         {/* TODO: add truck type */}
-        <UiDataField
-          title=" Proposed Price"
-          value={
-            trip.proposedPrice
-              ? `NGN ${trip.proposedPrice?.toLocaleString()}`
-              : 'N/A'
-          }
-        />
+        <UiDataField title="Proposed Price">
+          {trip?.proposedPrice ? (
+            <div>
+              NGN&nbsp;
+              <FormatNumber value={trip.proposedPrice} />
+            </div>
+          ) : (
+            <div>N/A</div>
+          )}
+        </UiDataField>
       </div>
       <TripPickUpAndDeliverWithDates
         pickUpAddress={trip.pickUpAddress}

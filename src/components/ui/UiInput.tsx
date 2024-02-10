@@ -2,6 +2,7 @@ import React, { lazy, useState } from 'react';
 import styled from 'styled-components';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input/input';
+import { NumericFormat } from 'react-number-format';
 import { Icons } from './UiIcon';
 import { Size } from 'types/Size';
 const UiField = lazy(() => import('./UiField'));
@@ -50,8 +51,21 @@ export default function UiInput({
     else setInputType('password');
   }
 
-  function sendValue(e: { target: { name: string; value: string } }) {
-    onChange({ name: e.target.name, value: e.target.value });
+  function sendValue(e: { target: { name: string; value: any } }) {
+    let parsedValue: string | null;
+
+    if (typeof e.target.value === 'string' && type === 'number') {
+      // removing commas and parse the string to a number
+      const valueWithoutSeparator = e.target.value.replace(/,/g, '');
+      const parsedNumber = parseFloat(valueWithoutSeparator);
+      // now checking if the parsed value is a valid number, if not, set it to null
+      parsedValue = !isNaN(parsedNumber) ? parsedNumber.toString() : null;
+    } else {
+      parsedValue = e.target.value;
+    }
+
+    onChange({ name: e.target.name, value: parsedValue });
+    console.log(e.target.name, parsedValue);
   }
 
   return (
@@ -68,12 +82,20 @@ export default function UiInput({
               onChange={(e) => sendPhone(e)}
             />
           </PhoneInputContainer>
+        ) : type === 'number' ? (
+          <StyledNumericFormat
+            thousandSeparator=","
+            value={(value as number) || ''}
+            placeholder={placeholder}
+            name={name}
+            onChange={(value: any) => sendValue(value)}
+          />
         ) : (
           <div className="input-wrapper">
             {!!icon && <UiIcon icon={icon} size="20" />}
             <Input
               type={inputType}
-              value={value || ''}
+              value={(value as string) || ''}
               placeholder={placeholder}
               name={name}
               ref={inputRef}
@@ -145,6 +167,34 @@ const Input = styled.input<any>`
   border: ${pxToRem(1)} solid;
   border-color: ${({ hasError }) =>
     hasError ? 'var(--color-danger)' : 'var(--color-gray)'};
+  background: transparent;
+  outline: none;
+  border-radius: ${pxToRem(8)};
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+  &:focus {
+    border: ${pxToRem(2)} solid var(--color-primary);
+    box-shadow: var(--box-shadow-primary);
+  }
+  ::placeholder {
+    font-size: ${pxToRem(14)};
+    color: var(--color-gray-80);
+    font-weight: 400;
+    line-height: ${pxToRem(24)};
+  }
+`;
+
+const StyledNumericFormat = styled(NumericFormat)<{
+  hasError?: boolean;
+}>`
+  // Define your styles here to match the input style
+  padding: ${pxToRem(16)};
+  height: ${({ size }) =>
+    size ? `var(--base-height-${size})` : 'var(--base-height)'};
+  width: 100%;
+  font-size: ${pxToRem(14)};
+  border: ${pxToRem(1)} solid;
+  border-color: var(--color-gray);
   background: transparent;
   outline: none;
   border-radius: ${pxToRem(8)};

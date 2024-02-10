@@ -6,6 +6,8 @@ import sizes from 'utils/sizes';
 import Trip from 'types/Trip';
 
 import { lazy } from 'react';
+import { FormatNumberProps } from 'types/NumberFormat';
+import { NumericFormat } from 'react-number-format';
 
 const UiIcon = lazy(() => import('ui/UiIcon'));
 const UiButton = lazy(() => import('ui/UiButton'));
@@ -21,6 +23,10 @@ interface Props {
 }
 export default function JobItem({ job, bidForJob, viewJobDetail }: Props) {
   const bid = useSelector(selectBid(job._id, 'trip'));
+
+  function FormatNumber({ value }: FormatNumberProps) {
+    return <NumericFormat displayType="text" thousandSeparator value={value} />;
+  }
 
   return (
     <JobItemStyling>
@@ -44,9 +50,13 @@ export default function JobItem({ job, bidForJob, viewJobDetail }: Props) {
           <div>
             <div className="field-name bid">Proposed Price</div>
             <div className="type-of-goods-value">
-              {job.proposedPrice
-                ? `NGN ${job.proposedPrice?.toLocaleString()}`
-                : 'N/A'}
+              {job.proposedPrice ? (
+                <div>
+                  NGN <FormatNumber value={job.proposedPrice} />
+                </div>
+              ) : (
+                <div>N/A</div>
+              )}
             </div>
           </div>
         </div>
