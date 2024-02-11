@@ -22,7 +22,6 @@ import {
 import CreateTrip from 'components/trips/CreateTrip';
 import TripHasBeenBroadcasted from 'components/trips/TripHasBeenBroadcasted';
 import UiModal from 'ui/UiModal';
-import { FormatNumberProps } from 'types/NumberFormat';
 
 const TripDetailPaymentCard = lazy(
   () => import('components/trips/TripDetailPaymentCard'),
@@ -289,10 +288,6 @@ export default function TripDetailsPage() {
     setIsTripBroadcastedVisible(true);
   }
 
-  function FormatNumber({ value }: FormatNumberProps) {
-    return <NumericFormat displayType="text" thousandSeparator value={value} />;
-  }
-
   return (
     <>
       <DashboardTopNav
@@ -314,10 +309,7 @@ export default function TripDetailsPage() {
                     <UiPill variant="info">
                       <div>
                         {trip.proposedPrice ? (
-                          <div>
-                            NGN&nbsp;
-                            <FormatNumber value={trip.proposedPrice} />
-                          </div>
+                          <div>{trip.proposedPrice}</div>
                         ) : (
                           <div>N/A</div>
                         )}
@@ -330,15 +322,7 @@ export default function TripDetailsPage() {
               </div>
               <div className="cargo-details">
                 <UiDataField title="Type" value={trip?.typeOfGoods} />
-                <UiDataField title="Weight">
-                  {trip?.weight ? (
-                    <div>
-                      <FormatNumber value={trip.weight} /> Tonnes
-                    </div>
-                  ) : (
-                    <div>N/A</div>
-                  )}
-                </UiDataField>
+                <UiDataField title="Weight" value={trip?.weight} />
 
                 <UiDataField
                   title="Shipping Line"
