@@ -6,6 +6,7 @@ interface Props {
   children: React.ReactNode;
   variant?: 'light' | 'primary-light';
 }
+
 export default function UiCard({ children, variant = 'light' }: Props) {
   return (
     <Card className={'ui-card ' + variant}>
@@ -16,9 +17,11 @@ export default function UiCard({ children, variant = 'light' }: Props) {
 
 const Card = styled.div`
   border: 1px solid var(--color-gray-200);
-  padding: ${pxToRem(20)};
+  padding: ${pxToRem(10)};
   border-radius: ${pxToRem(8)};
   position: relative;
+  min-height: ${pxToRem(100)};
+  flex-direction: column;
 
   &.light {
     background: #ffffff;
@@ -35,22 +38,20 @@ const Card = styled.div`
 
   .card-container {
     position: relative;
-    min-height: ${pxToRem(180)};
-  }
-
-  @media screen and (max-width: ${sizes.mobileLargeWidth}) {
-    .card-container {
-      position: relative;
-      min-height: ${pxToRem(200)};
-    }
+    min-height: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   .bottom {
-    position: absolute;
-    bottom: 0;
-    display: grid;
-    gap: ${pxToRem(8)};
-    padding-top: ${pxToRem(20)};
-    width: 100%;
+    margin-top: ${pxToRem(15)};
+  }
+
+  @media screen and (max-width: ${sizes.mobileLargeWidth}) {
+    .bottom {
+      bottom: ${pxToRem(5)};
+    }
   }
 `;
