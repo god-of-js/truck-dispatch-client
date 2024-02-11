@@ -55,14 +55,14 @@ export default function UiInput({
     let parsedValue: string | null;
 
     if (typeof e.target.value === 'string' && type === 'number') {
-      const valueWithoutSeparator = e.target.value.replace(/,/g, '');
-      const parsedNumber = parseFloat(valueWithoutSeparator);
-      parsedValue = !isNaN(parsedNumber) ? parsedNumber.toString() : null;
+      const sanitizedValue = e.target.value.replace(/[^0-9.]/g, '');
+      parsedValue = sanitizedValue || null;
     } else {
       parsedValue = e.target.value;
     }
 
     onChange({ name: e.target.name, value: parsedValue });
+    console.log(value);
   }
 
   return (
