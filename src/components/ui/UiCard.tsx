@@ -20,7 +20,6 @@ const Card = styled.div`
   padding: ${pxToRem(10)};
   border-radius: ${pxToRem(8)};
   position: relative;
-  min-height: ${pxToRem(100)};
   flex-direction: column;
 
   &.light {
