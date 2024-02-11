@@ -443,43 +443,45 @@ export default function TripDetailsPage() {
             </UiCard>
             <div className="double-grid">
               <UiCard>
-                    <div className="card-title">Transfer Delivery Order</div>
-                    <p className="description-text">
-                      This is a document that authorizes the release of cargo
-                      from a shipping terminal or port to the authorized
-                      transporter for final delivery.
-                    </p>
-                  <div className="double-items">
-                    {userIsClientBasedUser && !trip.TDO && (
-                      <UiButton
-                        isFullWidth
-                        onClick={() => setUploadTDOIsVisible(true)}
-                      >
-                        Upload TDO
-                      </UiButton>
-                    )}
-                    {!!trip.TDO && (
-                      <a href={trip.TDO} target="_blank">
-                        <UiButton isFullWidth> View TDO</UiButton>
-                      </a>
-                    )}
-                  </div>
+                <div className="card-title">Transfer Delivery Order</div>
+                <p className="description-text">
+                  This is a document that authorizes the release of cargo from a
+                  shipping terminal or port to the authorized transporter for
+                  final delivery.
+                </p>
+                <div className="double-items">
+                  {userIsClientBasedUser && !trip.TDO && (
+                    <UiButton
+                      isFullWidth
+                      onClick={() => setUploadTDOIsVisible(true)}
+                    >
+                      Upload TDO
+                    </UiButton>
+                  )}
+                  {!!trip.TDO && (
+                    <a href={trip.TDO} target="_blank">
+                      <UiButton isFullWidth> View TDO</UiButton>
+                    </a>
+                  )}
+                </div>
               </UiCard>
               {userIsClientBasedUser && trip.status === 'awaiting-bid' && (
                 <UiCard>
-                  <div className="card-title">Bids</div>
-                  <p className="description-text">
-                    Bids are requests transporters send to enable them assist
-                    you in your trip. Accept a bid to officially begin your
-                    trip.
-                  </p>
-                  <div className="bottom">
-                    <div className="double-items">
-                      <Link to={`/my-trips/${trip._id}/bids`}>
-                        <UiButton isFullWidth>
-                          View bids sent for this trip
-                        </UiButton>
-                      </Link>
+                  <div className="bids-container">
+                    <div className="card-title">Bids</div>
+                    <p className="description-text">
+                      Bids are requests transporters send to enable them assist
+                      you in your trip. Accept a bid to officially begin your
+                      trip.
+                    </p>
+                    <div className="bottom">
+                      <div className="double-items">
+                        <Link to={`/my-trips/${trip._id}/bids`}>
+                          <UiButton isFullWidth>
+                            View bids sent for this trip
+                          </UiButton>
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </UiCard>
@@ -660,6 +662,13 @@ const TripDetailsStyling = styled.div`
   gap: ${pxToRem(20)};
 
   padding: ${pxToRem(12)} ${pxToRem(24)};
+
+  .bids-container {
+    min-height: ${pxToRem(200)};
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+  }
 
   .card-title {
     font-style: normal;
