@@ -358,6 +358,7 @@ export function decodeToken(token: string): { exp: number } | void {
     return;
   }
 }
+
 export function isTokenValid(token: string) {
   const decodedToken = decodeToken(token);
   if (!decodedToken) return false;

@@ -1,4 +1,4 @@
-import React, { Children, lazy } from 'react';
+import React, { Children, ReactNode, lazy } from 'react';
 import styled from 'styled-components';
 import { Icons } from './UiIcon';
 import { ButtonVariant } from './UiButton';
@@ -16,6 +16,7 @@ interface Props {
   editButton?: boolean;
   editText?: string;
   buttonVariant?: ButtonVariant;
+  children?: ReactNode;
 
   variant?: Variant;
 
@@ -27,12 +28,14 @@ interface Props {
 export default function UiDataField({
   title,
   value,
+  children,
 
   editButton,
   editText,
   buttonVariant = 'tertiary',
 
   isBordered,
+
   isCentered,
   variant = 'field',
   size = 'l',
@@ -50,10 +53,17 @@ export default function UiDataField({
       <div className="ui-data-field__inner">
         <div className="field-title">{title}</div>
         <div className="field-main">
-          <div
-            className="field-value"
-            dangerouslySetInnerHTML={{ __html: value ? value : 'N/A' }}
-          />
+          {children && <div className="field-value">{children}</div>}
+
+          {!children ? (
+            <div
+              className="field-value"
+              dangerouslySetInnerHTML={{ __html: value ? value : 'N/A' }}
+            />
+          ) : (
+            ''
+          )}
+
           {editButton && (
             <div className="field-button">
               <UiButton size="s" type="button" variant={buttonVariant}>
