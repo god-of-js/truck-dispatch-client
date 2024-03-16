@@ -22,6 +22,7 @@ import Trip from 'types/Trip';
 import { removeTrip, setTrip } from 'modules/Trips';
 import { removeBid, setBid } from 'modules/Bid';
 import Bid from 'types/Bid';
+import UserStatus from 'types/enums/UserStatus';
 
 const DashboardSidebar = lazy(
   () => import('components/layout/DashboardSidebar'),
@@ -133,7 +134,7 @@ export default function DashboardLayout() {
     <Layout>
       <DashboardSidebar />
       <Body>
-        {!!user?.status && user?.status !== 'verified' ? (
+        {!!user?.status && user?.status !== UserStatus.VERIFIED ? (
           <div className="alert-container">
             <UiAlert variant="warning" alignCenter isClosable>
               <div className="alert-body">

@@ -14,6 +14,7 @@ import { getReferrals } from 'modules/Referrals';
 import UserDetails from 'ui/UserDetails';
 import User from 'types/User';
 import Referral from 'types/Referral';
+import UserStatus from 'types/enums/UserStatus';
 
 export default function ReferralsPage() {
   const user = useSelector((state: RootState) => state.account.user);
@@ -45,24 +46,26 @@ export default function ReferralsPage() {
     },
   ];
 
-  function verificationPillDetails(status?: User['status']) {
+  function verificationPillDetails(status?: UserStatus) {
     let variant: PillType = 'gray', text = 'Unverified';
 
-    if (status === 'verified') {
-      variant = 'success';
-      text = 'Verified'
-    }
-    if (status === 'rejected') {
-      variant = 'danger';
-      text = 'Rejected Verification';
-    }
-    if (status === 'fraudulent') {
-      variant = 'danger';
-      text = 'Fraudulent';
-    }
-    if (status === 'pending_verification') {
-      variant = 'warning';
-      text = 'Pending Verification';
+    switch (status) {
+      case UserStatus.VERIFIED:
+        variant = 'success';
+        text = 'Verified';
+        break;
+      case UserStatus.REJECTED:
+        variant = 'danger';
+        text = 'Rejected Verification';
+        break;
+      case UserStatus.FRAUDULENT:
+        variant = 'danger';
+        text = 'Fraudulent';
+        break;
+      case UserStatus.PENDING_VERIFICATION:
+        variant = 'warning';
+        text = 'Pending Verification';
+        break;
     }
 
     return {

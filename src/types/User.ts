@@ -1,5 +1,6 @@
 import { userTypes } from 'utils/constants';
 import TransferRecipient from './TransferRecipient';
+import UserStatus from './enums/UserStatus';
 
 export default interface User {
   _id: string;
@@ -12,12 +13,7 @@ export default interface User {
   avatar?: string;
   completedTrips?: number;
   userType: (typeof userTypes)[number];
-  status?:
-    | 'pending_verification'
-    | 'verified'
-    | 'unverified'
-    | 'rejected'
-    | 'fraudulent';
+  status?: UserStatus;
   rating: number;
   bankDetails?: TransferRecipient;
   password: string;

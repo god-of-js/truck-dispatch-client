@@ -16,6 +16,7 @@ import JobsResponse from 'types/JobsResponse';
 import { Toast } from 'utils/toast';
 import { deleteBid, getTransporterBids } from 'modules/Bid';
 import PageError from 'components/errors/PageError';
+import UserStatus from 'types/enums/UserStatus';
 
 const AllBids = lazy(() => import('components/bids/AllBids'));
 const PaginationLoader = lazy(
@@ -130,7 +131,7 @@ export default function TransporterJobs() {
   }
 
   function bidForJob(jobId: string) {
-    if (user?.status !== 'verified') {
+    if (user?.status !== UserStatus.VERIFIED) {
       setIsInformUserOfVerificationModalVisible(true);
       setIsViewJobDetailsVisible(false);
       return;

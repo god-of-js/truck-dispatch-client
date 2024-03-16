@@ -24,6 +24,7 @@ import User from 'types/User';
 import { deleteBid, getTransporterBids } from 'modules/Bid';
 import { searchObjectsByField } from 'utils/helpers';
 import { Toast } from 'utils/toast';
+import UserStatus from 'types/enums/UserStatus';
 
 const PaginationLoader = lazy(
   () => import('components/layout/PaginationLoader'),
@@ -403,7 +404,7 @@ export default function MyTripsPage() {
   }
 
   function bidForJob(jobId: string) {
-    if (user?.status !== 'verified') {
+    if (user?.status !== UserStatus.VERIFIED) {
       setIsInformUserOfVerificationModalVisible(true);
       setIsViewJobDetailsVisible(false);
       return;

@@ -1,6 +1,7 @@
 import { lazy, useMemo } from 'react';
 import styled from 'styled-components';
 import PaymentRequest from 'types/PaymentRequest';
+import PaymentRequestStatus from 'types/enums/PaymentRequestStatus';
 import { Icons } from 'ui/UiIcon';
 import { abbreviateNumber, convertToFullDate, getTime } from 'utils/helpers';
 
@@ -29,13 +30,11 @@ export default function TripDetailPaymentCard({
   }, [isClient, payment]);
 
   const requestIsPending = useMemo(() => {
-    return !isClient && payment?.status === 'pending';
+    return !isClient && payment?.status === PaymentRequestStatus.PENDING;
   }, [isClient, payment]);
 
   const approvePaymentIsVisible = useMemo(() => {
-    if (!isClient || payment?.status === 'completed') return false;
-
-    return true;
+    return !isClient || payment?.status !== PaymentRequestStatus.COMPLETED
   }, [isClient, payment]);
 
   const loadingProofIsVisible = useMemo(() => {
@@ -43,8 +42,9 @@ export default function TripDetailPaymentCard({
   }, [isClient, payment]);
 
   const paymentWasRejectedIsVisible = useMemo(() => {
-    return !isClient && payment?.status === 'rejected';
+    return !isClient && payment?.status === PaymentRequestStatus.REJECTED;
   }, [isClient, payment]);
+
   const statusIconDetails: { icon: Icons; className: string } = useMemo(() => {
     if (!payment) return {} as { icon: Icons; className: string };
 
@@ -55,7 +55,7 @@ export default function TripDetailPaymentCard({
       };
     }
 
-    if (payment.status === 'rejected') {
+    if (payment.status === PaymentRequestStatus.REJECTED) {
       return {
         icon: 'CloseCircle',
         className: 'rejected',
@@ -101,7 +101,7 @@ export default function TripDetailPaymentCard({
               Request Payment
             </UiButton>
           )}
-          {payment?.status === 'completed' && (
+          {payment?.status === PaymentRequestStatus.COMPLETED && (
             <UiButton disabled variant="success-secondary">
               <UiIcon icon="CheckCircle" />
               Payment Completed

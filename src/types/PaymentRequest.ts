@@ -1,11 +1,12 @@
 import Trip from './Trip';
 import Vehicle from './Vehicle';
+import PaymentRequestStatus from './enums/PaymentRequestStatus';
 
 export default interface PaymentRequest {
   _id: string;
   vehicle: Vehicle;
   proofVideo: string;
-  status: 'pending' | 'rejected' | 'completed';
+  status: PaymentRequestStatus;
   transporterId: string;
   trip: Trip;
   tripReference: string;

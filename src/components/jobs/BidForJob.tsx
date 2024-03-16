@@ -13,6 +13,7 @@ import BidForJobSchema from 'utils/validations/BidForJobSchema';
 import Vehicle from 'types/Vehicle';
 import InformUserOfVerification from 'components/verification/InformUserOfVerification';
 import VehiclePaginatedResponse from 'types/VehiclesPaginatedResponse';
+import UserStatus from 'types/enums/UserStatus';
 
 const UiButton = lazy(() => import('ui/UiButton'));
 const UiDataField = lazy(() => import('ui/UiDataField'));
@@ -138,7 +139,7 @@ export default function BidForJob({
   }
 
   function onSubmit() {
-    if (user?.status !== 'verified') {
+    if (user?.status !== UserStatus.VERIFIED) {
       setIsInformUserOfVerificationModalVisible(true);
       return;
     }

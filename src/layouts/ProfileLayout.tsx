@@ -12,6 +12,7 @@ import { clientBasedUserTypes } from 'utils/constants';
 import DashboardTopNav from 'components/layout/DashboardTopNav';
 
 import { Icons } from 'ui/UiIcon';
+import UserStatus from 'types/enums/UserStatus';
 
 const UiIcon = lazy(() => import('ui/UiIcon'));
 
@@ -56,7 +57,7 @@ export default function ProfileLayout() {
         route.path === '/profile/verification'
       );
 
-    if (user?.status === 'verified')
+    if (user?.status === UserStatus.VERIFIED)
       return route.path !== '/profile/verification';
 
     return true;

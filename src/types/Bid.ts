@@ -1,6 +1,7 @@
 import Trip from './Trip';
 import User from './User';
 import Vehicle from './Vehicle';
+import BidStatus from './enums/BidStatus';
 
 export default interface Bid {
   _id: string;
@@ -10,7 +11,7 @@ export default interface Bid {
   presentLocation?: string;
   vehicle: Vehicle;
   trip: Trip;
-  status?: 'pending' | 'accepted' | 'rejected';
+  status?: BidStatus;
   transporter: User;
   createdAt: string;
   updatedAt: string;
