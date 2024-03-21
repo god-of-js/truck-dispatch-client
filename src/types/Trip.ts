@@ -7,6 +7,8 @@ import {
 import User from './User';
 import PaymentRequest from './PaymentRequest';
 import Bid from './Bid';
+import TripStatus from './enums/TripStatus';
+
 export default interface Trip {
   _id: string;
   pickUpAddress: string;
@@ -25,7 +27,7 @@ export default interface Trip {
   tripOwner: User;
   TDO?: string;
   reference: string;
-  status: 'awaiting-bid' | 'assigned' | 'in-progress' | 'completed';
+  status: TripStatus;
   paymentRequest?: PaymentRequest;
   proposedPrice?: number;
 }

@@ -7,6 +7,7 @@ import { getTrip, selectTrip } from 'modules/Trips';
 import { toAnyAction } from 'utils/helpers';
 import { getTripRating } from 'modules/Ratings';
 import Rating from 'types/Rating';
+import TripStatus from 'types/enums/TripStatus';
 
 const Loader = lazy(() => import('components/layout/Loader'));
 const RateTransporter = lazy(() => import('components/ratings/RateUser'));
@@ -38,7 +39,7 @@ export default function TripLayout() {
   useEffect(() => {
     if (!trip) loadTrip();
 
-    if (trip?.status === 'completed') {
+    if (trip?.status === TripStatus.COMPLETED) {
       dispatch(toAnyAction(getTripRating(tripId!))).then((data: Rating) => {
         if (!data) setIsRatingsModalVisible(true);
       });

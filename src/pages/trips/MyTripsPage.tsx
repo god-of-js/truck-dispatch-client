@@ -25,6 +25,8 @@ import { deleteBid, getTransporterBids } from 'modules/Bid';
 import { searchObjectsByField } from 'utils/helpers';
 import { Toast } from 'utils/toast';
 import UserStatus from 'types/enums/UserStatus';
+import TripStatus from 'types/enums/TripStatus';
+import PaymentRequestStatus from 'types/enums/PaymentRequestStatus';
 
 const PaginationLoader = lazy(
   () => import('components/layout/PaginationLoader'),
@@ -213,19 +215,19 @@ export default function MyTripsPage() {
   }, [trips, searchQuery]);
 
   function getPillVariant(status: Trip['status']) {
-    if (status === 'awaiting-bid') return 'orange';
-    if (status === 'assigned') return 'rose';
-    if (status === 'in-progress') return 'info';
-    if (status === 'completed') return 'success';
+    if (status === TripStatus.AWAITING_BID) return 'orange';
+    if (status === TripStatus.ASSIGNED) return 'rose';
+    if (status === TripStatus.IN_PROGRESS) return 'info';
+    if (status === TripStatus.COMPLETED) return 'success';
 
     return 'success';
   }
 
   function formatStatus(status: Trip['status']) {
-    if (status === 'assigned') return 'Assigned';
-    if (status === 'awaiting-bid') return 'Awaiting Bid';
-    if (status === 'in-progress') return 'Ongoing';
-    if (status === 'completed') return 'Completed';
+    if (status === TripStatus.ASSIGNED) return 'Assigned';
+    if (status === TripStatus.AWAITING_BID) return 'Awaiting Bid';
+    if (status === TripStatus.IN_PROGRESS) return 'Ongoing';
+    if (status === TripStatus.COMPLETED) return 'Completed';
   }
 
   function userDetails(trip: Trip, tripUser?: User) {
@@ -235,7 +237,7 @@ export default function MyTripsPage() {
       <UserDetails
         userName={`${tripUser.firstName} ${tripUser.lastName}`}
         avatar={tripUser.avatar}
-        profileSubtitle={trip.status !== 'completed' ? tripUser.phone : ''}
+        profileSubtitle={trip.status !== TripStatus.COMPLETED ? tripUser.phone : ''}
       />
     );
   }
@@ -262,7 +264,7 @@ export default function MyTripsPage() {
         isDanger: true,
       },
     ].filter(({ label }) => {
-      const editIsNotAllowedStatuses = ['in-progress', 'completed'];
+      const editIsNotAllowedStatuses = [TripStatus.IN_PROGRESS, TripStatus.COMPLETED];
       if (
         editIsNotAllowedStatuses.includes(trip.status) &&
         label === 'Edit trip'
@@ -277,10 +279,10 @@ export default function MyTripsPage() {
         return false;
       if (!trip.transporter && label === 'Unassign trip') return false;
 
-      if (trip.status === 'completed' && label !== 'See trip details')
+      if (trip.status === TripStatus.COMPLETED && label !== 'See trip details')
         return false;
       if (
-        trip.paymentRequest?.status === 'completed' &&
+        trip.paymentRequest?.status === PaymentRequestStatus.COMPLETED &&
         (label === 'Cancel trip' || label === 'Unassign trip')
       )
         return false;

@@ -21,6 +21,8 @@ import {
 import CreateTrip from 'components/trips/CreateTrip';
 import TripHasBeenBroadcasted from 'components/trips/TripHasBeenBroadcasted';
 import UiModal from 'ui/UiModal';
+import TripStatus from 'types/enums/TripStatus';
+import PaymentRequestStatus from 'types/enums/PaymentRequestStatus';
 
 const TripDetailPaymentCard = lazy(
   () => import('components/trips/TripDetailPaymentCard'),
@@ -79,28 +81,34 @@ export default function TripDetailsPage() {
   const [newlyCreatedTripId, setnewlyCreatedTripId] = useState<string | null>(
     null,
   );
+
   const userIsClientBasedUser = useMemo(
     () => clientBasedUserTypes.includes(user?.userType!),
     [user],
   );
+
   const userIsServiceBasedUser = useMemo(
     () => serviceBasedUserTypes.includes(user?.userType!),
     [user],
   );
 
   const statusText = useMemo(() => {
-    if (trip?.status === 'assigned') return 'Assigned';
-    if (trip?.status === 'awaiting-bid') return 'Awaiting Bid';
-    if (trip?.status === 'in-progress') return 'Ongoing';
-    if (trip?.status === 'completed') return 'Completed';
+    if (trip?.status === TripStatus.ASSIGNED) return 'Assigned';
+
+    if (trip?.status === TripStatus.AWAITING_BID) return 'Awaiting Bid';
+
+    if (trip?.status === TripStatus.IN_PROGRESS) return 'Ongoing';
+
+    if (trip?.status === TripStatus.COMPLETED) return 'Completed';
+
     return trip?.status;
   }, [trip]);
 
   const statusVariant = useMemo(() => {
-    if (trip?.status === 'awaiting-bid') return 'orange';
-    if (trip?.status === 'assigned') return 'rose';
-    if (trip?.status === 'in-progress') return 'info';
-    if (trip?.status === 'completed') return 'success';
+    if (trip?.status === TripStatus.AWAITING_BID) return 'orange';
+    if (trip?.status === TripStatus.ASSIGNED) return 'rose';
+    if (trip?.status === TripStatus.IN_PROGRESS) return 'info';
+    if (trip?.status === TripStatus.COMPLETED) return 'success';
 
     return 'success';
   }, [trip]);
@@ -110,7 +118,7 @@ export default function TripDetailsPage() {
   }, [user?.userType]);
 
   const tripIsEditable = useMemo(() => {
-    const editIsNotAllowedStatuses = ['in-progress', 'completed'];
+    const editIsNotAllowedStatuses = [TripStatus.IN_PROGRESS, TripStatus.COMPLETED];
 
     return isClient && !editIsNotAllowedStatuses.includes(trip?.status!);
   }, [user, trip]);
@@ -119,11 +127,12 @@ export default function TripDetailsPage() {
     return (
       !!trip?.transporter &&
       isClient &&
-      trip.paymentRequest?.status !== 'completed'
+      trip.paymentRequest?.status !== PaymentRequestStatus.COMPLETED
     );
   }, [user, trip]);
+
   const tripcanBeCancelled = useMemo(() => {
-    return trip?.paymentRequest?.status !== 'completed';
+    return trip?.paymentRequest?.status !== PaymentRequestStatus.COMPLETED;
   }, [user, trip]);
 
   const edgeNode = useMemo(() => {
@@ -138,15 +147,15 @@ export default function TripDetailsPage() {
         {userIsServiceBasedUser && trip?.status === 'assigned' && (
           <UiButton
             loading={changeTripStatusIsLoading}
-            onClick={() => changeStatus('in-progress')}
+            onClick={() => changeStatus(TripStatus.IN_PROGRESS)}
           >
             Start Trip
           </UiButton>
         )}
-        {userIsServiceBasedUser && trip?.status === 'in-progress' && (
+        {userIsServiceBasedUser && trip?.status === TripStatus.IN_PROGRESS && (
           <UiButton
             loading={changeTripStatusIsLoading}
-            onClick={() => changeStatus('completed')}
+            onClick={() => changeStatus(TripStatus.COMPLETED)}
           >
             Complete Trip
           </UiButton>
@@ -213,7 +222,7 @@ export default function TripDetailsPage() {
   useEffect(() => {
     if (
       trip?.paymentRequest &&
-      trip?.paymentRequest.status !== 'completed' &&
+      trip?.paymentRequest.status !== PaymentRequestStatus.COMPLETED &&
       action === 'update-payment-request'
     ) {
       setRequestPaymentIsVisible(true);
@@ -375,7 +384,7 @@ export default function TripDetailsPage() {
                       userName={trip.acceptedBid.vehicle.driver.name}
                       avatar={trip.acceptedBid.vehicle.driver.avatar}
                       profileSubtitle={
-                        trip.status !== 'completed'
+                        trip.status !== TripStatus.COMPLETED
                           ? trip.acceptedBid.vehicle.driver.phone
                           : ''
                       }
@@ -416,7 +425,7 @@ export default function TripDetailsPage() {
                   showMessage
                   showViewProfile
                   profileSubtitle={
-                    trip.status !== 'completed' ? trip.tripOwner.phone : ''
+                    trip.status !== TripStatus.COMPLETED ? trip.tripOwner.phone : ''
                   }
                 />
               )}
@@ -430,7 +439,7 @@ export default function TripDetailsPage() {
                       showMessage
                       showViewProfile
                       profileSubtitle={
-                        trip.status !== 'completed'
+                        trip.status !== TripStatus.COMPLETED
                           ? trip.transporter.phone
                           : ''
                       }

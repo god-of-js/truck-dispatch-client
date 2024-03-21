@@ -48,7 +48,7 @@ export default function TripDetailPaymentCard({
   const statusIconDetails: { icon: Icons; className: string } = useMemo(() => {
     if (!payment) return {} as { icon: Icons; className: string };
 
-    if (payment.status === 'completed') {
+    if (payment.status === PaymentRequestStatus.COMPLETED) {
       return {
         icon: 'CheckCircle',
         className: 'completed',

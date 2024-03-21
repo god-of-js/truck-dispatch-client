@@ -15,6 +15,8 @@ import AssignTripFormData from 'types/AssignTripFormData';
 import { Toast } from 'utils/toast';
 import Payment from 'types/Payment';
 import SuccessGif from '../../assets/img/success.gif';
+import PaymentMethod from 'types/enums/PaymentMethod';
+import TripStatus from 'types/enums/TripStatus';
 
 const DashboardTopNav = lazy(() => import('components/layout/DashboardTopNav'));
 
@@ -96,7 +98,7 @@ export default function TripBidsPage() {
   }
 
   function acceptBid(bidId: string) {
-    if (trip?.status !== 'awaiting-bid') {
+    if (trip?.status !== TripStatus.AWAITING_BID) {
       navigate(`/my-trips/${tripId}`);
       return;
     }
@@ -118,7 +120,7 @@ export default function TripBidsPage() {
   }
 
   function assignTripToTransporter(
-    paymentMethod: 'paystack' | 'balance',
+    paymentMethod: PaymentMethod,
     payment?: Payment,
   ) {
     if (!bid || !trip || !user) {
@@ -134,7 +136,7 @@ export default function TripBidsPage() {
       amountInBid: bid?.price,
       totalAmountPaid: priceWithTDPercent(bid?.price),
       transaction: payment?.transaction,
-      paymentSource: paymentMethod,
+      PaymentMethod: paymentMethod,
     };
 
     if (payment) paymentData.processorReference = payment.reference;
@@ -202,7 +204,7 @@ export default function TripBidsPage() {
             isVisible={isMakePaymentVisible}
             payWithBalance={() => setIsPayWithBalanceVisible(true)}
             payWithPaystack={(param) =>
-              assignTripToTransporter('paystack', param)
+              assignTripToTransporter(PaymentMethod.PAYSTACK, param)
             }
             onClose={() => setIsMakePaymentVisible(false)}
           />
@@ -213,7 +215,7 @@ export default function TripBidsPage() {
             notYetVariant="danger-secondary"
             title="Approve Payment"
             onClose={() => setIsPayWithBalanceVisible(false)}
-            onProceed={() => assignTripToTransporter('balance')}
+            onProceed={() => assignTripToTransporter(PaymentMethod.BALANCE)}
           >
             <b>&#8358;{bid.price}</b> will be deducted from your wallet balance.{' '}
             <br />

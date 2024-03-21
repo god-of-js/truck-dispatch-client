@@ -19,7 +19,7 @@ import UiIcon from 'ui/UiIcon';
 import sizes from 'utils/sizes';
 import UiCard from 'ui/UiCard';
 import PaystackLogo from '../../assets/img/paystack.png';
-import PaymentMethods from 'types/PaymentMethods';
+import PaymentMethod from 'types/enums/PaymentMethod';
 
 const AppLogo = lazy(() => import('ui/AppLogo'));
 const UiModal = lazy(() => import('ui/UiModal'));
@@ -62,8 +62,8 @@ export default function MakePayment({
     publicKey: paystackPublickKey,
   };
 
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethods>(
-    user?.balance! >= bid.price ? 'balance' : 'paystack',
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(
+    user?.balance! >= bid.price ? PaymentMethod.BALANCE : PaymentMethod.PAYSTACK,
   );
 
   const isBalanceSufficient = useMemo(() => {
@@ -72,11 +72,11 @@ export default function MakePayment({
 
   function setPaymentMethodAsBalance() {
     if (!isBalanceSufficient) return;
-    setPaymentMethod('balance');
+    setPaymentMethod(PaymentMethod.BALANCE);
   }
 
   function setPaymentMethodAsPaystack() {
-    setPaymentMethod('paystack');
+    setPaymentMethod(PaymentMethod.PAYSTACK);
   }
 
   function proceedAfterPaystack(processorDetails?: Payment) {
@@ -222,7 +222,7 @@ export default function MakePayment({
                     <span>Paystack</span>
                   </div>
                   <UiCheckbox
-                    value={paymentMethod === 'paystack'}
+                    value={paymentMethod === PaymentMethod.PAYSTACK}
                     onChange={setPaymentMethodAsPaystack}
                   />
                 </div>

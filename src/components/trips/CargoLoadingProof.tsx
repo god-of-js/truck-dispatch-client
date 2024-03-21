@@ -1,6 +1,7 @@
 import { lazy } from 'react';
 import styled from 'styled-components';
 import PaymentRequest from 'types/PaymentRequest';
+import PaymentRequestStatus from 'types/enums/PaymentRequestStatus';
 
 const UiModal = lazy(() => import('ui/UiModal'));
 const UiButton = lazy(() => import('ui/UiButton'));
@@ -39,7 +40,7 @@ export default function CargoLoadingProof({
             : ''}
         </p>
         <UiVideoPlayer video={paymentRequest.proofVideo} />
-        {paymentRequest.status !== 'completed' && (
+        {paymentRequest.status !== PaymentRequestStatus.COMPLETED && (
           <>
             {isClient ? (
               <div className="button-container">

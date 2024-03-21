@@ -1,3 +1,5 @@
+import PaymentMethod from "./enums/PaymentMethod";
+
 export default interface AssignTripFormData {
   from: string;
   to: string;
@@ -7,5 +9,5 @@ export default interface AssignTripFormData {
   amountInBid: number;
   totalAmountPaid: number;
   transaction?: string;
-  paymentSource: 'balance' | 'paystack';
+  PaymentMethod: PaymentMethod;
 }
